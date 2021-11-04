@@ -1,0 +1,6 @@
+_book
+Thumbs.db
+/node_modules
+/yarn-error.log
+/docs/.vuepress/dist
+/ibax-io.github.io
