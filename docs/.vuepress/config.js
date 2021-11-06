@@ -80,7 +80,7 @@ module.exports = {
                             ],
                         },
 						{
-                            title: 'common problem',
+                            title: 'Common problem',
                             collapsable: false,
                             children: [
                                 'faq',
@@ -237,7 +237,7 @@ module.exports = {
                             ],
                         },
 						{
-                            title: 'häufiges Problem',
+                            title: 'Häufiges problem',
                             collapsable: false,
                             children: [
                                 'faq',
@@ -315,7 +315,7 @@ module.exports = {
                             ],
                         },
 						{
-                            title: 'problema comun',
+                            title: 'Problema comun',
                             collapsable: false,
                             children: [
                                 'faq',
@@ -549,7 +549,7 @@ module.exports = {
                             ],
                         },
 						{
-                            title: 'problema comune',
+                            title: 'Problema comune',
                             collapsable: false,
                             children: [
                                 'faq',
