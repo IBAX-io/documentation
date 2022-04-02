@@ -34,7 +34,7 @@ Düğümler tarafından kullanılan örnek adresler ve bağlantı noktaları aş
 
 ## Dağıtım aşaması
 Kendi blok zinciri ağınız birkaç aşamada devreye alınmalıdır:
-- [Bir IBAX Ağının Dağıtımı](#bir-ibax ağının dağıtımı)
+- [Bir IBAX Ağının Dağıtımı](#bir-ibax-ağının-dağıtımı)
   - [Bir dağıtım örneği](#bir-dağıtım-örneği)
   - [Dağıtım aşaması](#dağıtım-aşaması)
   - [Sunucu dağıtımı](#sunucu-dağıtımı)
@@ -53,9 +53,9 @@ Kendi blok zinciri ağınız birkaç aşamada devreye alınmalıdır:
   - [Diğer düğümleri dağıtın](#Diğer-düğümleri-dağıtın)
     - [Düğüm 2](#düğüm-2)
     - [Düğüm 3](#düğüm-3)
-  - [Ön uç dağıtım](#ön uç dağıtım)
+  - [Frontend dağıtım](#front-end-dağıtımı)
     - [Yazılım önkoşulları](#yazılım-önkoşulları)
-    - [Bir Weaver uygulaması oluşturun](#Bir Weaver uygulaması oluşturun)
+    - [Bir Weaver uygulaması oluşturun](#Bir-Weaver-uygulaması-oluşturun)
     - [Blockchain ağı için yapılandırma dosyasını ekleyin](#Blok-zinciri-ağı-için-yapılandırma-dosyasını-ekleyin)
     - [Weaver Web Uygulaması Oluşturun](#Weaver-Web-Uygulaması-Oluşturun)
   - [Blockchain ağını yapılandırın](#Blok-zinciri-ağını-yapılandırın)
@@ -85,7 +85,7 @@ Debian 9'un tüm komutları, root olmayan bir kullanıcı olarak çalıştırıl
 su -
 ```
 
-2. Upgrade your system.
+2. Sisteminizi yükseltin.
 
 ```shell
 apt update -y && apt upgrade -y && apt dist-upgrade -y
@@ -97,13 +97,13 @@ apt update -y && apt upgrade -y && apt dist-upgrade -y
 apt install sudo -y
 ```
 
-4. Add your user to the sudo group.
+4. Kullanıcınızı sudo grubuna ekleyin.
 
 ```shell
 usermod -a -G sudo user
 ```
 
-5. After restarting, the changes take effect.
+5. Yeniden başlattıktan sonra değişiklikler geçerli olur.
    
 ### Golang
 
