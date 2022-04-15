@@ -7,7 +7,7 @@
   - [4. Haben Sie eine eigene Kryptowährung?](#frage-4)
   - [5. Was ist ein Ehrenknoten und wer kann ihn pflegen?](#frage-5)
   - [6. Was ist ein Plattform-Ökosystem?](#frage-6)
-  - [7. Who can create an ecosystem?](#frage-7)
+  - [7. Wer kann ein Ökosystem schaffen?](#frage-7)
   - [8. Wie werden Nutzer Mitglieder des Ökosystems?](#frage-8)
   - [9. Kann ein Benutzer mehrere Ökosysteme erstellen?](#frage-9)
   - [10. Was ist eine Plattformanwendung?](#frage-10)
