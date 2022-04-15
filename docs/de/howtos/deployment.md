@@ -1,21 +1,20 @@
-# Deployment of A IBAX Network
-In this section, we will show you how to deploy your own blockchain network.
-## An deployment example
+# Bereitstellung eines IBAX-Netzwerks
+In diesem Abschnitt zeigen wir Ihnen, wie Sie Ihr eigenes Blockchain-Netzwerk bereitstellen.
+## Ein Bereitstellungsbeispiel
 
-A blockchain network will be deployed with the following three nodes as an example.
+Als Beispiel wird ein Blockchain-Netzwerk mit den folgenden drei Knoten bereitgestellt.
 
-Three network nodes:
+Drei Netzwerkknoten:
+* Knoten 1 ist der erste Knoten im Blockchain-Netzwerk, der neue Blöcke generieren und Transaktionen von mit ihm verbundenen Clients senden kann;
+   * Knoten 2 ist ein weiterer Ehrenknoten, der neue Blöcke generieren und Transaktionen von mit ihm verbundenen Clients senden kann;
+   * Knoten 3 ist ein Wächterknoten, der keine neuen Blöcke generieren kann, aber Transaktionen von mit ihm verbundenen Clients senden kann.
 
-  * Node 1 is the first node in the blockchain network, which can generate new blocks and send transactions from clients connected to it;
-  * Node 2 is another honor node, which can generate new blocks and send transactions from clients connected to it;
-  * Node 3 is a guardian node, which cannot generate new blocks, but can send transactions from clients connected to it.
+Konfigurationen der drei bereitzustellenden Knoten:
+* Jeder Knoten verwendet seine eigene PostgreSQL-Datenbanksysteminstanz;
+* Jeder Knoten verwendet seine eigene Centrifugo-Dienstinstanz;
+* Das serverseitige Github-Backend wird auf demselben Host bereitgestellt wie andere Backend-Komponenten.
 
-Configurations of the three nodes to be deployed:
-* Each node uses its own PostgreSQL database system instance;
-* Each node uses its own Centrifugo service instance;
-* The server side github-backend is deployed on the same host as other backend components.
-
-The sample addresses and ports used by the nodes are described in the following table:
+Die von den Knoten verwendeten Beispieladressen und Ports sind in der folgenden Tabelle beschrieben:
 
 | Node |       Component       |    IP & port     |
 | :--: | :-------------------: | :--------------: |
@@ -32,108 +31,109 @@ The sample addresses and ports used by the nodes are described in the following 
 |  3   | go-ibax (TCP service) | 192.168.1.3:7078 |
 |  3   | go-ibax (API service) | 192.168.1.3:7079 |
 
-## Deploy phase
-Your own blockchain network must be deployed in several stages:
-- [Deployment of A IBAX Network](#deployment-of-a-ibax-network)
-  - [An deployment example](#an-deployment-example)
-  - [Deploy phase](#deploy-phase)
-  - [Server deployment](#server-deployment)
-    - [Deploy the first node](#deploy-the-first-node)
-    - [Dependencies and environment settings](#dependencies-and-environment-settings)
+## Bereitstellungsphase
+
+Ihr eigenes Blockchain-Netzwerk muss in mehreren Schritten bereitgestellt werden:
+- [Bereitstellung eines IBAX-Netzwerks](#bereitstellung-eines-ibax-netzwerk)
+  - [Ein Bereitstellungsbeispiel](#ein-bereitstellungsbeispiel)
+  - [Bereitstellungsphase](#bereitstellungsphase)
+  - [Serverbereitstellung](#serverbereitstellung
+    - [Stellen Sie den ersten Knoten bereit](#stellen-sie-den-ersten-knoten-bereit])
+    - [Abhängigkeiten und Umgebungseinstellungen](#abhängigkeiten-und-umgebungseinstellungen)
       - [sudo](#sudo)
     - [Golang](#golang)
     - [PostgreSQL](#postgresql)
     - [Centrifugo](#centrifugo)
-    - [Directory structure](#directory-structure)
-    - [Create a database](#create-a-database)
-    - [Configure Centrifugo](#configure-centrifugo)
-    - [Install go-ibax](#install-go-ibax)
-    - [Configure the first node](#configure-the-first-node)
-    - [Initiate the first node server](#initiate-the-first-node-server)
-  - [Deploy other nodes](#deploy-other-nodes)
-    - [Node 2](#node-2)
-    - [Node 3](#node-3)
-  - [Front-end deployment](#front-end-deployment)
-    - [Software prerequisites](#software-prerequisites)
-    - [Build a Weaver application](#build-a-weaver-application)
-    - [Add the configuration file for the blockchain network](#add-the-configuration-file-for-the-blockchain-network)
-    - [Build Weaver Web Application](#build-weaver-web-application)
-  - [Configure the blockchain network](#configure-the-blockchain-network)
-    - [Create the creator account](#create-the-creator-account)
-    - [Import applications, roles and templates](#import-applications-roles-and-templates)
-    - [Add the first node to the node list](#add-the-first-node-to-the-node-list)
-  - [Add other honor nodes](#add-other-honor-nodes)
-    - [Add members into the consensus role group](#add-members-into-the-consensus-role-group)
-    - [Create the owner account for other nodes](#create-the-owner-account-for-other-nodes)
-    - [Assign the node owner with the Validators role](#assign-the-node-owner-with-the-validators-role)
+    - [Verzeichnisaufbau](#verzeichnisaufbau
+    - [Eine Datenbank erstellen](#eine-datenbank-erstellen)
+    - [Konfigurieren Centrifugo](#konfigurieren-centrifugo)
+    - [Go-ibax installieren](#go-ibax installieren)
+    - [Konfigurieren Sie den ersten Knoten](#konfigurieren-sie-den-ersten-Knoten)
+    - [Initiieren Sie den ersten Knotenserver](#initiieren-sie-den-ersten-knotenserver)
+  - [Andere Knoten bereitstellen](#andere-knoten-bereitstellen])
+    - [Knoten 2](#knoten-2)
+    - [Knoten 3](#knoten-3)
+  - [Front-End-Bereitstellung](#front-end-bereitstellung)
+    - [Software-Voraussetzungen](#software-voraussetzungen)
+    - [Erstellen Sie eine Weaver-Anwendung](#erstellen-sie-eine-weaver-anwendung)
+    - [Fügen Sie die Konfigurationsdatei für das Blockchain-Netzwerk hinzu](#Fügen-sie-die-Konfigurationsdatei-für-das-Blockchain-netzwerk-hinzu])
+    - [Erstellen Sie eine Weaver-Webanwendung](#erstellen-sie-eine-weaver-webanwendung)
+  - [Konfigurieren Sie das Blockchain-Netzwerk](#konfigurieren-sie-das-blockchain-netzwerk)
+    - [Erstellen Sie das Creator-Konto](#erstellen-sie-das-creator-konto)
+    - [Importieren Sie Anwendungen, Rollen und Vorlagen](#importieren-sie-anwendungen,rollen-und-vorlagen)
+    - [Fügen Sie den ersten Knoten zur Knotenliste hinzu](#Fügen-sie-den-ersten-knoten-zur-knotenliste-hinzu)
+  - [Füge weitere Ehrenknoten hinzu](#füge-weitere-ehrenknoten-hinzu)
+    - [Fügen Sie der Consensus-Rollengruppe Mitglieder hinzu](#Fügen-sie-der-consensus-rollengruppe-mitglieder-hinzu)
+    - [Erstellen Sie das Eigentümerkonto für andere Knoten](#erstellen-sie-das-eigentümerkonto-für-andere-knoten)
+    - [Weisen Sie dem Knoteneigentümer die Rolle „Validierer“ zu](#weisen-sie-dem-knoteneigentümer-die-rolle-validierer-zu)
 
-## Server deployment
+## Serverbereitstellung
 
-### Deploy the first node
+### Stellen Sie den ersten Knoten bereit
 
-The first node is a special one because it is essential to launch the blockchain network. The first block of the blockchain is generated by the first node, and all other nodes would download the blockchain from it. The owner of the first node is the platform creator.
+Der erste Knoten ist ein besonderer, da er für den Start des Blockchain-Netzwerks unerlässlich ist. Der erste Block der Blockchain wird vom ersten Knoten generiert, und alle anderen Knoten würden die Blockchain von ihm herunterladen. Der Eigentümer des ersten Knotens ist der Plattformersteller.
 
-### Dependencies and environment settings
+### Abhängigkeiten und Umgebungseinstellungen
 
 #### sudo
+Alle Befehle von Debian 9 müssen als Nicht-Root-Benutzer ausgeführt werden. Einige Systembefehle erfordern jedoch zur Ausführung Superuser-Berechtigungen. Standardmäßig ist sudo nicht auf Debian 9 installiert, Sie müssen es zuerst installieren.
 
-All commands of Debian 9 must be run as a non-root user. However, some system commands require super user permissions to execute. By default, sudo is not installed on Debian 9, you must install it first.
-
-1. Become a super user.
+1. Superuser werden.
 
 ```shell
 su -
 ```
 
-2. Upgrade your system.
+2. Aktualisieren Sie Ihr System.
 
 ```shell
 apt update -y && apt upgrade -y && apt dist-upgrade -y
 ```
 
-3. Install sudo。
+3. Sudo installieren
 
 ```shell
 apt install sudo -y
 ```
 
-4. Add your user to the sudo group.
+4. Fügen Sie Ihren Benutzer der sudo-Gruppe hinzu.
 
 ```shell
 usermod -a -G sudo user
 ```
 
-5. After restarting, the changes take effect.
+5. Nach dem Neustart werden die Änderungen wirksam.
    
 ### Golang
 
-Install Go according to the [Official Documents](https://golang.org/doc/install#tarball). 
+Installieren Sie Go gemäß der [Official Documents](https://golang.org/doc/install#tarball). 
+1. Laden Sie die neueste stabile Version von Go (> 1.10.x) von der [offiziellen Golang-Website] (https://golang.org/dl/) oder über die Befehlszeile herunter:
 
-1. Download the latest stable version of Go (> 1.10.x) from [Golang official website](https://golang.org/dl/) or through the command line:
 
 ```shell
 wget https://dl.google.com/go/go1.11.2.linux-amd64.tar.gz
 ```
 
-2. Use tar to extract the tarball to the `/usr/local` directory.
+2. Verwenden Sie tar, um den Tarball in das Verzeichnis `/usr/local` zu extrahieren.
 
 ```shell
 tar -C /usr/local -xzf go1.11.2.linux-amd64.tar.gz
 ```
 
-3. Add `/usr/local/go/bin` to PATH environment variables (located at `/etc/profile` or `$HOME/.profile`).
+3. Fügen Sie `/usr/local/go/bin` zu den PATH-Umgebungsvariablen hinzu (zu finden unter `/etc/profile` oder `$HOME/.profile`).
 
 ```shell
 export PATH=$PATH:/usr/local/go/bin
 ```
 
-1. Execute the `source` file to make the changes take effect, for example: 
+1. Führen Sie die `source` aus, damit die Änderungen wirksam werden, zum Beispiel:
+
 
 ```shell
 source $HOME/.profile
 ```
 
-2. Delete temporary files:
+2. Temporäre Dateien löschen:
 
 ```shell
 rm go1.11.2.linux-amd64.tar.gz
@@ -141,7 +141,7 @@ rm go1.11.2.linux-amd64.tar.gz
 
 ### PostgreSQL
 
-1. Install PostgreSQL (> v.10) and psql:
+1. Installieren Sie PostgreSQL (> v.10) and psql:
 
 ```shell
 sudo apt install -y postgresql
@@ -149,7 +149,7 @@ sudo apt install -y postgresql
 
 ### Centrifugo
 
-1. Download Centrifugo V.1.8.0 from [GitHub](https://github.com/centrifugal/centrifugo/releases/) or through the command line:
+1. Download Centrifugo V.1.8.0 aus [GitHub](https://github.com/centrifugal/centrifugo/releases/) oder über die Kommandozeile:
 
 ```shell
 wget https://github.com/centrifugal/centrifugo/releases/download/v1.8.0/centrifugo-1.8.0-linux-amd64.zip \
@@ -158,32 +158,30 @@ wget https://github.com/centrifugal/centrifugo/releases/download/v1.8.0/centrifu
 && mv centrifugo-1.8.0-linux-amd64/* centrifugo/
 ```
 
-2. Delete temporary files: 
+2. Temporäre Dateien löschen:
 
 ```shell
 rm -R centrifugo-1.8.0-linux-amd64 \
 && rm centrifugo-1.8.0-linux-amd64.zip
 ```
+### Verzeichnisaufbau
 
-### Directory structure
+Für das Debian 9-System wird empfohlen, die gesamte von der Blockchain-Plattform verwendete Software in einem separaten Verzeichnis zu speichern.
+Hier wird das Verzeichnis `/opt/backenddir` verwendet, aber Sie können jedes Verzeichnis verwenden. Bitte ändern Sie in diesem Fall alle Befehle und Konfigurationsdateien entsprechend.
 
-For the Debian 9 system, it is recommended to store all software used by the blockchain platform in a separate directory.
-
-The `/opt/backenddir` directory is used here, but you can use any directory. In this case, please change all commands and configuration files accordingly.
-
-1. Create a directory for the blockchain platform:
+1. Erstellen Sie ein Verzeichnis für die Blockchain-Plattform:
 
 ```shell
 sudo mkdir /opt/backenddir
 ```
 
-2. Make your user the owner of the directory:
+2. Machen Sie Ihren Benutzer zum Eigentümer des Verzeichnisses:
 
 ```shell
 sudo chown user /opt/backenddir/
 ```
 
-3. Create subdirectories for Centrifugo, go-ibax and node data. All node data is stored in a directory named `nodeX`, where `X` is the node number. According to the node to be deployed, `node1` is Node 1, `node2` is Node 2, and so forth.
+3. Erstellen Sie Unterverzeichnisse für Centrifugo, go-ibax und Knotendaten. Alle Knotendaten werden in einem Verzeichnis namens `nodeX` gespeichert, wobei `X` die Knotennummer ist. Gemäß dem bereitzustellenden Knoten ist `node1` Knoten 1, `node2` ist Knoten 2 und so weiter.
 
 ```shell
 mkdir /opt/backenddir/go-ibax \
@@ -191,42 +189,41 @@ mkdir /opt/backenddir/go-ibax/node1 \
 mkdir /opt/backenddir/centrifugo \
 ```
 
-### Create a database
+### Erstellen Sie eine Datenbank
 
-1. Change the user password postgres to the default password *123456*. You can set your own password, but you must change it in the node configuration file *config.toml*.
-
+1. Ändern Sie das Benutzerpasswort postgres auf das Standardpasswort *123456*. Sie können Ihr eigenes Passwort festlegen, aber Sie müssen es in der Knotenkonfigurationsdatei *config.toml* ändern.
 ```shell
 sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '123456'"
 ```
 
-2. Create a current state database for the node, for example **chaindb**:
+2. Erstellen Sie eine aktuelle Zustandsdatenbank für den Knoten, zum Beispiel **chaindb**:
 
 ```shell
 sudo -u postgres psql -c "CREATE DATABASE chaindb"
 ```
 
-### Configure Centrifugo
+### Konfigurieren Centrifugo
 
-1. Create the Centrifugo configuration file:
+1. Erstellen Sie die Centrifugo-Konfigurationsdatei:
 
 ```shell
 echo '{"secret":"CENT_SECRET"}' > /opt/backenddir/centrifugo/config.json
 ```
 
-You can set your own *secret*, but you must also change it in the node configuration file *config.toml*.
+Sie können Ihr eigenes *Geheimnis* festlegen, aber Sie müssen es auch in der Knotenkonfigurationsdatei *config.toml* ändern.
 
-### Install go-ibax
+### go-ibax installieren
 
-1. Download github-backend from GitHub:
-2. Copy the go-ibax binary file to the `/opt/backenddir/go-ibax` directory. If you are using default Go workspace, the binary files are located in the `$HOME/go/bin` directory:
+1. Github-Backend von GitHub herunterladen:
+2. Kopieren Sie die go-ibax-Binärdatei in das Verzeichnis `/opt/backenddir/go-ibax`. Wenn Sie den standardmäßigen Go-Arbeitsbereich verwenden, befinden sich die Binärdateien im Verzeichnis `$HOME/go/bin` :
 
 ```shell
 cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
 ```
 
-### Configure the first node
+### Konfigurieren Sie den ersten Knoten
 
-3. Create the configuration file for Node 1:
+3. Erstellen Sie die Konfigurationsdatei für Knoten 1:
 
 ```shell
 /opt/backenddir/go-ibax config \
@@ -239,17 +236,18 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
  --tcpPort=7078
 ```
 
-4. Generate the keys of Node 1, including the public and private keys of the node and the account:
+4. Generieren Sie die Schlüssel von Knoten 1, einschließlich der öffentlichen und privaten Schlüssel des Knotens und des Kontos:
+
 ```shell
 /opt/backenddir/go-ibax generateKeys \
  --config=/opt/backenddir/node1/config.toml
 ```
 
-5. Generate the first block:
+5. Generieren Sie den ersten Block:
 
-> Note
+> Hinweis
 >
-> If you want to create your own blockchain network, you must use the `--test=true` option. Otherwise, you cannot create a new account.
+> Wenn Sie Ihr eigenes Blockchain-Netzwerk erstellen möchten, müssen Sie die Option `--test=true` verwenden. Andernfalls können Sie kein neues Konto erstellen.
 
 ```shell
 /opt/backenddir/go-ibax generateFirstBlock \
@@ -257,22 +255,22 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
  --test=true
 ```
 
-6. Initialize the database:
+6. Initialisieren Sie die Datenbank:
 
 ```shell
 /opt/backenddir/go-ibax initDatabase \
  --config=/opt/backenddir/node1/config.toml
 ```
 
-### Initiate the first node server
+### Initiiere den ersten Node-Server
 
-To start the first node server, you must start the following two services:
+Um den ersten Knotenserver zu starten, müssen Sie die folgenden zwei Dienste starten:
 * centrifugo
 * go-ibax
 
-If you failed to create [services](#https://wiki.debian.org/systemd/Services) with these files, you may execute binary files from directories in different consoles.
+Wenn Sie mit diesen Dateien [Dienste](#https://wiki.debian.org/systemd/Services) nicht erstellen konnten, können Sie Binärdateien aus Verzeichnissen in verschiedenen Konsolen ausführen.
 
-1. Run centrifugo:
+1. Lauf centrifugo:
 
 ```shell
 /opt/backenddir/centrifugo/centrifugo \
@@ -280,30 +278,29 @@ If you failed to create [services](#https://wiki.debian.org/systemd/Services) wi
  --config /opt/backenddir/centrifugo/config.json
 ```
 
-2. Run go-ibax:
+2. Lauf go-ibax:
 
 ```shell
 /opt/backenddir/go-ibax start \
  --config=/opt/backenddir/node1/config.toml
 ```
 
-## Deploy other nodes
+## Andere Knoten bereitstellen
 
-Although the deployment of all other nodes (Node 2 and Node 3) is similar to the first, but there are three differences:
+Obwohl die Bereitstellung aller anderen Knoten (Knoten 2 und Knoten 3) der ersten ähnlich ist, gibt es drei Unterschiede:
 
-* You do not need to generate the first block. But it must be copied from Node 1 to the current node data directory;
-* The node must download blocks from Node 1 by configuring the `--nodesAddr` option;
-* The node must use its own addresses and ports.
+* Sie müssen den ersten Block nicht generieren. Aber es muss von Knoten 1 in das aktuelle Knotendatenverzeichnis kopiert werden;
+* Der Knoten muss Blöcke von Knoten 1 herunterladen, indem er die Option `--nodesAddr` konfiguriert;
+* Der Knoten muss seine eigenen Adressen und Ports verwenden.
 
-### Node 2
+### Knoten 2
 
-Follow operational instructions as shown below: 
-
-1. [Dependencies and environment settings](#dependencies-and-environment-settings)
-2. [Create database](#create-a-database)
-3. [Centrifugo](#centrifugo)
-4. [Install go-ibax](#install-go-ibax)
-5. Create the configuration file for Node 2: 
+Befolgen Sie die nachstehenden Betriebsanweisungen:
+1. [Abhängigkeiten und Umgebungseinstellungen](#dependencies-and-environment-settings)
+2. [Datenbank erstellen](#create-a-database)
+3. [Zentrifuge](#Zentrifuge)
+4. [go-ibax installieren](#install-go-ibax)
+5. Erstellen Sie die Konfigurationsdatei für Knoten 2:
 
 ```shell
  /opt/backenddir/go-ibax config \
@@ -317,26 +314,26 @@ Follow operational instructions as shown below:
 --nodesAddr=192.168.1.1
 ```
 
-6. Copy the first block file to Node 2. For example, you can perform this operation on Node 2 throughscp:
+6. Kopieren Sie die erste Blockdatei auf Knoten 2. Sie können diese Operation beispielsweise auf Knoten 2 über scp ausführen:
 
 ```shell
  scp user@192.168.1.1:/opt/backenddir/node1/1block /opt/backenddir/node2/
 ```
 
-7. Generate the keys of Node 2, including the public and private keys of the node and the account:
+7. Generieren Sie die Schlüssel von Knoten 2, einschließlich der öffentlichen und privaten Schlüssel des Knotens und des Kontos:
 
 ```shell
  /opt/backenddir/go-ibax generateKeys \
 --config=/opt/backenddir/node2/config.toml
 ```
 
-8. Initiate the database: 
+8. Starten Sie die Datenbank:
 
 ```shell
  ./go-ibax initDatabase --config\=node2/config.toml
 ```
 
-9. Run centrifugo:
+9. Lauf centrifugo:
 
 ```shell
 /opt/backenddir/centrifugo/centrifugo \
@@ -344,7 +341,7 @@ Follow operational instructions as shown below:
 --config/opt/backenddir/centrifugo/config.json
 ```
 
-10. Run go-ibax:
+10. Lauf go-ibax:
 
 ```shell
 /opt/backenddir/go-ibax start \
@@ -353,19 +350,18 @@ Follow operational instructions as shown below:
 
 As a result, the node downloads the block from the first node. As this node is not a verification node, it cannot generate a new block. Node 2 will be added to the list of verification nodes later.
 
-### Node 3
+### Knoten 3
 
-Follow operational instructions as shown below: 
+Befolgen Sie die nachstehenden Betriebsanweisungen:
+1. [Abhängigkeiten und Umgebungseinstellungen](#dependencies-and-environment-settings)
 
-1. [Dependencies and environment settings](#dependencies-and-environment-settings)
+2. [Datenbank erstellen](#create-a-database)
 
-2. [Create database](#create-a-database)
+3. [Zentrifuge](#Zentrifuge)
 
-3. [Centrifugo](#centrifugo)
+4. [go-ibax installieren](#install-go-ibax)
 
-4. [Install go-ibax](#install-go-ibax)
-
-5. Create the configuration file for Node 3:
+5. Erstellen Sie die Konfigurationsdatei für Knoten 3:
 
 ```shell
  /opt/backenddir/go-ibax config \
@@ -379,27 +375,27 @@ Follow operational instructions as shown below:
 --nodesAddr=192.168.1.1
 ```
 
-6. Copy the first block file to Node 3. For example, you can perform this operation on Node 3 through scp:
+6. Kopieren Sie die erste Blockdatei auf Knoten 3. Sie können diese Operation beispielsweise auf Knoten 3 über scp ausführen:
 
 ```shell
  scp user@192.168.1.1:/opt/backenddir/node1/1block /opt/backenddir/node3/
 ```
 
 
-7.Generate the key of Node 3, including the public and private keys of the node and the account:
+7.Generieren Sie den Schlüssel von Knoten 3, einschließlich der öffentlichen und privaten Schlüssel des Knotens und des Kontos:
 
 ```shell
  /opt/backenddir/go-ibax generateKeys \
 --config=/opt/backenddir/node3/config.toml
 ```
 
-8.Initiate the database: 
+8.Initiieren Sie die Datenbank:
 
 ```shell
  ./go-ibax initDatabase --config=node3/config.toml
 ```
 
-9.Run centrifugo:
+9.Lauf centrifugo:
 
 ```shell
  /opt/backenddir/centrifugo/centrifugo \
@@ -407,78 +403,75 @@ Follow operational instructions as shown below:
 --config/opt/backenddir/centrifugo/config.json
 ```
 
-10.Run go-ibax:
+10.Lauf go-ibax:
 
 ```shell
  /opt/backenddir/go-ibax start \
  --config=/opt/backenddir/node3/config.toml
 ```
+Als Ergebnis lädt der Knoten den Block vom ersten Knoten herunter. Da dieser Knoten kein Verifizierungsknoten ist, kann er keinen neuen Block erzeugen. Der Client kann mit dem Knoten verbunden sein und Transaktionen an das Netzwerk senden.
 
-As a result, the node downloads the block from the first node. As this node is not a verification node, it cannot generate a new block. The client may be connected to the node, and it may send transactions to the network.
+## Front-End-Bereitstellung
 
-## Front-end deployment
+Erst nach der Installation von **GNOME GUI** auf Debian 9 (Stretch) 64-Bit Official Release kann der Govis-Client mit dem `Yarn`-Paketmanager erstellt werden.
 
-Only after installing **GNOME GUI** on Debian 9 (Stretch) 64-bit Official Release, the Govis client can be built with the `yarn` package manager.
+### Softwarevoraussetzungen
 
-### Software prerequisites
-
-1. Download Node.js LTS version 8.11 from Node.js official website or through the command line:
+1. Laden Sie Node.js LTS Version 8.11 von der offiziellen Website von Node.js oder über die Befehlszeile herunter:
 
 ```shell
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash
 ```
 
-2. Install Node.js:
+2. Installieren Node.js:
 
 ```shell
 sudo apt install -y nodejs
 ```
 
-1. Download Yarn version 1.7.0 from yarn's [Github](https://github.com/yarnpkg/yarn/releases) repository or through the command line:
+1. Laden Sie Yarn Version 1.7.0 aus dem [Github](https://github.com/yarnpkg/yarn/releases)-Repository von Garn oder über die Befehlszeile herunter:
 
 ```shell
 cd/opt/backenddir \
 && wget https://github.com/yarnpkg/yarn/releases/download/v1.7.0/yarn_1.7.0_all.deb
 ```
 
-2. Install Yarn:
+2. Installieren Yarn:
 
 ```shell
 sudo dpkg -i yarn_1.7.0_all.deb && rm yarn_1.7.0_all.deb
 ```
+### Erstellen Sie eine Weaver-Anwendung
 
-### Build a Weaver application
-
-1. Download the latest version of Weaver from github-frontend via git:
+1. Laden Sie die neueste Version von Weaver vom Github-Frontend über Git herunter:
 
 ```shell
 cd/opt/backenddir \
 && git clone https://github.com/ibax-io/ibax-front.git
 ```
 
-2. Install Weaver dependencies via Yarn:
+2. Installieren Sie Weaver-Abhängigkeiten über Yarn:
 
 ```shell
 cd/opt/backenddir/ibax-front/ \
 && yarn install
 ```
+### Fügen Sie die Konfigurationsdatei für das Blockchain-Netzwerk hinzu
 
-### Add the configuration file for the blockchain network
-
-1. Create a *settings.json* file that contains information about node connection:
+1. Erstellen Sie eine *settings.json*-Datei, die Informationen zur Knotenverbindung enthält:
 
 ```shell
 cp/opt/backenddir/ibax-front/public/settings.json.dist \
  /opt/backenddir/ibax-front/public/public/settings.json
 ```
  
-2. Edit the *settings.json* file in any text editor and add the required settings in this format:
+2. Bearbeiten Sie die Datei *settings.json* in einem beliebigen Texteditor und fügen Sie die erforderlichen Einstellungen in diesem Format hinzu:
 
 ```
 http://Node_IP-address:Node_HTTP-Port
 ```
 
-Examples of *settings.json* files for the three nodes:
+Beispiele für *settings.json*-Dateien für die drei Knoten:
 
 ```json
 {
@@ -489,97 +482,94 @@ Examples of *settings.json* files for the three nodes:
   ]
 }
 ```
+Erstellen Sie die Weaver Desktop-Anwendung
 
-Build Weaver Desktop Application
-
-1.Use yarn to build the desktop version:
+1. Verwenden Sie Garn, um die Desktop-Version zu erstellen:
 
 ```shell
 cd/opt/backenddir/ibax-front \
 && yarn build-desktop
 ```
 
-2.The desktop version will be packaged into AppImage suffix format:
+2. Die Desktop-Version wird im AppImage-Suffixformat gepackt:
 
 ```shell
 yarn release --publish never -l
 ```
 
-After building, your application can be used, but its connection configuration cannot be changed. If these settings need to be changed, a new version of the application must be built.
+Nach dem Erstellen kann Ihre Anwendung verwendet werden, aber ihre Verbindungskonfiguration kann nicht geändert werden. Wenn diese Einstellungen geändert werden müssen, muss eine neue Version der Anwendung erstellt werden.
 
-### Build Weaver Web Application
+### Weaver-Webanwendung erstellen
 
-1.Build a web application:
+1. Erstellen Sie eine Webanwendung:
 
 ```shell
 cd/opt/backenddir/ibax-front/ \
 && yarn build
 ```
+Nach dem Erstellen werden die verteilbaren Dateien im Verzeichnis /build abgelegt. Sie können einen beliebigen Webserver Ihrer Wahl für die Bereitstellung verwenden, und die Datei *settings.json* muss ebenfalls in diesem Verzeichnis abgelegt werden. Beachten Sie, dass bei einer Änderung der Verbindungseinstellungen die Anwendung nicht erneut erstellt werden muss. Bearbeiten Sie stattdessen die Datei *settings.json* und starten Sie den Webserver neu.
 
-After building, the redistributable files will be placed in the /build directory. You can use any web server of your choice for deployment, and the *settings.json* file must also be placed in this directory. Note that if the connection settings are changed, there is no need to build the application again. Instead, edit the *settings.json* file and restart the web server.
-
-1.For development or testing purposes, you can build Yarn's web server:
-
+1. Für Entwicklungs- oder Testzwecke können Sie den Webserver von Yarn erstellen:
 
 ```shell
 sudo yarn global add serve \
 && serve -s build
 ```
 
-After that, your Weaver web application will be available at the following location: `http://localhost:5000`.
+Danach ist Ihre Weaver-Webanwendung an folgendem Ort verfügbar: `http://localhost:5000`.
 
-## Configure the blockchain network
+## Konfigurieren Sie das Blockchain-Netzwerk
 
-### Create the creator account
+### Erstellerkonto erstellen
 
-Create an account for the first node owner. This account is the creator of the new blockchain platform and has the administrator access.
+Erstellen Sie ein Konto für den ersten Knoteneigentümer. Dieses Konto ist der Ersteller der neuen Blockchain-Plattform und hat Administratorzugriff.
 
-1.Run Weaver;
+1.Weaver ausführen;
 
-2.Import the existing account using the following data:
+2.Importieren Sie das vorhandene Konto mit den folgenden Daten:
 
-–Load the backup of the node owner's private key located in the `/opt/backenddir/node1/PrivateKey` file.
+–Laden Sie die Sicherung des privaten Schlüssels des Knoteneigentümers, der sich in der Datei `/opt/backenddir/node1/PrivateKey` befindet.
 
-> Note
+> Hinweis
 >
->There are two private key files in this directory. The `PrivateKey` file is used create the node owner's account. The `NodePrivateKey` file is the private key of the node itself and must be kept secret.
+>In diesem Verzeichnis befinden sich zwei private Schlüsseldateien. Die Datei `PrivateKey` wird verwendet, um das Konto des Knoteneigentümers zu erstellen. Die `NodePrivateKey`-Datei ist der private Schlüssel des Knotens selbst und muss geheim gehalten werden.
 
-3.After logging in to the account, since no role has been created at this time, please select the Without role option.
+3. Nachdem Sie sich beim Konto angemeldet haben, wählen Sie bitte die Option Ohne Rolle, da zu diesem Zeitpunkt noch keine Rolle erstellt wurde.
+### Anwendungen, Rollen und Vorlagen importieren
 
-### Import applications, roles and templates
+Zu diesem Zeitpunkt befindet sich die Blockchain-Plattform in einem leeren Zustand. Sie können es konfigurieren, indem Sie Rollen, Vorlagen und Anwendungsframeworks hinzufügen, die grundlegende Ökosystemfunktionen unterstützen.
 
-At this time, the blockchain platform is in a blank state. You can configure it by adding roles, templates, and application frameworks that support basic ecosystem functions.
-
-1.Clone the application repository;
+1. Klonen Sie das Anwendungs-Repository;
 
 ```shell
 cd/opt/backenddir \
 && git clone https://github.com/ibax-io/dapps.git
 ```
 
-2.Navigate to Developer> Import in Weaver;
+2. Navigieren Sie zu Entwickler> Importieren in Weaver;
 
-3.Import applications as per the following order:
+3. Importieren Sie Anwendungen gemäß der folgenden Reihenfolge:
+
 ```
  A./opt/backenddir/dapps/system.json 
  B./opt/backenddir/dapps/conditions.json 
  C./opt/backenddir/dapps/basic.json 
  D./opt/backenddir/dapps/lang_res.json
 ```
+4. Navigieren Sie zu Admin > Rolle und klicken Sie auf Standardrolle installieren;
 
-4.Navigate to Admin> Role, and click Install Default Role;
+5. Verlassen Sie das System über das Konfigurationsdateimenü in der oberen rechten Ecke;
 
-5.Exit the system through the configuration file menu in the upper right corner;
+6.Melden Sie sich als Admin beim System an;
 
-6.Log in to the system as Admin;
+7. Navigieren Sie zu Start > Abstimmung > Vorlagenliste und klicken Sie auf Standardvorlage installieren.
 
-7.Navigate to Home> Vote> Template List, and click Install Default Template.
+### Den ersten Knoten zur Knotenliste hinzufügen
 
-### Add the first node to the node list
+1. Navigieren Sie zu Entwickler > Plattformparameter und klicken Sie auf den Parameter first_nodes;
 
-1.Navigate to Developer> Platform Parameters, and click the first_nodes parameter;
+2.Geben Sie die Parameter des ersten Blockchain-Netzwerkknotens an.
 
-2.Specify the parameters of the first blockchain network node.
 
   * public_key - The public key of the node is located in the `/opt/backenddir/node1/NodePublicKey` file;
 
@@ -587,41 +577,37 @@ cd/opt/backenddir \
 {"api_address":"http://192.168.1.1:7079","public_key":"%node_public_key%","tcp_address":"192.168.1.1:7078"}
 ```
 
-## Add other honor nodes
+## Weitere Ehrenknoten hinzufügen
 
-### Add members into the consensus role group
+### Mitglieder zur Consensus-Rollengruppe hinzufügen
 
-By default, only members in the consensus role (Consensus) group can participate in the voting required to add other master nodes. This means that before adding a new master node, members of the ecosystem must be assigned to the role.
-In this section, the creator's account is designated as the only member of the consensus role group. In a production environment, this role must be assigned to platform members that perform governance.
+Standardmäßig können nur Mitglieder in der Konsensus-Rollengruppe (Consensus) an der Abstimmung teilnehmen, die erforderlich ist, um andere Master-Knoten hinzuzufügen. Das bedeutet, dass vor dem Hinzufügen einer neuen Masternode Mitglieder des Ökosystems der Rolle zugewiesen werden müssen.
+In diesem Abschnitt wird das Konto des Erstellers als einziges Mitglied der Konsens-Rollengruppe festgelegt. In einer Produktionsumgebung muss diese Rolle Plattformmitgliedern zugewiesen werden, die Governance durchführen.
 
-1.Navigate to Home> Role and click Consensus;
+1. Navigieren Sie zu Start > Rolle und klicken Sie auf Konsens;
 
-2.Click Assign to assign the creator's account to the role.
+2.Klicken Sie auf Zuweisen, um das Konto des Erstellers der Rolle zuzuweisen.
 
-### Create the owner account for other nodes
+### Erstellen Sie das Eigentümerkonto für andere Knoten
+1. Weber ausführen;
 
-1. Run Weaver;
-
-2. Import the existing account using the following data:
-     – Load the backup of the node owner's private key located in the `/opt/backenddir/node2/PrivateKey` file.
+2. Importieren Sie das bestehende Konto mit den folgenden Daten:
+      – Laden Sie die Sicherung des privaten Schlüssels des Node-Eigentümers, der sich in der Datei `/opt/backenddir/node2/PrivateKey`
      
-3. After logging in to the account, since no role has been created at this time, please select the Without role option.
+3. Nachdem Sie sich beim Konto angemeldet haben, wählen Sie bitte die Option Ohne Rolle, da zu diesem Zeitpunkt noch keine Rolle erstellt wurde.
 
-4. Navigate to Home> Personal Information, and click the title of the personal information;
+4. Navigieren Sie zu Startseite > Persönliche Informationen und klicken Sie auf den Titel der persönlichen Informationen;
 
-5. Add account details (personal information title, description, etc.).
+5. Fügen Sie Kontodetails hinzu (persönliche Informationen, Titel, Beschreibung usw.).
+1. Operationen des neuen Knoteneigentümers:
+     1. Navigieren Sie zu Start > Prüfer;
+     2. Klicken Sie auf Anfrage erstellen und füllen Sie das Antragsformular des Prüferkandidaten aus;
+     3. Klicken Sie auf Anfrage senden.
+2. Operationen des Erstellers:
+     1. Melden Sie sich mit einer Konsensrolle an (Consensus);
+     2. Navigieren Sie zu Start > Prüfer;
+     3. Klicken Sie auf das Symbol „Spielen“, um die Abstimmung gemäß der Anfrage des Kandidaten zu starten;
+     4. Navigieren Sie zu Startseite > Abstimmen und klicken Sie auf Abstimmungsstatus aktualisieren;
+     5. Klicken Sie auf den Abstimmungsnamen und stimmen Sie für den Knoteneigentümer ab.
 
-### Assign the node owner with the Validators role
-
-1. Operations by the new node owner: 
-    1. Navigate to Home> Verifier;
-    2. Click Create Request and fill in the application form of the verifier candidate;
-    3. Click send request.
-2. Operations by the creator: 
-    1. Log in with a consensus role (Consensus);
-    2. Navigate to Home> Verifier;
-    3. Click the "Play" icon to start voting according to the candidate's request;
-    4. Navigate to Home> Vote, and click Update voting status;
-    5. Click the voting name and vote for the node owner.
-
-As a result, the account of the owner of the new node is assigned with the Validator role, and the new node is added to the list of master nodes.
+Als Ergebnis wird dem Konto des Eigentümers des neuen Knotens die Validator-Rolle zugewiesen, und der neue Knoten wird der Liste der Master-Knoten hinzugefügt.

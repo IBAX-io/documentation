@@ -1,53 +1,53 @@
-# Server Configuration File
+# Serverkonfigurationsdatei
 
-In this section, we will introduce parameters in the server configuration file. 
-## Introduction to the server configuration file
+In diesem Abschnitt stellen wir Parameter in der Serverkonfigurationsdatei vor.
+## Einführung in die Serverkonfigurationsdatei
 
-The server configuration file defines the node configuration of IBAX.
-## Location
+Die Serverkonfigurationsdatei definiert die Knotenkonfiguration von IBAX.
+## Standort
 
-This file is located in the working directory of the server and is named `config.toml`.
-## Sections
+Diese Datei befindet sich im Arbeitsverzeichnis des Servers und heißt `config.toml`.
+## Abschnitte
 
-The configuration file consists the following sections:
+Die Konfigurationsdatei besteht aus den folgenden Abschnitten:
 
-> general section
+> Allgemeiner Teil
 
-It defines the working directory DataDir, the first block directory FirstBlockPath and other parameters.
+Es definiert das Arbeitsverzeichnis DataDir, das erste Blockverzeichnis FirstBlockPath und andere Parameter.
 
-> [TCPServer]
+> [TCP-Server]
 
-It defines the TCP service parameters.
+Es definiert die TCP-Dienstparameter.
 
-TCPServer is used for the network interaction between nodes.
-
+TCPServer wird für die Netzwerkinteraktion zwischen Knoten verwendet.
 > [HTTP]
 
-It defines the HTTP service parameters.
+Es definiert die HTTP-Dienstparameter.
 
-HTTPServer provides RESTful APIs.
+HTTPServer bietet RESTful-APIs.
 
 > [DB]
 
-It defines parameters of the PostgreSQL node database.
+Es definiert Parameter der PostgreSQL-Knotendatenbank.
 
-> [StatsD]
+> [StatistikD]
 
-It defines parameters of the node operation indicator collector StatsD.
+Es definiert Parameter des Kollektors StatsD für die Knotenbetriebsanzeige.
 
-> [Centrifugo]
+> [Zentrifuge]
 
-It defines parameters of the notification service Centrifugo.
+Es definiert Parameter des Benachrichtigungsdienstes Centrifugo.
 
-> [Log]
+> [Protokoll]
 
-It defines parameters of the log service Log.
+Es definiert Parameter des Protokolldienstes Log.
 
-> [TokenMovement]
+> [TokenBewegung]
 
-It defines parameters of the token circulation service TokenMovement.
+Es definiert Parameter des Token-Zirkulationsdienstes TokenMovement.
 
-## An example configuration file
+## Eine Beispielkonfigurationsdatei
+
 ```
 PidFilePath = "/IBAX-data/go-ibax.pid"
 LockFilePath = "/IBAX-data/go-ibax.lock"
