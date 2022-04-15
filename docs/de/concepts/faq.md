@@ -41,12 +41,12 @@
 
 ### <span id = "frage-3">3.Was sind die Hauptunterschiede zwischen IBax und anderen öffentlichen Blockchain-Plattformen mit integrierten Mechanismen zur Ausführung von Smart Contracts?</span>
 
-  * IBax has unique features that cannot be found in the above-mentioned blockchains:
-    *  has an integrated application development environment in a single client software;
-      *  the special template language Logicor for page design and the contract language Needle coordinate with each other;
-      *  has a multi-level permission system for managing the access rights to data, interfaces and smart contracts, in which permissions can be granted to members, roles and contracts;
-      * the ecosystem, used to create blockchain applications and autonomous software environments for users to interact with them;
-      * the legal system, a set of rules written in smart laws (dedicated smart contracts), regulates the relationship between platform users and defines the process of changing protocol parameters for problem solving.
+* IBax hat einzigartige Eigenschaften, die in den oben genannten Blockchains nicht zu finden sind:
+     * verfügt über eine integrierte Anwendungsentwicklungsumgebung in einer einzigen Client-Software;
+       * die spezielle Template-Sprache Logicor zur Seitengestaltung und die Vertragssprache Needle sind aufeinander abgestimmt;
+       * verfügt über ein mehrstufiges Berechtigungssystem zur Verwaltung der Zugriffsrechte auf Daten, Schnittstellen und Smart Contracts, in dem Berechtigungen an Mitglieder, Rollen und Verträge vergeben werden können;
+       * das Ökosystem, das verwendet wird, um Blockchain-Anwendungen und autonome Softwareumgebungen zu erstellen, mit denen Benutzer mit ihnen interagieren können;
+       * Das Rechtssystem, eine Reihe von Regeln, die in Smart Laws (dedizierte Smart Contracts) niedergeschrieben sind, regelt die Beziehung zwischen Plattformbenutzern und definiert den Prozess der Änderung von Protokollparametern zur Problemlösung.
 
 ### <span id = "frage-4">4.Haben Sie eine eigene Kryptowährung?</span>
 
