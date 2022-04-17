@@ -1,147 +1,137 @@
+# Tutorial für die Anwendungsentwicklung
 
-# Tutorial for application development
+In diesem Abschnitt zeigen wir Ihnen, wie Sie eine einfache Anwendung im IBAX-Netzwerk entwickeln.
+- [Das Ziel](#the-goal)
+   - [Teil 1: Die Umwelt](#part-1-die-unwelt)
+   - [Teil 2: Vertrag](#teil-2-vertrag)
+     - [Creator-Konto](#creator-konto)
+     - [Neuer Antrag](#neuer-antrag)
+     - [Neue Datenbanktabelle](#neue-datenbanktabelle)
+     - [Neuer Vertrag](#neuer-Vertrag)
+       - [Vertragscode](#vertragscode)
+       - [Vertrag erstellen](#vertrag-erstellen)
+       - [Vertragsname](#vertragsname)
+       - [Daten](#daten)
+       - [Bedingungen](#bedingungen)
+       - [Aktion](#aktion)
+       - [Vollständiger Vertragscode](#vollständiger-vertragscode)
+       - [Speichern und ausführen](#speichern-und-ausführen)
+  - [Teil 3: Seite](#teil-3-seite)
+     - [Neues Feld](#neues-Feld)
+     - [Vertrag aktualisieren](#vertrag-aktualisieren)
+     - [Seite](#Seite)
+       - [Designer-Ansichten](#designer-ansichten)
+       - [Entwickleransicht](#entwickleransicht)
+       - [Daten aus der Datenbanktabelle holen](#daten-aus-der-datenbanktabelle-holen)
+       - [Seite speichern](#seite-speichern)
+  - [Teil 4: Bewerbung](#Teil-4-Bewerbung)
+     - [Menü](#Menü)
+       - [Einen Menüpunkt hinzufügen](#einen-menüpunkt-hinzufügen)
+       - [Neues Menüelement testen](#neues-menülement-testen)
+     - [Nachricht senden](#nachrict-senden)
+       - [Formular](#Formular)
+     - [Formularnavigation](#formularnavigation)
+       - [Navigationsschaltflächen](#navigationsschaltflächen)
+       - [Variablen](#variablen)
+       - [Anzahl der Einträge](#anzahl-der-einträge)
+       - [Tabellenoffset](#tabellenoffset)
+       - [Schaltflächencode](#schaltflächencode)
+       - [Seitenaktualisierung](#seitenaktualisierung)
+   - [Schlussfolgerungen](#schlussfolgerungen)
 
-In this section, we will show you how to  develop a simple application on the IBAX Network.
+## Das Ziel
 
-  - [The Goal](#the-goal)
-  - [Part 1: The Environment](#part-1-the-environment)
-  - [Part 2: Contract](#part-2-contract)
-    - [Creator account](#creator-account)
-    - [New application](#new-application)
-    - [New database table](#new-database-table)
-    - [New contract](#new-contract)
-      - [Contract code](#contract-code)
-      - [Create a contract](#create-a-contract)
-      - [Contract name](#contract-name)
-      - [Data](#data)
-      - [Conditions](#conditions)
-      - [Action](#action)
-      - [Full contract code](#full-contract-code)
-      - [Save and run](#save-and-run)
-  - [Part 3: Page](#part-3-page)
-    - [New field](#new-field)
-    - [Update the contract](#update-the-contract)
-    - [Page](#page)
-      - [Designer views](#designer-views)
-      - [Developer view](#developer-view)
-      - [Fetch data from the database table](#fetch-data-from-the-database-table)
-      - [Save the page](#save-the-page)
-  - [Part 4: Application](#part-4-application)
-    - [Menu](#menu)
-      - [Add a menu item](#add-a-menu-item)
-      - [Test the new meu item](#test-the-new-meu-item)
-    - [Send a message](#send-a-message)
-      - [Form](#form)
-    - [Form navigation](#form-navigation)
-      - [Navigation buttons](#navigation-buttons)
-      - [Variables](#variables)
-      - [Entry count](#entry-count)
-      - [Table offset](#table-offset)
-      - [Button code](#button-code)
-      - [Page refreshing](#page-refreshing)
-  - [Conclusions](#conclusions)
+Die Anwendung beginnt mit einfachen Funktionen, wird aber im Laufe des Tutorials immer komplexer.
 
+In der endgültigen Version der Anwendung werden einige einfache Nachrichten (Strings) in einer Datenbanktabelle gespeichert, die die Zeitstempel und Kontokennungen der Absender enthält. Benutzer können die Nachrichtenliste anzeigen und eine neue Nachricht von der Anwendungsseite hinzufügen, auf die über das Menü des Ökosystems zugegriffen werden kann.
+## Teil 1: Die Umwelt
 
-## The Goal 
+**Weber**
 
-The application begins with simple functions but grows in complexity as the tutorial progresses. 
+Als einziger Client von IBAX stellt Weaver Funktionen für alle Benutzer und Ökosystemrollen bereit. Damit können Anwendungsentwickler ihre Anwendungen entwickeln und testen, Ökosystemadministratoren können ihre Ökosysteme verwalten, während Benutzer mit den Ökosystemen interagieren können.
 
-In the final version of the application, some simple messages (strings) are stored in a database table, which contains the timestamps and account identifiers of senders. Users can view the messages list and add a new message from the application page which can be accessed from the menu of the ecosystem. 
+In diesem Tutorial codieren Sie Verträge, Seitenvorlagen und führen alle anderen Aktionen in Weaver aus. Weaver bietet auch eine Möglichkeit, Vertragscodes wiederherzustellen, zu speichern und auszuführen, Datenstrukturen (Datenbanktabellen) zu verwalten, Zugriffsberechtigungen zuzuweisen und Anwendungen zu erstellen.
 
-## Part 1: The Environment
+Jeder Knoten hat seine eigene Weaver-Instanz.
+## Teil 2: Vertrag
 
-**Weaver** 
+Ihre erste einfache Anwendung ist „Hello, World!“.
 
-As the only client of IBAX, Weaver provides functions for all users and ecosystem roles. With it, application developers can develop and test their applications, ecosystem administrators can manage their ecosystems, while users can interact with the ecosystems. 
+> Hinweis
 
-In this tutorial, you are going to code contracts, page templates and perform all other actions in Weaver. Weaver also provides a way to restore, save and execute contract codes, manage data structures (database tables), assign access permissions and create applications.
+> In dieser Anwendung werden Zeichenfolgen in einer Datenbanktabelle gespeichert, und es gibt keine Benutzerseite.
 
-Each node has its own Weaver instance.
-## Part 2: Contract 
+### Creator-Konto
 
-Your first simple application is "Hello, World!".
+Konten mit der Entwicklerrolle werden die „Root“-Privilegien des Ökosystems zugewiesen. Standardmäßig kann diese Rolle auf alle Aktionen zugreifen. In einem neuen Ökosystem wird dem Erstellerkonto die Admin-Rolle zugewiesen, die Sie verwenden müssen, um größere Änderungen am Ökosystem vorzunehmen, z. B. das Erstellen neuer Anwendungen und Datenbanktabellen.
 
-> Note
+Melden Sie sich mit dem Erstellerkonto beim Ökosystem an.
+### Neue Bewerbung
 
-> In this application, strings will be stored in a database table, and there is not a user page. 
+Sobald Sie sich als Ersteller des Ökosystems angemeldet haben, können Sie eine neue Anwendung erstellen.
 
-### Creator account 
+Erstellen Sie eine neue Anwendung:
+1. Gehen Sie zur Registerkarte Entwickler;
 
-Accounts with the Developer role will be assigned the "root" privileges of the ecosystem. By default, this role can access all actions. In a new ecosystem, the creator account will be assigned the Admin role, which you must use it to introduce major changes to the ecosystem, such as creating new applications and database tables.
+  2. Wählen Sie Anwendung im Menü auf der linken Seite;
 
-Log in to the ecosystem using the creator account.
+  3. Wählen Sie Neu auf der Anwendungsseite;
 
-### New application 
+  4. Geben Sie den Anwendungsnamen im Feld Name an;
 
-Once you logged in as the ecosystem creator, you can create a new application. 
+  5. Bedingungen auf `true` setzen;
 
-Create a new application: 
+  `true` bedeutet, dass jeder Änderungen an der Anwendung vornehmen kann;
 
-1. Go to the Developer tab;
+  Eine weitere Option ist `ContractConditions("MainCondition")`, was bedeutet, dass niemand außer dem Ersteller Änderungen an der Anwendung vornehmen kann.
 
- 2. Select Application in the menu at the left; 
+  6. Ihre Anwendung wird in der Anwendungsliste angezeigt, klicken Sie auf das Namensfeld einer bestimmten Anwendung, um sie zu aktivieren.
+  > Hinweis
 
- 3. Select New at the application page; 
+> Sie können auf relevante Ressourcen zugreifen, indem Sie auf der Registerkarte „Entwickler“ auf eine Anwendung klicken, ohne Auswirkungen auf das Ökosystem. Egal für welche Sie sich entscheiden, alle Ökosystemanwendungen sind weiterhin verfügbar.
 
- 4. Specify the application name in the Name field;
+### Neue Datenbanktabelle
+Erstellen Sie zum Speichern der Daten eine Datenbanktabelle für die Anwendung in Weaver.
 
- 5. Set Conditions to `true`;
+Erstellen Sie eine Datentabelle:
 
- `true` means anyone can make changes to the application; 
+  1. Wählen Sie auf der Registerkarte „Entwickler“ Anwendung – Name > Datenbanktabelle;
 
- Another option is `ContractConditions("MainCondition")`, which means no one can make changes to the application except for the creator. 
+  Hier werden alle Datenbanktabellen zur ausgewählten Anwendung angezeigt. Wenn die Liste leer ist, wurden noch keine Datenbanktabellen für Ihre Anwendung erstellt.
 
- 6. Your application will be displayed in the applications list, click the Name field of a specific application to activate it.
+  2. Klicken Sie auf Neu;
 
-> Note
+  Weaver zeigt Ihnen die Seite zum Erstellen einer neuen Datenbanktabelle.
 
->  You can access relevant resources by clicking an application in the Developer tab, no impact on the ecosystem. No matter which one you choose, all ecosystem applications are still available.
+  3. Geben Sie den Namen im Feld Name an;
+  In diesem Tutorial lautet der Name der Datenbanktabelle `apptable`.
 
-### New database table 
+  4. Fügen Sie die Spalte `message` hinzu, legen Sie ihren Typ als `Text` fest;
 
-To store the data, create a database table for the application in Weaver.
+    Diese Tabelle muss zwei Spalten haben: `id` (vordefiniert) und `message`. Sie werden später weitere Spalten hinzufügen.
 
-Create a data table: 
+  5. Setzen Sie in Bezug auf die Lese- und Schreibberechtigungen jedes Feld auf `true`;
 
- 1. In the Developer tab, select Application - Name > Database table; 
+    Dies ermöglicht es jedem, Einträge in die Datenbanktabelle einzufügen, zu aktualisieren, Spalten hinzuzufügen und Eintragsdaten zu lesen;
 
- All database tables in relation to the application selected will be displayed here. If the list is empty, then, no database tables have been created for your application yet. 
+    Optional können Sie die Lese- und Schreibrechte für das Erstellerkonto reservieren. Setzen Sie in diesem Fall dieses Feld auf `ContractConditions("MainCondition")`.
+### Neuer Vertrag
 
- 2. Click New；
+#### Vertragscode
 
- Weaver will show you the page to create a new database table.
+Jeder Vertrag besteht aus drei Teilen. Weitere Einzelheiten finden Sie unter: [Contract scructure](../topics/script.md#contract-structure)。
 
- 3. Specify the name in the Name field; 
+#### Vertrag erstellen
+1. Wählen Sie auf der Registerkarte „Entwickler“ Anwendung – Name > Vertrag;
 
- In this tutorial, the name of the database table will be `apptable`. 
+  Hier werden alle Verträge im Zusammenhang mit der Bewerbung angezeigt. Bei Neuanmeldungen ist die Liste leer.
 
- 4. Add the `message` column, set its type as `Text`;
+2. Klicken Sie auf Neu;
 
- This table must have two columns: `id` (predefine) and `message`. You are going to add more columns later. 
+  Im Editor wird eine neue Vertragsvorlage angezeigt.
 
- 5. With respect to the read and write permissions, set each field to `true`; 
+Eine leere Vertragsvorlage wird wie folgt angezeigt:
 
- This will allow anyone to insert, update entries, add columns and read entry data on the database table;
-
- As an option, you may reserve the read and write permissions to the creator account. In this case, set this field to `ContractConditions("MainCondition")`.
-
-### New contract 
-
-#### Contract code 
-
-Each contract has three parts. For more details, please see: [Contract structure](../topics/script.md#contract-structure)。
-
-#### Create a contract 
-
-1. In the Developer tab, select Application - Name > Contract; 
-
- All contracts in relation to the application will be displayed here. The list is empty for new applications. 
-
-2. Click New;
-
- A new contract template will be displayed in the editor. 
-
-An empty contract template is shown as below: 
 
 ```
 contract ... {
@@ -156,32 +146,30 @@ contract ... {
     }
 }
 ```
+#### Vertragsname
 
-####  Contract name 
+Bitte geben Sie zunächst den Vertragsnamen an.
 
-First, please specify the contract name. 
 
 ```  
     contract AppContract {
 
     }
 ```
+#### Daten
 
-#### Data 
+Füllen Sie den Abschnitt `data` aus.
 
-Fill in the `data` section.
-
-In the following example, `Message` refers to the variable name, while `string` the variable type. 
+Im folgenden Beispiel bezieht sich `message` auf den Variablennamen, während `string` auf den Variablentyp verweist.
 
 ```
     data {
         Message string
     }
 ```
+#### Bedingungen
 
-#### Conditions 
-
-Fill in the `conditions` section. A simple verification condition is to avoid empty strings. If the length of `Message` is `0`, a predefined warning message will be triggered when implementing the contract. 
+Füllen Sie den Abschnitt "`condition`" aus. Eine einfache Überprüfungsbedingung besteht darin, leere Zeichenfolgen zu vermeiden. Wenn die Länge von `Message` `0` ist, wird eine vordefinierte Warnmeldung bei der Ausführung des Vertrags ausgelöst.
 
 ```
 conditions {
@@ -191,22 +179,20 @@ conditions {
     }
 }
 ```
+#### Handlung
 
-#### Action 
-
-Fill in the `action` section. A simple action is to write `Message` into the data table. 
+Füllen Sie den Abschnitt `action` aus. Eine einfache Aktion besteht darin, `Message` in die Datentabelle zu schreiben.
 
 ```
     action {
         DBInsert("apptable", {message: $Message})
     }
 ```
+#### Vollständiger Vertragscode
 
-#### Full contract code 
+Der vollständige Vertragscode wird unten angezeigt.
 
-The full contract code is shown below. 
-
-All contracts in IBAX will be constructed like this, including the `data`, `conditions` and `action` sections. 
+Alle Verträge in IBAX werden so aufgebaut, einschließlich der Abschnitte `data`, `condition` und `action`.
 
 ```
 contract AppContract {
@@ -224,27 +210,27 @@ contract AppContract {
     }
 }
 ```
-#### Save and run 
+#### Speichern und ausführen
 
-Now, we are preparing to test the contract: 
+Jetzt bereiten wir uns darauf vor, den Vertrag zu testen:
 
-1. Click Save in the editor's menu; 
+1. Klicken Sie im Menü des Editors auf Speichern;
 
- This will update the contract code, and the updated version will be available to all network nodes. 
+  Dadurch wird der Vertragscode aktualisiert und die aktualisierte Version steht allen Netzwerkknoten zur Verfügung.
 
-2. Click Run in the editor's menu; 
+2. Klicken Sie im Menü des Editors auf Ausführen;
 
- This will display the Run the Contract page. 
+  Dadurch wird die Seite Vertrag ausführen angezeigt.
 
-3. In the Run the Contract page, fill in the input parameters of the contract; 
+3. Geben Sie auf der Seite Vertrag ausführen die Eingabeparameter des Vertrags ein; 
 
- As this contract has one parameter `Message`, set `Message` at the Key field and `Hello, World` at the Value field.
+ Da dieser Vertrag einen Parameter `Message` hat, setzen Sie `Message` im feld schlüssel und `Hello, World` im feld wert.
 
-4. Click Run. 
+4. Click run.
 
- The result will be displayed at the right. 
+  The result will be displayed at the right.
 
-If successfully added some strings, then, the result will contain the block ID and result code to introduce the change of transactions. 
+If successfully added some strings, then, the result will contain the block ID and result code to introduce the change of transactions.
 
 ```
 {
@@ -252,100 +238,96 @@ If successfully added some strings, then, the result will contain the block ID a
  "result": null
 }
 ```
+## Teil 3: Seite
 
-## Part 3: Page 
+Wenn der Vertrag in Kraft tritt, ist es an der Zeit, ihn um etwas Sinnvolles zu erweitern. In diesem Teil implementieren Sie die Benutzeroberfläche und andere Funktionen.
 
-When the contract become effective, it is time to extend it to something useful. In this part, you are going to implement the UI and other functions. 
+Klasse
 
-Note
+In dieser Anwendung werden Zeichenfolgen wie Einträge in einem Protokoll in einer Datenbanktabelle gespeichert. Jede Zeichenfolge hat einen Autor und einen Zeitstempel.
 
-In this application, strings will be stored in a database table, like entries in a log. Each string will have an author and timestamp. 
+Benutzer können die Liste der auf der Anwendungsseite gespeicherten Zeichenfolgen anzeigen, die dann als einfaches Formular angezeigt wird.
 
-Users can view the list of strings stored at the application page, which is shown as a simple form then. 
+### Neues Feld
 
-### New field 
+Bearbeiten Sie wie zuvor die Datenbanktabelle auf der Registerkarte Entwickler > Anwendung - Name > Seite Datenbanktabelle;
 
-As with the previous, edit the database table at the Developer tab > Application - Name > Database table page; 
+* Fügen Sie die folgenden Felder in `apptable` hinzu:
 
-Add the following fields into `apptable`:
+* `author`, Feldtyp `number`, setze Change auf `true`;
 
-*  `author` , field type `Number`, set Change to `true`;
+* Dieses Feld speichert die Kennung des Autorenkontos.
 
- This field will store the identifier of the author account. 
+* `timestamp` , Feldtyp `Date/Time`, setze Change auf `true`.
 
-*  `timestamp` , field type `Date/Time`, set Change to `true`.
+### Aktualisieren Sie den Vertrag
 
-### Update the contract 
+Wir werden den Vertragscode aktualisieren, um die Autoren-ID und den Zeitstempel zu verarbeiten.
 
-We will update the contract code to handle the author ID and timestamp. 
+Die Autoren-ID ist die Konto-ID des Ökosystems. Der Zeitstempel ist das Datum und die Uhrzeit der Vertragsausführung im Unix-Zeitformat.
 
-The author ID is the account ID of the ecosystem. The timestamp is the date and time executing the contract in Unix time format. 
+Da beide Werte von den [Predefined variables](../topics/script.md#variables) bereitgestellt werden und die vordefinierten Variablen nicht eingegeben oder überprüft werden müssen, können sie nur im Aktionsteil aktualisiert werden.
 
-As both values are provided by the [Predefined variables](../topics/script.md#variables) and no need to input or verify the predefined variables, they can only be updated in the action part. 
-
-Update the contract to write the author ID and timestamp into the database table when adding a message, among which the author ID is defined by `$key_id`, while the timestamp by `$time`.
+Aktualisieren Sie den Vertrag, um die Autoren-ID und den Zeitstempel in die Datenbanktabelle zu schreiben, wenn Sie eine Nachricht hinzufügen, wobei die Autoren-ID durch `$key_id` definiert wird, während der Zeitstempel durch `$time` definiert wird.
 
 ```
 action {
  DBInsert("apptable", {message: $Message, author: $key_id, timestamp: $time})
 }
 ```
+### Buchseite
 
-### Page 
+Bei der Anwendungsseite handelt es sich um eine einfache Seite, auf der die in der Datenbanktabelle gespeicherten Nachrichten angezeigt werden.
 
-For the application page, it is a simple page where displays the messages stored in the database table. 
+Wie alle anderen Ressourcen können Sie die UI-Seite in Weaver erstellen:
 
-Like all other resources, you can create the UI page in Weaver: 
+1. Navigieren Sie zur Registerkarte Entwickler, klicken Sie auf Anwendung – Name > Seite;
 
-1.Navigate to the Developer tab, click Application - Name > Page; 
+2.Klicken Sie auf Neu;
+  Der visuelle Designer wird in einem neuen Tab geöffnet.
 
-2.Click New; 
- The visual designer will be opened in a new tab. 
+#### Designeransichten
+Die Standardseite ist leer. Sie können die vordefinierte Struktur verwenden, um die Seite schnell auszufüllen.
 
-#### Designer views 
+Erstellen Sie eine einfache Tabelle:
 
-The default page is empty. You can use the predefine structure to quickly fill in the page. 
+1. Klicken Sie in der Ansichtsauswahl rechts auf Designer;
+  Die Ansicht wird auf den visuellen Designer umgeschaltet.
 
-Create a basic table: 
+2. Wählen Sie im Menü links Tabelle mit Kopfzeile und ziehen Sie sie auf die Seite.
+     Auf der Seite wird eine Tabelle mit mehreren Elementen angezeigt.
+#### Entwickleransicht
 
-1. In the view selector at the right, click Designer; 
- The view will be switched to the visual designer. 
+Da die Benutzerseite von IBAX mit einer [Template Language](../topics/templates2.md) codiert ist, wechseln Sie bitte beim Schreiben des Seitencodes in die Entwickleransicht.
 
-2. In the menu at the left, select Table With Header and drag it on to the page. 
-    A table with multiple elements will be displayed on the page. 
+Wechseln Sie in die Entwickleransicht.
 
-#### Developer view 
+1. Klicken Sie in der Ansichtsauswahl rechts auf Entwickler.
 
-As the user page of IBAX is coded with a [Template Language](../topics/templates2.md), please switch to the Developer view when writing the page code. 
+  Die Ansicht wird auf den Editor mit einem Reiter umgeschaltet, der den Seitencode enthält.
 
-Switch to the Developer view. 
+#### Daten aus der Datenbanktabelle holen
 
-1. In the view selector at the right, click Developer. 
+Bisher nichts mit der Seitenvorlage gemacht. Als Nächstes werden wir den Code aktualisieren, damit die Seite Daten von `apptable` anzeigen kann.
+1. Anfordern von Daten aus der Datenbanktabelle mit der Funktion [DBFind](../topics/script.md#dbfind);
 
- The view will be switched to the editor with a tab holding the page code. 
-
-#### Fetch data from the database table 
-So far, nothing done with the page template. In the next, we will update the code to allow the page to display data from `apptable`.
-
-1. To request data from the database table with the [DBFind](../topics/script.md#dbfind) function; 
-
- In the following example, this function call is used to fetch data from `apptable`. The data will be put it in the source `src_table` and sorted by the timestamp field. `src_table` will be later used as the data source for the page in table view.
+  Im folgenden Beispiel wird dieser Funktionsaufruf verwendet, um Daten aus `apptable` abzurufen. Die Daten werden in die Quelle `src_table` gestellt und nach dem Zeitstempelfeld sortiert. `src_table` wird später als Datenquelle für die Seite in der Tabellenansicht verwendet.
 
  ```
     DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp)
  ```
 
-2. To display the data from `src_table`, specify it as the data source and the header in the `Table` function. 
+2. Um die Daten aus `src_table` anzuzeigen, geben Sie diese als Datenquelle und den Header in der `Table`-Funktion an.
 
 ```
     Table(Columns: "AUTHOR=author,TIME=timestamp,MESSAGE=message", Source: src_table)
 ```
 
-3. In the view selector at the right, click Preview to check whether the data is displayed correctly. 
+3. Klicken Sie rechts in der Ansichtsauswahl auf Vorschau, um zu prüfen, ob die Daten korrekt angezeigt werden.
 
-#### Full page code 
+#### Ganzseitiger Code
 
-The following is the full page code for this part. This basic page will be expanded later.
+Das Folgende ist der ganzseitige Code für diesen Teil. Diese Basisseite wird später erweitert.
 
 ```
 DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp)
@@ -359,84 +341,83 @@ Div(Class: panel panel-primary) {
 }
 
 ```
+#### Seite speichern
 
-#### Save the page 
+Klicken Sie auf Speichern, um die Seite zu speichern:
 
-Click Save to save the page: 
+1. Geben Sie `AppPage` oder einen anderen Namen für die Seite im Feld „Seitenname“ an;
 
-1. Specify `AppPage` or any other name for the page in the Page Name field;
+2. Wählen Sie `default_menu` im Menü;
 
-2. Select `default_menu` in the Menu; 
+3. Bedingungen auf `true` setzen;
 
-3. Set Conditions to `true`;
+4. Klicken Sie auf OK.
 
-4. Click OK. 
+## Teil 4: Bewerbung
 
-## Part 4: Application 
+In den vorherigen Abschnitten haben Sie einen Vertrag, eine Tabelle zum Speichern von Daten und eine einfache UI-Seite zum Anzeigen dieser Daten erstellt.
 
-In the previous sections, you created a contract, a table to store data, and a basic UI page to display that data.
+In diesem Teil werden Sie die Anwendung fertigstellen, damit ihr Aussehen und ihre Aktionen denen einer tatsächlichen ähneln.
 
-In this part, you are going to finalize the application to make its appearance and actions are similar to an actual one.
+### Speisekarte
 
-### Menu 
+Die Seite muss mit einem Menü verknüpft sein, z. B. ist `default_page`, das auf der Registerkarte „Startseite“ angezeigt wird, mit dem standardmäßigen Ökosystemmenü `default_menu` verknüpft.
 
-The page needs to be linked to a menu, for example, `default_page` displayed on the Home tab is linked to the default ecosystem menu `default_menu`.
+Da dieses Anwendungs-Tutorial sehr einfach ist (nur eine Seite hat), muss dafür kein separates Menü erstellt werden. Der neue Menüpunkt im Standardmenü genügt.
 
-As this application tutorial is very simple (only having one page), there is no need to create a separate menu for it. The new menu item in the default menu is sufficient. 
+> Hinweis
 
-> Note
+> Sie können das Seitenmenü definieren, indem Sie die Seiteneigenschaften auf der Registerkarte Entwickler > Anwendung - Name > Seite bearbeiten. Wenn Ihre App beispielsweise mehrere Seiten hat, müssen Sie möglicherweise ein Menü erstellen, um zwischen diesen Seiten zu navigieren, und es allen Seiten der App zuweisen.
 
-> You can define the page menu by editing the page properties at the Developer tab > Application - Name > Page. For example, if your app has multiple pages, you may need to create a menu to navigate between these pages and assign it to all pages of the app.
+#### Menüpunkt hinzufügen
 
-#### Add a menu item 
+Wie alle anderen Ressourcen können Menüs in Weaver erstellt und bearbeitet werden:
 
-Like all other resources, menus can be created and edited in Weaver:
+1. Navigieren Sie zur Registerkarte Entwickler > Menü;
 
-1. Navigate to the Developer tab > Menu;
+2. Klicken Sie auf den Namen des Eintrags `default_menu`;
 
-2. Click the Name of the `default_menu` entry; 
+  Im Editor wird ein neuer Tab geöffnet.
 
- A new tab will be opened in the editor.
-
-3. Add a new menu item to the end of the template, which will be linked to open the application page and its icon comes from the [FontAwesome](https://fontawesome.com/icons) icon set. 
+3. Fügen Sie am Ende der Vorlage einen neuen Menüpunkt hinzu, der zum Öffnen der Anwendungsseite verlinkt wird und dessen Symbol aus dem Symbolsatz [FontAwesome](https://fontawesome.com/icons) stammt.
 
 ```
     MenuItem(Title:Messages, Page:AppPage, Icon:"fa fa-envelope")
 ```
+4. Klicken Sie auf Speichern.
 
-4. Click Save. 
-#### Test the new meu item 
+#### Testen Sie das neue Menüelement
 
-Check whether the new menu item is valid:
+Prüfen Sie, ob der neue Menüpunkt gültig ist:
 
-1. Open the Home tab;
+1. Öffnen Sie die Registerkarte Startseite;
 
-2. Click Refresh in the menu;
+2. Klicken Sie im Menü auf Aktualisieren;
 
-    An entry with a header of Messages will appear; 
+     Ein Eintrag mit einer Kopfzeile von Nachrichten wird angezeigt;
 
-3. Click Messages.
+3. Klicken Sie auf Nachrichten.
 
-    The application page will be opened. 
-### Send a message 
+     Die Bewerbungsseite wird geöffnet.
 
-The buttons in Logicor can be used to implement contracts and open pages, depending on the parameters.
+### Eine Nachricht schicken
 
-The [Button](../topics/templates2.md#button) function has two contract parameters: 
+Die Schaltflächen in Logicor können je nach Parameter zum Ausführen von Verträgen und Aufrufen von Seiten verwendet werden.
+Die Funktion [Button](../topics/templates2.md#button) hat zwei Vertragsparameter:
 
-*  `Contract`
+* `Contract`.
 
-     Name of the contract activated. 
+      Name des aktivierten Vertrags.
 
-*  `Params`
+* `Params`
 
-    Input parameters of the contract. 
+     Eingabeparameter des Vertrags.
 
 #### Form 
 
-To send data to the contract, add a form on the application page, which must have an input field for a message and a button to activate the contract AppContract.
+Um Daten an den Vertrag zu senden, fügen Sie auf der Antragsseite ein Formular hinzu, das über ein Eingabefeld für eine Nachricht und einen Button zur Aktivierung des Vertrags AppContract verfügen muss.
 
-The following is an example of this type of form. It is nested in its own [Div](../topics/templates2.md#div). Putting it after the Div element that contains the form view, which defines that the [Input](../topics/templates2.md#input) field has a predefine name `message_input`. The button uses this name to send the value of `Message` to the contract. Finally, the [Val](../topics/templates2.md#calling-contracts) function is used to get the value of the input field.
+Im Folgenden finden Sie ein Beispiel für diese Art von Formular. Es ist in einem eigenen [Div](../topics/templates2.md#div) verschachtelt. Platzieren Sie es nach dem Div-Element, das die Formularansicht enthält, wodurch definiert wird, dass das Feld [Input](../topics/templates2.md#input) einen vordefinierten Namen `message_input` hat. Die Schaltfläche verwendet diesen Namen, um den Wert von `message` an den Vertrag zu senden. Schließlich wird die Funktion [Val](../topics/templates2.md#calling-contracts) verwendet, um den Wert des Eingabefelds zu erhalten.
 
 ```
 Div(Class: panel panel-primary) {
@@ -447,49 +428,47 @@ Div(Class: panel panel-primary) {
 }
 ```
 
-You may notice that when testing this new feature by sending a message, the form does not refresh. This will be introduced in [page refresh](#page-refreshing).
+Möglicherweise stellen Sie fest, dass das Formular beim Testen dieser neuen Funktion durch Senden einer Nachricht nicht aktualisiert wird. Dies wird in [Seitenaktualisierung](#page-refreshing) eingeführt.
 
-### Form navigation 
+### Formularnavigation
 
-Under the default view, the form on the page can only display 25 entries on the first page. Hence, you can add some simple buttons to navigate users to all form entries.
+In der Standardansicht kann das Formular auf der Seite nur 25 Einträge auf der ersten Seite anzeigen. Daher können Sie einige einfache Schaltflächen hinzufügen, um Benutzer zu allen Formulareinträgen zu navigieren.
+#### Navigationstasten
 
-#### Navigation buttons 
+Es wird zwei Navigationsschaltflächen geben, und jede von ihnen könnte die Anwendungsseite neu laden und die Parameter an sie übergeben.
 
-There will be two navigation buttons, and each of them could reload the application page and pass the parameters to it.
+* Die Schaltfläche Zurück zeigt die ersten 25 Einträge an. Wenn keine weiteren Einträge vorhanden sind, wird die Schaltfläche nicht angezeigt;
 
-*  The Previous button will display the first 25 entries. If there are no other entries, the button will not be displayed;
+* Die Schaltfläche Weiter zeigt die nächsten 25 Einträge an. Wenn keine weiteren Einträge vorhanden sind, wird die Schaltfläche nicht angezeigt.
+#### Variablen
 
-*  The Next button will display the next 25 entries. If there are no other entries, the button will not be displayed.
+Die Navigationsschaltflächen erfordern zwei Variablen zum Speichern der Tabellenansichtszustände:
 
-#### Variables 
-
-The navigation buttons require two variables to store the table view states:
 
 *  `#table_view_offset#`
 
-This variable stores the offset of current table view.
+Diese Variable speichert den Offset der aktuellen Tabellenansicht.
 
-The navigation buttons will pass it as a parameter when the page is reloaded.
+Die Navigationsschaltflächen übergeben es als Parameter, wenn die Seite neu geladen wird.
 
 *  `#record_count#`
 
- This variable stores the total number of entries in the table.
+Diese Variable speichert die Gesamtzahl der Einträge in der Tabelle.
 
- The value will be calculated.
+  Der Wert wird berechnet.
+  
+#### Anzahl der Einträge
 
-#### Entry count 
-
-To count `#record_count#`, please modify the existing [DBFind](../topics/script.md#dbfind) function call. The variable specified in the `.count()` call will store the entry count.
+Um `#record_count#` zu zählen, ändern Sie bitte den bestehenden Funktionsaufruf [DBFind](../topics/script.md#dbfind). Die im `.count()`-Aufruf angegebene Variable speichert die Eintragsanzahl.
 
 ```
 DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count)
 ```
+#### Tabellen-Offset
 
-#### Table offset 
+Der Offset der Tabellenansicht muss beim Öffnen der Seite an die Seite übergeben werden. Wenn `#table_view_offset#` keinen Wert bekommt, setzen Sie ihn auf 0.
 
-The table view offset must be passed to the page when the page is opened. If `#table_view_offset#` does not get a value, set it to 0.
-
-Add the following code to the top of the page.
+Fügen Sie oben auf der Seite den folgenden Code hinzu.
 
 ```
 If(GetVar(table_view_offset)){
@@ -499,22 +478,20 @@ If(GetVar(table_view_offset)){
 }
 ```
 
-Modify the [DBFind](../topics/script.md#dbfind) function call again. This time it must use the new table view offset.
+Ändern Sie den Funktionsaufruf [DBFind](../topics/script.md#dbfind) erneut. Dieses Mal muss es den neuen Offset der Tabellenansicht verwenden.
 
 ```
 DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count).Offset(#table_view_offset#)
 ```
+#### Tastencode
 
-#### Button code 
-
-Find the [Div](../topics/templates2.md#div) function call that defines the footer: `Div(Class:panel-footer text-right)`. Add the button code into it.
+Suchen Sie den Funktionsaufruf [Div](../topics/templates2.md#div), der die Fußzeile definiert: `Div(Class:panel-footer text-right)`. Fügen Sie den Schaltflächencode hinzu.
 
 ```
 Div(Class: panel-footer text-right) {
 }
 ```
-
-The *Previous* button will only appear if there is at least one Next to return. When adding a button, the new table view offset `offset_previous` of the page will be calculated. The parameters are passed to `PageParams` of the reopened page.
+Die Schaltfläche *Zurück* wird nur angezeigt, wenn mindestens ein Weiter zum Zurückkehren vorhanden ist. Beim Hinzufügen einer Schaltfläche wird der neue Tabellenansichts-Offset `offset_ previous` der Seite berechnet. Die Parameter werden an `PageParams` der erneut geöffneten Seite übergeben.
 
 ```
 If(#table_view_offset# >= 25) {
@@ -522,8 +499,7 @@ If(#table_view_offset# >= 25) {
     Button(Class: btn btn-primary, Body: Previous, Page: AppPage, PageParams:"table_view_offset=#offset_previous#")
 }
 ```
-
-The Next button will only be displayed when the total number of records is greater than the number displayed on the page. When a button is added, the new table view offset `offset_next` of the page will be calculated. The parameters are passed to `PageParams` of the reopened page.
+Die Schaltfläche Weiter wird nur angezeigt, wenn die Gesamtzahl der Datensätze größer ist als die auf der Seite angezeigte Zahl. Wenn eine Schaltfläche hinzugefügt wird, wird der neue Tabellenansichts-Offset `offset_next` der Seite berechnet. Die Parameter werden an `PageParams` der erneut geöffneten Seite übergeben.
 
 ```
 If(#record_count# >= Calculate(#table_view_offset# + 25)) {
@@ -532,24 +508,23 @@ If(#record_count# >= Calculate(#table_view_offset# + 25)) {
 }
 ```
 
-After adding these buttons, save the page and test it from the Home > Messages menu item.
+Nachdem Sie diese Schaltflächen hinzugefügt haben, speichern Sie die Seite und testen Sie sie über das Menüelement Startseite > Nachrichten.
 
-#### Page refreshing 
+#### Seite wird aktualisiert
 
-The last function to be implemented is to automatically update the table on the page. When users send a new message, it must be displayed in the table.
+Die letzte zu implementierende Funktion ist die automatische Aktualisierung der Tabelle auf der Seite. Wenn Benutzer eine neue Nachricht senden, muss diese in der Tabelle angezeigt werden.
 
-In addition to implementing the contract, you may also use the Send button to reopen the current page to achieve the same. `#table_view_offset#` must be passed to the page without any change.
+Neben der Vertragsabwicklung können Sie auch über die Schaltfläche Senden die aktuelle Seite erneut öffnen, um dasselbe zu erreichen. `#table_view_offset#` muss unverändert an die Seite übergeben werden.
 
-Add `Page` and `PageParams` to the Send button, the code is as follows:
+Fügen Sie „Page“ und `PageParams` zur Schaltfläche „Senden“ hinzu. Der Code lautet wie folgt:
 
 ```
 Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)", Page:AppPage, PageParams:"table_view_offset=#table_view_offset#")
 ```
 
+### Vollständiger Seitencode
 
-### Full page code 
-
-This part describes many changes to the application page. The following is the full code of the application page.
+Dieser Teil beschreibt viele Änderungen an der Anwendungsseite. Das Folgende ist der vollständige Code der Anwendungsseite.
 
 ```
 If(GetVar(table_view_offset)){
@@ -579,6 +554,6 @@ DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,mes
 }
 ```
 
-## Conclusions 
+## Schlussfolgerungen
 
-Instead of expounding other important topics for application developers, such as layout styles, access permissions management and interaction between applications and resources, this tutorial introduces how to create a basic application for an ecosystem. For more information on these advanced topics, see other relevant documents.
+Anstatt andere wichtige Themen für Anwendungsentwickler zu erläutern, wie z. B. Layoutstile, Verwaltung von Zugriffsberechtigungen und Interaktion zwischen Anwendungen und Ressourcen, führt dieses Tutorial ein, wie eine grundlegende Anwendung für ein Ökosystem erstellt wird. Weitere Informationen zu diesen fortgeschrittenen Themen finden Sie in anderen relevanten Dokumenten.
