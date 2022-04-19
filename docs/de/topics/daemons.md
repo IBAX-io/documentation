@@ -1,287 +1,277 @@
+# Dämon
 
-# Daemon
+In diesem Abschnitt beschreiben wir aus technischer Sicht, wie IBax-Knoten miteinander interagieren.
 
-In this section, we will describe how IBax nodes interact with each other from a technical perspective.
+## Über den Server-Daemon
+Der Server-Daemon muss auf jedem Netzwerkknoten laufen, der verschiedene Serverfunktionen ausführt und das Blockchain-Protokoll von IBax unterstützt. Im Blockchain-Netzwerk verteilt der Daemon Blöcke und Transaktionen, generiert neue Blöcke und verifiziert empfangene Blöcke und Transaktionen und kann das Fork-Problem vermeiden.
+### Honor-Knoten-Daemon
+Ein Ehrenknoten führt die folgenden Server-Daemons aus:
+* [BlockGenerator-Daemon](#blockgenerator-Daemon)
 
-## About the server daemon
-The server daemon needs to run on every network node, which executes various server functions and supports IBax's blockchain protocol. In the blockchain network, the daemon distributes blocks and transactions, generates new blocks, and verifies blocks and transactions received, and it can avoid the fork issue.
-### Honor node daemon
-A honor node runs the following server daemons:
-* [BlockGenerator daemon](#blockgenerator-daemon)
+     Generieren neuer Blöcke.
 
-    Generating new blocks.
+* [BlockCollection-Daemon](#blockcollection-Daemon)
 
-* [BlockCollection daemon](#blockcollection-daemon)
+     Herunterladen neuer Blöcke von anderen Knoten.
 
-    Downloading new blocks from other nodes.
+* [Bestätigungs-Daemon](#confirmations-Daemon)
 
-* [Confirmations daemon](#confirmations-daemon)
+     Bestätigen, dass Blöcke auf dem Knoten auch auf den meisten anderen Knoten vorhanden sind.
 
-    Confirming that blocks on the node also exist on most other nodes.
+* [Disseminator-Daemon](#disseminator-Daemon)
 
-* [Disseminator daemon](#disseminator-daemon)
+     Verteilen von Transaktionen und Blöcken an andere Ehrenknoten.
+     
+* QueueParserBlocks-Daemon
 
-    Distributing transactions and blocks to other honor nodes.
+     Blöcke in der Warteschlange, die Blöcke von anderen Knoten enthält.
 
-* QueueParserBlocks daemon
+     Die Blockverarbeitungslogik ist die gleiche wie bei [BlockCollection-Daemon](#blockcollection-daemon).
 
-    Blocks in the queue, which contains blocks from other nodes.
+* QueueParserTx-Daemon
 
-    Block processing logic is the same as [BlockCollection daemon](#blockcollection-daemon).
+     Überprüfung der Transaktionen in der Warteschlange.
 
-* QueueParserTx daemon
+* Scheduler-Daemon
 
-    Verifying the transactions in queue.
+     Laufende Verträge wie geplant.
 
-* Scheduler daemon
+### Guardian-Knoten-Daemon
 
-    Running contracts as scheduled.
+Ein Wächterknoten führt die folgenden Server-Daemons aus:
 
-### Guardian node daemon
-
-A guardian node runs the following server daemons:
-
-* [BlockCollection daemon](#blockcollection-daemon)
-* [Confirmations daemon](#confirmations-daemon)
-* [Disseminator daemon](#disseminator-daemon)
+* [BlockCollection-Daemon](#blockcollection-Daemon)
+* [Bestätigungs-Daemon](#confirmations-Daemon)
+* [Disseminator-Daemon](#disseminator-Daemon)
 * QueueParserTx
-* Scheduler
+* Planer
 
-## BlockCollection daemon
+## BlockCollection-Daemon
 
-This daemon downloads blocks and synchronizes the blockchain with other network nodes.
+Dieser Daemon lädt Blöcke herunter und synchronisiert die Blockchain mit anderen Netzwerkknoten.
 
-### Blockchain synchronization
+### Blockchain-Synchronisation
 
-This daemon synchronizes the blockchain by determining the maximum block height in the blockchain network, requesting new blocks, and solving the fork issue in the blockchain.
+Dieser Daemon synchronisiert die Blockchain, indem er die maximale Blockhöhe im Blockchain-Netzwerk bestimmt, neue Blöcke anfordert und das Fork-Problem in der Blockchain löst.
 
-#### Check for blockchain updates
+#### Nach Blockchain-Updates suchen
 
-This daemon sends requests from the current block ID to all honor nodes.
+Dieser Daemon sendet Anforderungen von der aktuellen Block-ID an alle Ehrenknoten.
 
-If the current block ID of the node running the daemon is less than the current block ID of any honor node, the blockchain network node is considered out of date.
+Wenn die aktuelle Block-ID des Knotens, auf dem der Daemon läuft, kleiner ist als die aktuelle Block-ID eines beliebigen Ehrenknotens, gilt der Blockchain-Netzwerkknoten als veraltet.
 
-#### Download new blocks
+#### Neue Blöcke herunterladen
 
-The node that returns the largest current block height is considered the latest node.
-The daemon downloads all unknown blocks.
+Der Knoten, der die größte aktuelle Blockhöhe zurückgibt, wird als letzter Knoten betrachtet.
+Der Daemon lädt alle unbekannten Blöcke herunter.
 
-#### Solving the fork issue
+#### Lösung des Fork-Problems
 
-If a fork is detected in the blockchain, the daemon moves the fork backward by downloading all blocks to a common parent block.
-When found the common parent block, a blockchain rollback is performed on the node running the daemon, and the correct block is added to the blockchain until the latest one is included.
+Wenn ein Fork in der Blockchain erkannt wird, verschiebt der Daemon den Fork rückwärts, indem er alle Blöcke in einen gemeinsamen übergeordneten Block herunterlädt.
+Wenn der gemeinsame übergeordnete Block gefunden wird, wird ein Blockchain-Rollback auf dem Knoten durchgeführt, auf dem der Daemon ausgeführt wird, und der richtige Block wird zur Blockchain hinzugefügt, bis der neueste enthalten ist.
 
-### Tables
+### Tabellen
 
-The BlocksCollection daemon uses the following tables:
+Der BlocksCollection-Daemon verwendet die folgenden Tabellen:
 
 * block_chain
-* transactions
-* transactions_status
+* Transaktionen
+* Transaktionsstatus
+* info_block
+### Anfrage
+
+Der BlockCollection-Daemon sendet die folgenden Anforderungen an andere Daemons:
+
+* [Type 10](#type-10) zeigt auf die größte Block-ID unter allen Ehrenknoten.
+* [Type 7](#type-7) zeigt auf die Daten mit der größten Block-ID.
+
+## BlockGenerator-Dämon
+
+Der BlockGenerator-Daemon generiert neue Blöcke.
+
+### Vorabüberprüfung
+
+Der BlockGenerator-Daemon analysiert die neuesten Blöcke in der Blockchain, um neue Blockgenerierungspläne zu erstellen.
+
+Wenn die folgenden Bedingungen erfüllt sind, kann ein neuer Block generiert werden:
+
+* Der Knoten, der den letzten Block generiert hat, befindet sich in einem Knoten innerhalb der Ehrenknotenliste und führt den Daemon aus.
+* Die kürzeste Zeit, seit der letzte nicht verifizierte Block generiert wurde.
+
+### Blockgenerierung
+Ein vom Daemon generierter neuer Block enthält alle neuen Transaktionen, die vom [Disseminator-Daemon](#disseminator-daemon) anderer Knoten empfangen oder von dem Knoten generiert werden können, der den Daemon ausführt. Der generierte Block wird in der Node-Datenbank gespeichert.
+### Tabellen
+
+Der BlockGenerator-Daemon verwendet die folgenden Tabellen:
+
+* block_chain (speichert neue Blöcke)
+* Transaktionen
+* Transaktionsstatus
 * info_block
 
-### Request
+### Anfrage
 
-The BlockCollection daemon sends the following requests to other daemons:
+Der BlockGenerator-Daemon stellt keine Anfrage an andere Daemons.
 
-* [Type 10](#type-10) points to the largest block ID among all honor nodes.
-* [Type 7](#type-7) points to the data with the largest block ID.
+## Disseminator-Daemon
 
-## BlockGenerator daemon
+Der Disseminator-Daemon sendet Transaktionen und Blöcke an alle Ehrenknoten.
 
-The BlockGenerator daemon generates new blocks.
+### Guardian-Knoten
 
-### Pre-verification
+Bei der Arbeit an einem Wächterknoten sendet der Daemon von seinem Knoten generierte Transaktionen an alle Ehrenknoten.
+### Ehrenknoten
 
-The BlockGenerator daemon analyzes the latest blocks in the blockchain to make new block generation plans. 
+Bei der Arbeit an einem Ehrenknoten sendet der Daemon generierte Blöcke und Transaktions-Hashes an alle Ehrenknoten.
 
-If the following conditions are met, a new block can be generated:
+Dann antwortet der Ehrenknoten auf Transaktionsanfragen, die ihm unbekannt sind. Als Antwort sendet der Daemon die vollständigen Transaktionsdaten.
 
-* The node that generated the latest block is in a node within the honor node list and runs the daemon.
-* The shortest time since the latest unverified block was generated.
+### Tabellen
 
-### Block generation
+Der Disseminator-Daemon verwendet die folgenden Tabellen:
 
-A new block generated by the daemon contains all new transactions, which can be received from the [Disseminator daemon](#disseminator-daemon) of other nodes or generated by the node running the daemon. The block generated is stored in the node database.
+* Transaktionen
 
-### Tables
+### Anfrage
 
-The BlockGenerator daemon uses the following tables:
+Der Disseminator-Daemon sendet die folgenden Anforderungen an andere Daemons:
 
-* block_chain (saves new blocks)
-* transactions
-* transactions_status
+* [Type 1](#type-1) Senden Sie Transaktionen und Block-Hashes an den Ehrenknoten.
+* [Type 2](#type-2) Transaktionsdaten vom Ehrenknoten empfangen.
+
+## Bestätigungs-Daemon
+
+Der Confirmations-Daemon prüft, ob alle Blöcke in seinem Knoten auf den meisten anderen Knoten vorhanden sind.
+
+### Bestätigung blockieren
+
+Ein von mehreren Knoten im Netzwerk bestätigter Block wird als bestätigter Block betrachtet.
+
+Der Daemon bestätigt nacheinander alle Blöcke, beginnend mit dem ersten, der derzeit nicht in der Datenbank bestätigt ist.
+
+Jeder Block wird wie folgt bestätigt:
+
+* Senden einer Anfrage, die die ID des zu bestätigenden Blocks enthält, an alle Ehrenknoten.
+* Alle Ehrenknoten reagieren auf den Block-Hash.
+* Wenn der geantwortete Hash mit dem Hash des Blocks auf dem Daemon-Knoten übereinstimmt, wird der Wert des Bestätigungszählers erhöht. Falls nicht, wird der Löschzählerwert erhöht.
+### Tabellen
+
+Der Confirmations-Daemon verwendet die folgenden Tabellen:
+
+* Bestätigung
 * info_block
 
-### Request
+### Anfrage
 
-The BlockGenerator daemon does not make any request to other daemons.
+Der Confirmations-Daemon sendet die folgenden Anfragen an andere Daemons:
 
-## Disseminator daemon
+* [Type 4](#type-4) Fordert Block-Hashes vom Honor-Knoten an.
 
-The Disseminator daemon sends transactions and blocks to all honor nodes.
+## TCP-Dienstprotokoll
 
-### Guardian node
+Das TCP-Dienstprotokoll arbeitet auf Ehrenknoten und Wächterknoten, die das Binärprotokoll auf TCP für Anfragen von den Daemons BlocksCollection, Disseminator und Confirmation verwenden.
 
-When working on a guardian node, the daemon sends transactions generated by its node to all honor nodes.
+## Anfragetyp
 
-### Honor node
+Jede Anfrage hat einen Typ, der durch die ersten zwei Bytes der Anfrage definiert ist.
 
-When working on a honor node, the daemon sends blocks generated and transaction hashes to all honor nodes.
+## Typ 1
+#### Absender anfordern
 
-Then, the honor node responds to transaction requests unknown to it. The daemon sends the complete transaction data as a response.
+Diese Anfrage wird vom [Disseminator-Daemon] (#disseminator-daemon) gesendet.
 
-### Tables
+#### Daten anfordern
 
-The Disseminator daemon uses the following tables:
+Hashes der Transaktion und des Blocks.
 
-* transactions
+#### Bearbeitung der Anfrage
 
-### Request
+Der Block-Hash wird der Block-Warteschlange hinzugefügt.
 
-The Disseminator daemon sends the following requests to other daemons:
+Analysiert und verifiziert die Transaktions-Hashes und wählt Transaktionen aus, die noch nicht auf dem Knoten erschienen sind.
 
-* [Type 1](#type-1) Send transactions and block hashes to the honor node.
-* [Type 2](#type-2) Receive transaction data from the honor node.
+#### Antwort
 
-## Confirmations daemon
+Nein. Nach der Verarbeitung der Anfrage wird eine [Typ 2](#type-2)-Anfrage ausgegeben.
 
-The Confirmations daemon checks whether all the blocks in its node exist on most other nodes.
+## Typ 2
 
-### Block confirmation
+#### Absender anfordern
 
-A block confirmed by multiple node in the network is considered as a confirmed block.
+Diese Anfrage wird vom [Disseminator-Daemon] (#disseminator-daemon) gesendet.
 
-The daemon confirms all blocks one by one starting from the first that is currently not confirmed in the database.
+#### Daten anfordern
 
-Each block is confirmed in the way as follows:
+Die Transaktionsdaten, einschließlich der Datengröße:
 
-* Sending a request containing the ID of the block being confirmed to all honor nodes.
-* All honor nodes respond to the block hash.
-* If the hash responded matches the hash of the block on the daemon node, the confirmation counter value is increased. If not, the cancellation counter value is increased.
+* data_size (4 Bytes)
 
-### Tables
+* Größe der Transaktionsdaten in Byte.
 
-The Confirmations daemon uses the following tables:
+* Daten (data_size bytes)
 
-* confirmation
-* info_block
+Die Transaktionsdaten.
 
-### Request
+#### Bearbeitung der Anfrage
 
-The Confirmations daemon sends the following requests to other daemons:
+Verifiziert die Transaktion und fügt sie der Transaktionswarteschlange hinzu.
 
-* [Type 4](#type-4) Request block hashes from the honor node.
+#### Antwort
 
-## TCP service protocol
+Nein.
 
-The TCP service protocol works on honor nodes and guardian nodes, which uses the binary protocol on TCP to requests from the BlocksCollection, Disseminator, and Confirmation daemons.
+## Typ 4
 
-## Request type
+#### Absender anfordern
 
-Each request has a type defined by the first two bytes of the request.
+Diese Anfrage wird vom [Bestätigungs-Daemon] (#confirmations-Daemon) gesendet.
 
-## Type 1
+#### Daten anfordern
 
-#### Request sender
+Block-ID.
 
-This request is sent by the [Disseminator daemon](#disseminator-daemon).
+#### Antwort
 
-#### Request data
+Hash blockieren.
 
-Hashes of the transaction and block.
+Gibt `0` zurück, wenn kein Block mit dieser ID vorhanden ist.
 
-#### Request processing
+## Geben Sie 7 ein
 
-The block hash is added to the block queue.
+#### Absender anfordern
 
-Analyzes and verifies the transaction hashes, and select transactions that have not yet appeared on the node.
+Diese Anfrage wird vom [BlockCollection-Daemon] (#blockcollection-Daemon) gesendet.
 
-#### Response
+#### Daten anfordern
+Block-ID.
 
-No. After processing the request, a [Type 2](#type-2) request is issued.
+* block_id (4 Bytes)
 
-## Type 2
+#### Antwort
 
-#### Request sender
+Die Blockdaten, einschließlich der Datengröße.
 
-This request is sent by the [Disseminator daemon](#disseminator-daemon).
+* data_size (4 Bytes)
 
-#### Request data
+* Größe der Blockdaten in Bytes.
 
-The transaction data, including the data size:
+* Daten (data_size bytes)
 
-* data_size (4 bytes)
+Die Blockdaten.
 
-* Size of the transaction data, in bytes.
+Die Verbindung wird geschlossen, wenn kein Block mit dieser ID vorhanden ist.
 
-* data (data_size bytes)
+## Geben Sie 10 ein
 
-The transaction data.
+#### Absender anfordern
+Diese Anfrage wird vom [BlockCollection-Daemon] (#blockcollection-Daemon) gesendet.
 
-#### Request processing
+#### Daten anfordern
 
-Verifies the transaction and add it to the transaction queue.
+Nein.
 
-#### Response
+#### Antwort
 
-No.
+Block-ID.
 
-## Type 4
-
-#### Request sender
-
-This request is sent by the [Confirmations daemon](#confirmations-daemon).
-
-#### Request data
-
-Block ID.
-
-#### Response
-
-Block hash.
-
-Returns `0` if not having a block with this ID.
-
-## Type 7
-
-#### Request sender
-
-This request is sent by the [BlockCollection daemon](#blockcollection-daemon).
-
-#### Request data
-
-Block ID.
-
-* block_id (4 bytes)
-
-#### Response
-
-The block data, including data size.
-
-* data_size (4 bytes)
-
-* Size of the block data, in bytes.
-
-* data (data_size bytes)
-
-The block data.
-
-The connection is closed if not having a block with this ID.
-
-## Type 10
-
-#### Request sender
-
-This request is sent by the [BlockCollection daemon](#blockcollection-daemon).
-
-#### Request data
-
-No.
-
-#### Response
-
-Block ID.
-
-* block_id (4 bytes)
-
+* block_id (4 Bytes)
