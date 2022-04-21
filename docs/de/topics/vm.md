@@ -1,60 +1,59 @@
-# Compiler and Virtual Machine
+# Compiler und virtuelle Maschine
 
-  - [Source code storage and compilation](#source-code-storage-and-compilation)
-  - [Virtual machine structures](#virtual-machine-structures)
-    - [VM Structure](#vm-structure)
-    - [Block structure](#block-structure)
-    - [ObjInfo structure](#objinfo-structure)
-      - [ContractInfo structure](#contractinfo-structure)
-      - [FieldInfo structure](#fieldinfo-structure)
-      - [FuncInfo structure](#funcinfo-structure)
-      - [FuncName Structure](#funcname-structure)
-      - [ExtFuncInfo structure](#extfuncinfo-structure)
-      - [VarInfo structure](#varinfo-structure)
-      - [ObjExtend value](#objextend-value)
-  - [Virtual machine commands](#virtual-machine-commands)
-    - [ByteCode structure](#bytecode-structure)
-    - [Command identifiers](#command-identifiers)
-    - [Stack operation commands](#stack-operation-commands)
-    - [Runtime structure](#runtime-structure)
-      - [blockStack structure](#blockstack-structure)
-    - [RunCode function](#runcode-function)
-    - [Other functions for operations with VM](#other-functions-for-operations-with-vm)
-  - [Compiler](#compiler)
-  - [Lexical analyzer](#lexical-analyzer)
+  - [Speicherung und Kompilierung des Quellcodes](#source-code-storage-and-compilation)
+  - [Strukturen virtueller Maschinen](#virtual-machine-structures)
+    - [VM-Struktur](#vm-Struktur)
+    - [Blockstruktur](#Blockstruktur)
+    - [ObjInfo-Struktur](#objinfo-Struktur)
+      - [ContractInfo-Struktur](#contractinfo-Struktur)
+      - [FieldInfo-Struktur](#fieldinfo-Struktur)
+      - [FuncInfo-Struktur](#funcinfo-Struktur)
+      - [Funktionsname-Struktur](#Funktionsname-Struktur)
+      - [ExtFuncInfo-Struktur](#extfuncinfo-Struktur)
+      - [VarInfo-Struktur](#varinfo-Struktur)
+      - [ObjExtend-Wert](#objextend-Wert)
+  - [Befehle für virtuelle Maschinen](#virtual-machine-commands)
+    - [ByteCode-Struktur](#Bytecode-Struktur)
+    - [Befehlskennungen](#Befehlskennungen)
+    - [Befehle für Stapeloperationen](#stack-operation-commands)
+    - [Laufzeitstruktur](#runtime-structure)
+      - [blockStack-Struktur](#blockstack-Struktur)
+    - [RunCode-Funktion] (#runcode-Funktion)
+    - [Andere Funktionen für Operationen mit VM](#other-functions-for-operations-with-vm)
+  - [Compiler](#Compiler)
+  - [Lexikalanalyse](#lexical-analyzer)
     - [lextable/lextable.go](#lextable-lextable-go)
     - [lex.go](#lex-go)
-  - [Needle language](#needle-language)
-    - [Lexemes](#lexemes)
-    - [Types](#types)
-    - [Expressions](#expressions)
-    - [Scope](#scope)
-    - [Contract execution](#contract-execution)
-    - [Backus–Naur Form (BNF)](#backus-naur-form-bnf)
+  - [Nadelsprache](#Nadelsprache)
+    - [Lexeme](#lexeme)
+    - [Typen](#Typen)
+    - [Ausdrücke](#Ausdrücke)
+    - [Bereich](#Bereich)
+    - [Vertragsausführung](#Vertragsausführung)
+    - [Backus-Naur-Form (BNF)](#backus-naur-Form-bnf)
 
-This section involves program compilation and Needle language operations in the Virtual Machine (VM).
+Dieser Abschnitt umfasst Programmkompilierung und Needle-Language-Operationen in der virtuellen Maschine (VM).
+## Speicherung und Kompilierung des Quellcodes
 
-## Source code storage and compilation
+Verträge und Funktionen werden mit Golang geschrieben und in den Vertragstabellen von Ökosystemen gespeichert.
 
-Contracts and functions are written with Golang and stored in the contract tables of ecosystems.
+Wenn ein Vertrag ausgeführt wird, wird sein Quellcode aus der Datenbank gelesen und in Bytecode kompiliert.
 
-When a contract is executed, its source code will be read from the database and compiled into bytecode.
+Wenn ein Vertrag geändert wird, wird sein Quellcode aktualisiert und in der Datenbank gespeichert. Dann wird der Quellcode kompiliert, wodurch der Bytecode in der entsprechenden virtuellen Maschine aktualisiert wird.
 
-When a contract is changed, its source code will be updated and saved in the database. Then, the source code is compiled, thereby updating the bytecode in the corresponding virtual machine. 
+Da Bytecodes nicht physikalisch gespeichert werden, werden sie bei einer erneuten Programmausführung neu kompiliert.
 
-As bytecodes are not physically saved, it will be compiled anew when the program is executed again.
+Der gesamte in der Vertragstabelle jedes Ökosystems beschriebene Quellcode wird in einer strengen Reihenfolge in eine virtuelle Maschine kompiliert, und der Status der virtuellen Maschine ist auf allen Knoten gleich.
 
-The entire source code described in the contract table of each ecosystem is compiled into a virtual machine in strict order, and the status of the virtual machine is the same on all nodes.
+Beim Vertragsaufruf ändert die virtuelle Maschine ihren Status in keiner Weise. Die Ausführung eines Vertrages oder das Aufrufen einer Funktion erfolgt auf einem separaten laufenden Stack, der während jedes externen Aufrufs erstellt wird.
 
-When the contract is called, the virtual machine will not change its status in any way. The execution of any contract or calling of any function occurs on a separate running stack created during each external call.
+Jedes Ökosystem kann ein sogenanntes virtuelles Ökosystem haben, das innerhalb eines Knotens in Verbindung mit Tabellen außerhalb der Blockchain verwendet werden kann, ohne direkten Einfluss auf die Blockchain oder andere virtuelle Ökosysteme. In diesem Fall erstellt der Knoten, der ein solches virtuelles Ökosystem hostet, seinen Vertrag und erstellt seine eigene virtuelle Maschine.
+## Strukturen virtueller Maschinen
 
-Each ecosystem can have a so-called virtual ecosystem, which can be used within a node in conjunction with tables outside the blockchain, without direct affection on the blockchain or other virtual ecosystems. In this case, the node hosting such a virtual ecosystem will compile its contract and create its own virtual machine.
+### VM-Struktur
 
-## Virtual machine structures
+Eine virtuelle Maschine ist im Arbeitsspeicher als Struktur wie unten organisiert.
 
-### VM Structure
-
-A virtual machine is organized in memory as a structure like below.
 ```
 type VM struct {
    Block
@@ -65,22 +64,20 @@ type VM struct {
    logger *log.Entry
 }
 ```
+Eine VM-Struktur hat die folgenden Elemente:
+* Block - enthält eine [Blockstruktur] (#block-structure);
+* ExtCost - eine Funktion gibt die Kosten für die Ausführung einer externen Golang-Funktion zurück;
+* FuncCallsDB - eine Sammlung von Golang-Funktionsnamen. Diese Funktion gibt die Ausführungskosten als ersten Parameter zurück. Diese Funktionen verwenden EXPLAIN, um die Kosten der Datenbankverarbeitung zu berechnen;
+* Extern – ein Boolesches Flag, das angibt, ob ein Vertrag ein externer Vertrag ist. Es wird auf „true“ gesetzt, wenn eine VM erstellt wird. Aufgerufene Verträge werden beim Kompilieren des Codes nicht angezeigt. Mit anderen Worten, es ermöglicht, den in Zukunft festgelegten Vertragscode aufzurufen;
+* Schichtvertrag – ID des ersten Vertrags in der VM;
+* logger - Ausgabe des VM-Fehlerprotokolls.
+### Blockstruktur
 
-A VM structure has the following elements:
-* Block - contains a [block structure](#block-structure);
-* ExtCost - a function returns the cost of executing an external golang function;
-* FuncCallsDB - a collection of Golang function names. This function returns the execution cost as the first parameter. These functions use EXPLAIN to calculate the cost of database processing;
-* Extern - a Boolean flag indicating whether a contract is an external contract. It is set to true when a VM is created. Contracts called are not displayed when the code is compiled. In other words, it allows to call the contract code determined in the future;
-* ShiftContract - ID of the first contract in the VM;
-* logger - VM error log output.
+Eine virtuelle Maschine ist ein Baum, der aus **Blocktyp**-Objekten besteht.
 
-### Block structure
+Ein Block ist eine unabhängige Einheit, die einige Bytecodes enthält. Einfach ausgedrückt ist alles, was Sie in der Sprache in die geschweiften Klammern (`{}`) setzen, ein Block.
 
-A virtual machine is a tree composed of **Block type** objects.
-
-A block is an independent unit that contains some bytecodes. In simple terms, everything you put in the braces (`{}`) in the language is a block.
-
-For example, the following code would create a block with functions. This block also contains another block with an if statement, which contains a block with a while statement.
+Der folgende Code würde beispielsweise einen Block mit Funktionen erstellen. Dieser Block enthält auch einen weiteren Block mit einer if-Anweisung, der wiederum einen Block mit einer while-Anweisung enthält.
 
 ```
 func my() {
@@ -92,7 +89,7 @@ func my() {
 }
 ```
 
-The block is organized in the memory as a structure like below.
+Der Block ist im Speicher als Struktur wie unten organisiert.
 ```
 type Block struct {
    Objects map[string]*ObjInfo
@@ -105,41 +102,39 @@ type Block struct {
    Children Blocks
 }
 ```
+Eine Blockstruktur besteht aus folgenden Elementen:
 
-A block structure consists of the following elements:
+* **Objekte** - eine Abbildung interner Objekte des Zeigertyps [ObjInfo](#objInfo-Struktur). Wenn der Block beispielsweise eine Variable enthält, können Sie anhand ihres Namens Informationen darüber erhalten.
+* **Typ** - der Typ des Blocks. Bei einem Funktionsblock ist sein Typ **ObjFunc**; für einen Vertragsblock ist sein Typ **ObjContract**;
+* **Eigentümer** – eine Struktur vom Zeigertyp **Eigentümerinfo**. Diese Struktur enthält Informationen über den Eigentümer des kompilierten Vertrags, der während der Vertragserstellung angegeben oder aus der Tabelle **Verträge** erhalten wird;
+* **Info** - enthält Informationen über das Objekt, die vom Blocktyp abhängen;
+* **Parent** – ein Zeiger auf den Elternblock;
+* **Vars** - ein Array, das die Typen der aktuellen Blockvariablen enthält;
+* **Code** - der Bytecode des Blocks selbst, der ausgeführt wird, wenn die Kontrollrechte an den Block übergeben werden, zum Beispiel Funktionsaufrufe oder Schleifenkörper;
+* **Children** - ein Array mit Unterblöcken, wie z. B. Funktionsverschachtelung, Schleifen, bedingte Operatoren.
+### ObjInfo-Struktur
 
-* **Objects** - a map of internal objects of the pointer type [ObjInfo](#objInfo-structure). For example, if there is a variable in the block, you can get information about it by its name;
-* **Type** - the type of the block. For a function block, its type is **ObjFunc**; for a contract block, its type is **ObjContract**;
-* **Owner** - a structure of **OwnerInfo** pointer type. This structure contains information about the owner of the compiled contract, which is specified during contract compilation or obtained from the **contracts** table;
-* **Info** - it contains information about the object, which depends on the block type;
-* **Parent** - a pointer to the parent block;
-* **Vars** - an array containing the types of current block variables;
-* **Code** - the bytecode of the block itself, which will be executed when the control rights are passed to the block, for example, function calls or loop bodies;
-* **Children** - an array containing sub-blocks, such as function nesting, loops, conditional operators.
+Die ObjInfo-Struktur enthält Informationen über interne Objekte.
 
-### ObjInfo structure
-
-The ObjInfo structure contains information about internal objects.
 ```
 type ObjInfo struct {
    Type int
    Value interface{}
 }
 ```
+Die ObjInfo-Struktur hat die folgenden Elemente:
 
-The ObjInfo structure has the following elements:
+* **Typ** ist der Objekttyp, der einen der folgenden Werte hat:
+    * **ObjContract** – [Vertrag](#contractInfo-Struktur);
+    * **ObjFunc** - Funktion;
+    * **ObjExtFunc** - externe Golang-Funktion;
+    * **ObjVar** - Variable;
+    * **ObjExtend** - $name-Variable.
+* **Wert** – enthält die Struktur jedes Typs.
 
-* **Type** is the object type, which has any of the following values:
-   * **ObjContract** – [contract](#contractInfo-structure);
-   * **ObjFunc** - function;
-   * **ObjExtFunc** - external golang function;
-   * **ObjVar** - variable;
-   * **ObjExtend** - $name variable.
-* **Value** – it contains the structure of each type.
+#### ContractInfo-Struktur
 
-#### ContractInfo structure
-
-Pointing to the **ObjContract** type, and the **Value** field contains a **ContractInfo** structure.
+Zeigt auf den Typ **ObjContract**, und das Feld **Value** enthält eine **ContractInfo**-Struktur.
 
 ```
 type ContractInfo struct {
@@ -150,18 +145,17 @@ type ContractInfo struct {
    Tx *[]*FieldInfo
 }
 ```
+Die ContractInfo-Struktur hat die folgenden Elemente:
 
-The ContractInfo structure has the following elements:
+* **ID** - Vertrags-ID, die beim Aufruf des Vertrags in der Blockchain angezeigt wird;
+* **Name** - Vertragsname;
+* **Eigentümer** - andere Informationen zum Vertrag;
+* **Verwendet** - Karte der aufgerufenen Vertragsnamen;
+* **Tx** – ein Datenarray, das im [Datenabschnitt](script.md#data-section) des Vertrags beschrieben wird.
 
-* **ID** - contract ID, displayed in the blockchain when calling the contract;
-* **Name** - contract name;
-* **Owner** - other information about the contract;
-* **Used** - map of contracts names that has been called;
-* **Tx** - a data array described in the [data section](script.md#data-section) of the contract.
+#### FieldInfo-Struktur
 
-#### FieldInfo structure
-
-The FieldInfo structure is used in the **ContractInfo** structure and describes elements in [data section](script.md#data-section) of a contract.
+Die FieldInfo-Struktur wird in der **ContractInfo**-Struktur verwendet und beschreibt Elemente im [Datenabschnitt](script.md#data-section) eines Vertrags.
 
 ```
 type FieldInfo struct {
@@ -171,17 +165,16 @@ type FieldInfo struct {
    Tags string
 }
 ```
+Die FieldInfo-Struktur hat die folgenden Elemente:
 
-The FieldInfo structure has the following elements:
+* **Name** - Feldname;
+* **Typ** - Feldtyp;
+* **Original** - optionales Feld;
+* **Tags** - zusätzliche Beschriftungen für dieses Feld.
 
-* **Name** - field name;
-* **Type** - field type;
-* **Original** - optional field;
-* **Tags** - additional labels for this field.
+#### FuncInfo-Struktur
 
-#### FuncInfo structure
-
-Pointing to the ObjFunc type, and the Value field contains a FuncInfo structure.
+Zeigt auf den ObjFunc-Typ, und das Value-Feld enthält eine FuncInfo-Struktur.
 ```
 type FuncInfo struct {
    Params []reflect.Type
@@ -191,18 +184,17 @@ type FuncInfo struct {
    ID uint32
 }
 ```
+Die FuncInfo-Struktur hat die folgenden Elemente:
 
-The FuncInfo structure has the following elements:
+* **Params** - ein Array von Parametertypen;
+* **Ergebnisse** - ein Array zurückgegebener Typen;
+* **Namen** - Abbildung von Daten für Tail-Funktionen, zum Beispiel `DBFind().Columns ()`;
+* **Variadic** - wahr, wenn die Funktion eine variable Anzahl von Parametern haben kann;
+* **ID** - Funktions-ID.
 
-* **Params** - an array of parameter types;
-* **Results** - an array of returned types;
-* **Names** - map of data for tail functions, for example, `DBFind().Columns ()`;
-* **Variadic** - true if the function can have a variable number of parameters;
-* **ID** - function ID.
+#### FuncName-Struktur
 
-#### FuncName Structure
-
-The FuncName structure is used for FuncInfo and describes the data of a tail function.
+Die Struktur FuncName wird für FuncInfo verwendet und beschreibt die Daten einer Tail-Funktion.
 ```
 type FuncName struct {
    Params []reflect.Type
@@ -210,16 +202,15 @@ type FuncName struct {
    Variadic bool
 }
 ```
+Die FuncName-Struktur hat die folgenden Elemente:
 
-The FuncName structure has the following elements:
+* **Params** - ein Array von Parametertypen;
+* **Offset** - das Array von Offsets für diese Variablen. Tatsächlich können die Werte aller Parameter in einer Funktion mit dem Punkt . initialisiert werden;
+* **Variadic** - true, wenn die Tail-Funktion eine variable Anzahl von Parametern haben kann.
 
-* **Params** - an array of parameter types;
-* **Offset** - the array of offsets for these variables. In fact, the values of all parameters in a function can be initialized with the dot .;
-* **Variadic** - true if the tail function can have a variable number of parameters.
+#### ExtFuncInfo-Struktur
 
-#### ExtFuncInfo structure
-
-Pointing to the ObjExtFunc type, and the Value field contains a ExtFuncInfo structure. It is used to describe golang functions.
+Zeigt auf den ObjExtFunc-Typ, und das Value-Feld enthält eine ExtFuncInfo-Struktur. Es wird verwendet, um Golang-Funktionen zu beschreiben.
 ```
 type ExtFuncInfo struct {
    Name string
@@ -230,36 +221,34 @@ type ExtFuncInfo struct {
    Func interface{}
 }
 ```
+Die ExtFuncInfo-Struktur hat die folgenden Elemente:
 
-The ExtFuncInfo structure has the following elements:
+* Die Parameter **Name**, **Params**, **Results** haben die gleiche Struktur wie [FuncInfo](#funcinfo-structure);
+* **Auto** - ein Array von Variablen. Wird gegebenenfalls als zusätzlicher Parameter an die Funktion übergeben. Beispielsweise eine Variable vom Typ SmartContract sc;
+* **Func** - Golang-Funktionen.
 
-* **Name**, **Params**, **Results** parameters have the same structure as [FuncInfo](#funcinfo-structure);
-* **Auto** - an array of variables. If any, passes to the function as an additional parameter. For example, a variable of type SmartContract sc;
-* **Func** - golang functions.
+#### VarInfo-Struktur
 
-#### VarInfo structure
-
-Pointing to the **ObjVar** type, and the **Value** field contains a **VarInfo** structure.
+Zeigt auf den Typ **ObjVar**, und das Feld **Value** enthält eine **VarInfo**-Struktur.
 ```
 type VarInfo struct {
    Obj *ObjInfo
    Owner *Block
 }
 ```
+Die VarInfo-Struktur hat die folgenden Elemente:
 
-The VarInfo structure has the following elements:
+* **Obj** - Informationen über Typ und Wert der Variablen;
+* **Eigentümer** - Zeiger auf den Eigentümerblock.
 
-* **Obj** - information about the type and value of the variable;
-* **Owner** - Pointer to the owner block.
+#### ObjExtend-Wert
 
-#### ObjExtend value
+Zeigt auf den Typ **ObjExtend**, und das Feld **Value** enthält eine Zeichenfolge, die den Namen der Variablen oder Funktion enthält.
 
-Pointing to the **ObjExtend** type, and the **Value** field contains a string containing the name of the variable or function.
+## Befehle für virtuelle Maschinen
+### ByteCode-Struktur
 
-## Virtual machine commands
-### ByteCode structure
-
-A bytecode is a sequence of **ByteCode** type structures.
+Ein Bytecode ist eine Folge von Strukturen vom Typ **ByteCode**.
 ```
 type ByteCode struct {
    Cmd uint16
@@ -267,68 +256,66 @@ type ByteCode struct {
 }
 ```
 
-This structure has the following fields:
+Diese Struktur hat die folgenden Felder:
 
-* **Cmd** - the identifier of the storage commands;
-* **Value** - contains the operand (value).
+* **Cmd** - der Bezeichner der Speicherbefehle;
+* **Wert** - enthält den Operanden (Wert).
 
-In general, commands perform an operation on the top element of the stack and writes the result value into it if necessary.
+Im Allgemeinen führen Befehle eine Operation auf dem obersten Element des Stapels aus und schreiben bei Bedarf den Ergebniswert hinein.
 
-### Command identifiers
+### Befehlskennungen
+Bezeichner der Befehle der virtuellen Maschine sind in der Datei vm/cmds_list.go beschrieben.
 
-Identifiers of the virtual machine commands are described in the vm/cmds_list.go file.
+* **cmdPush** – legt einen Wert aus dem Value-Feld auf den Stack. Legen Sie zum Beispiel Zahlen und Linien auf den Stapel;
+* **cmdVar** - Legt den Wert einer Variablen auf den Stack. Value enthält einen Zeiger auf die VarInfo-Struktur und Informationen über die Variable;
+* **cmdExtend** – legt den Wert einer externen Variablen auf den Stack. Wert enthält eine Zeichenfolge mit dem Variablennamen (beginnend mit $);
+* **cmdCallExtend** – Aufruf einer externen Funktion (beginnend mit $). Die Parameter der Funktion werden aus dem Stapel abgerufen und die Ergebnisse auf dem Stapel abgelegt. Wert enthält einen Funktionsnamen (beginnend mit $);
+* **cmdPushStr** – legt den String in Value auf den Stack;
+* **cmdCall** - ruft die Funktion der virtuellen Maschine auf. Wert enthält eine **ObjInfo**-Struktur. Dieser Befehl gilt für die Golang-Funktion **ObjExtFunc** und die Needle-Funktion **ObjFunc**. Wenn eine Funktion aufgerufen wird, werden ihre Parameter vom Stapel abgerufen und die Ergebniswerte werden auf dem Stapel abgelegt;
+* **cmdCallVari** - Ähnlich wie der Befehl **cmdCall** ruft er die Funktion der virtuellen Maschine auf. Dieser Befehl wird verwendet, um eine Funktion mit einer variablen Anzahl von Parametern aufzurufen;
+* **cmdReturn** - wird verwendet, um die Funktion zu verlassen. Die Rückgabewerte werden auf den Stack gelegt und das Value-Feld wird nicht verwendet;
+* **cmdIf** – übergibt die Kontrolle an den Bytecode in der Struktur **block**, der im Feld Wert übergeben wird. Das Steuerelement wird nur dann auf den Stack übertragen, wenn das oberste Element des Stacks von der *valueToBool*-Funktion aufgerufen und `true` zurückgegeben wird. Andernfalls wird die Steuerung an den nächsten Befehl übergeben;
+* **cmdElse** - dieser Befehl funktioniert auf die gleiche Weise wie **cmdIf**, aber nur wenn das oberste Element des Stacks von der valueToBool-Funktion aufgerufen und `false` zurückgegeben wird, wird die Steuerung an die übertragen angegebener Block;
+* **cmdAssignVar** – erhält eine Liste von Variablen des Typs **VarInfo** von Value. Diese Variablen verwenden den Befehl **cmdAssign**, um den Wert abzurufen;
+* **cmdAssign** – weist den Wert im Stack der Variablen zu, die durch den Befehl **cmdAssignVar** erhalten wurde;
+* **cmdLabel** - definiert ein Label, wenn die Steuerung während der While-Schleife zurückgegeben wird;
+* **cmdContinue** - Dieser Befehl überträgt die Steuerung an das Label **cmdLabel**. Beim Ausführen einer neuen Iteration der Schleife wird Value nicht verwendet;
+* **cmdWhile** – Verwenden Sie valueToBool, um das oberste Element des Stapels zu überprüfen. Wenn dieser Wert „true“ ist, wird die Struktur **block** aus dem Wertefeld aufgerufen;
+* **cmdBreak** - beendet die Schleife;
+* **cmdIndex** – legt den Wert in der Map oder im Array nach Index in den Stack, ohne Value zu verwenden. Beispiel: `(map | array) (index value) => (map | array [index value])`;
+* **cmdSetIndex** – weist den Wert des obersten Elements des Stapels den Elementen der Karte oder des Arrays zu, ohne Value zu verwenden. Beispiel: `(map | array) (index value) (value) => (map | array)`;
+* **cmdFuncName** - fügt Parameter hinzu, die mit sequentiellen Beschreibungen geteilt durch Punkt übergeben werden. Beispiel: `func name => Fun (...) .Name (...)`;
+* **cmdUnwrapArr** - definiert ein boolesches Flag, wenn das oberste Element des Stapels ein Array ist;
+* **cmdMapInit** – initialisiert den Wert von map;
+* **cmdArrayInit** – initialisiert den Wert des Arrays;
+* **cmdError** - Dieser Befehl wird erstellt, wenn ein Vertrag oder eine Funktion mit einem angegebenen `error, warning, info` beendet wird.
 
-* **cmdPush** – put a value from the Value field to the stack. For example, put numbers and lines to the stack;
-* **cmdVar** - put the value of a variable to the stack. Value contains a pointer to the VarInfo structure and information about the variable;
-* **cmdExtend** – put the value of an external variable to the stack. Value contains a string with the variable name (starting with $);
-* **cmdCallExtend** – call an external function (starting with $). The parameters of the function are obtained from the stack, and the results are placed to the stack. Value contains a function name (starting with $);
-* **cmdPushStr** – put the string in Value to the stack;
-* **cmdCall** - calls the virtual machine function. Value contains a **ObjInfo** structure. This command is applicable to the **ObjExtFunc** golang function and **ObjFunc** Needle function. If a function is called, its parameters will be obtained from the stack and the result values will be placed to the stack;
-* **cmdCallVari** - similar to the **cmdCall** command, it calls the virtual machine function. This command is used to call a function with a variable number of parameters;
-* **cmdReturn** - used to exit the function. The return values will be put to the stack, and the Value field is not used;
-* **cmdIf** – transfer control to the bytecode in the **block** structure, which is passed in the Value field. The control will be transferred to the stack only when the top element of the stack is called by the *valueToBool* function and returned `true`. Otherwise, the control will be transferred to the next command;
-* **cmdElse** - this command works in the same way as the **cmdIf**, but only when the top element of the stack is called by the valueToBool function and returned `false`, the control will be transferred to the specified block;
-* **cmdAssignVar** – get a list of variables of type **VarInfo** from Value. These variables use the **cmdAssign** command to get the value;
-* **cmdAssign** – assign the value in the stack to the variable obtained by the **cmdAssignVar** command;
-* **cmdLabel** - defines a label when control is returned during the while loop;
-* **cmdContinue** - this command transfers control to the **cmdLabel** label. When executing a new iteration of the loop, Value is not used;
-* **cmdWhile** – use valueToBool to check the top element of the stack. If this value is `true`, the **block** structure will be called from the value field;
-* **cmdBreak** - exits the loop;
-* **cmdIndex** – put the value in map or array into the stack by index, without using Value. For example, `(map | array) (index value) => (map | array [index value])`;
-* **cmdSetIndex** – assigns the value of the top element of the stack to elements of map or array, without using Value. For example, `(map | array) (index value) (value) => (map | array)`;
-* **cmdFuncName** - adds parameters that are passed using sequential descriptions divided by dot . For example, `func name => Func (...) .Name (...)`;
-* **cmdUnwrapArr** - defines a Boolean flag if the top element of the stack is an array;
-* **cmdMapInit** – initializes the value of map;
-* **cmdArrayInit** – initializes the value of array;
-* **cmdError** - this command is created when a contract or function terminates with a specified `error, warning, info`.
+### Stack-Operationsbefehle
+> Hinweis
 
-### Stack operation commands
-> Note
-
-> In the current version, automatic type conversion is not fully applicable for these commands. For example, 
+> In der aktuellen Version ist die automatische Typkonvertierung für diese Befehle nicht vollständig anwendbar. Zum Beispiel,
 
 > `string + float | int | decimal => float | int | decimal, float + int | str => float, but int + string => runtime error`.
 
-The following are commands for direct stack processing. The Value field is not used in these commands.
+Das Folgende sind Befehle für die direkte Stack-Verarbeitung. Das Feld Wert wird in diesen Befehlen nicht verwendet.
+* **cmdNot** - logische Negation. `(val) => (!ValueToBool(val))`;
+* **cmdSign** - Vorzeichenwechsel. `(val) => (-val)`;
+* **cmdAdd** - Ergänzung. `(val1)(val2) => (val1 + val2)`;
+* **cmdSub** - Subtraktion. `(val1)(val2) => (val1-val2)`;
+* **cmdMul** - Multiplikation. `(val1)(val2) => (val1 * val2)`;
+* **cmdDiv** - Division. `(val1)(val2) => (val1 / val2)`;
+* **cmdAnd** - logisches UND. `(val1)(val2) => (valueToBool(val1) && valueToBool(val2))`;
+* **cmdOr** - logisches ODER. `(val1)(val2) => (valueToBool(val1) || valueToBool(val2))`;
+* **cmdEqual** - Gleichheitsvergleich, bool wird zurückgegeben. `(val1)(val2) => (val1 == val2)`;
+* **cmdNotEq** - Ungleichheitsvergleich, bool wird zurückgegeben. `(val1)(val2) => (val1 != val2)`;
+* **cmdLess** - Kleiner-als-Vergleich, bool wird zurückgegeben. `(val1)(val2) => (val1 <val2)`;
+* **cmdNotLess** - Größer-gleich-Vergleich, bool wird zurückgegeben. `(val1)(val2) => (val1 >= val2)`;
+* **cmdGreat** - Größer-als-Vergleich, bool wird zurückgegeben. `(val1)(val2) => (val1> val2)`;
+* **cmdNotGreat** - Kleiner-gleich-Vergleich, bool wird zurückgegeben. `(val1)(val2) => (val1 <= val2)`.
+### Laufzeitstruktur
 
-* **cmdNot** - logical negation. `(val) => (!ValueToBool(val))`;
-* **cmdSign** - change of sign. `(val) => (-val)`;
-* **cmdAdd** - addition. `(val1)(val2) => (val1 + val2)`;
-* **cmdSub** - subtraction. `(val1)(val2) => (val1-val2)`;
-* **cmdMul** - multiplication. `(val1)(val2) => (val1 * val2)`;
-* **cmdDiv** - division. `(val1)(val2) => (val1 / val2)`;
-* **cmdAnd** - logical AND. `(val1)(val2) => (valueToBool(val1) && valueToBool(val2))`;
-* **cmdOr** - logical OR. `(val1)(val2) => (valueToBool(val1) || valueToBool(val2))`;
-* **cmdEqual** - equality comparison, bool is returned. `(val1)(val2) => (val1 == val2)`;
-* **cmdNotEq** - inequality comparison, bool is returned. `(val1)(val2) => (val1 != val2)`;
-* **cmdLess** - less-than comparison, bool is returned. `(val1)(val2) => (val1 <val2)`;
-* **cmdNotLess** - greater-than-or-equal comparison, bool is returned. `(val1)(val2) => (val1 >= val2)`;
-* **cmdGreat** - greater-than comparison, bool is returned. `(val1)(val2) => (val1> val2)`;
-* **cmdNotGreat** - less-than-or-equal comparison, bool is returned. `(val1)(val2) => (val1 <= val2)`.
+Die Ausführung von Bytecodes wirkt sich nicht auf die virtuelle Maschine aus. Beispielsweise können verschiedene Funktionen und Verträge gleichzeitig in einer einzigen virtuellen Maschine ausgeführt werden. Die Runtime-Struktur wird verwendet, um Funktionen und Verträge sowie beliebige Ausdrücke und Bytecode auszuführen.
 
-### Runtime structure
-
-The execution of bytecodes will not affect the virtual machine. For example, it allows various functions and contracts to run simultaneously in a single virtual machine. The Runtime structure is used to run functions and contracts, as well as any expressions and bytecode.
 ```
 type RunTime struct {
    stack []interface{}
@@ -340,39 +327,37 @@ type RunTime struct {
    err error
 }
 ```
+* **stack** - der Stack zum Ausführen des Bytecodes;
+* **blocks** - Stack für Blockaufrufe;
+* **vars** - Stapel von Variablen. Seine Variable wird dem Stapel von Variablen hinzugefügt, wenn der Bytecode im Block aufgerufen wird. Nach dem Verlassen des Blocks kehrt die Größe des Variablenstapels zum vorherigen Wert zurück;
+* **extend** - ein Zeiger zum Abbilden mit Werten externer Variablen (`$name`);
+* **vm** - ein Zeiger einer virtuellen Maschine;
+* **cost** - Kraftstoffeinheit der resultierenden Ausführungskosten;
+* **err** - Fehler während der Ausführung aufgetreten.
 
-* **stack** - the stack to execute the bytecode;
-* **blocks** - block calls stack;
-* **vars** - stack of variables. Its variable will be added to the stack of variables when the bytecode is called in the block. After exiting the block, the size of the stack of variables will return to the previous value;
-* **extend** - a pointer to map with values of external variables (`$name`);
-* **vm** - a virtual machine pointer;
-* **cost** - fuel unit of the resulting cost of execution;
-* **err** - error occurred during execution.
+#### blockStack-Struktur
 
-#### blockStack structure
-
-The blockStack structure is used in the Runtime structure.
+Die blockStack-Struktur wird in der Runtime-Struktur verwendet.
 ```
 type blockStack struct {
    Block *Block
    Offset int
 }
 ```
+* **Block** – ein Zeiger auf den ausgeführten Block;
+* **Offset** – der Offset des letzten ausgeführten Befehls im Bytecode des angegebenen Blocks.
 
-* **Block** - a pointer to the block being executed;
-* **Offset** – the offset of the last command executed in the bytecode of the specified block.
+### RunCode-Funktion
 
-### RunCode function
+Bytecodes werden in der Funktion **RunCode** ausgeführt. Es enthält eine Schleife, die die entsprechende Operation für jeden Bytecode-Befehl durchführt. Vor der Verarbeitung eines Bytecodes müssen die erforderlichen Daten initialisiert werden.
 
-Bytecodes are executed in the **RunCode** function. It contains a loop that performs the corresponding operation for each bytecode command. Before processing a bytecode, the data required must be initialized.
-
-New blocks are added to other blocks.
+Neue Blöcke werden zu anderen Blöcken hinzugefügt.
 
 ```
 rt.blocks = append(rt.blocks, &blockStack{block, len(rt.vars)})
 ```
+Rufen Sie als Nächstes die Informationen zu den relevanten Parametern der Tail-Funktion ab. Diese Parameter sind im letzten Element des Stapels enthalten.
 
-Next, get the information of relevant parameters of the tail function. These parameters are contained in the last element of the stack.
 ```
 var namemap map[string][]interface{}
 if block.Type == ObjFunc && block.Info.(*FuncInfo).Names != nil {
@@ -383,7 +368,7 @@ if block.Type == ObjFunc && block.Info.(*FuncInfo).Names != nil {
 }
 ```
 
-Then, all variables defined in the current block must be initialized with their initial values.
+Anschließend müssen alle im aktuellen Block definierten Variablen mit ihren Anfangswerten initialisiert werden.
 ```
 start := len(rt.stack)
 varoff := len(rt.vars)
@@ -391,14 +376,15 @@ for vkey, vpar := range block.Vars {
    rt.cost--
    var value interface{}
 ```
-Since variables in the function are also variables, we need to retrieve them from the last element of the stack in the order described by the function itself.
+Da Variablen in der Funktion auch Variablen sind, müssen wir sie vom letzten Element des Stacks in der von der Funktion selbst beschriebenen Reihenfolge abrufen.
+
 ```
    if block.Type == ObjFunc && vkey <len(block.Info.(*FuncInfo).Params) {
       value = rt.stack[start-len(block.Info.(*FuncInfo).Params)+vkey]
    } else {
 ```
 
-Initialize local variables with their initial values.
+Lokale Variablen mit ihren Anfangswerten initialisieren.
 ```
       value = reflect.New(vpar).Elem().Interface()
 
@@ -413,7 +399,7 @@ Initialize local variables with their initial values.
 }
 ```
 
-Next, update the values of variable parameters passed in the tail function.
+Aktualisieren Sie als Nächstes die Werte der variablen Parameter, die in der Tail-Funktion übergeben werden.
 ```
 if namemap != nil {
    for key, item := range namemap {
@@ -422,7 +408,8 @@ if namemap != nil {
          if params.Variadic && i >= len(params.Params)-1 {
 ```
 
-If variable parameters passed belongs to a variable number of parameters, then these parameters will be combined into an array of variables.
+Wenn übergebene variable Parameter zu einer variablen Anzahl von Parametern gehören, werden diese Parameter zu einem Array von Variablen kombiniert.
+
 ```
             off := varoff + params.Offset[len(params.Params)-1]
             rt.vars[off] = append(rt.vars[off].([]interface{}), value)
@@ -434,7 +421,7 @@ If variable parameters passed belongs to a variable number of parameters, then t
 }
 ```
 
-After that, all we have to do is delete values passed from the top of the stack as function parameters, thereby moving the stack. We have copied their values into a variable array.
+Danach müssen wir nur noch Werte löschen, die von der Spitze des Stacks als Funktionsparameter übergeben wurden, wodurch der Stack verschoben wird. Wir haben ihre Werte in ein Variablenarray kopiert.
 
 ```
 if block.Type == ObjFunc {
@@ -443,20 +430,19 @@ if block.Type == ObjFunc {
 ```
 
 
-When a bytecode command loop finished, we must clear the stack correctly.
+Wenn eine Bytecode-Befehlsschleife beendet ist, müssen wir den Stack korrekt leeren.
 ```
 last := rt.blocks[len(rt.blocks)-1]
 ```
 
-Delete the current block from the stack of blocks.
+Löschen Sie den aktuellen Block aus dem Blockstapel.
 
 ```
 rt.blocks = rt.blocks[:len(rt.blocks)-1]
 if status == statusReturn {
 ```
 
-If successfully exited from a function already executed, we will add the return value to the end of the previous stack.
-```
+Wenn eine bereits ausgeführte Funktion erfolgreich beendet wird, fügen wir den Rückgabewert am Ende des vorherigen Stacks hinzu.```
    if last.Block.Type == ObjFunc {
       for count := len(last.Block.Info.(*FuncInfo).Results); count > 0; count-- {
          rt.stack[start] = rt.stack[len(rt.stack)-count]
@@ -465,7 +451,7 @@ If successfully exited from a function already executed, we will add the return 
       status = statusNormal
    } else {
 ```
-As you can see, if we do not execute the function, then we will not restore the stack status and exit the function as is. The reason is that loops and conditional structures that have been executed in the function are also bytecode blocks.
+Wie Sie sehen können, stellen wir den Stack-Status nicht wieder her und beenden die Funktion unverändert, wenn wir die Funktion nicht ausführen. Der Grund ist, dass Schleifen und bedingte Strukturen, die in der Funktion ausgeführt wurden, ebenfalls Bytecode-Blöcke sind.
 ```
    return
 
@@ -475,49 +461,50 @@ As you can see, if we do not execute the function, then we will not restore the 
 rt.stack = rt.stack[:start]
 ```
 
-### Other functions for operations with VM
+### Weitere Funktionen für Operationen mit VM
 
-Your may create a virtual machine with the **NewVM** function. Each virtual machine will be added with four functions, such as **ExecContract**, **MemoryUsage**, **CallContract**, and **Settings**, through the **Extend** function.
+Mit der Funktion **NewVM** können Sie eine virtuelle Maschine erstellen. Jeder virtuellen Maschine werden über die Funktion **Extend** vier Funktionen hinzugefügt, z. B. **ExecContract**, **MemoryUsage**, **CallContract** und **Settings**.
 
 ```
 for key, item := range ext.Objects {
    fobj := reflect.ValueOf(item).Type()
 ```
 
-We traverse all the objects passed and only look at the functions.
+Wir durchlaufen alle übergebenen Objekte und betrachten nur die Funktionen.
 
 ```
    switch fobj.Kind() {
    case reflect.Func:
 ```
-We fill the **ExtFuncInfo** structure according to the information received about the function, and add its structure to the top level map **Objects** by name. 
+
+Wir füllen die **ExtFuncInfo**-Struktur gemäß den über die Funktion erhaltenen Informationen und fügen ihre Struktur namentlich der Top-Level-Map **Objects** hinzu.
 
 ```
    data := ExtFuncInfo{key, make([]reflect.Type, fobj.NumIn()), make([]reflect.Type, fobj.NumOut()),
    make([]string, fobj.NumIn()), fobj.IsVariadic(), item}
    for i := 0; i <fobj.NumIn(); i++ {
 ```
+Die **ExtFuncInfo**-Struktur hat ein **Auto**-Parameter-Array. Normalerweise ist der erste Parameter `sc *SmartContract` oder `rt *Runtime`, wir können sie nicht von der Sprache Needle übergeben, da sie für uns notwendig sind, um einige Golang-Funktionen auszuführen. Daher legen wir fest, dass diese Variablen automatisch verwendet werden, wenn diese Funktionen aufgerufen werden. In diesem Fall ist der erste Parameter der obigen vier Funktionen `rt *Runtime`.
 
-The **ExtFuncInfo** structure has an **Auto** parameter array. Usually the first parameter is `sc *SmartContract` or `rt *Runtime`, we cannot pass them from theNeedle language, because they are necessary for us to execute some golang functions. Therefore, we specify that these variables will be used automatically when these functions are called. In this case, the first parameter of the above four functions is `rt *Runtime`.
 ```
    if isauto, ok := ext.AutoPars[fobj.In(i).String()]; ok {
       data.Auto[i] = isauto
    }
 ```
 
-Information about assigning the parameters.
+Informationen zur Parametrierung.
 ```
       data.Params[i] = fobj.In(i)
    }
 ```
 
-And the types of return values.
+Und die Typen der Rückgabewerte.
 ```
 for i := 0; i <fobj.NumOut(); i++ {
    data.Results[i] = fobj.Out(i)
 }
 ```
-Adds a function to the root **Objects** so that the compiler can find them later when using the contract.
+Fügt eine Funktion zu den **Objekten** des Stammverzeichnisses hinzu, damit der Compiler sie später finden kann, wenn er den Vertrag verwendet.
 ```
       vm.Objects[key] = &ObjInfo{ObjExtFunc, data}
    }
@@ -527,20 +514,19 @@ Adds a function to the root **Objects** so that the compiler can find them later
 
 ## Compiler
 
-Functions in the compile.go file are responsible for compiling the array of tokens obtained from the lexical analyzer. Compilation can be divided into two levels conditionally. At the top level, we deal with functions, contracts, code blocks, conditional and loop statements, variable definitions, and so on. At the lower level, we compile expressions in code blocks or conditions in loops and conditional statements.
+Funktionen in der Datei compile.go sind für das Kompilieren des Token-Arrays verantwortlich, das vom lexikalischen Analysator erhalten wird. Die Zusammenstellung kann bedingt in zwei Ebenen unterteilt werden. Auf der obersten Ebene beschäftigen wir uns mit Funktionen, Verträgen, Codeblöcken, Bedingungs- und Schleifenanweisungen, Variablendefinitionen und so weiter. Auf der unteren Ebene kompilieren wir Ausdrücke in Codeblöcke oder Bedingungen in Schleifen und bedingte Anweisungen.
 
-First, we will start from the simple lower level. In the **compileEval** function, expressions can be converted to bytecode. Since we use a virtual machine with a stack, it is necessary to convert ordinary infix record expressions into postfix notation or reverse Polish notation. For example, we convert `1+2` to `12+` and put `1` and `2` to the stack. Then, we apply the addition operation to the last two elements in the stack and write the result to the stack. You can find this [conversion](https://master.virmandy.net/perevod-iz-infiksnoy-notatsii-v-postfiksnuyu-obratnaya-polskaya-zapis/) algorithm on the Internet.
+Zunächst beginnen wir mit der einfachen unteren Ebene. In der Funktion **compileEval** können Ausdrücke in Bytecode umgewandelt werden. Da wir eine virtuelle Maschine mit einem Stack verwenden, ist es notwendig, gewöhnliche Infix-Record-Ausdrücke in Postfix-Notation oder umgekehrte polnische Notation umzuwandeln. Zum Beispiel wandeln wir „1+2“ in „12+“ um und legen „1“ und „2“ auf den Stack. Dann wenden wir die Additionsoperation auf die letzten beiden Elemente im Stack an und schreiben das Ergebnis in den Stack. Sie finden diesen [Konvertierungs-](https://master.virmandy.net/perevod-iz-infiksnoy-notatsii-v-postfiksnuyu-obratnaya-polskaya-zapis/) Algorithmus im Internet.
 
-The global variable `opers = map [uint32] operPrior` contains the priority of operations required for conversion to inverse Polish notation.
+Die globale Variable „opers = map [uint32] operPrior“ enthält die Priorität der Operationen, die für die Konvertierung in die inverse polnische Notation erforderlich sind.
 
-The following variables are defined at the beginning of the **compileEval** function:
+Die folgenden Variablen werden am Anfang der Funktion **compileEval** definiert:
+* **Puffer** - temporärer Puffer für Bytecode-Befehle;
+* **Bytecode** - letzter Puffer von Bytecode-Befehlen;
+* **parcount** - temporärer Puffer, der zum Berechnen von Parametern beim Aufrufen einer Funktion verwendet wird;
+* **setIndex** - Variablen im Arbeitsprozess werden auf true gesetzt, wenn wir Map- oder Array-Elemente zuweisen. Beispiel: `a["my"] = 10`. In diesem Fall müssen wir den angegebenen Befehl **cmdSetIndex** verwenden.
 
-* **buffer** - temporary buffer for bytecode commands;
-* **bytecode** - final buffer of bytecode commands;
-* **parcount** - temporary buffer used to calculate parameters when calling a function;
-* **setIndex** - variables in the work process will be set to true when we assign map or array elements. For example, `a["my"] = 10`. In this case, we need to use the specified **cmdSetIndex** command.
-
-We get a token in a loop and process it accordingly. For example, expression paring will be stopped if braces are found. When moving the string, we check whether the previous statement is an operation and whether it is inside the parentheses, otherwise it will exit the expression is parsed.
+Wir erhalten ein Token in einer Schleife und verarbeiten es entsprechend. Beispielsweise wird die Ausdruckstrennung gestoppt, wenn geschweiften Klammern gefunden werden. Beim Verschieben der Zeichenfolge prüfen wir, ob die vorherige Anweisung eine Operation ist und ob sie innerhalb der Klammern steht, andernfalls wird der Ausdruck beendet und analysiert.
 
 ```
 case isRCurly, isLCurly:
@@ -561,8 +547,7 @@ case lexNewLine:
 break main
 
 ```
-
-In general, the algorithm itself corresponds to an algorithm for converting to inverse Polish notation. With the consideration of the calling of necessary contracts, functions, and indexes, as well as other things not encountered during parsing and options for parsing lexIdent type tokens, then, variables, functions or contracts with this name will be checked. If nothing is found and this is not a function or contract call, then it will indicate an error.
+Im Allgemeinen entspricht der Algorithmus selbst einem Algorithmus zum Umwandeln in die inverse polnische Notation. Unter Berücksichtigung des Aufrufs notwendiger Verträge, Funktionen und Indizes sowie anderer Dinge, die beim Parsing nicht vorkommen, und Optionen zum Parsing von Token vom Typ lexIdent werden dann Variablen, Funktionen oder Verträge mit diesem Namen überprüft. Wenn nichts gefunden wird und es sich nicht um einen Funktions- oder Vertragsaufruf handelt, wird ein Fehler angezeigt.
 
 ```
 objInfo, tobj := vm.findObj(lexem.Value.(string), block)
@@ -571,7 +556,7 @@ if objInfo == nil && (!vm.Extern || i> *ind || i >= len(*lexems)-2 || (*lexems)[
 }
 ```
 
-We may encounter such a situation, and the contract call will be described later. In this example, if no functions or variables with the same name are found, then we think it is necessary to call a contract. In this compiled language, there is no difference between contracts and function calls. But we need to call the contract through the **ExecContract** function used in the bytecode.
+Wir können auf eine solche Situation stoßen, und der Vertragsaufruf wird später beschrieben. Wenn in diesem Beispiel keine Funktionen oder Variablen mit demselben Namen gefunden werden, halten wir es für notwendig, einen Vertrag aufzurufen. In dieser kompilierten Sprache gibt es keinen Unterschied zwischen Verträgen und Funktionsaufrufen. Aber wir müssen den Vertrag über die Funktion **ExecContract** aufrufen, die im Bytecode verwendet wird.
 ```
 if objInfo.Type == ObjContract {
    if objInfo.Value != nil {
@@ -581,8 +566,8 @@ if objInfo.Type == ObjContract {
    isContract = true
 }
 ```
+Die Anzahl der bisherigen Variablen erfassen wir in `count`, die zusammen mit der Anzahl der Funktionsparameter auch auf den Stack geschrieben werden. Bei jeder weiteren Erkennung von Parametern müssen wir diese Zahl nur am letzten Element des Stapels um eine Einheit erhöhen.
 
-We record the number of variables so far in `count`, which will also be written to the stack along with the number of function parameters. In each subsequent detection of parameters, we only need to increase this number by one unit at the last element of the stack.
 
 ```
 count := 0
@@ -590,8 +575,7 @@ if (*lexems)[i+2].Type != isRPar {
    count++
 }
 ```
-
-We have a list Used of called parameters for contracts, then we need to mark the case of the contract is called. If the contract is called without parameters, we must add two empty parameters to call **ExecContract** to get at least two parameters.
+Wir haben eine Liste mit aufgerufenen Parametern für Verträge verwendet, dann müssen wir den Fall markieren, in dem der Vertrag aufgerufen wird. Wenn der Vertrag ohne Parameter aufgerufen wird, müssen wir zwei leere Parameter hinzufügen, um **ExecContract** aufzurufen, um mindestens zwei Parameter zu erhalten.
 ```
 if isContract {
    name := StateName((*block)[0].Info.(uint32), lexem.Value.(string))
@@ -614,7 +598,7 @@ if isContract {
 }
 ```
 
-If we see that there is a square bracket next, then we add the **cmdIndex** command to get the value by the index.
+Wenn wir sehen, dass als nächstes eine eckige Klammer steht, fügen wir den Befehl **cmdIndex** hinzu, um den Wert durch den Index zu erhalten.
 ```
 if (*lexems)[i+1].Type == isLBrack {
    if objInfo == nil || objInfo.Type != ObjVar {
@@ -623,12 +607,11 @@ if (*lexems)[i+1].Type == isLBrack {
    buffer = append(buffer, &ByteCode{cmdIndex, 0})
 }
 ```
+Die Funktion **CompileBlock** kann Objektbäume und ausdrucksunabhängige Bytecodes generieren. Der Kompilierungsprozess basiert auf einer endlichen Zustandsmaschine, genau wie ein lexikalischer Analysator, aber mit den folgenden Unterschieden. Erstens verwenden wir keine Symbole, sondern Tokens; zweitens werden wir gleich die *states*-Variablen in allen Zuständen und Übergängen beschreiben. Es stellt ein Array von Objekten dar, die nach Tokentyp indiziert sind. Jedes Token hat eine Struktur von *compileState*, und ein neuer Status wird in *NewState* angegeben. Wenn klar ist, welche Struktur wir aufgelöst haben, können wir die Funktion des Handlers im Feld *Func* angeben.
 
-The **CompileBlock** function can generate object trees and expression-independent bytecodes. The compilation process is based on a finite state machine, just like a lexical analyzer, but with the following differences. First, we do not use symbols but tokens; second, we will immediately describe the *states* variables in all states and transitions. It represents an array of objects indexed by token type. Each token has a structure of *compileState*, and a new state is specified in *NewState*. If it is clear what structure we have resolved, we can specify the function of the handler in the *Func* field.
+Betrachten wir den Hauptzustand als Beispiel.
 
-Let us review the main state as an example.
-
-If we encounter a newline or comment, then we will remain in the same state. If we encounter the **contract** keyword, then we change the state to *stateContract* and start parsing the structure. If we encounter the **func** keyword, then we change the state to *stateFunc*. If other tokens are received, the function generating error will be called.
+Wenn wir auf einen Zeilenumbruch oder einen Kommentar stoßen, bleiben wir im selben Zustand. Wenn wir auf das Schlüsselwort **contract** stoßen, ändern wir den Status in *stateContract* und beginnen mit dem Parsen der Struktur. Wenn wir auf das Schlüsselwort **func** stoßen, ändern wir den Status in *stateFunc*. Wenn andere Token empfangen werden, wird die Funktion, die einen Fehler generiert, aufgerufen.
 
 ```
 {// stateRoot
@@ -639,9 +622,7 @@ If we encounter a newline or comment, then we will remain in the same state. If 
    0: {errUnknownCmd, cfError},
 },
 ```
-
-Suppose we encountered the **func** keyword and we have changed the state to *stateFunc*. Since the function name must follow the **func** keyword, we will keep the same state when changing the function name. For all other tokens, we will generate corresponding errors. If we get the function name in the token identifier, then we go to the *stateFParams* state, where we can get the parameters of the function.
-
+Angenommen, wir sind auf das Schlüsselwort **func** gestoßen und haben den Status in *stateFunc* geändert. Da der Funktionsname auf das Schlüsselwort **func** folgen muss, behalten wir denselben Zustand bei, wenn wir den Funktionsnamen ändern. Für alle anderen Token werden wir entsprechende Fehler generieren. Wenn wir den Funktionsnamen in der Token-ID erhalten, gehen wir zum *stateFParams*-Zustand, wo wir die Parameter der Funktion erhalten können.
 ```
 {// stateFunc
    lexNewLine: {stateFunc, 0},
@@ -649,8 +630,7 @@ Suppose we encountered the **func** keyword and we have changed the state to *st
    0: {errMustName, cfError},
 },
 ```
-
-At the same time as the above operations, we will call the **fNameBlock** function. It should be noted that the Block structure is created with the statePush mark, where we get it from the buffer and fill it with the data we need. The **fNameBlock** function is suitable for contracts and functions (including those nested in them). It fills the *Info* field with the corresponding structure and writes itself into the *Objects* of the parent block. In this way, we can call the function or contract with the specified name. Similarly, we create corresponding functions for all states and variables. These functions are usually very small and perform some duties when constructing the virtual machine tree.
+Gleichzeitig mit den obigen Operationen rufen wir die Funktion **fNameBlock** auf. Es sollte beachtet werden, dass die Blockstruktur mit der statePush-Markierung erstellt wird, wo wir sie aus dem Puffer holen und mit den Daten füllen, die wir benötigen. Die **fNameBlock**-Funktion eignet sich für Verträge und Funktionen (einschließlich der darin verschachtelten). Er füllt das *Info*-Feld mit der entsprechenden Struktur und schreibt sich in die *Objects* des übergeordneten Blocks. Auf diese Weise können wir die Funktion oder den Vertrag mit dem angegebenen Namen aufrufen. Ebenso erstellen wir entsprechende Funktionen für alle Zustände und Variablen. Diese Funktionen sind normalerweise sehr klein und führen einige Aufgaben beim Erstellen des Baums der virtuellen Maschine aus.
 ```
 func fNameBlock(buf *[]*Block, state int, lexem *Lexem) error {
    var itype int
@@ -672,69 +652,64 @@ func fNameBlock(buf *[]*Block, state int, lexem *Lexem) error {
    return nil
 }
 ```
+Für die Funktion **CompileBlock** durchläuft sie einfach alle Tokens und wechselt die Zustände gemäß den in den Zuständen beschriebenen Tokens. Fast alle zusätzlichen Token entsprechen zusätzlichen Programmcodes.
 
-For the **CompileBlock** function, it just traverses all the tokens and switches states according to the tokens described in states. Almost all additional tokens correspond to additional program codes.
+* **statePush** – fügt das Objekt **Block** zum Objektbaum hinzu;
+* **statePop** - wird verwendet, wenn der Block mit einer schließenden geschweiften Klammer endet;
+* **stateStay** - Sie müssen die aktuelle Markierung beibehalten, wenn Sie in einen neuen Status wechseln;
+* **stateToBlock** - Übergang in den Zustand **stateBlock** zur Verarbeitung von *while* und *if*. Nach der Verarbeitung von Ausdrücken müssen Sie Blöcke innerhalb der geschweiften Klammern verarbeiten;
+* **stateToBody** - Übergang in den Zustand **stateBody**;
+* **stateFork** - speichert die markierte Position. Wenn der Ausdruck mit einem Bezeichner oder einem Namen mit `$` beginnt, können wir Funktionsaufrufe oder Zuweisungen vornehmen;
+* **stateToFork** – wird verwendet, um das in **stateFork** gespeicherte Token abzurufen, das an die Prozessfunktion übergeben wird;
+* **stateLabel** – wird zum Einfügen von **cmdLabel**-Befehlen verwendet. *während* die Struktur dieses Flag erfordert;
+* **stateMustEval** – prüft die Verfügbarkeit von bedingten Ausdrücken am Anfang von *if*- und *while*-Strukturen.
 
-* **statePush** – adds the **Block** object to the object tree;
-* **statePop** - used when the block ends with a closing brace;
-* **stateStay** - you need to keep the current mark when changing to a new state;
-* **stateToBlock** - transition to the **stateBlock** state for processing *while* and *if*. After processing expressions, you need to process blocks within the braces;
-* **stateToBody** - transition to the **stateBody** state;
-* **stateFork** - save the marked position. When the expression starts with an identifier or a name with `$`, we can make function calls or assignments;
-* **stateToFork** – used to get the token stored in **stateFork**, which will be passed to the process function;
-* **stateLabel** – used to insert **cmdLabel** commands. *while* structure requires this flag;
-* **stateMustEval** – check the availability of conditional expressions at the beginning of *if* and *while* structures.
+Neben der Funktion **CompileBlock** ist auch die Funktion **FlushBlock** zu nennen. Das Problem besteht jedoch darin, dass der Blockbaum unabhängig von vorhandenen virtuellen Maschinen erstellt wird. Genauer gesagt erhalten wir Informationen über Funktionen und Verträge, die in einer virtuellen Maschine vorhanden sind, aber wir sammeln die kompilierten Blöcke in einem separaten Baum. Andernfalls, wenn während der Kompilierung ein Fehler auftritt, müssen wir die virtuelle Maschine auf den vorherigen Zustand zurücksetzen. Daher gehen wir separat zum Kompilierungsbaum, aber nachdem die Kompilierung erfolgreich ist, muss die Funktion **FlushContract** aufgerufen werden. Diese Funktion fügt den fertigen Blockbaum zur aktuellen virtuellen Maschine hinzu. Die Kompilierungsphase ist nun abgeschlossen.
 
-In addition to the **CompileBlock** function, the **FlushBlock** function should also be mentioned. But the problem is that the block tree is constructed independently of existing virtual machines. More precisely, we obtain information about functions and contracts that exist in a virtual machine, but we collect the compiled blocks into a separate tree. Otherwise, if an error occurs during compilation, we must roll back the virtual machine to the previous state. Therefore, we go to the compilation tree separately, but after the compilation is successful, the **FlushContract** function must be called. This function adds the completed block tree to the current virtual machine. The compilation phase is now complete.
+## Lexikalischer Analysator
+Der lexikalische Analysator verarbeitet eingehende Zeichenfolgen und bildet eine Folge von Token der folgenden Typen:
+* **lexSys** - Systemtoken, zum Beispiel: `{}, [], (), ,, .` usw.;
+* **lexOper** - Vorgangstoken, zum Beispiel: `+, -, /, \, *`;
+* **lexNumber** - Zahl;
+* **lexident** - Kennung;
+* **lexNewline** - Zeilenumbruchzeichen;
+* **lexString** - Zeichenkette;
+* **lexComment** - Kommentar;
+* **lexKeyword** - Schlüsselwort;
+* **lexType** - Typ;
+* **lexExtend** - Verweis auf externe Variablen oder Funktionen, zum Beispiel: `$myname`.
 
-## Lexical analyzer
-
-The lexical analyzer processes incoming strings and forms a sequence of tokens of the following types :
-
-* **lexSys** - system token, for example: `{}, [], (), ,, .` etc;
-* **lexOper** - operation token, for example: `+, -, /, \, *`;
-* **lexNumber** - number;
-* **lexident** - identifier;
-* **lexNewline** - newline character;
-* **lexString** - string;
-* **lexComment** - comment;
-* **lexKeyword** - keyword;
-* **lexType** - type;
-* **lexExtend** - reference to external variables or functions, for example: `$myname`.
-
-In the current version, a conversion table (finite state machine) is initially constructed with the help of the [script/lextable/lextable.go](#lextablelextablego) file to parse the tokens, which is written to the lex_table.go file. In general, you can get rid of the conversion table initially generated by the file and create a conversion table in the memory (`init()`) immediately upon startup. The lexical analysis itself occurs in the lexParser function in the [lex.go](#lex-go) file.
+In der aktuellen Version wird zunächst mit Hilfe der Datei [script/lextable/lextable.go](#lextablelextablego) eine Konvertierungstabelle (finite state machine) zum Parsen der Tokens aufgebaut, die in die Datei lex_table.go geschrieben wird. Im Allgemeinen können Sie die ursprünglich von der Datei generierte Konvertierungstabelle loswerden und direkt beim Start eine Konvertierungstabelle im Speicher erstellen (`init()`). Die lexikalische Analyse selbst findet in der lexParser-Funktion in der Datei [lex.go](#lex-go) statt.
 
 ### <span id = "lextable-lextable-go">lextable/lextable.go</span>
 
-Here we define the alphabet to operate and describe how the finite state machine changes from one state to another based on the next received symbol.
+Hier definieren wir das zu betreibende Alphabet und beschreiben, wie die endliche Zustandsmaschine basierend auf dem nächsten empfangenen Symbol von einem Zustand in einen anderen wechselt.
 
-*states* is a JSON object containing a list of states.
+*states* ist ein JSON-Objekt, das eine Liste von Zuständen enthält.
+Mit Ausnahme bestimmter Symbole steht „d“ für alle Symbole, die nicht im Staat angegeben sind.
+„n“ steht für 0x0a, „s“ steht für Leerzeichen, „q“ steht für Backquote, „Q“ steht für doppeltes Anführungszeichen, „r“ steht für Zeichen >= 128, „a“ steht für AZ und az und „ 1` steht für 1-9.
 
-Except for specific symbols, `d` stands for all symbols not specified in the state.
-`n` stands for 0x0a, `s` stands for space, `q` stands for backquote, `Q` stands for double quote, `r` stands for character >= 128, `a` stands for AZ and az, and `1` stands for 1- 9.
+Die Namen dieser Zustände sind Schlüssel, und die möglichen Werte sind im Wertobjekt aufgelistet. Dann gibt es einen neuen Zustand, um Übergänge für jede Gruppe vorzunehmen. Dann gibt es noch den Namen des Tokens. Wenn wir zum Anfangszustand zurückkehren müssen, ist der dritte Parameter das Service-Token, das angibt, wie mit dem aktuellen Symbol umgegangen werden soll.
 
-The name of these states are keys, and the possible values are listed in the value object. Then, there is a new state to make transitions for each group. Then there is the name of the token. If we need to return to the initial state, the third parameter is the service token, which indicates how to handle the current symbol.
+Zum Beispiel haben wir den Hauptzustand und die eingehenden Zeichen `/`, `"/": ["solidus", "", "push next"]`,
 
-For example, we have the main state and the incoming characters `/`, `"/": ["solidus", "", "push next"]`,
+* **push** - gibt den Befehl, sich daran zu erinnern, dass es sich in einem separaten Stack befindet ;
+* **nächster** - geht zum nächsten Zeichen, und gleichzeitig ändern wir den Status auf **solidus**. Ruft danach das nächste Zeichen ab und überprüft den Status von **solidus**.
 
-* **push** - gives the command to remember that it is in a separate stack ;
-* **next** - goes to the next character, and at the same time we change the status to **solidus**. After that, gets the next character and check the status of **solidus**.
+Wenn das nächste Zeichen `/` oder `/*` hat, gehen wir zum Kommentarstatus **Kommentar**, weil sie mit `//` oder `/*` beginnen. Offensichtlich hat jeder Kommentar danach einen anderen Zustand, weil sie mit einem anderen Symbol enden.
 
-If the next character has `/` or `/*`, then we go to the comment **comment** state because they start with `//` or `/*`. Obviously, each comment has a different state afterwards, because they end with a different symbol.
+Wenn das nächste Zeichen nicht `/` und `*` ist, dann zeichnen wir alles im Stack als Tags vom Typ **lexOper** auf, leeren den Stack und kehren zum Hauptzustand zurück.
+Das folgende Modul konvertiert den Zustandsbaum in ein numerisches Array und schreibt es in die Datei *lex_table.go*.
 
-If the next character is not `/` and `*`, then we record everything in the stack as **lexOper** type tags, clear the stack and return to the main state.
+In der ersten Schleife:
 
-The following module converts the state tree into a numeric array and writes it into the *lex_table.go* file.
-
-In the first loop:
-
-We form an alphabet of valid symbols.
+Wir bilden ein Alphabet gültiger Symbole.
 
 ```
 for ind, ch := range alphabet {
    i := byte(ind)
 ```
-In addition, in **state2int**, we provide each state with its own sequence identifier.
+Darüber hinaus versehen wir in **state2int** jeden Zustand mit einer eigenen Sequenzkennung.
 
 ```
    state2int := map[string]uint{`main`: 0}
@@ -743,15 +718,15 @@ In addition, in **state2int**, we provide each state with its own sequence ident
    if key != `main` {
    state2int[key] = uint(len(state2int))
 ```
-
-When we traverse all states and each set in a state and each symbol in a set, we write a three-byte number [new state identifier (0 = main)] + [token type ( 0-no token)] + [token].
-The bidimensionality of the *table* array is that it is divided into states and 34 input symbols from the *alphabet* array, which are arranged in the same order.
-We are in the *main* state on the zero row of the *table*. Take the first character, find its index in the *alphabet* array, and get the value from the column with the given index. Starting from the value received, we receive the token in the low byte. If the parsing is complete, the second byte indicates the type of token received. In the third byte, we receive the index of the next new state.
-All of these are described in more detail in the **lexParser** function in *lex.go*.
-If you want to add some new characters, you need to add them to the *alphabet* array and increase the quantity of the *AlphaSize* constant. If you want to add a new symbol combination, it should be described in the status, similar to the existing options. After the above operation, run the *lextable.go* file to update the *lex_table.go* file.
+Wenn wir alle Zustände und jede Menge in einem Zustand und jedes Symbol in einer Menge durchlaufen, schreiben wir eine Drei-Byte-Zahl [neue Zustandskennung (0 = Haupt)] + [Tokentyp (0-kein Token)] + [Token] .
+Die Zweidimensionalität des Arrays *table* besteht darin, dass es in Zustände und 34 Eingabesymbole aus dem Array *alphabet* unterteilt ist, die in derselben Reihenfolge angeordnet sind.
+Wir befinden uns im *Hauptzustand* in der Nullzeile der *Tabelle*. Nehmen Sie das erste Zeichen, finden Sie seinen Index im Array *alphabet* und erhalten Sie den Wert aus der Spalte mit dem angegebenen Index. Ausgehend vom empfangenen Wert erhalten wir den Token im Low-Byte. Wenn die Analyse abgeschlossen ist, zeigt das zweite Byte den Typ des empfangenen Tokens an. Im dritten Byte erhalten wir den Index des nächsten neuen Zustands.
+All dies wird ausführlicher in der Funktion **lexParser** in *lex.go* beschrieben.
+Wenn Sie einige neue Zeichen hinzufügen möchten, müssen Sie sie dem Array *alphabet* hinzufügen und die Menge der Konstante *AlphaSize* erhöhen. Wenn Sie eine neue Symbolkombination hinzufügen möchten, sollte diese ähnlich wie bei den bestehenden Optionen im Status beschrieben werden. Führen Sie nach dem obigen Vorgang die Datei *lextable.go* aus, um die Datei *lex_table.go* zu aktualisieren.
 
 ### <span id = "lex-go">lex.go</span>
-The **lexParser** function directly generates lexical analysis and returns an array of received tags based on incoming strings. Let us analyze the structure of tokens.
+Die **lexParser**-Funktion generiert direkt eine lexikalische Analyse und gibt basierend auf eingehenden Zeichenfolgen ein Array empfangener Tags zurück. Lassen Sie uns die Struktur von Token analysieren.
+
 ```
 type Lexem struct {
    Type  uint32 // Type of the lexem
@@ -760,92 +735,84 @@ type Lexem struct {
    Column uint32 // Position inside the line
 }
 ```
+* **Typ** - Token-Typ. Es hat einen der folgenden Werte: `lexSys, lexOper, lexNumber, lexIdent, lexString, lexComment, lexKeyword, lexType, lexExtend`;
+* **value** – Wert des Tokens. Die Art des Werts hängt vom Token-Typ ab. Lassen Sie uns das genauer analysieren:
+   * **lexSys** - enthält Klammern, Kommas usw. In diesem Fall `Type = ch << 8 | lexSys“, beziehen Sie sich bitte auf die Konstante „isLPar ... isRBrack“, und ihr Wert ist uint32 Bits;
+   * **lexOper** - der Wert stellt eine äquivalente Zeichenfolge in Form von uint32 dar. Siehe die `isNot ... isOr`-Konstanten;
+   * **lexNumber** - Zahlen werden als int64 oder float64 gespeichert. Wenn die Zahl einen Dezimalpunkt hat, ist sie Float64;
+   * **lexIdent** - Identifikatoren werden als String gespeichert;
+   * **lexNewLine** - Zeilenumbruchzeichen. Wird auch zur Berechnung der Reihen- und Tokenposition verwendet;
+   * **lexString** - Zeilen werden als String gespeichert;
+   * **lexComment** - Kommentare werden als String gespeichert;
+   * **lexKeyword** - für Schlüsselwörter werden nur die entsprechenden Indizes gespeichert, siehe `keyContract ... keyTail`-Konstante. In diesem Fall `Type = KeyID << 8 | lexKeyword`. Außerdem ist zu beachten, dass die Schlüsselwörter „true, false, nil“ sofort in Token vom Typ „lexNumber“ umgewandelt und die entsprechenden Typen „bool“ und „interface {}“ verwendet werden;
+   * **lexType** – dieser Wert enthält den entsprechenden „reflect.Type“-Typwert;
+   * **lexExtend** – Bezeichner, die mit einem `$` beginnen. Diese Variablen und Funktionen werden von außen übergeben und sind daher speziellen Arten von Token zugeordnet. Dieser Wert enthält den Namen als String ohne $ am Anfang.
+* **Line** - die Zeile, in der das Token gefunden wird;
+* **Column** - Inline-Position des Tokens.
+Lassen Sie uns die Funktion **lexParser** im Detail analysieren. Die **todo**-Funktion schlägt den Symbolindex im Alphabet basierend auf dem aktuellen Status und dem eingehenden Symbol nach und erhält einen neuen Status, Token-Identifikator (falls vorhanden) und andere Token aus der Umwandlungstabelle. Das Parsing selbst beinhaltet das Aufrufen der **todo**-Funktion der Reihe nach für jedes nächste Zeichen und das Wechseln in einen neuen Zustand. Sobald das Tag empfangen wurde, erstellen wir das entsprechende Token in den Ausgabekriterien und setzen den Parsing-Prozess fort. Es sollte beachtet werden, dass wir während des Parsing-Prozesses die Token-Symbole nicht in einem separaten Stack oder Array akkumulieren, weil wir nur den Offset des Starts des Tokens speichern. Nachdem wir das Token erhalten haben, verschieben wir den Offset des nächsten Tokens an die aktuelle Parsing-Position.
 
-* **Type** - token type. It has one of the following values: `lexSys, lexOper, lexNumber, lexIdent, lexString, lexComment, lexKeyword, lexType, lexExtend`;
-* **Value** – token value. The type of value depends on the token type, Let us analyze it in more detail:
-   * **lexSys** - includes brackets, commas, etc. In this case, `Type = ch << 8 | lexSys`, please refer to the `isLPar ... isRBrack` constant, and its value is uint32 bits;
-   * **lexOper** - the value represents an equivalent character sequence in the form of uint32. See the `isNot ... isOr` constants;
-   * **lexNumber** - numbers are stored as int64 or float64. If the number has a decimal point, it is float64;
-   * **lexIdent** - identifiers are stored as string;
-   * **lexNewLine** - newline character. Also used to calculate the row and token position;
-   * **lexString** - lines are stored as string;
-   * **lexComment** - comments are stored as string;
-   * **lexKeyword** - for keywords, only the corresponding indexes are stored, see the `keyContract ... keyTail` constant. In this case `Type = KeyID << 8 | lexKeyword`. In addition, it should be noted that the `true, false, nil` keywords will be immediately converted to lexNumber type tokens, and the corresponding `bool` and `intreface {}` types will be used;
-   * **lexType** – this value contains the corresponding `reflect.Type` type value;
-   * **lexExtend** – identifiers beginning with a `$`. These variables and functions are passed from the outside and are therefore assigned to special types of tokens. This value contains the name as a string without a $ at the beginning.
-* **Line** - the line where the token is found;
-* **Column** - in-line position of the token.
+Es bleibt nur noch, die beim Parsing verwendeten lexikalischen Status-Token zu überprüfen:
+* **lexfPush** - dieses Token bedeutet, dass wir beginnen, Symbole in einem neuen Token zu sammeln;
+* **lexfNext** - das Zeichen muss dem aktuellen Token hinzugefügt werden;
+* **lexfPop** - Der Empfang des Tokens ist abgeschlossen. Normalerweise haben wir mit diesem Flag den Bezeichnertyp des geparsten Tokens;
+* **lexfSkip** - Dieses Token wird verwendet, um Zeichen vom Parsen auszuschließen. Beispielsweise sind die Kontrollschrägstriche in der Zeichenfolge \n \r \". Sie werden während der lexikalischen Analysephase automatisch ersetzt.
 
-Let us analyze the **lexParser** function in detail. The **todo** function looks up the symbol index in the alphabet based on the current state and the incoming symbol, and obtains a new state, token identifier (if any), and other tokens from the conversion table. The parsing itself involves calling the **todo** function in turn for each next character and switching to a new state. Once the tag is received, we create the corresponding token in the output criteria and continue the parsing process. It should be noted that during the parsing process, we do not accumulate the token symbols into a separate stack or array, because we only save the offset of the start of the token. After getting the token, we move the offset of the next token to the current parsing position.
-
-All that remains is to check the lexical status tokens used in the parsing:
-
-* **lexfPush** - this token means that we start to accumulate symbols in a new token;
-* **lexfNext** - the character must be added to the current token;
-* **lexfPop** - the receipt of the token is complete. Usually, with this flag we have the identifier type of the parsed token;
-* **lexfSkip** - this token is used to exclude characters from parsing. For example, the control slashes in the string are \n \r \". They will be automatically replaced during the lexical analysis stage.
-
-## Needle language
+## Needle Sprache
 ### Lexemes
+Der Quellcode eines Programms muss in UTF-8-Kodierung vorliegen.
 
-The source code of a program must be in UTF-8 encoding.
+Die folgenden lexikalischen Typen werden verarbeitet:
 
-The following lexical types are processed:
+* **Schlüsselwörter** - ```action, break, conditions, Continue, Contract, data, else, error, false, func, If, info, nil, return, settings, true, var, warning, while``` ;
+* **Zahl** - nur Dezimalzahlen werden akzeptiert. Es gibt zwei Grundtypen: **int** und **float**. Wenn die Zahl einen Dezimalpunkt hat, wird sie zu einem Float **float**. Der Typ **int** entspricht in Golang **int64**, während der Typ **float** in Golang **float64** entspricht.
+* **String** - Der String kann in doppelte Anführungszeichen ```("ein String")``` oder Backquotes ```(\`ein String\`)``` eingeschlossen werden. Beide Arten von Zeichenfolgen können Zeilenumbruchzeichen enthalten. Zeichenfolgen in doppelten Anführungszeichen können doppelte Anführungszeichen, Zeilenumbruchzeichen und mit Schrägstrichen maskierte Wagenrückläufe enthalten. Beispiel: ```"Dies ist eine \"erste Zeichenfolge\".\r\nDies ist eine zweite Zeichenfolge."```.
+* **Kommentar** - Es gibt zwei Arten von Kommentaren. Einzeilige Kommentare verwenden zwei Schrägstriche (//). Beispiel: // Dies ist ein einzeiliger Kommentar. Mehrzeilige Kommentare verwenden Schrägstriche und Sternchen und können sich über mehrere Zeilen erstrecken. Beispiel: ```/* Dies ist ein mehrzeiliger Kommentar */```.
+* **Bezeichner** - die Namen von Variablen und Funktionen, die aus Buchstaben a-z und A-Z, UTF-8-Symbolen, Zahlen und Unterstrichen bestehen. Der Name kann mit einem Buchstaben, Unterstrich, ```@``` oder ```$``` beginnen. Der Name, der mit ```$``` beginnt, ist der Name der Variablen, die im **Datenabschnitt** definiert ist. Der mit ```$``` beginnende Name kann auch verwendet werden, um globale Variablen im Bereich von **Bedingungen** und **Aktionsabschnitten** zu definieren. Ökosystemverträge können über das Symbol ```@``` aufgerufen werden. Zum Beispiel: ```@1NewTable(...)```.
 
-* **Keywords** - ```action, break, conditions, continue, contract, data, else, error, false, func, If, info, nil, return, settings, true, var, warning, while```;
-* **Number** - only decimal numbers are accepted. There are two basic types: **int** and **float**. If the number has a decimal point, it becomes a float **float**. **int** type is equivalent to **int64** in golang, while **float** type is equivalent to **float64** in golang.
-* **String** - the string can be enclosed in double quotes ```("a string")``` or backquotes ```(\`a string\`)```. Both types of strings can contain newline characters. Strings in double quotes can contain double quotes, newline characters, and carriage returns escaped with slashes. For example, ```"This is a \"first string\".\r\nThis is a second string."```.
-* **Comment** - there are two types of comments. Single-line comments use two slashes (//). For example, // This is a single-line comment. Multi-line comments use slash and asterisk symbols and can span multiple lines. For example, ```/* This is a multi-line comment */```.
-* **Identifier** - the names of variables and functions composed of a-z and A-Z letters, UTF-8 symbols, numbers and underscores. The name can start with a letter, underscore, ```@``` or ```$```. The name starting with ```$``` is the name of the variable defined in the **data section**. The name starting with ```$``` can also be used to define global variables in the scope of **conditions** and **action sections**. Ecosystem contracts can be called using the ```@``` symbol. For example: ```@1NewTable(...)```.
+### Typen
 
-### Types
+Neben den Nadeltypen sind entsprechende Golang-Typen angegeben.
+* **bool** - bool, standardmäßig **false**;
+* **bytes** - []byte{}, standardmäßig ein leeres Byte-Array;
+* **int** - standardmäßig int64, **0**;
+* **Address** - uint64, standardmäßig **0**;
+* **Array** - []interface{}, standardmäßig ein leeres Array;
+* **map** - map[string]interface{}, standardmäßig ein leeres Objekt-Array;
+* **money** - Dezimalzahl. Dezimal, standardmäßig **0**;
+* **float** - float64, standardmäßig **0**;
+* **String** - String, standardmäßig ein leerer String;
+* **file** - map[string]interface{}, standardmäßig ein leeres Objekt-Array.
+Diese Variablentypen werden mit dem Schlüsselwort ```var``` definiert. Beispiel: ```var var1, var2 int```. Bei dieser Definition wird einer Variablen ein Standardwert nach Typ zugewiesen.
 
-Corresponding golang types are specified next to theNeedle types.
+Alle Variablenwerte sind vom Typ interface{} und werden dann den erforderlichen Golang-Typen zugewiesen. Daher sind beispielsweise Array- und Map-Typen Golang-Typen []interface{} und map[string]interface{}. Beide Arten von Arrays können Elemente beliebigen Typs enthalten.
 
-* **bool** - bool, **false** by default;
-* **bytes** - []byte{}, an empty byte array by default;
-* **int** - int64, **0** by default;
-* **address** - uint64, **0** by default;
-* **array** - []interface{}, an empty array by default;
-* **map** - map[string]interface{}, an empty object array by default;
-* **money** - decimal. Decimal, **0** by default;
-* **float** - float64, **0** by default;
-* **string** - string, an empty string by default;
-* **file** - map[string]interface{}, an empty object array by default.
+### Ausdrücke
 
-These types of variables are defined with the ```var``` keyword. For example, ```var var1, var2 int```. When defined in this way, a variable will be assigned with a default value by type.
+Ein Ausdruck kann arithmetische Operationen, logische Operationen und Funktionsaufrufe enthalten. Alle Ausdrücke werden von links nach rechts nach Priorität der Operatoren ausgewertet. Bei gleicher Priorität werden Operatoren von links nach rechts ausgewertet.
 
-All variable values are of the interface{} type, and then they are assigned to the required golang types. Therefore, for example, array and map types are golang types []interface{} and map[string]interface{}. Both types of arrays can contain elements of any type.
+Priorität der Operationen von hoch nach niedrig:
+* **Funktionsaufruf und Klammern** - Beim Aufruf einer Funktion werden übergebene Parameter von links nach rechts berechnet;
+* **Unäre Operation** - logische Negation ```!``` und arithmetischer Vorzeichenwechsel ```-```;
+* **Multiplikation und Division** - arithmetische Multiplikation ```*``` und Division ```/```;
+* **Addition und Subtraktion** - arithmetische Addition ```+``` und Subtraktion ```-```;
+* **Logischer Vergleich** - ```>=>> >=```;
+* **Logische Gleichheit und Ungleichheit** - ```== !=```;
+* **Logisches UND** - ```&&```;
+* **Logisches ODER** - ```||```.
 
-### Expressions
+Bei der Auswertung von logischem AND und OR werden in jedem Fall beide Seiten des Ausdrucks ausgewertet.
 
-An expression may include arithmetic operations, logical operations, and function calls. All expressions are evaluated from left to right by priority of operators. If having an equal priority, operators are evaluated from left to right.
+Needle hat keine Typprüfung während der Kompilierung. Beim Auswerten von Operanden wird versucht, den Typ in einen komplexeren Typ umzuwandeln. Die Art der Komplexitätsreihenfolge kann wie folgt sein: ```string, int, float, money```. Nur ein Teil der Typkonvertierungen ist implementiert. Der Zeichenfolgentyp unterstützt Additionsoperationen, und das Ergebnis ist eine Zeichenfolgenverkettung. Beispiel: ```string + string = string, money-int = money, int * float = float```.
 
-Priority of operations from high to low:
-
-* **Function call and parentheses** - when a function is called, passed parameters will be calculated from left to right;
-* **Unary Operation** - logical negation ```!``` and arithmetic sign change ```-```;
-* **Multiplication and Division** - arithmetic multiplication ```*``` and division ```/```;
-* **Addition and Subtraction** - arithmetic addition ```+``` and subtraction ```-```;
-* **Logical comparison** - ```>=>> >=```;
-* **Logical equality and inequality** - ```== !=```;
-* **Logical AND** - ```&&```;
-* **Logical OR** - ```||```.
-
-When evaluating logical AND and OR, both sides of the expression are evaluated in any case.
-
-Needle has no type checking during compilation. When evaluating operands, an attempt is made to convert the type to a more complex type. The type of complexity order can be as follows: ```string, int, float, money```. Only part of the type conversions is implemented. The string type supports addition operations, and the result will be string concatenation. For example, ```string + string = string, money-int = money, int * float = float```.
-
-For functions, type checking is performed on the ```string``` and ```int``` types during execution.
-
-**array** and **map** types can be addressed by index. For the **array** type, the **int** value must be specified as the index. For the **map** type, a variable or **string** value must be specified. If you assign a value to an **array** element whose index is greater than the current maximum index, an empty element will be added to the array. The initial value of these elements is **nil**. For example: .. code:
+Bei Funktionen wird während der Ausführung eine Typprüfung für die Typen ```string``` und ```int``` durchgeführt.
+Die Typen **array** und **map** können per Index adressiert werden. Beim Typ **array** muss als Index der Wert **int** angegeben werden. Für den Typ **Map** muss eine Variable oder ein **String**-Wert angegeben werden. Wenn Sie einem **Array**-Element einen Wert zuweisen, dessen Index größer als der aktuelle maximale Index ist, wird dem Array ein leeres Element hinzugefügt. Der Anfangswert dieser Elemente ist **nil**. Zum Beispiel: .. Code:
 ```
 var my array
 my[5] = 0
 var mymap map
 mymap["index"] = my[3]
 ```
-In expressions of conditional logical values (such as `if, while, &&, ||, !`), the type is automatically converted to a logical value. If the type is not the default value, it is true.
+In Ausdrücken mit bedingten logischen Werten (z. B. `if, while, &&, ||, !`) wird der Typ automatisch in einen logischen Wert konvertiert. Wenn der Typ nicht der Standardwert ist, ist er wahr.
 ```
 var mymap map
 var val string
@@ -853,9 +820,9 @@ if mymap && val {
 ...
 }
 ```
-### Scope
+### Zielfernrohr
 
-Braces specify a block that can contain local scope variables. By default, the scope of a variable extends to its own blocks and all nested blocks. In a block, you can define a new variable using the name of an existing variable. However, in this case, external variables with the same name become unavailable.
+Klammern geben einen Block an, der lokale Bereichsvariablen enthalten kann. Standardmäßig erstreckt sich der Geltungsbereich einer Variablen auf ihre eigenen Blöcke und alle verschachtelten Blöcke. In einem Block können Sie eine neue Variable mit dem Namen einer vorhandenen Variablen definieren. In diesem Fall sind jedoch externe Variablen mit demselben Namen nicht mehr verfügbar.
 ```
 var a int
 a = 3
@@ -866,18 +833,16 @@ a = 3
 }
 Println(a) // 3
 ```
+### Vertragsabwicklung
 
-### Contract execution
+Beim Aufruf eines Contracts müssen ihm in **data** definierte Parameter übergeben werden. Vor Ausführung eines Auftrags erhält die virtuelle Maschine diese Parameter und weist sie den entsprechenden Variablen ($Param) zu. Dann werden die vordefinierten Funktionen **conditions** und **action** aufgerufen.
 
-When calling a contract, parameters defined in **data** must be passed to it. Before executing a contract, the virtual machine receives these parameters and assigns them to the corresponding variables ($Param). Then, the predefined **conditions** function and **action** function are called.
+Fehler, die während der Vertragsausführung auftreten, können in zwei Arten unterteilt werden: Formularfehler und Umgebungsfehler. Formularfehler werden mit speziellen Befehlen generiert: `error, warning, info` und wenn die eingebaute Funktion `err` ungleich *nil* zurückgibt.
 
-Errors that occur during contract execution can be divided into two types: form errors and environment errors. Form errors are generated using special commands: `error, warning, info` and when the built-in function returns `err` not equal to *nil*.
-
-The Needle language does not handle exceptions. Any error will terminate the execution of contracts. Since a separate stack and structure for saving variable values are created when a contract is executed, the golang garbage collection mechanism will automatically delete these data when a contract is executed.
+Die Needle-Sprache behandelt keine Ausnahmen. Jeder Fehler wird die Ausführung von Verträgen beenden. Da ein separater Stack und eine separate Struktur zum Speichern von Variablenwerten erstellt werden, wenn ein Vertrag ausgeführt wird, löscht der Golang-Garbage-Collection-Mechanismus diese Daten automatisch, wenn ein Vertrag ausgeführt wird.
 
 ### <span id = "backus-naur-form-bnf">Backus–Naur Form (BNF)</span>
-
-In computer science, BNF is a notation technique for context-free syntax and is usually used to describe the syntax of the language used in computing.
+In der Informatik ist BNF eine Notationstechnik für kontextfreie Syntax und wird normalerweise verwendet, um die Syntax der beim Rechnen verwendeten Sprache zu beschreiben.
 
 * &lt;decimal digit&gt;
 ```

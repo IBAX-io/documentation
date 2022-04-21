@@ -25,31 +25,31 @@ footer: © Copyright 2019 - 2021, IBAX Updated Date 03/11/2021 | Built with VueP
 
 ## Konzept
 
-* [IBAX Overview](concepts/about-the-platform.md)
-* [The IBAX Network](concepts/blockchain-layers.md)
-* [Proof-of-Authority Consensus](concepts/consensus.md)
-* [Terms and Definitions](concepts/thesaurus.md)
+* [IBAX Überblick](concepts/about-the-platform.md)
+* [The IBAX Netzwerk](concepts/blockchain-layers.md)
+* [Konsens zum Nachweis der Autorität](concepts/consensus.md)
+* [Begriffe und Definitionen](concepts/thesaurus.md)
 * [FAQ](concepts/faq.md)
 
 ## Lernprogramm
 
-* [Tutorial for application development](tutorials/app_tutorial.md)
+* [Tutorial für die Anwendungsentwicklung](tutorials/app_tutorial.md)
 
 ## Handbuch
 
-* [Smart Contracts](topics/script.md)
-* [Template Language](topics/templates2.md)
-* [Compiler and Virtual Machine](topics/vm.md)
-* [Daemon](topics/daemons.md)
+* [Intelligente Verträge](topics/script.md)
+* [Vorlagensprache](topics/templates2.md)
+* [Compiler und virtuelle Maschine](topics/vm.md)
+* [Dämon](topics/daemons.md)
 
 ## Referenz
 
 * [RESTful API](reference/api2.md)
-* [Platform Parameters](reference/platform-parameters.md)
-* [Server Configuration File](reference/backend-config.md)
-* [Synchronized Monitoring Tool](reference/desync_monitor.md)
+* [Plattformparameter](reference/platform-parameters.md)
+* [Server-Konfigurationsdatei](reference/backend-config.md)
+* [Synchronisiertes Überwachungstool](reference/desync_monitor.md)
 
 ## Einsatz
 
-* [Deployment of A IBAX Network](howtos/deployment.md)
+* [Bereitstellung von A IBAX Netzwerk](howtos/deployment.md)
 

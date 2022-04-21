@@ -1,110 +1,107 @@
-# The IBAX Network
+# The IBAX Netzwerk
 
-In this section, we will brief you how to use IBAX.
+In diesem Abschnitt werden wir Sie in die Verwendung von IBAX einweisen.
 
-- [The IBAX Network](#the-ibax-network)
-  - [Application developers](#application-developers)
-  - [ECOLIB members](#ecolib-members)
-  - [ECOLIB applications and platform applications](#ecolib-applications-and-platform-applications)
-  - [Underlying model](#underlying-model)
-  - [Implementation](#implementation)
-
-
+- [The IBAX Netzwerk](#the-ibax-netzwerk)
+  - [Anwendungsentwickler](#anwendungsentwickler)
+  - [ECOLIB Mitglieder](#ecolib-mitglieder)
+  - [ECOLIB Anwendungen und Plattformanwendungen](#ecolib-anwendungen-und-plattformanwendungen])
+  - [Zugrunde liegendes Modell](#zugrunde-liegendes-modell)
+  - [Implementierung](#implementierung)
 
 
 
 
-If you are interested in the development, use or management of applications in IBAX, then you may not need to understand it at all.
 
-In IBAX, the blockchain and the blockchain network are hidden from ECOLIB members, administrators, and application developers. IBAX offers [RESTful API](../reference/api2.md) for all user groups, which provide a tamper-proof and distributed access to the **global state** of the blockchain.
+Wenn Sie an der Entwicklung, Verwendung oder Verwaltung von Anwendungen in IBAX interessiert sind, müssen Sie es möglicherweise überhaupt nicht verstehen.
 
-## Application developers
+In IBAX sind die Blockchain und das Blockchain-Netzwerk vor ECOLIB-Mitgliedern, Administratoren und Anwendungsentwicklern verborgen. IBAX bietet für alle Benutzergruppen [RESTful API](../reference/api2.md) an, die einen manipulationssicheren und verteilten Zugriff auf den **globalen Zustand** der Blockchain ermöglichen.
 
-In technical terms, the **global state** is a set of data, which is implemented via IBAX's database. From the perspective of application developers, an application interacts with the database by querying, inserting and updating tables.
+## Anwendungsentwickler
 
-In IBAX, transactions are written into the blockchain by implementing various contracts. These transactions will call contract codes implemented by blockchain network nodes, which will update the global state (database) accordingly.
+Technisch gesehen ist der **global state** ein Datensatz, der über die Datenbank von IBAX implementiert wird. Aus der Perspektive von Anwendungsentwicklern interagiert eine Anwendung mit der Datenbank, indem sie Tabellen abfragt, einfügt und aktualisiert.
 
-For application developers, a contract is a function that data will be written to the database when it is implemented. Pages are like scripts and the page code is a set of page [template](../topics/templates2.md) functions, some of these functions display page elements, while other data comes from the database. Application developers do not need to understand what are transactions, block generation and consensus algorithms, just use it.
+In IBAX werden Transaktionen in die Blockchain geschrieben, indem verschiedene Verträge implementiert werden. Diese Transaktionen rufen Vertragscodes auf, die von Blockchain-Netzwerkknoten implementiert werden, die den globalen Status (Datenbank) entsprechend aktualisieren.
 
-## ECOLIB members
+Für Anwendungsentwickler ist ein Vertrag eine Funktion, dass Daten bei der Implementierung in die Datenbank geschrieben werden. Seiten sind wie Skripte und der Seitencode ist ein Satz von Seitenfunktionen [template](../topics/templates2.md), einige dieser Funktionen zeigen Seitenelemente an, während andere Daten aus der Datenbank stammen. Anwendungsentwickler müssen nicht verstehen, was Transaktionen, Blockgenerierung und Konsensalgorithmen sind, verwenden Sie sie einfach.
 
-Applications written by developers run in an environment called [ECOLIB](thesaurus.md#ecolib). An application usually serves a specific purpose and complete various tasks together with several other applications.
+## ECOLIB mitglieder
 
-A user must become a member of an ECOLIB if wants to access applications in it, and it can be a member of multiple different ECOLIBs at the same time.
+Von Entwicklern geschriebene Anwendungen werden in einer Umgebung namens [ECOLIB](thesaurus.md#ecolib) ausgeführt. Eine Anwendung dient in der Regel einem bestimmten Zweck und erledigt zusammen mit mehreren anderen Anwendungen verschiedene Aufgaben.
 
-ECOLIB members can view and modify the database from application pages, just like filling out forms, clicking buttons and navigating pages in a common web application.
+Ein Benutzer muss Mitglied einer ECOLIB werden, wenn er auf Anwendungen darin zugreifen möchte, und er kann gleichzeitig Mitglied mehrerer verschiedener ECOLIBs sein.
 
-## ECOLIB applications and platform applications
+ECOLIB-Mitglieder können die Datenbank von den Anwendungsseiten aus anzeigen und ändern, genau wie das Ausfüllen von Formularen, das Klicken auf Schaltflächen und das Navigieren durch Seiten in einer gemeinsamen Webanwendung.
 
-Applications may fall into **ECOLIB applications** and **platform applications**.
+## ECOLIB Anwendungen und Plattformanwendungen
 
-ECOLIB applications
+Anwendungen können in **ECOLIB-Anwendungen** und **Plattformanwendungen** fallen.
 
-An ECOLIB application implements certain unique functions or business processes of an ECOLIB, but it is only available in that ECOLIB.
-Platform applications
+ECOLIB-Anwendungen
 
-A platform application is applicable to all ECOLIBs. Any application could be developed as a platform application. IBAX developers would provide platform applications that support the core functions for ECOLIB governance, such as voting, notification, and ECOLIB member role management.
+Eine ECOLIB-Anwendung implementiert bestimmte einzigartige Funktionen oder Geschäftsprozesse einer ECOLIB, ist aber nur in dieser ECOLIB verfügbar.
+Plattformanwendungen
 
-## Underlying model
+Eine Plattformanwendung gilt für alle ECOLIBs. Jede Anwendung könnte als Plattformanwendung entwickelt werden. IBAX-Entwickler würden Plattformanwendungen bereitstellen, die die Kernfunktionen für ECOLIB-Governance unterstützen, wie z. B. Abstimmung, Benachrichtigung und ECOLIB-Mitgliederrollenverwaltung.
 
-Definition of layers
+## Liegendes Modell]
 
-IBAX consists of several layers:
+Definition von Schichten
 
-* User interaction layer
+IBAX besteht aus mehreren Schichten:
 
-    ECOLIB members interact with the application through pages and page elements.
+* Benutzerinteraktionsebene
 
-* Application layer
+     ECOLIB-Mitglieder interagieren mit der Anwendung über Seiten und Seitenelemente.
 
-    Application developers interact with the global state (data tables) through contract codes and page codes.
+* Anwendungsschicht
 
-* Global state layer
+     Anwendungsentwickler interagieren mit dem globalen Zustand (Datentabellen) über Vertragscodes und Seitencodes.
 
-    Update and synchronize the global state (database) based on operations written to the distributed ledger (blockchain)
-* Blockchain layer
+* Globale Zustandsebene
 
-    Update the distributed ledger with new blocks. Operations (transactions) saved in new blocks must be performed on the global state.
+     Aktualisieren und synchronisieren Sie den globalen Status (Datenbank) basierend auf Operationen, die in das verteilte Ledger (Blockchain) geschrieben wurden.
+* Blockchain-Schicht
 
-* Node network layer
+     Aktualisieren Sie das Distributed Ledger mit neuen Blöcken. Operationen (Transaktionen), die in neuen Blöcken gespeichert werden, müssen auf dem globalen Zustand durchgeführt werden.
 
-    It implemented the IBAX Network protocol, which distributes, verifies transactions and generates new blocks on the node network. Similarly, new blocks are distributed and verified by the node network.
+* Knotennetzwerkschicht
 
-    The distributed ledger of all nodes is kept in sync. If having conflicts in a node, the node will identify which blockchains are considered valid and invalid blockchains will be rolled back accordingly.
+     Es implementierte das IBAX-Netzwerkprotokoll, das Transaktionen verteilt, verifiziert und neue Blöcke im Knotennetzwerk generiert. In ähnlicher Weise werden neue Blöcke vom Knotennetzwerk verteilt und verifiziert.
 
-* Transaction layer
+     Das verteilte Hauptbuch aller Knoten wird synchron gehalten. Wenn Konflikte in einem Knoten auftreten, identifiziert der Knoten, welche Blockchains als gültig gelten, und ungültige Blockchains werden entsprechend zurückgesetzt.
 
-    Transactions are the basis for generating blocks and blockchain protocols, and transactions themselves are the results of operations performed at the user interaction layer. Transactions are generated by Weaver.
+* Transaktionsschicht
 
-    When a user or developer performs an operation such as clicking a button on a page or implement a contract from the code editor, Weaver will convert this operation into a transaction and send it to the network node connected to it.
+     Transaktionen sind die Grundlage für die Generierung von Blöcken und Blockchain-Protokollen, und Transaktionen selbst sind die Ergebnisse von Operationen, die auf der Benutzerinteraktionsebene ausgeführt werden. Transaktionen werden von Weaver generiert.
 
-Therefore, the flow of transactions is as follows:
+     Wenn ein Benutzer oder Entwickler eine Operation durchführt, z. B. das Klicken auf eine Schaltfläche auf einer Seite oder das Implementieren eines Vertrags aus dem Code-Editor, wandelt Weaver diese Operation in eine Transaktion um und sendet sie an den damit verbundenen Netzwerkknoten.
+Daher ist der Transaktionsfluss wie folgt:
 
-  * A user operation in a user page will become a transaction;
-  * The transaction is contained in a block;
+   * Eine Benutzeroperation auf einer Benutzerseite wird zu einer Transaktion;
+   * Die Transaktion ist in einem Block enthalten;
 
-  * The block is included in the blockchain;
+   * Der Block ist in der Blockchain enthalten;
 
-  * The change of operation will cause the global state of the blockchain to change, and such operation will be applied to the database;
+   * Die Änderung der Operation bewirkt, dass sich der globale Zustand der Blockchain ändert, und diese Operation wird auf die Datenbank angewendet.
 
-  * Any database change will be reflected in the application.
+   * Jede Datenbankänderung wird in der Anwendung widergespiegelt.
+## Implementierung
 
-## Implementation
+IBAX besteht aus zwei Hauptkomponenten, nämlich Server [go-ibax](https://github.com/IBAX-io/go-ibax) und Weaver [Quellcode](https://github.com/IBAX-io/weaver ).
 
-IBAX has two major components, i.e. server [go-ibax](https://github.com/IBAX-io/go-ibax) and Weaver [Source code](https://github.com/IBAX-io/weaver).
+Weber:
+   * Bereitstellung der Benutzerseiten;
+   * Bereitstellung der IDE für die Anwendungsentwicklung;
+   * Speichern öffentlicher Schlüssel von Benutzerkonten und Ausführen der Autorisierung;
+   * Anfordern von Datenbankdaten von Anwendungsseiten und Anzeigen von Anwendungsseiten für Benutzer;
+   * Senden von Transaktionen an den Server über [REST APIs](../reference/api2.md);
 
-Weaver:
-  * Providing the user pages;
-  * Providing the IDE for application development;
-  * Storing public keys of user accounts and perform authorization;
-  * Requesting database data from application pages and display application pages to users;
-  * Sending transactions to the server through [REST APIs](../reference/api2.md);
-
-      In order to automatically create transactions against user operations, Weaver will convert such operations into transactions when application developers implement a contract from the IDE.
+       Um automatisch Transaktionen für Benutzeroperationen zu erstellen, wandelt Weaver solche Operationen in Transaktionen um, wenn Anwendungsentwickler einen Vertrag von der IDE implementieren.
 
 Server:
-  * Keeping the global state (database) of the node;
-  * Implementation of the blockchain protocol;
-  * Implementation of contract codes in the IBAX [Virtual Machine](../topics/vm.md);
-  * Implementation of page codes in the [Template Engine](../topics/templates2.md);
-  * Implementation of [RESTful API](../reference/api2.md).
+   * Halten des globalen Zustands (Datenbank) des Knotens;
+   * Implementierung des Blockchain-Protokolls;
+   * Implementierung von Vertragscodes in der IBAX [Virtual Machine](../topics/vm.md);
+   * Implementierung von Seitencodes in der [Template Engine](../topics/templates2.md);
+   * Implementierung von [RESTful API](../reference/api2.md).
