@@ -44,6 +44,11 @@ module.exports = {
             lang: 'zh-CN',
             title: 'IBAX 文档',
             description: 'A Decentralized Commercial Cross-Chain infrastructure Network',
+        },
+		'/tr-TR/': {
+            lang: 'tr-TR',
+            title: 'IBAX Belgeleri',
+            description: 'A Decentralized Commercial Cross-Chain infrastructure Network',
         }
     },
     themeConfig: {
@@ -599,6 +604,85 @@ module.exports = {
                         }
                     ],
                     '/it/': 'auto',
+                },
+            },
+			'/tr-TR/': {
+				selectText: 'Bir dil seçin',
+                label: 'Türkçe',
+                ariaLabel: 'Bir dil seçin',
+                editLinkText: 'Bu sayfayı GitHub da düzenleyin',
+                lastUpdated: 'son Güncelleme',
+                contributorsLabel: 'katkıda bulunan',
+                nav: [
+                    {text: 'Genel Bakış', link: '/tr-TR/concepts/about-the-platform',},
+                    {text: 'öğretici', link: '/tr-TR/tutorials/app_tutorial',},
+                    {text: 'kılavuz', link: '/tr-TR/topics/script'},
+                    {text: 'başvurmak', link: '/tr-TR/reference/api2',},
+                    {text: 'dağıtmak', link: '/tr-TR/howtos/deployment'},
+                ],
+                sidebar: {
+                    '/tr-TR/concepts/': [	
+                        {
+                            title: 'Genel Bakış',
+                            collapsable: false,
+                            children: [							
+								'about-the-platform',
+                                'blockchain-layers',
+								'consensus',
+								'thesaurus',
+                            ],
+                        },
+						{
+                            title: 'SSS',
+                            collapsable: false,
+                            children: [
+                                'faq',
+                            ],
+                        },
+                    ],
+                    '/tr-TR/tutorials/': [
+                        {
+                            title: 'öğretici',
+                            collapsable: false,
+                            children: [
+                                'app_tutorial',
+                            ],
+                        },
+                    ],
+                    '/tr-TR/topics/': [
+                        {
+                            title: 'kılavuz',
+                            collapsable: false,
+                            children: [
+								'script',
+                                'templates2',
+								'vm',
+								'daemons',
+                            ],
+                        },
+                    ],
+					'/tr-TR/reference/': [
+                        {
+                            title: 'başvurmak',
+                            collapsable: false,
+                            children: [
+                                'api2',
+								'platform-parameters',
+								'backend-config',
+								'desync_monitor',
+                            ],
+                        },
+                    ],
+					'/tr-TR/howtos/': [
+                        {
+                            title: 'dağıtmak',
+                            collapsable: false,
+                            children: [
+                                'deployment',
+                            ]
+                        }
+                    ],
+                    '/tr-TR/': 'auto',
                 },
             },
         },
