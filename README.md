@@ -1,7 +1,7 @@
 # IBAX Documentation
 
 
-- [IBAX Documentation(English)](docs/en-US/README.md)
+- [IBAX Documentation(English)](docs/README.md)
 - [IBAX Dokümantasyon(Türkçe)](docs/tr-TR/README.md)
 - [IBAX Dokumentation(Deutsch)](docs/de/README.md)
 - [IBAX Documentación(Español)](docs/es/README.md)
