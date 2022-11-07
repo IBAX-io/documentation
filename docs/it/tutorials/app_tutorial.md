@@ -29,7 +29,7 @@ In this section, we will show you how to  develop a simple application on the IB
   - [Part 4: Application](#part-4-application)
     - [Menu](#menu)
       - [Add a menu item](#add-a-menu-item)
-      - [Test the new meu item](#test-the-new-meu-item)
+      - [Test the new menu item](#test-the-new-menu-item)
     - [Send a message](#send-a-message)
       - [Form](#form)
     - [Form navigation](#form-navigation)
@@ -255,7 +255,7 @@ If successfully added some strings, then, the result will contain the block ID a
 
 ## Part 3: Page 
 
-When the contract become effective, it is time to extend it to something useful. In this part, you are going to implement the UI and other functions. 
+When the contract becomes effective, it is time to extend it to something useful. In this part, you are going to implement the UI and other functions. 
 
 Note
 
@@ -405,7 +405,7 @@ Like all other resources, menus can be created and edited in Weaver:
 ```
 
 4. Click Save. 
-#### Test the new meu item 
+#### Test the new menu item 
 
 Check whether the new menu item is valid:
 
