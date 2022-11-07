@@ -33,7 +33,7 @@ In terms of its structure and functions, IBAX is quite different from most exist
 
 * The development and use of IBAX applications are in an autonomous software environment called **ecosystem**. Each ecosystem has its own membership rules that are initially established by the creator;
 
-* Ecosystem activities, such as the data involved in **database table** records or updates, are based on **registers** created with **smart contracts**. In most other blockchain platforms, activities are based on transaction exchange between accounts;
+* Ecosystem activities, such as the data involved in <font color=Red>database table</font> records or updates, are based on **registers** created with **smart contracts**. In most other blockchain platforms, activities are based on transaction exchange between accounts;
 
 * The access to **registers** and the control of relationships between ecosystem members are managed by a set of rules called **smart laws**.
 

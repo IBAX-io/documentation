@@ -34,7 +34,7 @@ In Bezug auf seine Struktur und Funktionen unterscheidet sich IBAX erheblich von
 * Die Entwicklung und Nutzung von IBAX-Anwendungen erfolgt in einer autonomen Softwareumgebung namens **ökosystem**. Jedes Ökosystem hat seine eigenen Mitgliedschaftsregeln, die zunächst vom Ersteller festgelegt werden;
 
 
-* Ökosystemaktivitäten, wie die Daten, die in Datensätzen oder Aktualisierungen von **Datenbanktabellen** enthalten sind, basieren auf **Registern**, die mit **intelligente Verträge** erstellt wurden. Bei den meisten anderen Blockchain-Plattformen basieren die Aktivitäten auf dem Transaktionsaustausch zwischen Konten;
+* Ökosystemaktivitäten, wie die Daten, die in Datensätzen oder Aktualisierungen von <font color=Red>Datenbanktabellen</font> enthalten sind, basieren auf **Registern**, die mit **intelligente Verträge** erstellt wurden. Bei den meisten anderen Blockchain-Plattformen basieren die Aktivitäten auf dem Transaktionsaustausch zwischen Konten;
 
 * Der Zugriff auf **registrieren** und die Kontrolle der Beziehungen zwischen den Mitgliedern des Ökosystems werden durch eine Reihe von Regeln verwaltet, die als **intelligente Gesetze** bezeichnet werden.
 
@@ -50,7 +50,7 @@ Netzwerkbenutzer können Daten empfangen, indem sie Anfragen von der Guardian No
 
 ### Honor Node
 
-Ein Wächterknoten, der privilegiert ist, neue Blöcke im Netzwerk zu erzeugen, wird Ehrenknoten genannt. Die maximale Anzahl von Ehrenknoten wird durch number_of_nodes in der Plattformparametertabelle definiert, was zeigt, dass die Anzahl von Ehrenknoten begrenzt ist.
+Ein Wächterknoten, der privilegiert ist, neue Blöcke im Netzwerk zu erzeugen, wird Ehrenknoten genannt. Die maximale Anzahl von Ehrenknoten wird durch [Anzahl der Knoten](../reference/platform-parameters.md#Anzahl der Knoten) in der Plattformparametertabelle definiert, was zeigt, dass die Anzahl von Ehrenknoten begrenzt ist.
 
 Ein Ehrenknoten ist eine der Schlüsselkomponenten des IBAX Public Network. Es führt Transaktionen aus und validiert sie, sammelt Transaktionsinformationen von anderen Knoten, fügt Transaktionen zur Warteschlange hinzu und überprüft die Korrektheit und Gültigkeit neuer Blöcke mithilfe des Bestätigungsmechanismus. Im Allgemeinen hat es zwei Zustände: Verpackung und Aufverpackung.
 

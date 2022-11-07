@@ -82,23 +82,23 @@ leader = ((time - first) / step) % nodes
 
 > leader
 
-Current leader node.
+    Current leader node.
 
 > time
 
-Current time (UNIX).
+    Current time (UNIX).
 
 > first
 
-First block generation time (UNIX).
+    First block generation time (UNIX).
 
 > step
 
-Number of seconds in the block generation interval.
+    Number of seconds in the block generation interval.
 
 > nodes
 
-Total number of honor nodes.
+    Total number of honor nodes.
 
 ### Generation of new blocks
 
