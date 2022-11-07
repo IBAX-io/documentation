@@ -49,7 +49,7 @@ Network users can receive data by sending requests from the guardian node databa
 
 ### Honor Node
 
-A guardian node which is privileged to generate new blocks in the network is called a honor node. The maximum number of honor nodes is defined by number_of_nodes in the platform parameters table, showing that the number of honor nodes is limited.
+A guardian node which is privileged to generate new blocks in the network is called a honor node. The maximum number of honor nodes is defined by [number_of_nodes](../reference/platform-parameters.md#number-of-nodes) in the platform parameters table, showing that the number of honor nodes is limited.
 
 An Honor Node is one of the key components of IBAX Public Network. It executes and validates transactions, collects transaction information from other nodes, adds transactions to the queue, and verifies the correctness and validity of new blocks using the confirmation mechanism. Generally, it has two states: packaging and on-packaging. 
 
