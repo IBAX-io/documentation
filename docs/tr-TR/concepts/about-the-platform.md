@@ -33,7 +33,7 @@ Yapısı ve işlevleri açısından IBAX, mevcut çoğu blok zinciri platformund
 
 * IBAX uygulamalarının geliştirilmesi ve kullanımı, **ekosistem** adı verilen özerk bir yazılım ortamındadır. Her ekosistemin başlangıçta yaratıcı tarafından belirlenen kendi üyelik kuralları vardır;
 
-* **veritabanı tablosu** kayıtlarında veya güncellemelerinde yer alan veriler gibi ekosistem faaliyetleri, **akıllı sözleşmeler** ile oluşturulan **kayıtlara** dayanmaktadır. Diğer blok zinciri platformlarının çoğunda, faaliyetler hesaplar arasındaki işlem alışverişine dayanır;
+* <font color=Red>veritabanı tablosu</font> kayıtlarında veya güncellemelerinde yer alan veriler gibi ekosistem faaliyetleri, **akıllı sözleşmeler** ile oluşturulan **kayıtlara** dayanmaktadır. Diğer blok zinciri platformlarının çoğunda, faaliyetler hesaplar arasındaki işlem alışverişine dayanır;
 
 * **Kayıtlara** erişim ve ekosistem üyeleri arasındaki ilişkilerin kontrolü, **akıllı yasalar** adı verilen bir dizi kural tarafından yönetilir.
 
