@@ -816,7 +816,7 @@ The request does not require login authorization.
 
 #### Request
 
-```default
+```text
 GET
 /data/{id}/data/{hash}
 ```
@@ -864,7 +864,7 @@ The request does not require login authorization.
 
 #### Request
 
-```default
+```text
 GET
 /data/{table}/id/{column}/{hash}
 ```
@@ -919,7 +919,7 @@ The request does not require login authorization.
 
 #### Request
 
-```default
+```text
 GET
 /api/v2/keyinfo/{address}
 ```
@@ -1882,7 +1882,7 @@ Content-Type: application/json
 
 ### <span id = "row-name-colorn-id">row/{name}/{column}/{id} </span>
 
-[Authorization] (#Authorization)
+[Authorization] (#authorization)
 
 **GET**/ Return to the entry of the data table specified in the current ecosystem. You can specify columns to be returned.
 

@@ -816,7 +816,7 @@ The request does not require login authorization.
 
 #### Request
 
-```default
+```text
 GET
 /data/{id}/data/{hash}
 ```
@@ -864,7 +864,7 @@ The request does not require login authorization.
 
 #### Request
 
-```default
+```text
 GET
 /data/{table}/id/{column}/{hash}
 ```
@@ -919,7 +919,7 @@ The request does not require login authorization.
 
 #### Request
 
-```default
+```text
 GET
 /api/v2/keyinfo/{address}
 ```
