@@ -9,3 +9,28 @@
 - [IBAXドキュメント(日本語)](docs/ja/README.md)
 - [IBAX Documentazione(Italiano)](docs/it/README.md)
 - [IBAX 技术档案(中文)](docs/zh-CN/README.md)
+
+
+## Project setup
+```shell
+yarn install
+```
+
+## Compiles
+
+### Run
+```shell
+yarn dev
+```
+
+
+### Build
+```shell
+yarn build
+```
+
+
+## Deploy
+```shell
+./syncDist.sh
+```

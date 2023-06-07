@@ -4,3 +4,4 @@ Thumbs.db
 /yarn-error.log
 /docs/.vuepress/dist
 /ibax-io.github.io
+/.idea

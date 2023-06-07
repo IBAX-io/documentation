@@ -183,7 +183,7 @@ Each ecosystem can create a set of data tables for developing its applications o
 
 By configuring access rights through smart laws, data are logged into tables. Smart laws are used for rights management.
 
- >  Table table management tool
+ >  Table management tool
 
 You can find the table management tool in Weaver menu Table, which cover the following functions:
 
@@ -191,7 +191,16 @@ You can find the table management tool in Weaver menu Table, which cover the fol
 
 * Create new tables;
 
-* Add a table field and specify its data type, such as `Text, Date/Time, Varchar, Character, JSON, Number, Money, Double, Binary`;
+* Add a table field and specify its data type, such as 
+  - Text correspond postgresql `text`
+  - Date/Time correspond postgresql `timestamp`
+  - Varchar correspond postgresql `varchar(102400)`
+  - Character correspond postgresql `character(1) NOT NULL DEFAULT '0'`
+  - JSON correspond postgresql `jsonb`
+  - Number correspond postgresql `bigint NOT NULL DEFAULT '0'`
+  - Money correspond postgresql `decimal (30, 0) NOT NULL DEFAULT '0'`
+  - Double correspond postgresql `double precision`
+  - Binary correspond postgresql `bytea NOT NULL DEFAULT '\x'`
 
 * Manage privileges for insert, update data and change table structure.
 
