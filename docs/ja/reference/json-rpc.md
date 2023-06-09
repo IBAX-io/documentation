@@ -61,7 +61,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 `"params":[0,"", "title,page"]` - *String* 空の値は
 
 
-#### 認証
+#### Authorization
 認証ヘッダー、リクエストヘッダーにAuthorizationを追加します。例：
 
 **name** : Authorization
