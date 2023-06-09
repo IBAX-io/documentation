@@ -34,6 +34,7 @@ footer: © Copyright 2019 - 2021, IBAX Updated Date 06/03/2022 | Built with VueP
 ## Öğretici
 
 * [Uygulama geliştirme eğitimi](tutorials/app_tutorial.md)
+* [Development Tutorial](tutorials/tutorial.md)
 
 ## Kılavuz
 
@@ -48,6 +49,7 @@ footer: © Copyright 2019 - 2021, IBAX Updated Date 06/03/2022 | Built with VueP
 * [Platform Parametreleri](reference/platform-parameters.md)
 * [Sunucu yapılandırma dosyası](reference/backend-config.md)
 * [Senkronize İzleme Aracı](reference/desync_monitor.md)
+* [JSON-RPC Application Programming Interface](reference/json-rpc.md)
 
 ## Dağıtım
 

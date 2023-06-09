@@ -1,71 +1,73 @@
-# JSON-RPC Application Programming Interface
+# JSON-RPC アプリケーション プログラミング インターフェイス
 
-In order for a software application to interact with the IBAX blockchain (fetch block data or send transactions to the network), it must be connected to an IBAX network node.
-
-
-Due to the generality and extensibility of the original REST API interface, it will become more and more complex with more and more interfaces and different clients. We realize the importance of interface unification to ensure that all clients can use the same set of specifications, regardless of the specific node and client implementation.
+ソフトウェア アプリケーションが IBAX ブロックチェーンと対話するには (ブロック データを取得したり、トランザクションをネットワークに送信したり)、ソフトウェア アプリケーションは IBAX ネットワーク ノードに接続されている必要があります。
 
 
-JSON-RPC  is  a  stateless,  lightweight  remote  procedure  call  (RPC)  protocol.  It  defines  a number of data structures and their processing rules. It is transport independent, as these concepts can be used in the same process, via an interface, hypertext transfer protocol, or in many different messaging environments. It uses JSON (RFC 4627) as the data format.
+元の REST API インターフェイスの汎用性と拡張性により、インターフェイスとクライアントの数がますます増え、ますます複雑になります。 私たちは、特定のノードやクライアントの実装に関係なく、すべてのクライアントが同じ仕様セットを使用できるようにするためのインターフェイスの統合の重要性を認識しています。
+
+
+JSON-RPC は、ステートレスで軽量なリモート プロシージャ コール (RPC) プロトコルです。 これは、多数のデータ構造とその処理ルールを定義します。 これらの概念は、インターフェイス、ハイパーテキスト転送プロトコル、または多くの異なるメッセージング環境を介して同じプロセスで使用できるため、トランスポートに依存しません。 データ形式として JSON (RFC 4627) を使用します。
 
 
 
-JSON-RPC is compatible with most of the REST API interfaces, retaining the original REST API interface, the client using the REST API interface can easily transfer to the JSON-RPC interface, part of the interface
+JSON-RPC は、ほとんどの REST API インターフェイスと互換性があり、元の REST API インターフェイスを保持しており、REST API インターフェイスを使用するクライアントは、インターフェイスの一部である JSON-RPC インターフェイスに簡単に転送できます。
 - [/data/{id}/data/{hash}](api2.md#data-id-data-hash)
 - [/data/{table}/id/{column}/{hash}](api2.md#data-table-id-column-hash)
 - [avatar/{ecosystem}/{member}](api2.md#avatar-ecosystem-member) 
 
-Available through the REST API interface.
+REST API インターフェイスを通じて利用できます。
 
-## Client-side implementation
-Each client can use a different programming language when  implementing  the JSON-RPC specification, and you can use the
+## Client-sideの実装
+SON-RPC 仕様を実装する場合、各クライアントは異なるプログラミング言語を使用できます。
 [GO-SDK](https://github.com/IBAX-io/go-ibax-sdk)
 
 
-## Curl example
-The following provides examples of using the JSON RPC API by making curl requests to IBAX nodes. Each example includes a description of the particular endpoint, its parameters, the return type, and a working example of how it should be used.
+## Curlの例
+以下に、IBAX ノードに対してcurlリクエストを行うことによるJSON RPC APIの使用例を示します。 各例には、特定のエンドポイント、そのパラメーター、戻り値の型、およびその使用方法の実例の説明が含まれています。
 
-Curl requests may return an error message related to the content type. This is because the --data option sets the content type to application/x-www-form-urlencoded. If your request has this problem, set the header manually by placing -H "Content-Type: application/json" at the beginning of the call. These examples also do not include the URL/Internet Protocol and port combination that must be the last parameter of the curl (e.g. 127.0.0.1:7079 A full curl request with this additional data takes the form of
+Curl リクエストは、コンテンツ タイプに関連するエラー メッセージを返す場合があります。 これは、 --data オプションによってコンテンツ タイプが application/x-www-form-urlencoded に設定されるためです。 リクエストにこの問題がある場合は、呼び出しの先頭に -H "Content-Type: application/json" を配置して、ヘッダーを手動で設定します。 これらの例には、curl の最後のパラメータである必要がある URL/インターネット プロトコルとポートの組み合わせも含まれていません (例: 127.0.0.1:7079)。この追加データを含む完全なcurl リクエストは次の形式になります。
 
 ``` text
 curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","params":[],"id":1}' http://127.0.0.1:7079	
 ```
 
-## Covenant 
+## 契約
 
 ### Hex
-**Hexadecimal code**
+**16進数コード**
 
-When encoding byte arrays, hashes, and bytecode arrays: the encoding is hexadecimal, two hexadecimal digits per byte.
+バイト配列、ハッシュ、およびバイトコード配列をエンコードする場合: エンコードは 16 進数で、1 バイトあたり 2 桁の 16 進数になります。
 
-### Request type
-**Uniform use**
+### リクエストの種類
+**Uniformの使用**
 - Content-Type: application/json
 
-### Special markers 
+### 特殊マーカー
 #### Omitempty
-This field is an optional parameter.
 
-If there are multiple `Omitempty` fields in a row,
-But only want to pass the value of a certain field, then you need to set the unwanted field to null (the field type null value), Example:
+このフィールドはオプションのパラメータです。
+
+行に複数の `Omitempty` フィールドがある場合、
+特定のフィールドの値のみを渡したい場合は、不要なフィールドを null（フィールドタイプの null 値）に設定する必要があります。例：
+
 - **id** - *Number* - [Omitempty](#omitempty) id
 - **name** - *String* - [Omitempty](#omitempty) Name
 - **column** - *String* - [Omitempty](#omitempty) Filter column names
 
-If only the name value is passed, then the request parameters are passed as follows
-`"params":[0, "testname"]` - *Number* null value is 0
+名前の値のみが渡される場合、リクエストパラメータは以下のように渡されます
+`"params":[0, "testname"]` - *Number* null 値は 0
 
-If only the column value is passed, then the request parameters are passed as follows
-`"params":[0,"", "title,page"]` - *String* empty value for ""
+カラムの値のみが渡される場合、リクエストパラメータは以下のように渡されます
+`"params":[0,"", "title,page"]` - *String* 空の値は
 
 
+#### 認証
+認証ヘッダー、リクエストヘッダーにAuthorizationを追加します。例：
 
-#### Authorization
-Authorization header, add Authorization to the request header, example:
+**name** : Authorization
+**value** : Bearer +[ログイントークン](#ibax-login)
 
-**name** : Authorization **value** : Bearer +[login token](#ibax-login)
- 
-Example:
+例：
 ```` text
     //request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ey...." -d '{"jsonrpc":"2.0","method":"ibax.getContractInfo","params":["@1TokensSend"],"id":1}' http://127.0.0.1:7079
@@ -73,30 +75,31 @@ Example:
 ````
 
 #### AccountOrKeyId
-For the account address parameter, you can use two formats of addresses, for example
-1. - *String* - Account Address `"XXXX-XXXX-XXXX-XXXX-XXXX"` or Account Id `"64842...538120"` .538120"`
+アカウントアドレスのパラメータでは、2つの形式のアドレスを使用できます。例えば
+1. - *String* - アカウントアドレス `"XXXX-XXXX-XXXX-XXXX-XXXX"` またはアカウントID `"64842...538120"`
 
-2. - *Obeject* - Address object
-    - **key_id** - *Number* - Account Id, Example: `{"key_id":-64842	38120}`
-    - **account** - *String* - Account address, Example: `{"account": "1196-... -	-... -3496"}`
+2. - *Object* - アドレスオブジェクト
+   - **key_id** - *Number* - アカウントID、例: `{"key_id":-64842   38120}`
+   - **account** - *String* - アカウントアドレス、例: `{"account": "1196-... - -... -3496"}`
 
-    **Account Id is preferred when both account address and account Id exist**. 
-    
+   **アカウントIDが存在する場合、アカウントアドレスとアカウントIDの両方がある場合はアカウントIDが優先されます**。
+
 #### BlockOrHash
-Block height or block HASH, example
+ブロックの高さまたはブロックのハッシュ、例:
 
-1.	- *String*	-	Block	Height	`"100"`	or	Block	HASH`"4663aa47...a60753c18d9ba9cb4"`
+1.  - *String*  -   ブロックの高さ `"100"` または ブロックのハッシュ   `"4663aa47...a60753c18d9ba9cb4"`
 
-2.	- *Obeject* - Block information object
-        - **id** - *Number* - block height, example: `{"id":2}`
-        - **hash**	-	*[Hex](#hex)	String*	-	Block	HASH,	Example:	`{"hash": "d36b8996c	c616d3043a0d02a0f59"}`
+2.  - *Object* - ブロック情報オブジェクト
+    - **id** - *Number* - ブロックの高さ、例: `{"id":2}`
+    - **hash** - *[Hex](#hex) String* - ブロックのハッシュ、例: `{"hash": "d36b8996c   c616d3043a0d02a0f59"}`
 
-        **Block Height and Block HASH can only choose one**. 
+    **ブロックの高さとブロックのハッシュはどちらか一方を選択できます**。
 
-### Batch requests
-This feature can be used to reduce network latency, especially when acquiring a large number of largely independent data objects.
+### バッチリクエスト
+この機能は、特に大量の大部分が独立したデータオブジェクトを取得する場合にネットワークのレイテンシを低減するために使用できます。
 
-The following is an example of obtaining the highest block and total number of transactions:
+以下は、最高ブロックとトランザクションの総数を取得する例です：
+
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '[{"jsonrpc":"2.0","method":"ibax.getTxCount","id":1,"params":[]},{"jsonrpc":"2.0","method":"ibax.maxBlockId","id":2,"params":[]}]' http://127.0.0.1:7079
@@ -117,27 +120,22 @@ The following is an example of obtaining the highest block and total number of t
 ```
 
 
-### Error response handling
+### エラーレスポンスの処理
 
-Returns status `200` in case the request is executed successfully.
+リクエストが正常に実行された場合、ステータスコード `200` が返されます。
 
-If an error occurs, a JSON object with the following fields will be returned:
+エラーが発生した場合、以下のフィールドを持つJSONオブジェクトが返されます:
 
--	jsonrpc
+- jsonrpc
+    エラー識別子。
+- id
+    エラーテキストメッセージ。
+- error
+    - code
+        レスポンスステータスコード
+    - message
+        レスポンスステータスの説明
 
-    Error identifier.
-
--	id
-
-    Error text message.
-
--	error
-    -	code
-
-        Response Status Code
-    -	message
-
-        Response Status Description
 
 ``` text
 {
@@ -151,26 +149,26 @@ If an error occurs, a JSON object with the following fields will be returned:
 ```
 
 
-## JSON-RPC Namespaces
+## JSON-RPC ネームスペース
 
- ### ibax Namespace
+### ibax ネームスペース
 
-#### Authentication Interface
+#### 認証インターフェース
 - [ibax.getuid](#ibax-getuid)
 - [ibax.login](#ibax-login)
 - [ibax.getAuthStatus](#ibax-getauthstatus)
 
-#### server-side command interface
+#### server-sideのコマンドインターフェイス
 - [ibax.getVersion](#ibax-getversion)
 
-#### Data Request Function Interface
+#### データリクエスト機能インターフェース
 - [ibax.getBalance](#ibax-getbalance)
 - [ibax.getBlocksTxInfo](#ibax-getblockstxinfo)
 - [ibax.detailedBlocks](#ibax-detailedblocks)
 - [ibax.getKeyInfo](#ibax-getkeyinfo)
 - [ibax.detailedBlock](#ibax-detailedblock)
 
-#### Get Metrics Interface
+#### メトリクスの取得インターフェイス
 - [ibax.maxBlockId](#ibax-maxblockid)
 - [ibax.getKeysCount](#ibax-getkeyscount)
 - [ibax.getTxCount](#ibax-gettxcount)
@@ -179,7 +177,7 @@ If an error occurs, a JSON object with the following fields will be returned:
 - [ibax.honorNodesCount](#ibax-honornodescount)
 - [ibax.getEcosystemCount](#ibax-getecosystemcount)
 
-#### Ecosystem Interface
+#### エコシステムインターフェース
 - [ibax.ecosystemInfo](#ibax-ecosysteminfo)
 - [ibax.appParams](#ibax-appparams)
 - [ibax.getEcosystemParams](#ibax-getecosystemparams)
@@ -196,7 +194,7 @@ If an error occurs, a JSON object with the following fields will be returned:
 - [ibax.getAppContent](#ibax-getappcontent)
 - [ibax.getMember](#ibax-getmember)
 
-#### Contract Function Interface
+#### スマートコントラクト機能インターフェース
 - [ibax.getContracts](#ibax-getcontracts)
 - [ibax.getContractInfo](#ibax-getcontractinfo)
 - [ibax.sendTx](#ibax-sendtx)
@@ -212,59 +210,60 @@ If an error occurs, a JSON object with the following fields will be returned:
 - [ibax.getBlockInfo](#ibax-getblockinfo)
 - [ibax.getConfig](#ibax-getconfig)
 
-### net Namespace
+### ネット名前空間
 - [net.getNetwork](#net-getnetwork)
 - [net.status](#net-status)
 
-### rpc Namespace
+### rpc名前空間
 - [rpc.modules](#rpc-modules)
 
-### admin Namespace
+### admin名前空間
 - [admin.startJsonRpc](#admin-startjsonrpc)
 - [admin.stopJsonRpc](#admin-stopjsonrpc)
 
 
-### debug Namespace
+### debug名前空間
 - [debug.getNodeBanStat](#debug-getnodebanstat)
 - [debug.getMemStat](#debug-getmemstat)
  
 
 
-## JSON-RPC Interface Methods 
+## JSON-RPC インターフェースメソッド
 
 ### **ibax.getUid**
 
 [Authorization](#authorization) [Omitempty](#omitempty)
 
-Generate a temporary JWT token,	which needs to be passed to [**Authorization**](#authorization) when calling **[login](#ibax-login)**
+[**login**](#ibax-login)を呼び出す際に、[**Authorization**](#authorization)に渡す必要がある一時的なJWTトークンを生成します。
 
-#### Parameters 
-None
+#### パラメーター
+なし
 
-#### Return Value
-- **uid** - *String* - The signature number.
+#### 戻り値
+- **uid** - *String* - 署名の数値。
 
-- **token** - *String* - temporary token passed during login (temporary token has a 5 second lifespan).
+- **token** - *String* - ログイン時に渡される一時トークン（一時トークンの寿命は5秒）。
 
-- **network_id** - *String* - The network identifier.
+- **network_id** - *String* - ネットワークの識別子。
 
-- **cryptoer** - *String* - Elliptic curve algorithm.
+- **cryptoer** - *String* - 楕円曲線アルゴリズム。
 
-- **hasher** - *String* - hash algorithm.
+- **hasher** - *String* - ハッシュアルゴリズム。
 
-In the case that no authorization is required(the request contains [Authorization](#authorization), the following message will be returned.
+認証が必要ない場合（リクエストに[Authorization](#authorization)が含まれている場合）、以
 
-- **expire** - *String* - Expiration time.
 
-- **ecosystem** - *String* - Ecosystem ID.
+- **expire** - *String* - 有効期限。
 
-- **key_id** - *String* - The account address.
+- **ecosystem** - *String* - エコシステムID。
 
-- **address** - *String* - wallet address `XXXX-XXXXXX-XXXX-XXXX-XXXX`.
+- **key_id** - *String* - アカウントアドレス。
 
-- **network_id** - *String* - The network identifier.
+- **address** - *String* - ウォレットアドレス `XXXX-XXXXXX-XXXX-XXXX-XXXX`。
 
-#### Example
+- **network_id** - *String* - ネットワークの識別子。
+
+#### 例
 ```text
     //Request1
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getUid","params":[],"id":1}' http://127.0.0.1:7079
@@ -301,61 +300,61 @@ In the case that no authorization is required(the request contains [Authorizatio
     }
 ```
 
+
 ### **ibax.login**
-User authentication. [Authorization](#authorization)
+ユーザー認証。[Authorization](#authorization)
 
-The [**ibax.getUid**](#ibax-getuid) command should be called first in order to receive the unique value and sign it.
-The temporary JWT token for getuid needs to be passed in the request header.
-If the request is successful, the token received in the response is contained in [**Authorization**](#authorization).
+最初に[**ibax.getUid**](#ibax-getuid)コマンドを呼び出して、一意の値を受信し、署名する必要があります。getuidの一時的なJWTトークンは、リクエストヘッダーに渡す必要があります。リクエストが成功した場合、レスポンスで受信したトークンは[**Authorization**](#authorization)に含まれます。
 
-#### Parameters
+#### パラメーター
 
-*Object* - Authentication call object
-- **ecosystem_id** - *Number* - Ecosystem ID. if not specified, defaults to the first ecosystem ID.
+*Object* - 認証呼び出しオブジェクト
+- **ecosystem_id** - *Number* - エコシステムID。指定されていない場合、最初のエコシステムIDにデフォルト設定されます。
 
-- **expire** - *Number* - The lifecycle of the JWT token in seconds, default is 28800,8 hours.
+- **expire** - *Number* - JWTトークンのライフサイクル（秒単位）、デフォルトは28800、8時間です。
 
-- **public_key** - *[Hex](#hex) String* - Hexadecimal account public key.
+- **public_key** - *[Hex](#hex) String* - 16進数のアカウント公開鍵。
 
 - **key_id** - *String* -
-    >	Account address `XXXX-... -XXXX`.
+    >   アカウントアドレス「XXXX-...-XXXX」。
     >
-    >	Use this parameter if the public key is already stored in the blockchain. It cannot be used with *pubkey*
-    >	parameters are used together.
+    >   公開鍵がすでにブロックチェーンに保存されている場合、このパラメーターを使用します。*pubkey*パラメーターとは一緒に使用できません。
 
 - **signature** - *String* -
-    Use the private key to sign the uid received by getuid. 
+    getuidで受信したuidに対して、秘密鍵を使用して署名します。
 
-    Signature data content:LOGIN+{$network_id}+uid
+    署名データの内容：LOGIN+{$network_id}+uid
 
-- **role_id** - *Number* - Role ID, default role 0
+- **role_id** - *Number* - ロールID、デフォルトロール0
 
 
-#### Return Value
-*Object* - Authentication object
-- **token** - *String* - JWT token.
 
-- **ecosystem_id** - *String* - Ecosystem ID.
+#### 戻り値
+*Object* - 認証オブジェクト
+- **token** - *String* - JWTトークン。
 
-- **key_id** - *String* - Account Address ID
+- **ecosystem_id** - *String* - エコシステムID。
 
-- **account** - *String* - wallet address `XXXX-XXXXXX-XXXX-XXXX-XXXX`.
+- **key_id** - *String* - アカウントアドレスID
 
-- **notify_key** - *String* - The notification ID.
+- **account** - *String* - ウォレットアドレス「XXXX-XXXXXX-XXXX-XXXX-XXXX」。
 
-- **isnode** - *Bool* - Whether the account address is the owner of the node. Values: `true,false`.
+- **notify_key** - *String* - 通知ID。
 
-- **isowner** - *Bool* - Whether the account address is the creator of this ecosystem. Values: `true,false`.
+- **isnode** - *Bool* - アカウントアドレスがノードのオーナーであるかどうか。値：`true,false`。
 
-- **clb** - *Bool* - Whether the logged-in ecosystem is a CLB. Values: `true,false`.
+- **isowner** - *Bool* - アカウントアドレスがこのエコシステムの作成者であるかどうか。値：`true,false`。
 
-- **timestamp** - *String* - current timestamp
- 
-- **roles** - *Array* list of roles, if there are no roles, the field is nil
-    - **role_id** - *Number* - Role ID
-    - **role_name** - *String* - Role name
+- **clb** - *Bool* - ログインしたエコシステムがCLBであるかどうか。値：`true,false`。
 
-#### Example
+- **timestamp** - *String* - 現在のタイムスタンプ
+
+- **roles** - *Array* - ロールのリスト。ロールがない場合、このフィールドはnilです。
+    - **role_id** - *Number* - ロールID
+    - **role_name** - *String* - ロール名
+
+#### 例
+
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.login","params":[{"ecosystem_id":1,"public_key":"04....","signature","46...","role_id":0}],"id":1}' http://127.0.0.1:7079
@@ -380,19 +379,19 @@ If the request is successful, the token received in the response is contained in
 ```
 
 ### **ibax.getAuthStatus** 
-User authentication status 
+ユーザー認証ステータス
 [Authorization](#authorization)
 
-#### Parameters 
-None
+#### パラメーター
+なし
 
-#### Return Value
-*Object* - Authentication status object
-- **active** - *Bool* - The current user authentication status. Values: `true,false`
+#### 戻り値
+*Object* - 認証ステータスオブジェクト
+- **active** - *Bool* - 現在のユーザー認証ステータス。値：`true,false`
 
-- **exp** - *Number* - [Omitempty](#omitempty) Token validity cutoff timestamp
- 
-#### Example
+- **exp** - *Number* - [Omitempty](#omitempty) トークン有効期限の切り捨てタイムスタンプ
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getAuthStatus","id":1}' http://127.0.0.1:7079
@@ -409,15 +408,15 @@ None
 ```
 
 ### **ibax.getVersion**
-Returns the current server version.
+現在のサーバーバージョンを返します。
 
-#### Parameters 
-None
+#### パラメーター
+なし
 
-#### Return Value
-- **vesion** - *String* - version number (`big Version` + `branch name` + `git commit` + `time` + `node status`)
+#### 戻り値
+- **vesion** - *String* - バージョン番号（`big Version` + `branch name` + `git commit` + `time` + `node status`）
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getVersion","id":1}' http://127.0.0.1:7079
@@ -430,28 +429,30 @@ None
     }
 ```
 
-### **ibax.getBalance**
-Get the account address balance.
- 
-#### Parameters
+### ibax.getBalance
+アカウントアドレスの残高を取得します。
 
-- **key_id or account** - [*AccountOrKeyId*](#accountorkeyid) - account address `XXXX- XXXX-XXXX-XXXX-XXXX` or account ID
+#### パラメーター
 
-- **ecosystem_id** - *Number* - Ecosystem ID [Omitempty](#omitempty) Default 1 
+- key_idまたはaccount - [*AccountOrKeyId*](#accountorkeyid) - アカウントアドレス \`XXXX- XXXX-XXXX-XXXX-XXXX\` またはアカウントID
 
-#### Return Value
-*Object* - Get the balance object
-- **amount** - *String* - the minimum unit of the contract account balance.
+- ecosystem_id - *Number* - エコシステムID [Omitempty](#*omitempty*) デフォルト1 
 
-- **total** - *String* - the total balance of the minimum unit account (amount + utxo).
 
-- **utxo** - *String* - Minimum unit UTXO account balance.
+#### 戻り値
+*Object* - 残高オブジェクトを取得する
+- **amount** - **String** - 契約アカウント残高の最小単位。
 
-- **digits** - *Number* - Accuracy
+- **total** - **String** - 最小単位のアカウントの総残高（amount+utxo）。
 
-- **token_symbol** - *String* - Token symbols 
+- **utxo** - **String** - 最小単位のUTXOアカウント残高。
 
-#### Example
+- **digits** - **Number** - 精度
+
+- **token_symbol** - **String** - トークンシンボル
+
+
+#### 例
 ```text
     //Request1
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBalance","id":1,"params":["648...8120"]}' http://127.0.0.1:7079
@@ -478,31 +479,31 @@ Get the account address balance.
 
 
 ### **ibax.getBlocksTxInfo**
-Returns a list containing additional information about the transactions in each block. 
+ブロック内のトランザクションに関する追加情報が含まれたリストを返します。
 
-#### Parameters
+#### パラメーター
 
-- **block_id** - *Number* - the starting block height to query
+- **block_id** - *Number* - クエリする開始ブロック高
 
-- **count** - *Number* - number of blocks, default is 25, maximum request is 100 
+- **count** - *Number* - ブロック数、デフォルトは25、最大リクエスト数は100
 
-#### Return Value
-*Object* - Get the block information object
-- **block_id** - *String* - block height
--	List of transactions in the block and additional information for each transaction:
+#### 戻り値
+*Object* - ブロック情報オブジェクトを取得する
+- **block_id** - *String* - ブロック高
+- 各トランザクションの追加情報を含むブロック内のトランザクションのリスト：
 
-    - **hash** - *[Hex](#hex) String* - The transaction hash.
+   - **hash** - *[Hex](#hex) String* - トランザクションのハッシュ。
 
-    - **contract_name** - *String* - The name of the contract.
+    - **contract_name** - *String* - コントラクトの名前。
 
-    - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo).
+    - **params** - *Object* - コントラクトパラメーター。[ibax.getContractInfo](#ibax-getcontractinfo)を使用して、コントラクトフィールドをクエリできます。
 
     - **key_id** - *Number* -
-        For the first block, it is the account address of the first block that signed the transaction.
+        最初のブロックの場合、トランザクションに署名した最初のブロックのアカウントアドレスです。
 
-        For all other blocks, it is the address of the account that signed the transaction.
+        他のすべてのブロックの場合、トランザクションに署名したアカウントのアドレスです。
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBlocksTxInfo","id":1,"params":[1,2]}' http://127.0.0.1:7079
@@ -537,42 +538,41 @@ Returns a list containing additional information about the transactions in each 
 
 
 ### **ibax.detailedBlocks**
-Returns a list containing detailed additional information about the transactions in each block.
+R各ブロック内のトランザクションに関する詳細情報を含むリストを返します。
 
-#### Parameters
-- **block_id** - *Number* - the height of the starting block to query
+#### パラメーター
+- **block_id** - *Number* - クエリの開始ブロック高
 
-- **count** - *Number* - number of blocks, default is 25, maximum request is 100
+- **count** - *Number* - ブロック数。デフォルトは 25 ですが、最大要求数は 100 です。
 
+#### 戻り値
+*Object* - ブロックの詳細情報オブジェクト
+- **block_id** - *String* - ブロック高
+    - **header** - *Object* - ブロックヘッダー。ブロックヘッダーには、次のフィールドが含まれます。
+        - **block_id** - *Number* - ブロックの高さ。
+        - **time** - *Number* - ブロック生成タイムスタンプ。
+        - **key_id** - *Number* - ブロックに署名したアカウントのアドレス。
+        - **node_position** - *Number* - ブロックを生成したノードの栄誉ノードリスト内の位置。
+        - **version** - *Number* - ブロック構造バージョン。
+    - **hash** - *[Hex](#hex) String* - ブロックのハッシュ。
+    - **node_position** - *Number* - ブロックを生成したノードの栄誉ノードリスト内の位置。
+    - **key_id** - *Number* - ブロックに署名したアカウントのアドレス。
+    - **time** - *Number* - ブロック生成タイムスタンプ。
+    - **tx_count** - *Number* - ブロック内のトランザクション数。
+    - **size** - *String* - ブロックのサイズ。
+    - **rollback_hash** - *[Hex](#hex) String* - ブロックのロールバックハッシュ。
+    - **merkle_root** - *[Hex](#hex) String* - このブロックトランザクションのマークルツリー。
+    - **bin_data** - *[Hex](#hex) String* - ブロックヘッダー、ブロック内のすべてのトランザクション、前のブロックハッシュ、およびブロックを生成したノードの秘密鍵のシリアル化。
+    -  **transactions** - *Object* - トランザクションリスト。ブロック内の各トランザクションに関する追加情報が含まれます。
+        - **hash** - *[Hex](#hex) String* - トランザクションのハッシュ。
+        - **contract_name** - *String* - コントラクトの名前。
+        - **params** - *Object* - コントラクトパラメーター。[ibax.getContractInfo](#ibax-getcontractinfo)を使用して、コントラクトフィールドをクエリできます。
+        - **key_id** - *Number* - トランザクションに署名したアカウントのアドレス。
+        - **time** - *Number* - トランザクション生成タイムスタンプ（単位：ミリ秒）。
+        - **type** - *Number* - トランザクションのタイプ。
+        - **size** - *String* - トランザクションのサイズ。
 
-#### Return Value
-*Object* - Get the block details object
-- **block_id** - *String* - block height
-    - **header** - *Object* - block header The block header contains the following fields.
-        - **block_id** - *Number* - the height of the block.
-        - **time** - *Number* - block generation timestamp.
-        - **key_id** - *Number* - the address of the account that signed the block.
-        - **node_position** - *Number* - The position of the node that generated the block in the honor node list.
-        - **version** - *Number* - the block structure version.
-    - **hash** - *[Hex](#hex) String* - The block hash.
-    - **node_position** - *Number* - The position of the node that generated the block in the honor node list.
-    - **key_id** - *Number* - the address of the account that signed the block.
-    - **time** - *Number* - block generation timestamp.
-    - **tx_count** - *Number* - the number of transactions within the block.
-    - **size** - *String* - the size of the block.
-    - **rollback_hash** - *[Hex](#hex) String* - The block rollback hash.
-    - **merkle_root** - *[Hex](#hex) String* - The merkle tree for this block transaction.
-    - **bin_data** - *[Hex](#hex) String* - Serialization of the block header, all transactions within the block, the previous block hash, and the private key of the node that generated the block.
-    -  **transactions** - *Object* - Transactions List of transactions in the block and additional information about each transaction:
-        - **hash** - *[Hex](#hex) String* - The transaction hash.
-        - **contract_name** - *String* - The name of the contract.
-        - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo).
-        - **key_id** - *Number* - The address of the account that signed the transaction.
-        - **time** - *Number* - transaction generation timestamp (unit: ms).
-        - **type** - *Number* - the type of the transaction.
-        - **size** - *String* - The transaction size.
-
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.detailedBlocks","id":1,"params":[1,2]}' http://127.0.0.1:7079
@@ -651,24 +651,24 @@ Returns a list containing detailed additional information about the transactions
 
 
 ### **ibax.getKeyInfo**
-Returns a list of ecosystems with roles that are registered to the specified address.
+指定されたアドレスに登録されている役割を持つエコシステムのリストを返します。
 
-#### Parameters
-- **account** - *String* - Account Address
+#### パラメーター
+- **account** - *String* - アカウントアドレス
 
-#### Return Value
-*Object* - Specify the address eco-list object
-- **account** - *String* - Account Address
-- **ecosystems** - *Array* - Eco-List
-    - **ecosystem** - *String* - Ecosystem id
-    - **name** - *String* - Ecosystem name
-    - **digits** - *Number* - Accuracy
-    - **roles** - *Array* - list of roles.
-        - **id** - *String* - role id
-        - **name** - *String* - Character name
- 
+#### 戻り値
+*Object* - アドレスエコリストオブジェクトを指定します。
+- **account** - *String* - アカウントアドレス
+- **ecosystems** - *Array* - エコリスト
+    - **ecosystem** - *String* - エコシステム ID
+    - **name** - *String* - エコシステム名
+    - **digits** - *Number* - 精度
+    - **roles** - *Array* - 役割のリスト。
+        - **id** - *String* - 役割 ID
+        - **name** - *String* - キャラ
 
-#### Example
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getKeyInfo","id":1,"params":["0666-XXXX-XXXX-XXXX-5186"]}' http://127.0.0.1:7079
@@ -701,39 +701,39 @@ Returns a list of ecosystems with roles that are registered to the specified add
 ```
  
 ### **ibax.detailedBlock**
-Returns a detailed list of additional information about the transactions in the block.
+ブロック内のトランザクションに関する詳細な情報のリストを返します。
 
-#### Parameters
--	**Block or Hash** - *[BlockOrHash](#blockorhash)* - Block Height or Block Hash
+#### パラメーター
+- **Block or Hash** - *[BlockOrHash](#blockorhash)* - ブロックの高さまたはブロックハッシュ
 
-#### Return Value
-*Object* - Get the block details object
-- **header** - *Object* - block header The block header contains the following fields.
-    - **block_id** - *Number* - the height of the block. 
-    - **time** - *Number* - block generation timestamp.
-    - **key_id** - *Number* - the address of the account that signed the block.
-    - **node_position** - *Number* - The position of the node that generated the block in the honor node list.
-    -	**version** - *Number* - the block structure version.
+#### 戻り値
+*Object* - ブロックの詳細オブジェクトを取得します。
+- **header** - *Object* - ブロックヘッダー。以下のフィールドが含まれます。
+    - **block_id** - *Number* - ブロックの高さ
+    - **time** - *Number* - ブロックの生成タイムスタンプ
+    - **key_id** - *Number* - ブロックに署名したアカウントのアドレス
+    - **node_position** - *Number* - ブロックを生成したノードのHonorノードリスト内の位置
+    - **version** - *Number* - ブロック構造のバージョン
 
-- **hash** - *[Hex](#hex) String* - The block hash.
-- **node_position** - *Number* - The position of the node that generated the block in the honor node list.
-- **key_id** - *Number* - the address of the account that signed the block.
-- **time** - *Number* - block generation timestamp.
-- **tx_count** - *Number* - the number of transactions within the block.
-- **size** - *String* - the size of the block.
-- **rollback_hash** - *[Hex](#hex) String* - The block rollback hash.
-- **merkle_root** - *[Hex](#hex) String* - The merkle tree for this block transaction.
-- **bin_data** - *[Hex](#hex) String* - Serialization of the block header, all transactions within the block, the previous block hash, and the private key of the node that generated the block.
--  **transactions** - *Array* - Transactions List of transactions in the block and additional information about each transaction:
-    - **hash** - *[Hex](#hex) String* - The transaction hash.
-    - **contract_name** - *String* - The name of the contract.
-    - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo).
-    - **key_id** - *Number* - The address of the account that signed the transaction.
-    - **time** - *Number* - transaction generation timestamp (unit: ms).
-    - **type** - *Number* - the type of the transaction.
-    - **size** - *String* - The transaction size.
+- **hash** - *[Hex](#hex) String* - ブロックのハッシュ
+- **node_position** - *Number* - ブロックを生成したノードのHonorノードリスト内の位置
+- **key_id** - *Number* - ブロックに署名したアカウントのアドレス
+- **time** - *Number* - ブロックの生成タイムスタンプ
+- **tx_count** - *Number* - ブロック内のトランザクション数
+- **size** - *String* - ブロックのサイズ
+- **rollback_hash** - *[Hex](#hex) String* - ブロックのロールバックハッシュ
+- **merkle_root** - *[Hex](#hex) String* - このブロックのトランザクションのマークルツリー
+- **bin_data** - *[Hex](#hex) String* - ブロックヘッダー、ブロック内のすべてのトランザクション、前のブロックハッシュ、およびブロックを生成したノードの秘密鍵のシリアル化
+- **transactions** - *Array* - トランザクション。ブロック内のトランザクションのリストと各トランザクションに関する追加情報。
+    - **hash** - *[Hex](#hex) String* - トランザクションのハッシュ
+    - **contract_name** - *String* - コントラクト名
+    - **params** - *Object* - コントラクトパラメータ。コントラクトのフィールドは、[ibax.getContractInfo](#ibax-getcontractinfo)を介してクエリできます。
+    - **key_id** - *Number* - トランザクションに署名したアカウントのアドレス
+    - **time** - *Number* - トランザクションの生成タイムスタンプ（単位：ms）
+    - **type** - *Number* - トランザクションのタイプ
+    - **size** - *String* - トランザクションのサイズ
 
-#### Example
+#### 例
 ```text
     //Request1
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.detailedBlock","id":1,"params":["1"]}' http://127.0.0.1:7079
@@ -785,13 +785,13 @@ Returns a detailed list of additional information about the transactions in the 
 ### **ibax.maxBlockId**
 Get the highest block ID on the current node
 
-#### Parameters 
-None
+#### パラメーター 
+なし
 
-#### Return Value
--	**Block Id** - *Number* - The highest block on the current node
+#### 戻り値 
+- **Block Id** - *Number* - 現在のノード上の最高ブロック
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","id":1,"params":[]}' http://127.0.0.1:7079
@@ -806,14 +806,14 @@ None
 
 
 ### **ibax.getKeysCount**
-Get the total number of addresses on the current node
+現在のノード上のアドレスの総数を取得する
 
-#### Parameters 
-None
-#### Return Value
+#### パラメーター 
+なし
+#### 戻り値
 - **Count** - *Number* - Total number of addresses 
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getKeysCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -828,15 +828,15 @@ None
 
 
 ### **ibax.getTxCount**
-Get the total number of transactions in the current node
+現在のノード上のトランザクションの総数を取得します。
 
-#### Parameters 
-None
+#### パラメーター 
+なし
 
-#### Return Value
+#### 戻り値
 - **Count** - *Number* - Total number of transactions
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getTxCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -851,15 +851,15 @@ None
 
 
 ### **ibax.getTransactionCount** 
-Get the number of block transactions
+ブロックトランザクションの数を取得する
 
-#### Parameters
-- **block or hash** - *[BlockOrHash](#blockorhash)* - block height or block hash
+#### パラメーター 
+- **block or hash** - *[BlockOrHash](#blockorhash)* - ブロック高さまたはブロックハッシュ
  
-#### Return Value
-- **Count** - *Number* - Total number of blocks
+#### 戻り値
+- **Count** - *Number* - ブロックの総数
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getTransactionCount","id":1,"params":["efc386f7573269610a34af9cc722f775cca8183ccaa0ed7a96db61ef0bde6d1c"]}' http://127.0.0.1:7079
@@ -874,19 +874,18 @@ Get the number of block transactions
 
 
 ### **ibax.getBlocksCountByNode**
-Get the number of node location packing blocks 
-#### Parameters
-- **nodePosition** - *Number* - node subscript
+Gノードロケーションパッキングブロックの数を取得する
 
-- **consensusMode** - *Number* - Consensus Mode, parameters (1: Creator Management Mode 2: DAO Governance Mode)
+#### パラメーター
+- **nodePosition** - *Number* - ノードサブスクリプト
+- **consensusMode** - *Number* - コンセンサスモード。パラメーター (1: Creator Managementモード、2: DAO Governanceモード)
 
-#### Return Value
-*Object* - Get the node subscript packing number object
-- **total_count** - *Number* - Total number of blocks
+#### 戻り値
+*Object* - ノードサブスクリプトのパッキング数オブジェクトを取得します。
+- **total_count** - *Number* - ブロックの総数
+- **partial_count** - *Number* - ノードサブスクリプトのパッキングブロック数
 
-- **partial_count** - *Number* - Number of node subscript packing blocks 
-
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBlocksCountByNode","id":1,"params":[0,1]}' http://127.0.0.1:7079
@@ -904,15 +903,14 @@ Get the number of node location packing blocks
 
 
 ### **ibax.honorNodesCount** 
-Get number of honor nodes
+名誉ノード数を取得する
 
-#### Parameters 
-None
+#### パラメーター
+なし
 
-#### Return Value
-- **Count** - *Number* - number of nodes
-
-#### Example
+#### 戻り値
+- **Count** - *Number* - ノードの数
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.honorNodesCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -927,15 +925,15 @@ None
 
 
 ### **ibax.getEcosystemCount** 
-Number of ecosystem acquisitions
+エコシステムの獲得数を取得する
 
-#### Parameters 
-None
+#### パラメーター
+なし
 
-#### Return Value
-- **Count** - *Number* - Ecological number
+#### 戻り値
+- **Count** - *Number* - エコロジー番号
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getEcosystemCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -952,27 +950,27 @@ None
 
 
 ### **ibax.ecosystemInfo** 
-Access to ecological information
+エコロジー情報にアクセスする
 
-#### Parameters
-- **ecosystem id** - *Number* - ecological ID
+#### パラメーター
+- **ecosystem id** - *Number* - エコロジーID
 
-#### Return Value
-- **id** - *Number* - Eco-ID
-- **name** - *String* - Ecological name
-- **digits** - *Number* - Accuracy
-- **token_symbol** - *String* - Token symbols
-- **token_name** - *String* - the name of the token
-- **total_amount** - *String* - the number of issues (first issue, or `"0"` if not issued)
-- **is_withdraw** - *Bool* - destructible `true:destructible false:undestructible`
-- **withdraw** - *String* - amount of destruction (`"0"` if not destructible, or not destroyed)
-- **is_emission** - *Bool* - may be incremented `true:may be incremented false:may not be incremented`
-- **emission** - *String* - increment (`"0"` if no increment is available, or if no increment is available)
-- **introduction** - *String* - Eco Introduction
-- **logo** - *Number* - ecoLogo Id (corresponds to Binary table id), available through the RESTFUL API
-- **creator** - *String* - Eco-creator
+#### 戻り値
+- **id** - *Number* - エコID
+- **name** - *String* - エコロジー名
+- **digits** - *Number* - 精度
+- **token_symbol** - *String* - トークンシンボル
+- **token_name** - *String* - トークンの名称
+- **total_amount** - *String* - 発行量（初回発行、発行していない場合は `"0"`）
+- **is_withdraw** - *Bool* - 破棄可能性 `true:破棄可能 false:破棄不可能`
+- **withdraw** - *String* - 破棄量（破棄不可能な場合、または破棄されていない場合は `"0"`）
+- **is_emission** - *Bool* - 増発可能性 `true:増発可能 false:増発不可能`
+- **emission** - *String* - 増発量（増発不可能な場合、または増発がない場合は `"0"`）
+- **introduction** - *String* - エコの紹介
+- **logo** - *Number* - エコロゴのID（バイナリテーブルIDに対応）、RESTFUL APIで利用可能
+- **creator** - *String* - エコ作成者
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.ecosystemInfo","id":1,"params":[1]}' http://127.0.0.1:7079
@@ -1001,36 +999,34 @@ Access to ecological information
 
 
 ### **ibax.appParams**
-Returns a list of application parameters in the current or specified ecosystem 
+現在のエコシステムまたは指定されたエコシステムのアプリケーションパラメータのリストを返します
 
 [Authorization](#authorization)
 
-#### Parameters
-- **appid** - *Number* - the application ID.
+#### パラメーター
+- **appid** - *Number* - アプリケーションID。
+- **ecosystem** - *Number* - [Omitempty](#omitempty) - エコシステムID;
 
-- **ecosystem** - *Number* - [Omitempty](#omitempty) - Ecosystem ID;
+    指定されていない場合、または0の場合、現在のエコシステムのパラメータが返されます。
 
-    If unspecified or 0, the parameters of the current ecosystem will be returned.
+- **names** - *String* - [Omitempty](#omitempty) - アプリケーションパラメータ名をフィルタリングします。
 
-- **names** - *String* - [Omitempty](#omitempty) - Filter the application parameter names.
+    カンマで区切られた名前のリスト、例：`name1,name2`。
 
-    A comma-separated list of names, e.g.: `name1,name2`.
+- **offset** - *Number* - [Omitempty](#omitempty) オフセット、デフォルトは0です。
 
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
+- **limit** - *Number* - [Omitempty](#omitempty) エントリ数、デフォルトは100、最大100。
 
-- **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
- 
-#### Return Value
+#### 戻り値
+*Array* - アプリケーションパラメータのリスト
+- **app_id** - *Number* - アプリケーションID
+- **list** - *Number* - 配列の各要素には、次のパラメータが含まれます。
+    - **id** - *String* - パラメータID、ユニーク。
+    - **name** - *String* - パラメータ名。
+    - **value** - *String* - パラメータ値。
+    - **conditions** - *String* - パラメータを変更するための権限。
 
-*Array* - List of application parameters
-- **app_id** - *Number* - Application ID
-- **list** - *Number* - Each element of the array contains the following parameters
-    - **id** - *String* - parameter ID, unique;
-    - **name** - *String* - the name of the parameter;
-    - **value** - *String* - the parameter value;
-    - **conditions** - *String* - permissions to change parameters.
-
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.appParams","id":1,"params":[1,1,"role_developer,role_governancer"]}' http://127.0.0.1:7079
@@ -1061,34 +1057,33 @@ Returns a list of application parameters in the current or specified ecosystem
  
 
 ### **ibax.getEcosystemParams** 
-Get a list of ecosystem parameters
- 
+エコシステムパラメータのリストを取得する
+
 [Authorization](#authorization)
 
-#### Parameters
-- **ecosystem** - *Number* - [Omitempty](#omitempty) - Ecosystem ID 
+#### パラメーター
+- **ecosystem** - *Number* - [Omitempty](#omitempty) - エコシステムID
 
-    If 0 or no such parameter, default: current ecid.
+    もし0またはそのようなパラメータがない場合、デフォルト: 現在のecid。
 
-- **names** - *String* - [Omitempty](#omitempty) - The name of the filter parameter.
+- **names** - *String* - [Omitempty](#omitempty) - フィルタパラメータの名前。
 
-    Comma-separated list of names, e.g.: `name1,name2`
+    カンマで区切られた名前のリスト、例：`name1,name2`。
 
-    The *offset* and *limit* parameters are invalid when there is a filter parameter.
+    フィルタパラメータがある場合、*offset*と*limit*パラメータは無効です。
 
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
+- **offset** - *Number* - [Omitempty](#omitempty) オフセット、デフォルトは0です。
 
-- **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
+- **limit** - *Number* - [Omitempty](#omitempty) エントリ数、デフォルトは100、最大100。
 
+#### 戻り値
+- **list** - *Array* - 配列の各要素には、次のパラメータが含まれます。
+    - **id** - *String* - パラメータのID、ユニーク。
+    - **name** - *String* - パラメータの名前。
+    - **value** - *String* - パラメータの値。
+    - **conditions** - *String* - パラメータを変更するための権限。
 
-#### Return Value
-- **list** - *Array* - Each element of the array contains the following parameters:
-    - **id** - *String* - The id of the parameter, unique.
-    - **name** - *String* - The name of the parameter.
-    - **value** - *String* - The value of the parameter.
-    - **conditions** - *String* - permissions to change parameters.
-
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getEcosystemParams","id":1,"params":[0,"changing_app_params,changing_language"]}' http://127.0.0.1:7079
@@ -1118,25 +1113,25 @@ Get a list of ecosystem parameters
 
 
 ### **ibax.getTableCount**
-Returns a list of data tables for the current ecosystem.
+現在のエコシステムに関するデータテーブルのリストを返します。
 
 Offset and number of entries can be set 
 
 [Authorization](#authorization)
-#### Parameters
+#### パラメーター
 
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
+- **offset** - *Number* - [Omitempty] オフセット。デフォルトは0です。
 
-- **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
+- **limit** - *Number* - [Omitempty] エントリの数。デフォルトは100で、最大は100です。
 
-#### Return Value
-- **count** - *Number* - The total number of sheets of the current ecological data table.
+#### 戻り値
+- **count** - *Number* - 現在のエコロジカルデータテーブルの総シート数。
 
-- **list** - *Array* - Each element of the array contains the following parameters:
-    - **name** - *String* - The name of the data table without prefix.
-    - **count** - *String* - The number of entries in the data table.
+- **list** - *Array* - 配列の各要素には次のパラメーターが含まれています：
+    - **name** - *String* - プレフィックスなしのデータテーブルの名前。
+    - **count** - *String* - データテーブル内のエントリ数。
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getTableCount","id":1,"params":[0,2]}' http://127.0.0.1:7079
@@ -1163,32 +1158,33 @@ Offset and number of entries can be set
  
 
 ### **ibax.getTable**
-Returns information about the current ecosystem request data table. 
+R現在のエコシステムのリクエストデータテーブルに関する情報を返します。
 
 [Authorization](#authorization)
 
-#### Parameters
-- **tableName** - *String* - Data table name
+#### パラメーター
+- **tableName** - *String* - データテーブル名
 
-#### Return Value
-- **name** - *String* - The name of the data table.
+#### 返り値
+- **name** - *String* - データテーブルの名前。
 
-- **insert** - *String* - Add permission to add an entry.
+- **insert** - *String* - エントリを追加する権限。
 
-- **new_column** - *String* - Add new field permission.
+- **new_column** - *String* - 新しいフィールドを追加する権限。
 
-- **update** - *String* - Change entry permissions.
+- **update** - *String* - エントリの権限を変更する権限。
 
-- **app_id** - *String* - The application id.
+- **app_id** - *String* - アプリケーションID。
 
-- **conditions** - *String* - Conditions for changing permissions.
+- **conditions** - *String* - 権限を変更するための条件。
 
-- **columns** - *Array* - Array of information related to data table fields:
-    - **name** - *String* - The name of the field.
-    - **type** - *String* - The field data type.
-    - **perm** - *String* - Permission to change the value of this field.
- 
-#### Example
+- **columns** - *Array* - データテーブルフィールドに関連する情報の配列：
+    - **name** - *String* - フィールドの名前。
+    - **type** - *String* - フィールドのデータ型。
+    - **perm** - *String* - このフィールドの値を変更する権限。
+
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getTable","id":1,"params":["app_params"]}' http://127.0.0.1:7079
@@ -1242,50 +1238,46 @@ Returns information about the current ecosystem request data table.
 
 
 ### **ibax.getList**
-Returns the entry of the specified data table. 
+指定されたデータテーブルのエントリを返します。
 
-You can specify the columns to be returned.
+返される列を指定することができます。
 
-You can set the offset and the number of entries. 
+オフセットとエントリの数を設定することができます。
 
-You can set the query criteria.
+クエリ条件を設定することができます。
 
-Hex encoding of data tables of type *BYTEA* (byte arrays, hashes, byte code arrays) 
+タイプが *BYTEA*（バイト配列、ハッシュ、バイトコード配列）のデータテーブルのヘックスエンコーディング
 
 [Authorization](#authorization)
 
-#### Parameters
-*Object* - Get the data table object
-- **name** - *String* - The name of the data table.
+#### パラメーター
+*Object* - データテーブルオブジェクトを取得します。
+- **name** - *String* - データテーブルの名前。
 
-- **limit** - *Number* - [Omitempty](#omitempty) The number of entries, default 25.
+- **limit** - *Number* - [Omitempty] エントリの数。デフォルトは25です。
 
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
+- **offset** - *Number* - [Omitempty] オフセット。デフォルトは0です。
 
-- **order** - *String* - [Omitempty](#omitempty) Sort by, default id ASC.
+- **order** - *String* - [Omitempty] ソート方法。デフォルトはid ASCです。
 
-- **columns** - *String* - [Omitempty](#omitempty) A comma-separated list of requested columns, if not specified, all columns will be returned.
+- **columns** - *String* - [Omitempty] 要求された列のコンマ区切りのリスト。指定されていない場合はすべての列が返されます。
 
-    The id column will be returned in all cases.
+    id列は常に返されます。
 
-- **where** - *Object* - [Omitempty](#omitempty) 
+- **where** - *Object* - [Omitempty] クエリ条件
 
-    Query criteria
+    例：id > 2 かつ name = john をクエリしたい場合は、`where:{"id":{"$gt":2}, "name":{"$eq": "john"}}` を使用します。
 
-    Example:If you want to query id>2 and name = john
- 
-    You can use `where:{"id":{"$gt":2}, "name":{"$eq": "john"}}`
+    詳細については、[DBFind](../topics/script.md#dbfind) のwhere構文を参照してください。
 
-    For details, please refer to [DBFind](../topics/script.md#dbfind) where syntax 
-    
-#### Return Value
-- **count** - *Number* - the total number of entries.
-- **list** - *Array* - Each element of the array contains the following parameters:
+#### 返り値
+- **count** - *Number* - エントリの総数。
+- **list** - *Array* - 配列の各要素には次のパラメーターが含まれています：
 
-    - **id** - *String* - The ID of the entry.
-    - **...** - Other columns of the data table.
+    - **id** - *String* - エントリのID。
+    - **...** - データテーブルの他の列。
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getList","id":1,"params":[{"name":"@1history","where":{"$and": [{"id":{"$gt": 2}}, {"id":{"$lt": 5}}]}}]}' http://127.0.0.1:7079
@@ -1320,33 +1312,29 @@ Hex encoding of data tables of type *BYTEA* (byte arrays, hashes, byte code arra
 
 
 ### **ibax.getSections**
-Return to the tab of the current ecosystem
-List of table entries, you can set the offset and the number of entries.
+現在のエコシステムのタブに戻ります。
+テーブルエントリのリストで、オフセットとエントリ数を設定できます。
 
-If *role_access*
-field contains a list of roles and does not include the current role, no record will be returned. *title*
-The data in the field will be replaced by the *Accept-Language* language resource in the request header.
+もし *role_access* フィールドがロールのリストを含み、現在のロールが含まれていない場合、レコードは返されません。*title* フィールドのデータは、リクエストヘッダーの *Accept-Language* 言語リソースによって置き換えられます。
 
-[Authorization](#authorization) 
+[Authorization](#authorization)
 
-#### Parameters
+#### パラメーター
 
-- *Object* - Get the actions request object
-    - **limit** - *Number* - [Omitempty](#omitempty) - The number of entries, default 25 entries.
+- *Object* - アクションリクエストオブジェクトを取得します。
+    - **limit** - *Number* - [Omitempty](#omitempty) - エントリの数。デフォルトは25です。
 
-    - **offset** - *Number* - [Omitempty](#omitempty) - The offset, default is 0.
+    - **offset** - *Number* - [Omitempty](#omitempty) - オフセット。デフォルトは0です。
 
-    - **lang** - *String* - [Omitempty](#omitempty) -
+    - **lang** - *String* - [Omitempty](#omitempty) - このフィールドは、マルチリンガルリソースコードまたはローカライゼーションを指定します。例：*en, zh*。指定されたマルチリンガルリソースが見つからない場合、例えば *en-US* の場合は、マルチリンガルリソースグループで検索します。**デフォルト**: **en**。
 
-        This field specifies the multilingual resource code or localization, e.g. *en, zh*. If the specified multilingual resource is not found, e.g. *en-US*, then search in the Multilingual Resources group, **default**: **en**.
+#### 返り値
 
-#### Return Value
+- **count** - *Number* - タブエントリの総数。
 
-- **count** - *Number* - the total number of tab entries.
+- **list** - *Array* - 配列の各要素には、セクションテーブルのすべての列に関する情報が含まれています。
 
-- **list** - *Array* - Each element of the array contains information about all columns in the sections table.
-
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getSections","id":1,"params":[{"offset":0,"limit":2}]}' http://127.0.0.1:7079
@@ -1383,30 +1371,31 @@ The data in the field will be replaced by the *Accept-Language* language resourc
  
 
 ### **ibax.getRow**
-Returns the entries of the specified data table in the current ecosystem. You can specify the columns to be returned.
+現在のエコシステムの指定されたデータテーブルのエントリを返します。返される列を指定することができます。
 
-[Authorization](#authorization) 
-#### Parameters
-- **tableName** - *String* - The name of the data table.
+[Authorization](#authorization)
 
-- **id** - *Number* - the ID of the entry.
+#### パラメーター
+- **tableName** - *String* - データテーブルの名前。
 
-- **columns** - *String* - [Omitempty](#omitempty)
- 
-    A comma-separated list of requested columns, if not specified, all columns will be returned.
+- **id** - *Number* - エントリのID。
 
-    If you do not filter, you can place a blank "". 
-    
-    The id column will be returned in all cases.
+- **columns** - *String* - [Omitempty](#omitempty) 
 
-- **whereColumn** - *String* - [Omitempty](#omitempty) - Find column name (only Number type columns can be found)
+    要求された列のコンマ区切りのリスト。指定されていない場合、すべての列が返されます。
 
-#### Return Value
-- **value**- *Object* - object that receives column values
-    - **id** - *String* - The ID of the entry.
-    - **...** - The sequence of requested columns.
+    フィルタリングしない場合は、空白 "" を指定できます。
 
-#### Example
+    id列は常に返されます。
+
+- **whereColumn** - *String* - [Omitempty](#omitempty) - 検索する列名（Number型の列のみ検索可能）
+
+#### 返り値
+- **value** - *Object* - 列の値を受け取るオブジェクト
+    - **id** - *String* - エントリのID。
+    - **...** - 要求された列のシーケンス。
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getRow","id":1,"params":["@1history",4,"id,sender_id,recipient_id,amount,ecosystem,created_at","id"]}' http://127.0.0.1:7079
@@ -1430,27 +1419,29 @@ Returns the entries of the specified data table in the current ecosystem. You ca
 
 
 ### **ibax.systemParams**
-Returns the list of platform parameters. 
+プラットフォームパラメータのリストを返します。
 
 [Authorization](#authorization)
-#### Parameters
-- **names** - *String* [Omitempty](#omitempty) - A list of request parameters, separated by commas.
 
-    For example `names="name1,name2"`.
+#### パラメーター
+- **names** - *String* - [Omitempty](#omitempty) - カンマで区切られたリクエストパラメータのリスト。
 
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
+    例：`names="name1,name2"`。
 
-- **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
+- **offset** - *Number* - [Omitempty](#omitempty) - オフセット。デフォルトは0です。
 
-#### Return Value
+- **limit** - *Number* - [Omitempty](#omitempty) - エントリの数。デフォルトは100で、最大は100です。
 
--	**list** - *Array* - Each element of the array contains the following parameters:
-    - **id** - *String* - Unique id
-    - **name** - *String* - The name of the parameter.
-    - **value** - *String* - The value of the parameter.
-    - **conditions** - *String* - permissions to change parameters.
+#### 返り値
 
-#### Example
+- **list** - *Array* - 配列の各要素には次のパラメーターが含まれています：
+    - **id** - *String* - ユニークなID
+    - **name** - *String* - パラメーターの名前。
+    - **value** - *String* - パラメーターの値。
+    - **conditions** - *String* - パラメーターを変更する権限。
+
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.systemParams","id":1,"params":["gap_between_blocks,honor_nodes"]}' http://127.0.0.1:7079
@@ -1480,18 +1471,19 @@ Returns the list of platform parameters.
 
 
 ### **ibax.history**
-Returns the changed records of the entries of the specified data table in the current ecosystem
+現在のエコシステムの指定されたデータテーブルのエントリの変更レコードを返します。
 
-[Authorization](#authorization) 
-#### Parameters
+[Authorization](#authorization)
 
-- **name** - *String* - The name of the data table.
-- **tableId** - *Number* - the ID of the entry.
+#### パラメーター
 
-#### Return Value
-- **list** - *Array* - Each element of the array contains change records for the requested entry.
+- **name** - *String* - データテーブルの名前。
+- **tableId** - *Number* - エントリのID。
 
-#### Example
+#### 返り値
+- **list** - *Array* - 配列の各要素には、要求されたエントリの変更レコードが含まれています。
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.history","id":1,"params":["contracts",1]}' http://127.0.0.1:7079
@@ -1514,23 +1506,23 @@ Returns the changed records of the entries of the specified data table in the cu
 
 
 ### **ibax.getPageRow**
-Gets the current entry in the ecosystempages data table field. 
+エコシステムページデータテーブルのフィールドで、現在のエントリを取得します。
 
 [Authorization](#authorization)
 
-#### Parameters
-- **name** - *String* - Specifies the name of the entry in the table.
+#### パラメーター
+- **name** - *String* - テーブル内のエントリの名前を指定します。
 
-#### Return Value
-- **id** - *Number* - the ID of the entry.
-- **name** - *String* - The name of the entry.
-- **value** - *String* - The content.
-- **menu** - *String* - Directory.
-- **nodesCount** - *Number* - the number of nodes the page needs to validate
-- **app_id** - *Number* - Application Id
-- **conditions** - *String* - permissions to change parameters
+#### 返り値
+- **id** - *Number* - エントリのID。
+- **name** - *String* - エントリの名前。
+- **value** - *String* - コンテンツ。
+- **menu** - *String* - ディレクトリ。
+- **nodesCount** - *Number* - ページが検証するノードの数。
+- **app_id** - *Number* - アプリケーションID。
+- **conditions** - *String* - パラメーターを変更する権限。
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getPageRow","id":1,"params":["default_page"]}' http://127.0.0.1:7079
@@ -1554,21 +1546,22 @@ Gets the current entry in the ecosystempages data table field.
 
 
 ### **ibax.getMenuRow**
-Gets the current entry in the ecosystem menu data table field.
- 
+エコシステムメニューデータテーブルのフィールドで、現在のエントリを取得します。
+
 [Authorization](#authorization)
 
-#### Parameters
-- **name** - *String* - Specifies the name of the entry in the table.
+#### パラメーター
+- **name** - *String* - テーブル内のエントリの名前を指定します。
 
-#### Return Value
-- **id** - *Number* - the ID of the entry.
-- **name** - *String* - The name of the entry.
-- **title** - *String* - The title.
-- **value** - *String* - The content.
-- **conditions** - *String* - permissions to change parameters
+#### 返り値
+- **id** - *Number* - エントリのID。
+- **name** - *String* - エントリの名前。
+- **title** - *String* - タイトル。
+- **value** - *String* - コンテンツ。
+- **conditions** - *String* - パラメーターを変更する権限。
 
-#### Example
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getMenuRow","id":1,"params":["default_menu"]}' http://127.0.0.1:7079
@@ -1589,20 +1582,21 @@ Gets the current entry in the ecosystem menu data table field.
 
 
 ### **ibax.getSnippetRow**
-Gets the current entry in the ecosystem snippet data table field. 
+エコシステムスニペットデータテーブルのフィールドから、現在のエントリを取得します。
 
 [Authorization](#authorization)
 
-#### Parameters
-- **name** - *String* - Specifies the name of the entry in the table. 
+#### パラメーター
+- **name** - *String* - テーブル内のエントリの名前を指定します。
 
-#### Return Value 
-- **id** - *Number* - the ID of the entry.
-- **name** - *String* - The name of the entry.
-- **value** - *String* - The content.
-- **conditions** - *String* - permissions to change parameters.
+#### 返り値
+- **id** - *Number* - エントリのID。
+- **name** - *String* - エントリの名前。
+- **value** - *String* - コンテンツ。
+- **conditions** - *String* - パラメーターを変更する権限。
 
-#### Example
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getSnippetRow","id":1,"params":["welcome"]}' http://127.0.0.1:7079
@@ -1622,30 +1616,28 @@ Gets the current entry in the ecosystem snippet data table field.
 
 
 ### **ibax.getAppContent**
-Get application related information (including page, snippet, menu) 
+アプリケーションに関連する情報（ページ、スニペット、メニューなど）を取得します。
 
 [Authorization](#authorization)
 
-#### Parameters
-- **id** - *Number* - Application id
+#### パラメーター
+- **id** - *Number* - アプリケーションID
 
-#### Return Value
-- **snippets** - *Array* - Array of code snippet information
+#### 返り値
+- **snippets** - *Array* - コードスニペット情報の配列
+    - **id** - *Number* - ID
+    - **name** - *String* - コードスニペット名
 
-    - **id** - *Number* - id
-    - **name** - *String* - Code snippet name
+- **pages** - *Array* - ページ情報の配列
+    - **id** - *Number* - ID
+    - **name** - *String* - ページ名
 
-- **pages** - *Array* - Array of page information
+- **contracts** - *Array* - コントラクト情報の配列
+    - **id** - *Number* - ID
+    - **name** - *String* - コントラクト名
 
-    - **id** - *Number* - id
-    - **name** - *String* - page name
- 
-- **contracts** - *Array* - an array of contract information
 
-    - **id** - *Number* - id
-    - **name** - *String* - Contract name
-
-#### Example
+#### 例
 ```text
     //Request
     //Response
@@ -1689,22 +1681,21 @@ Get application related information (including page, snippet, menu)
 
 
 ### **ibax.getMember** 
-Get member information
+メンバー情報を取得します。
 
-#### Parameters
-**account** - *String* - Member Information
+#### パラメーター
+- **account** - *String* - メンバー情報
+- **ecosystemId** - *Number* - エコシステムID
 
-**ecosystemId** - *Number* - ecoid
-
-
-#### Return Value
-- **id** - *Number* - member id
-- **member_name** - *String* - Name
-- **image_id** - *Number* - Avatar id
-- **member_info** - *String* - Introduction
+#### 返り値
+- **id** - *Number* - メンバーID
+- **member_name** - *String* - 名前
+- **image_id** - *Number* - アバターのID
+- **member_info** - *String* - 自己紹介
 
 
-#### Example
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}}" -d '{"jsonrpc":"2.0","method":"ibax.getMember","id":1,"params":["1497-2036-4953-3607-1121",1]}' http://127.0.0.1:7079
@@ -1723,30 +1714,31 @@ Get member information
 ```
 
 ### **ibax.getContracts**
-Get the list of contracts in the current ecosystem, you can set the offset and the number of entries.
+現在のエコシステムのコントラクトのリストを取得します。オフセットとエントリ数を設定することができます。
 
-[Authorization](#authorization) 
+[Authorization](#authorization)
 
-#### Parameters
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
-- **limit** - *Number* - [Omitempty](#omitempty) The number of entries, default 25.
+#### パラメーター
+- **offset** - *Number* - [Omitempty](#omitempty) オフセット。デフォルトは0です。
+- **limit** - *Number* - [Omitempty](#omitempty) エントリ数。デフォルトは25です。
 
-#### Return Value
-- **count** - *Number* - the total number of entries.
+#### 返り値
+- **count** - *Number* - エントリの総数。
 
-- **list** - *Array* - Each element of the array contains the following parameters:
-    - **id** - *String* - Contract ID.
-    - **name** - *String* - The name of the contract.
-    - **value** - *String* - The content of the contract.
-    - **wallet_id** - *String* - The address of the account to which the contract is bound.
-    - **address** - *String* - the address of the contract-bound wallet `XXXX-... -XXXX`.
-    - **ecosystem_id** - *String* - The ecosystem ID to which the contract belongs.
-    - **app_id** - *String* - The ID of the application to which the contract belongs.
-    - **conditions** - *String* - Change the permissions of the contract.
-    - **token_id** - *String* - The ID of the ecosystem where the pass is used as a payment for the contract.
+- **list** - *Array* - 配列の各要素には、次のパラメータが含まれます：
+    - **id** - *String* - コントラクトID。
+    - **name** - *String* - コントラクトの名前。
+    - **value** - *String* - コントラクトの内容。
+    - **wallet_id** - *String* - コントラクトがバインドされているアカウントのアドレス。
+    - **address** - *String* - コントラクトにバインドされたウォレットのアドレス `XXXX-...-XXXX`。
+    - **ecosystem_id** - *String* - コントラクトが所属するエコシステムのID。
+    - **app_id** - *String* - コントラクトが所属するアプリケーションのID。
+    - **conditions** - *String* - コントラクトの権限を変更します。
+    - **token_id** - *String* - コントラクトの支払いに使用されるパスのエコシステムID。
 
 
-#### Example
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getContracts","id":1,"params":[0,1]}' http://127.0.0.1:7079
@@ -1776,28 +1768,27 @@ Get the list of contracts in the current ecosystem, you can set the offset and t
  
 
 ### **ibax.getContractInfo**
-Returns information about the specified contract. 
+指定されたコントラクトの情報を返します。
 
 [Authorization](#authorization)
 
-#### Parameters
-- **contractName**	-	*String*	-	The	name	of	the	contract.	The	format	is `@ecosystem_id%%contractName%`, e.g. @1contractName (the specified eco1contract name contractName) or contractName (the current eco-contract name contractName).
+#### パラメーター
+- **contractName** - *String* - コントラクトの名前。形式は `@ecosystem_id%%contractName%` です。例：@1contractName（指定されたエコシステムID1のcontractNameコントラクト）またはcontractName（現在のエコシステムのcontractNameコントラクト）。
 
-#### Return Value
+#### 返り値
+- **id** - *Number* - VM内のコントラクトID。
+- **name** - *String* - エコシステムIDを含むコントラクト名 `@1MainCondition`。
+- **state** - *Number* - コントラクトが所属するエコシステムのID。
+- **walletid** - *String* - コントラクトがバインドされているアカウントのアドレス。
+- **tokenid** - *String* - コントラクトの支払いに使用されるパスのエコシステムID。
+- **address** - *String* - コントラクトにバインドされたウォレットのアドレス `XXXX-...-XXXX`。
+- **tableid** - *String* - コントラクトが配置されている*contracts*テーブルのエントリのID。
+- **fields** - *Array* - コントラクトの**data**セクションの各パラメータの構造情報が含まれる配列：
+    - **name** - *String* - パラメータの名前。
+    - **type** - *String* - パラメータの型。
+    - **optional** - *Bool* - パラメータのオプション。`true` はオプションパラメータを意味し、`false` は必須パラメータを意味します。
 
-- **id** - *Number* - the contract ID in the VM.
-- **name** - *String* - Contract name with ecosystem ID `@1MainCondition`.
-- **state** - *Number* - the ecosystem ID to which the contract belongs.
-- **walletid** - *String* - the address of the account to which the contract is bound
-- **tokenid** - *String* - the ecosystem ID of the pass that is used as the payment for the contract.
-- **address** - *String* - the address of the contract-bound wallet `XXXX-... -XXXX`.
-- **tableid** - *String* - ID of the entry in the *contracts* table where the contract is located.
-- **fields** - *Array* - array containing structural information for each parameter of the contract **data** section:
-    - **name** - *String* - The name of the parameter.
-    - **type** - *String* - The type of the parameter.
-    - **optional** - *Bool* - parameter options, `true` means optional parameters, `false` means mandatory parameters.
-
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getContractInfo","id":1,"params":["@1TokensSend"]}' http://127.0.0.1:7079
@@ -1847,20 +1838,20 @@ Returns information about the specified contract.
  
 
 ### **ibax.sendTx**
-Receives the transactions in the parameters and adds them to the transaction queue, returning a transaction hash if the request is executed successfully. This hash yields the corresponding transaction within the block and is included in the error text message in case of an error response.
+パラメーターでトランザクションを受け取り、それらをトランザクションキューに追加し、リクエストが正常に実行された場合はトランザクションのハッシュを返します。このハッシュはブロック内の対応するトランザクションを指し示し、エラーレスポンスの場合にはエラーテキストメッセージに含まれます。
 
-[Authorization](#authorization) 
+[Authorization](#authorization)
 
-#### Parameters
-- *Object* - Transaction data object
-    - **tx_key** - *String* - the content of the transaction, this parameter can specify any name and supports receiving multiple transactions.
+#### パラメーター
+- *Object* - トランザクションデータオブジェクト
+    - **tx_key** - *String* - トランザクションの内容です。このパラメーターは任意の名前を指定でき、複数のトランザクションを受け取ることができます。
 
-#### Return Value
-- **hashes** - *Array* - transaction hash arrays:
-    - **tx1** - *String* - Hash of transaction 1.
-    - **txN** - *String* - Hash of transaction N.
+#### 返り値
+- **hashes** - *Array* - トランザクションハッシュの配列：
+    - **tx1** - *String* - トランザクション1のハッシュ。
+    - **txN** - *String* - トランザクションNのハッシュ。
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.sendTx","id":1,"params":[{"tx1":...,"txN":...}]}' http://127.0.0.1:7079
@@ -1880,26 +1871,26 @@ Receives the transactions in the parameters and adds them to the transaction que
 
 
 ### **ibax.txStatus**
-Gets the block ID and error message of the specified transaction hash. If the return value of the block ID and error text message is null, then the transaction is not yet contained in the block.
- 
+指定されたトランザクションハッシュのブロックIDとエラーメッセージを取得します。ブロックIDとエラーテキストメッセージの返り値がnullの場合、トランザクションはまだブロックに含まれていません。
+
 [Authorization](#authorization)
 
-#### Parameters
-- **hashes** - *String* - transaction hash, split using `,`.
+#### パラメーター
+- **hashes** - *String* - トランザクションハッシュ。`,`で区切って指定します。
 
-#### Return Value
-- **hash** - *Object* - The transaction hash.
-    - **blockid** - *String* - returns the block ID if the transaction was executed successfully;
+#### 返り値
+- **hash** - *Object* - トランザクションハッシュ
+    - **blockid** - *String* - トランザクションが正常に実行された場合、ブロックIDが返されます。
+    
+        トランザクションの実行が失敗した場合、*blockid* は `0` となり、トランザクションの実行エラーがペナルティにより処理された場合は、対応するブロックIDが返されます。
+        
+    - **result** - *String* - トランザクションの結果を **\$result** 変数で返します。
+    - **errmsg** - *Object* - [Omitempty](#omitempty) トランザクションの実行に失敗した場合、エラーテキストメッセージが返されます。
+        - **type** - *String* - エラーのタイプ
+        - **error** - *String* - エラーメッセージ
+    - **penalty** - *Number* - トランザクションの実行が失敗した場合、(0: ペナルティなし、1: ペナルティあり)
 
-        If the transaction execution fails, *blockid* will be `0`, and the corresponding block ID will be returned if the transaction execution error is penalized.
-
-    - **result** - *String* - Returns the result of the transaction via the **\$result** variable.
-    - **errmsg** - *Object* - [Omitempty](#omitempty) Returns an error text message if the execution of the transaction failed.
-        - **type** - *String* - Error type
-        - **error** - *String* - error message
-    - **penalty** - *Number* - if the transaction execution fails, (0: no penalty 1: penalty)
-
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.txStatus","id":1,"params":["cf46ef1ce7ecfcf48ccf209577fb8a2130426b71adc3a3855aff7f68d114fca9,4a458232de2ab2a3f5361da68e409b925c775346d14139263a69c0e8ecf0166b"]}' http://127.0.0.1:7079
@@ -1929,35 +1920,34 @@ Gets the block ID and error message of the specified transaction hash. If the re
 
 
 ### **ibax.txInfo**
-Returns information about the transaction for the specified hash, including the block ID and the number of confirmations. If optional parameters are specified, the contract name and its associated parameters can also be returned.
+指定されたハッシュに関するトランザクションの情報を返します。ブロックIDと確認数を含みます。オプションのパラメータが指定された場合、コントラクト名と関連するパラメータも返すことができます。
 
-#### Parameters
-- **hash** - *String* - The transaction hash.
+#### パラメーター
+- **hash** - *String* - トランザクションのハッシュ。
+- **contractinfo** - *Bool* [Omitempty](#omitempty) - コントラクトの詳細パラメータ識別子。このトランザクションに関連するコントラクトの詳細を取得します。デフォルトは `false` です。
 
-- **contractinfo** - *Bool* [Omitempty](#omitempty) - Contract detail parameter identifier, get contract details related to this transaction, default is `false`
+#### 返り値
+- **blockid** - *Number* - トランザクションが含まれるブロックのID。
+    値が `0` の場合、このハッシュに対するトランザクションは見つかりません。
+    トランザクションが現在のノードで発生した場合、[ibax.txStatus](#ibax-txstatus) を通じて取得できます。
 
-#### Return Value
-- **blockid** - *Number* - The block ID containing the transaction.
-    If the value is `0`, no transactions are found for this hash.
-    If the transaction occurred on the current node, it can be obtained via [ibax.txStatus](#ibax-txstatus)
+- **confirm** - *Number* - このブロック *blockid* のノードの確認数。
 
-- **confirm** - *Number* - the number of node confirmations for this block *blockid*.
+- **data** - *Object* - `contractinfo=true` が指定された場合、コントラクトの詳細情報が返されます。指定されていない場合は null が返されます。
+    - **block_id** - *Number* - ブロックの高さ
+    - **block_hash** - *String* - ブロックのハッシュ
+    - **address** - *String* - トランザクションの作成アドレス
+    - **ecosystem** - *String* - トランザクションの送信エコシステムID
+    - **hash** - *String* - トランザクションのハッシュ
+    - **expedite** - *String* - 速達料金、利用できない場合は ""
+    - **contract_name** - *String* - コントラクト名
+    - **params** - *Object* - コントラクトのパラメータ、[ibax.getContractInfo](#ibax-getcontractinfo) を介してコントラクトフィールドをクエリできます
+    - **created_at** - *Number* - トランザクションの作成日時
+    - **size** - *String* - トランザクションのサイズ、単位: B;KiB;MiB;GiB;TiB
+    - **status** - *String* - ステータス (0: 成功 1: ペナルティ)
 
-- **data** - *Object* - Returns contract details if `contentinfo=true` is specified. null if not specified
-    - **block_id** - *Number* - block height
-    - **block_hash** - *String* - block_hash
-    - **address** - *String* - transaction creation address
-    - **ecosystem** - *String* - transaction sending ecid
-    - **hash** - *String* - transaction hash
-    - **expedite** - *String* - expedited fee, or "" if not available
-    - **contract_name** - *String* - Contract name
-    - **params** - *Obeject* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo)
-    - **created_at** - *Number* - when the transaction was created
-    - **size** - *String* - transaction size unit: B;KiB;MiB;GiB;TiB
-    - **status** - *String* - status (0:success 1:penalty)
- 
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.txInfo","id":1,"params":["020d8c004b3a0c00a6bfffa36e2746509295e5ea6dbb14e7cd6098c3d906bb58",true]}' http://127.0.0.1:7079
@@ -1991,32 +1981,33 @@ Returns information about the transaction for the specified hash, including the 
 
 
 ### **ibax.txInfoMultiple**
-Returns transaction-related information for the specified hash list.
+指定されたハッシュリストに関するトランザクションに関する情報を返します。
 
-#### Parameters
-- **hashes** - *Array* - A list of transaction hashes.
+#### パラメーター
+- **hashes** - *Array* - トランザクションのハッシュのリスト。
  
-- **contractinfo** - *Bool* [Omitempty](#omitempty) - Contract detail parameter identifier, get contract details related to this transaction, default is `false`
+- **contractinfo** - *Bool* [Omitempty](#omitempty) - コントラクトの詳細パラメータ識別子。このトランザクションに関連するコントラクトの詳細を取得します。デフォルトは `false` です。
 
-#### Return Value
--	**results** - *Array* - Data dictionary with transaction hash as key and transaction details as value.
-    - **hash** - *String* - The transaction hash.
-        - **blockid** - *Number* - The block ID containing the transaction. if the value is `0`, then no transaction was found for that hash.
-        - **confirm** - *Number* - the number of confirmations for this block *blockid*.
-        - **data** - *Object* - If `contentinfo=true`is specified, the contract details are returned to this parameter. null when not specified
-            - **block_id**- *Number* - Block height
-            - **block_hash** - *String* - block_hash
-            - **address** - *String* - transaction creation address
-            - **ecosystem** - *String* - transaction sending ecid
-            - **hash** - *String* - transaction hash
-            - **expedite** - *String* - expedited fee, or "" if not available
-            - **contract_name** - *String* - Contract name
-            - **params** - *Obeject* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo)
-            - **created_at** - *Number* - when the transaction was created
-            - **size** - *String* - transaction size unit: B;KiB;MiB;GiB;TiB
-            - **status** - *String* - status (0:success 1:penalty)
+#### 返り値
+-   **results** - *Array* - トランザクションのハッシュをキー、トランザクションの詳細を値とするデータ辞書。
+    - **hash** - *String* - トランザクションのハッシュ。
+        - **blockid** - *Number* - トランザクションが含まれるブロックのID。値が `0` の場合、そのハッシュに対するトランザクションは見つかりません。
+        - **confirm** - *Number* - このブロック *blockid* の確認数。
+        - **data** - *Object* - `contentinfo=true` が指定された場合、このパラメータにはコントラクトの詳細が返されます。指定されていない場合は null です。
+            - **block_id**- *Number* - ブロックの高さ
+            - **block_hash** - *String* - ブロックのハッシュ
+            - **address** - *String* - トランザクションの作成アドレス
+            - **ecosystem** - *String* - トランザクションの送信エコシステムID
+            - **hash** - *String* - トランザクションのハッシュ
+            - **expedite** - *String* - 速達料金、利用できない場合は ""
+            - **contract_name** - *String* - コントラクト名
+            - **params** - *Object* - コントラクトのパラメータ、[ibax.getContractInfo](#ibax-getcontractinfo) を介してコントラクトフィールドをクエリできます
+            - **created_at** - *Number* - トランザクションの作成日時
+            - **size** - *String* - トランザクションのサイズ、単位: B;KiB;MiB;GiB;TiB
+            - **status** - *String* - ステータス (0:成功 1:ペナルティ)
 
-#### Example
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getPageValidatorsCount","id":1,"params":[["1875b4fc02a8bf5ccf0d3fbce83011dd6711d8d325c7d731ac659b8beffc0284","4a458232de2ab2a3f5361da68e409b925c775346d14139263a69c0e8ecf0166b"],true]}' http://127.0.0.1:7079
@@ -2060,16 +2051,15 @@ Returns transaction-related information for the specified hash list.
 
 
 ### **ibax.getPageValidatorsCount**
-Returns the number of nodes to be validated for the specified page.
+指定されたページに対して検証する必要があるノードの数を返します。
 
-#### Parameters
-- **name**  -  *String*  -  page  name  in  the  format  `@ecosystem_id%%%page_name%`,  e.g. @1params_list (specifying ecology 1 page name params_list) or params_list (current ecology page name params_list)
+#### パラメーター
+- **name** - *String* - ページ名。`@ecosystem_id%%%page_name%` の形式で指定します。例: @1params_list (エコロジー1のページ名 params_list) や params_list (現在のエコロジーのページ名 params_list)。
 
+#### 返り値
+- **validate_count** - *Number* - ページに対して検証する必要があるノードの数を指定します。
 
-#### Return Value
-- **validate_count** - *Number* - Specifies the number of nodes to be validated by the page.
- 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getPageValidatorsCount","id":1,"params":["@1params_list"]}' http://127.0.0.1:7079
@@ -2086,24 +2076,21 @@ Returns the number of nodes to be validated for the specified page.
 
 
 ### **ibax.getPage**
-Gets the tree of code JSON objects for the specified page name, which is the result of processing by the templating engine.
+指定されたページ名のコードJSONオブジェクトのツリーを取得します。このツリーはテンプレートエンジンによる処理の結果です。
 
 [Authorization](#authorization)
 
-#### Parameters
--	**name** - *String* - the name of the page with the ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
-`@1main_page`.
+#### パラメーター
+-   **name** - *String* - ページ名。`@ecosystem_id%%page_name%` の形式で指定します。例: `@1main_page`。
 
-    If you don't have an ecosystem ID, the default is to find the current ecological page, e.g. `main_page`
+    エコシステムIDが指定されていない場合、現在のエコロジーのページを検索します。例: `main_page`
 
-#### Return Value
-- **menu** - *String* - The name of the menu to which the page belongs.
+#### 返り値
+- **menu** - *String* - ページが所属するメニューの名前です。
+- **menutree** - *Array* - ページのメニューのJSONオブジェクトツリーです。
+- **tree** - *Array* - ページのJSONオブジェクトツリーです。
 
-- **menutree** - *Array* - JSON object tree of the page's menus.
-
-- **tree** - *Array* - page JSON object tree. 
-
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getPage","id":1,"params":["@1params_list"]}' http://127.0.0.1:7079
@@ -2138,24 +2125,23 @@ Gets the tree of code JSON objects for the specified page name, which is the res
 
 
 ### **ibax.getMenu**
-Gets the tree of code JSON objects for the specified menu name, which is the result of processing by the template engine.
+指定されたメニュー名のコードJSONオブジェクトツリーを取得します。このメニューはテンプレートエンジンによる処理の結果です。
 
-[Authorization](#authorization) 
+[Authorization](#authorization)
 
-#### Parameters
--	**name** - *String* -
-    > Menu name with ecosystem ID in the format `@ecosystem_id%%%menu_name%`, e.g.
-    > `@1main_menu`.
-    > If you don't bring the ecosystem ID, the menu of the current ecology will be found by default, for example
-    > `main_menu`
- 
-#### Return Value
+#### パラメーター
+-   **name** - *String* -
+    > メニュー名は `@ecosystem_id%%%menu_name%` の形式で指定します。例： `@1main_menu`。
+    > エコシステムIDを指定しない場合は、デフォルトで現在のエコロジーのメニューが見つかります。例： `main_menu`
 
-- **title** - *String* - the menu title.
+#### 返り値
 
-- **tree** - *Array* - Menu JSON object tree. 
+- **title** - *String* - メニューのタイトル。
 
-#### Example
+- **tree** - *Array* - メニューのJSONオブジェクトツリー。
+
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getMenu","id":1,"params":["@1default_menu"]}' http://127.0.0.1:7079
@@ -2183,20 +2169,21 @@ Gets the tree of code JSON objects for the specified menu name, which is the res
 
 
 ### **ibax.getSource**
-Returns a tree of coded JSON objects for the specified page name. Does not execute any functions or receive any data. The returned JSON object tree corresponds to the page template and can be used in the visual page designer. If the page is not found, a 404 error is returned.
 
+指定されたページ名のコード化されたJSONオブジェクトツリーを返します。いかなる関数も実行せず、データを受信しません。返されるJSONオブジェクトツリーは、ページのテンプレートに対応し、ビジュアルページデザイナーで使用することができます。ページが見つからない場合は、404エラーが返されます。
 
 [Authorization](#authorization)
- 
-#### Parameters
--	**name** - *String* -
-    Page  name  with  ecosystem  ID  in  the  format  `@ecosystem_id%%%page_name%`,  for example `@1main_page`.
-    If you don't have an ecosystem ID, the default is to find the current ecological page e.g. `main_page`
 
-#### Return Value
--	**tree** - *Array* - JSON object tree for the page.
+#### パラメーター
+-   **name** - *String* -
+    ページ名は `@ecosystem_id%%%page_name%` の形式で指定します。例： `@1main_page`。
+    エコシステムIDを持たない場合は、デフォルトで現在のエコロジーのページが見つかります。例： `main_page`
 
-#### Example
+#### 返り値
+-   **tree** - *Array* - ページのJSONオブジェクトツリー。
+
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getSource","id":1,"params":["@1params_list"]}' http://127.0.0.1:7079
@@ -2281,26 +2268,25 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
 
 
 ### **ibax.getPageHash**
-Returns a SHA256 hash of the specified page name, or a 404 error if the page is not found.
 
-To receive the correct hash when making requests to other nodes, you must also pass the
-*ecosystem,key_id,role_id*
-parameter. To receive pages from other ecosystems, the ecosystem ID must be prefixed to the page name. For example: `@2mypage`.
+指定されたページ名のSHA256ハッシュを返します。ページが見つからない場合は404エラーが返されます。
 
-#### Parameters
-- **name** - *String* - The name of the page with the ecosystem ID. The format is `@ecosystem_id%%%page_name%`, e.g. `@1main_page`, you can specify the eco ID
+他のノードにリクエストを行う際に正しいハッシュを受け取るためには、*ecosystem,key_id,role_id* パラメーターも渡す必要があります。他のエコシステムからページを受け取るには、ページ名の前にエコシステムIDを付ける必要があります。例：`@2mypage`。
 
-- **ecosystem** - *Number* - [Omitempty](#omitempty) Ecosystem ID.
+#### パラメーター
+- **name** - *String* - エコシステムIDを含むページの名前。形式は `@ecosystem_id%%%page_name%` です。例： `@1main_page`。エコシステムIDを指定することもできます。
 
-- *Object* - [Omitempty](#omitempty) Get the specified page object
-    - **key_id** - *String* - The account address.
-    - **role_id** - *String* - The role ID.
+- **ecosystem** - *Number* - [Omitempty](#omitempty) エコシステムID。
 
-#### Return Value
+- *Object* - [Omitempty](#omitempty) 指定されたページオブジェクトを取得する場合
+    - **key_id** - *String* - アカウントアドレス。
+    - **role_id** - *String* - ロールID。
+
+#### 返り値
 - *Object* -
-    - **hash** - *String* - Hexadecimal hash.
+    - **hash** - *String* - 16進数のハッシュ値。
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getPageHash","id":1,"params":["@1params_list",0,{"role_id":"1","key_id":"-6484253546138538120"}]}' http://127.0.0.1:7079
@@ -2317,19 +2303,17 @@ parameter. To receive pages from other ecosystems, the ecosystem ID must be pref
 
 
 ### **ibax.getContent**
-Returns the number of JSON objects for the page code from the **template** parameter, if the optional parameter
-**source** Specified as `true`, this JSON object tree does not perform any functions and receive data. This JSON object tree can be used in the visual page designer.
+オプションのパラメーター **source** が `true` と指定されている場合、**template** パラメーターのページコードからJSONオブジェクトの数を返します。このJSONオブジェクトツリーは、関数を実行せずにデータを受信しないものです。このJSONオブジェクトツリーは、ビジュアルページデザイナーで使用することができます。
 
-#### Parameters
+#### パラメーター
 - *Object*
-    - **template** - *String* - page code.
+    - **template** - *String* - ページコード。
+    - **source** - *Bool* - `true` と指定されている場合、JSONオブジェクトツリーは関数を実行せずにデータを受信しません。
 
-    - **source** - *Bool* - If specified as `true`, the JSON object tree does not perform any functions and receives data.
+#### 返り値
+- **tree** - *Object* - JSONオブジェクトツリー。
 
-#### Return Value
-- **tree** - *Object* - JSON object tree.
-
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getContent","id":1,"params":[{"template","..."source":true}]}' http://127.0.0.1:7079
@@ -2353,28 +2337,23 @@ Returns the number of JSON objects for the page code from the **template** param
 
 
 ### **ibax.getBlockInfo**
-Returns information about the specified block ID.
+指定されたブロックIDに関する情報を返します。
 
-#### Parameters
--	**id** - *Number* - the height of the block. 
+#### パラメーター
+- **id** - *Number* - ブロックの高さ。
 
-#### Return Value
+#### 返り値
 
-- **hash** - *String* - The block hash value.
+- **hash** - *String* - ブロックのハッシュ値。
+- **key_id** - *Number* - ブロックに署名したアカウントのアドレス。
+- **time** - *Number* - ブロックの生成タイムスタンプ。
+- **tx_count** - *Number* - ブロック内のトランザクションの総数。
+- **rollbacks_hash** - *String* - ブロックのロールバックハッシュ。
+- **node_position** - *Number* - ブロックのエンドポイントリスト内での位置。
+- **consensus_mode** - *Number* - コンセンサスモード（1: クリエーターマネージメントモード、2: DAOガバナンスモード）。
 
-- **key_id** - *Number* - the address of the account that signed the block.
 
-- **time** - *Number* block generation timestamp.
-
-- **tx_count** - *Number* - the total number of transactions within the block.
-
-- **rollbacks_hash** - *String* - The block rollback hash.
-
-- **node_position** - *Number* - The position of the block in the honor node list.
-
-- **consensus_mode** *Number* - Consensus mode, parameters (1: creator management mode 2: DAO governance mode)
-
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBlockInfo","id":1,"params":[12]}' http://127.0.0.1:7079
@@ -2397,19 +2376,19 @@ Returns information about the specified block ID.
 
 
 ### **ibax.getConfig**
-Get the host address and port of centrifugo
+centrifugoのホストアドレスとポートを取得します。
 
-#### Parameters
-- **option** - *String* - Configuration item
+#### パラメーター
+- **option** - *String* - 設定項目
 
-    1. "centrifugo" - messaging service
+    1. "centrifugo" - メッセージングサービス
+
+#### 返り値
+
+- **centrifugo** - *String* - [Omitempty](#omitempty) centrifugoのホストアドレスとポート。結果の形式は `http://address:port` となります。例: `http://127.0.0.1:8100`。
 
 
-#### Return Value
-
-- **centrifugo** - *String* - [Omitempty](#omitempty) host address and port of centrifugo Result format `http://address:port`, e.g.: `http://127.0.0.1:8100`.
-
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getConfig","id":1,"params":["centrifugo"]}' http://127.0.0.1:7079
@@ -2428,24 +2407,24 @@ Get the host address and port of centrifugo
 
 
 ### **net.getNetwork** 
-Get node information
- 
-#### Parameters 
-None
+ノードの情報を取得します。
 
-#### Return Value
-- **network_id** - *String* - The network identifier.
-- **centrifugo_url** - *String* - centrifugo message service address
-- **test** - *Bool* - whether it is a test chain
-- **private** - *Bool* - whether the chain is private
-- **honor_nodes** - *Object* - List of honor nodes
-    - **tcp_address** - *String* - tcp address
-    - **api_address** - *String* - api address
-    - **public_key** - *String* - node public key
-    - **unban_time** - *String* - Unlock time
+#### パラメーター
+なし
+
+#### 返り値
+- **network_id** - *String* - ネットワークの識別子。
+- **centrifugo_url** - *String* - centrifugoメッセージサービスのアドレス。
+- **test** - *Bool* - テストチェーンであるかどうか。
+- **private** - *Bool* - チェーンがプライベートであるかどうか。
+- **honor_nodes** - *Object* - honorノードのリスト。
+    - **tcp_address** - *String* - TCPアドレス。
+    - **api_address** - *String* - APIアドレス。
+    - **public_key** - *String* - ノードの公開鍵。
+    - **unban_time** - *String* - アンバンの時間。
 
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"net.getNetwork","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2473,18 +2452,19 @@ None
  
 
 ### **net.status**
-Get the current node status
+現在のノードのステータスを取得します。
 
-#### Parameters 
-None
+#### パラメーター
+なし
 
-#### Return Value
-- **status** - *String* - Node Status
-    "node server status is running" - the node is running 
-    "node server is updating" - node is being updated 
-    "node server is stopped" - node suspended
+#### 返り値
+- **status** - *String* - ノードのステータス
+    - "node server status is running" - ノードが稼働中です
+    - "node server is updating" - ノードが更新中です
+    - "node server is stopped" - ノードが停止中です
 
-#### Example
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"net.status","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2501,15 +2481,16 @@ None
 
 
 ### **rpc.modules**
-Get the currently registered JSON-RPC interface
+現在登録されているJSON-RPCインターフェースを取得します。
 
-#### Parameters 
-None
+#### パラメーター
+なし
 
-#### Return Value
-- *Array* - JSON-RPC interface array
+#### 返り値
+- *Array* - JSON-RPCインターフェースの配列
 
-#### Example
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"rpc.modules","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2535,15 +2516,15 @@ None
 
 
 ### **admin.startJsonRpc**
-Can be used to switch between JSON-RPC change namespace services
+JSON-RPCの名前空間サービスの切り替えに使用できます。
 
-#### Parameters
-**methods** - *String* - JSON-RPC module, default: "ibax,net"
+#### パラメーター
+**methods** - *String* - JSON-RPCモジュール、デフォルト値: "ibax,net"
 
-#### Return Value
-- *bool* - execution status
+#### 返り値
+- *bool* - 実行のステータス
 
-#### Example
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"admin.startJsonRpc","id":1,"params":["ibax,net,admin"]}' http://127.0.0.1:8385
@@ -2558,15 +2539,16 @@ Can be used to switch between JSON-RPC change namespace services
 
 
 ### **admin.stopJsonRpc** 
-Close the JSON-RPC service
+JSON-RPCサービスを閉じることができます。
 
-#### Parameters 
-None
+#### パラメーター
+なし
 
-#### Return Value
-- *bool* - execution status
+#### 返り値
+- *bool* - 実行のステータス
 
-#### Example
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"admin.stopJsonRpc","id":1,"params":[]}' http://127.0.0.1:8385
@@ -2582,16 +2564,17 @@ None
 
 
 ### **debug.getNodeBanStat** 
-Get node disable status
+ノードの無効化状態を取得します。
 
-#### Parameters 
-None
+#### パラメーター
+なし
 
-#### Return Value
-**node_position** - *Number* - node subscript
-**status** - *Bool* - Disable status, `true` ban status, `false` not disabled
+#### 返り値
+**node_position** - *Number* - ノードの添字
+**status** - *Bool* - 無効化の状態。`true`は無効化されていることを示し、`false`は無効化されていないことを示します。
 
-#### Example
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"debug.getNodeBanStat","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2611,16 +2594,17 @@ None
  
 
 ### **debug.getMemStat**
-Get the current node memory usage
+現在のノードのメモリ使用状況を取得します。
 
-#### Parameters 
-None
+#### パラメーター
+なし
 
-#### Return Value
-- **alloc** - *Number* - Number of bytes requested and still in use
-- **sys** - *Number* - Number of bytes fetched from the system
+#### 返り値
+- **alloc** - *Number* - リクエストされたバイト数およびまだ使用中のバイト数
+- **sys** - *Number* - システムから取得されたバイト数
 
-#### Example
+
+#### 例
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"debug.getMemStat","id":1,"params":[]}' http://127.0.0.1:7079

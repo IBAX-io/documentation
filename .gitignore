@@ -5,3 +5,4 @@ Thumbs.db
 /docs/.vuepress/dist
 /ibax-io.github.io
 /.idea
+/docs/.idea
