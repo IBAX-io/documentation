@@ -76,7 +76,7 @@ Example:
 For the account address parameter, you can use two formats of addresses, for example
 1. - *String* - Account Address `"XXXX-XXXX-XXXX-XXXX-XXXX"` or Account Id `"64842...538120"` .538120"`
 
-2. - *Obeject* - Address object
+2. - *Object* - Address object
     - **key_id** - *Number* - Account Id, Example: `{"key_id":-64842	38120}`
     - **account** - *String* - Account address, Example: `{"account": "1196-... -	-... -3496"}`
 
@@ -87,7 +87,7 @@ Block height or block HASH, example
 
 1.	- *String*	-	Block	Height	`"100"`	or	Block	HASH`"4663aa47...a60753c18d9ba9cb4"`
 
-2.	- *Obeject* - Block information object
+2.	- *Object* - Block information object
         - **id** - *Number* - block height, example: `{"id":2}`
         - **hash**	-	*[Hex](#hex)	String*	-	Block	HASH,	Example:	`{"hash": "d36b8996c	c616d3043a0d02a0f59"}`
 
@@ -1951,7 +1951,7 @@ Returns information about the transaction for the specified hash, including the 
     - **hash** - *String* - transaction hash
     - **expedite** - *String* - expedited fee, or "" if not available
     - **contract_name** - *String* - Contract name
-    - **params** - *Obeject* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo)
+    - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo)
     - **created_at** - *Number* - when the transaction was created
     - **size** - *String* - transaction size unit: B;KiB;MiB;GiB;TiB
     - **status** - *String* - status (0:success 1:penalty)
@@ -2011,7 +2011,7 @@ Returns transaction-related information for the specified hash list.
             - **hash** - *String* - transaction hash
             - **expedite** - *String* - expedited fee, or "" if not available
             - **contract_name** - *String* - Contract name
-            - **params** - *Obeject* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo)
+            - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo)
             - **created_at** - *Number* - when the transaction was created
             - **size** - *String* - transaction size unit: B;KiB;MiB;GiB;TiB
             - **status** - *String* - status (0:success 1:penalty)
