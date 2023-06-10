@@ -1,110 +1,107 @@
-# The IBAX Network
+# IBAXネットワーク
 
-In this section, we will brief you how to use IBAX.
+このセクションでは、IBAXの使用方法について説明します。
 
-- [The IBAX Network](#the-ibax-network)
-  - [Application developers](#application-developers)
-  - [ECOLIB members](#ecolib-members)
-  - [ECOLIB applications and platform applications](#ecolib-applications-and-platform-applications)
-  - [Underlying model](#underlying-model)
-  - [Implementation](#implementation)
-
-
+- [IBAXネットワーク](#the-ibax-network)
+- [アプリケーション開発者](#application-developers)
+- [エコライブメンバー](#ecolib-members)
+- [ECOLIBアプリケーションとプラットフォームアプリケーション](#ecolib-applications-and-platform-applications)
+- [基盤モデル](#underlying-model)
+- [実装](#implementation)
 
 
 
 
-If you are interested in the development, use or management of applications in IBAX, then you may not need to understand it at all.
 
-In IBAX, the blockchain and the blockchain network are hidden from ECOLIB members, administrators, and application developers. IBAX offers [RESTful API](../reference/api2.md) for all user groups, which provide a tamper-proof and distributed access to the **global state** of the blockchain.
 
-## Application developers
+IBAXにおけるアプリケーションの開発、利用、管理に興味があるのであれば、全く理解する必要はないかもしれません。
 
-In technical terms, the **global state** is a set of data, which is implemented via IBAX's database. From the perspective of application developers, an application interacts with the database by querying, inserting and updating tables.
+IBAXでは、ブロックチェーンとブロックチェーン・ネットワークは、ECOLIBメンバー、管理者、アプリケーション開発者からは隠されています。IBAXでは、すべてのユーザーグループに対して[RESTful API](../reference/api2.md) を提供しており、ブロックチェーンの **global state** への改ざん防止と分散アクセスを提供します。
 
-In IBAX, transactions are written into the blockchain by implementing various contracts. These transactions will call contract codes implemented by blockchain network nodes, which will update the global state (database) accordingly.
+## アプリケーション開発者
 
-For application developers, a contract is a function that data will be written to the database when it is implemented. Pages are like scripts and the page code is a set of page [template](../topics/templates2.md) functions, some of these functions display page elements, while other data comes from the database. Application developers do not need to understand what are transactions, block generation and consensus algorithms, just use it.
+技術用語では、**グローバルステート**はデータのセットであり、IBAXのデータベースを介して実装されています。アプリケーション開発者の視点から見ると、アプリケーションはテーブルの問い合わせ、挿入、更新によってデータベースと相互作用する。
 
-## ECOLIB members
+IBAXでは、さまざまなコントラクトを実装することで、ブロックチェーンにトランザクションが書き込まれます。これらのトランザクションは、ブロックチェーンネットワークノードが実装するコントラクトコードを呼び出し、それに応じてグローバルステート（データベース）を更新する。
 
-Applications written by developers run in an environment called [ECOLIB](thesaurus.md#ecolib). An application usually serves a specific purpose and complete various tasks together with several other applications.
+アプリケーション開発者にとっては、コントラクトが実装されるとデータベースにデータが書き込まれる機能である。ページはスクリプトのようなもので、ページコードはページ[テンプレート](../topics/templates2.md)関数のセットであり、これらの関数の一部はページ要素を表示し、他のデータはデータベースからもたらされます。アプリケーション開発者は、トランザクション、ブロック生成、コンセンサス・アルゴリズムが何であるかを理解する必要はなく、ただそれを使うだけでよい。
 
-A user must become a member of an ECOLIB if wants to access applications in it, and it can be a member of multiple different ECOLIBs at the same time.
+## ECOLIB メンバー
 
-ECOLIB members can view and modify the database from application pages, just like filling out forms, clicking buttons and navigating pages in a common web application.
+開発者が書いたアプリケーションは、[ECOLIB](thesaurus.md#ecolib)と呼ばれる環境下で動作します。アプリケーションは通常、特定の目的を持ち、他のいくつかのアプリケーションと一緒に様々なタスクをこなします。
 
-## ECOLIB applications and platform applications
+ECOLIB内のアプリケーションにアクセスするには、ECOLIBのメンバーになる必要があり、同時に複数の異なるECOLIBのメンバーになることができる。
 
-Applications may fall into **ECOLIB applications** and **platform applications**.
+ECOLIBのメンバーは、一般的なWebアプリケーションでフォームに記入したり、ボタンをクリックしたり、ページをナビゲートするように、アプリケーションのページからデータベースを見たり、変更したりすることができます。
 
-ECOLIB applications
+## ECOLIBアプリケーションとプラットフォーム・アプリケーション
 
-An ECOLIB application implements certain unique functions or business processes of an ECOLIB, but it is only available in that ECOLIB.
-Platform applications
+アプリケーションは、**ECOLIBアプリケーション**と**プラットフォーム・アプリケーション**に分類されます。
 
-A platform application is applicable to all ECOLIBs. Any application could be developed as a platform application. IBAX developers would provide platform applications that support the core functions for ECOLIB governance, such as voting, notification, and ECOLIB member role management.
+ECOLIBアプリケーション
 
-## Underlying model
+ECOLIBアプリケーションは、あるECOLIB独自の機能やビジネスプロセスを実装したもので、そのECOLIBでしか利用できない。
+プラットフォームアプリケーション
 
-Definition of layers
+プラットフォームアプリケーションは、すべてのECOLIBに適用可能です。どんなアプリケーションでもプラットフォーム・アプリケーションとして開発することができる。IBAXの開発者は、投票、通知、ECOLIBメンバーの役割管理など、ECOLIBガバナンスの中核機能をサポートするプラットフォーム・アプリケーションを提供する。
 
-IBAX consists of several layers:
+## 基礎となるモデル
 
-* User interaction layer
+レイヤーの定義
 
-    ECOLIB members interact with the application through pages and page elements.
+IBAXはいくつかのレイヤーから構成されています：
 
-* Application layer
+* ユーザーインタラクションレイヤー
 
-    Application developers interact with the global state (data tables) through contract codes and page codes.
+    ECOLIBメンバーは、ページとページ要素を通じてアプリケーションと対話する。
 
-* Global state layer
+* アプリケーション層
 
-    Update and synchronize the global state (database) based on operations written to the distributed ledger (blockchain)
-* Blockchain layer
+    アプリケーション開発者は、契約コードとページコードを通じてグローバルな状態（データテーブル）と対話する。
 
-    Update the distributed ledger with new blocks. Operations (transactions) saved in new blocks must be performed on the global state.
+* グローバルステート層
 
-* Node network layer
+    分散台帳（ブロックチェーン）に書き込まれた操作に基づき、グローバルステート（データベース）の更新・同期を行う。
+* ブロックチェーンレイヤー
 
-    It implemented the IBAX Network protocol, which distributes, verifies transactions and generates new blocks on the node network. Similarly, new blocks are distributed and verified by the node network.
+    分散台帳を新しいブロックに更新する。新しいブロックに保存された操作（トランザクション）は、グローバル状態に対して実行する必要があります。
 
-    The distributed ledger of all nodes is kept in sync. If having conflicts in a node, the node will identify which blockchains are considered valid and invalid blockchains will be rolled back accordingly.
+* ノード・ネットワーク層
 
-* Transaction layer
+    IBAX Networkプロトコルを実装し、ノードネットワーク上でトランザクションの分散、検証、新しいブロックの生成を行う。同様に、新しいブロックもノードネットワークで配布され、検証される。
 
-    Transactions are the basis for generating blocks and blockchain protocols, and transactions themselves are the results of operations performed at the user interaction layer. Transactions are generated by Weaver.
+    すべてのノードの分散型台帳は同期された状態に保たれます。ノードで競合が発生した場合、ノードはどのブロックチェーンが有効とみなされるかを識別し、無効なブロックチェーンはそれに応じてロールバックされます。
 
-    When a user or developer performs an operation such as clicking a button on a page or implement a contract from the code editor, Weaver will convert this operation into a transaction and send it to the network node connected to it.
+* トランザクション層
 
-Therefore, the flow of transactions is as follows:
+    トランザクションはブロックとブロックチェーンプロトコルを生成するための基礎であり、トランザクション自体はユーザーインタラクション層で行われた操作の結果である。トランザクションはWeaverによって生成されます。
 
-  * A user operation in a user page will become a transaction;
-  * The transaction is contained in a block;
+    ユーザーや開発者がページ上のボタンをクリックしたり、コードエディターからコントラクトを実装したりといった操作を行うと、Weaverはこの操作をトランザクションに変換して、接続しているネットワークノードに送信する。
 
-  * The block is included in the blockchain;
+したがって、トランザクションの流れは次のようになります：
 
-  * The change of operation will cause the global state of the blockchain to change, and such operation will be applied to the database;
+  * ユーザーページでのユーザー操作がトランザクションとなる；
+  * トランザクションはブロックに含まれる；
+  * そのブロックはブロックチェーンに含まれる；
+  * 操作の変更によりブロックチェーンのグローバルな状態が変化し、その操作はデータベースにも適用される；
+  * データベースの変更は、アプリケーションに反映されます。
 
-  * Any database change will be reflected in the application.
+## 実装
 
-## Implementation
+IBAXは、サーバ[go-ibax](https://github.com/IBAX-io/go-ibax)とWeaver[ソースコード](https://github.com/IBAX-io/weaver)という2つの大きなコンポーネントを持っています。
 
-IBAX has two major components, i.e. server [go-ibax](https://github.com/IBAX-io/go-ibax) and Weaver [Source code](https://github.com/IBAX-io/weaver).
+Weaverは、以下のようなものです：
+  * ユーザーページを提供する；
+  * アプリケーション開発のためのIDEを提供する；
+  * ユーザーアカウントの公開鍵を保存し、認可を行う；
+  * アプリケーションページからデータベースデータを要求し、ユーザーにアプリケーションページを表示する；
+  * [REST API](../reference/api2.md) を通してサーバーにトランザクションを送信する；
 
-Weaver:
-  * Providing the user pages;
-  * Providing the IDE for application development;
-  * Storing public keys of user accounts and perform authorization;
-  * Requesting database data from application pages and display application pages to users;
-  * Sending transactions to the server through [REST APIs](../reference/api2.md);
+      ユーザーの操作に対して自動的にトランザクションを作成するため、アプリケーション開発者がIDEからコントラクトを実装する際に、Weaverがその操作をトランザクションに変換します。
 
-      In order to automatically create transactions against user operations, Weaver will convert such operations into transactions when application developers implement a contract from the IDE.
-
-Server:
-  * Keeping the global state (database) of the node;
-  * Implementation of the blockchain protocol;
-  * Implementation of contract codes in the IBAX [Virtual Machine](../topics/vm.md);
-  * Implementation of page codes in the [Template Engine](../topics/templates2.md);
-  * Implementation of [RESTful API](../reference/api2.md).
+サーバーです：
+  * ノードのグローバルな状態（データベース）を保持する；
+  * ブロックチェーンプロトコルの実装
+  * IBAX[仮想マシン](../topics/vm.md)におけるコントラクトコードの実装；
+  * [ テンプレートエンジン ]（.../topics/templates2.md ）にページコードを実装する；
+  * [RESTful API](・・・/reference/api2.md)を実装しています。
