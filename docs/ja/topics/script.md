@@ -1,25 +1,25 @@
 
-# Smart Contracts
-  - [Contract Structure](#contract-structure)
-    - [Data section](#data-section)
-    - [Conditions section](#conditions-section)
-    - [Action section](#action-section)
-  - [Variables](#variables)
-  - [Nested Contracts](#nested-contracts)
-  - [File upload](#file-upload)
-  - [Queries in JSON format](#queries-in-json-format)
-  - [Queries with date and time operations](#queries-with-date-and-time-operations)
-  - [Needle contract language](#needle-contract-language)
-    - [Basic elements and structure](#basic-elements-and-structure)
-    - [Data types and variables](#data-types-and-variables)
-    - [Array](#array)
-    - [If and While statements](#if-and-while-statements)
-  - [Functions](#functions)
-    - [Function declaration](#function-declaration)
-    - [Variable-length parameters](#variable-length-parameters)
-    - [Optional parameters](#optional-parameters)
-  - [Needle functions classification](#needle-functions-classification)
-  - [Needle functions reference](#needle-functions-reference)
+# スマートコントラクト
+   - [スマートコントラクト構造](#スマートコントラクト構造)
+     - [データセクション](#データセクション)
+     - [条件セクション](#条件セクション)
+     - [アクションセクション](#アクションセクション)
+   - [変数](#変数)
+   - [ネストされたコントラクト](#ネストされたコントラクト)
+   - [ファイルアップロード](#ファイルアップロード)
+   - [JSON形式のクエリ](#JSON形式のクエリ)
+   - [日付と時刻の操作を伴うクエリ](#日付と時刻の操作を伴うクエリ)
+   - [Needleスマートコントラクト言語](#Needleスマートコントラクト言語)
+    - [基本要素と構造](#基本要素と構造)
+    - [データ型と変数](#データ型と変数)
+    - [配列](#配列)
+    - [IfおよびWhileステートメント](#IfおよびWhileステートメント)
+   - [関数](#関数)
+    - [関数宣言](#関数宣言)
+     - [可変長パラメータ](#可変長パラメータ)
+     - [オプションパラメータ](#オプションパラメータ)
+   - [Needle機能分類](#Needle機能分類)
+   - [Needle関数リファレンス](#Needle関数リファレンス)
     - [AppParam](#appparam)
     - [DBFind](#dbfind)
     - [DBRow](#dbrow)
@@ -103,7 +103,7 @@
     - [RunOBS](#runobs)
     - [StopOBS](#stopobs)
     - [RemoveOBS](#removeobs)
-  - [System Contracts](#system-contracts)
+  - [システムスマートコントラクト](#システムスマートコントラクト)
     - [NewEcosystem](#newecosystem)
     - [EditEcosystemName](#editecosystemname)
     - [NewContract](#newcontract)
@@ -135,17 +135,17 @@
     - [UploadBinary](#uploadbinary)
 
 
-Smart Contract (hereinafter referred to as Contract) is one of the basic elements of an application. The implementation of a contract on a page by the user is usually a single operation that the purpose is to update or create a database entry. All data operations of an application form a contract system, and these contracts interact with each other through database or contract content functions.
+スマート コントラクト (以下、コントラクトと呼びます) は、アプリケーションの基本要素の 1 つです。 ユーザーによるページ上のコントラクトの実装は、通常、データベース エントリの更新または作成を目的とした 1 回の操作です。 アプリケーションのすべてのデータ操作はコントラクト システムを形成し、これらのコントラクトはデータベースまたはコントラクト コンテンツ関数を通じて相互に対話します。
 
-## Contract Structure
+## Cスマートコントラクト構造
 
-Use the keyword `contract` to declare a contract, followed by the contract name, and the contract content must be enclosed in braces. A contract mainly consists of three sections:
+キーワード `contract` を使用してコントラクトを宣言し、その後にコントラクト名を続けます。コントラクトの内容は中括弧で囲む必要があります。 コントラクトは主に次の 3 つのセクションで構成されます。
 
-1. **data** - [data section](#data-section), where declares the variables of the input data, including variable name and variable type;
+1. **data** - [data section](#data-section)、変数名と変数タイプを含む入力データの変数を宣言します。
 
-2. **conditions** - [conditions section](#conditions-section), where validates the correctness of the data;
+2. **conditions** - [conditions section](#conditions-section)、データの正確性を検証します。
 
-3. **action** - [action section](#action-section), where defines the data manipulations.
+3. **action** - [action section](#action-section)、データ操作を定義します。
 ```
 contract MyContract {
   data {
@@ -164,15 +164,16 @@ contract MyContract {
 
 
 
-### Data section
+### データセクション
 
-The `data` section describes the contract data inputs and the form parameters received.
+`data`セクションでは、コントラクトデータ入力と受信したフォーム パラメーターについて説明します。
 
-The structure of each line by sequence:
+シーケンスごとの各行の構造:
 
-* Variable name - only receive variables, not arrays;
-* Variable data type - the [data type](#data-types-and-variables) of the variable;
-* optional - an optional parameter that do not need to fill in the form element.
+* 変数名 - 変数のみを受け取り、配列は受け取りません；
+* 変数のデータ型 - 変数の[data type](#data-types-and-variables)；
+* optional - オプションのパラメータで、フォーム要素に入力する必要はありません。
+
 
 ```
 contract my {
@@ -189,11 +190,11 @@ contract my {
 
 
 
-### Conditions section
+### 条件セクション
 
-The `conditions` section describes the validation of data received.
+`conditions`セクションでは、受け取ったデータの検証が説明されています。
 
-The following commands are used for error warnings: serious errors `error`, warning errors `warning`, suggestive errors `info`. These three commands will generate an error that terminates the execution of contracts, and each error will print a different type of error log information. For example:
+次のコマンドはエラーワーニングに使用されます: 重大なエラー `error`、警告エラー `warning`、示唆的なエラー `info`。これらの3つのコマンドは、コントラクトの実行を終了するエラーを生成し、各エラーは異なるタイプのエラーログ情報を出力します。例えば:
 
 ```
 if fuel == 0 {
@@ -207,9 +208,9 @@ if idexist > 0 {
 }
 ```
 
-### Action section
+### アクションセクション
 
-The `action` section describes the main code of the contract, which retrieves other data and records the result values in tables. For example:
+`action`セクションでは、コントラクトの主なコードが説明されており、他のデータを取得し、結果の値をテーブルに記録します。例えば:
 
 ```
 action {
@@ -220,30 +221,31 @@ DBUpdate("keys", $recipient, {"+amount": $amount, "pub": $Pub})
 
 
 
-## Variables
+## 変数
 
-Variables declared in the data section are passed to other contract sections through the `$` symbol followed by the variable name. The `$` symbol can also be used to declare other variables that are not within the data section, which are considered as global variables of this contract and all contracts that this contract is nested.
+データセクションで宣言された変数は、変数名の後に`$`記号を付けて他のコントラクトセクションに渡されます。`$`記号はデータセクション内にない他の変数を宣言するためにも使用できますが、これらはこのコントラクトと、このコントラクトにネストされるすべてのコントラクトのグローバル変数と見なされます。
 
-Pre-defined variables can be used in contracts, which contain transaction data that called the contract:
+コントラクトで事前定義された変数を使用できます。これには、コントラクトを呼び出したトランザクションデータが含まれます:
 
-* `$time` - transaction timestamp;
-* `$ecosystem_id` - ecosystem ID;
-* `$block` - ID of the block containing the transaction;
-* `$key_id` - address of the account that signed the current transaction;
-* `$type` - contract ID in the virtual machine;
-* `$block_key_id` - account address of the node generated the block;
-* `$block_time` - block generation timestamp;
-* `$original_contract` - name of the contract that initially processed the transaction. It means the contract is called during transaction validation if the variable is an empty string. To check whether the contract is called by another contract or directly by the transaction, you need to compare the values of $original_contract and $this_contract. It means that the contract is called by the transaction if they are equal;
-* `$this_contract` - name of the contract currently being executed;
-* `$guest_key` - guest account address;
-* `$stack` - contract array stack with a data type of array, containing all contracts executed. The first element of the array represents the name of the contract currently being executed, while the last element represents the name of the contract that initially processed the transaction;
-* `$node_position` - the index number of the verification node array where the block is located;
-* `$txhash` - transaction hash;
-* `$contract` - the current contract structure array.
+* `$time` - トランザクションのタイムスタンプ;
+* `$ecosystem_id` - エコシステムID;
+* `$block` - トランザクションを含むブロックのID;
+* `$key_id` - 現在のトランザクションに署名したアカウントのアドレス;
+* `$type` - 仮想マシン内のコントラクトID;
+* `$block_key_id` - ブロックを生成したノードのアカウントアドレス;
+* `$block_time` - ブロックの生成タイムスタンプ;
+* `$original_contract` - トランザクションを最初に処理したコントラクトの名前。変数が空の文字列であれば、トランザクションの検証中にコントラクトが呼び出されることを意味します。コントラクトが別のコントラクトによって呼び出されたか、トランザクションに直接よって呼び出されたかを確認するには、$original_contractと$this_contractの値を比較する必要があります。値が等しい場合、トランザクションによってコントラクトが呼び出されることを意味します;
+* `$this_contract` - 現在実行中のコントラクトの名前;
+* `$guest_key` - ゲストアカウントのアドレス;
+* `$stack` - データ型が配列のコントラクト配列スタックで、実行されたすべてのコントラクトを含みます。配列の最初の要素は現在実行中のコントラクトの名前を表し、最後の要素は最初にトランザクションを処理したコントラクトの名前を表します;
+* `$node_position` - ブロックが位置する検証ノード配列のインデックス番号;
+* `$txhash` - トランザクションのハッシュ;
+* `$contract` - 現在のコントラクトの構造配列。
 
-Predefined variables can be accessed not only in contracts, but also in permission fields that defines the access permission conditions of the application elements. When used in permission fields, predefined variables for block information are always equal to zero, such as `$time`, `$block`, etc.
+事前定義された変数はコントラクトだけでなく、アプリケーション要素のアクセス許可条件を定義する許可フィールドでも使用できます。許可フィールドで使用する場合、ブロック情報の事前定義変数は常にゼロと等しくなります（`$time`、`$block`など）。
 
-A predefined variable `$result` is assigned with the return result of the contract.
+事前定義変数`$result`にはコントラクトの返り値が割り当てられます。
+
 
 ```
 contract my {
@@ -266,13 +268,13 @@ contract my {
 }
 ```
 
-## Nested Contracts
+## ネストされたコントラクト
 
-You can nest contracts in the conditions and action sections of the contract. Nested contracts can be called directly, and the contract parameters are specified in parentheses after the contract name, for example, `@1NameContract(Params)`. You may also call nested contracts with the [CallContract](#callcontract) function.
+コントラクトの`conditions`セクションと`action`セクションでは、コントラクトをネストすることができます。ネストされたコントラクトは直接呼び出すことができ、コントラクトのパラメータはコントラクト名の後にかっこ内で指定されます。例えば、`@1NameContract(Params)`といった形式です。また、[CallContract](#callcontract)関数を使用してネストされたコントラクトを呼び出すこともできます。
 
-## File upload
+## ファイルアップロード
 
-To upload a file using a form in the format of `multipart/form-data`, the data type of the contract must be `file`.
+`multipart/form-data` 形式のフォームを使用してファイルをアップロードするには、コントラクトのデータ型が `file` である必要があります。
 
 ```
 contract Upload {
@@ -283,11 +285,11 @@ contract Upload {
 }
 ```
 
-The [UploadBinary](#uploadbinary) contract is used to upload and store files. With the Logicor language function [Binary](templates2.md#binary) in the page editor, you can get the file download link.
+[UploadBinary](#uploadbinary) コントラクトは、ファイルのアップロードと保存に使用されます。 ページエディタのLogicor言語関数[バイナリ](templates2.md#binary)を使用すると、ファイルのダウンロードリンクを取得できます。
 
-## Queries in JSON format
+## JSON形式のクエリ
 
-In the contract language, **JSON** can be specified as a field type. You can use the syntax: **columnname->fieldname** to process the entry field. The value obtained is recorded in **columnname.fieldname**. The above syntax can be used in Columns,One,Where of the [DBFind](#dbfind) function.
+スマートコントラクト言語では、フィールドタイプとして**JSON**を指定することができます。エントリーフィールドを処理するためには、**columnname->fieldname**の構文を使用します。取得した値は**columnname.fieldname**に記録されます。上記の構文は、[DBFind](#dbfind)関数のColumns、One、Whereで使用することができます。
 
 ```
 var ret map
@@ -302,53 +304,54 @@ val = DBFind("mytable").WhereId($Id).One("doc->check")
 
 
 
-## Queries with date and time operations
+## 日付と時刻の操作を伴うクエリ
 
-You cannot directly query and update the date and time with the contract language functions, but you can use PostgreSQL functions and features in the Where statement as in the example below. For example, you need to compare the field date_column with the current time. If date_column is a timestamp type, the expression should be `date_column <NOW()`; if date_column is a Unix type, the expression should be `to_timestamp(date_column)> NOW()`.
+スマート コントラクト言語関数を使用して日時を直接クエリしたり更新したりすることはできませんが、以下の例のように Where ステートメントで PostgreSQL の関数と機能を使用することができます。 たとえば、フィールド date_column を現在時刻と比較する必要があります。 date_column がタイムスタンプ型の場合、式は `date_column <NOW()` でなければなりません。 date_column が Unix 型の場合、式は `to_timestamp(date_column)> NOW()` である必要があります。
 
 ```
 Where("to_timestamp(date_column)> NOW()")
 Where("date_column <NOW() - 30 * interval '1 day'")
 ```
 
-The following Needle function is used to process date and time in SQL format:
+次の Needle 関数は、SQL 形式で日付と時刻を処理するために使用されます。
 
 * [BlockTime](#blocktime)
 * [DateTime](#datetime)
 * [UnixDateTime](#unixdatetime)
 
-## Needle contract language
+## Needleスマートコントラクト言語
 
-The contract language includes a set of functions, operators and structures, which can realize data algorithm processing and database operations.
+コントラクト言語には、データ アルゴリズム処理とデータベース操作を実現できる一連の関数、演算子、構造が含まれています。
 
-The contract content can be modified if the contract editing permission is not set to `false`. The complete history of contract changes is stored in the blockchain, which is available in Weaver.
+コントラクト書の編集権限が「false」に設定されていない場合、コントラクト内容を変更できます。 コントラクト変更の完全な履歴はブロックチェーンに保存され、Weaver で利用できます。
 
-Data operations in the blockchain are executed in accordance with the latest version of the contract.
+ブロックチェーン内のデータ操作は、最新バージョンのコントラクトに従って実行されます。
 
-### Basic elements and structure
+### 基本要素と構造
 
-### Data types and variables
+### データ型と変数
 
-Data type must be defined for every variables. Normally, data types are converted automatically. The following data types can be used:
+データ型は変数ごとに定義する必要があります。 通常、データ型は自動的に変換されます。 次のデータ型を使用できます。
 
-* `bool` - Boolean, `true` or `false`;
-* `bytes` - a byte format;
-* `Int` - a 64-bit integer;
-* `Array` - an array of any type;
-* `map` - an object array;
-* `money` - a big integer;
-* `float` - a 64-bit float number;
-* `string` - a string must be defined with double quotes or escape format: "This is a string" or \`This is a string\`;
-* `file` - an object array:
-  * `Name` - file name, `string` type;
-  * `MimeType` - **mime-type** file, `string` type;
-  * `Body` - file content, `bytes` type.
+* `bool` - ブール値、`true` または `false`
+* `bytes` - バイト形式
+* `Int` - 64ビット整数
+* `Array` - 任意の型の配列
+* `map` - オブジェクトの配列
+* `money` - ビッグ整数
+* `float` - 64ビット浮動小数点数
+* `string` - 文字列はダブルクォートまたはエスケープ形式で定義する必要があります: "This is a string" もしくは \`This is a string\`
+* `file` - オブジェクトの配列:
+  * `Name` - ファイル名、`string` 型
+  * `MimeType` - ファイルのMIMEタイプ、`string` 型
+  * `Body` - ファイルの内容、`bytes` 型
 
-All identifiers, including the names of variables, functions and contracts, are case sensitive (MyFunc and myFunc are different names).
 
-Use the **var** keyword to declare a variable, followed by the name and type of the variable. Variables declared in braces must be used in the same pair of braces.
+変数、関数、コントラクトの名前を含むすべての識別子は大文字と小文字が区別されます (MyFunc と myFunc は別の名前です)。
 
-The default value of any variable declared is zero: the zero value of bool type is false, the zero value of all numeric types is 0, and the zero value, for strings, empty strings. An example of variable declaration:
+**var** キーワードを使用して変数を宣言し、その後に変数の名前と型を指定します。 中かっこで宣言された変数は、同じ中かっこのペアで使用する必要があります。
+
+宣言された変数のデフォルト値はゼロです。ブール型のゼロ値は false、すべての数値型のゼロ値は 0、文字列の場合は空の文字列のゼロ値です。 変数宣言の例:
 
 ```
 func myfunc( val int) int {
@@ -364,13 +367,13 @@ func myfunc( val int) int {
 
 
 
-### Array
+### 配列
 
-The contract language supports two array types:
-* `Array` - an array with index starting from 0;
-* `map` - an array of objects.
+コントラクト言語は、次の 2 つの配列タイプをサポートします。
+* `Array` - 0 から始まるインデックスを持つ配列。
+* `map` - オブジェクトの配列。
 
-When allocating and retrieving array elements, the index must be placed in square brackets. Multiple indexes are not supported in the array, and the array elements cannot be treated as myarr[i][j].
+配列要素を割り当てたり取得したりするときは、インデックスを角かっこで囲む必要があります。 配列では複数のインデックスはサポートされておらず、配列要素を myarr[i][j] として扱うことはできません。
 
 ```
 var myarr array
@@ -386,7 +389,7 @@ s = Sprintf("%v, %v, %v", myarr[0] + mymap["value"], myarr[1], mymap["param"])
 // s = 877, This is a line, Parameter
 ```
 
-You can also define arrays of array type by specifying elements in `[]`. For map type `arrays`, please use `{}`.
+`[]` 内に要素を指定して配列型の配列を定義することもできます。 マップタイプ `arrays` の場合は、`{}` を使用してください。
 
 ```
 var my map
@@ -395,21 +398,21 @@ var mya array
 mya=["value1", {key2: i}, $Name]
 ```
 
-You can use such initialization in expressions. For example, use it in function parameters.
+このような初期化を式で使用できます。 たとえば、関数のパラメータで使用します。
 
 ```
 DBFind...Where({id: 1})
 ```
 
-For an array of objects, you must specify a key. Key are specified as strings in double quotes (`""`). If the key name is limited to letters, numbers and underscores, you can omit the double quotes.
+オブジェクトの配列の場合は、キーを指定する必要があります。 キーは二重引用符 (`""`) で囲まれた文字列として指定します。 キー名が文字、数字、アンダースコアに限定されている場合は、二重引用符を省略できます。
 
 ```
 {key1: "value1", key2: "value2"}
 ```
 
-An array can contain strings, numbers, variable names of any type, and variable names with the `$` symbol. It supports nested arrays. You can specify different maps or arrays as values.
+配列には、文字列、数値、任意の型の変数名、および「$」記号を含む変数名を含めることができます。 ネストされた配列をサポートします。 さまざまなマップまたは配列を値として指定できます。
 
-Expressions cannot be used as array elements. Use a variable to store the expression result and specify this variable as an array element.
+式を配列要素として使用することはできません。 変数を使用して式の結果を保存し、この変数を配列要素として指定します。
 
 ```
 [1+2, myfunc(), name["param"]] // don't do this
@@ -420,15 +423,16 @@ val = my["param"]
 MyFunc({key: val, sub: {name: "My name", "color": "Red"}})
 ```
 
-### If and While statements
+### IfおよびWhileステートメント
 
-The contract language supports standard **if** conditional statements and **while** loops, which can be used in contracts and functions. These statements can be nested within each other.
+以下のコントラクト言語の例では、コントラクトや関数内で使用できる標準の**if**条件文と**while**ループがサポートされています。これらの文は相互にネストすることができます。
 
-**if** and **while** must be followed by a conditional statement. If the conditional statement returns a number, it is regarded as false when its value is 0.
+**if**と**while**は、条件文に続く必要があります。条件文が数値を返す場合、その値が0であれば偽と見なされます。
 
-val == 0 is equal to !val, val != 0 is equal to val. The **if** statement can have an **else** code block, and the **else** is executed when the **if** conditional statement is false.
+val == 0は!valと等価であり、val != 0はvalと等価です。**if**文には**else**コードブロックが存在し、**if**条件文が偽の場合に実行されます。
 
-The following comparison operators can be used in conditional statements: `<, >, >=, <=, ==, !=, ||, &&`
+以下の比較演算子を条件文で使用することができます: `<, >, >=, <=, ==, !=, ||, &&`
+
 
 ```
 if val> 10 || id != $block_key_id {
@@ -438,7 +442,7 @@ if val> 10 || id != $block_key_id {
 }
 ```
 
-The code block is executed when the conditional statement of the **while** loop is true. **break** means to terminate the loop of the code block. If you want to start a loop from the beginning, use **continue**.
+**while** ループの条件ステートメントが true の場合、コード ブロックが実行されます。 **break** は、コード ブロックのループを終了することを意味します。 ループを最初から開始する場合は、**Continue** を使用します。
 
 ```
 var i int
@@ -455,17 +459,17 @@ while true {
 }
 ```
 
-In addition to conditional statements, Needle also supports standard arithmetic operations: `+`, `-`, `*`, `/`.
+コンディショナル文に加えて、Needleは標準の算術演算もサポートしています: `+`, `-`, `*`, `/`。
 
-Variables of string and bytes types can be used as a conditional statement. If the length of the type is greater than zero, the condition is true, otherwise it is false.
+文字列型とバイト型の変数は、条件文として使用することができます。型の長さがゼロより大きい場合、条件は真となります。そうでなければ偽です。
 
-## Functions
+## 関数
 
-Functions can perform some operations on the data received by the [data section](#data-section) of a contract: read and write data from the database, convert the type of value, and establish the interaction between contracts.
+関数は、コントラクトの [data section](#data-section) で受け取ったデータに対していくつかの操作を実行できます。つまり、データベースからのデータの読み取りと書き込み、値の型の変換、コントラクト間の対話の確立などです。
 
-### Function declaration
+### 関数宣言
 
-Use the func keyword to declare a function, followed by the name and the list of parameters passed to it and their types. All parameters are enclosed in parentheses and separated by commas. After the parentheses, the data type of the value returned by the function must be declared. The function body must be enclosed in braces. If the function has no parameters, the braces can be omitted. To return a value from a function, use the `return` keyword.
+func キーワードを使用して関数を宣言し、その後に名前と、関数に渡されるパラメータのリストとその型を指定します。 すべてのパラメータは括弧で囲まれ、カンマで区切られます。 括弧の後に、関数によって返される値のデータ型を宣言する必要があります。 関数本体は中括弧で囲む必要があります。 関数にパラメーターがない場合は、中括弧を省略できます。 関数から値を戻すには、`return` キーワードを使用します。
 
 ```
 func myfunc(left int, right int) int {
@@ -479,11 +483,11 @@ func ooops {
 }
 ```
 
-Function do not return errors, because all error checks are performed automatically. If there is an error in any function, the contract will terminate its operation and present the error description in a window.
+すべてのエラー チェックは自動的に実行されるため、関数はエラーを返しません。 いずれかの機能にエラーがある場合、コントラクトはその操作を終了し、ウィンドウにエラーの説明を表示します。
 
-### Variable-length parameters
+### 可変長パラメータ
 
-Functions can define variable-length parameters, use the `...` symbol as the last parameter type of the function to indicate variable-length parameters, with a data type of `array`. Variable-length parameters include all variables from the time the parameter is passed in the call. All types of variables can be passed, but you need to deal with conflicts of mismatching of data types.
+関数は可変長パラメータを定義できます。可変長パラメータを示すには、関数の最後のパラメータ タイプとして`...`記号を使用し、データ タイプは`array`です。 可変長パラメータには、パラメータが呼び出しで渡された時点からのすべての変数が含まれます。 すべてのタイプの変数を渡すことができますが、データタイプの不一致による競合に対処する必要があります。
 
 ```
 func sum(out string, values ...) {
@@ -508,11 +512,12 @@ func main() {
 
 
 
-### Optional parameters
+### オプションパラメータ
 
-A function has many parameters, but we only need some of them when calling it. In this case, you can declare optional parameters in the following way: `func myfunc(name string).Param1(param string).Param2(param2 int) {...}`, then you can call the specified parameters in any order: `myfunc("name").Param2(100)`.
+関数には多くのパラメータがありますが、呼び出す際にはそのうちの一部だけが必要な場合、次のようにオプションのパラメータを宣言することができます: `func myfunc(name string).Param1(param string).Param2(param2 int) {...}`。その後、指定したパラメータを任意の順序で呼び出すことができます: `myfunc("name").Param2(100)`。
 
-In the function body, you can handle these variables normally. If no specified optional parameters called, their default values are zero. You can also use ... to specify a variable-length parameter: `func DBFind(table string).Where(request string, params ...)` and then call it: `DBFind("mytable").Where({" id": $myid, "type": 2})`
+関数本体では、これらの変数を通常通り扱うことができます。指定されたオプションのパラメータが呼び出されない場合、デフォルト値はゼロになります。また、...を使用して可変長のパラメータを指定することもできます: `func DBFind(table string).Where(request string, params ...)`。その後、次のように呼び出すことができます: `DBFind("mytable").Where({" id": $myid, "type": 2})`。
+
 
 ```
 func DBFind(table string).Columns(columns string).Where(format string, tail ...)
@@ -526,9 +531,9 @@ func names() string {
 }
 ```
 
-## Needle functions classification
+## Needle機能分類
 
-Retrieving values from the database:
+データベースから値を取得します:
 
 |                 |               |                 |
 | --------------- | ------------- | --------------- |
@@ -537,14 +542,14 @@ Retrieving values from the database:
 | [DBRow](#dbrow)           | [GetHistoryRow](#gethistoryrow) | [GetBlock](#getblock)        |
 | [DBSelectMetrics](#dbselectmetrics) | [GetColumnType](#getcolumntype) | [LangRes](#langres)         |
 
-Updating data in tables:
+テーブル内のデータを更新する:
 
 |          |             |          |
 | -------- | ----------- | -------- |
 | [DBInsert](#dbinsert) | [DBUpdateExt](#dbupdateext) | [DelTable](#deltable) |
 | [DBUpdate](#dbupdate) | [DelColumn](#delcolumn)   |          |
 
-Operations with arrays:
+配列を使った操作:
 
 |        |      |            |
 | ------ | ---- | ---------- |
@@ -552,7 +557,7 @@ Operations with arrays:
 | [Join](#join)   | [Row](#row)  | [SortedKeys](#sortedkeys) |
 | [Split](#split)  | [One](#one)  |            |
 
-Operations with contracts and permissions:
+スマートコントラクトと権限による操作:
 
 |                    |                   |                   |
 | ------------------ | ----------------- | ----------------- |
@@ -562,14 +567,14 @@ Operations with contracts and permissions:
 | [EvalCondition](#evalcondition)      |                   |                   |
 
 
-Operations with addresses:
+アドレスを使った操作:
 
 |             |             |         |
 | ----------- | ----------- | ------- |
 | [AddressToId](#addresstoid) | [IdToAddress](#idtoaddress) | [PubToID](#pubtoid) |
 
 
-Operations with variable values:
+変数値を使用した演算:
 
 |              |             |        |
 | ------------ | ----------- | ------ |
@@ -578,7 +583,7 @@ Operations with variable values:
 | [Float](#float)        | [Int](#int)         | [Str](#str)    |
 | [HexToBytes](#hextobytes)   |             |        |
 
-Arithmetic operations:
+算術演算:
 
 |       |       |       |
 | ----- | ----- | ----- |
@@ -588,14 +593,14 @@ Arithmetic operations:
 
 
 
-Operations with JSON:
+JSONを使った操作:
 
 |            |                  |            |
 | ---------- | ---------------- | ---------- |
 | [JSONEncode](#jsonencode) | [JSONEncodeIndent](#jsonencodeindent) | [JSONDecode](#jsondecode) |
 
 
-Operations with strings:
+文字列を使った操作:
 
 |           |         |           |
 | --------- | ------- | --------- |
@@ -604,21 +609,21 @@ Operations with strings:
 | [Replace](#replace)   | [Substr](#substr)  | [TrimSpace](#trimspace) |
 
 
-Operations with bytes:
+バイトを使った操作:
 
 |               |               |      |
 | ------------- | ------------- | ---- |
 | [StringToBytes](#stringtobytes) | [BytesToString](#bytestostring) |      |
 
 
-Operations with date and time in SQL format:
+SQL形式での日付と時刻の操作:
 
 |           |          |              |
 | --------- | -------- | ------------ |
 | [BlockTime](#blocktime) | [DateTime](#datetime) | [UnixDateTime](#unixdatetime) |
 
 
-Operations with platform parameters:
+プラットフォームパラメータを使用した操作:
 
 |             |              |      |
 | ----------- | ------------ | ---- |
@@ -627,7 +632,7 @@ Operations with platform parameters:
 
 
 
-Functions for master CLB nodes:
+マスター CLB ノードの機能:
 
 |            |         |           |
 | ---------- | ------- | --------- |
@@ -636,12 +641,12 @@ Functions for master CLB nodes:
 
 
 
-## Needle functions reference
+## Needle関数リファレンス
 
 
 ### AppParam
 
-Returns the value of a specified application parameter (from the application parameter table app_params).
+指定されたアプリケーション パラメータの値を (アプリケーション パラメータ テーブル app_params から) 返します。
 
 #### Syntax
 
@@ -651,17 +656,17 @@ AppParam(app int, name string, ecosystemid int) string
 
 * **App**
 
-  Application ID.
+  アプリケーションID。
 
 * **name**
 
-    Application parameter name.
+    アプリケーションパラメータ名。
 
 * **Ecosystemid**
 
-    Ecosystem ID.
+    エコシステムID。
 
-#### Example
+#### 例
 
 ```
 AppParam(1, "app_account", 1)
@@ -671,9 +676,9 @@ AppParam(1, "app_account", 1)
 
 ### DBFind
 
-Queries data from a specified table with the specified parameters and returns an array array consisting of an array of objects map.
+指定されたパラメータを使用して指定されたテーブルのデータをクエリし、オブジェクト マップの配列で構成される配列を返します。
 
-`.Row()` can get the first map element in the query, `.One(column string)` can get the first map element of a specified column in the query.
+`.Row()` はクエリ内の最初のマップ要素を取得でき、`.One(column string)` はクエリ内の指定された列の最初のマップ要素を取得できます。
 
 #### Syntax
 
@@ -692,71 +697,72 @@ DBFind(table string)
 
 * **table**
 
-  Table name.
+  テーブル名。
 
 * **сolumns**
 
-  Returns a list of columns. If not specified, all columns will be returned.
+  列のリストを返します。 指定しない場合は、すべての列が返されます。
 
-  The value is an array or a string separated by commas.
+  値は配列またはカンマで区切られた文字列です。
 
 * **where**
 
-  Query conditions.
+  クエリ条件。
 
-  Example: `.Where({name: "John"})` or `.Where({"id": {"$gte": 4}})`.
+   例: `.Where({name: "John"})` または `.Where({"id": {"$gte": 4}})`。
 
-  This parameter must contain an array of objects with search criteria. The array can contain nested elements.
+   このパラメータには、検索基準を含むオブジェクトの配列が含まれている必要があります。 配列にはネストされた要素を含めることができます。
 
-  Following syntactic constructions are used:
+   次の構文構造が使用されます。
+
   * `{"field1": "value1", "field2": "value2"}`
-     Equivalent to `field1 = "value1" AND field2 = "value2"`.
+     `field1 = "value1" AND field2 = "value2"` と同等です。
 
   * `{"field1": {"$eq":"value"}}`
-     Equivalent to `field = "value"`.
+     `field = "value"` と同等です。
 
   * `{"field1": {"$neq": "value"}}`
-     Equivalent to `field != "value"`.
+     `field != "value"` と同等です。
 
   * `{"field1: {"$in": [1,2,3]}`
-     Equivalent to `field IN (1,2,3)`.
+     `field IN (1,2,3)`に相当します。
 
   * `{"field1": {"$nin": [1,2,3]}`
-     Equivalent to field NOT IN (1,2,3).
+     フィールド NOT IN (1,2,3) と同等です。
 
   * `{"field": {"$lt": 12}}`
-     Equivalent to `field <12`.
+     `field <12`と同等です。
 
   * `{"field": {"$lte": 12}}`
-     Equivalent to f`ield <= 12`.
+     f`ield <= 12`と同等。
 
   * `{"field": {"$gt": 12}}`
-     Equivalent to `field> 12`.
+     `field> 12` と同等。
 
   * `{"field": {"$gte": 12}}`
-     Equivalent to `field >= 12`.
+     `field >= 12`と同等。
 
   * `{"$and": [<expr1>, <expr2>, <expr3>]}`
-     Equivalent to `expr1 AND expr2 AND expr3`.
+     `expr1 AND expr2 AND expr3` と同等です。
 
   * `{"$or": [<expr1>, <expr2>, <expr3>]}`
-     Equivalent to `expr1 OR expr2 OR expr3`.
+     `expr1 OR expr2 OR expr3` と同等です。
 
   * `{field: {"$like": "value"}}`
-     Equivalent to `field like'%value%'` (fuzzy search).
+     `field like'%value%'` (あいまい検索) と同等です。
 
   * `{field: {"$begin": "value"}}`
-     Equivalent to `field like'value%'` (starts with `value`).
+     `field like'value%'` (`value` で始まります) と同等です。
 
   * `{field: {"$end": "value"}}`
-     Equivalent to `field like'%value'` (ends with `value`).
+     `field like'%value'` (`value` で終わる) と同等です。
 
   * `{field: "$isnull"}`
-     Equivalent to field is null.
+     フィールドが null に相当します。
 
      
+オブジェクト配列のキーを上書きしないように注意してください。 たとえば、`id>2 and id<5` でクエリを実行する場合、`{id:{"$gt": 2}, id:{"$lt": 5}}` は使用できません。 最初の要素は 2 番目の要素によって上書きされます。 次のクエリ構造を使用する必要があります。
 
-Make sure not to overwrite the keys of object arrays. For example, if you want to query with `id>2 and id<5`, you cannot use `{id:{"$gt": 2}, id:{"$lt": 5}}`, because the first element will be overwritten by the second element. You should use the following query structure:
 ```
 {id: [{"$gt": 2}, {"$lt": 5}]}
 ```
@@ -766,35 +772,35 @@ Make sure not to overwrite the keys of object arrays. For example, if you want t
 
 * **Id**
 
-     Queries by ID. For example, .WhereId(1).
+     IDによるクエリ。 たとえば、.WhereId(1)。
 
      
 
 * **Order**
 
-     Used to sort the result set by a specified column, or by id by default.
+     結果セットを指定した列、またはデフォルトでは ID でソートするために使用されます。
 
-     If you use only one field for sorting, you can specify it as a string. To sort multiple fields, you need to specify an array of string objects:
+      並べ替えにフィールドを 1 つだけ使用する場合は、それを文字列として指定できます。 複数のフィールドを並べ替えるには、文字列オブジェクトの配列を指定する必要があります。
 
-     Descending order: `{"field": "-1"}` Equivalent to `field desc`.
+      降順: `{"field": "-1"}` `field desc` と同等。
 
-     Ascending order: `{"field": "1"}` Equivalent to `field asc`.
+      昇順: `{"field": "1"}` `field asc` と同等。
 
 * **limit**
 
-     Returns the number of entries. 25, by default. The maximum number is 10,000.
+     エントリの数を返します。 デフォルトでは 25 です。 最大数は 10,000 です。
 
 * **Offset**
 
-     Offset.
+     オフセット。
 
 * **Ecosystemid**
 
-     Ecosystem ID. By default, the table of the current ecosystem is queried.
+     エコシステムID。デフォルトでは、現在のエコシステムのテーブルがクエリされます。
 
      
 
-#### Example
+#### 例
 
 ```
 var i int
@@ -813,13 +819,12 @@ if ret != nil {
   Println(ret)
 }
 ```
-
-​     
+    
 
 
 ### DBRow
 
-Queries data from a specified table with the specified parameters. Returns an array array consisting of an array of objects map.
+指定されたパラメータを使用して、指定されたテーブルのデータをクエリします。 オブジェクト マップの配列で構成される配列 array を返します。
 
 #### Syntax
 
@@ -834,35 +839,36 @@ DBRow(table string)
 
 * **table**
 
-  Table name.
+  テーブル名。
 
 * **columns**
   
-  Returns a list of columns. If not specified, all columns will be returned.
+  列のリストを返します。 指定しない場合は、すべての列が返されます。
 
-  The value is an array or a string separated by commas.
+   値は配列またはカンマで区切られた文字列です。
 * **where**
 
-  Query conditions.
+  クエリ条件。
 
-  For example: `.Where({name: "John"})` or `.Where({"id": {"$gte": 4}})`.
+  例: `.Where({name: "John"})` または `.Where({"id": {"$gte": 4}})`。
 
-  For more details, see [DBFind](#dbfind).
+  詳細については、「[DBFind](#dbfind)」を参照してください。
+
 * **Id**
   
-  Query by ID. For example, `.WhereId(1)`.
+  IDによるクエリ。 たとえば、`.WhereId(1)` です。
 
 * **Order**
 
-  Used to sort the result set by a specified column, or by id by default.
+  結果セットを指定した列、またはデフォルトでは ID でソートするために使用されます。
 
-  For more details, see [DBFind](#dbfind).
+   詳細については、「[DBFind](#dbfind)」を参照してください。
 
 * **Ecosystemid**
 
-  Ecosystem ID. By default, the table of the current ecosystem is queried.
+  エコシステムID。 デフォルトでは、現在のエコシステムのテーブルがクエリされます。
 
-#### Example
+#### 例
 
 ```
 var ret map
@@ -874,9 +880,9 @@ Println(ret)
 
 ### DBSelectMetrics
 
-Returns the aggregated data of a metric.
+メトリクスの集計データを返します。
 
-The metrics are updated each time 100 blocks are generated. And the aggregated data is stored on a 1-day cycle.
+メトリクスは、100 ブロックが生成されるたびに更新されます。 そして、集計されたデータは1日周期で保存されます。
 
 #### Syntax
 
@@ -887,33 +893,34 @@ DBSelectMetrics(metric string, timeInterval string, aggregateFunc string) array
 
 * **metric**
 
-  Metric name
+  メトリクス名
 
   * **ecosystem_pages**
   
-    Number of ecosystem pages.
+    エコシステムのページ数。
 
-    Return value: key - ecosystem ID, value - number of ecosystem pages.
+    戻り値: キー - エコシステム ID、値 - エコシステム ページの数。
+
   * **ecosystem_members**
   
-    Number of ecosystem members.
+    エコシステムのメンバーの数。
 
-    Return value: key - ecosystem ID, value - number of ecosystem members.
+    戻り値: キー - エコシステム ID、値 - エコシステム メンバーの数。
   * **ecosystem_tx**
 
-    Number of ecosystem transactions.
+    エコシステムトランザクションの数。
 
-    Return value: key - ecosystem ID, value - number of ecosystem transactions.
+    戻り値: キー - エコシステム ID、値 - エコシステム トランザクションの数。
 
 * **timeInterval**
 
-    The time interval for aggregating metric data. For example: `1 day`, `30 days`.
+    メトリクス データを集計する時間間隔。 例: `1 日`、`30 日`。
 
 * **aggregateFunc**
 
-    Aggregate function. For example, `max`, `min`, `avg`.
+    集計関数。 たとえば、`最大`、`最小`、`平均`などです。
 
-#### Example
+#### 例
 
 ```
 var rows array
@@ -930,7 +937,7 @@ while(i <Len(rows)) {
 
 ### EcosysParam
 
-Returns the value of a specified parameter in the ecosystem parameters table parameters.
+エコシステム パラメーター テーブルのパラメーター内の指定されたパラメーターの値を返します。
 
 #### Syntax
 
@@ -941,9 +948,9 @@ EcosysParam(name string) string
 
 * **name**
 
-  Parameter name.
+  パラメータ名。
 
-#### Example
+#### 例
 
 ```
 Println(EcosysParam("founder_account"))
@@ -953,7 +960,7 @@ Println(EcosysParam("founder_account"))
 
 ### GetHistory
 
-Returns the history of changes to entries in a specified table.
+指定されたテーブル内のエントリに対する変更履歴を返します。
 
 #### Syntax
 
@@ -964,20 +971,20 @@ GetHistory(table string, id int) array
 
 * **table**
 
-  Table name.
+  テーブル名。
 * **Id**
 
-  Entry ID.
+  エントリーID。
 > **Return value**
 
-  Returns an array of objects of type map, which specify the history of changes to entries in tables.
+  テーブル内のエントリの変更履歴を指定する、マップ型のオブジェクトの配列を返します。
 
-  Each array contains the fields of a record before making the next change.
-  The array is sorted by order of most recent changes.
+  各配列には、次の変更を行う前のレコードのフィールドが含まれています。
+  配列は、最近の変更の順序で並べ替えられます。
   
-  The id field in the array points to the id of the rollback_tx table. block_id represents the block ID, while block_time represents the block generation timestamp.
+  配列内の id フィールドは、rollback_tx テーブルの ID を指します。 block_id はブロック ID を表し、block_time はブロック生成のタイムスタンプを表します。
 
-#### Example
+#### 例
 
 ```
 var list array
@@ -992,7 +999,7 @@ if Len(list) > 0 {
 
 ### GetHistoryRow
 
-Returns a single snapshot from the change history of a specified entry in a specified table.
+指定されたテーブル内の指定されたエントリの変更履歴から 1 つのスナップショットを返します。
 
 #### Syntax
 
@@ -1004,15 +1011,15 @@ GetHistoryRow(table string, id int, rollbackId int) map
 
 * **table**
 
-  Table name.
+  テーブル名。
 
 * **Id**
 
-  Entry ID.
+  エントリーID。
 
 * **rollbackId**
 
-  rollback_tx The entry ID of the table.
+  rollback_tx テーブルのエントリ ID。
 
 ```
   $result = GetHistoryRow("contracts",205,2358)
@@ -1023,7 +1030,7 @@ GetHistoryRow(table string, id int, rollbackId int) map
 
 ### GetColumnType
 
-Returns the data type of a specified field in a specified table.
+指定されたテーブル内の指定されたフィールドのデータ型を返します。
 
 #### Syntax
 
@@ -1034,15 +1041,15 @@ GetColumnType(table, column string) string
 
 * **table**
 
-  Table name.
+  テーブル名。
 * **column**
 
-  Field Name.
+  フィールド名。
 > **Return value**
 
-  The following types can be returned: `text, varchar, number, money, double, bytes, json, datetime, double`.
+  次のタイプを返すことができます: `text, varchar, number, money, double, bytes, json, datetime, double`。
 
-#### Example
+#### 例
 
 ```
 var coltype string
@@ -1053,7 +1060,7 @@ coltype = GetColumnType("members", "member_name")
 
 ### GetDataFromXLSX
 
-Returns data from XLSX spreadsheets.
+XLSX スプレッドシートからデータを返します。
 
 #### Syntax
 
@@ -1064,18 +1071,18 @@ GetDataFromXLSX(binId int, line int, count int, sheet int) string
 
 * **binId**
 
-  ID in XLSX format in the binary table binary.
+  バイナリテーブルbinary内のXLSX形式のID。
 * **line**
 
-  The starting line number, starting from 0 by default.
+  開始行番号。デフォルトでは 0 から始まります。
 * **count**
 
-  The number of rows that need to be returned.
+  返す必要がある行数。
 * **sheet**
 
-  List number, starting from 1 by default.
+  デフォルトでは 1 から始まるリスト番号。
 
-#### Example
+#### 例
 
 ```
 var a array
@@ -1086,7 +1093,7 @@ a = GetDataFromXLSX(3, 12, 10, 1)
 
 ### GetRowsCountXLSX
 
-Returns the number of lines in a specified XLSX file.
+指定された XLSX ファイルの行数を返します。
 
 #### Syntax
 
@@ -1096,12 +1103,13 @@ GetRowsCountXLSX(binId int, sheet int) int
 
 * **binId**
 
-  ID in XLSX format in the binary table binary.
+  バイナリテーブルbinary内のXLSX形式のID。
+
 * **sheet**
 
-  List number, starting from 1 by default.
+  デフォルトでは 1 から始まるリスト番号。
 
-#### Example
+#### 例
 
 ```
 var count int
@@ -1112,7 +1120,7 @@ count = GetRowsCountXLSX(binid, 1)
 
 ### LangRes
 
-Returns a multilingual resource with name label for language lang, specified as a two-character code, for example: `en`, `zh`. If there is no language for a selected language, then the language resource of the `en` label is returned.
+2 文字のコード (例: `en`、`zh`) として指定された、言語 lang の名前ラベルを持つ多言語リソースを返します。 選択した言語に対応する言語がない場合は、`en`ラベルの言語リソースが返されます。
 
 #### Syntax
 
@@ -1122,12 +1130,12 @@ LangRes(label string, lang string) string
 
 * **label**
 
-  Language resource name.
+  言語リソース名。
 * **lang**
 
-  Two-character language code.
+  2文字の言語コード。
 
-#### Example
+#### 例
 
 ```
 warning LangRes("@1confirm", "en")
@@ -1138,7 +1146,7 @@ error LangRes("@1problems", "zh")
 
 ### GetBlock
 
-Returns relevant information about a specified block.
+指定されたブロックに関する関連情報を返します。
 
 #### Syntax
 
@@ -1149,21 +1157,21 @@ GetBlock(blockID int64) map
 
 * **blockID**
 
-  Block ID.
+  ブロックID。
 > **Return value**
 
-  Return an array of objects:
+  オブジェクトの配列を返します。
   * **id**
   
-     Block ID.
+     ブロックID。
   * **time**
   
-     Block generation timestamp.
+     ブロック生成のタイムスタンプ。
   * **key_id**
   
-     The account address of the verification node generated the block.
+     検証ノードのアカウント アドレスがブロックを生成しました。
 
-#### Example
+#### 例
 
 ```
 var b map
@@ -1175,7 +1183,7 @@ Println(b)
 
 ### DBInsert
 
-Adds an entry to a specified table and return the entry ID.
+指定されたテーブルにエントリを追加し、エントリーIDを返します。
 
 #### Syntax
 
@@ -1186,12 +1194,12 @@ DBInsert(table string, params map) int
 
 * **tblname**
 
-  Table name.
+  テーブル名。
 * **params**
 
-  An array of objects where keys are field names and values are inserted values.
+  キーがフィールド名、値が挿入値であるオブジェクトの配列。
 
-#### Example
+#### 例
 
 ```
 DBInsert("mytable", {name: "John Smith", amount: 100})
@@ -1201,7 +1209,7 @@ DBInsert("mytable", {name: "John Smith", amount: 100})
 
 ### DBUpdate
 
-Changes the column value of a specified entry ID in a specified table. If the entry ID does not exist in the table, an error is returned.
+指定されたテーブル内の指定されたエントリ ID の列の値を変更します。 エントリ ID がテーブルに存在しない場合は、エラーが返されます。
 
 #### Syntax
 
@@ -1212,15 +1220,15 @@ DBUpdate(tblname string, id int, params map)
 
 * **tblname**
 
-  Table name.
+  テーブル名。
 * **Id**
 
-  Entry ID.
+  エントリーID。
 * **params**
 
-  An array of objects where keys are field names and values are new values after changes.
+  キーがフィールド名、値が変更後の新しい値であるオブジェクトの配列。
 
-#### Example
+#### 例
 
 ```
 DBUpdate("mytable", myid, {name: "John Smith", amount: 100})
@@ -1230,7 +1238,7 @@ DBUpdate("mytable", myid, {name: "John Smith", amount: 100})
 
 ### DBUpdateExt
 
-Changes the value of a column in a specified table that matches the query condition.
+クエリ条件に一致する、指定されたテーブル内の列の値を変更します。
 
 #### Syntax
 
@@ -1241,17 +1249,17 @@ DBUpdateExt(tblname string, where map, params map)
 
 * **tblname**
 
-  Table name.
+  テーブル名。
 * **where**
 
-  Query conditions.
+  クエリ条件。
 
-  For more details, see [DBFind](#dbfind).
+  詳細については、「[DBFind](#dbfind)」を参照してください。
 * **params**
 
-  An array of objects where keys are field names and values are new values after changes.
+  キーがフィールド名、値が変更後の新しい値であるオブジェクトの配列。
 
-#### Example
+#### 例
 
 ```
 DBUpdateExt("mytable", {id: $key_id, ecosystem: $ecosystem_id}, {name: "John Smith", amount: 100})
@@ -1261,7 +1269,7 @@ DBUpdateExt("mytable", {id: $key_id, ecosystem: $ecosystem_id}, {name: "John Smi
 
 ### DelColumn
 
-Deletes a field in a specified table that has no records.
+指定されたテーブル内のレコードのないフィールドを削除します。
 
 #### Syntax
 
@@ -1272,11 +1280,11 @@ DelColumn(tblname string, column string)
 
 * **tblname**
 
-  Table name.
+  テーブル名。
 
 * **column**
 
-  The field to be deleted.
+  削除するフィールド。
 
 ```
 DelColumn("mytable", "mycolumn")
@@ -1287,7 +1295,7 @@ DelColumn("mytable", "mycolumn")
 
 ### DelTable
 
-Deletes a specified table that has e no records.
+レコードのない指定されたテーブルを削除します。
 
 #### Syntax
 
@@ -1298,9 +1306,9 @@ DelTable(tblname string)
 
 * **tblname**
 
-  Table name.
+  テーブル名。
 
-#### Example
+#### 例
 
 ```
 DelTable("mytable")
@@ -1310,7 +1318,7 @@ DelTable("mytable")
 
 ### Append
 
-Inserts any type of val into the src array.
+任意のタイプの val を src 配列に挿入します。
 
 #### Syntax
 
@@ -1318,12 +1326,12 @@ Append(src array, val anyType) array
 
 * **src**
 
-  The original array.
+  元の配列。
 * **val**
 
-  The value to be inserted.
+  挿入される値。
 
-#### Example
+#### 例
 
 ```
 var list array
@@ -1334,7 +1342,7 @@ list = Append(list, "new_val")
 
 ### Join
 
-Combines elements of the in array into a string with a specified sep separator.
+in 配列の要素を、指定された sep 区切り記号を使用して文字列に結合します。
 
 #### Syntax
 
@@ -1345,12 +1353,12 @@ Join(in array, sep string) string
 
 * **In**
 
-  Array name.
+  配列名。
 * **sep**
 
-  Separator.
+  セパレーター。
 
-#### Example
+#### 例
 
 ```
  var val string, myarr array
@@ -1363,7 +1371,7 @@ Join(in array, sep string) string
 
 ### Split
 
-Uses the sep separator to split the in string into elements and put them into an array.
+sep(セパレーター) セパレータを使用して、in 文字列を要素に分割し、配列に入れます。
 
 #### Syntax
 
@@ -1378,7 +1386,7 @@ Split(in string, sep string) array
 
    Separator.
 
-#### Example
+#### 例
 
 ```
 var myarr array
@@ -1389,7 +1397,7 @@ myarr = Split("first,second,third", ",")
 
 ### Len
 
-Returns the number of elements in a specified array.
+指定された配列内の要素の数を返します。
 
 #### Syntax
 
@@ -1401,9 +1409,9 @@ Len(val array) int
 
 * **val**
 
-   Array.
+   配列。
 
-#### Example
+#### 例
 
 ```
 if Len(mylist) == 0 {
@@ -1415,8 +1423,7 @@ if Len(mylist) == 0 {
 
 ### Row
 
- The list parameter must not be specified in this case. Return the first object array in the array list. If the list is empty, an empty result is returned. This function is mostly used in conjunction with the [DBFind](#dbfind) function. When using this function, you cannot specify parameters.
-
+ この場合、list パラメータを指定してはなりません。 配列リストの最初のオブジェクト配列を返します。 リストが空の場合は、空の結果が返されます。 この関数は主に [DBFind](#dbfind) 関数と組み合わせて使用されます。 この機能を使用する場合、パラメータを指定することはできません。
 #### Syntax
 
 ```
@@ -1425,9 +1432,9 @@ if Len(mylist) == 0 {
 
 * **list**
 
-   The array of objects returned by the DBFind function.
+   DBFind 関数によって返されるオブジェクトの配列。
 
-#### Example
+#### 例
 
 ```
  var ret map
@@ -1439,7 +1446,7 @@ if Len(mylist) == 0 {
 
 ### One
 
- Returns the field value of the first object array in the array list. If the list array is empty, nil is returned. It is mostly used in conjunction with the [DBFind](#dbfind) function. When using this function, you cannot specify parameters.
+ 配列リスト内の最初のオブジェクト配列のフィールド値を返します。 リスト配列が空の場合は、nil が返されます。 これは主に [DBFind](#dbfind) 関数と組み合わせて使用されます。 この機能を使用する場合、パラメータを指定することはできません。
 
 #### Syntax
 
@@ -1449,13 +1456,13 @@ One(list array, column string) string
 
 *  **list**
 
-  The array of objects returned by the DBFind function.
+  DBFind 関数によって返されるオブジェクトの配列。
 
 * **column**
 
-  Field Name.
+  フィールド名。
 
-#### Example
+#### 例
 
 ```
 var ret string
@@ -1469,7 +1476,7 @@ if ret != nil {
 
 ### GetMapKeys
 
-Returns the key array in the object array.
+オブジェクト配列内のキー配列を返します。
 
 #### Syntax
 
@@ -1481,9 +1488,9 @@ GetMapKeys(val map) array
 
 * **val**
 
-    Object array.
+    オブジェクト配列。
 
-#### Example
+#### 例
 
 ```
 var val map
@@ -1497,7 +1504,7 @@ arr = GetMapKeys(val)
 
 ### SortedKeys
 
-Returns a sorted key array in the object array.
+オブジェクト配列内のソートされたキー配列を返します。
 
 #### Syntax
 
@@ -1508,9 +1515,9 @@ SortedKeys(val map) array
 
 * **val**
 
-    Object array.
+    オブジェクト配列。
 
-#### Example
+#### 例
 
 ```
 var val map
@@ -1524,7 +1531,7 @@ arr = SortedKeys(val)
 
 ### CallContract
 
-Calls the contract with a specified name. All parameters of the data section in the contract must be included in an object array. This function returns the value assigned to the **$result** variable by a specified contract.
+指定された名前でコントラクトを呼び出します。 コントラクト内のデータ セクションのすべてのパラメーターはオブジェクト配列に含まれている必要があります。この関数は、指定されたコントラクトによって **$result** 変数に割り当てられた値を返します。
 
 #### Syntax
 
@@ -1535,12 +1542,12 @@ CallContract(name string, params map)
 
 * **name**
 
-    The name of the contract being called.
+    呼び出されるスマート コントラクトの名前。
 * **params**
 
-    An associative array of the contract input data.
+    コントラクト入力データの連想配列。
 
-#### Example
+#### 例
 
 ```
 var par map
@@ -1552,7 +1559,7 @@ CallContract("MyContract", par)
 
 ### ContractAccess
 
-Checks if the name of contract being executed matches one of the names listed in the parameters. Usually it is used to control contract access to tables. When editing table fields or inserting and adding new column fields in the permissions section of the table, please specify this function in the permissions fields.
+実行されているコントラクトの名前が、パラメーターにリストされている名前のいずれかと一致するかどうかを確認します。 通常、テーブルへのコントラクト アクセスを制御するために使用されます。 テーブルフィールドを編集する場合、またはテーブルの権限セクションで新しい列フィールドを挿入および追加する場合は、権限フィールドでこの機能を指定してください。
 
 #### Syntax
 
@@ -1564,9 +1571,9 @@ ContractAccess(name string, [name string]) bool
 
 * **name**
 
-    Contract name.
+    スマートコントラクト名。
 
-#### Example
+#### 例
 
 ```
 ContractAccess("MyContract")
@@ -1577,9 +1584,9 @@ ContractAccess("MyContract","SimpleContract")
 
 ### ContractConditions
 
-Calls the conditions section in the contract with a specified name.
+指定された名前でコントラクト内の条件セクションを呼び出します。
 
-For this type of contracts, the data section must be empty. If the conditions section is executed without error, it returns true. If there is an error during execution, the parent contract will also be terminated due to the error. This function is usually used to control the contract's access to tables and can be called in the permission fields when editing system tables.
+このタイプのスマート コントラクトの場合、データ セクションは空である必要があります。 条件セクションがエラーなく実行された場合、true を返します。 実行中にエラーが発生した場合、親スマート コントラクトもエラーにより終了します。 この関数は通常、テーブルへのコントラクトのアクセスを制御するために使用され、システム テーブルを編集するときに権限フィールドで呼び出すことができます。
 
 #### Syntax
 
@@ -1590,9 +1597,9 @@ ContractConditions(name string, [name string]) bool
 
 * **name**
 
-    Contract name.
+    コントラクト名。
 
-#### Example
+#### 例
 
 ```
 ContractConditions("MainCondition")
@@ -1602,7 +1609,7 @@ ContractConditions("MainCondition")
 
 ### EvalCondition
 
-Gets the value of the condfield field in the record with a 'name' field from the tablename table, and checks the conditions of the condfield field value.
+tablename テーブルから 'name' フィールドを持つレコードの condfield フィールドの値を取得し、condfield フィールド値の条件をチェックします。
 
 #### Syntax
 
@@ -1613,15 +1620,15 @@ EvalCondition(tablename string, name string, condfield string)
 
 * **tablename**
 
-    Table name.
+    テーブル名。
 *  **name**
 
-    Queries the value with the 'name' field.
+    `name`フィールドの値をクエリします。
 *  **condfield**
 
-    The name of the field whose conditions needs to be checked.
+    条件をチェックする必要があるフィールドの名前。
 
-#### Example
+#### 例
 
 ```
 EvalCondition(`menu`, $Name, `conditions`)
@@ -1631,7 +1638,7 @@ EvalCondition(`menu`, $Name, `conditions`)
 
 ### GetContractById
 
-Returns its contract name by contract ID. If not found the contract, an empty string is returned.
+コントラクト ID によってコントラクト名を返します。 コントラクトが見つからない場合は、空の文字列が返されます。
 
 #### Syntax
 
@@ -1642,9 +1649,9 @@ GetContractById(id int) string
 
 * **Id**
 
-  The contract ID in the contract table contracts.
+  コントラクトテーブルのコントラクトIDです。
 
-#### Example
+#### 例
 
 ```
 var name string
@@ -1655,7 +1662,7 @@ name = GetContractById($IdContract)
 
 ### GetContractByName
 
-This function returns its contract ID by contract name. If not found the contract, zero is returned.
+この関数は、コントラクト名によってそのコントラクトのIDを返します。コントラクトが見つからない場合は、ゼロが返されます。
 
 #### Syntax
 
@@ -1665,9 +1672,9 @@ GetContractByName(name string) int
 
 * **name**
 
-    The contract name in the contract table contracts.
+    コントラクトテーブルのcontractsにおけるコントラクト名です。
 
-#### Example
+#### 例
 
 ```
 var id int
@@ -1678,9 +1685,9 @@ id = GetContractByName(`NewBlock`)
 
 ### RoleAccess
 
-Checks whether the role ID of the contract caller matches one of the IDs specified in the parameter.
+コントラクト呼び出し元のロール ID がパラメーターで指定された ID のいずれかと一致するかどうかを確認します。
 
-You can use this function to control contract access to tables and other data.
+この関数を使用して、テーブルやその他のデータへのコントラクト アクセスを制御できます。
 
 #### Syntax
 
@@ -1692,9 +1699,9 @@ RoleAccess(id int, [id int]) bool
 
 * **Id**
 
-    Role ID.
+    ロールID。
 
-#### Example
+#### 例
 
 ```
 RoleAccess(1)
@@ -1705,7 +1712,7 @@ RoleAccess(1, 3)
 
 ### TransactionInfo
 
-Queries transactions by specified hash value and returns information about the contract executed and its parameters.
+指定されたハッシュ値によってトランザクションをクエリし、実行されたコントラクトとそのパラメータに関する情報を返します。
 
 #### Syntax
 
@@ -1715,11 +1722,11 @@ TransactionInfo(hash: string)
 
   * **hash**
 
-    Transaction hash in hexadecimal string format.
+    16 進文字列形式のトランザクション ハッシュ。
   
 > **Return value**
 
-  This function returns a string in JSON format:
+  この関数は、JSON 形式の文字列を返します。
 
 ```
 {"contract":"ContractName", "params":{"key": "val"}, "block": "N"}
@@ -1729,16 +1736,16 @@ TransactionInfo(hash: string)
 
   *   **contract**
 
-      Contract name.
+      コントラクト名。
   
   *   **params**
 
-      Data passed to contract parameters.
+      コントラクトパラメータに渡されるデータ。
   *   **block**
 
-      ID of the block that processed the transaction.
+      トランザクションを処理したブロックの ID。
 
-#### Example
+#### 例
 
 ```
 var out map
@@ -1749,7 +1756,7 @@ out = JSONDecode(TransactionInfo(hash))
 
 ### Throw
 
-  Generates an error of type exception.
+  例外タイプのエラーを生成します。
 
 #### Syntax
 
@@ -1761,21 +1768,21 @@ Throw(ErrorId string, ErrDescription string)
 
 * **ErrorId**
 
-    Error identifier.
+    エラー識別子。
 
 * **ErrDescription**
 
-    Error description.
+    エラーの説明。
 
 >  **Return value**
 
-  The format of this type of transaction results:
+  このタイプのトランザクション結果の形式は次のとおりです。
 
 ```
 {"type":"exception","error":"Error description","id":"Error ID"}
 ```
 
-#### Example
+#### 例
 
 ```
 Throw("Problem", "There is a problem")
@@ -1785,7 +1792,7 @@ Throw("Problem", "There is a problem")
 
 ### ValidateCondition
 
-  Tries to compile the conditions specified by the condition parameter. If there is an error during the compilation process, an error is generated and the contract called is terminated. This function is designed to check the correctness of the conditional format.
+  条件パラメータで指定された条件をコンパイルしようとします。 コンパイル処理中にエラーが発生した場合、エラーが生成され、呼び出されたコントラクトは終了します。 この関数は、条件付き書式の正確性をチェックするように設計されています。
 
 #### Syntax
 
@@ -1795,12 +1802,12 @@ ValidateCondition(condition string, state int)
 
 * **condition**
 
-    The conditional format that needs to be verified.
+    検証する必要がある条件付き書式。
 * **state**
 
-    Ecosystem ID. If you check the global condition, please specify it as 0.
+    エコシステムID。 グローバル条件をチェックする場合は0を指定してください。
 
-#### Example
+#### 例
 
 ```
 ValidateCondition(`ContractAccess("@1MyContract")`, 1)
@@ -1810,7 +1817,7 @@ ValidateCondition(`ContractAccess("@1MyContract")`, 1)
 
 ### AddressToId
 
-Returns the corresponding account address by wallet address. If an invalid address is specified, '0' is returned.
+ウォレットアドレスごとに対応するアカウントアドレスを返します。 無効なアドレスが指定された場合は、`0`が返されます。
 
 #### Syntax
 
@@ -1821,9 +1828,9 @@ AddressToId(address string) int
 
 *  Address
 
-    Wallet address in `XXXX-...-XXXX` format or number format.
+    「XXXX-...-XXXX」形式または数値形式のウォレットアドレス。
 
-#### Example
+#### 例
 
 ```
 wallet = AddressToId($Recipient)
@@ -1833,7 +1840,7 @@ wallet = AddressToId($Recipient)
 
 ### IdToAddress
 
-Returns the corresponding wallet address by account address. If an invalid address is specified, the invalid address 'invalid' is returned.
+アカウントアドレスごとに対応するウォレットアドレスを返します。 無効なアドレスが指定された場合は、無効なアドレス`invalid`が返されます。
 
 #### Syntax
 
@@ -1844,9 +1851,9 @@ IdToAddress(id int) string
 
 *  **Id**
 
-    Account address.
+    アカウントアドレス。
 
-#### Example
+#### 例
 
 ```
 $address = IdToAddress($id)
@@ -1856,7 +1863,7 @@ $address = IdToAddress($id)
 
 ### PubToID
 
-The account address is returned by public key in hexadecimal format.
+アカウント アドレスは、16 進形式の公開鍵によって返されます。
 
 #### Syntax
 
@@ -1867,9 +1874,9 @@ PubToID(hexkey string) int
 
 *  **hexkey**
 
-    The public key in hexadecimal format.
+    16進数形式の公開鍵です。
 
-#### Example
+#### 例
 
   
 
@@ -1882,7 +1889,7 @@ wallet = PubToID("04fa5e78.....34abd6")
 
 ### DecodeBase64
 
-Returns a string by specifying the base64 format
+Base64形式を指定して文字列を返します。
 
 #### Syntax
 
@@ -1893,9 +1900,9 @@ DecodeBase64(input string) string
 
 *  **Input**
 
-    String in base64 format.
+    Base64形式の文字列。
 
-#### Example
+#### 例
 
 ```
 val = DecodeBase64(mybase64)
@@ -1905,7 +1912,7 @@ val = DecodeBase64(mybase64)
 
 ### EncodeBase64
 
-Returns a string in base64 format by specifying a string.
+文字列を指定してbase64形式の文字列を返します。
 
 #### Syntax
 
@@ -1916,9 +1923,9 @@ EncodeBase64(input string) string
 
 *  **Input**
 
-    The string to be encoded.
+    エンコードされる文字列。
 
-#### Example
+#### 例
 
  
 
@@ -1931,7 +1938,7 @@ base64str = EncodeBase64("my text")
 
 ### Float
 
-Converts an integer or string to a float number.
+整数または文字列を浮動小数点数に変換します。
 
 #### Syntax
 
@@ -1942,9 +1949,9 @@ Float(val int|string) float
 
 * **val**
 
-    An integer or string.
+    整数または文字列です。
 
-#### Example
+#### 例
 
 ```
 val = Float("567.989") + Float(232)
@@ -1954,7 +1961,7 @@ val = Float("567.989") + Float(232)
 
 ### HexToBytes
 
-Converts a string in hexadecimal format to byte type bytes.
+16進形式の文字列をバイト型のバイトに変換します。
 
 #### Syntax
 
@@ -1965,9 +1972,9 @@ Converts a string in hexadecimal format to byte type bytes.
 
 *  **hexdata**
 
-    A string in hexadecimal format.
+    16進形式の文字列です。
 
-#### Example
+#### 例
 
 ```
 var val bytes
@@ -1978,7 +1985,7 @@ val = HexToBytes("34fe4501a4d80094")
 
 ### FormatMoney
 
-Returns the string value of exp / 10 ^ digit.
+exp / 10 ^ digit の文字列値を返します。
 
 #### Syntax
 
@@ -1990,12 +1997,13 @@ FormatMoney(exp string, digit int) string
 
 * **Exp**
 
-    A number in string format.
+    文字列形式の数値。
+
 * **digit**
 
-    The exponent (positive or negative) of 10 in the expression `Exp/10^digit`. Positive values determine decimal places.
+    式 `Exp/10^digit` の 10 の指数 (正または負)。 正の値は小数点以下の桁を決定します。
 
-#### Example
+#### 例
 
 ```
   s = FormatMoney("78236475917384", 0)
@@ -2024,7 +2032,7 @@ Random(min int, max int) int
 
     The upper limit of random numbers. The random number generated will be less than this value.
 
-#### Example
+#### 例
 
 ```
 i = Random(10,5000)
@@ -2034,7 +2042,7 @@ i = Random(10,5000)
 
 ### Int
 
-Converts a value in string format to an integer.
+文字列形式の値を整数に変換します。
 
 #### Syntax
 
@@ -2044,9 +2052,9 @@ Int(val string) int
 
 * **val**
 
-    A number in string format.
+    文字列形式の数値。
 
-#### Example
+#### 例
 
 ```
 mystr = "-37763499007332"
@@ -2057,7 +2065,7 @@ val = Int(mystr)
 
 ### Hash
 
-  Returns the hash of a specified byte array or string, which is generated by the system encryption library crypto.
+  システム暗号化ライブラリ crypto によって生成される、指定されたバイト配列または文字列のハッシュを返します。
 
 #### Syntax
 
@@ -2069,9 +2077,9 @@ Hash(val interface{}) string, error
 
 * **val**
 
-    A string or byte array.
+    文字列またはバイト配列。
 
-#### Example
+#### 例
 
 ```
 var hash string
@@ -2082,7 +2090,7 @@ hash = Hash("Test message")
 
 ### Sha256
 
-  Returns the SHA256 hash of a specified string.
+  指定された文字列の SHA256 ハッシュを返します。
 
 #### Syntax
 
@@ -2094,9 +2102,9 @@ Sha256(val string) string
 
 * **val**
 
-    A string requires the Sha256 hash operation.
+    文字列には Sha256 ハッシュ操作が必要です。
 
-#### Example
+#### 例
 
 ```
 var sha string
@@ -2107,7 +2115,7 @@ sha = Sha256("Test message")
 
 ### Str
 
-Converts an integer int or float float number to a string.
+整数 int または浮動小数点数 float を文字列に変換します。
 
 #### Syntax
 
@@ -2119,9 +2127,9 @@ Str(val int|float) string
 
 * **val**
 
-    An integer or float number.
+    整数または浮動小数点数。
 
-#### Example
+#### 例
 
 ```
 myfloat = 5.678
@@ -2132,7 +2140,7 @@ val = Str(myfloat)
 
 ### JSONEncode
 
-Converts a number, string or array to a string in JSON format.
+数値、文字列、または配列を JSON 形式の文字列に変換します。
 
 #### Syntax
 
@@ -2143,9 +2151,9 @@ JSONEncode(src int|float|string|map|array) string
 
 * **src**
 
-    Data to convert.
+    変換するデータ。
 
-#### Example
+#### 例
 
   
 
@@ -2160,7 +2168,7 @@ json = JSONEncode(mydata)
 
 ### JSONEncodeIndent
 
-Uses the specified indentation to convert a number, string, or array to a string in JSON format.
+指定されたインデントを使用して、数値、文字列、または配列を JSON 形式の文字列に変換します。
 
 #### Syntax
 
@@ -2171,13 +2179,13 @@ JSONEncodeIndent(src int|float|string|map|array, indent string) string
 
 * **src**
 
-    Data to convert.
+    変換するデータ。
 
 * **Indent**
 
-    The string will be used as indentation.
+    文字列はインデントとして使用されます。
 
-#### Example
+#### 例
 
   
 
@@ -2192,7 +2200,7 @@ json = JSONEncodeIndent(mydata, "\t")
 
 ### JSONDecode
 
-Converts a string in JSON format to a number, string or array.
+JSON 形式の文字列を数値、文字列、または配列に変換します。
 
 #### Syntax
 
@@ -2203,9 +2211,9 @@ JSONDecode(src string) int|float|string|map|array
 
 *  **src**
 
-    A string containing data in JSON format.
+    JSON 形式のデータを含む文字列。
 
-#### Example
+#### 例
 
 ```
 var mydata map
@@ -2216,7 +2224,7 @@ mydata = JSONDecode(`{"name": "John Smith", "company": "Smith's company"}`)
 
 ### HasPrefix
 
-Checks whether the string starts with a specified string.
+文字列が指定された文字列で始まるかどうかを確認します。
 
 #### Syntax
 
@@ -2228,17 +2236,17 @@ HasPrefix(s string, prefix string) bool
 
 * **s**
 
-    A string.
+    文字列。
 
 * **prefix**
 
-    The prefix to check.
+    チェックするプレフィックス。
 
 > **Return value**
 
-  If the string starts with a specified string, `true` is returned.
+  文字列が指定された文字列で始まる場合、`true` が返されます。
 
-#### Example
+#### 例
 
 ```
 if HasPrefix($Name, `my`) {
@@ -2250,7 +2258,7 @@ if HasPrefix($Name, `my`) {
 
 ### Contains
 
-Checks whether the string contains a specified substring.
+文字列に指定された部分文字列が含まれているかどうかを確認します。
 
 #### Syntax
 
@@ -2262,17 +2270,17 @@ Contains(s string, substr string) bool
 
 * **s**
 
-    A string.
+    文字列。
 
 * **substr**
 
-    A substring.
+    部分文字列。
 
 > **Return value**
 
-  If the string contains the substring, it returns `true`.
+  文字列に部分文字列が含まれている場合は、`true`を返します。
 
-#### Example
+#### 例
 
 ```
 if Contains($Name, `my`) {
@@ -2284,7 +2292,7 @@ if Contains($Name, `my`) {
 
 ### Replace
 
-Replaces old (the old string) with new (the new string) in the string.
+文字列内の古い (古い文字列) を新しい (新しい文字列) に置き換えます。
 
 #### Syntax
 
@@ -2295,17 +2303,17 @@ Replace(s string, old string, new string) string
 
 * **s**
 
-    The original string.
+   元の文字列。
 
 * **Old**
 
-    The substring to replace.
+    置換する部分文字列。
 
 * **new**
 
-    The new string.
+    新しい文字列。
 
-#### Example
+#### 例
 
 ```
 s = Replace($Name, `me`, `you`)
@@ -2315,7 +2323,7 @@ s = Replace($Name, `me`, `you`)
 
 ### Size
 
-Returns the number of bytes in a specified string.
+指定された文字列のバイト数を返します。
 
 #### Syntax
 
@@ -2326,9 +2334,9 @@ Size(val string) int
 
 * **val**
 
-    A string.
+    文字列。
 
-#### Example
+#### 例
 
 ```
 var len int
@@ -2339,7 +2347,7 @@ len = Size($Name)
 
 ### Sprintf
 
-This function creates a string using the specified template and parameters.
+この関数は、指定されたテンプレートとパラメーターを使用して文字列を作成します。
 
 Available wildcards:
 * `%d` (integer)
@@ -2355,9 +2363,9 @@ Sprintf(pattern string, val ...) string
 
 * **pattern**
 
-    A string template.
+    文字列テンプレート。
 
-#### Example
+#### 例
 
 ```
 out = Sprintf("%s=%d", mypar, 6448)
@@ -2367,11 +2375,11 @@ out = Sprintf("%s=%d", mypar, 6448)
 
 ### Substr
 
-Returns the substring obtained from a specified string starting from the offset offset (calculated from 0 by default), and the maximum length is limited to length.
+オフセット offset (デフォルトでは 0 から計算) から始まる指定された文字列から取得された部分文字列を返します。最大長は length に制限されます。
 
-If the offset or length is less than zero, or the offset is greater than the length, an empty string is returned.
+オフセットまたは長さがゼロより小さい場合、またはオフセットが長さより大きい場合は、空の文字列が返されます。
 
-If the sum of the offset and length is greater than the string size, then, the substring will be returned starting from the offset to the end of the string.
+オフセットと長さの合計が文字列サイズより大きい場合は、オフセットから文字列の末尾までの部分文字列が返されます。
 
 #### Syntax
 
@@ -2382,17 +2390,17 @@ Substr(s string, offset int, length int) string
 
 * **val**
 
-    A string.
+    文字列。
 
 * **Offset**
 
-    Offset.
+    オフセット。
 
 * **length**
 
-    Length of the substring.
+    部分文字列の長さ。
 
-#### Example
+#### 例
 
 ```
 var s string
@@ -2403,7 +2411,7 @@ s = Substr($Name, 1, 10)
 
 ### ToLower
 
-Returns a specified string in lowercase.
+指定された文字列を小文字で返します。
 
 #### Syntax
 
@@ -2414,9 +2422,9 @@ ToLower(val string) string
 
 * **val**
 
-    A string.
+    文字列。
 
-#### Example
+#### 例
 
 ```
 val = ToLower(val)
@@ -2426,7 +2434,7 @@ val = ToLower(val)
 
 ### ToUpper
 
-Returns a specified string in uppercase.
+指定された文字列を大文字で返します。
 
 #### Syntax
 
@@ -2437,9 +2445,9 @@ ToUpper(val string) string
 
 * **val**
 
-    A string.
+    文字列。
 
-#### Example
+#### 例
 
 ```
 val = ToUpper(val)
@@ -2449,7 +2457,7 @@ val = ToUpper(val)
 
 ### TrimSpace
 
-Deletes the leading and trailing spaces, tabs and newlines of a specified string.
+指定された文字列の先頭と末尾のスペース、タブ、改行を削除します。
 
 #### Syntax
 
@@ -2460,9 +2468,9 @@ TrimSpace(val string) string
 
 * **val**
 
-    A string.
+    文字列。
 
-#### Example
+#### 例
 
  
 
@@ -2475,7 +2483,7 @@ val = TrimSpace(" mystr ")
 
 ### Floor
 
-Returns the largest integer value less than or equal to a specified number, float number, and string.
+指定された数値、浮動小数点数値、および文字列以下の最大の整数値を返します。
 
 #### Syntax
 
@@ -2485,9 +2493,9 @@ Floor(x float|int|string) int
 
 * **x**
 
-    A number, float number, and string.
+数値、浮動小数点数、文字列。
 
-#### Example
+#### 例
 
 ```
 val = Floor(5.6) // returns 5
@@ -2497,7 +2505,7 @@ val = Floor(5.6) // returns 5
 
 ### Log
 
-Returns the natural logarithm of a specified number, float number, and string.
+指定された数値、浮動小数点数値、文字列の自然対数を返します。
 
 #### Syntax
 
@@ -2508,9 +2516,9 @@ Log(x float|int|string) float
 
 *  **x**
 
-    A number, float number, and string.
+    数値、浮動小数点数、文字列。
 
-#### Example
+#### 例
 
 ```
 val = Log(10)
@@ -2520,7 +2528,7 @@ val = Log(10)
 
 ### Log10
 
-Returns the base-10 logarithm of a specified number, float number, and string.
+指定された数値、浮動小数点数値、および文字列の底 10 の対数を返します。
 
 #### Syntax
 
@@ -2531,9 +2539,9 @@ Log10(x float|int|string) float
 
 * **x**
 
-    A number, float number, and string.
+    数値、浮動小数点数、文字列。
 
-#### Example
+#### 例
 
  
 
@@ -2545,7 +2553,7 @@ val = Log10(100)
 
 ### Pow
 
-Returns the specified base to the specified power (xy).
+指定された基数を指定されたべき乗 (xy) で返します。
 
 #### Syntax
 
@@ -2556,13 +2564,13 @@ Pow(x float|int|string, y float|int|string) float
 
 * **x**
 
-    Base number.
+    ベース番号。
 
 * **y**
 
     Exponent.
 
-#### Example
+#### 例
 
 ```
 val = Pow(2, 3)
@@ -2571,7 +2579,7 @@ val = Pow(2, 3)
 
 ### Round
 
-Returns the value of a specified number rounded to the nearest integer.
+指定された数値を最も近い整数に四捨五入した値を返します。
 
 #### Syntax
 
@@ -2582,9 +2590,9 @@ Round(x float|int|string) int
 
 * **x**
 
-    A number.
+    数値。
 
-#### Example
+#### 例
 
 ```
 val = Round(5.6)
@@ -2592,7 +2600,7 @@ val = Round(5.6)
 
 ### Sqrt
 
-Returns the square root of a specified number.
+指定された数値の平方根を返します。
 
 ```
 Sqrt(x float|int|string) float
@@ -2601,9 +2609,9 @@ Sqrt(x float|int|string) float
 
 * **x**
 
-    A number.
+    数値。
 
-#### Example
+#### 例
 
 ```
 val = Sqrt(225)
@@ -2613,7 +2621,7 @@ val = Sqrt(225)
 
 ### StringToBytes
 
-Converts a string to bytes.
+文字列をバイトに変換します。
 
 #### Syntax
 
@@ -2624,9 +2632,9 @@ StringToBytes(src string) bytes
 
 * **src**
 
-    A string.
+    文字列。
 
-#### Example
+#### 例
 
  
 
@@ -2639,7 +2647,7 @@ b = StringToBytes("my string")
 
 ### BytesToString
 
-Converts bytes to string.
+バイトを文字列に変換します。
 
 #### Syntax
 
@@ -2650,9 +2658,9 @@ BytesToString(src bytes) string
 
 * **src**
 
-    Byte.
+    バイト。
 
-#### Example
+#### 例
 
 ```
 var s string
@@ -2663,7 +2671,7 @@ s = BytesToString($Bytes)
 
 ### SysParamString
 
-Returns the value of a specified platform parameter.
+指定されたプラットフォーム パラメータの値を返します。
 
 #### Syntax
 
@@ -2674,9 +2682,9 @@ SysParamString(name string) string
 
 * **name**
 
-    Parameter name.
+    パラメータ名。
 
-#### Example
+#### 例
 
 ```
 url = SysParamString(`blockchain_url`)
@@ -2686,7 +2694,7 @@ url = SysParamString(`blockchain_url`)
 
 ### SysParamInt
 
-Returns the value of a specified platform parameter in the form of a number.
+指定されたプラットフォーム パラメーターの値を数値の形式で返します。
 
 #### Syntax
 
@@ -2697,9 +2705,9 @@ SysParamInt(name string) int
 
 * **name**
 
-    Parameter name.
+    パラメータ名。
 
-#### Example
+#### 例
 
 ```
 maxcol = SysParam(`max_columns`)
@@ -2709,7 +2717,7 @@ maxcol = SysParam(`max_columns`)
 
 ### DBUpdateSysParam
 
-Updates the value and conditions of a platform parameter. If you do not need to change the value or conditions, please specify an empty string in the corresponding parameter.
+プラットフォームパラメータの値と条件を更新します。 値や条件を変更する必要がない場合は、該当パラメータに空文字列を指定してください。
 
 #### Syntax
 
@@ -2720,17 +2728,17 @@ DBUpdateSysParam(name, value, conditions string)
 
 * **name**
 
-    Parameter name.
+    パラメータ名。
 
 * **value**
 
-    New value of a parameter.
+    パラメータの新しい値。
 
 * **conditions**
 
-    New conditions for updating a parameter.
+    パラメータを更新するための新しい条件。
 
-#### Example
+#### 例
 
 ```
 DBUpdateSysParam(`fuel_rate`, `400000000000`, ``)
@@ -2739,7 +2747,7 @@ DBUpdateSysParam(`fuel_rate`, `400000000000`, ``)
 
 ### UpdateNotifications
 
-Obtains the notification list of a specified key from the database, and sends the notification obtained to Centrifugo.
+指定されたキーの通知リストをデータベースから取得し、取得した通知を Centrifugo に送信します。
 
 #### Syntax
 
@@ -2750,13 +2758,13 @@ UpdateNotifications(ecosystemID int, keys int...)
 
 * **EcosystemID**
 
-    Ecosystem ID.
+    エコシステムID。
 
 * **key**
 
-    A list of account addresses, separated by commas. Or you can use an array to specify a list of account addresses.
+    カンマで区切られたアカウント アドレスのリスト。 または、配列を使用してアカウント アドレスのリストを指定することもできます。
 
-#### Example
+#### 例
 
 ```
 UpdateNotifications($ecosystem_id, $key_id, 23345355454, 35545454554)
@@ -2767,7 +2775,7 @@ UpdateNotifications(1, [$key_id, 23345355454, 35545454554])
 
 ### UpdateRolesNotifications
 
-Obtains the notification list of all account addresses of a specified role ID in the database, and sends the notification obtained to Centrifugo.
+データベース内の指定されたロール ID のすべてのアカウント アドレスの通知リストを取得し、取得した通知を Centrifugo に送信します。
 
 #### Syntax
 
@@ -2778,13 +2786,13 @@ UpdateRolesNotifications(ecosystemID int, roles int ...)
 
 *  **EcosystemID**
 
-    Ecosystem ID.
+    エコシステムID。
 
 *  **roles**
 
-    A list of role IDs, separated by commas. Or you can use an array to specify a list of role IDs.
+    カンマで区切られたロール ID のリスト。 または、配列を使用してロール ID のリストを指定することもできます。
 
-#### Example
+#### 例
 
 ```
 UpdateRolesNotifications(1, 1, 2)
@@ -2793,10 +2801,10 @@ UpdateRolesNotifications(1, 1, 2)
 
 ### HTTPRequest
 
-Sends HTTP requests to the specified address.
-> Note
+指定されたアドレスに HTTP リクエストを送信します。
+> 注意
 
-> This function can only be used in CLB contracts.
+> この機能は CLB 契約でのみ使用できます。
 
 #### Syntax
 
@@ -2807,21 +2815,21 @@ HTTPRequest(url string, method string, heads map, pars map) string
 
 * **Url**
 
-    Address, to which the request will be sent.
+   リクエストが送信されるアドレス。
 
 * **method**
 
-    Request type (GET or POST).
+    リクエストのタイプ (GET または POST)。
 
 * **heads**
 
-    An array of request headers, objects.
+    リクエストヘッダー、オブジェクトの配列。
 
 * **pars**
 
-    Request parameters.
+    リクエストパラメータ。
 
-#### Example
+#### 例
 
 ```
 var ret string
@@ -2838,11 +2846,11 @@ json = JSONToMap(ret)
 
 ### HTTPPostJSON
 
-This function is similar to the HTTPRequest function, but it sends a POST request and the request parameters are strings.
+この関数は HTTPRequest 関数に似ていますが、POST リクエストを送信し、リクエスト パラメータは文字列です。
 
->  Note
+> 注意
 
->  This function can only be used in CLB contracts
+> この機能は CLB スマートコントラクトでのみ使用できます
 
 #### Syntax
 
@@ -2853,14 +2861,14 @@ HTTPPostJSON(url string, heads map, pars string) string
 
 * **Url**
 
-    Address, to which the request will be sent.
+    リクエストが送信されるアドレス。
 
 * **heads**
 
-    An array of request headers, objects.
+    リクエストヘッダー、オブジェクトの配列。
 * **pars**
 
-    Request parameters as a JSON string. 
+    パラメータを JSON 文字列としてリクエストします。
 
 ####   Example
 
@@ -2878,7 +2886,7 @@ json = JSONToMap(ret)
 
 ### BlockTime
 
-Returns the generation time of the block in SQL format.
+ブロックの生成時刻をSQL形式で返します。
 
 ####   Syntax
 
@@ -2888,7 +2896,7 @@ BlockTime()
 
 
 
-#### Example
+#### 例
 
 ```
 var mytime string
@@ -2900,7 +2908,7 @@ DBInsert("mytable", myid, {time: mytime})
 
 ### DateTime
 
-Converts the timestamp unixtime to a string in YYYY-MM-DD HH:MI:SS format.
+タイムスタンプ unixtime を YYYY-MM-DD HH:MI:SS 形式の文字列に変換します。
 
 #### Syntax
 
@@ -2910,7 +2918,7 @@ DateTime(unixtime int) string
 
 
 
-#### Example
+#### 例
 
 ```
 DateTime(1532325250)
@@ -2919,7 +2927,7 @@ DateTime(1532325250)
 
 ### UnixDateTime
 
-Converts a string in YYYY-MM-DD HH:MI:SS format to a timestamp unixtime
+YYYY-MM-DD HH:MI:SS 形式の文字列をタイムスタンプ unixtime に変換します。
 
 #### Syntax
 
@@ -2929,7 +2937,7 @@ UnixDateTime(datetime string) int
 
 
 
-#### Example
+#### 例
 
 ```
 UnixDateTime("2018-07-20 14:23:10")
@@ -2939,9 +2947,9 @@ UnixDateTime("2018-07-20 14:23:10")
 
 ### CreateOBS
 
-Creates a child CLB.
+子CLBを作成します。
 
-This function can only be used in the master CLB mode.
+この機能はマスター CLB モードでのみ使用できます。
 
 #### Syntax
 
@@ -2952,21 +2960,21 @@ CreateOBS(OBSName string, DBUser string, DBPassword string, OBSAPIPort int)
 
 * **OBSName**
 
-    CLB name.
+    CLB名。
 
 * **DBUser**
 
-    The role name of the database.
+    データベースのロール名。
 
 *  **DBPassword**
 
-    The password of the role.
+    ロールのパスワード。
 
 * **OBSAPIPort**
 
-    The port of the API request.
+    API リクエストのポート。
 
-#### Example
+#### 例
 
 ```
 CreateOBS("obsname", "obsuser", "obspwd", 8095)
@@ -2975,9 +2983,9 @@ CreateOBS("obsname", "obsuser", "obspwd", 8095)
 
 ### GetOBSList
 
-Returns the list of child CLBs.
+子 CLB のリストを返します。
 
-This function can only be used in the master CLB mode.
+この機能はマスター CLB モードでのみ使用できます。
 
 #### Syntax
 
@@ -2988,13 +2996,13 @@ GetOBSList()
 
 > **Return value**
 
-An array of objects, where the key is the CLB name and the value is the process state.
+オブジェクトの配列。キーは CLB 名、値はプロセス状態です。
 
 ### RunOBS
 
-A process running the CLB.
+CLB を実行するプロセス。
 
-This function can only be used in the master CLB mode.
+この機能はマスター CLB モードでのみ使用できます。
 
 #### Syntax
 
@@ -3005,15 +3013,15 @@ RunOBS(OBSName string)
 
 * **OBSName**
 
-  CLB name.
+  CLB名。
 
-  It can only contain letters and numbers, and the space symbol cannot be used.
+  文字と数字のみを含めることができ、スペース記号は使用できません。
 
 ### StopOBS
 
-Stop the process of a specified CLB.
+指定した CLB のプロセスを停止します。
 
-This function can only be used in the master CLB mode.
+この機能はマスター CLB モードでのみ使用できます。
 
 #### Syntax
 
@@ -3024,15 +3032,15 @@ StopOBS(OBSName string)
 
 * **OBSName**
 
-  CLB name.
+  CLB名。
 
-  It can only contain letters and numbers, and the space symbol cannot be used.
+  文字と数字のみを含めることができ、スペース記号は使用できません。
 
 ### RemoveOBS
 
-Deletes the process of a specified CLB.
+指定された CLB のプロセスを削除します。
 
-This function can only be used in the master CLB mode.
+この機能はマスター CLB モードでのみ使用できます。
 
 #### Syntax
 
@@ -3043,295 +3051,299 @@ RemoveOBS(OBSName string)
 
 * **OBSName**
 
-CLB name.
+CLB名。
 
-It can only contain letters and numbers, and the space symbol cannot be used.
+文字と数字のみを含めることができ、スペース記号は使用できません。
 
 ## System Contracts
 
-System contracts are created by default when the IBax blockchain platform is launched. All these contracts were created in the first ecosystem. This is why you need to specify their full names when calling them from other ecosystems, for example, `@1NewContract`.
+システム コントラクトは、IBax ブロックチェーン プラットフォームの起動時にデフォルトで作成されます。 これらすべての契約は最初のエコシステムで作成されました。 このため、他のエコシステムから呼び出すときは、`@1NewContract` のようにフルネームを指定する必要があります。
 
 ### NewEcosystem
 
-This contract creates a new ecosystem. To obtain the ID of the ecosystem created, you must quote the result filed returned in [txstatus](../reference/api2.md#txstatus).
+このスマート コントラクトは新しいエコシステムを作成します。 作成されたエコシステムの ID を取得するには、[txstatus](../reference/api2.md#txstatus) で返された結果フィールドを引用する必要があります。
 
-Parameters:
-  * **Name** string - name of the ecosystem. It can be changed later.
+パラメーター：
+   * **Name** 文字列 - エコシステムの名前。 後で変更することもできます。
 
 ### EditEcosystemName
 
-Changes the name of the ecosystem in the 1_ecosystems table that only exists in the first ecosystem.
+最初のエコシステムにのみ存在する 1_ecosystems テーブル内のエコシステムの名前を変更します。
 
-Parameters:
-  * **EcosystemID** int - changes the name of the ecosystem ID;
-  * **NewName** string - new name of the ecosystem.
+パラメーター：
+   * **EcosystemID** int - エコシステム ID の名前を変更します。
+   * **NewName** string - エコシステムの新しい名前。
 
 ### NewContract
 
-Creates a new contract in the current ecosystem.
+現在のエコシステムに新しいコントラクトを作成します。
 
-Parameters:
-  * **ApplicationId** int - the application to which a new contract belongs;
-  * **Value** string - contract source code. The upper layer must have only one contract;
-  * **Conditions** string - changes the conditions of the contract;
-  * **TokenEcosystem** int "optional" - ecosystem ID. It determines which token will be used for transactions when the contract is activated.
+パラメーター：
+   * **ApplicationId** int - 新しいコントラクトが属するアプリケーション。
+   * **値** string - コントラクト ソース コード。 上位層にはコントラクトが 1 つだけ必要です。
+   * **Conditions** string - 契約の条件を変更します。
+   * **TokenEcosystem** int "optional" - エコシステムID。 コントラクトがアクティブ化されるときに、トランザクションにどのトークンが使用されるかを決定します。
 
 ### EditContract
 
-Edits the contract in the current ecosystem.
+現在のエコシステムでコントラクトを編集します。
 
-Parameters:
-  * **Id** int - the contract ID changed;
-  * **Value** string "optional" - source code of the contract;
-  * **Conditions** string "optional" - changes the conditions of the contract.
+パラメーター：
+   * **Id** int - 変更されたコントラクト ID。
+   * **値** string "optional" - コントラクトのソース コード。
+   * **Conditions** string "optional" - 契約の条件を変更します。
 
 ### BindWallet
-Binding the contract to the wallet address in the current ecosystem. After binding with the contract, the contract execution fee will be paid under this address. 
+現在のエコシステムのウォレット アドレスにコントラクトをバインドします。 スマート コントラクトを結び付けた後、スマート コントラクトの実行料金はこのアドレスに支払われます。
 
-Parameters:
-  * **Id** int - the contract ID to be bound.
-  * **WalletId** string "optional" - the wallet address bound to the contract.
+パラメーター：
+   * **Id** int - バインドされるコントラクト ID。
+   * **WalletId** string "optional" - コントラクトにバインドされたウォレット アドレス。
 
 ### UnbindWallet
 
-Unbinding the contract from the wallet address in the current ecosystem. Only addresses bound to the contract can be unbound. After unbinding the contract, users who execute the contract will pay the execution fee.
+現在のエコシステムのウォレットアドレスからコントラクトのバインドを解除します。 コントラクトにバインドされているアドレスのみをバインド解除できます。 スマートコントラクトの拘束を解除した後、コントラクトを実行するユーザーは実行手数料を支払います。
 
-Parameters:
-  * **Id** int - the ID of the contract being bound.
+パラメーター：
+   * **Id** int - バインドされているコントラクトの ID。
 
 ### NewParameter
 
 A new ecosystem parameter has been added to the current ecosystem.
 
 Parameters:
-  * **Name** string - parameter name;
-  * **Value** string - parameter value;
-  * **Conditions** string - conditions to change the parameter.
+  * **Name** string - パラメータ名。
+  * **Value** string - パラメータ値。
+  * **Conditions** string - パラメータを変更する条件。
 
 ### EditParameter
 
-Changes existing ecosystem parameters in the current ecosystem.
+現在のエコシステム内の既存のエコシステムパラメータを変更します。
 
 Parameters:
-  * **Name** string - name of the parameter to be changed;
-  * **Value** string - new parameter value;
-  * **Conditions** string - new conditions to change the parameter.
+  * **Name** string - 変更するパラメータの名前。
+  * **Value** string - 新しいパラメータ値。
+  * **Conditions** string - パラメータを変更するための新しい条件。
 
 ### NewMenu
 
-Adds a new menu in the current ecosystem.
+現在のエコシステムに新しいメニューを追加します。
 
-Parameters:
-  * **Name** string - menu name;
-  * **Value** string - menu source code;
-  * **Title** string "optional" - menu title;
-  * **Conditions** string - conditions to change the menu.
+パラメータ:
+  * **Name** string - メニュー名
+  * **Value** string - メニューのソースコード
+  * **Title** string "optional" - メニュータイトル
+  * **Conditions** string - メニューを変更する条件
+
 
 ### EditMenu
 
-Changes the existing menu in the current ecosystem.
+現在のエコシステムの既存のメニューを変更します。
 
-Parameters:
-  * **Id** int - menu ID to be changed;
-  * **Value** string "optional" - source code of the new menu;
-  * **Title** string "optional" - title of the new menu;
-  * **Conditions** string "optional" - new conditions to change the menu.
+パラメータ:
+  * **Id** int - 変更するメニューのID
+  * **Value** string "optional" - 新しいメニューのソースコード
+  * **Title** string "optional" - 新しいメニューのタイトル
+  * **Conditions** string "optional" - メニューを変更する新しい条件
 
 ### AppendMenu
 
-Adds the source code content to existing menus in the current ecosystem
+現在のエコシステムの既存のメニューにソースコードのコンテンツを追加します。
 
-Parameters:
-  * **Id** int - menu ID;
-  * **Value** string - source code to be added.
+パラメータ:
+  * **Id** int - メニューのID
+  * **Value** string - 追加するソースコード
 
 ### NewPage
 
-Adds a new page in the current ecosystem.
+現在のエコシステムに新しいページを追加します。
 
-Parameters:
-  * **Name** string - name of the page;
-  * **Value** string - source code of the page;
-  * **Menu** string - name of the menu associated with the page;
-  * **Conditions** string - conditions to change the page;
-  * **ValidateCount** int "optional" - number of nodes required for page validation. If this parameter is not specified, the min_page_validate_count ecosystem parameter value is used. The value of this parameter cannot be less than min_page_validate_count and greater than max_page_validate_count;
+パラメータ:
+  * **Name** string - ページの名前
+  * **Value** string - ページのソースコード
+  * **Menu** string - ページに関連付けられたメニューの名前
+  * **Conditions** string - ページを変更するための条件
+  * **ValidateCount** int "optional" - ページの検証に必要なノードの数。このパラメータが指定されていない場合、min_page_validate_countエコシステムパラメータの値が使用されます。このパラメータの値は、min_page_validate_count未満またはmax_page_validate_countを超えることはできません。
+  * **ValidateMode** int "optional" - ページの妥当性チェックのモード。このパラメータの値が0の場合、ページが読み込まれる時点でチェックされます。このパラメータの値が1の場合、ページが読み込まれる時点やページを終了する時点でもチェックされます。
 
-  * **ValidateMode** int "optional" - mode of page validity check. The page will be checked when it is loaded if the value of this parameter is 0; or checked when it is loaded or exit the page if the value of this parameter is 1. 
 
 ### EditPage
 
-Changes existing pages in the current ecosystem.
+現在のエコシステム内の既存のページを変更します。
 
-Parameters:
-  * **Id** int - ID of the page to be changed;
-  * **Value** string "optional" - source code of the new page;
-  * **Menu** string "optional" - name of the new menu associated with the page;
-  * **Conditions** string "optional" - new conditions to change the page;
-  * **ValidateCount** int "optional" - number of nodes required for page validation. If this parameter is not specified, the min_page_validate_count ecosystem parameter value is used. The value of this parameter cannot be less than min_page_validate_count and greater than max_page_validate_count;
-  * **ValidateMode** int "optional" - mode of page validity check. The page will be checked when it is loaded if the value of this parameter is 0; or checked when it is loaded or exit the page if the value of this parameter is 1. 
+パラメータ:
+  * **Id** int - 変更するページのID
+  * **Value** string "optional" - 新しいページのソースコード
+  * **Menu** string "optional" - ページに関連付けられる新しいメニューの名前
+  * **Conditions** string "optional" - ページを変更するための新しい条件
+  * **ValidateCount** int "optional" - ページの検証に必要なノードの数。このパラメータが指定されていない場合、min_page_validate_countエコシステムパラメータの値が使用されます。このパラメータの値は、min_page_validate_count未満またはmax_page_validate_countを超えることはできません。
+  * **ValidateMode** int "optional" - ページの妥当性チェックのモード。このパラメータの値が0の場合、ページが読み込まれる時点でチェックされます。このパラメータの値が1の場合、ページが読み込まれる時点やページを終了する時点でもチェックされます。
 
 ### AppendPage
 
-Adds the source content to existing pages in the current ecosystem.
+現在のエコシステム内の既存のページにソースコードの内容を追加します。
 
-Parameters:
-* **Id** int - ID of the page to be changed;
-* **Value** string - the source code to be added.
+パラメータ:
+  * **Id** int - 変更するページのID
+  * **Value** string - 追加するソースコード
 
 ### NewBlock
 
-Adds a page module to the current ecosystem.
+現在のエコシステムにページモジュールを追加します。
 
-Parameters:
-  * **Name** string - name of the module;
-  * **Value** string - source code of the module;
-  * **Conditions** string - conditions to change the module.
+パラメータ:
+  * **Name** string - モジュールの名前
+  * **Value** string - モジュールのソースコード
+  * **Conditions** string - モジュールを変更するための条件
 
 ### EditBlock
 
-Changes existing page modules in the current ecosystem.
+現在のエコシステム内のページモジュールを変更します。
 
-Parameters:
-  * Id int - module ID to be changed;
-  * Value string - source code of the new module;
-  * Conditions string - new conditions to change the module.
+パラメータ:
+  * Id int - 変更するモジュールのID
+  * Value string - 新しいモジュールのソースコード
+  * Conditions string - モジュールを変更するための新しい条件
 
 ### NewTable
 
 Adds a new table to the current ecosystem.
 
-Parameters:
-  * **ApplicationId** int - application ID of the associated table;
-  * **Name** string - name of the new table;
-  * **Columns** string - field array in JSON format `[{"name":"...", "type":"...","index": "0", "conditions":".. ."},...]`, where
-    * **name** - field name, only Latin characters;
-    * **type** - data type `varchar,bytea,number,datetime,money,text,double,character`;
-    * **index** - non-primary key field `0`, primary key `1`;
-    * **conditions** - conditions to change the field data, and the access permissions must be specified in JSON format "`{"update":"ContractConditions(MainCondition)", "read":"ContractConditions(MainCondition)"}`;
-  * **Permissions** string - access permissions in JSON format `{"insert": "...", "new_column": "...", "update": "...", "read": ".. ."}`.
-    * **insert** - permission to insert entries;
-    * **new_column** - permission to add a new column;
-    * **update** - permission to change entry data;
-    * **read** - permission to read entry data.
+現在のエコシステムに新しいテーブルを追加します。
+
+パラメーター：
+  * **ApplicationId** int - 関連するテーブルのアプリケーションID
+  * **Name** string - 新しいテーブルの名前
+  * **Columns** string - JSON形式のフィールド配列 `[{"name":"...", "type":"...","index": "0", "conditions":".. ."},...]`。以下の項目が含まれます：
+    * **name** - フィールド名（英字のみ）
+    * **type** - データ型 `varchar,bytea,number,datetime,money,text,double,character`
+    * **index** - 非主キーフィールド `0`、主キー `1`
+    * **conditions** - フィールドデータを変更するための条件。アクセス許可はJSON形式で指定する必要があります `{"update":"ContractConditions(MainCondition)", "read":"ContractConditions(MainCondition)"}`
+  * **Permissions** string - アクセス許可を示すJSON形式 `{"insert": "...", "new_column": "...", "update": "...", "read": ".. ."}`。以下の項目が含まれます：
+    * **insert** - エントリの挿入権限
+    * **new_column** - 新しい列の追加権限
+    * **update** - エントリデータの変更権限
+    * **read** - エントリデータの読み取り権限
+
 
 ### EditTable
 
-Changes the access permissions of a table in the current ecosystem.
+現在のエコシステム内のテーブルのアクセス許可を変更します。
 
-Parameters:
-  * **Name** string - name of the table;
-  * **InsertPerm** string - permission to insert entries into the table;
-  * **UpdatePerm** string - permission to update entries in the table;
-  * **ReadPerm** string - permission to read entries in the table;
-  * **NewColumnPerm** string - permission to create a new column;
+パラメーター：
+   * **Name** string - テーブルの名前。
+   * **InsertPerm** string - テーブルにエントリを挿入する権限。
+   * **UpdatePerm** string - テーブル内のエントリを更新する権限。
+   * **ReadPerm** string - テーブル内のエントリを読み取る権限。
+   * **NewColumnPerm** string - 新しい列を作成する権限。
 
 ### NewColumn
 
-Adds a new field to the table of the current ecosystem.
+現在のエコシステムのテーブルに新しいフィールドを追加します。
 
-Parameters:
-  * **TableName** string - table name;
-  * **Name** string - field name in Latin characters;
-  * **Type** string - data type `varchar,bytea,number,money,datetime,text,double,character`;
-  * **UpdatePerm** string - permission to change the value in the column;
-  * **ReadPerm** string - permission to read the value in the column.
+パラメーター：
+   * **TableName** string - テーブル名。
+   * **名前** string - ラテン文字のフィールド名。
+   * **Type** string - データ型 `varchar,bytea,number,money,datetime,text,double,character`;
+   * **UpdatePerm** string - 列の値を変更する権限。
+   * **ReadPerm** string - 列の値を読み取る権限。
 
 ### EditColumn
 
-Changes the permission of a specified table field in the current ecosystem.
+現在のエコシステム内の指定されたテーブルフィールドの権限を変更します。
 
-Parameters:
-  * **TableName** string - table name;
-  * **Name** string - field name in Latin characters to be changed;
-  * **UpdatePerm** string - new permission to change the value in the column;
-  * **ReadPerm** string - new permission to read the value in the column.
+パラメーター：
+   * **TableName** string - テーブル名。
+   * **Name** string - 変更するラテン文字のフィールド名。
+   * **UpdatePerm** string - 列の値を変更するための新しい権限。
+   * **ReadPerm** string - 列の値を読み取るための新しい権限。
 
 ### NewLang
 
-Adds language resources to the current ecosystem, and the permission to do so is set in the changing_language parameter of the ecosystem parameters.
+現在のエコシステムに言語リソースを追加します。そのための権限は、エコシステム パラメーターの Changing_Language パラメーターに設定されます。
 
-Parameters:
+パラメーター：
 
-  * **Name** string - name of the language resources in Latin characters;
-  * **Trans** string - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "zh": "Chinese text"}`.
+   * **Name** string  - ラテン文字での言語リソースの名前。
+   * **Trans** string - 2 文字の lang コードをキーとし、翻訳された文字列を値とする JSON 形式の文字列。 例: `{"en": "英語テキスト"、"jp": "日本語テキスト"}`。
 
 ### EditLang
 
-Changes the language resources in the current ecosystem, and the permission to do so is set in the changing_language parameter of the ecosystem parameter.
+現在のエコシステム内の言語リソースを変更します。変更するための権限は、エコシステム パラメーターの Changing_Language パラメーターに設定されます。
 
-Parameters:
+パラメーター：
 
-  * **Id** int - language resources ID.
-  * **Trans** - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "zh": "Chinese text"}`.
+   * **Id** int - 言語リソース ID。
+   * **Trans** - 2 文字の lang コードをキーとし、翻訳された文字列を値とする JSON 形式の文字列。例: `{"en": "英語テキスト"、"jp": "日本語テキスト"}`。
 
 ### Import
 
-Imports an application into the current ecosystem and imports the data loaded from the [ImportUpload](#importupload) contract.
+アプリケーションを現在のエコシステムにインポートし、[ImportUpload](#importupload) コントラクトからロードされたデータをインポートします。
 
-Parameters:
+パラメーター：
 
-  * **Data** string - data imported in text format, which comes from a file exported by the ecosystem.
+   * **データ** string - エコシステムによってエクスポートされたファイルから取得される、テキスト形式でインポートされたデータ。
 
 ### ImportUpload
 
-Loads an external application file into the buffer_data table of the current ecosystem for subsequent import.
+後続のインポートのために、外部アプリケーション ファイルを現在のエコシステムのbuffer_data テーブルにロードします。
 
-Parameters:
-  * **InputFile** file - a file written to the buffer_data table of the current ecosystem.
+パラメーター：
+   * **InputFile** ファイル - 現在のエコシステムのbuffer_data テーブルに書き込まれるファイル。
 
 ### NewAppParam
 
-Adds new application parameters to the current ecosystem.
+新しいアプリケーションパラメータを現在のエコシステムに追加します。
 
-Parameters:
-  * **ApplicationId** int - application ID;
-  * **Name** string - parameter name;
-  * **Value** string - parameter value;
-  * **Conditions** string - permission to change the parameter.
+パラメーター：
+   * **ApplicationId** int - アプリケーション ID;
+   * **Name** string - パラメータ名。
+   * **alue** string - パラメータ値。
+   * **Conditions** string - パラメーターを変更する権限。
 
 ### EditAppParam
 
-Changes existing application parameters in the current ecosystem.
+現在のエコシステム内の既存のアプリケーションパラメータを変更します。
 
-Parameters:
-  * **Id** int - application parameter ID;
-  * **Value** string "optional" - new parameter value;
-  * **Conditions** string "optional" - new permissions to change the parameter.
+パラメーター：
+  * **Id** int - アプリケーション パラメータ ID。
+  * **Value** string "optional" - 新しいパラメーター値。
+  * **Conditions** string "optional" - パラメータを変更するための新しい権限。
 
 ### NewDelayedContract
 
-Adds a new task to the delayed contracts scheduler daemon.
+新しいタスクを遅延コントラクトスケジューラー デーモンに追加します。
 
-The delayered contracts scheduler runs contracts required by the currently generated block.
+遅延コントラクト スケジューラは、現在生成されているブロックに必要なコントラクトを実行します。
 
-Parameters:
-  * **Contract** string - contract name;
-  * **EveryBlock** int - the contract will be executed every such amount of blocks;
-  * Conditions string - permission to change the task;
-  * **BlockID** int "optional" - the block ID where the contract must be executed. If not specified, it will be calculated automatically by adding the "current block ID" + EveryBlock;
-  * **Limit** int "optional" - the maximum number of task execution. If not specified, the task will be executed for an unlimited times.
+パラメーター：
+  * **Contract** string - コントラクト名。
+  * **EveryBlock** int - コントラクトはブロックの量ごとに実行されます。
+  * Conditions string - タスクを変更する権限。
+  * **BlockID** int "optional" - コントラクトを実行する必要があるブロック ID。 指定しない場合は、「現在のブロック ID」+EveryBlock を加算して自動的に計算されます。
+  * **Limit** int "optional" - タスク実行の最大数。 指定しない場合、タスクは無制限に実行されます。
 
 ### EditDelayedContract
 
-Changes a task in the delayed contracts scheduler daemon. 
+遅延コントラクトスケジューラ デーモンのタスクを変更します。
 
-Parameters:
-  * **Id** int - task ID;
-  * **Contract** string - contract name;
-  * **EveryBlock** int - the contract will be executed every such amount of blocks;
-  * **Conditions** string - permission to change the task;
-  * **BlockID** int "optional" - the block ID where the contract must be executed. If not specified, it will be calculated automatically by adding the "current block ID" + EveryBlock;
-  * **Limit** int "optional" - the maximum number of task execution. If not specified, the task will be executed for an unlimited times.
-  * **Deleted** int "optional" - task switching. A value of `1` will disable the task. A value of `0` will enable the task.
+パラメーター：
+  * **Id** int - タスク ID;
+  * **Contract** string - コントラクト名。
+  * **EveryBlock** int - コントラクトはブロックの量ごとに実行されます。
+  * **Conditions** string - タスクを変更する権限。
+  * **BlockID** int "optional" - コントラクトを実行する必要があるブロック ID。 指定しない場合は、「現在のブロック ID」+EveryBlock を加算して自動的に計算されます。
+  * **Limit** int "optional" - タスク実行の最大数。 指定しない場合、タスクは無制限に実行されます。
+  * **Deleted** int "optional" - タスクの切り替え。 値「1」はタスクを無効にします。 値`0`はタスクを有効にします。
 
 ### UploadBinary
 
-Adds or overwrites a static file in the X_binaries table. When calling a contract via HTTP API, the request must be in `multipart/form-data` format; the DataMimeType parameter will be used in conjunction with the form data.
+X_binaries テーブルに静的ファイルを追加または上書きします。 HTTP API 経由でコントラクトを呼び出す場合、リクエストは`multipart/form-data`形式である必要があります。 DataMimeType パラメータはフォーム データと組み合わせて使用されます。
 
-Parameters:
-  * **Name** string - name of the static file;
-  * **Data** bytes - content of the static file;
-  * **DataMimeType** string "optional" - a static file in mime-type format;
-  * **ApplicationId** int - the application ID associated with the X_binaries table.
+パラメーター：
+  * **Name** string - 静的ファイルの名前。
+  * **Data** bytes - 静的ファイルの内容。
+  * **DataMimeType** string "optional" - 静的ファイルの MIME タイプ
+  * **ApplicationId** int - X_binaries テーブルに関連付けられたアプリケーション ID
 
-  If the DataMimeType parameter is not passed, the `application/octet-stream` format is used by default.
+DataMimeType パラメータが渡されない場合、デフォルトで `application/octet-stream` 形式が使用されます。
