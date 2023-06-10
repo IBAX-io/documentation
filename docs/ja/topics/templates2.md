@@ -1,26 +1,26 @@
-# Template Language
+# テンプレート言語
 
-  - [Page construction](#page-construction)
-    - [Template engine](#template-engine)
-    - [Create pages](#create-pages)
-      - [Visual page designer](#visual-page-designer)
-      - [Applicable styles](#applicable-styles)
-      - [Page module](#page-module)
-      - [Language resource editor](#language-resource-editor)
-  - [Logicor template language](#logicor-template-language)
-    - [Logicor overview](#logicor-overview)
-      - [Use PageParams to pass parameters to pages](#use-pageparams-to-pass-parameters-to-pages)
-      - [Calling contracts](#calling-contracts)
-  - [Logicor function classification](#logicor-function-classification)
-    - [Operations on variables:](#operations-on-variables)
-    - [Navigational operations:](#navigational-operations)
-    - [Data manipulation:](#data-manipulation)
-    - [Data presentation:](#data-presentation)
-    - [Accepting of data:](#accepting-of-data)
-    - [Data formatting elements:](#data-formatting-elements)
-    - [Form elements:](#form-elements)
-    - [Operations on code blocks:](#operations-on-code-blocks)
-  - [Logicor function references](#logicor-function-references)
+   - [ページ構成](#pページ構成)
+    - [テンプレートエンジン](#テンプレートエンジン)
+    - [ページの作成](#ページの作成)
+      - [ビジュアルページデザイナー](#ビジュアルページデザイナー)
+      - [適用可能なスタイル](#適用可能なスタイル)
+      - [ページモジュール](#ページモジュール)
+      - [言語リソースエディタ](#言語リソースエディタ)
+  - [Logicalテンプレート言語](#Logicalテンプレート言語)
+    - [Logicalの概要](#lLogicalの概要)
+      - [PageParamsを使用してパラメータをページに渡す](#PageParamsを使用してパラメータをページに渡す)
+      - [スマートコントラクトの呼び出し](#スマートコントラクトの呼び出し)
+  - [Logicalの機能分類](#Logicalの機能分類)
+    - [変数の操作:](#変数の操作)
+    - [ナビゲーション操作:](#nナビゲーション操作)
+    - [データ操作:](#データ操作)
+    - [データのプレゼンテーション:](#データのプレゼンテーション)
+    - [データの受け入れ:](#データの受け入れ)
+    - [データフォーマット要素:](#データフォーマット要素)
+    - [フォーム要素:](#フォーム要素)
+    - [コードブロックに対する操作:](#コードブロックに対する操作)
+  - [Logicor関数のリファレンス](#logicor関数のリファレンス)
     - [Address](#address)
     - [AddressToId](#addresstoid)
     - [AddToolButton](#addtoolbutton)
@@ -87,126 +87,126 @@
       - [Button](#button-app)
       - [Icon](#icon)
 
-## Page construction
+## ページ構成
 
-Weaver's Integrated Development Environment (IDE) is created using React, a JavaScript library. It has a page editor and a visual page designer. Pages are basic parts of an application, which are used to retrieve and display data from tables, create forms for receiving user input data, pass data to contracts, and navigate between application pages. Like contracts, pages are stored in the blockchain, which can ensure they are tamper-proof when loaded in the software client.
+Weaver の統合開発環境 (IDE) は、JavaScript ライブラリである React を使用して作成されます。 ページエディターとビジュアルページデザイナーが備わっています。 ページはアプリケーションの基本的な部分であり、テーブルからのデータの取得と表示、ユーザー入力データを受信するフォームの作成、契約へのデータの受け渡し、およびアプリケーション ページ間の移動に使用されます。 契約書と同様に、ページはブロックチェーンに保存されるため、ソフトウェア クライアントに読み込まれる際の改ざん防止が保証されます。
 
-### Template engine
+### テンプレートエンジン
 
-Page elements (pages and menus) are formed by developers in the template engine of a verification node using the template language in Weaver's page editor. All pages are constructed using the Logicor language developed by IBAX's development team. Use content/... API commands to request pages from nodes on the network. What the template engine sent as a response to this type of request is not an HTML page, but a JSON code composed of HTML tags that form a tree in accordance with the template structure. If you want to test the template engine, you can refer to the [content](../reference/api2.md#content) API command.
+ページ要素 (ページとメニュー) は、開発者が Weaver のページ エディターのテンプレート言語を使用して検証ノードのテンプレート エンジンで形成します。 すべてのページは、IBAX の開発チームによって開発された Logicor 言語を使用して構築されています。 content/... API コマンドを使用して、ネットワーク上のノードからページをリクエストします。 この種のリクエストに対してテンプレート エンジンが応答として送信するのは、HTML ページではなく、テンプレートの構造に従ってツリーを形成する HTML タグで構成される JSON コードです。 テンプレート エンジンをテストする場合は、[content](../reference/api2.md#content) API コマンドを参照できます。
 
-### Create pages
+### ページの作成
 
-You can use the page editor to create and edit pages, which can be found in the Pages section of Weaver's management tool. The editor can be used to:
+ページ エディターを使用してページを作成および編集できます。ページ エディターは、Weaver 管理ツールの [ページ] セクションにあります。 エディターは次の目的で使用できます。
 
-* Write the page code, highlight the keywords of the Logicor template language;
-* Select and display menus on pages;
-* Edit the menu page;
-* Configure the permission to change pages, by specifying the contract name with permission in the ContractConditions function, or by directly specifying the access permission in Change conditions;
-* Start the visual page designer;
-* Preview pages.
+* ページ コードを記述し、Logicor テンプレート言語のキーワードを強調表示します。
+* ページ上のメニューを選択して表示します。
+* メニューページを編集します。
+* ContractConditions関数に権限のある契約名を指定するか、変更条件に直接アクセス権限を指定してページ変更権限を設定します。
+* ビジュアル ページ デザイナーを開始します。
+* プレビューページ。
 
-#### Visual page designer
+#### ビジュアルページデザイナー
 
-The visual page designer can be used to create page layouts without using interface codes in the Logicor language. With it, you can set the position of form elements and text on pages by dragging and dropping such elements, and configure the size of page blocks. It provides a set of ready-to-use blocks for presenting standard data models: with titles, forms and information panels. After creating a page in the visual page designer, you can write program logic for receiving data and conditional structure in the page editor. In the future, we plan to create a visual page designer with additional functions.
+ビジュアル ページ デザイナーを使用すると、Logicor 言語のインターフェイス コードを使用せずにページ レイアウトを作成できます。 これを使用すると、フォーム要素やテキストをページ上でドラッグ アンド ドロップすることで位置を設定したり、ページ ブロックのサイズを設定したりできます。 これは、タイトル、フォーム、情報パネルなどの標準データ モデルを表示するための、すぐに使用できるブロックのセットを提供します。 ビジュアル ページ デザイナーでページを作成した後、ページ エディターでデータと条件構造を受信するためのプログラム ロジックを作成できます。 将来的には、追加機能を備えたビジュアル ページ デザイナーを作成する予定です。
 
-#### Applicable styles
+#### 適用可能なスタイル
 
-By default, pages are presented with Angular's Bootstrap Angle style. Users can create their own styles according to needs. The style is stored in the style parameter stylesheet in the ecosystem parameter table.
+デフォルトでは、ページは Angular のブートストラップ角度スタイルで表示されます。 ユーザーはニーズに応じて独自のスタイルを作成できます。 スタイルは、エコシステム パラメーター テーブルのスタイル パラメーター スタイルシートに保存されます。
 
-#### Page module
+#### ページモジュール
 
-To use a code block in multiple pages, you can create a page module to hold and embed it into the page code. Page modules can be created and edited in Weaver's Module Blocks. Like pages, editing permissions can be defined.
+複数のページでコード ブロックを使用するには、ページ モジュールを作成してそれを保持し、ページ コードに埋め込むことができます。 ページ モジュールは、Weaver のモジュール ブロックで作成および編集できます。 ページと同様に、編集権限を定義できます。
 
-#### Language resource editor
+#### 言語リソースエディタ
 
-Weaver includes a mechanism for page localization using a function **LangRes** of the Logicor template language. It could replace language resource tags on the page with text lines corresponding to the language selected by the user in the software client or browser. You can use the short syntax **$lable$** instead of the **LangRes** function. The translation of messages in popups initiated by the contract is performed by Needle's **LangRes** function.
+Weaver には、Logicor テンプレート言語の関数 **LangRes** を使用したページ ローカリゼーションのメカニズムが含まれています。 ページ上の言語リソース タグを、ソフトウェア クライアントまたはブラウザでユーザーが選択した言語に対応するテキスト行に置き換えることができます。 **LangRes** 関数の代わりに、短い構文 **$lable$** を使用できます。 コントラクトによって開始されたポップアップ内のメッセージの翻訳は、Needle の **LangRes** 関数によって実行されます。
 
-You can create and edit language resources in the Language resources section of Weaver. A language resource consists of label names and corresponding translation of such name in different languages, as well as the corresponding two-letter language identifier (EN, ZH, JP, etc.).
+Weaver の言語リソース セクションで言語リソースを作成および編集できます。 言語リソースは、ラベル名とその名前のさまざまな言語での対応する翻訳、および対応する 2 文字の言語識別子 (EN、ZH、JP など) で構成されます。
 
-The permissions for adding and changing language resources can be defined in the same way as other tables.
+言語リソースの追加および変更の権限は、他のテーブルと同様に定義できます。
 
-## Logicor template language
+## Logicalテンプレート言語
 
-Logicor functions provide the following operations:
+ロジック関数は次の操作を提供します。
 
-* Retrieving values from the database: ```DBFind```, showing data retrieved from the database as tables and charts;
-* Data operations for assigning and displaying variable values: ```SetVar, GetVar, Data```;
-* Displaying and comparing date/time values: ```DateTime, Now, CmpTime```;
-* Use various user data input fields to build forms: ```Form, ImageInput, Input, RadioGroup, Select```;
-* Verify the data in the form field by displaying error messages: ```Validate, InputErr```;
-* Displaying the navigation elements: ```AddToolButton, LinkPage, Button```;
-* Calling contracts: ```Button```;
-* Creating HTML page layout elements, including various tags, and choosing specific css classes: ```Div, P, Span, etc```;
-* Embedding and unloading images onto pages: ```Image, ImageInput```;
-* Displaying conditions of page layout fragment: ```If, ElseIf, Else```;
-* Creating multi-level menus;
-* Page localization.
+* データベースからの値の取得: ```DBFind```、データベースから取得したデータを表とグラフとして表示します。
+* 変数値の割り当てと表示のためのデータ操作: ```SetVar, GetVar, Data```;
+* 日付/時刻値の表示と比較: ```DateTime, Now, CmpTime```;
+* さまざまなユーザー データ入力フィールドを使用してフォームを構築します: ```Form、ImageInput、Input、RadioGroup、Select```;
+* エラー メッセージを表示して、フォーム フィールドのデータを検証します。
+* ナビゲーション要素の表示: ```AddToolButton、LinkPage、Button```;
+* コントラクトの呼び出し: ```Button```;
+* さまざまなタグを含む HTML ページ レイアウト要素を作成し、特定の CSS クラス: ```Div、P、Span など``` を選択します。
+* ページへの画像の埋め込みとアンロード: ```Image, ImageInput```;
+* ページレイアウトフラグメントの表示条件: ```If, ElseIf, Else```;
+* マルチレベルメニューの作成;
+* ページのローカリゼーション。
 
-### Logicor overview
+### Logicalの概要
 
-The Logicor page template language is a functional language that allows a function calling another function ```FuncName(parameters)``` and nesting functions into each other. You can specify parameters without quotes, and delete unnecessary parameters.
+Logical ページ テンプレート言語は、関数が別の関数 ``FuncName(parameters)`` を呼び出したり、関数を相互にネストしたりできる関数型言語です。 パラメータを引用符なしで指定したり、不要なパラメータを削除したりできます。
 
-If the parameter contains a comma, it should be enclosed in quotes (backquotes or double quotes). If a function can only have one parameter, you can use a comma without quotes. In addition, if the parameter has an unpaired closing parenthesis, quotes should be used.
+パラメータにカンマが含まれる場合は、引用符 (逆引用符または二重引用符) で囲む必要があります。 関数にパラメータを 1 つだけ指定できる場合は、引用符なしでコンマを使用できます。 さらに、パラメータに対になっていない右括弧がある場合は、引用符を使用する必要があります。
 
-If you put a parameter in quotes, but the parameter itself contains quotes, you can use different types of quotes or multiple quotes in the text.
+パラメータを引用符で囲んで、パラメータ自体に引用符が含まれている場合は、テキスト内で異なる種類の引用符または複数の引用符を使用できます。
 
-In the function definition, each parameter has a specific name. You can call the function and specify the parameters in the order of declaration, or any parameter set in any order of name: ```Parameter_name: Parameter_value```. Using this method, you can safely add new function parameters without breaking compatibility with the current template:
+関数定義では、各パラメータに特定の名前が付けられます。 関数を呼び出して、宣言の順序でパラメータを指定することも、任意のパラメータ セットを任意の名前の順序で指定することもできます (```Parameter_name: Parameter_value```)。 この方法を使用すると、現在のテンプレートとの互換性を損なうことなく、新しい関数パラメータを安全に追加できます。
 
-Functions can return texts, generate HTML elements (e.g. ```Input```), or create HTML elements with nested HTML elements (```Div, P, Span```). In the latter case, a parameter with the predefined name Body is used to define the nested element. For example, nesting two divs in another div looks like this:
+関数はテキストを返したり、HTML 要素を生成したり (例えば ```Input```)、またはネストされた HTML 要素を含む HTML 要素を作成したりできます (```Div, P, Span```)。 後者の場合、事前定義された名前 Body を持つパラメーターを使用して、ネストされた要素を定義します。 たとえば、2 つの div を別の div にネストすると、次のようになります。
 
-To define the nested elements described in the Body parameter, the following notation can be used: ```FuncName(...){...}```. Nested elements should be specified with braces:
+Body パラメータに記述されたネストされた要素を定義するには、```FuncName(...){...}``` という表記法を使用できます。 ネストされた要素は中括弧で指定する必要があります。
 
-If you need to specify the same function multiple times in succession, you can use the dot `.` instead of writing its name every time. For example, the following are the same:
+同じ関数を連続して複数回指定する必要がある場合は、毎回名前を記述する代わりにドット `.` を使用できます。 たとえば、次のようなものは同じです。
 
-With this language, you can assign a variable with the SetVar function and refer its value with `#name#`.
+この言語では SetVar 関数で変数を代入し、`#name#` でその値を参照することができます。
 
-To refer to the language resources of the ecosystem, you can use `$langres$`, where langres is the language name.
+エコシステムの言語リソースを参照するには、「$langres$」を使用できます。ここで、langres は言語名です。
 
-The following variables are predefined:
+次の変数が事前定義されています。
 
-* `#key_id#` - Account address of the current user;
-* `#ecosystem_id#` - Current ecosystem ID;
-* `#guest_key#` - Address of the guest account;
-* `#isMobile#` - 1, if Weaver runs on a mobile device.
+* `#key_id#` - 現在のユーザーのアカウント アドレス。
+* `#ecosystem_id#` - 現在のエコシステム ID。
+* `#guest_key#` - ゲスト アカウントのアドレス。
+* `#isMobile#` - 1，Weaver がモバイル デバイス上で実行される場合。
 
-#### Use PageParams to pass parameters to pages
+#### PageParamsを使用してパラメータをページに渡す
 
-Many functions support the PageParams parameter, which is used to pass parameters when redirecting to a new page. For example: PageParams: `"param1=value1,param2=value2"`. The parameter value can be a simple string or a variable with a reference value. When passing parameters to pages, a variable with the parameter name is created, e.g. `#param1#` and `#param2#`.
+多くの関数は、新しいページにリダイレクトするときにパラメータを渡すために使用される PageParams パラメータをサポートしています。 例: PageParams: `"param1=value1,param2=value2"`。 パラメーター値は、単純な文字列または参照値を持つ変数にすることができます。 パラメータをページに渡すと、パラメータ名を持つ変数が作成されます。 `#param1#` と `#param2#`。
 
-* `PageParams: "hello=world"` - The new page receives the hello parameter with world as the value;
-* `PageParams: "hello=#world#"` - The new page receives the hello parameter with the value of the world variable.
+* `PageParams: "hello=world"` - 新しいページは、値として world を持つ hello パラメータを受け取ります。
+* `PageParams: "hello=#world#"` - 新しいページは、world 変数の値を持つ hello パラメータを受け取ります。
 
-In addition, the Val function can get data from forms, which is specified in the redirection.
+さらに、Val 関数は、リダイレクトで指定されたフォームからデータを取得できます。
 
-* `PageParams: "hello=Val(world)"` - The new page receives the hello parameter with the value of the world form element.
+* `PageParams: "hello=Val(world)"` - 新しいページは、world フォーム要素の値を持つ hello パラメーターを受け取ります。
 
-#### Calling contracts
+#### スマートコントラクトの呼び出し
 
-Logicor implements contract calls by clicking the Button function in a form. Once an event is triggered, the data entered by the user in a form field on the page will be passed to the contract. If the form field name corresponds to the variable name in the data section of the contract called, the data will be automatically transferred. The Button function allows to open a modal window for the user to verify the contract execution, and initiate the redirection to the specified page when the contract is successfully executed, and pass certain parameters to the page.
+Logicalor は、フォーム内の Button 関数をクリックすることでコントラクト呼び出しを実装します。 イベントがトリガーされると、ユーザーがページ上のフォーム フィールドに入力したデータがコントラクトに渡されます。 フォームのフィールド名が、呼び出されたコントラクトのデータ セクションの変数名に対応する場合、データは自動的に転送されます。 Button 関数を使用すると、ユーザーがコントラクトの実行を確認するためのモーダル ウィンドウを開いて、コントラクトが正常に実行されたときに指定されたページへのリダイレクトを開始し、特定のパラメーターをページに渡すことができます。
 
-## Logicor function classification
+## Logicalの機能分類
 
-### Operations on variables: 
+### 変数の操作: 
 
 |        |        |         |
 | ------ | ------ | ------- |
 | [GetVar](#getvar) | [SetVar](#setvar) | [VarAsIs](#varasis) |
 
-### Navigational operations: 
+### ナビゲーション操作: 
 
 |               |        |          |
 | ------------- | ------ | -------- |
 | [AddToolButton](#addtoolbutton) | [Button](#button) | [LinkPage](#linkpage) |
 
-### Data manipulation: 
+### データ操作: 
 
 |           |          |       |
 | --------- | -------- | ----- |
 | [Calculate](#calculate) | [DateTime](#datetime) | [Money](#money) |
 | [CmpTime](#cmptime)   |          |       |
 
-### Data presentation: 
+### データのプレゼンテーション: 
 
 |          |           |          |
 | -------- | --------- | -------- |
@@ -215,7 +215,7 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [Chart](#chart)    | [MenuGroup](#menugroup) | [Table](#table)    |
 | [ForList](#forlist)  |           |          |
 
-### Accepting of data: 
+### データの受け入れ: 
 
 |             |               |                 |
 | ----------- | ------------- | --------------- |
@@ -225,7 +225,7 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [Data](#data)        | [JsonToSource](#jsontosource)  | [Binary](#binary)          |
 | [DBFind](#dbfind)      | [ArrayToSource](#arraytosource) | [TransactionInfo](#transactioninfo) |
 
-### Data formatting elements: 
+### データフォーマット要素: 
 
 |      |          |        |
 | ---- | -------- | ------ |
@@ -233,7 +233,7 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [Em](#em)   | [Label](#label)    | [Strong](#strong) |
 | [P](#p)    |          |        |
 
-### Form elements: 
+### フォーム要素: 
 
 |            |            |          |
 | ---------- | ---------- | -------- |
@@ -241,7 +241,7 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [ImageInput](#imageinput) | [RadioGroup](#radiogroup) | [Map](#map)      |
 | [Input](#input)      | [Select](#select)     |          |
 
-### Operations on code blocks: 
+### コードブロックに対する操作: 
 
 |      |      |         |
 | ---- | ---- | ------- |
@@ -250,11 +250,11 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 
 
 
-## Logicor function references
+## Logicor関数のリファレンス
 
 ### Address
 
-This function returns the wallet address `xxxx-xxxx-...-xxxx` of a specific account address; if no address is specified, the account address of the current user will be used as the parameter.
+この関数は、特定のアカウント アドレスのウォレット アドレス `xxxx-xxxx-...-xxxx` を返します。 アドレスが指定されていない場合は、現在のユーザーのアカウント アドレスがパラメータとして使用されます。
 
 #### Syntax
 
@@ -265,9 +265,9 @@ Address(account)
 > Address
   * `account`
   
-    Account address.
+    アカウントアドレス。
 
-#### Example
+#### 例
 
 ```
 Span(Your wallet: Address(#account#))
@@ -275,7 +275,7 @@ Span(Your wallet: Address(#account#))
 
 ### AddressToId
 
-It returns the account address of a specific wallet address xxxx-xxxx-...-xxxx.
+特定のウォレットアドレス xxxx-xxxx-...-xxxx のアカウントアドレスを返します。
 
 #### Syntax
 
@@ -286,9 +286,9 @@ AddressToId(Wallet)
 > AddressToId
   * `Wallet`
   
-    The wallet address in XXXX-...-XXXX format.
+    XXXX-...-XXXX 形式のウォレット アドレス。
 
-#### Example
+#### 例
 
 ```
 AddressToId(#wallet#)
@@ -296,7 +296,7 @@ AddressToId(#wallet#)
 
 ### AddToolButton
 
-Create a button panel with an addtoolbutton element.
+addtoolbutton 要素を使用してボタン パネルを作成します。
 
 #### Syntax
 
@@ -311,34 +311,35 @@ AddToolButton(Title, Icon, Page, PageParams)
 
   * `Title`
   
-    Button title.
+    ボタンのタイトル。
 
   * `Icon`
   
-    Button icon style.
+    ボタンアイコンのスタイル。
 
   * `Page`
   
-    Name of the page redirects to.
+    リダイレクト先のページの名前。
 
   * `PageParams`
   
-    The parameters passed to the page.
+    ページに渡されるパラメータ。
 
     
 
 > Popup
 
-  The modal window pops up.
+  モーダルウィンドウがポップアップします。
+
   * `Header`
 
     Title of the window.
   * `Width`
 
-      Percentage of window width.
-      Its range is 1 to 100.
+      ウィンドウ幅のパーセンテージ。
+      範囲は 1 ～ 100 です。
 
-#### Example
+#### 例
 
 ```
 AddToolButton(Title: $@1broadcast$, Page: @1notifications_broadcast, Icon: icon-plus).Popup(Header: $@1notifications_broadcast$, Width: "50")
@@ -346,7 +347,7 @@ AddToolButton(Title: $@1broadcast$, Page: @1notifications_broadcast, Icon: icon-
 
 ### And
 
-It returns the result of an and logical operation. All parameters listed in parentheses are separated by commas. If one of the parameters is an empty string, zero or `false`, the parameter value is `false`, otherwise the parameter value is `true`. If the parameter value is `true`, the function returns `1`, otherwise it returns `0`.
+and 論理演算の結果を返します。 括弧内にリストされているすべてのパラメータはカンマで区切られています。 パラメータの 1 つが空の文字列、ゼロまたは `false` である場合、パラメータ値は `false` になり、それ以外の場合、パラメータ値は `true` になります。 パラメータ値が「true」の場合、関数は「1」を返し、それ以外の場合は「0」を返します。
 
 #### Syntax
 
@@ -354,7 +355,7 @@ It returns the result of an and logical operation. All parameters listed in pare
 And(parameters)
 ```
 
-#### Example
+#### 例
 
 ```
 If(And(#myval1#,#myval2#), Span(OK))
@@ -362,7 +363,7 @@ If(And(#myval1#,#myval2#), Span(OK))
 
 ### AppParam
 
-Output the application parameter value, which is taken from the app_params table of the current ecosystem. If there is a language resource with the specified name, its value will be automatically replaced.
+現在のエコシステムの app_params テーブルから取得したアプリケーション パラメーター値を出力します。 指定した名前の言語リソースが存在する場合、その値は自動的に置き換えられます。
 
 #### Syntax
 ```
@@ -373,22 +374,22 @@ AppParam(App, Name, Index, Source)
 > AppParam
   * `App`
   
-    Application ID.
+    アプリケーションID。
   * `Name`
 
-    Parameter name.
+    パラメータ名。
   * `Index`
 
-    It can be used when the parameter value is a comma-separated list.
-    The parameter elements index, starting from 1. For example, if `type = full,light`, then `AppParam(1, type, 2)` returns `light`.
-    It cannot be used in conjunction with the Source parameter.
+    パラメータ値がカンマ区切りリストの場合に使用できます。
+    パラメータ要素のインデックスは 1 から始まります。たとえば、`type = full,light` の場合、`AppParam(1, type, 2)` は `light` を返します。
+    Source パラメーターと組み合わせて使用することはできません。
   * `Source`
 
-    It can be used when the parameter value is a comma-separated list.
-    Create a data object whose elements are the values of specific parameters. This object can be used as a data source for the [Table](#table) and [Select](#select) functions.
-    It cannot be used in conjunction with the Index parameter.
+    パラメータ値がカンマ区切りリストの場合に使用できます。
+    特定のパラメータの値を要素とするデータ オブジェクトを作成します。 このオブジェクトは、[Table](#table) および [Select](#select) 関数のデータ ソースとして使用できます。
+    Index パラメーターと組み合わせて使用することはできません。
 
-#### Example
+#### 例
 
 ```
 AppParam(1, type, Source: mytype)
@@ -396,7 +397,7 @@ AppParam(1, type, Source: mytype)
 
 ### ArrayToSource
 
-Create an arraytosource element and fill it with the key-value pairs of a JSON array. The data obtained is put into the Source element, which can be used later in the source input function (e.g. Table).
+arraytosource 要素を作成し、JSON 配列のキーと値のペアを入力します。 取得されたデータは Source 要素に入れられ、後でソース入力関数 (例: Table) で使用できます。
 
 #### Syntax
 ```
@@ -407,12 +408,12 @@ ArrayToSource(Source, Data)
 > ArrayToSource
   * `Source`
   
-    Data source name.
+    データソース名。
   * `Data`
 
-    A JSON array or a variable name containing a JSON array (`#name#`).
+    JSON 配列、または JSON 配列を含む変数名 (`#name#`)。
 
-#### Example
+#### 例
 
 ```
 ArrayToSource(src, #myjsonarr#)
@@ -421,7 +422,7 @@ ArrayToSource(dat, [1, 2, 3])
 
 ### Binary
 
-Returns links to static files stored in the binary table binaries.
+バイナリ テーブル バイナリに格納されている静的ファイルへのリンクを返します。
 
 #### Syntax
 ```
@@ -431,21 +432,21 @@ Binary(Name, AppID, MemberID)[.ById(ID)][.Ecosystem(ecosystem)]
 > Binary
   * `Name`
   
-    File name.
+    ファイル名。
   * `AppID`
   
-    Application ID.
+    アプリケーションID。
   * `MemberID`
 
-    Account address, 0 by default.
+    アカウントアドレス。デフォルトでは 0。
   * `ID`
 
-    Static file ID.
+    静的ファイル ID。
   * `Ecosystem`
 
-    Ecosystem ID. If it is not specified, the binary file is requested from the current ecosystem.
+    エコシステムID。 指定しない場合は、現在のエコシステムからバイナリ ファイルが要求されます。
 
-#### Example
+#### 例
 
 ```
 Image(Src: Binary("my_image", 1))
@@ -455,7 +456,7 @@ Image(Src: Binary().ById(#id#).Ecosystem(#eco#))
 
 ### Button
 
-Create a button HTML element which will create a button to call a contract or open a page.
+コントラクトを呼び出すか、ページを開くためのボタンを作成するボタン HTML 要素を作成します。
 
 #### Syntax
 ```
@@ -470,80 +471,80 @@ Button(Body, Page, Class, Contract, Params, PageParams)
 > Button
   * `Body`
   
-    Child text or element.
+    子のテキストまたは要素。
   * `Page`
 
-    Name of the page redirects to.
+    リダイレクト先のページの名前。
   * `Class`
 
-    Button class.
+    ボタンクラス。
   * `Contract`
 
-    Name of the contract called.
+    呼び出された契約の名前。
   * `Params`
 
-    The list of values passed to the contract. Normally, the value of the contract parameter (the data section) is obtained from an HTML element (such as an input field) of id with a similar name. If the element id is different from the name of the contract parameter, then the value should be assigned in the format of contractField1=idname1, contractField2=idname2. This parameter is returned to attr as the object {contractField1: idname1, contractField2: idname2}.
+    コントラクトに渡される値のリスト。 通常、コントラクトパラメータ（データセクション）の値は、類似した名前のidのHTML要素（入力フィールドなど）から取得されます。 要素 ID が契約パラメータの名前と異なる場合は、contractField1=idname1、contractField2=idname2 の形式で値を割り当てる必要があります。 このパラメータは、オブジェクト {contractField1: idname1, ContractField2: idname2} として attr に返されます。
   * `PageParams`
 
-    The format of parameters passed to the redirect page is pageField1=idname1, pageField2=idname2. Variables with target page parameter names #pageField1 and #pageField2 are created on the target page and assigned the specified values. See more specifications for parameter passing Use PageParams to pass parameters to pages).
+    リダイレクト ページに渡されるパラメータの形式は、pageField1=idname1、pageField2=idname2 です。 ターゲット ページ パラメータ名 #pageField1 および #pageField2 を持つ変数がターゲット ページ上に作成され、指定された値が割り当てられます。 パラメーターの受け渡しに関する詳細な仕様を参照してください。 PageParams を使用してパラメーターをページに渡します)。
   
 > CompositeContract
 
-  Used to add additional contracts to the button. CompositeContract can be used multiple times.
+  ボタンに追加のコントラクトを追加するために使用されます。 CompositeContract は複数回使用できます。
   * `Name`
 
-    Name of the contract.
+    契約の名前。
   * `Data`
 
-    The contract parameters are JSON arrays.
+    コントラクトパラメータはJSON配列です。
 > Alert
 
   Display the message.
   * `Text`
 
-    Text of the message.
+    メッセージのテキスト。
   * `ConfirmButton`
   
-    Title of the Confirm button.
+    確認ボタンのタイトル。
   * `CancelButton`
 
-    Title of the Cancel button.
+    「キャンセル」ボタンのタイトル。
   * `Icon`
 
-    Button icon.
+    ボタンアイコン。
 > Popup
 
-  Output modal window.
+  モーダルウィンドウを出力します。
   * `Header`
 
-    Window title.
+    ウィンドウのタイトル。
   * `Width`
 
-    Percentage of window width.
-    Its range is 1 to 100.
+    ウィンドウ幅のパーセンテージ。
+    I範囲は 1 ～ 100 です。
 > Style
 
-  The CSS style specified.
+  指定された CSS スタイル。
   * `Style`
 
-    CSS style.
+    CSS スタイル。
 > ErrorRedirect
 
- Specify and redirect to a page when the :ref:contractfundef-Throw function generates an error during contract execution. There can be several ErrorRedirect calls. Therefore, when returning the *errredirect* attribute, the attribute key is ErrorID and the value is the parameters list.
+ :ref:contractfundef-Throw 関数がコントラクト実行中にエラーを生成した場合に、ページを指定してリダイレクトします。 複数の ErrorRedirect 呼び出しが存在する可能性があります。 したがって、*errredirect* 属性を返す場合、属性キーは ErrorID で、値はパラメーター リストになります。
 
   * `ErrorID`
 
-    Error ID.
+    エラーID。
 
   * `PageName`
 
-    Name of the redirect page.
+    リダイレクトページの名前。
 
   * `PageParams`
 
-    Parameters passed to the page.
+    ページに渡されるパラメータ。
 
-#### Example
+#### 例
 
 ```
 Button(Submit, default_page, mybtn_class).Alert(Alert message)
@@ -551,7 +552,7 @@ Button(Contract: MyContract, Body:My Contract, Class: myclass, Params:"Name=myid
 ```
 
 ### Calculate
-It returns the result of the arithmetic expression passed in the Exp parameter. The following operations are applicable: +, -, *, / and brackets ().
+Exp パラメータで渡された算術式の結果を返します。 次の演算が適用できます: +、-、* 、/、および括弧 ()。
 
 #### Syntax
 ```
@@ -561,15 +562,15 @@ Calculate(Exp, Type, Prec)
 > Calculate
   * `Exp`
 
-    An arithmetic expression, containing numbers and the #name# variable.
+    数値と #name# 変数を含む算術式。
   * `Type`
 
-    Result data type: int, float, money. If not specified, it is float if there is a number with a decimal point, otherwise it is int.
+    結果のデータ型: int、float、money。 指定しない場合、小数点付きの数値がある場合は float、それ以外の場合は int になります。
   * `Prec`
 
     float and money data, with two significant digits after the decimal point.
 
-#### Example
+#### 例
 
 ```
 Calculate( Exp: (342278783438+5000)\*(#val#-932780000), Type: money, Prec:18 )
@@ -579,7 +580,7 @@ Calculate("((10+#val#-45)\*3.0-10)/4.5 + #val#", Prec: 4)
 
 ### Chart
 
-Create HTML charts.
+HTML グラフを作成します。
 
 #### Syntax
 ```
@@ -589,21 +590,21 @@ Chart(Type, Source, FieldLabel, FieldValue, Colors)
 > Chart
   * `Type`
 
-    Chart type.
+    チャートの種類。
   * `Source`
 
-    Name of the data source, e.g., obtained from the [DBFind](#dbfind) function.
+    データ ソースの名前。たとえば、[DBFind](#dbfind) 関数から取得されます。
   * `FieldLabel`
 
-    Name of the header field.
+    ヘッダーフィールドの名前。
   * `FieldValue`
 
-    Name of the value field.
+    値フィールドの名前。
   * `Colors`
 
-    List of colors.
+    色のリスト。
 
-#### Example
+#### 例
 
 ```
 Data(mysrc,"name,count"){
@@ -616,8 +617,8 @@ Chart(Type: "bar", Source: mysrc, FieldLabel: "name", FieldValue: "count", Color
 
 ### CmpTime
 
-It compares two time values in the same format.
-It supports unixtime, `YYYY-MM-DD HH:MM:SS` and any time format, such as `YYYYMMDD`.
+同じ形式の 2 つの時間値を比較します。
+unixtime、`YYYY-MM-DD HH:MM:SS`、および `YYYYMMDD` などの任意の時刻形式をサポートします。
 
 #### Syntax
 
@@ -628,11 +629,11 @@ CmpTime(Time1, Time2)
 
 Return value
 
-* `-1` - Time1 <Time2;
+* `-1` - Time1 < Time2;
 * `0` - Time1 = Time2;
-* `1` - Time1> Time2.
+* `1` - Time1 > Time2.
 
-#### Example
+#### 例
 
 ```
 If(CmpTime(#time1#, #time2#)<0){...}
@@ -640,9 +641,10 @@ If(CmpTime(#time1#, #time2#)<0){...}
 
 ### Code
 
-Create a code element to display the specified code.
+指定されたコードを表示するコード要素を作成します。
 
-It substitute a variable with the value of the variable (for example, `#name#`).
+変数をその変数の値で置き換えます (たとえば、`#name#`)。
+
 #### Syntax
 ```
 Code(Text)
@@ -651,9 +653,9 @@ Code(Text)
 > Code
   * `Text`
 
-    Source code.
+    ソースコード。
 
-#### Example
+#### 例
 
 ```
 Code( P(This is the first line.
@@ -663,8 +665,8 @@ Code( P(This is the first line.
 
 ### CodeAsIs
 
-Create a code element to display the specified code.
-It does not replace a variable with its value. For example, `#name#` will be displayed as is.
+指定されたコードを表示するコード要素を作成します。
+変数をその値で置き換えるわけではありません。 たとえば、`#name#`はそのまま表示されます。
 
 #### Syntax
 ```
@@ -674,9 +676,9 @@ CodeAsIs(Text)
 > CodeAsIs
   * `Text`
 
-    Source code.
+    ソースコード。
 
-#### Example
+#### 例
 
 ```
 CodeAsIs( P(This is the #test1#.
@@ -686,7 +688,7 @@ CodeAsIs( P(This is the #test1#.
 
 ### Data
 
-Create a data element, fill it with the specified data and put it in Source. Then, you can receive Source as a data input in [Table](#table) and other functions. The sequence of column names corresponds to the sequence of data entry values.
+データ要素を作成し、指定されたデータを入力してソースに配置します。 その後、[Table](#table)やその他の関数のデータ入力としてSourceを受け取ることができます。 列名のシーケンスは、データエントリ値のシーケンスに対応します。
 
 #### Syntax
 ```
@@ -697,36 +699,36 @@ Data(Source,Columns,Data)
 > Data
   * `Source`
 
-    Name of the data source. You can specify any name that will be passed to other functions later as a data source.
+    データソースの名前。 後でデータ ソースとして他の関数に渡される任意の名前を指定できます。
 
   * `Columns`
 
-    A list of column names, separated by commas.
+    カンマで区切られた列名のリスト。
 
   * `Data`
 
-    Data set.
+    データセット。
 
-    One record per line. Column values must be separated by commas. Data and Columns should be set in the same order.
+    1 行に 1 つのレコード。 列の値はカンマで区切る必要があります。 データと列は同じ順序で設定する必要があります。
 
-    Values with commas should be enclosed in double quotes (`"example1, example2", 1, 2`). Quoted values should be put in two double quotes (`"""example", "example2""", 1, 2`).
+    カンマを含む値は二重引用符で囲む必要があります (`"example1, example2", 1, 2`)。 引用符で囲まれた値は 2 つの二重引用符 (`"""example"、"example2"""、1、2`) で囲む必要があります。
 
     
 
 ### Custom
 
-    You can assign calculated columns to Data. For example, you can specify field templates for buttons and other page layout elements. These field templates are usually assigned to [Table](#table) and other functions to receive data.
-    Use multiple Custom functions if you want to assign multiple calculated columns.
+    計算列をデータに割り当てることができます。 たとえば、ボタンやその他のページ レイアウト要素のフィールド テンプレートを指定できます。 これらのフィールド テンプレートは通常、データを受信するために [Table](#table) およびその他の関数に割り当てられます。
+    複数の計算列を割り当てる場合は、複数のカスタム関数を使用します。
 
   * `Column`
 
-    Column name, which is unique and compulsory.
+    列名。一意であり必須です。
 
   * `Body`
 
-    Code block. You can use `#columnname#` to get values from other columns in the entry, and then use those values in code blocks.
+    コードブロック。 `#columnname#` を使用してエントリ内の他の列から値を取得し、それらの値をコード ブロックで使用できます。
 
-#### Example
+#### 例
 
 ```
 Data(mysrc,"id,name"){
@@ -738,7 +740,7 @@ Data(mysrc,"id,name"){
 
 ### DateTime
 
-Display the time and date in the specified format.
+    指定された形式で時刻と日付を表示します。
 
 #### Syntax
 ```
@@ -748,13 +750,14 @@ DateTime(DateTime, Format)
 > DateTime
   * `DateTime`
 
-    Time and date expressed in unixtime or standard format `2006-01-02T15:04:05`.
+    unixtime または標準形式 `2006-01-02T15:04:05` で表現された時刻と日付。
+
   * `Format`
 
-    Format template: year in 2-digit format `YY`, 4-digit format `YYYY`, month in `MM`, day in `DD`, hour in `HH`, minute in `MM`, second in `SS`, e.g.: `YY/MM/DD HH:MM`.
-    If it is not specified or missing, `YYYY-MM-DD HH:MI:SS` will be used.
+    書式テンプレート: 年は 2 桁形式 `YY`、4 桁形式 `YYYY`、月は `MM`、日は `DD`、時は `HH`、分は `MM`、秒は `SS` 例: `YY/MM/DD HH:MM`。
+    指定されていないか欠落している場合は、`YYYY-MM-DD HH:MI:SS` が使用されます。
 
-#### Example
+#### 例
 
 ```
 DateTime(2017-11-07T17:51:08)
@@ -763,7 +766,7 @@ DateTime(#mytime#,HH:MI DD.MM.YYYY)
 
 ### DBFind
 
-Create a dbfind element, fill it with the data of the table table and put it in the Source structure, which can later be used for the input data of [Table](#table) and other functions Source.
+dbfind 要素を作成し、テーブル table のデータを入力して Source 構造に配置します。これは、後で [Table](#table) や他の関数 Source の入力データに使用できます。
 
 #### Syntax
 ```
@@ -784,88 +787,92 @@ DBFind(table, Source)
 > DBFind
   * `table`
 
-    Table name.
+    テーブル名。
+
   * `Source`
 
-    Data source name.
+    データソース名。
 
 > Columns
   * `columns`
 
-    If not specified, a list of all fields will be returned. If there is a JSON type field, you can use the following syntax to process the record field: `columnname->fieldname`. In this case, the field name generated is `columnname.fieldname`.
+    指定しない場合は、すべてのフィールドのリストが返されます。 JSON タイプのフィールドがある場合は、構文 `columnname->fieldname` を使用してレコード フィールドを処理できます。 この場合、生成されるフィールド名は `columnname.fieldname` です。
 
 > Where
   * `conditions`
 
-   Data query conditions. See DBFind.
-   If there is a JSON type field, you can use the following syntax to process the record field:      `columnname->fieldname`.
+   データクエリ条件。 「DBFind」を参照してください。
+   JSON タイプのフィールドがある場合は、構文 `columnname->fieldname` を使用してレコード フィールドを処理できます。
 
 > WhereId
-  Query by ID, e.g. `.WhereId(1)`.
+  ID によるクエリ (例: `.WhereId(1)`。
+
   * `Id`
 
-   Entry ID.
+   エントリーID。
 
 > Order
-  Sort by field.
-  For more information about the sorting syntax, see [DBFind](#dbfind).
+  フィールドごとに並べ替えます。
+  ソート構文の詳細については、「[DBFind](#dbfind)」を参照してください。
+
   * `name`
 
-   Field Name
+   フィールド名
 
 > Limit
   * `limit`
   
-    The number of entries returned, 25 by default. The maximum number is 10,000.
+    返されるエントリの数。デフォルトでは 25 です。 最大数は 10,000 です。
 
 > Offset
   * `Offset`
 
-    Offset.
+    オフセット。
 
 > Count
 
-  Specify the total number of rows of the Where condition.
-  In addition to storing it in a variable, the total count is returned in the count parameter of the dbfind element.
+  Where 条件の合計行数を指定します。
+  合計カウントは、変数に格納するだけでなく、dbfind 要素の count パラメーターで返されます。
 
-  If Where and WhereID are not specified, the total count of rows in the table will be returned.
+  Where と WhereID が指定されていない場合は、テーブル内の行の合計数が返されます。
 
   * `countvar`
 
-    Name of the variable that holds the row count.
+    行数を保持する変数の名前。
 
 > Ecosystem
   * `Id`
 
-   Ecosystem ID. By default, the data comes from the specified table in the current ecosystem.
+   エコシステムID。 デフォルトでは、データは現在のエコシステム内の指定されたテーブルから取得されます。
 
 > Cutoff
 
-  Used to cut and display large amounts of text data.
+  大量のテキストデータを切り取って表示する場合に使用します。
+
   * `columns`
 
-   A comma-separated list of fields that must be processed by the Cutoff function.
-   The field value will be replaced by a JSON object that has two fields: link link and title title. If the field value contains more than 32 characters, link pointing to the first 32 characters of the full text is returned. If the field value contains 32 characters or less, link is set to void and title contains the complete field value.
+   Cutoff 関数で処理する必要があるフィールドのカンマ区切りのリスト。
+   フィールド値は、link link と title title という 2 つのフィールドを持つ JSON オブジェクトに置き換えられます。 フィールド値に 32 文字を超える文字が含まれている場合は、全文の最初の 32 文字を指すリンクが返されます。 フィールド値が 32 文字以下の場合、リンクは無効に設定され、タイトルには完全なフィールド値が含まれます。
 
 > Custom
 
-  You can assign calculated columns to Data. For example, you can specify field templates for buttons and other page layout elements. These field templates are usually assigned to [Table](#table) and other functions to receive data.
-  If you want to assign multiple calculated columns, use multiple Custom functions.
+  計算列をデータに割り当てることができます。 たとえば、ボタンやその他のページ レイアウト要素のフィールド テンプレートを指定できます。 これらのフィールド テンプレートは通常、データを受信するために [Table](#table) およびその他の関数に割り当てられます。
+   複数の計算列を割り当てる場合は、複数のカスタム関数を使用します。
   * `Column`
 
-   Column name, which is unique and compulsory.
+   列名。一意であり必須です。
   * `Body`
 
-   Code block. You can use `#columnname#` to get values from other columns in the entry, and then use those values in code blocks.
+   コードブロック。 `#columnname#` を使用してエントリ内の他の列から値を取得し、それらの値をコード ブロックで使用できます。
 
 > Vars
 
-  The first row obtained by the query will generate a set of variables with values. When it is specified, the Limit parameter automatically becomes 1, and only one (1) record is returned.
+  クエリによって取得された最初の行は、値を含む変数のセットを生成します。 これを指定すると、Limit パラメーターは自動的に 1 になり、1 つのレコードのみが返されます。
   * `Prefix`
 
-   The prefix added to the variable name. Its format is `#prefix_columnname#`, where the column name immediately follows the underscore symbol. If there is a column containing a JSON field, the variable generated will be in the following format: `#prefix_columnname_field#`.
+   The prefix added to the 変数名。 Its format is `#prefix_columnname#`, where the column name immediately follows the underscore symbol. If there is a column containing a JSON field, the variable generated will be in the following format: `#prefix_columnname_field#`.
 
-#### Example
+#### 例
 
 ```
 DBFind(parameters,myparam)
@@ -877,7 +884,7 @@ DBFind(parameters,myparam).Custom(myid){Strong(#id#)}.Custom(myname){
 
 ### Div
 
-Create a div HTML element.
+div HTML 要素を作成します。
 
 #### Syntax
 ```
@@ -890,30 +897,30 @@ Div(Class, Body)
 > Div
   * `Class`
 
-    Class name of the div.
+    div のクラス名。
   * `Body`
 
-    Child element.
+    子要素。
 > Style
 
-  The CSS style specified.
+  指定された CSS スタイル。
   * `Style`
 
-   CSS style.
+   CSS スタイル。
 > Show
 
- Define the conditions for displaying Div.
+ Divを表示する条件を定義します。
    * `Condition`
 
-   See Hide below.
+   以下の「非表示」を参照してください。
 > Hide
 
  Define the conditions for hiding Div.
    * `Condition`
 
-   The expression format is `InputName=Value`, when all expressions are true, *Condition* is true, and when the value of `InputName` is equal to `Value`, *Condition* is true. If multiple *Show* or *Hide* are called, there must be at least one *Condition* parameter is true.
+   式の形式は `InputName=Value` です。すべての式が true の場合、*Condition* は true であり、`InputName` の値が `Value` と等しい場合、*Condition* は true です。 複数の *Show* または *Hide* が呼び出される場合、少なくとも 1 つの *Condition* パラメーターが true である必要があります。
 
-#### Example
+#### 例
 
 ```
 Form(){
@@ -931,7 +938,7 @@ Form(){
 
 ### EcosysParam
 
-This function obtains parameter values from the ecosystem parameter table of the current ecosystem. If the returned result name contains the language resources, it will be translated accordingly.
+この関数は、現在の生態系の生態系パラメータ テーブルからパラメータ値を取得します。 返された結果名に言語リソースが含まれている場合は、それに応じて翻訳されます。
 
 #### Syntax
 ```
@@ -941,16 +948,16 @@ EcosysParam(Name, Index, Source)
 > EcosysParam
   * `Name`
 
-    Parameter name.
+    パラメータ名。
   * `Index`
 
-    If the requested parameter is a list of comma-separated elements, you can specify an index starting from 1. For example, if `gender = male,female`, then `gender = male,female` returns `female`.
-    It cannot be used in conjunction with the Source parameter.
+    要求されたパラメータがコンマで区切られた要素のリストである場合、1 から始まるインデックスを指定できます。たとえば、`gender = Male, Female` の場合、`gender = Male, Female` は ` Female` を返します。
+    Source パラメーターと組み合わせて使用することはできません。
   * `Source`
 
-    It can be used when the parameter value is a comma-separated list.
-    Create a data object whose elements are the values of the specified parameters. This object can be used as a data source for the [Table](#table) and [Select](#select) functions.
-    It cannot be used in conjunction with the Index parameter.
+    パラメータ値がカンマ区切りリストの場合に使用できます。
+    指定されたパラメータの値を要素とするデータ オブジェクトを作成します。 このオブジェクトは、[Table](#table) および [Select](#select) 関数のデータ ソースとして使用できます。
+    Index パラメーターと組み合わせて使用することはできません。
 
 ```
 Address(EcosysParam(founder_account))
@@ -962,7 +969,7 @@ Select(Name: gender, Source: src_gender, NameColumn: name, ValueColumn: id)
 
 ### Em
 
-Create an em HTML element.
+em HTML 要素を作成します。
 
 #### Syntax
 ```
@@ -972,12 +979,13 @@ Em(Body, Class)
 > Em
   * `Body`
 
-    Child text or element.
+    子のテキストまたは要素。
+
   * `Class`
 
-    The em class name.
+    em クラス名。
 
-#### Example
+#### 例
 
 ```
 This is an Em(important news).
@@ -985,7 +993,7 @@ This is an Em(important news).
 
 ### ForList
 
-Display the list of elements in the Source data source in the template format set in Body and create a **forlist** element.
+Sourceデータソース内の要素の一覧をBodyで設定したテンプレート形式で表示し、**forlist**要素を作成します。
 
 #### Syntax
 ```
@@ -995,21 +1003,21 @@ ForList(Source, Index){Body}
 > ForList
   * `Source`
 
-    Data source obtained from the [DBFind](#dbfind) or [Data](#data) function.
+    [DBFind](#dbfind) または [Data](#data) 関数から取得されたデータ ソース。
   * `Index`
 
-    The variable of the iteration counter, starting from 1.
-    An optional parameter. If not specified, the iteration count value will be written to the [Source] _index variable.
+    1 から始まる反復カウンターの変数。
+    オプションのパラメータ。 指定しない場合、反復カウント値は [Source] _index 変数に書き込まれます。
   * `Body`
 
-    Template for inserting elements.
+    要素を挿入するためのテンプレート。
 
 ```
 ForList(mysrc){Span(#mysrc_index#. #name#)}
 ```
 
 ### Form
-   Create a form HTML element.
+   フォームの HTML 要素を作成します。
 
 #### Syntax
 ```
@@ -1018,17 +1026,17 @@ Form(Class, Body) [.Style(Style)]
 > Form
   * `Body`
 
-    Child text or element.
+    子のテキストまたは要素。
   * `Class`
 
-    Class name of the form.
+    フォームのクラス名。
 > Style
-  The CSS style specified.
+  指定された CSS スタイル。
   * `Style`
 
-   CSS style.
+   CSS スタイル。
 
-#### Example
+#### 例
 
 ```
 Form(class1 class2, Input(myid))
@@ -1036,9 +1044,10 @@ Form(class1 class2, Input(myid))
 
 ### GetColumnType
 
-Returns the field data type of a specific table.
+特定のテーブルのフィールドのデータ型を返します。
 
-Types returned include: `text, varchar, number, money, double, bytes, json, datetime, double`.
+返される型には、`text、varchar、number、money、double、bytes、json、datetime、double` が含まれます。
+
 #### Syntax
 
 ```
@@ -1048,12 +1057,13 @@ GetColumnType(Table, Column)
 > GetColumnType
   * `Table`
 
-    Table name.
+    テーブル名。
+
   * `Column`
 
-    Field name.
+    フィールド名。
 
-#### Example
+#### 例
 
 ```
 SetVar(coltype,GetColumnType(members, member_name))Div(){#coltype#}
@@ -1061,9 +1071,9 @@ SetVar(coltype,GetColumnType(members, member_name))Div(){#coltype#}
 
 ### GetHistory
 
-Create a gethistory element and fill it with the history change records of the entries in the specified table. The data generated will be placed in the Source element, which can be used later in the source input function (for example, [Table](#table)).
-The array is sorted in order from the last modified.
-The id field in the array points to the id of the rollback_tx table. block_id represents the block ID, block_time represents the block generation timestamp.
+gethistory 要素を作成し、指定されたテーブル内のエントリの履歴変更レコードをその要素に入力します。 生成されたデータは Source 要素に配置され、後でソース入力関数 ([Table](#table) など) で使用できます。
+配列は最後に変更されたものから順にソートされます。
+配列内の id フィールドは、rollback_tx テーブルの ID を指します。 block_id はブロック ID を表し、block_time はブロック生成のタイムスタンプを表します。
 
 #### Syntax
 ```
@@ -1073,18 +1083,18 @@ GetHistory(Source, Name, Id, RollbackId)
 > GetHistory
   * `Source`
 
-    Data source name.
+    データソース名。
   * `Name`
 
-    Table name.
+    テーブル名。
   * `Id`
 
-    Entry ID.
+    エントリーID。
   * `RollbackId`
 
-    An optional parameter. If specified, only one record with the specified ID will be returned from the rollback_tx table.
+    オプションのパラメータ。 指定した場合、指定した ID を持つ 1 つのレコードだけが rollback_tx テーブルから返されます。
 
-#### Example
+#### 例
 
 ```
 GetHistory(blocks, BlockHistory, 1)
@@ -1092,8 +1102,8 @@ GetHistory(blocks, BlockHistory, 1)
 
 ### GetVar
 
-It returns the value of the specified variable that already exists, or an empty string if it does not exist.
-The getvar element is only created when an editable tree is requested. The difference between `GetVar(varname)` and `#varname` is that if varname does not exist, GetVar will return an empty string, while #varname# will be interpreted as a string value.
+すでに存在する指定された変数の値を返します。存在しない場合は空の文字列を返します。
+getvar 要素は、編集可能なツリーが要求された場合にのみ作成されます。 `GetVar(varname)` と `#varname` の違いは、varname が存在しない場合、GetVar は空の文字列を返すのに対し、#varname# は文字列値として解釈されることです。
 
 #### Syntax
 ```
@@ -1103,9 +1113,9 @@ GetVar(Name)
 > GetVar
   * `Name`
 
-    Variable name.
+    変数名。
 
-#### Example
+#### 例
 
 ```
 If(GetVar(name)){#name#}.Else{Name is unknown}
@@ -1113,7 +1123,7 @@ If(GetVar(name)){#name#}.Else{Name is unknown}
 
 ### Hint
 
-Create a hint element for hints.
+ヒント用のヒント要素を作成します。
 
 #### Syntax
 ```
@@ -1123,15 +1133,15 @@ Hint(Icon,Title,Text)
 > Hint
   * `Icon`
 
-    Icon name.
+    アイコン名。
   * `Title`
 
-    Hint title.
+    ヒントのタイトル。
   * `Text`
 
-    Hint text.
+    ヒントテキスト。
 
-#### Example
+#### 例
 
 ```
 Hint(Icon: "icon-wrench",Title:$@1pa_settings$,Text: This is a hint text)
@@ -1139,8 +1149,8 @@ Hint(Icon: "icon-wrench",Title:$@1pa_settings$,Text: This is a hint text)
 
 ### If
 
-Condition statement.
-Returns the first If or ElseIf child element that satisfies Condition. Otherwise, return the Else child element.
+条件ステートメント。
+Condition を満たす最初の If または ElseIf 子要素を返します。 それ以外の場合は、Else 子要素を返します。
 
 #### Syntax
 ```
@@ -1152,12 +1162,12 @@ If(Condition){ Body}
 > If
   * `Condition`
 
-    If the condition is equal to an empty string, 0 or false, it is considered that the condition is not met. In all other cases, this condition is considered to be satisfied.
+    条件が空の文字列、0、または false に等しい場合、条件は満たされていないと見なされます。 それ以外の場合はすべて、この条件が満たされているとみなされます。
   * `Body`
 
-    Child element.
+    子要素。
 
-#### Example
+#### 例
 
 ```
 If(#value#){
@@ -1169,7 +1179,7 @@ If(#value#){
 ```
 
 ### Image
-Create a image HTML element.
+画像のHTML要素を作成します。
 
 #### Syntax
 ```
@@ -1180,15 +1190,15 @@ Image(Src, Alt, Class)
 > Image
   * `Src`
 
-    Image source, file or `data:...`
+    画像ソース、ファイル、または `data:...`
   * `Alt`
 
-    Alternative text when the image cannot be displayed.
+    画像が表示できない場合の代替テキスト。
   * `Сlass`
 
-    Image class name.
+    Image クラス名。
 
-#### Example
+#### 例
 
 ```
 Image(Src: Binary().ById(#id#), Class: preview).Style(height: 40px; widht 40px;)
@@ -1196,7 +1206,7 @@ Image(Src: Binary().ById(#id#), Class: preview).Style(height: 40px; widht 40px;)
 
 ### ImageInput
 
-Create an imageinput element to upload an image.
+画像をアップロードするために imageinput 要素を作成します。
 
 #### Syntax
 ```
@@ -1206,18 +1216,18 @@ ImageInput(Name, Width, Ratio, Format)
 > ImageInput
   * `Name`
 
-    Element name.
+    要素名。
   * `Width`
 
-    Width of the cropped image.
+    トリミングされた画像の幅。
   * `Ratio`
 
-    Aspect ratio or image height.
+    アスペクト比または画像の高さ。
   * `Format`
 
-    The format of the uploaded image.
+    アップロードされた画像の形式。
 
-#### Example
+#### 例
 
 ```
 ImageInput(avatar, 100, 2/1)
@@ -1225,7 +1235,7 @@ ImageInput(avatar, 100, 2/1)
 
 ### Include
 
-Insert the template with a specified name into the page code.
+指定した名前のテンプレートをページ コードに挿入します。
 
 #### Syntax
 ```
@@ -1235,9 +1245,9 @@ Include(Name)
 > Include
   * `Name`
 
-    Template name.
+    テンプレート名。
 
-#### Example
+#### 例
 
 ```
 Div(myclass, Include(mywidget))
@@ -1245,7 +1255,7 @@ Div(myclass, Include(mywidget))
 
 ### Input
 
-Create an input HTML element.
+入力 HTML 要素を作成します。
 
 #### Syntax
 ```
@@ -1257,33 +1267,34 @@ Input(Name, Class, Placeholder, Type, Value, Disabled)
 > Input
   * `Name`
 
-    Element name.
+    要素名。
   * `Class`
 
-    Class name.
+    クラス名。
   * `Placeholder`
 
-    Prompt for the expected value of the input field.
+    入力フィールドの期待値の入力を求めるプロンプトが表示されます。
+
   * `Type`
 
-    input type.
+    入力方式。
   * `Value`
 
-    Element value.
+    要素の値。
   * `Disabled`
 
-    Disable the input element.
+    入力要素を無効にします。
 > Validate
 
-  Validate the parameter.
+  パラメータを検証します。
 > Style
 
-  The CSS style specified.
+  指定された CSS スタイル。
   * `Style`
 
-    CSS style.
+    CSS スタイル。
 
-#### Example
+#### 例
 
 ```
 Input(Name: name, Type: text, Placeholder: Enter your name)
@@ -1292,7 +1303,7 @@ Input(Name: num, Type: text).Validate(minLength: 6, maxLength: 20)
 
 ### InputErr
 
-Create an inputerr element to validate the error text.
+inputerr 要素を作成して、エラー テキストを検証します。
 
 #### Syntax
 ```
@@ -1302,12 +1313,12 @@ InputErr(Name,validation errors)]
 > InputErr
   * `Name`
 
-    Corresponds to the name of the [Input](#input) element.
+    [Input](#input) 要素の名前に対応します。
   * `validation errors`
 
-    Validation error message for one or more parameters.
+    1 つ以上のパラメータの検証エラー メッセージ。
 
-#### Example
+#### 例
 
 ```
 InputErr(Name: name,
@@ -1317,7 +1328,7 @@ maxLength: The length of the value must be less than 20 characters)
 
 ### InputMap
 
-Create an text input field for address, able to select coordinates on the map.
+マップ上の座標を選択できるウォレットアドレスのテキスト入力フィールドを作成します。
 
 #### Syntax
 ```
@@ -1327,23 +1338,23 @@ InputMap(Name, Type, MapType, Value)
 > InputMap
   * `Name`
 
-    Element name.
+    要素名。
   * `Value`
 
-    Default value.
-    The value is an object in string format. For example, `{"coords":[{"lat":number,"lng":number},]}` or `{"zoom":int, "center":{"lat":number,"lng": number}}`. When the InputMap is created with the predefined Value, the address field can be used to save the address value, so the it is not void.
+    デフォルト値。
+     値は文字列形式のオブジェクトです。 たとえば、`{"coords":[{"lat":number,"lng":number},]}` または `{"zoom":int, "center":{"lat":number,"lng" : 番号}}`。 事前定義された値を使用してInputMapが作成されると、ウォレットアドレスフィールドを使用してアドレス値を保存できるため、アドレス値は無効になりません。
   * `Type`
 
-    Type of map spot mapping:
-    * `polygon` - indicates the area of a multi-spot closed loop;
-    * `Line` - means a polyline with multiple points without closed loop;
-    * `Point` - indicates a single point coordinate.
+    マップスポットマッピングのタイプ:
+     * `polygon` - マルチスポットの閉じたループの領域を示します。
+     * `Line` - 閉じたループのない複数の点を持つポリラインを意味します。
+     * `Point` - 単一点の座標を示します。
   * `MapType`
 
-    Map type.
-    It has the following values: `hybrid, roadmap, satellite, terrain`.
+    マップの種類。
+    これには、「ハイブリッド、ロードマップ、衛星、地形」という値があります。
 
-#### Example
+#### 例
 
 ```
 InputMap(Name: Coords,Type: polygon, MapType: hybrid, Value: `{"zoom":8, "center":{"lat":55.749942860682545,"lng":37.6207172870636}}`)
@@ -1351,8 +1362,8 @@ InputMap(Name: Coords,Type: polygon, MapType: hybrid, Value: `{"zoom":8, "center
 
 ### JsonToSource
 
-Create a jsontosource element and fill it with the key-value pairs of a JSON array. The data obtained is put into the Source element, which can be used later in the source input function (e.g. [Table](#table)).
-The records in the result data are sorted alphabetically by JSON key.
+jsontosource 要素を作成し、JSON 配列のキーと値のペアを入力します。 取得されたデータは Source 要素に入れられ、後でソース入力関数 (例: [Table](#table)) で使用できます。
+結果データ内のレコードは、JSON キーによってアルファベット順に並べ替えられます。
 
 #### Syntax
 ```
@@ -1362,12 +1373,12 @@ JsonToSource(Source, Data)
 > JsonToSource
   * `Source`
 
-    Data source name.
+    データソース名。
   * `Data`
 
-    A JSON object or a variable name containing a JSON object (`#name#`).
+    JSON オブジェクト、または JSON オブジェクトを含む変数名 (`#name#`)。
 
-#### Example
+#### 例
 
 ```
 JsonToSource(src, #myjson#)
@@ -1376,7 +1387,7 @@ JsonToSource(dat, {"param":"value", "param2": "value 2"})
 
 ### Label
 
-Create a label HTML element.
+ラベルの HTML 要素を作成します。
 
 #### Syntax
 ```
@@ -1387,19 +1398,19 @@ Label(Body, Class, For)
 > Label
   * `Body`
 
-    Child text or element.
+    子のテキストまたは要素。
   * `Class`
 
-    Class name.
+    クラス名。
   * `For`
 
-    Bind to a form element.
+    フォーム要素にバインドします。
 > `StyleThe`:CSS style specified.
   * `Style`
 
-    CSS style.
+    CSS スタイル。
 
-#### Example
+#### 例
 
 ```
 Label(The first item).
@@ -1407,7 +1418,7 @@ Label(The first item).
 
 ### LangRes
 
-Returns a specific language resource. If requested to edit the tree, the langres element is returned, and you may use the short format symbol $langres$.
+特定の言語リソースを返します。 ツリーの編集を要求された場合は、langres 要素が返され、短い形式のシンボル $langres$ を使用できます。
 #### Syntax
 
 ```
@@ -1417,9 +1428,9 @@ LangRes(Name)
 > LangRes
   * `Name`
 
-    Name of the language resource.
+    言語リソースの名前。
 
-#### Example
+#### 例
 
 ```
 LangRes(name)
@@ -1428,7 +1439,7 @@ LangRes(myres)
 
 ### LinkPage
 
-Create a linkpage element, linking to the page.
+ページにリンクする linkpage 要素を作成します。
 #### Syntax
 
 ```
@@ -1439,24 +1450,24 @@ LinkPage(Body, Page, Class, PageParams)
 > LinkPage
   * `Body`
 
-    Child text or element.
+    子のテキストまたは要素。
   * `Page`
 
-    Name of the redirect page.
+    リダイレクトページの名前。
   * `Class`
 
-    Button class name.
+    Button クラス名。
   * `PageParams`
 
-    Redirect page parameters.
+    ページパラメータをリダイレクトします。
 > Style
 
-  The CSS style specified.
+  指定された CSS スタイル。
   * `Style`
 
-  CSS styles
+  CSS スタイル。
   
-#### Example
+#### 例
 
 ```
 LinkPage(Class: #style_link# h5 text-bold, Page: @1roles_view, PageParams: "v_role_id=#recipient.role_id#")
@@ -1464,7 +1475,7 @@ LinkPage(Class: #style_link# h5 text-bold, Page: @1roles_view, PageParams: "v_ro
 
 ### Map
 
-Create a visual map and display coordinates in any format.
+ビジュアルマップを作成し、任意の形式で座標を表示します。
 
 #### Syntax
 ```
@@ -1474,18 +1485,18 @@ Map(Hmap, MapType, Value)
 > Map
   * `Hmap`
 
-    Height of an HTML element on the page.
-    The default value is 100.
+    ページ上の HTML 要素の高さ。
+    デフォルト値は 100 です。
   * `Value`
 
-    Map value, an object in string format.
-    For example, `{"coords":[{"lat":number,"lng":number},]}` or `{"zoom":int, "center":{"lat":number,"lng": number}}`. If `center` is not specified, the map window will automatically adjust according to the specified coordinates.
+    マップ値、文字列形式のオブジェクト。
+     たとえば、`{"coords":[{"lat":number,"lng":number},]}` または `{"zoom":int, "center":{"lat":number,"lng":number}}`。 `center` が指定されていない場合、マップ ウィンドウは指定された座標に従って自動的に調整されます。
   * `MapType`
 
-    Map type.
-    It has the following values: `hybrid, roadmap, satellite, terrain`.
+    マップの種類。
+    これには、「ハイブリッド、ロードマップ、衛星、地形」という値があります。
 
-#### Example
+#### 例
 
 ```
 Map(MapType:hybrid, Hmap:400, Value:{"coords":[{"lat":55.58774531752405,"lng":36.97260184619233},{"lat":55.58396161622043,"lng":36.973803475831005},{"lat":55.585222890513975,"lng":36.979811624024364},{"lat":55.58803635636347,"lng":36.978781655762646}],"area":146846.65783403456,"address":"Unnamed Road, Moscow, Russia, 143041"})
@@ -1493,7 +1504,7 @@ Map(MapType:hybrid, Hmap:400, Value:{"coords":[{"lat":55.58774531752405,"lng":36
 
 ### MenuGroup
 
-Create a nested submenu in the menu and return the menugroup element. Before replacing it with the language resource, the name parameter will return the value of Title.
+メニュー内にネストされたサブメニューを作成し、menugroup要素を返します。タイトルの言語リソースで置き換える前に、nameパラメータはTitleの値を返します。
 
 #### Syntax
 ```
@@ -1503,17 +1514,17 @@ MenuGroup(Title, Body, Icon)
 
   * `Title`
 
-    Name of the menu item.
+    メニュー項目の名前。
 
   * `Body`
 
-    Child elements in a submenu.
+    サブメニューの子要素。
 
   * `Icon`
 
-    Icon.
+    アイコン。
 
-#### Example
+#### 例
 
 ```
 MenuGroup(My Menu){
@@ -1524,7 +1535,7 @@ MenuGroup(My Menu){
 
 ### MenuItem
 
-Create a menu item and return the menuitem element.
+メニュー項目を作成し、menuitem 要素を返します。
 
 #### Syntax
 ```
@@ -1535,21 +1546,21 @@ MenuItem(Title, Page, Params, Icon)
 
   * `Title`
 
-    Name of the menu item.
+    メニュー項目の名前。
 
   * `Page`
 
-    Name of the redirect page.
+    リダイレクトページの名前。
 
   * `Params`
 
-    Redirect page parameters.
+    ページパラメータをリダイレクトします。
 
   * `Icon`
 
-    Icon.
+    アイコン。
 
-#### Example
+#### 例
 
 ```
 MenuItem(Title:$@1roles$, Page:@1roles_list, Icon:"icon-pie-chart")
@@ -1557,7 +1568,7 @@ MenuItem(Title:$@1roles$, Page:@1roles_list, Icon:"icon-pie-chart")
 
 ### Money
 
-Returns the string value of exp / 10 ^ digit.
+exp / 10 ^ 桁の文字列値を返します。
 
 #### Syntax
 ```
@@ -1568,13 +1579,13 @@ Money(Exp, Digit)
 
   * `Exp`
 
-    A number in string format.
+    文字列形式の数値。
 
   * `Digit`
 
-    The exponent of 10 in the expression `Exp/10^digit`. The value can be positive or negative, and a positive value determines the number of digits after the decimal point.
+    式 `Exp/10^digit` の 10 の指数。 値は正または負にすることができ、正の値によって小数点以下の桁数が決まります。
 
-#### Example
+#### 例
 
 ```
 Money(Exp, Digit)
@@ -1582,7 +1593,7 @@ Money(Exp, Digit)
 
 ### Or
 
-It returns the result of an if logical operation. All parameters listed in parentheses are separated by commas. If having one parameter that is value is not an empty string, zero or `false`, the parameter value is `true`, otherwise the parameter value is `false`. If the parameter value is `true`, the function returns `1`, otherwise it returns `0`.
+if 論理演算の結果を返します。 括弧内にリストされているすべてのパラメータはカンマで区切られています。 値が空の文字列、ゼロ、または `false` ではないパラメータを 1 つ持つ場合、パラメータ値は `true` になり、それ以外の場合はパラメータ値は `false` になります。 パラメータ値が「true」の場合、関数は「1」を返し、それ以外の場合は「0」を返します。
 
 #### Syntax
 ```
@@ -1590,7 +1601,7 @@ Or(parameters)
 ```
 
 
-#### Example
+#### 例
 
 ```
 If(Or(#myval1#,#myval2#), Span(OK))
@@ -1598,7 +1609,7 @@ If(Or(#myval1#,#myval2#), Span(OK))
 
 ### P
 
-Create a p HTML element.
+p HTML 要素を作成します。
 
 #### Syntax
 ```
@@ -1610,21 +1621,21 @@ P(Body, Class)
 
   * `Body`
 
-    Child text or element.
+    子のテキストまたは要素。
 
   * `Class`
 
-    Class name.
+    クラス名。
 
 > Style
 
-The CSS style specified.
+指定された CSS スタイル。
 
   * `Style`
 
-    CSS style.
+    CSS スタイル。
 
-#### Example
+#### 例
 
 ```
 P(This is the first line.
@@ -1633,7 +1644,7 @@ P(This is the first line.
 
 ### QRcode
 
-Returns the QR code with the specified text and create a qrcode element.
+指定されたテキストを含む QR コードを返し、qrcode 要素を作成します。
 
 #### Syntax
 ```
@@ -1643,9 +1654,9 @@ QRcode(Text)
 > QRcode
   * `Text`
 
-    QR code text.
+    QRコードのテキスト。
 
-#### Example
+#### 例
 
 ```
 QRcode(#name#)
@@ -1653,7 +1664,7 @@ QRcode(#name#)
 
 ### RadioGroup
 
-Create a radiogroup element.
+radiogroup 要素を作成します。
 
 #### Syntax
 ```
@@ -1666,42 +1677,42 @@ RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class)
 
   * `Name`
 
-    Element name.
+    要素名。
 
   * `Source`
 
-    Data source obtained from the DBFind or Data function.
+    DBFind または Data 関数から取得されたデータ ソース。
 
   * `NameColumn`
 
-    Field name of the data source.
+    フィールド名 of the data source.
 
   * `ValueColumn`
 
-    Value name of the data source.
-    Fields created with Custom cannot be used in this parameter.
+    データソースの値の名前。
+    Custom で作成されたフィールドは、このパラメーターでは使用できません。
 
   * `Value`
 
-    Default value.
+    デフォルト値。
 
   * `Class`
 
-    Class name.
+    クラス名。
 
 > Validate
 
-  Validate the parameter.
+  パラメータを検証します。
 
 > Style
 
-  The CCS style specified.
+  指定された CCS スタイル。
 
   * `Style`
 
-    CSS style.
+    CSS スタイル。
 
-#### Example
+#### 例
 
 ```
 RadioGroup(Name: type_decision, Source: numbers_type_decisions, NameColumn: name, ValueColumn: value)
@@ -1709,7 +1720,7 @@ RadioGroup(Name: type_decision, Source: numbers_type_decisions, NameColumn: name
 
 ### Range
 
-Create a range element, use step size Step from From to To (not including To) to fill integer elements. The data generated will be put into Source and can be used later in the function of the source input (e.g. [Table](#table)). If an invalid parameter is specified, an empty Source is returned.
+range 要素を作成し、From から To までのステップ サイズ (To は含まない) を使用して整数要素を埋めます。 生成されたデータは Source に置かれ、後でソース入力の関数で使用できます (例: [Table](#table))。 無効なパラメータが指定された場合は、空の Source が返されます。
 
 #### Syntax
 ```
@@ -1720,21 +1731,21 @@ Range(Source,From,To,Step)
 
   * `Source`
 
-    Data source name.
+    データソース名。
 
   * `From`
 
-    Starting value (i = From).
+    開始値 (i = 開始値)。
 
   * `To`
 
-    End value (i <To).
+    終了値 (i < To)。
 
   * `Step`
 
-    Step of value change. If it is not specified, the default value is 1.
+    値が変化するステップ。 指定しない場合、デフォルト値は 1 です。
 
-#### Example
+#### 例
 
 ```
 Range(my,0,5)
@@ -1744,7 +1755,7 @@ Range(Source: neg, From: #from#, To: #to#, Step: #step#)
 
 ### Select
 
-Create a select HTML element.
+選択した HTML 要素を作成します。
 
 #### Syntax
 ```
@@ -1757,42 +1768,42 @@ Select(Name, Source, NameColumn, ValueColumn, Value, Class)
 
   * `Name`
 
-    Element name.
+    要素名。
 
   * `Source`
 
-    Data source obtained from the [DBFind](#dbfind) or [Data](#data) function.
+    [DBFind](#dbfind) または [Data](#data) 関数から取得されたデータ ソース。
 
   * `NameColumn`
 
-    Field name of the data source.
+    フィールド名 of the data source.
 
   * `ValueColumn`
 
-    Value name of the data source.
-    Fields created with [Custom](#custom) cannot be used in this parameter.
+    データソースの値の名前。
+    [Custom](#custom)で作成したフィールドはこのパラメータでは使用できません。
 
   * `Value`
 
-    Default value.
+    デフォルト値。
 
   * `Class`
 
-    Class name.
+    クラス名。
 
 > Validate
 
-  Validate the parameter.
+  パラメータを検証します。
 
 > Style
 
-  The CCS style specified.
+  指定された CCS スタイル。
 
   * `Style`
 
-    CSS style.
+    CSS スタイル。
 
-#### Example
+#### 例
 
 ```
 DBFind(mytable, mysrc)
@@ -1801,7 +1812,7 @@ Select(mysrc, name)
 
 ### SetTitle
 
-To set the page title and create a settitle element.
+ページ タイトルを設定し、settitle 要素を作成します。
 
 #### Syntax
 ```
@@ -1811,9 +1822,9 @@ SetTitle(Title)
 > SetTitle
   * `Title`
 
-    Page title.
+    ページタイトル。
 
-#### Example
+#### 例
 
 ```
 SetTitle(My page)
@@ -1821,7 +1832,7 @@ SetTitle(My page)
 
 ### SetVar
 
-Assign the value Value to the specified variable Name.
+値 Value を指定された変数 Name に割り当てます。
 
 #### Syntax
 ```
@@ -1832,13 +1843,13 @@ SetVar(Name, Value)
 
   * `Name`
 
-    Variable name.
+    変数名。
 
   * `Value`
 
-    Variable value, may contain a reference to another variable.
+    変数値には、別の変数への参照が含まれる場合があります。
 
-#### Example
+#### 例
 
 ```
 SetVar(name, John Smith).(out, I am #name#)
@@ -1847,7 +1858,7 @@ Span(#out#)
 
 ### Span
 
-Create a span HTML element.
+スパン HTML 要素を作成します。
 
 #### Syntax
 ```
@@ -1859,21 +1870,21 @@ Span(Body, Class)
 
   * `Body`
 
-    Child text or element.
+    子のテキストまたは要素。
 
   * `Class`
 
-    Class name.
+    クラス名。
 
 > Style
 
-  The CCS style specified.
+  指定された CCS スタイル。
 
   * `Style`
 
-    CSS style.
+    CSS スタイル。
 
-#### Example
+#### 例
 
 ```
 This is Span(the first item, myclass1).
@@ -1881,7 +1892,7 @@ This is Span(the first item, myclass1).
 
 ### Strong
 
-Create a strong HTML element.
+強力な HTML 要素を作成します。
 
 #### Syntax
 ```
@@ -1892,13 +1903,13 @@ Strong(Body, Class)
 
   * `Body`
 
-    Child text or element.
+    子のテキストまたは要素。
 
   * `Class`
 
-    Class name.
+    クラス名。
 
-#### Example
+#### 例
 
 ```
 This is Strong(the first item, myclass1).
@@ -1906,7 +1917,7 @@ This is Strong(the first item, myclass1).
 
 ### SysParam
 
-Get the value of a specific parameter in the platform parameter table system_parameters.
+プラットフォーム パラメーター テーブル system_parameters 内の特定のパラメーターの値を取得します。
 
 #### Syntax
 ```
@@ -1916,9 +1927,9 @@ SysParam(Name)
 > SysParam
   * `Name`
 
-    Name of the platform parameter.
+    プラットフォームパラメータの名前。
 
-#### Example
+#### 例
 
 ```
 SysParam(max_columns)
@@ -1926,7 +1937,7 @@ SysParam(max_columns)
 
 ### Table
 
-Create a table HTML element.
+テーブルの HTML 要素を作成します。
 
 #### Syntax
 ```
@@ -1938,21 +1949,21 @@ Table(Source, Columns)
 
   * `Source`
 
-    Name of a specific data source.
+    特定のデータ ソースの名前。
 
   * `Columns`
 
-    Title and corresponding column name, e.g.: Title1=column1,Title2=column2.
+    タイトルと対応する列名。例: Title1=column1,Title2=column2。
 
 > Style
 
-  The CSS style specified.
+  指定された CSS スタイル。
 
   * `Style`
 
-    CSS style.
+    CSS スタイル。
 
-#### Example
+#### 例
 
 ```
 DBFind(mytable, mysrc)
@@ -1961,7 +1972,7 @@ Table(mysrc,"ID=id,Name=name")
 
 ### TransactionInfo
 
-It queries transactions by specified hash and returns information about the executed contracts and their parameters.
+指定されたハッシュによってトランザクションをクエリし、実行されたコントラクトとそのパラメータに関する情報を返します。
 
 #### Syntax
 ```
@@ -1971,22 +1982,22 @@ TransactionInfo(Hash)
 > TransactionInfo
   * `Hash`
 
-    Transaction hashes in hexadecimal string format.
+    16 進文字列形式のトランザクション ハッシュ。
 > Return value
 
-  It returns a string in JSON format:
+  JSON 形式で文字列を返します:
 
 ```
 {"contract":"ContractName", "params":{"key": "val"}, "block": "N"}
 ```
 
-Where:
+どこ：
 
-* `contract` - Contract name;
-* `params` - Data passed to the contract parameters;
-* `block` - ID of the block that processed the transaction.
+* `contract` - 契約名。
+* `params` - コントラクトパラメータに渡されるデータ。
+* `block` - トランザクションを処理したブロックの ID。
 
-#### Example
+#### 例
 
 ```
 P(TransactionInfo(#hash#))
@@ -1994,9 +2005,9 @@ P(TransactionInfo(#hash#))
 
 ### VarAsIs
 
-Assigns the value Value to a specific variable Name, which is the name of a specific variable instead of its value.
+値 Value を特定の変数 Name (値の代わりに特定の変数の名前) に割り当てます。
 
-For versions with variable substitution, see [SetVar](#setvar).
+変数置換を備えたバージョンについては、[SetVar](#setvar) を参照してください。
 #### Syntax
 ```
 VarAsIs(Name, Value)
@@ -2006,13 +2017,13 @@ VarAsIs(Name, Value)
 
   * `Name`
 
-    Variable name.
+    変数名。
 
   * `Value`
 
-    A variable value. Variable name in the value will not be substituted. For example, if Value is example #varname#, then the variable value is also example #varname#.
+    変数値。 値内の変数名は置換されません。 たとえば、値が example #varname# の場合、変数値も example #varname# になります。
 
-#### Example
+#### 例
 
 ```
 SetVar(Name,"John")
@@ -2089,5 +2100,5 @@ Span(#name#) // I am #Name#
 
 #### Icon
 
-* All fa-class icons are from FontAwesome: `fa fa-<icon-name></icon-name>`.
-* All icon-class icons are from SimpleLineIcons: `icon-<icon-name>`.
+* すべての「fa-class icons」は FontAwesome：`fa fa-<icon-name></icon-name>`。
+* すべての「icon-class icons」は SimpleLineIcons: `icon-<icon-name>` からのものです。
