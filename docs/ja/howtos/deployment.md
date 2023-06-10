@@ -1,21 +1,21 @@
-# Deployment of A IBAX Network
-In this section, we will show you how to deploy your own blockchain network.
-## An deployment example
+# IBAX ネットワークの展開
+このセクションでは、独自のブロックチェーン ネットワークを展開する方法を説明します。
+## 導入例
 
-A blockchain network will be deployed with the following three nodes as an example.
+ブロックチェーン ネットワークは、例として次の 3 つのノードで展開されます。
 
-Three network nodes:
+3 つのネットワーク ノード:
 
-  * Node 1 is the first node in the blockchain network, which can generate new blocks and send transactions from clients connected to it;
-  * Node 2 is another honor node, which can generate new blocks and send transactions from clients connected to it;
-  * Node 3 is a guardian node, which cannot generate new blocks, but can send transactions from clients connected to it.
+   * ノード 1 はブロックチェーン ネットワーク内の最初のノードであり、新しいブロックを生成し、接続されているクライアントからトランザクションを送信できます。
+   * ノード 2 は別の優等ノードで、新しいブロックを生成し、接続されているクライアントからトランザクションを送信できます。
+   * ノード 3 はガーディアン ノードであり、新しいブロックを生成できませんが、接続されているクライアントからトランザクションを送信できます。
 
-Configurations of the three nodes to be deployed:
-* Each node uses its own PostgreSQL database system instance;
-* Each node uses its own Centrifugo service instance;
-* The server side github-backend is deployed on the same host as other backend components.
+導入される 3 つのノードの構成:
+* 各ノードは独自の PostgreSQL データベース システム インスタンスを使用します。
+* 各ノードは独自の Centrifugo サービス インスタンスを使用します。
+* サーバー側の github-backend は、他のバックエンド コンポーネントと同じホストにデプロイされます。
 
-The sample addresses and ports used by the nodes are described in the following table:
+ノードによって使用されるサンプルのアドレスとポートを次の表に示します。
 
 | Node |       Component       |    IP & port     |
 | :--: | :-------------------: | :--------------: |
@@ -32,108 +32,112 @@ The sample addresses and ports used by the nodes are described in the following 
 |  3   | go-ibax (TCP service) | 192.168.1.3:7078 |
 |  3   | go-ibax (API service) | 192.168.1.3:7079 |
 
-## Deploy phase
-Your own blockchain network must be deployed in several stages:
-- [Deployment of A IBAX Network](#deployment-of-a-ibax-network)
-  - [An deployment example](#an-deployment-example)
-  - [Deploy phase](#deploy-phase)
-  - [Server deployment](#server-deployment)
-    - [Deploy the first node](#deploy-the-first-node)
-    - [Dependencies and environment settings](#dependencies-and-environment-settings)
+# デプロイフェーズ
+
+独自のブロックチェーンネットワークを展開するには、いくつかのステージで展開する必要があります：
+
+- [IBAXネットワークの展開](#ibaxネットワークの展開)
+  - [展開の例](#展開の例)
+  - [デプロイフェーズ](#デプロイフェーズ)
+  - [サーバーの展開](#サーバーの展開)
+    - [最初のノードの展開](#最初のノードの展開)
+    - [依存関係と環境設定](#依存関係と環境設定)
       - [sudo](#sudo)
-    - [Golang](#golang)
-    - [PostgreSQL](#postgresql)
-    - [Centrifugo](#centrifugo)
-    - [Directory structure](#directory-structure)
-    - [Create a database](#create-a-database)
-    - [Configure Centrifugo](#configure-centrifugo)
-    - [Install go-ibax](#install-go-ibax)
-    - [Configure the first node](#configure-the-first-node)
-    - [Initiate the first node server](#initiate-the-first-node-server)
-  - [Deploy other nodes](#deploy-other-nodes)
-    - [Node 2](#node-2)
-    - [Node 3](#node-3)
-  - [Front-end deployment](#front-end-deployment)
-    - [Software prerequisites](#software-prerequisites)
-    - [Build a Weaver application](#build-a-weaver-application)
-    - [Add the configuration file for the blockchain network](#add-the-configuration-file-for-the-blockchain-network)
-    - [Build Weaver Web Application](#build-weaver-web-application)
-  - [Configure the blockchain network](#configure-the-blockchain-network)
-    - [Create the creator account](#create-the-creator-account)
-    - [Import applications, roles and templates](#import-applications-roles-and-templates)
-    - [Add the first node to the node list](#add-the-first-node-to-the-node-list)
-  - [Add other honor nodes](#add-other-honor-nodes)
-    - [Add members into the consensus role group](#add-members-into-the-consensus-role-group)
-    - [Create the owner account for other nodes](#create-the-owner-account-for-other-nodes)
-    - [Assign the node owner with the Validators role](#assign-the-node-owner-with-the-validators-role)
+    - [Golang](#gGlang)
+    - [PostgreSQL](#PostgreSQL)
+    - [Centrifugo](#Centrifugo)
+    - [ディレクトリ構造](#ディレクトリ構造)
+    - [データベースの作成](#データベースの作成)
+    - [Centrifugoの設定](#Centrifugoの設定)
+    - [go-ibaxのインストール](#go-ibaxのインストール)
+    - [最初のノードの設定](#最初のノードの設定)
+    - [最初のノードサーバーの初期化](#最初のノードサーバーの初期化)
+  - [他のノードの展開](#他のノードの展開)
+    - [ノード2](#ノード2)
+    - [ノード3](#ノード3)
+  - [フロントエンドの展開](#フロントエンドの展開)
+    - [ソフトウェアの前提条件](#ソフトウェアの前提条件)
+    - [Weaverアプリケーションのビルド](#weaverアプリケーションのビルド)
+    - [ブロックチェーンネットワークの設定ファイルの追加](#ブロックチェーンネットワークの設定ファイルの追加)
+    - [Weaver Webアプリケーションのビルド](#weaver-webアプリケーションのビルド)
+  - [ブロックチェーンネットワークの設定](#ブロックチェーンネットワークの設定)
+    - [作成者アカウントの作成](#作成者アカウントの作成)
+    - [アプリケーション、ロール、テンプレートのインポート](#アプリケーションロールテンプレートのインポート)
+    - [最初のノードをノードリストに追加](#最初のノードをノードリストに追加)
+  - [他のホノーノードの追加](#他のホノーノードの追加)
+    - [コンセンサスロールグループにメンバーを追加](#コンセンサスロールグループにメンバーを追加)
+    - [他のノード用のオーナーアカウントの作成](#他のノード用のオーナーアカウントの作成)
+    - [ノードオーナーにバリデータの役割を割り当てる](#ノードオーナーにバリデータの役割を割り当てる)
 
-## Server deployment
 
-### Deploy the first node
 
-The first node is a special one because it is essential to launch the blockchain network. The first block of the blockchain is generated by the first node, and all other nodes would download the blockchain from it. The owner of the first node is the platform creator.
+## サーバーの展開
 
-### Dependencies and environment settings
+### 最初のノードの展開
+
+最初のノードは特別な役割を果たし、ブロックチェーンネットワークを起動するために不可欠です。最初のノードがブロックチェーンの最初のブロックを生成し、他のすべてのノードはそれからブロックチェーンをダウンロードします。最初のノードの所有者はプラットフォームの作成者です。
+
+### 依存関係と環境設定
 
 #### sudo
 
-All commands of Debian 9 must be run as a non-root user. However, some system commands require super user permissions to execute. By default, sudo is not installed on Debian 9, you must install it first.
+Debian 9のすべてのコマンドは、rootユーザーではないユーザーとして実行する必要があります。ただし、一部のシステムコマンドはスーパーユーザー権限で実行する必要があります。デフォルトでは、Debian 9にはsudoがインストールされていないため、まずsudoをインストールする必要があります。
 
-1. Become a super user.
+1. スーパーユーザーになる。
 
 ```shell
 su -
 ```
 
-2. Upgrade your system.
+2. システムをアップグレードしてください。
 
 ```shell
 apt update -y && apt upgrade -y && apt dist-upgrade -y
 ```
 
-3. Install sudo。
+3. sudoをインストールします。
 
 ```shell
 apt install sudo -y
 ```
 
-4. Add your user to the sudo group.
+4. ユーザーを sudo グループに追加します。
 
 ```shell
 usermod -a -G sudo user
 ```
 
-5. After restarting, the changes take effect.
+5. 再起動後、変更が有効になります。
    
 ### Golang
 
-Install Go according to the [Official Documents](https://golang.org/doc/install#tarball). 
+[公式ドキュメント](https://golang.org/doc/install#tarball)に従って Go をインストールします。
 
-1. Download the latest stable version of Go (> 1.10.x) from [Golang official website](https://golang.org/dl/) or through the command line:
+1. Go の最新の安定バージョン (> 1.10.x) を [Golang 公式 Web サイト](https://golang.org/dl/) から、またはコマンド ラインを通じてダウンロードします。
 
 ```shell
 wget https://dl.google.com/go/go1.11.2.linux-amd64.tar.gz
 ```
 
-2. Use tar to extract the tarball to the `/usr/local` directory.
+2. tar を使用して、tarball を `/usr/local` ディレクトリに抽出します。
 
 ```shell
 tar -C /usr/local -xzf go1.11.2.linux-amd64.tar.gz
 ```
 
-3. Add `/usr/local/go/bin` to PATH environment variables (located at `/etc/profile` or `$HOME/.profile`).
+3. `/usr/local/go/bin` を PATH 環境変数 (`/etc/profile` または `$HOME/.profile` にあります) に追加します。
 
 ```shell
 export PATH=$PATH:/usr/local/go/bin
 ```
 
-1. Execute the `source` file to make the changes take effect, for example: 
+1. `source` ファイルを実行して変更を有効にします。次に例を示します。
 
 ```shell
 source $HOME/.profile
 ```
 
-2. Delete temporary files:
+2. 一時ファイルを削除します。
 
 ```shell
 rm go1.11.2.linux-amd64.tar.gz
@@ -141,7 +145,7 @@ rm go1.11.2.linux-amd64.tar.gz
 
 ### PostgreSQL
 
-1. Install PostgreSQL (> v.10) and psql:
+1. PostgreSQL (> v.10) と psql をインストールします。
 
 ```shell
 sudo apt install -y postgresql
@@ -149,7 +153,7 @@ sudo apt install -y postgresql
 
 ### Centrifugo
 
-1. Download Centrifugo V.1.8.0 from [GitHub](https://github.com/centrifugal/centrifugo/releases/) or through the command line:
+1. Centrifugo V.1.8.0 を [GitHub](https://github.com/centrifugal/centrifugo/releases/) から、またはコマンド ラインからダウンロードします。
 
 ```shell
 wget https://github.com/centrifugal/centrifugo/releases/download/v1.8.0/centrifugo-1.8.0-linux-amd64.zip \
@@ -158,32 +162,32 @@ wget https://github.com/centrifugal/centrifugo/releases/download/v1.8.0/centrifu
 && mv centrifugo-1.8.0-linux-amd64/* centrifugo/
 ```
 
-2. Delete temporary files: 
+2. 一時ファイルを削除します。
 
 ```shell
 rm -R centrifugo-1.8.0-linux-amd64 \
 && rm centrifugo-1.8.0-linux-amd64.zip
 ```
 
-### Directory structure
+### ディレクトリ構造
 
-For the Debian 9 system, it is recommended to store all software used by the blockchain platform in a separate directory.
+Debian 9 システムの場合、ブロックチェーン プラットフォームで使用されるすべてのソフトウェアを別のディレクトリに保存することをお勧めします。
 
-The `/opt/backenddir` directory is used here, but you can use any directory. In this case, please change all commands and configuration files accordingly.
+ここでは「/opt/backenddir」ディレクトリを使用していますが、任意のディレクトリを使用できます。 この場合、すべてのコマンドと設定ファイルを適宜変更してください。
 
-1. Create a directory for the blockchain platform:
+1. ブロックチェーン プラットフォームのディレクトリを作成します。
 
 ```shell
 sudo mkdir /opt/backenddir
 ```
 
-2. Make your user the owner of the directory:
+2. ユーザーをディレクトリの所有者にします。
 
 ```shell
 sudo chown user /opt/backenddir/
 ```
 
-3. Create subdirectories for Centrifugo, go-ibax and node data. All node data is stored in a directory named `nodeX`, where `X` is the node number. According to the node to be deployed, `node1` is Node 1, `node2` is Node 2, and so forth.
+3. Centrifugo、go-ibax、およびノード データ用のサブディレクトリを作成します。 すべてのノード データは `nodeX` という名前のディレクトリに保存されます。ここで、`X` はノード番号です。 デプロイされるノードに応じて、`node1`はノード 1、`node2`はノード 2 などとなります。
 
 ```shell
 mkdir /opt/backenddir/go-ibax \
@@ -191,42 +195,42 @@ mkdir /opt/backenddir/go-ibax/node1 \
 mkdir /opt/backenddir/centrifugo \
 ```
 
-### Create a database
+### データベースの作成
 
-1. Change the user password postgres to the default password *123456*. You can set your own password, but you must change it in the node configuration file *config.toml*.
+1. ユーザーのパスワード postgres をデフォルトのパスワード *123456* に変更します。 独自のパスワードを設定できますが、ノード構成ファイル *config.toml* で変更する必要があります。
 
 ```shell
 sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '123456'"
 ```
 
-2. Create a current state database for the node, for example **chaindb**:
+2. ノードの現在の状態データベース (例: **chaindb**) を作成します。
 
 ```shell
 sudo -u postgres psql -c "CREATE DATABASE chaindb"
 ```
 
-### Configure Centrifugo
+### Centrifugoの設定
 
-1. Create the Centrifugo configuration file:
+1. Centrifugo 構成ファイルを作成します。
 
 ```shell
 echo '{"secret":"CENT_SECRET"}' > /opt/backenddir/centrifugo/config.json
 ```
 
-You can set your own *secret*, but you must also change it in the node configuration file *config.toml*.
+独自の *secret* を設定できますが、ノード構成ファイル *config.toml* でも変更する必要があります。
 
-### Install go-ibax
+### go-ibaxのインストール
 
-1. Download github-backend from GitHub:
-2. Copy the go-ibax binary file to the `/opt/backenddir/go-ibax` directory. If you are using default Go workspace, the binary files are located in the `$HOME/go/bin` directory:
+1. GitHub から github-backend をダウンロードします。
+2. go-ibax バイナリ ファイルを `/opt/backenddir/go-ibax` ディレクトリにコピーします。 デフォルトの Go ワークスペースを使用している場合、バイナリ ファイルは `$HOME/go/bin` ディレクトリにあります。
 
 ```shell
 cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
 ```
 
-### Configure the first node
+### 最初のノードの設定
 
-3. Create the configuration file for Node 1:
+3. ノード 1 の構成ファイルを作成します。
 
 ```shell
 /opt/backenddir/go-ibax config \
@@ -239,17 +243,17 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
  --tcpPort=7078
 ```
 
-4. Generate the keys of Node 1, including the public and private keys of the node and the account:
+4. ノードとアカウントの公開鍵と秘密鍵を含む、ノード 1 の鍵を生成します。
 ```shell
 /opt/backenddir/go-ibax generateKeys \
  --config=/opt/backenddir/node1/config.toml
 ```
 
-5. Generate the first block:
+5. 最初のブロックを生成します。
 
-> Note
+> 注意
 >
-> If you want to create your own blockchain network, you must use the `--test=true` option. Otherwise, you cannot create a new account.
+> 独自のブロックチェーン ネットワークを作成したい場合は、`--test=true` オプションを使用する必要があります。 そうしないと、新しいアカウントを作成できません。
 
 ```shell
 /opt/backenddir/go-ibax generateFirstBlock \
@@ -257,22 +261,22 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
  --test=true
 ```
 
-6. Initialize the database:
+6. データベースを初期化します。
 
 ```shell
 /opt/backenddir/go-ibax initDatabase \
  --config=/opt/backenddir/node1/config.toml
 ```
 
-### Initiate the first node server
+### 最初のノードサーバーの初期化
 
-To start the first node server, you must start the following two services:
+最初のノード サーバーを起動するには、次の 2 つのサービスを起動する必要があります。
 * centrifugo
 * go-ibax
 
-If you failed to create [services](#https://wiki.debian.org/systemd/Services) with these files, you may execute binary files from directories in different consoles.
+これらのファイルを使用して [サービス](#https://wiki.debian.org/systemd/Services) を作成できなかった場合は、別のコンソールのディレクトリからバイナリ ファイルを実行する可能性があります。
 
-1. Run centrifugo:
+1. centrifugoを実行します:
 
 ```shell
 /opt/backenddir/centrifugo/centrifugo \
@@ -280,30 +284,30 @@ If you failed to create [services](#https://wiki.debian.org/systemd/Services) wi
  --config /opt/backenddir/centrifugo/config.json
 ```
 
-2. Run go-ibax:
+2. go-ibaxを実行します:
 
 ```shell
 /opt/backenddir/go-ibax start \
  --config=/opt/backenddir/node1/config.toml
 ```
 
-## Deploy other nodes
+## 他のノードの展開
 
-Although the deployment of all other nodes (Node 2 and Node 3) is similar to the first, but there are three differences:
+他のすべてのノード (ノード 2 およびノード 3) の展開は最初のものと似ていますが、次の 3 つの違いがあります。
 
-* You do not need to generate the first block. But it must be copied from Node 1 to the current node data directory;
-* The node must download blocks from Node 1 by configuring the `--nodesAddr` option;
-* The node must use its own addresses and ports.
+* 最初のブロックは生成する必要はありません。 ただし、ノード 1 から現在のノードのデータ ディレクトリにコピーする必要があります。
+* ノードは、`--nodesAddr` オプションを設定してノード 1 からブロックをダウンロードする必要があります。
+* ノードは独自のアドレスとポートを使用する必要があります。
 
-### Node 2
+### ノード2
 
-Follow operational instructions as shown below: 
+以下に示す操作手順に従ってください。
 
-1. [Dependencies and environment settings](#dependencies-and-environment-settings)
-2. [Create database](#create-a-database)
-3. [Centrifugo](#centrifugo)
-4. [Install go-ibax](#install-go-ibax)
-5. Create the configuration file for Node 2: 
+1. [依存関係と環境設定](#依存関係と環境設定)
+2. [データベースの作成](#データベースの作成)
+3. [Centrifugo](#Centrifugo)
+4. [go-ibaxをインストールする](#go-ibaxのインストール)
+5. ノード 2 の構成ファイルを作成します。
 
 ```shell
  /opt/backenddir/go-ibax config \
@@ -317,26 +321,26 @@ Follow operational instructions as shown below:
 --nodesAddr=192.168.1.1
 ```
 
-6. Copy the first block file to Node 2. For example, you can perform this operation on Node 2 throughscp:
+6. 最初のブロック ファイルをノード 2 にコピーします。たとえば、scp を使用してノード 2 で次の操作を実行できます。
 
 ```shell
  scp user@192.168.1.1:/opt/backenddir/node1/1block /opt/backenddir/node2/
 ```
 
-7. Generate the keys of Node 2, including the public and private keys of the node and the account:
+7. ノードとアカウントの公開鍵と秘密鍵を含む、ノード 2 の鍵を生成します。
 
 ```shell
  /opt/backenddir/go-ibax generateKeys \
 --config=/opt/backenddir/node2/config.toml
 ```
 
-8. Initiate the database: 
+8. データベースを初期化します。
 
 ```shell
  ./go-ibax initDatabase --config\=node2/config.toml
 ```
 
-9. Run centrifugo:
+9. centrifugoを実行します。
 
 ```shell
 /opt/backenddir/centrifugo/centrifugo \
@@ -344,28 +348,24 @@ Follow operational instructions as shown below:
 --config/opt/backenddir/centrifugo/config.json
 ```
 
-10. Run go-ibax:
+10. go-ibaxを実行します。
 
 ```shell
 /opt/backenddir/go-ibax start \
  --config=/opt/backenddir/node2/config.toml
 ```
 
-As a result, the node downloads the block from the first node. As this node is not a verification node, it cannot generate a new block. Node 2 will be added to the list of verification nodes later.
+その結果、ノードは最初のノードからブロックをダウンロードします。 このノードは検証ノードではないため、新しいブロックを生成できません。 ノード 2 は後で検証ノードのリストに追加されます。
 
-### Node 3
+### ノード3
 
-Follow operational instructions as shown below: 
+以下に示す操作手順に従ってください。
 
-1. [Dependencies and environment settings](#dependencies-and-environment-settings)
-
-2. [Create database](#create-a-database)
-
-3. [Centrifugo](#centrifugo)
-
-4. [Install go-ibax](#install-go-ibax)
-
-5. Create the configuration file for Node 3:
+1. [依存関係と環境設定](#依存関係と環境設定)
+2. [データベースの作成](#データベースの作成)
+3. [Centrifugo](#Centrifugo)
+4. [go-ibaxをインストールする](#go-ibaxのインストール)
+5. ノード 3 の構成ファイルを作成します。
 
 ```shell
  /opt/backenddir/go-ibax config \
@@ -379,27 +379,27 @@ Follow operational instructions as shown below:
 --nodesAddr=192.168.1.1
 ```
 
-6. Copy the first block file to Node 3. For example, you can perform this operation on Node 3 through scp:
+6. 最初のブロック ファイルをノード 3 にコピーします。たとえば、scp を使用してノード 3 で次の操作を実行できます。
 
 ```shell
  scp user@192.168.1.1:/opt/backenddir/node1/1block /opt/backenddir/node3/
 ```
 
 
-7.Generate the key of Node 3, including the public and private keys of the node and the account:
+7. ノードとアカウントの公開鍵と秘密鍵を含む、ノード 3 の鍵を生成します。
 
 ```shell
  /opt/backenddir/go-ibax generateKeys \
 --config=/opt/backenddir/node3/config.toml
 ```
 
-8.Initiate the database: 
+8. データベースを初期化します。
 
 ```shell
  ./go-ibax initDatabase --config=node3/config.toml
 ```
 
-9.Run centrifugo:
+9. Centrifugoを実行します。
 
 ```shell
  /opt/backenddir/centrifugo/centrifugo \
@@ -407,78 +407,78 @@ Follow operational instructions as shown below:
 --config/opt/backenddir/centrifugo/config.json
 ```
 
-10.Run go-ibax:
+10. go-ibaxeを実行します。
 
 ```shell
  /opt/backenddir/go-ibax start \
  --config=/opt/backenddir/node3/config.toml
 ```
 
-As a result, the node downloads the block from the first node. As this node is not a verification node, it cannot generate a new block. The client may be connected to the node, and it may send transactions to the network.
+その結果、ノードは最初のノードからブロックをダウンロードします。 このノードは検証ノードではないため、新しいブロックを生成できません。 クライアントはノードに接続でき、トランザクションをネットワークに送信できます。
 
-## Front-end deployment
+## フロントエンドの展開
 
-Only after installing **GNOME GUI** on Debian 9 (Stretch) 64-bit Official Release, the Govis client can be built with the `yarn` package manager.
+Debian 9 (Stretch) 64 ビット公式リリースに **GNOME GUI** をインストールした後でのみ、`yarn` パッケージ マネージャーを使用して Govis クライアントを構築できます。
 
-### Software prerequisites
+### ソフトウェアの前提条件
 
-1. Download Node.js LTS version 8.11 from Node.js official website or through the command line:
+1. Node.js 公式 Web サイトまたはコマンド ラインから Node.js LTS バージョン 8.11 をダウンロードします。
 
 ```shell
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash
 ```
 
-2. Install Node.js:
+2. Node.js をインストールします。
 
 ```shell
 sudo apt install -y nodejs
 ```
 
-1. Download Yarn version 1.7.0 from yarn's [Github](https://github.com/yarnpkg/yarn/releases) repository or through the command line:
+1. Yarn バージョン 1.7.0 を、yarn の [Github](https://github.com/yarnpkg/yarn/releases) リポジトリから、またはコマンド ラインを通じてダウンロードします。
 
 ```shell
 cd/opt/backenddir \
 && wget https://github.com/yarnpkg/yarn/releases/download/v1.7.0/yarn_1.7.0_all.deb
 ```
 
-2. Install Yarn:
+2. Yarnをインストールします。
 
 ```shell
 sudo dpkg -i yarn_1.7.0_all.deb && rm yarn_1.7.0_all.deb
 ```
 
-### Build a Weaver application
+### Weaverアプリケーションのビルド
 
-1. Download the latest version of Weaver from github-frontend via git:
+1. Git 経由で github-frontend から Weaver の最新バージョンをダウンロードします。
 
 ```shell
 cd/opt/backenddir \
 && git clone https://github.com/ibax-io/ibax-front.git
 ```
 
-2. Install Weaver dependencies via Yarn:
+2. Yarn 経由で Weaver 依存関係をインストールします。
 
 ```shell
 cd/opt/backenddir/ibax-front/ \
 && yarn install
 ```
 
-### Add the configuration file for the blockchain network
+### [ブロックチェーンネットワークの設定ファイルの追加
 
-1. Create a *settings.json* file that contains information about node connection:
+1. ノード接続に関する情報を含む *settings.json* ファイルを作成します。
 
 ```shell
 cp/opt/backenddir/ibax-front/public/settings.json.dist \
  /opt/backenddir/ibax-front/public/public/settings.json
 ```
  
-2. Edit the *settings.json* file in any text editor and add the required settings in this format:
+2. 任意のテキスト エディターで *settings.json* ファイルを編集し、次の形式で必要な設定を追加します。
 
 ```
 http://Node_IP-address:Node_HTTP-Port
 ```
 
-Examples of *settings.json* files for the three nodes:
+3 つのノードの *settings.json* ファイルの例:
 
 ```json
 {
@@ -490,35 +490,35 @@ Examples of *settings.json* files for the three nodes:
 }
 ```
 
-Build Weaver Desktop Application
+Weaver デスクトップ アプリケーションを構築する
 
-1.Use yarn to build the desktop version:
+1. yarn を使用してデスクトップ バージョンを構築します。
 
 ```shell
 cd/opt/backenddir/ibax-front \
 && yarn build-desktop
 ```
 
-2.The desktop version will be packaged into AppImage suffix format:
+2. デスクトップ バージョンは、AppImage サフィックス形式でパッケージ化されます。
 
 ```shell
 yarn release --publish never -l
 ```
 
-After building, your application can be used, but its connection configuration cannot be changed. If these settings need to be changed, a new version of the application must be built.
+ビルド後、アプリケーションを使用することはできますが、接続構成を変更することはできません。 これらの設定を変更する必要がある場合は、新しいバージョンのアプリケーションを構築する必要があります。
 
-### Build Weaver Web Application
+### Weaver Webアプリケーションのビルド
 
-1.Build a web application:
+1. Web アプリケーションを構築します。
 
 ```shell
 cd/opt/backenddir/ibax-front/ \
 && yarn build
 ```
 
-After building, the redistributable files will be placed in the /build directory. You can use any web server of your choice for deployment, and the *settings.json* file must also be placed in this directory. Note that if the connection settings are changed, there is no need to build the application again. Instead, edit the *settings.json* file and restart the web server.
+ビルド後、再頒布可能ファイルは /build ディレクトリに配置されます。 デプロイメントには任意の Web サーバーを使用できます。*settings.json* ファイルもこのディレクトリに配置する必要があります。 なお、接続設定を変更した場合、アプリケーションを再度ビルドする必要はありません。 代わりに、*settings.json* ファイルを編集し、Web サーバーを再起動します。
 
-1.For development or testing purposes, you can build Yarn's web server:
+1. 開発またはテストの目的で、Yarn の Web サーバーを構築できます。
 
 
 ```shell
@@ -526,40 +526,40 @@ sudo yarn global add serve \
 && serve -s build
 ```
 
-After that, your Weaver web application will be available at the following location: `http://localhost:5000`.
+その後、Weaver Web アプリケーションが `http://localhost:5000` の場所で利用できるようになります。
 
-## Configure the blockchain network
+## ブロックチェーンネットワークの設定
 
-### Create the creator account
+### 作成者アカウントの作成
 
-Create an account for the first node owner. This account is the creator of the new blockchain platform and has the administrator access.
+最初のノード所有者のアカウントを作成します。 このアカウントは新しいブロックチェーン プラットフォームの作成者であり、管理者アクセス権を持っています。
 
-1.Run Weaver;
+1. ウィーバーを実行します。
 
-2.Import the existing account using the following data:
+2. 次のデータを使用して既存のアカウントをインポートします。
 
-–Load the backup of the node owner's private key located in the `/opt/backenddir/node1/PrivateKey` file.
+–`/opt/backenddir/node1/PrivateKey` ファイルにあるノード所有者の秘密キーのバックアップをロードします。
 
-> Note
+> 注意
 >
->There are two private key files in this directory. The `PrivateKey` file is used create the node owner's account. The `NodePrivateKey` file is the private key of the node itself and must be kept secret.
+>このディレクトリには秘密鍵ファイルが 2 つあります。 `PrivateKey` ファイルは、ノード所有者のアカウントを作成するために使用されます。 `NodePrivateKey` ファイルはノード自体の秘密鍵であり、秘密にしておく必要があります。
 
-3.After logging in to the account, since no role has been created at this time, please select the Without role option.
+3. アカウントにログインした後、この時点ではロールが作成されていないため、ロールなし オプションを選択してください。
 
-### Import applications, roles and templates
+### アプリケーション、ロール、テンプレートのインポート
 
-At this time, the blockchain platform is in a blank state. You can configure it by adding roles, templates, and application frameworks that support basic ecosystem functions.
+現時点では、ブロックチェーン プラットフォームは空白の状態です。 基本的なエコシステム機能をサポートするロール、テンプレート、アプリケーション フレームワークを追加することで構成できます。
 
-1.Clone the application repository;
+1. アプリケーションリポジトリのクローンを作成します。
 
 ```shell
 cd/opt/backenddir \
 && git clone https://github.com/ibax-io/dapps.git
 ```
 
-2.Navigate to Developer> Import in Weaver;
+2. 「開発者」Developer >「Weaver でインポート」に移動します。
 
-3.Import applications as per the following order:
+3. 次の順序に従ってアプリケーションをインポートします。
 ```
  A./opt/backenddir/dapps/system.json 
  B./opt/backenddir/dapps/conditions.json 
@@ -567,61 +567,61 @@ cd/opt/backenddir \
  D./opt/backenddir/dapps/lang_res.json
 ```
 
-4.Navigate to Admin> Role, and click Install Default Role;
+4. 「管理者」Admin >「役割」Role に移動し、「デフォルトの役割のインストール」Default Role をクリックします。
 
-5.Exit the system through the configuration file menu in the upper right corner;
+5. 右上隅の構成ファイルメニューからシステムを終了します。
 
-6.Log in to the system as Admin;
+6. 管理者 Admin としてシステムにログインします。
 
-7.Navigate to Home> Vote> Template List, and click Install Default Template.
+7. 「ホーム」Home > 「投票」Vote > 「テンプレート リスト」Template List に移動し、「デフォルト テンプレートのインストール」Default Template をクリックします。
 
-### Add the first node to the node list
+### 最初のノードをノードリストに追加
 
-1.Navigate to Developer> Platform Parameters, and click the first_nodes parameter;
+1. 「開発者」Developer >「プラットフォームパラメータ」Platform Parameters に移動し、first_nodesパラメータをクリックします。
 
-2.Specify the parameters of the first blockchain network node.
+2. 最初のブロックチェーンネットワークノードのパラメータを指定します。
 
-  * public_key - The public key of the node is located in the `/opt/backenddir/node1/NodePublicKey` file;
+   * public_key - ノードの公開鍵は `/opt/backenddir/node1/NodePublicKey` ファイルにあります。
 
 ```
 {"api_address":"http://192.168.1.1:7079","public_key":"%node_public_key%","tcp_address":"192.168.1.1:7078"}
 ```
 
-## Add other honor nodes
+## 他のホノーノードの追加
 
-### Add members into the consensus role group
+### コンセンサスロールグループにメンバーを追加
 
-By default, only members in the consensus role (Consensus) group can participate in the voting required to add other master nodes. This means that before adding a new master node, members of the ecosystem must be assigned to the role.
-In this section, the creator's account is designated as the only member of the consensus role group. In a production environment, this role must be assigned to platform members that perform governance.
+デフォルトでは、コンセンサスロール (コンセンサス) グループのメンバーのみが、他のマスターノードを追加するために必要な投票に参加できます。 これは、新しいマスター ノードを追加する前に、エコシステムのメンバーをロールに割り当てる必要があることを意味します。
+このセクションでは、作成者のアカウントがコンセンサス役割グループの唯一のメンバーとして指定されます。 運用環境では、このロールはガバナンスを実行するプラットフォーム メンバーに割り当てる必要があります。
 
-1.Navigate to Home> Role and click Consensus;
+1.「ホーム」Home >「役割」Role に移動し、「コンセンサス」をクリックします。
 
-2.Click Assign to assign the creator's account to the role.
+2.「割り当て」をクリックして、作成者のアカウントをロールに割り当てます。
 
-### Create the owner account for other nodes
+### 他のノード用のオーナーアカウントの作成
 
-1. Run Weaver;
+1. Weaverを実行します。
 
-2. Import the existing account using the following data:
-     – Load the backup of the node owner's private key located in the `/opt/backenddir/node2/PrivateKey` file.
+2. 次のデータを使用して既存のアカウントをインポートします。
+      – `/opt/backenddir/node2/PrivateKey` ファイルにあるノード所有者の秘密キーのバックアップをロードします。
      
-3. After logging in to the account, since no role has been created at this time, please select the Without role option.
+3. アカウントにログインした後、この時点ではロールが作成されていないため、ロールなし オプションを選択してください。
 
-4. Navigate to Home> Personal Information, and click the title of the personal information;
+4. 「Home」 > 「個人情報 Personal Information」に移動し、個人情報のタイトルをクリックします。
 
-5. Add account details (personal information title, description, etc.).
+5. アカウントの詳細 (個人情報のタイトル、説明など) を追加します。
 
-### Assign the node owner with the Validators role
+### ノードオーナーにバリデータの役割を割り当てる
 
-1. Operations by the new node owner: 
-    1. Navigate to Home> Verifier;
-    2. Click Create Request and fill in the application form of the verifier candidate;
-    3. Click send request.
-2. Operations by the creator: 
-    1. Log in with a consensus role (Consensus);
-    2. Navigate to Home> Verifier;
-    3. Click the "Play" icon to start voting according to the candidate's request;
-    4. Navigate to Home> Vote, and click Update voting status;
-    5. Click the voting name and vote for the node owner.
+1. 新しいノード所有者による操作:
+     1. 「Home」 > 「検証者 Verfier」 に移動します。
+     2. 「リクエストの作成」 をクリックし、検証者候補者の申請フォームに記入します。
+     3. 「リクエストの送信」をクリックします。
+2. 作成者による操作：
+     1. コンセンサスロール (コンセンサス) でログインします。
+     2. 「Home」 > 「検証者 Verfier」に移動します。
+     3. 「Play」 アイコンをクリックして、候補者の要求に従って投票を開始します。
+     4. 「Home」 > 「投票 Vote」に移動し、「投票ステータスの更新 Update voting status」をクリックします。
+     5. 投票名をクリックして、ノード所有者に投票します。
 
-As a result, the account of the owner of the new node is assigned with the Validator role, and the new node is added to the list of master nodes.
+その結果、新しいノードの所有者のアカウントに検証者の役割が割り当てられ、新しいノードがマスター ノードのリストに追加されます。
