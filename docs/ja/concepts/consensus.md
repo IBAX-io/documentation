@@ -1,153 +1,155 @@
 
-# Decentralized Proof-of-Authority Consensus
+# 分散型プルーフオブオーソリティ・コンセンサス
 
-* What is Decentralized Proof-of-Authority consensus
+* 分散型権威証明コンセンサスとは？
 
-* Advantages of DPoA consensus
+* DPoAコンセンサスの利点
 
-* DPoA consensus and common means of attack
+* DPoA コンセンサスと一般的な攻撃手段
 
-* Implementation of DPoA consensus in IBAX
+* IBAX における DPoA コンセンサスの実装
 
-In this section, we will describe the Decentralized Proof-of-Authority consensus and its implementation in IBAX. 
-
-
- - [What is Decentralized Proof-of-Authority consensus](#what-is-decentralized-proof-of-authority-consensus)
-  - [Advantages of DPoA consensus](#advantages-of-dpoa-consensus)
-  - [DPoA consensus and common means of attack](#dpoa-consensus-and-common-means-of-attack)
-    - [DoS](#dos)
-    - [51 percent attack](#percent-attack-51)
-  - [Implementation of DPoA consensus in IBAX](#implementation-of-dpoa-consensus-in-ibax)
-    - [Honor node](#honor-node)
-    - [Leader node](#leader-node)
-    - [Generation of new blocks](#generation-of-new-blocks)
-    - [Forks](#forks)
-
-## What is Decentralized Proof-of-Authority consensus
-
-Considering commercial application scenarios and real-world environments, IBAX Network has built a new consensus mechanism, DPoA (Decentralized Proof of Authority). 
-
-Decentralization has always been our firm belief. It refers not only to IBAX’s infrastructure network environment. Instead, we will let decentralization take root in each ecoLib created in IBAX Network and use technical solutions to achieve a high degree of self-governance in each of them. For the purpose of highly distributed self-governance, we have made many changes in the overall architecture and technical implementation. However, in practice, we cannot avoid the centralized management concept. In order to find a balance between centralization and decentralization, in addition to the DPoA consensus mechanism, we have also formulated certain reward and incentive programs.
-
-IBAX Network has created a new consensus mechanism that combines distribution, weak centralization, and a certification authority. We call it DPoA (Decentralized Proof of Authority). To ensure continuity for the entire IBAX Network, the consensus covers not only IBAX Public Network, but also ecoLibs created by each user and user group. This creates a truly self-governed, decentralized, fair, transparent, and fraud-proof Decentralized Autonomous Organization (DAO). 
-
-DPoA has a prevention mechanism against network attacks and allows creation of Mint Nodes that guard the network and mint new IBXC coins. IBAXCoin holders can stake a part of their IBXC liquidity balance in Mint Nodes for Mint & Stake Emission Rewards. Minting and staking serve to increase the cost and difficulty of attacks and increase the total value of IBXC coins proportionally. With this mechanism, the probability and harm of any attack are infinitely close to zero. 
+このセクションでは、分散型認証コンセンサス（Decentralized Proof-of-Authority consensus）とそのIBAXでの実装について説明します。
 
 
-## Advantages of DPoA consensus
+- [分散型権威証明コンセンサスとは](#分散型権威証明コンセンサスとは)
+- [DPoAコンセンサスの利点](#DPoAコンセンサスの利点)
+- [DPoAのコンセンサスと共通の攻撃手段](#DPoAのコンセンサスと共通の攻撃手段)
+- [DoS](#DoS)
+- [51%攻撃](#51%攻撃)
+- [IBAXにおけるDPoAコンセンサスの実装](#IBAXにおけるDPoAコンセンサスの実装)
+- [名誉ノード](#名誉ノード)
+- [リーダーノード](#リーダーノード)
+- [新しいブロックの生成](#新しいブロックの生成)
+- [フォークス](#フォークス)
 
-Compared to Proof-of-Work (PoW) or Proof-of-Stake (PoS) consensus, DPoA consensus has the following advantages:
+## 分散型権威証明コンセンサスとは？
 
-* No need of high-performance hardware. Compared to PoW consensus, nodes implementing the DPoA consensus does not spend computational resources for solving complex mathematical logic tasks;
+IBAX Networkは、商用アプリケーションのシナリオや実環境を考慮し、新しいコンセンサスメカニズムであるDPoA（Decentralized Proof of Authority）を構築しました。
 
-* The interval of time to generate new blocks is predictable, but that for  PoW and PoS consensuses are different;
+分散化は、常に私たちの確固たる信念です。それは、IBAXのインフラ・ネットワーク環境だけを指すのではありません。IBAXネットワークで作られたそれぞれのecoLibに分散を根付かせ、それぞれのecoLibで高度な自己統治を実現するための技術的な解決策を講じていくのです。高度に分散した自治を実現するために、全体のアーキテクチャや技術的な実装に多くの変更を加えています。しかし、実際には、中央集権的な管理概念を避けることはできません。中央集権と分散化のバランスをとるために、DPoAコンセンサスメカニズムに加えて、一定の報酬とインセンティブプログラムを策定しました。
 
-* High transaction rate. Blocks are generated in a sequence at specified time interval by authorized network nodes, which increases the speed of transaction verification.
+IBAX Networkは、分散、弱い中央集権、認証局を組み合わせた新しい合意メカニズムを構築しました。それをDPoA（Decentralized Proof of Authority）と呼んでいます。IBAX Network全体の継続性を確保するため、コンセンサスはIBAX Public Networkだけでなく、各ユーザーやユーザーグループが作成したecoLibsも対象とします。これにより、真に自治され、分散化され、公正で透明性が高く、不正のない分散型自律組織（DAO）を実現します。
 
-* Tolerance to compromised and malicious nodes, as long as 51% of nodes are not compromised. IBAX implements a mechanism of banning nodes and revoking block generation rights.
+DPoAには、ネットワーク攻撃に対する予防メカニズムがあり、ネットワークを守り、新しいIBXCコインを鋳造するMint Nodeの作成が可能です。IBAXCoinの保有者は、IBXCの流動性残高の一部をミントノードにステークして、ミント＆ステーク排出リワードを得ることができます。ミントとステークは、攻撃のコストと難易度を高め、IBXCコインの総価値を比例して増加させる役割を果たします。このメカニズムにより、あらゆる攻撃の確率と被害は限りなくゼロに近くなります。
 
-## DPoA consensus and common means of attack
+
+## DPoAコンセンサスの利点
+
+DPoAコンセンサスは、PoW（Proof-of-Work）やPoS（Proof-of-Stake）コンセンサスと比較して、以下のような利点がある：
+
+* 高性能なハードウェアを必要としない。PoWコンセンサスと比較して、DPoAコンセンサスを実装するノードは、複雑な数学的論理タスクを解くために計算資源を費やす必要がありません；
+
+* 新しいブロックを生成する間隔は予測可能だが、PoWコンセンサスとPoSコンセンサスでは異なる；
+
+* 高いトランザクションレート。認可されたネットワークノードが指定された時間間隔でブロックを生成するため、取引検証の速度が向上する。
+
+* 51%のノードが危険でない限り、危険なノードや悪意のあるノードに対する耐性がある。IBAXは、ノードを禁止し、ブロック生成権を剥奪するメカニズムを実装しています。
+
+## DPoAのコンセンサスと共通の攻撃手段
 
 ### DoS
 
-An attacker may send large amount of transactions and blocks to a targeted node in the network, making an attempt to disrupt its operation and make its services unavailable.
+攻撃者は、ネットワーク上の標的となるノードに大量のトランザクションやブロックを送信し、その動作を妨害してサービスを利用できなくすることを試みることがある。
 
-The DPoA mechanism is possible to defend against DoS attacks:
+DPoA機構はDoS攻撃から防御することが可能である：
 
-* Because network nodes are pre-authenticated, block generation rights can be granted only to nodes that can withstand DoS attacks.
+* ネットワークノードは事前に認証されるため、DoS攻撃に耐えられるノードにのみブロック生成権を付与することができる。
 
-* If a honor node is unavailable for a certain period, it can be excluded from the list of honor nodes.
+* ネットワークノードは事前認証されるため，DoS攻撃に耐えられるノードにのみブロック生成権を付与することができる．
 
-### <spn id = "percent-attack-51">51 percent attack</span>
+### 51%攻撃
 
-As to the scenario with the DPoA consensus, the 51% attack requires an attacker to obtain control over 51% of network nodes. But the scenario for the PoW consensus is different, which an attacker needs to obtain 51% of network computational power. Obtaining the control over nodes in a permissioned blockchain network is much harder than obtaining the computational power.
+DPoAコンセンサスのシナリオでは、51%攻撃は攻撃者が51%のネットワークノードを制御する必要があります。しかし、PoWコンセンサスのシナリオは異なり、攻撃者はネットワークの51％の計算能力を得る必要がある。許可されたブロックチェーン・ネットワークでノードの制御を得ることは、計算能力を得ることよりもはるかに困難である。
 
-For example, in a network implementing the PoW consensus, an attacker can increase computation power (performance) of the controlled network segment thus increasing the percentage of controlled nodes. This makes no sense for DPoA consensus, because the computational power of the node has no impact on the blockchain network decisions.
+例えば、PoWコンセンサスを実装したネットワークでは、攻撃者は制御されるネットワークセグメントの計算能力（性能）を高めることができ、制御されるノードの割合を増やすことができます。DPoAコンセンサスでは、ノードの計算能力はブロックチェーン・ネットワークの決定に影響を与えないため、このようなことは意味がない。
 
-## Implementation of DPoA consensus in IBAX
+## IBAXにおけるDPoAコンセンサスの実装
 
-### Honor node
+### 名誉ノード
 
-In IBAX, only honor nodes can generate new blocks, which maintain the blockchain network and the distributed ledger.
+IBAXでは、新しいブロックを生成するのは名誉ノードのみであり、彼らがブロックチェーンネットワークと分散台帳を維持しています。
 
-The list of honor nodes is kept in the blockchain registry. The order of nodes determines the sequence in which nodes generate new blocks.
+名誉ノードのリストはブロックチェーンのレジストリに保持されています。ノードの順序は、ノードが新しいブロックを生成する順序を決定します。
 
-### Leader node
+### リーダーノード
 
-The following formula determines the current **leader node**, i.e. a node that must generate a new block at the current time.
+以下の式により、現在の**リーダーノード**、すなわち現在の時刻に新しいブロックを生成する必要があるノードが決定されます。
 
 ```
 leader = ((time - first) / step) % nodes
 ```
 
-> leader
+> リーダー
 
-Current leader node.
+    現在のリーダーノード。
 
-> time
+> 時間
 
-Current time (UNIX).
+    現在の時刻（UNIX）。
 
-> first
+> 最初
 
-First block generation time (UNIX).
+    最初のブロック生成時刻（UNIX）。
 
-> step
+> ステップ
 
-Number of seconds in the block generation interval.
+    ブロック生成間隔の秒数。
 
-> nodes
+> ノード
 
-Total number of honor nodes.
+    総リーダーノード数。
 
-### Generation of new blocks
 
-New blocks are generated by a [leader node](#leader-node) of the current time interval. At each time interval, the leader role is passed to the next honor node from the list of honor nodes.
+### 新しいブロックの生成
+
+新しいブロックは、現在の時間間隔の[リーダーノード](#leader-node)によって生成されます。各時間間隔で、リーダーの役割はリーダーノードリストから次のリーダーノードに渡されます。
 
 ![avatar](/block-generation.png)
 
-a) Steps for Generation of new blocks
+a) 新しいブロックの生成手順
 
-Main steps for generating a new block are as follows:
+新しいブロックを生成するための主な手順は次のとおりです：
 
-1. Collects all new transactions from the transaction queue of the node;
+1. ノードのトランザクションキューからすべての新しいトランザクションを収集します。
 
-2. Executes transactions one by one. Invalid or inexecutable transactions are rejected;
+2. トランザクションを1つずつ実行します。無効または実行不可能なトランザクションは拒否されます。
 
-3. Checks if the [block generation limits](../reference/platform-parameters.md#configure-the-generation-of-blocks) is in compliance; 
+3. [ブロック生成制限](../reference/platform-parameters.md#configure-the-generation-of-blocks)を満たしているかどうかを確認します。
 
-4. Generates a block with valid transactions and signs it with the private key of the honor node through the ECDSA algorithm;
+4. 有効なトランザクションを含むブロックを生成し、ECDSAアルゴリズムを使用してリーダーノードの秘密鍵で署名します。
 
-5. Sends this block to other honor nodes.
+5. このブロックを他のリーダーノードに送信します。
 
-b) Verification of new blocks
+b) 新しいブロックの検証
 
-Steps for verifying new blocks on other honor nodes:
+他のリーダーノードで新しいブロックを検証する手順：
 
-1.Receive a new block and verify:
+1. 新しいブロックを受信して検証します：
 
-    – whether the new block was generated by the leader node of a current interval;
+    – 新しいブロックが現在の時間間隔のリーダーノードによって生成されたものかどうかを確認します。
 
-    – whether there are no other blocks generated by the leader node of a current interval;
+    – 他のブロックが現在の時間間隔のリーダーノードによって生成されたものがないかどうかを確認します。
 
-    – whether the new block is properly signed. 
+    – 新しいブロックが正しく署名されているかどうかを確認します。
 
-2. Execute transactions from the block one by one. Check whether the transactions are executed successfully and within the [block generation limits](../reference/platform-parameters.md#configure-the-generation-of-blocks) .
+2. ブロックからトランザクションを1つずつ実行します。トランザクションが正常に実行され、[ブロック生成制限](../reference/platform-parameters.md#configure-the-generation-of-blocks)の範囲内であるかどうかを確認します。
 
-3. Add or reject the block, depending on the previous step:
+3. 前のステップに基づいて、ブロックを追加または拒否します：
 
-    – If block validation is successful, add the new block to the blockchain of the current node;
+    – ブロックの検証が成功した場合、新しいブロックを現在のノードのブロックチェーンに追加します。
 
-    – If block validation failed, reject the block and send a **bad block** transaction;
+    – ブロックの検証に失敗した場合、ブロックを拒否して「不正なブロック」トランザクションを送信します。
 
-    – If the honor node that created this invalid block continues to generate bad blocks, it can be banned or excluded from the list of honor nodes.
+    – この無効なブロックを生成したリーダーノードが引き続き不正なブロ
 
-### Forks
 
-A **fork** is an alternative version of the blockchain, which contains one or more blocks that were generated independently from the rest of the blockchain.
+### フォークス
 
-Forks usually occur when a part of the network becomes desynchronized. Factors that are probably result in forks are high network latency, intentional or unintentional time limits violation, time desynchronization at nodes. If network nodes have a significant geographic distribution, block generation interval must be increased.
+**フォーク**は、ブロックチェーンの残りとは独立して生成された1つ以上のブロックを含む、ブロックチェーンの代替バージョンです。
 
-Forks are resolved by following the longest blockchain rule. When two blockchain versions are detected, honor nodes rollback the shorter one and accept the longer one. 
+フォークは通常、ネットワークの一部が同期解除されたときに発生します。フォークの原因となる可能性のある要素は、高いネットワークの遅延、意図的または意図しない時間制限の違反、ノード間の時刻の非同期です。ネットワークノードが著しい地理的分布を持つ場合、ブロック生成間隔を増やす必要があります。
+
+フォークは、最も長いブロックチェーンのルールに従って解決されます。2つのブロックチェーンバージョンが検出された場合、リーダーノードは短いバージョンをロールバックし、長いバージョンを受け入れます。
 
 ![avatar](/block-fork-resolution.png)
