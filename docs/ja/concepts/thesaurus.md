@@ -1,280 +1,279 @@
 
-# Terms and Definitions
+# 用語と定義
 
-  - [Blockchain terms](#blockchain-terms)
-    - [Blockchain](#blockchain)
-    - [Peer-to-peer network](#peer-to-peer-network)
-    - [Hash](#hash)
-    - [Block](#block)
-    - [Block verification](#block-verification)
-    - [Consensus](#consensus)
-    - [Token](#token)
-    - [Identification](#identification)
-    - [Unique identification](#unique-identification)
-    - [Private key](#private-key)
-    - [Public key](#public-key)
-    - [Digital signature](#digital-signature)
-    - [Smart contract](#smart-contract)
-    - [Transaction fee](#transaction-fee)
-    - [Double spend](#double-spend)
-    - [Encryption](#encryption)
-    - [Private blockchain](#private-blockchain)
-    - [Public blockchain](#public-blockchain)
-    - [Proof of Authority](#proof-of-authority)
-  - [IBAX Terms](#ibax-terms)
-    - [Testnet](#testnet)
-    - [Mainnet](#mainnet)
-    - [Gas fee](#gas-fee)
-    - [Account address](#account-address)
-    - [Wallet address](#wallet-address)
-    - [Weaver](#weaver)
-    - [ECOLIB](#ecolib)
-    - [ECOLIB parameters](#ecolib-parameters)
-    - [ECOLIB members](#ecolib-members)
-    - [Virtual private ECOLIB](#virtual-private-ecolib)
-    - [Decentralized Proof-of-Authority](#decentralized-proof-of-authority)
-    - [Needle](#needle)
-    - [Logicor](#logicor)
-    - [Integrated Development Environment (IDE)](#integrated-development-environment-ide)
-    - [Page editor](#page-editor)
-    - [Visual page designer](#visual-page-designer)
-    - [Contract editor](#contract-editor)
-    - [Multilingual resources](#multilingual-resources)
-    - [Application export](#application-export)
-    - [Application import](#application-import)
-    - [Smart law](#smart-law)
-    - [Legal system](#legal-system)
-    - [Application](#application)
-    - [Page](#page)
-    - [Code segment](#code-segment)
-    - [Access rights](#access-rights)
-    - [Honor node](#honor-node)
-    - [Guardian node](#guardian-node)
-    - [Concurrent transaction processing](#concurrent-transaction-processing)
+   - [ブロックチェーン用語](#blockchain-terms)
+     - [ブロックチェーン](#blockchain)
+     - [ピアツーピア ネットワーク](#peer-to-peer-network)
+     - [ハッシュ](#ハッシュ)
+     - [ブロック](#ブロック)
+     - [ブロック検証](#block-verification)
+     - [コンセンサス](#コンセンサス)
+     - [トークン](#トークン)
+     - [識別](#識別)
+     - [一意の識別](#unique-identification)
+     - [秘密鍵](#private-key)
+     - [公開鍵](#public-key)
+     - [デジタル署名](#digital-signature)
+     - [スマートコントラクト](#smart-contract)
+     - [取引手数料](#transaction-fee)
+     - [二重支払い](#double-spend)
+     - [暗号化](#encryption)
+     - [プライベートブロックチェーン](#private-blockchain)
+     - [パブリックブロックチェーン](#public-blockchain)
+     - [権限の証明](#proof-of-authority)
+   - [IBAX 規約](#ibax-terms)
+     - [テストネット](#テストネット)
+     - [メインネット](#メインネット)
+     - [ガス料金](#ガス料金)
+     - [アカウントアドレス](#アカウントアドレス)
+     - [ウォレットアドレス](#ウォレットアドレス)
+     - [ウィーバー](#ウィーバー)
+     - [エコリブ](#エコリブ)
+     - [ECOLIBパラメータ](#ecolib-parameters)
+     - [ECOLIBメンバー](#ecolib-members)
+     - [仮想プライベート ECOLIB](#virtual-private-ecolib)
+     - [分散型権限証明](#decentralized-proof-of-authority)
+     - [針](#針)
+     - [ロジコー](#logicor)
+     - [統合開発環境 (IDE)](#integrated-development-environment-ide)
+     - [ページエディター](#page-editor)
+     - [ビジュアル ページ デザイナー](#visual-page-designer)
+     - [契約編集者](#contract-editor)
+     - [多言語リソース](#multilingual-resources)
+     - [アプリケーションのエクスポート](#application-export)
+     - [アプリケーションのインポート](#application-import)
+     - [スマートロー](#smart-law)
+     - [法制度](#legal-system)
+     - [アプリケーション](#application)
+     - [ページ](#ページ)
+     - [コードセグメント](#コードセグメント)
+     - [アクセス権](#access-rights)
+     - [名誉ノード](#honor-node)
+     - [ガーディアンノード](#guardian-node)
+     - [同時トランザクション処理](#concurrent-transaction-processing)
 
 
+## ブロックチェーン用語
 
-## Blockchain terms
+### ブロックチェーン
 
-### Blockchain
+ブロックチェーンは、データの信頼性を維持しながらデータの偽造や紛失を防ぐために、データを保存し、システム内でデータを送信および処理する情報システムです。 データ保護は次のようにして実現されます。
 
-Blockchain is an information system that stores data and transmits and processes data within the system to prevent data from being forged or lost while maintaining data reliability; Data protection is achieved by:
+1.一連の暗号化されたブロックのブロックチェーンにデータを書き込む。
 
-1.writing data into a blockchain of a series of encrypted blocks;
+2.ピアツーピアネットワークにおけるブロックチェーンコピーの分散ストレージ。
 
-2.distributed storage of blockchain copies in peer-to-peer networks;
+3.コンセンサスメカニズムを使用したすべてのノード上のブロックチェーンの同期。
 
-3.synchronization of blockchains on all nodes using a consensus mechanism;
+4.データ送信を保存し、ブロックチェーンに契約を処理するアルゴリズムを備えたネットワークを使用してデータ操作を実行する際のデータの信頼性を確保します。
 
-4.ensuring data reliability when performing data operations using the network with algorithms that store data transmissions and process contracts in the blockchain.
+### ピアツーピア ネットワーク
 
-### Peer-to-peer network
+同等の特権を持つノード (中央サーバーなし) で構成されるコンピューター ネットワーク。
 
-A computer network, consisting of equally privileged nodes (without a central server).
+### ハッシュ
 
-### Hash
+ハッシュとも呼ばれ、ファイルまたはデータ セットの長さのバイナリ値を、より短い固定長のバイナリ値にマッピングすること。
 
-Also known as hashing, the binary value of any file or data set length that is mapped to a shorter fixed-length binary value.
+### ブロック
 
-### Block
+トランザクションの形式と署名を検証した後、トランザクション セットはオナー ノードによって特定のデータ構造にグループ化されます。 ブロックには、前のブロックへのリンクとしてハッシュ ポインターが含まれます。これは、ブロックチェーン暗号化のセキュリティを確保するための手段の 1 つです。
 
-After verifying the format and signature of the transaction, a transaction set is grouped by the honor node into a specific data structure. A block contains a hash pointer as a link to the previous block, which is one of the measures to ensure the security of blockchain encryption.
+### ブロック検証
 
-### Block verification
+ブロック構造の正確性、生成時間、前のブロックとの互換性、トランザクションの署名、トランザクションとブロック データの対応関係を検証する手順。
 
-A procedure to verify the correctness of the block structure, generation time, compatibility with the previous block, transaction signatures, and the correspondence between the transaction and the block data.
+### コンセンサス
 
-### Consensus
+新しいブロックをブロックチェーンに追加するプロセスで優等ノードによって使用される検証プロトコルまたはこのタイプのプロトコルのアルゴリズム。
 
-The verification protocol or algorithm of this type of protocol used by the honor node in the process of adding new blocks to the blockchain.
+### 取引
 
-### Transaction
+ブロックチェーンネットワーク上のデータ送信操作、またはブロックチェーン内のそのようなトランザクションの記録。
 
-Data transmission operations on the blockchain network or records of such transactions in the blockchain.
+### トークン
 
-### Token
+ブロックチェーン上で流通できる暗号化されたデジタル権利と共有の証明。 レジスターに保管される一連の識別可能なデジタル記録。これらの記録間の権利と共有を交換するメカニズムが含まれます。
 
-Proof of encrypted digital rights and shares that can be circulated on the blockchain. A set of identifiable digital records stored in a register, including a mechanism for exchanging rights and shares between these records.
+### 身元
 
-### Identification
+システム内のユーザーを識別するために使用される暗号化プログラム。
 
-An encryption program used to identify users in the system.
+### 一意の識別
 
-### Unique identification
+アカウントをユーザーにリンクするプロセスでは、ユーザー名を実際のユーザーにリンクするために、生体認証を達成するための法的および組織的な取り組み、またはその他の手順が必要です。
 
-The process of linking accounts with users requires legal and organizational efforts or other procedures to achieve biometric identification in order to link user names with actual users.
+### 秘密鍵
 
-### Private key
+所有者によって秘密裏に保存された文字列。所有者がインターネット上の仮想アカウントにアクセスし、トランザクションに署名するために使用されます。
 
-A string of characters secretly stored by its owner, used by the owner to access virtual accounts on the internet and sign transactions.
+### 公開鍵
 
-### Public key
+秘密キーの信頼性をチェックするために使用される文字列。 公開キーは秘密キーから一意に導出されます。
 
-A string of characters used to check the authenticity of the private key. The public key is uniquely derived from the private key.
+### デジタル署名
 
-### Digital signature
+暗号化されたデータ処理後に取得されるドキュメントまたはメッセージの属性。 デジタル署名は、文書の完全性 (変更がないこと) と信頼性 (送信者の身元の検証) をチェックするために使用されます。
 
-The attributes of a document or message obtained after encrypted data processing. The digital signature is used to check the integrity of the document (no modification) and authenticity (verification of the identity of the sender).
+### スマートコントラクト
 
-### Smart contract
+ブロックチェーンでデータ保存操作を実行するプログラムでは、すべてのコントラクトがブロックチェーンに保存されます。
 
-In the program that performs data storage operations in the blockchain, all contracts are stored in the blockchain.
+### 取引手数料
 
-### Transaction fee
+トランザクションを実行するために優等ノードに支払われる料金。
 
-The fee paid to the honor node to execute the transaction.
+### 二重支出
 
-### Double spend
+ブロックチェーンネットワークを攻撃する方法。 その結果、トランザクションには同じトークンが 2 回かかります。
 
-A method of attacking the blockchain network. The result is that a transaction costs the same token twice. 
+この種の攻撃はブロックチェーンがフォークされるときに発生し、攻撃者がネットワークの検証能力の 50% 以上を制御している場合にのみ実行できます。
 
-This kind of attack occurs when the blockchain is forked, which can only be executed when the attacker controls more than 50% of the network's verification capability.
+### 暗号化
 
-### Encryption
+デジタル データ変換の 1 つの方法であり、対応する復号キーを持っている当事者のみがそれを読み取ることができます。
 
-A way of digital data conversion, only the party with the corresponding decryption key can read it.
+### プライベートブロックチェーン
 
-### Private blockchain
+すべてのノードとデータ アクセス権が単一の組織 (政府、企業、個人) によって集中管理されるブロックチェーン ネットワーク。
 
-A blockchain network where all nodes and data access rights are centrally controlled by a single organization (government, company or individual).
+### パブリックブロックチェーン
 
-### Public blockchain
+どの組織にも管理されていないブロックチェーン ネットワークでは、すべての決定はネットワーク参加者間の合意に達することによって行われます。 誰もがブロックチェーンネットワークのデータを取得してアクセスできます。
 
-In a blockchain network that is not controlled by any organization, all decisions are made by reaching a consensus among network participants. Everyone can obtain and access the data of the blockchain network.
+### 分散型権限証明
 
-### Proof of Authority
+Distributed Proof of Authority (PoA) である IBAX ネットワークは、分散、弱い集中管理、認証局を組み合わせた新しいコンセンサス メカニズムを作成しました。 私たちはこれを DPoA (Distributed Proof of Authority) と呼んでいます。 IBAX ネットワーク全体の継続性を確保するために、コンセンサスには IBAX パブリック ネットワークだけでなく、各ユーザーおよびユーザー グループによって作成された ecoLib も含まれます。 これにより、真に自治的で分散型、公正、透明、不正行為の防止された分散型自律組織 (DAO) が構築されます。
 
-Proof of Authority (PoA), IBAX Network has created a new consensus mechanism that combines distribution, weak centralization, and a certification authority. We call it PoA (Proof of Authority). To ensure continuity for the entire IBAX Network, the consensus covers not only IBAX Public Network, but also ecoLibs created by each user and user group. This creates a truly self-governed, decentralized, fair, transparent, and fraud-proof Decentralized Autonomous Organization (DAO).
+## IBAX 規約
 
-## IBAX Terms
+### テストネット
 
-### Testnet
+テストに使用されるブロックチェーン ネットワークのバージョン。
 
-The version of the blockchain network used for testing.
+### メインネット
 
-### Mainnet
+ブロックチェーン ネットワークのメイン バージョン。
 
-The main version of the blockchain network.
+### 取引
 
-### Transaction
+コントラクトを呼び出し、コントラクトの操作コマンドにパラメータを渡します。 Honor ノードの実行結果はデータベースの更新です。
 
-Call the contract and pass the parameters to the operation command of the contract. The result of the honor node execution is the update of the database.
+### ガス料金
 
-### Gas fee
+ノードのネットワーク上で特定の操作を実行するコストを計算するために使用される従来の単位。 燃料交換レートは優等ノードの投票によって決定されます。
 
-A conventional unit used to calculate the cost of performing certain operations on a network of nodes. The fuel exchange rate is determined by a vote on the honor node.
+### アカウントアドレス
 
-### Account address
+データ レコードにはトークンが保存され、キーのペア (秘密キーと公開キー) を介してアクセスできます。
 
-The data records store the token and can be accessed through a pair of keys (private key and public key).
+### ウォレットアドレス
 
-### Wallet address
+ユーザーの仮想アカウントの名前として使用される、ノード ネットワーク上のユーザーの文字エンコード識別子。
 
-The character encoding identifier of the user on the node network that is used as the name of the user's virtual account.
+### ウィーバー
 
-### Weaver
+ノード ネットワークに接続するために使用されるソフトウェア クライアント。デスクトップ バージョンと Web ブラウザ バージョンを提供します。
 
-The software client used to connect to the node network, which provides the desktop and web browser versions.
+Weaver は、テーブル、ページ、コントラクトの作成と編集を含むプラットフォーム開発環境を統合します。 ユーザーは、Weaver で ECOLIB を構築し、アプリケーションを作成して使用できます。
 
-Weaver integrates the platform development environment, including creating and editing tables, pages, and contracts. Users can build ECOLIBs, create and use applications in Weaver. 
+### エコリブ
 
-### ECOLIB
+アプリケーションや ECOLIB メンバーを含む、比較的クローズドまたはオープンなソフトウェア プログラミング環境。
 
-A relatively closed or open software programming environment, including applications and ECOLIB members.
+ECOLIB メンバーは、ECOLIB に属する排他的なトークンを発行し、スマート コントラクトを使用してメンバー間の対話ルールを確立し、メンバーのアプリケーション要素へのアクセス権を設定できます。
 
-ECOLIB members can issue exclusive tokens belonging to the ECOLIB, use smart contracts to establish interaction rules between members, and set access rights to application elements for members.
+### ECOLIB パラメータ
 
-### ECOLIB parameters
+ECOLIB の作成者のアカウントやアプリケーション要素を変更する権限など、一連の構成可能な ECOLIB パラメータは、パラメータ テーブルで変更できます。
 
-A set of configurable ECOLIB parameters, such as the account of the creator of the ECOLIB and the permissions of changing application elements, can be changed in the parameter table.
+### ECOLIB メンバー
 
-### ECOLIB members
+特定の ECOLIB およびアプリケーション機能にアクセスできるユーザー。
 
-Users who can access specific ECOLIBs and application features.
+### 仮想プライベート ECOLIB
 
-### Virtual private ECOLIB
+仮想プライベート ECOLIB - Cross Ledger Base (CLB)。標準 ECOLIB の完全な機能セットを備えていますが、ブロックチェーンの外部で動作します。 CLB では、コントラクトとテンプレート言語、データベース テーブルを使用および作成し、Weaver を使用してアプリケーションを作成できます。 API を介してブロックチェーン ECOLIB 上のコントラクトを呼び出すことができます。
 
-Virtual private ECOLIB - Cross Ledgers Base (CLB), which has the full set of functions of the standard ECOLIB, but works outside the blockchain. In CLB, you can use and create contracts and template languages, database tables, and use Weaver to create applications. You can call contracts on the blockchain ECOLIB via APIs.
+### 分散化された権限証明
 
-### Decentralized Proof-of-Authority
+分散型 Proof-of-Authority (DPoA) は、高いパフォーマンスとフォールト トレランスを提供する新しいコンセンサス アルゴリズムです。 DPoA では、新しいブロックを生成する権利は、その権利を証明したノードに与えられ、そのようなノードは事前検証を受ける必要があります。
 
-Decentralized Proof-of-Authority (DPoA) is a new consensus algorithm that provides high performance and fault tolerance. In DPoA, the right to generate new blocks is granted to nodes that have proven the right to do so, and such nodes must be subject to preliminary verification.
+### 針
 
-### Needle
+ユーザー ページから受信したデータとデータベース テーブルで実行される値の操作を処理できるスマート コントラクトを作成するために使用されるスクリプト言語。
+Weaver のエディターで契約を作成および編集できます。
 
-A scripting language used to create smart contracts that can handle data received from user pages and value operations performed in database tables.
-You can create and edit contracts in Weaver's editor.
+### ロジコー
 
-### Logicor
+ページの作成に使用されるテンプレート言語。 データベース テーブルから値を取得し、ユーザー ページを構築し、ユーザー入力データをコントラクトの **data** セクションに渡すことができます。
 
-The template language used to create pages. It can get values from database tables, build user pages, and pass user input data to the **data** section of the contract.
+### 統合開発環境 (IDE)
 
-### Integrated Development Environment (IDE)
+統合開発環境 (IDE) は、アプリケーションの作成に使用されるソフトウェア ツールのセットです。
 
-Integrated Development Environment (IDE) is a set of software tools used to create applications.
+Weaver の IDE には、コントラクト エディター、ページ エディター、データベース テーブル管理ツール、多言語リソース エディターに加え、アプリケーションのエクスポートおよびインポート機能が含まれています。 IDE は、セマンティック ツールに基づいてビジュアル ページ デザイナーを補完します。
 
-Weaver's IDE includes a contract editor, page editor, database table management tool, multi-language resources editor, as well as application export and import functions. The IDE complements the visual page designer based on semantic tools.
+### ページエディター
 
-### Page editor
+Weaver では、基本的なアプリケーション要素、HTML コンテナ、フォーム フィールド、ボタン、その他のツールを画面上に直接配置して、アプリケーション ページを作成できます。
 
-In Weaver, you can create application pages by directly arranging basic application elements, HTML containers, form fields, buttons and other tools on the screen.
+### ビジュアルページデザイナー
 
-### Visual page designer
+Weaver でアプリケーション ページを作成するためのツール。インターフェイス デザイナーや「Logicor」ページ コード ジェネレーターなど。
 
-Tools for creating application pages in Weaver, including interface designer and "Logicor" page code generator.
+### 契約編集者
 
-### Contract editor
+Weaver のビジュアル ページを使用して契約書を作成するためのツール。
 
-A tool for creating contracts using visual pages in Weaver.
+### 多言語リソース
 
-### Multilingual resources
+Weaver のアプリケーション ページのローカリゼーションのモジュール。アプリケーション ページのラベルを選択した言語のテキスト値に関連付けます。
 
-The module of application page localization in Weaver, which associates the label on the application page with the text value of the selected language.
+### アプリケーションのエクスポート
 
-### Application export
+アプリケーションのすべてのテーブル、ページ、およびコントラクトのソース コードをファイルとして保存します。
 
-Save the source code of all tables, pages, and contracts of the application as files.
+### アプリケーションのインポート
 
-### Application import
+エクスポート ファイルに含まれるアプリケーションのすべてのテーブル、ページ、コントラクトを ECOLIB にロードします。
 
-Load all tables, pages, and contracts of an application included in the export file into the ECOLIB.
+### スマートな法律
 
-### Smart law
+これは、規制情報を含む特別なスマート コントラクトのセットであり、操作の管理と制御、およびアクセス権の登録に使用されます。
 
-It is a special set of smart contracts that contain regulatory information and used to manage and control the operation and register access rights.
+### 法制度
 
-### Legal system
+スマート ローで確立された一連のルールとメカニズム。ECOLIB ユーザー間の関係を規制し、プロトコル パラメーターを変更するための手順ルールを定義し、さまざまな困難なソリューションを定義できます。
 
-A set of rules and mechanisms established in smart law, which can regulate the relationship between ECOLIB users, define procedural rules for changing protocol parameters, and define various challenging solutions.
+### 応用
 
-### Application
+Weaver の IDE で完全に機能するソフトウェア製品を作成します。
 
-Create fully functional software products in Weaver's IDE.
+アプリケーションは、データベース テーブル、スマート コントラクト、構成アクセス権を持つユーザー ページなどの要素のコレクションです。
 
-An application is a collection of elements such as database tables, smart contracts, and user pages with configuration access rights.
+### ページ
 
-### Page
+画面上に対話型インターフェイスを形成する、Logicor テンプレート言語で記述されたプログラム コード。
 
-The program code written in the Logicor template language that forms an interactive interface on the screen.
+### コードセグメント
 
-### Code segment
+Logical テンプレート言語で記述されたプログラム コード。アプリケーション ページで再利用できます。
 
-The program code written in the Logicor template language that can be reused in application pages.
+### アクセス権
 
-### Access rights
+テーブル、コントラクト、ページを作成および編集するためのアクセス権を取得するための条件。
 
-Conditions to get access rights for creating and editing tables, contracts and pages.
+テーブルへのアクセス権は、行と列を追加し、列の値を編集する権限で構成できます。
 
-The access rights to tables can be configured with rights to add rows and columns, and edit the values in columns. 
+### 名誉ノード
 
-### Honor node
+ブロックを生成および検証する権利を持つネットワーク ノード内のノード。
 
-A node in the network node that has the right to generate and verify blocks.
+### ガーディアンノード
 
-### Guardian node
+完全なブロックチェーンの最新バージョンを保存するために使用されるネットワーク上のノード。
 
-A node on the network used to store the latest version of the complete blockchain.
+### 同時トランザクション処理
 
-### Concurrent transaction processing
-
-A method to increase transaction processing speed by processing data from different ECOLIBs at the same time.
+異なる ECOLIB からのデータを同時に処理することでトランザクションの処理速度を向上させる方法。
