@@ -1,274 +1,282 @@
-# IBAX Overview
+# IBAX概要
 
-- [IBAX Overview](#ibax-overview)
-  - [Features](#features)
-  - [Architecture](#architecture)
-    - [Network](#network)
-    - [Honor Node](#honor-node)
-    - [Transactions](#transactions)
-    - [Network protocol](#network-protocol)
-    - [Block and transaction verification](#block-and-transaction-verification)
-    - [Database](#database)
+- [IBAX概要](#ibax概要)
+  - [特徴](#特徴)
+  - [アーキテクチャ](#アーキテクチャ)
+    - [ネットワーク](#ネットワーク)
+    - [名誉ノード](#名誉ノード)
+    - [トランザクション](#トランザクション)
+    - [ネットワークプロトコル](#ネットワークプロトコル)
+    - [ブロックとトランザクションの検証](#ブロックとトランザクションの検証)
+    - [データベース](#データベース)
   - [ECOLIB](#ecolib)
     - [IDE](#ide)
-    - [Applications](#applications)
-    - [Tables](#tables)
-    - [Ecosystem Parameters](#ecosystem-parameters)
-  - [Access rights control mechanism](#access-rights-control-mechanism)
-    - [Access rights management](#access-rights-management)
-    - [Exclusive rights](#exclusive-rights)
-  - [Virtual private ecosystem](#virtual-private-ecosystem)
-    - [Requests to web resources](#requests-to-web-resources)
-    - [Rights to read data](#rights-to-read-data)
-    - [CLB creation](#clb-creation)
-    - [CLB usage](#clb-usage)
+    - [アプリケーション](#アプリケーション)
+    - [テーブル](#テーブル)
+    - [エコシステムパラメータ](#エコシステムパラメータ)
+  - [アクセス権制御メカニズム](#アクセス権制御メカニズム)
+    - [アクセス権管理](#アクセス権管理)
+    - [排他的権利](#排他的権利)
+  - [仮想プライベートエコシステム](#仮想プライベートエコシステム)
+    - [Webリソースへのリクエスト](#Webリソースへのリクエスト)
+    - [データの読み取り権限](#データの読み取り権限)
+    - [CLBの作成](#CLBの作成)
+    - [CLBの使用法](#CLBの使用法)
+
+## 特徴
+
+IBAXネットワーク（IBAX）は、統合されたアプリケーション開発環境（IDE）を持つプラットフォームです。データ、ユーザーページ、スマートコントラクトに対するマルチレベルのアクセス制御システムがあります。
+
+構造と機能の面で、IBAXは他の多くの既存のブロックチェーンプラットフォームとは異なっています：
+
+* IBAXアプリケーションの開発と使用は、**エコシステム**と呼ばれる自律ソフトウェア環境で行われます。各エコシステムには、最初に作成者によって確立される独自のメンバーシップルールがあります。
+
+* エコシステムの活動は、<font color=Red>データベーステーブル</font>のレコードや更新に関連するデータを含みます。これらの活動は、スマートコントラクトで作成されたレジスターに基づいて行われます。他のほとんどのブロックチェーンプラットフォームでは、活動はアカウント間のトランザクション交換に基づいています。
+
+* **レジスター**へのアクセスとエコシステムメンバー間の関係の制御は、**スマートロウズ**と呼ばれる一連のルールによって管理されます。
+
+## アーキテクチャ
+
+### ネットワーク
+
+IBAXはピア・ツー・ピア（P2P）ネットワーク上に構築されています。
+
+ネットワーク内のガーディアンノードは、IBAXのブロックチェーンの最新バージョンを格納するブロックチェーンデータベースを保持しており、IBAXのブロックチェーンの最新の状態を記録しています。
+
+ネットワークユーザーは、**Weaver**またはREST APIコマンドを介してガーディアンノードデータベースからリクエストを送信することでデータを受け取ることができます。ユーザーによって署名された新しいリクエストは、バイナリ形式のトランザクションとしてネットワークに送信されます。これらのトランザクションは、関連するデータベースレコードを変更するためのコマンドです。トランザクションはブロックに集約され、そのようなブロックはネットワークのすべてのノードのブロックチェーンに送信されます。各ガーディアンノードはブロック内のトランザクションを処理し、データベース内の対応するデータを更新することで、トランザクションを実行します。
+
+### 名誉ノード
+
+ネットワーク内で新しいブロックを生成する特権を持つガーディアンノードは、名誉ノードと呼ばれます。名誉ノードの最大数は[platform-parameters.md](../reference/platform-parameters.md#number-of-nodes)の`number_of_nodes`で定義されており、名誉ノードの数は制限されています。
+
+名誉ノードはIBAXパブリックネットワークの主要なコンポーネントの1つです。トランザクションを実行し、他のノードからトランザクション情報を収集し、トランザクションをキューに追加し、確認メカニズムを使用して新しいブロックの正当性と妥当性を検証します。一般的に、名誉ノードにはパッケージング状態と非パッケージング状態の2つの状態があります。
+
+パッケージング状態の名誉ノードは、最高のパフォーマンスを提供します。実行するためのトランザクションリクエストをトランザクションキューから取得し、トランザクションの署名の有効性と正確性（送金額、トランザクション操作の許可、トランザクションの正確な実行など）を検証します。正しいか誤ったトランザクション（誤ったトランザクションはロールバックされます）は、ブロックに書き込まれます。誤ったトランザクションには罰則のガス料金が発生します。実行されたトランザクションは、ブロックとともに他の名誉ノードにブロードキャストされます。
+
+非パッケージング状態の名誉ノードは、パッケージングノードによって生成されたブロック内のトランザクションが正しく実行されていることを確認するためのブロック検証に主に責任を持ちます。異常が発生した場合は、例外処理メカニズムをトリガーし、IBAXネットワークはブロックをロールバックして再検証します。
+
+トランザクションの実行効率を確保するために、名誉ノードは常にトランザクション情報を収集します。
+
+### トランザクション
+
+トランザクションは、**スマートコントラクト**の実装に使用されるデータを含むWeaverによって生成されます。
+
+トランザクションはユーザーによって秘密鍵で署名されます。秘密鍵とWeaverの署名関数は、ブラウザ、ソフトウェアクライアント、SIMカード、または専用の物理デバイスに保存することができます。現在の実装では、秘密鍵はECDSAアルゴリズムで暗号化され、Weaver側に保存されます。すべてのトランザクションはECDSAアルゴリズムで署名されます。
+
+トランザクションの構造は以下の形式に準拠しています：
+
+- ID - 実装されたコントラクトのID；
+- Params - コントラクトに送信されるパラメータ；
+- KeyID - トランザクションを送信するユーザーのID；
+- PublicKey - オナーノードの公開鍵；
+- Time - トランザクションによって生成されたタイムスタンプ；
+- EcosystemID - トランザクションが行われるエコシステムのID；
+- ТokenEcosystem - エコシステムのID（デフォルトは1）であり、トランザクションのコストをカバーするためにその中のトークンが使用されます。
+
+### ネットワークプロトコル
+
+ユーザーによってトランザクションはオナーノードに送信され、フォーマットが正しいことを基本的な検証を受けた後、キューに追加されます。トランザクションはネットワーク上の他のオナーノードにも送信され、それぞれのキューに追加されます。
+
+オナーノードは特定の時間枠内で新しいブロックを生成する特権を持っており、これはプラットフォームパラメータの**full_nodes**と特別なアルゴリズムによって決定されます。オナーノードはキューからトランザクションを取得し、ブロックジェネレータに送信します。新しいブロックを生成する際に、そのブロック内のトランザクションも処理されます：各トランザクションは仮想マシンに送信され、トランザクションパラメータに対応するコントラクトが実装され、データベースのレコ
 
 
+新しいブロックは、他のネットワーク上の他の優等ノードに送信する前に、エラーがないことを確認するために検証される必要があります。
 
-## Features
+新しいブロックは、他の優等ノードによって受信されるとブロックキューに追加され、検証後、ブロック内のトランザクションを処理するために配置されている優等ノードのブロックチェーンに追加され、それによってデータベース内のレコードが更新されます。
 
-The IBAX Network (IBAX) has an integrated application development environment (IDE). It is a multi-level access control system for data, user pages and smart contracts.
+### ブロックとトランザクションの検証
 
-In terms of its structure and functions, IBAX is quite different from most existing blockchain platforms:
+新しいブロックは、他のネットワーク上の他のオナーノードに送信する前にエラーがないことを検証する必要があります。
 
-* The development and use of IBAX applications are in an autonomous software environment called **ecosystem**. Each ecosystem has its own membership rules that are initially established by the creator;
+他のオナーノードに受信された新しいブロックは、ブロックキューに追加され、検証された後、それが位置するオナーノードのブロックチェーンに追加されます。その結果、ブロック内のトランザクションが処理され、データベースのレコードが更新されます。
 
-* Ecosystem activities, such as the data involved in <font color=Red>database table</font> records or updates, are based on **registers** created with **smart contracts**. In most other blockchain platforms, activities are based on transaction exchange between accounts;
+### ブロックとトランザクションの検証
 
-* The access to **registers** and the control of relationships between ecosystem members are managed by a set of rules called **smart laws**.
+新しいブロックの生成または受信後、他のオナーノード上で次の検証が行われます：
 
-## Architecture
+* 受信データの最初のバイトは0である必要があります。そうでない場合、受信データはブロックと見なされません。
 
-### Network
+* 受信したブロックの生成タイムスタンプは現在のタイムスタンプよりも前である必要があります。
 
-IBAX  is built on a peer-to-peer (P2P) network.
+* ブロックの生成タイムスタンプは、新しいブロックを生成する特権を持つオナーノードの時間枠に対応している必要があります。
 
-Guardian nodes in the network store the latest version of the blockchain database, which records the latest status of  IBAX's blockchain.
+* 新しいブロックの高さは、既存のブロックチェーン上の最大ブロックの高さよりも大きくなければなりません。
 
-Network users can receive data by sending requests from the guardian node database via **Weaver** or REST API commands. After signing by users, new requests are sent to the network as transactions in binary format. Essentially, these transactions are commands to modify relevant database records. Transactions are aggregated in blocks, and such blocks are sent to the blockchains of all network nodes. Each guardian node will process the transactions in the block, thereby updating the corresponding data in the database.
+* ブロック内のすべてのトランザクションに許可される最大の費用を超えることはできません。
 
-### Honor Node
+* ブロックは、それが位置するノードの秘密鍵で適切に署名されている必要があります。署名データには以下の情報が含まれている必要があります：
 
-A guardian node which is privileged to generate new blocks in the network is called a honor node. The maximum number of honor nodes is defined by [number_of_nodes](../reference/platform-parameters.md#number-of-nodes) in the platform parameters table, showing that the number of honor nodes is limited.
+  * ブロックの高さ、前のブロックのハッシュ、ブロックのタイムスタンプ、ブロックが位置するエコシステムのID、およびブロックのオナーノードのアカウントアドレス。
 
-An Honor Node is one of the key components of IBAX Public Network. It executes and validates transactions, collects transaction information from other nodes, adds transactions to the queue, and verifies the correctness and validity of new blocks using the confirmation mechanism. Generally, it has two states: packaging and on-packaging. 
+  * プラットフォームパラメータfull_nodes配列内のオナーノードの位置、ブロック内のすべてのトランザクションのMerkel Root（MrklRoot）、前のブロックの逆ハッシュ。
 
-An Honor Node in the packaging state delivers the highest performance. It obtains transaction requests to be executed from the transaction queue and verifies the ignature validity and correctness of transactions, e.g. transfer amount, permission for transaction operations, and accurate execution of transactions. All ransactional operations, correct or wrong (wrong transactions will be rolled back), will be written into the block. Wrong transactions will incur a punitive gas fee. Executed transactions are notified to other Honor Nodes along with the block through broadcasting.
+各トランザクションの正当性を以下の方法で確認します：
 
-An Honor Node in the non-packaging state is mainly responsible for block verification to ensure in-block transactions generated by a packaging node are executed orrectly. In case of an anomaly, it will trigger the exception handling mechanism and IBAX Network will roll back and re-verify the block. 
+* 各トランザクションのハッシュは一意である必要があります。
 
-In order to ensure transaction execution efficiency, Honor Nodes collect transaction information constantly. 
+* キーで署名されたトランザクションは、制限（[max_tx_block_per_user](../reference/platform-parameters.md#max-tx-block-per-user)）を超えることはできません。
 
-### Transactions
+* トランザクションのサイズが最大トランザクションサイズ（[max_tx_size](../reference/platform-parameters.md#max-tx-size)）の制限を超えることはできません。
 
-Transactions, including data used to implement **smart contracts**, are generated by Weaver.
+* トランザクションのタイムスタンプは、ブロックの生成時刻よりも大きく、ブロックの生成時刻に600秒を加えたものよりも大きくすることはできません。また、ブロックの生成時刻から86400秒未満である必要があります。
 
-Transactions are signed by users with a private key. The private key and Weaver's signature function can be stored in browsers, software clients, SIM cards or dedicated physical devices. In the current implementation, the private key is encrypted with the ECDSA algorithm and stored at the Weaver side. All transactions are signed with the ECDSA algorithm.
+* トランザクションは適切に署名されている必要があります。
 
-The structure of a transaction complies with the following format:
+* コントラクトを実装するユーザーは、トランザクションのコストを支払うための十分なトークンをアカウントに持っている必要があります。
 
-* ID - ID of the contract implemented;
+### データベース
 
-* Params - parameters sent to the contract;
+IBAXネットワークの基礎データストレージレイヤーは、一般に公開された`PGSQL`データベースです。IBAXオペレーティングシステムプラットフォームの許可設計に基づき、ユーザーはデータセキュリティの心配をする必要はありません。オブジェクト指向の設計思想に基づいて、IBAXネットワークはリレーショナルなPGSQLデータベースを介してデータを事前コンパイルし、データ処理の効率を向上させています。
 
-* KeyID - ID of the user sending the transaction;
-
-* PublicKey - public key of the honor node;
-
-* Time - timestamp generated by the transaction;
-
-* EcosystemID - ID of the ecosystem where the transaction is made;
-
-* ТokenEcosystem - ID of the ecosystem, 1 by default, and tokens within it are used to cover the transaction costs.
-
-### Network protocol
-
-Transactions will be sent to honor nodes by users, where they are subject to basic verification to ensure the formats are correct and then are added to the queue. Transactions are also sent to other honor nodes on the network and added to the respective queue.
-
-A honor node is privileged to generate new blocks within a specific time period which is determined by the platform parameter **full_nodes** and a special algorithm. Honor nodes retrieve transactions from queues and send them to the block generator. When generating a new block, transactions in such block will also be processed: each transaction is sent to a virtual machine, where the contract corresponding to the transaction parameters is implemented, thereby updating records in the database.
-
-New blocks should be verified to ensure there are no errors before sending to other honor nodes on other networks. 
-
-A new block will be added to the block queue when received by other honor node and, after verification, to the blockchain of the honor node where it is located to process transactions in the block, and thereby updating records in the database. 
-
-### Block and transaction verification
-
-After generating or receiving a new block, it will be verified on all other honor nodes, which cover the following:  
-
-* The first byte of the data received should be 0. If not, the data received will not be considered as a block;
-
-* The received block generation timestamp should be before the current timestamp;
-
-* The block generation timestamp should correspond to the time interval at which the honor node having privilege to generate new blocks; 
-
-* The height of a new block should be greater than the height of the largest block on the existing blockchain;
-
-* It cannot exceed the maximum expenses allowed for all transactions in the block;
-
-* The block must be properly signed with the secret key of the node which it is located. The signature data should contain:
-
-  * The height of the block, the hash of the previous block, the timestamp of the block, the ID of the ecosystem where the block is located, and the account address of the honor node of the block;
-
-  * The position of the honor node in the platform parameter full_nodes array, the Merkel Root (MrklRoot) of all transactions in the block, and the revert hash of the previous block.
-
-To check the correctness of each transaction in the block with the following methods:
-
-* The hash of each transaction must be unique;
-
-* A key-signed transaction cannot exceed the limit ([max_tx_block_per_user](../reference/platform-parameters.md#max-tx-block-per-user));
-
-* It cannot exceed the limit of the maximum transaction size ([max_tx_size](../reference/platform-parameters.md#max-tx-size));
-
-* The transaction time can neither be greater than the block generation time nor be greater than the block generation time plus 600 seconds, and it can be no less than the block generation time minus 86400 seconds;
-
-* The transaction must be signed properly;
-
-* The user who implements the contract must have sufficient tokens in his account to pay for the transaction cost.
-
-### Database
-
-The underlying data storage layer of IBAX Network is a `PGSQL` database completely open to the public. Based on the permission design of the IBAX Operating System Platform, users do not need to worry about data security. With an object-oriented design philosophy, IBAX Network pre-compiles data through a relational PGSQL database and improves the data processing efficiency. 
-
-You may be interested in the following if you are a technical specialist, or just skip it if you are not.
-① All tables without a number prefix in their name belong to permission tables of IBAX Network Basic; 
-② All tables with a number prefix in their name belong to permission tables of ecoLibs.
+技術スペシャリストの場合は、以下に興味があるかもしれません。そうでない場合はスキップしてください。
+① 名前に番号の接頭辞がないすべてのテーブルは、IBAXネットワーク基本の許可テーブルに属しています。
+② 名前に番号の接頭辞があるすべてのテーブルは、ecoLibsの許可テーブルに属しています。
 
 ## ECOLIB
 
-It is quite easy for users, even common users, to create an ecoLib of their own on the IBAX Network System Platform. We have integrated and developed an application where ecoLib creation takes just one click. 
+IBAXネットワークシステムプラットフォーム上で、ユーザーは自分自身のecoLibを簡単に作成できます。私たちは、ecoLibの作成がワンクリックで行えるアプリケーションを統合・開発しました。
 
-When creating an ecoLib, you can configure the ecosystem parameters and rules, and set the administrator account and charging model. Most importantly, to apply the DPoA consensus within ecoLibs better, creators can set it up by writing or importing their own contracts. 
+ecoLibを作成する際には、エコシステムのパラメータやルールを設定し、管理者アカウントと課金モデルを設定することができます。重要なのは、DPoAコンセンサスをecoLib内でよりよく適用するため、独自のコントラクトを作成またはインポートすることができる点です。
 
-We support quick emission of ecoLib tokens by importing contract templates.
+コントラクトテンプレートのインポートによるecoLibトークンの迅速な発行をサポートしています。
 
-Due to the differences in consensus and management permissions, ecoLibs fall into decentralized and centralized ones. They have no specific advantage or disadvantage by type. You should choose the appropriate one against your service needs. What to do if it is OK for now but not for the future? You can change ecoLib parameters, even the consensus mechanism, token, and governance method, on the IBAX Network System Platform. You can leave it all to the self-governance mechanism maintained by the ecoLib administrator or members (depending on the ecoLib type). 
+コンセンサスと管理許可の違いにより、ecoLibは分散型と集中型に分類されます。タイプによって具体的な利点や欠点はありません。サービスのニーズに合わせて適切なタイプを選択する必要があります。現在は大丈夫でも将来には大丈夫ではない場合はどうすればよいですか？IBAXネットワークシステムプラットフォーム上で、ecoLibのパラメータ、コンセンサスメカニズム、トークン、ガバナンス方法を変更することができます。全てをecoLib管理者またはメンバー（ecoLibタイプに応じる）が維持する自己統治メカニズムに任せることもできます。
 
-On the IBAX Network System Platform, an ecoLib has complete data control permissions and permissions to design and access independent database tables and fields. In the data control permission design, we support triggering when a field satisfies a logical expression. This feature allows for imagination space in special services like monitoring, logic satisfaction, and triggering by time and specific conditions. 
+IBAXネットワークシステムプラットフォーム上では、ecoLibは完全なデータ制御権限を持ち、独立したデータベーステーブルやフィールドにアクセスできる権限も持っています。データ制御権限の設計では、フィールドが論理式を満たすときにトリガーをサポートしています。この機能により、モニタリング、論理満足、時間や特定の条件によるトリガリングなどの特殊なサービスに想像力の余地があります。
 
-There may be multiple DApps in an ecoLib, and each of them can have independent parameters. An ecoLib is like a platform where you can implement anything you want. 
+ecoLib内には複数のDAppが存在する場合があり、それぞれに独立したパラメータが設定されている場合があります。ecoLibは、実現したいものを何でも実装できるプラットフォームのようなものです。
 
-In order to better support ecosystem developers, we provide the editing, management, and development tool Weaver. It will reduce the ecosystem development, maintenance, and management costs greatly.
+エコシステム開発者をよりよくサポートするために、編集、管理、開発ツールであるWeaverを提供しています。これにより、エコシステムの開発、保守、管理コストを大幅に削減できます。
 
 ### IDE
 
-Weaver has a complete integrated development environment (IDE) for creating blockchain applications, which does not require software developers to have a deep understanding of the blockchain technology.
+Weaverは、ブロックチェーンアプリケーションを作成するための完全な統合開発環境（IDE）を備えています。ソフトウェア開発者はブロックチェーン技術について深い理解を持つ必要はありません。
 
-Weaver provides a table management tool, contract editor, page editor and other functions needed to create applications in the ecosystem, without the support of any software module.
+Weaverは、エコシステム内のアプリケーションを作成するために必要なテーブル管理ツール、コントラクトエディター、ページエディターなどの機能を提供しています。ソフトウェアモジュールのサポートなしで、エコシステム内でアプリケーションを作成することができます。
 
-The IDE mainly includes the following parts:
+IDEには、次のようなパーツが主に含まれています：
 
-* list of ecosystem parameters;
+* エコシステムパラメータのリスト
 
-* contract editor;
+* コントラクトエディター
 
-* table management tool;
+* テーブル管理ツール
 
-* page editor and visual page designer;
+* ページエディターとビジュアルページデザイナー
 
-* multi-language resources editor;
+* マルチ言語リソースエディター
 
-* application import/export functions.
+* アプリケーションのインポート/エクスポート機能
 
-### Applications
+### アプリケーション
 
-An application is a collection of elements such as database tables, smart contracts, and user pages with access rights for configuration. The ecosystem to which the application element belongs is indicated by the prefix in the element name, such as `@1ElementName`, where the ecosystem ID is indicated by the number `1` after the `@` symbol. When using application elements in the current ecosystem, the prefix `@1` can be omitted. These applications can perform useful functions or implement various services.
+アプリケーションは、データベース テーブル、スマート コントラクト、構成のためのアクセス権を持つユーザー ページなどの要素のコレクションです。 アプリケーション要素が属するエコシステムは、「@1ElementName」などの要素名の接頭辞によって示されます。エコシステム ID は、「@」記号の後の数字「1」で示されます。 現在のエコシステムでアプリケーション要素を使用する場合、接頭辞 `@1` は省略できます。 これらのアプリケーションは、便利な機能を実行したり、さまざまなサービスを実装したりできます。
 
-### Tables
+### テーブル
 
-In IBAX's database, each ecosystem can create an unlimited number of tables. Tables of a specific ecosystem can be identified by a prefix containing the ecosystem ID, which will not be displayed in Weaver.
+IBAX のデータベースでは、各エコシステムは無制限の数のテーブルを作成できます。 特定のエコシステムのテーブルは、Weaver には表示されないエコシステム ID を含むプレフィックスによって識別できます。
 
-A table is not bound in any way and belongs to a certain contract. It can be used by all applications within the scope of the table's access rights.
+テーブルはいかなる形でもバインドされず、特定のコントラクトに属します。 テーブルのアクセス権の範囲内のすべてのアプリケーションで使用できます。
 
-Each ecosystem can create a set of data tables for developing its applications or may, possibly, access data tables of other ecosystems by specifying the table name prefix.
+各エコシステムは、そのアプリケーションを開発するためのデータ テーブルのセットを作成できます。また、場合によっては、テーブル名のプレフィックスを指定して他のエコシステムのデータ テーブルにアクセスすることもできます。
 
-By configuring access rights through smart laws, data are logged into tables. Smart laws are used for rights management.
+スマート ローを通じてアクセス権を構成することにより、データがテーブルに記録されます。 スマートローは権利管理に使用されます。
 
- >  Table table management tool
+  > テーブル管理ツール
 
-You can find the table management tool in Weaver menu Table, which cover the following functions:
+Weaver メニューの [テーブル] にテーブル管理ツールがあり、次の機能をカバーします。
 
-* View the list of tables and their entries;
+* テーブルとそのエントリのリストを表示します。
 
-* Create new tables;
+* 新しいテーブルを作成します。
 
-* Add a table field and specify its data type, such as `Text, Date/Time, Varchar, Character, JSON, Number, Money, Double, Binary`;
+* テーブル フィールドを追加し、そのデータ型を指定します。
+   - テキストはpostgresqlの`text`に対応します
+   - 日付/時刻はpostgresqlの`timestamp`に対応します
+   - Varchar は postgresql `varchar(102400)` に対応します
+   - 文字はpostgresql `character(1) NOT NULL DEFAULT '0'`に対応します
+   - JSON は postgresql `jsonb` に対応
+   - postgresql `bigint NOT NULL DEFAULT '0''に対応する番号
+   - お金はpostgresql `10進数(30, 0) NOT NULL DEFAULT '0'`に対応します
+   - double は postgresql の「倍精度」に対応します
+   - バイナリ対応 postgresql `bytea NOT NULL DEFAULT '\x'`
 
-* Manage privileges for insert, update data and change table structure.
+* データの挿入、更新、テーブル構造の変更の権限を管理します。
 
-> Table data manipulation
+> テーブルデータの操作
 
-For better database manipulation, both Needle and Logicor have the **DBFind** function, which is used to retrieve values and data arrays from tables.
+データベース操作を改善するために、Needle と Logical の両方に **DBFind** 関数があり、テーブルから値とデータ配列を取得するために使用されます。
 
-The contract language **DBInsert** function is used to add entries to tables. The **DBUpdate** and **DBUpdateExt** functions are used to update the value of an existing entry. During updating, the corresponding data in tables will be updated, and the blockchain will add new transactions while retaining all historical transactions. Data in tables can only be modified and cannot be deleted.
+コントラクト言語の **DBInsert** 関数は、テーブルにエントリを追加するために使用されます。 **DBUpdate** 関数と **DBUpdateExt** 関数は、既存のエントリの値を更新するために使用されます。 更新中に、テーブル内の対応するデータが更新され、ブロックチェーンはすべての履歴トランザクションを保持しながら新しいトランザクションを追加します。 テーブル内のデータは変更のみ可能で、削除はできません。
 
-In order to minimize the contract implementation time, the **DBFind** function cannot query multiple tables simultaneously, and JOIN is not supported. Therefore, we recommend not to normalize application tables, but to store all available information in entries or repeat the information available in other tables. This is not mandatory but necessary for a blockchain application. In this case, data should be stored fully, which cannot be updated even if the same data in other tables is updated, though it is updated synchronously in a relational database.
+コントラクトの実装時間を最小限に抑えるために、**DBFind** 関数は複数のテーブルを同時にクエリできず、JOIN はサポートされていません。 したがって、アプリケーション テーブルを正規化せず、利用可能なすべての情報をエントリに保存するか、他のテーブルで利用可能な情報を繰り返すことをお勧めします。 これは必須ではありませんが、ブロックチェーン アプリケーションには必要です。 この場合、リレーショナルデータベースでは同期的に更新されますが、他のテーブルの同じデータが更新されても更新できないデータを完全に保存する必要があります。
 
-### Ecosystem Parameters
+### エコシステムパラメータ
 
-You may view and edit the list of ecosystem parameters (**1_parameters**) in Weaver's menu. Ecosystem parameters can be divided into the following groups:
+Weaver のメニューでエコシステム パラメータのリスト (**1_parameters**) を表示および編集できます。 生態系パラメータは次のグループに分類できます。
 
-* General parameters: the account of the ecosystem creator (founder_account) and other information;
+* 一般パラメータ: エコシステム作成者のアカウント (founder_account) およびその他の情報。
 
-* Access rights parameters: used to define access permissions for application elements
+* アクセス権パラメーター: アプリケーション要素のアクセス許可を定義するために使用されます。
 
-    * change the table structure (changing_tables);
+     * テーブル構造を変更します (changing_tables)。
 
-    * change the contract (changing_contracts);
+     * 契約を変更する (changing_contracts);
 
-    * change the user page (changing_page);
+     * ユーザーページを変更します (changing_page);
 
-    * change the menu (changing_menu);
+     * メニューを変更します (changing_menu);
 
-    * change the multi-language resources (changing_language).
+     * 多言語リソースを変更します (changing_ language)。
 
+* 技術パラメータ: ユーザー スタイル (スタイルシート) を定義するために使用されます。
 
-* Technical parameters: used to define the user styles (stylesheet);
+* ユーザーパラメータ: アプリケーションの動作に必要な定数またはリスト (カンマ区切り) を定義するために使用されます。
 
-* User parameters: used to define constants or lists (separated by commas) required for application operation.
+各エコシステムのパラメータの編集権限を指定できます。
 
-You may specify the edit permission for parameters of each ecosystem.
+EcosysParam 関数を使用すると、エコシステム パラメーターのタイトルをパラメーターとして渡すことで、エコシステム パラメーターの値を取得できます。
 
-You may use the EcosysParam function to retrieve the value of an ecosystem parameter by passing the ecosystem parameter title as a parameter to it.
+## アクセス権制御メカニズム
 
-## Access rights control mechanism
+IBAX には、複数レベルのアクセス許可管理システムがあります。 アクセス権を構成することで、コントラクト、テーブル、ユーザー ページ、エコシステム パラメーターなどのアプリケーション要素を作成および変更できます。 構成を通じてアクセス権を変更することもできます。
 
-IBAX has a multi-level access permission management system. By configuring access rights, you can create and change any application element, such as the contracts, tables, user pages, ecosystem parameters. You may also change the access rights through configuration.
+デフォルトでは、IBAX エコシステム内のすべての権利は、各エコシステムの MainCondition コントラクトで定義されている作成者によって管理されます。 しかし、スマートな法律を作成した後は、アクセス制御をエコシステムのメンバー全員またはグループに移管することができます。
 
-By default, all rights in the IBAX ecosystem are managed by its creator, which is defined in the MainCondition contract of each ecosystem. But after creating smart laws, access control can be transferred to all or a group of ecosystem members.
-Access rights control
+アクセス権制御
 
-The access rights are defined in contract tables (**1_contracts** ), data tables (**1_tables** ), user page tables (**1_pages** ), menu tables (**1_menu** ), and code block tables (**1_blocks** ). You can find the corresponding menus in Weaver.
+アクセス権は、コントラクト テーブル (**1_contracts** )、データ テーブル (**1_tables** )、ユーザー ページ テーブル (**1_pages** )、メニュー テーブル (**1_menu** )、およびコード ブロックで定義されます。 テーブル (**1_blocks** )。 Weaver で対応するメニューを見つけることができます。
 
-### Access rights management
+### アクセス権管理
 
-The rules of access rights are configured by filling in the corresponding contract expressions **ContractConditions(“@1MainCondition”)**, **ContractAccess(“@1MainCondition”)** or logical expressions in the permission field. If the result of the request expression passes (true ), then access is granted. Otherwise, access is denied and related operations are terminated.
+アクセス権のルールは、対応する契約式 **ContractConditions(“@1MainCondition”)**、**ContractAccess(“@1MainCondition”)**、または論理式を許可フィールドに入力することによって構成されます。 リクエスト式の結果が合格 ( true ) の場合、アクセスが許可されます。 それ以外の場合、アクセスは拒否され、関連する操作は終了します。
 
-The easy way to define rights is to enter a logical expression in the right field. For example, `$key_id == 8919730491904441614`, where **$keyid** represents the ID of an ecosystem member.
+権利を定義する簡単な方法は、右側のフィールドに論理式を入力することです。 たとえば、「$key_id == 8919730491904441614」の場合、**$keyid** はエコシステム メンバーの ID を表します。
 
-The most common and recommended way to define rights is to use the `ContractConditions("@1ContractsName1","@1ContractsName2")` function. The contract name **ContractsName** is passed to the function as a parameter, and the contract result must be the result of a logical expression (true or false).
+権利を定義する最も一般的で推奨される方法は、`ContractConditions("@1ContractsName1","@1ContractsName2")` 関数を使用することです。 コントラクト名 **ContractsName** はパラメーターとして関数に渡され、コントラクトの結果は論理式 (true または false) の結果である必要があります。
 
-Another way to define rights is to use the `ContractAccess("@1ContractsName3","@1ContractsName4")` function. The contract **ContractsName** qualified to implement the corresponding operation can be passed to the function as a parameter. For example, if the right field of the amount column is configured as `ContractAccess("@1TokenTransfer")`, then you can only implement the contract **@1TokenTransfer** if you want to change the value in the amount column. The right to access the contract itself can be managed in the conditions section, which are quite complex and may contain many other contracts.
+権利を定義するもう 1 つの方法は、`ContractAccess("@1ContractsName3","@1ContractsName4")` 関数を使用することです。 対応する操作を実装するために修飾されたコントラクト **ContractsName** をパラメーターとして関数に渡すことができます。 たとえば、金額列の右側のフィールドが `ContractAccess("@1TokenTransfer")` として設定されている場合、金額列の値を変更したい場合にのみコントラクト **@1TokenTransfer** を実装できます。 契約自体にアクセスする権利は条件セクションで管理できますが、条件セクションは非常に複雑であり、他の多くの契約が含まれる場合があります。
 
-### Exclusive rights
+### 排他的権利
 
-In case of emergencies or situations that are critical to the operation of an ecosystem, there are many special parameters in the list of ecosystem parameters (**1_parameters**) (such as *changing_contracts*, *changing_pages* ), etc., which defines rights to access all contracts, data tables, and pages of the current ecosystem. These rights are configured by key contracts.
+エコシステムの運営にとって重大な緊急事態または状況の場合、エコシステム パラメーターのリスト (**1_parameters**) ( *changing_contracts* 、 *changing_pages* など) などの特別なパラメーターが多数あります。 現在のエコシステムのすべてのコントラクト、データ テーブル、ページにアクセスする権利を定義します。 これらの権利は、キー契約によって構成されます。
 
-## Virtual private ecosystem
+## 仮想プライベートエコシステム
 
-In IBAX, you can create a virtual private ecosystem - **Cross Ledgers Base (CLB)**. A CLB has the full functionality of the standard ecosystem, but operates outside the blockchain. In CLB, you can use and create contracts and template languages, tables, and use Weaver to create applications. You may call contracts on the blockchain ecosystem via API.
+IBAX では、仮想プライベート エコシステム - **Cross Ledger Base (CLB)** を作成できます。 CLB は標準エコシステムのすべての機能を備えていますが、ブロックチェーンの外部で動作します。 CLB では、コントラクトとテンプレート言語、テーブルを使用および作成し、Weaver を使用してアプリケーションを作成できます。 API 経由でブロックチェーン エコシステム上のコントラクトを呼び出すことができます。
 
-### Requests to web resources
+### Webリソースへのリクエスト
 
-    The main difference between a CLB and a standard ecosystem is that you can use contract functions ([HTTPRequest](../topics/script.md#httprequest)) and ([HTTPPostJSON](../topics/script.md#httppostjson)) to request any web resource within the contract via HTTP / HTTPS requests. Parameters passed to this function include: URLs, request methods (GET or POST), request headers and request parameters.
+     CLB と標準エコシステムの主な違いは、コントラクト関数 ([HTTPRequest](../topics/script.md#httprequest)) および ([HTTPPostJSON](../topics/script.md#httppostjson)) を使用できることです。 )) HTTP / HTTPS リクエスト経由でコントラクト内の Web リソースをリクエストします。 この関数に渡されるパラメータには、URL、リクエスト メソッド (GET または POST)、リクエスト ヘッダー、リクエスト パラメータが含まれます。
 
-### Rights to read data
+### データの読み取り権限
 
-Though it is readable, data in CLB is not saved within the blockchain. You can choose to grant the read permission to database tables. You can set rights to read for individual columns, or for any row using a special contract.
+CLB 内のデータは読み取り可能ですが、ブロックチェーン内に保存されません。 データベーステーブルへの読み取り権限を付与するかどうかを選択できます。 特別な契約を使用して、個々の列または任意の行の読み取り権限を設定できます。
 
-### CLB creation
+### CLBの作成
 
-You may create a CLB node on the network. As predefined, the CLB node administrator is privileged to use the ecosystem list with the CLB functionality, and designate a user with ecosystem creator privileges to install applications, receive new members and configure the resources access permissions. 
+ネットワーク上に CLB ノードを作成できます。 事前定義されているように、CLB ノード管理者には、CLB 機能でエコシステム リストを使用する権限が与えられ、アプリケーションのインストール、新しいメンバーの受信、リソースのアクセス許可の構成を行うためのエコシステム作成者権限を持つユーザーを指定します。
 
-### CLB usage
+### CLBの使用法
 
-You may use a CLB to create registration forms, send verification information to users via email or phone, and store publicly accessible data. You can write and test applications, and then import them into the blockchain ecosystem. In a CLB, you may use scheduling contract tasks, create oracle machines to receive data from web resources and send such data to the blockchain ecosystem.
+CLB を使用して、登録フォームを作成し、電子メールまたは電話でユーザーに検証情報を送信し、公的にアクセス可能なデータを保存できます。 アプリケーションを作成してテストし、ブロックチェーン エコシステムにインポートできます。 CLB では、契約タスクのスケジューリングを使用し、Web リソースからデータを受信し、そのデータをブロックチェーン エコシステムに送信するオラクル マシンを作成できます。
