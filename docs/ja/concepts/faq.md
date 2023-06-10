@@ -1,183 +1,179 @@
 
-# FAQ
+# よくある質問
 
-  - [1. Please briefly describe IBAX?](#question-1)
-  - [2. Is IBax applicable for Bitcoin, Ethereum or other blockchains?](#question-2)
-  - [3. What are the main differences between IBax and other public blockchain platforms with built-in mechanisms for executing smart contracts?](#question-3)
-  - [4. Do you have your own cryptocurrency?](#question-4)
-  - [5. What is a honor node and who can maintain it?](#question-5)
-  - [6. What is a platform ecosystem?](#question-6)
-  - [7. Who can create an ecosystem?](#question-7)
-  - [8. How do users become members of the ecosystem?](#question-8)
-  - [9. Can one user create multiple ecosystems?](#question-9)
-  - [10. What is a platform application?](#question-10)
-  - [11. What programming language is used to create the application?](#question-11)
-  - [12. What software is used to create applications and interact with users?](#question-12)
-  - [13. Can platform contracts use third-party APIs to access data?](#question-13)
-  - [14. Can the contract stored in the blockchain be changed?](#question-14)
-  - [15. What is smart law?](#question-15)
-  - [16. Can the contract call and execute other contracts?](#question-16)
-  - [17. Does the application run with a master contract?](#question-17)
-  - [18. Can the application be localized for different languages?](#question-18)
-  - [19. Can I create a page without using a template language?](#question-19)
-  - [20. Are the pages stored in the blockchain?](#question-20)
-  - [21. What types of databases can be used for contract operations?](#question-21)
-  - [22. How to manage access to the data in the database table?](#question-22)
-  - [23. Can an application in an ecosystem exchange data with other applications from another ecosystem?](#question-23)
-  - [24. Should all applications in a new ecosystem be written from scratch?](#question-24)
-  - [25. Are there any fees for the operation of applications?](#question-25)
-  - [26. Who pays for the operation of applications?](#question-26)
-  - [27. How to protect the applications in the ecosystem from attacks due to vulnerabilities?](#question-27)
-  - [28. What new features will be implemented in future plans?](#question-28)
-  - [29. How to prove its operability?](#question-29)
+  - [ 1.IBAXについて簡単に教えてください](#question-1)
+  - [ 2.IBAXはビットコイン、イーサリアム、その他のブロックチェーンに適用できますか](#question-2)
+  - [3. IBAXと、スマートコントラクトを実行するためのメカニズムが組み込まれた他のパブリックブロックチェーンプラットフォームとの主な違いは何ですか](#question-3)
+  - [4.独自の暗号通貨を持っていますか](#question-4)
+  - [5.オナーノードとは何か、誰が維持できるのか](#question-5)
+  - [6.プラットフォームのエコシステムとは何ですか](#question-6)
+  - [7.誰がエコシステムを作ることができるのか](#question-7)
+  - [8. ユーザーはどのようにしてエコシステムのメンバーになるのですか](#question-8)
+  - [9. 1人のユーザーが複数のエコシステムを作ることはできますか](#question-9)
+  - [10. プラットフォームアプリケーションとは何ですか](#question-10)
+  - [11. アプリケーションの作成にはどのようなプログラミング言語が使われますか](#question-11)
+  - [12. アプリケーションを作成し、ユーザーと対話するために使用されるソフトウェアは何ですか](#question-12)
+  - [13. プラットフォーム契約は、サードパーティーのAPIを使用してデータにアクセスできますか](#question-13)
+  - [14. ブロックチェーンに保存されている契約は変更できますか](#question-14)
+  - [15. スマートローとは何ですか](#question-15)
+  - [16. 契約は他の契約を呼び出して実行することができますか](#question-16)
+  - [17. アプリケーションはマスター契約で実行されますか](#question-17)
+  - [18. アプリケーションを異なる言語にローカライズすることはできますか](#question-18)
+  - [19. テンプレート言語を使用せずにページを作成できますか](#question-19)
+  - [20. ページはブロックチェーンに保存されるのでしょうか](#question-20)
+  - [21. 契約業務に使用できるデータベースはどのようなものがありますか](#question-21)
+  - [22. データベースのテーブルのデータへのアクセスをどのように管理するか](#question-22)
+  - [23. エコシステム内のアプリケーションは、別のエコシステムの他のアプリケーションとデータを交換できますか](#question-23)
+  - [24. 新しいエコシステム内のアプリケーションはすべてゼロから書かなければならないのでしょうか](#question-24)
+  - [25.アプリケーションの運用に料金はかかりますか](#question-25)
+  - [26. アプリケーションの運用費用は誰が負担するのですか](#question-26)
+  - [27. エコシステム内のアプリケーションを脆弱性による攻撃から守る方法はありますか](#question-27)
+  - [28. 将来の計画ではどのような新機能が実装されるのでしょうか](#question-28)
+  - [29. 操作性をどのように証明するのか](#question-29)
 
-### <span id = "question-1">1. Please briefly describe IBAX?</span>
+### <span id="question-1">1. IBAXについて簡単に説明してください。</span>
 
-  * It is a blockchain platform that aims to build a digital ecosystem based on an integrated application development environment that has a multi-level permission system for managing the access rights to data, interfaces, and smart contracts.
+  * IBAXは、統合アプリケーション開発環境をベースにしたデジタルエコシステムを構築するブロックチェーンプラットフォームです。マルチレベルの許可システムを持ち、データ、インターフェース、スマートコントラクトのアクセス権を管理します。
 
-### <span id = "question-2">2. Is IBax applicable for Bitcoin, Ethereum or other blockchains?</span>
+### <span id="question-2">2. IBAXはBitcoin、Ethereumまたは他のブロックチェーンに適用できますか？</span>
 
-  * Not applicable. IBax is built on the basis of its own original blockchain.
+  * 適用できません。IBAXは独自のオリジナルブロックチェーンをベースにしています。
 
-### <span id = "question-3">3. What are the main differences between IBax and other public blockchain platforms with built-in mechanisms for executing smart contracts?</span>
+### <span id="question-3">3. IBAXと他の内部にスマートコントラクトの実行メカニズムを備えた公開ブロックチェーンプラットフォームとの主な違いは何ですか？</span>
 
-  * IBax has unique features that cannot be found in the above-mentioned blockchains:
-    *  has an integrated application development environment in a single client software;
-      *  the special template language Logicor for page design and the contract language Needle coordinate with each other;
-      *  has a multi-level permission system for managing the access rights to data, interfaces and smart contracts, in which permissions can be granted to members, roles and contracts;
-      * the ecosystem, used to create blockchain applications and autonomous software environments for users to interact with them;
-      * the legal system, a set of rules written in smart laws (dedicated smart contracts), regulates the relationship between platform users and defines the process of changing protocol parameters for problem solving.
+  * IBAXには、上記のブロックチェーンで見つけることができない独自の機能があります：
+    * シングルクライアントソフトウェア内の統合アプリケーション開発環境があります；
+    * ページデザイン用の特別なテンプレート言語Logicorとコントラクト言語Needleが連携しています；
+    * メンバー、役割、コントラクトに権限を付与できる、データ、インターフェース、スマートコントラクトのアクセス権を管理するマルチレベルの許可システムがあります；
+    * ブロックチェーンアプリケーションを作成し、ユーザーがそれらとやり取りするための自律ソフトウェア環境として使用されるエコシステムがあります；
+    * スマートローズ（専用のスマートコントラクト）で書かれた一連のルールである法的システムがあり、プラットフォームユーザーとの関係を規制し、問題解決のためのプロトコルパラメータの変更プロセスを定義します。
 
-### <span id = "question-4">4. Do you have your own cryptocurrency?</span>
+### <span id="question-4">4. 独自の暗号通貨はありますか？</span>
 
-  * Yes, IBax uses its own token, IBXC.
+  * はい、IBAXは独自のトークンであるIBXCを使用しています。
 
-### <span id = "question-5">5. What is a honor node and who can maintain it?</span>
+### <span id="question-5">5. ノードとは何ですか？誰がメンテナンスを行いますか？</span>
 
-  * The honor node is the network node that has the authority to verify transactions and generate new blocks.
-  * Any network node with sufficient processing power and fault tolerance can become a honor node. IBax uses a Proof of Authority (PoA) consensus mechanism. Nodes can become verification nodes based on ecosystem voting, but only ecosystems that are proven by the platform's token owner to have normal operational capabilities can participate in such voting. Using this authorization algorithm, the master node is run by major ecosystems because it is in their best interest to maintain the network operation.
+  * ノードは、トランザクションの検証と新しいブロックの生成権限を持つネットワークノードです。
+  * 十分な処理能力と耐障害性を持つネットワークノードは、ノードになることができます。IBAXはProof of Authority（PoA）のコンセンサスメカニズムを使用しています。エコシステムの投票に基づいて検証ノードになることができますが、プラットフォームのトークン所有者が正常な運用能力を持つことが証明されたエコシステムのみがそのような投票に参加できます。この権限のアルゴリズムを使用して、マスターノードはネットワークの運用を維持することが最も望ましいため、主要なエコシステムによって実行されます。
 
-### <span id = "question-6">6. What is a platform ecosystem?</span>
+### <span id="question-6">6. プラットフォームエコシステムとは何ですか？</span>
 
-  * An ecosystem is actually an autonomous software environment used to create blockchain applications and the operations of users in them.
+  * エコシステムは、実際にはブロックチェーンアプリケーションを作成し、ユーザーの操作を行うための自律ソフトウェア環境です。
 
-### <span id = "question-7">7. Who can create an ecosystem?</span>
+### <span id="question-7">7. 誰がエコシステムを作成できますか？</span>
 
-  * All users of the platform can create new ecosystems.
+  * プラットフォームのすべてのユーザーが新しいエコシステムを作成できます。
 
-### <span id = "question-8">8. How do users become members of the ecosystem?</span>
+### <span id="question-8">8. ユーザーはどのようにエコシステムのメンバーになりますか？</span>
 
-  * Users may be registered as members of any existing ecosystem. The ecosystem strategy defines different member admission procedures, which publishes key public information of the new ecosystem in a dedicated ecosystem catalog.
+  * ユーザーは既存のいずれかのエコシステムのメンバーとして登録することができます。エコシステムの戦略は、新しいエコシステムのキーパブリック情報を専用のエコシステムカタログに公開する異なるメンバーの入会手続きを定義します。
 
-### <span id = "question-9">9. Can one user create multiple ecosystems?</span>
+### <span id="question-9">9. 1人のユーザーが複数のエコシステムを作成できますか？</span>
 
-  * Yes, each user can create any number of ecosystems and can also become a member of multiple ecosystems.
+  * はい、各ユーザーは任意の数のエコシステムを作成することができ、複数のエコシステムのメンバーにもなることができます。
 
-### <span id = "question-10">10. What is a platform application?</span>
+### <span id="question-10">10. プラットフォームアプリケーションとは何ですか？</span>
 
-  * An application is a complete software product that implements a function or service. The application consists of database tables, contracts and pages.
-### <span id = "question-11">11. What programming language is used to create the application?</span>
-  * The contract is written in the Needle language, which is developed by the platform team, For more information, see: [Smart Contract](../topics/script.md).
+  * アプリケーションは、機能やサービスを実装した完全なソフトウェア製品です。アプリケーションにはデータベーステーブル、コントラクト、およびページが含まれます。
 
-  * The page is written in Logicor language, which is a page template language. For more information, see: [Template Language](../topics/templates2.md).
+### <span id="question-11">11. アプリケーションを作成するために使用するプログラミング言語は何ですか？</span>
 
-### <span id = "question-12">12. What software is used to create applications and interact with users?</span>
+  * コントラクトは、プラットフォームチームによって開発されたNeedle言語で書かれます。詳細については、[スマートコントラクト](../topics/script.md)を参照してください。
 
-  * The application program is written and executed in Weaver, no other software is required.
+  * ページはLogicor言語で書かれており、ページテンプレート言語です。詳細については、[テンプレート言語](../topics/templates2.md)を参照してください。
 
-### <span id = "question-13">13. Can platform contracts use third-party APIs to access data?</span>
+### <span id="question-12">12. アプリケーションを作成し、ユーザーとやり取りするために使用するソフトウェアは何ですか？</span>
 
-  * No, the contract can only directly access the data stored in the blockchain. [CLB](about-the-platform.md#virtual-private-ecosystem) is used to process external data sources.
+  * アプリケーションプログラムはWeaverで書かれ、実行されます。他のソフトウェアは必要ありません。
 
-### <span id = "question-14">14. Can the contract stored in the blockchain be changed?</span>
+### <span id="question-13">13. プラットフォームのコントラクトはサードパーティのAPIを使用してデータにアクセスできますか？</span>
 
-  * Yes, the contract can be changed. The permission to change the contract is specified by its creator, who can grant the permission to refuse to change, or grant permission to make changes with contracts or by members, or configure a complex set of conditions in the smart law.
-  * Weaver provides access to all versions of contracts.
+  * いいえ、コントラクトはブロックチェーンに直接保存されたデータにのみアクセスできます。外部データソースの処理には[CLB](about-the-platform.md#virtual-private-ecosystem)が使用されます。
 
-### <span id = "question-15">15. What is smart law?</span>
+### <span id="question-14">14. ブロックチェーンに保存されたコントラクトは変更できますか？</span>
 
-  * Smart law is a contract designed to control and restrict the operation of conventional contracts, thereby controlling and restricting the activities of ecosystem members.
-  * A set of smart laws can be regarded as the legal system of an ecosystem.
+  * はい、コントラクトは変更できます。コントラクトの変更権限は作成者によって指定され、変更を拒否する権限や、コントラクトやメンバーによる変更の許可、またはスマートローに複雑な条件のセットを構成する権限を付与することができます。
+  * Weaverはすべてのバージョンのコントラクトにアクセスできるようにします。
 
-### <span id = "question-16">16. Can the contract call and execute other contracts?</span>
 
-  * Yes, the contract can call other contracts by direct addressing and provide parameters for it, or call the contract by link name. For more information, see: [Smart Contract](../topics/script.md).
+### <span id="question-15">15. スマートローとは何ですか？</span>
 
-### <span id = "question-17">17. Does the application run with a master contract?</span>
+  * スマートローは、従来の契約の操作を制御し制限するために設計された契約です。これにより、エコシステムメンバーの活動を制御し制限することができます。
+  * スマートローのセットは、エコシステムの法的システムと見なすことができます。
 
-  * No, the contract is an autonomous program module that performs certain functions. Each contract is configured to receive specified data, then check the correctness of these data, and perform some operations that are recorded in the database as transactions.
+### <span id="question-16">16. コントラクトは他のコントラクトを呼び出して実行できますか？</span>
 
-### <span id = "question-18">18. Can the application be localized for different languages?</span>
+  * はい、コントラクトは直接アドレッシングによって他のコントラクトを呼び出し、パラメータを提供するか、リンク名でコントラクトを呼び出すことができます。詳細については、[スマートコントラクト](../topics/script.md)を参照してください。
 
-  * Yes, Weaver has a built-in localization support mechanism and can create pages in any language.
+### <span id="question-17">17. アプリケーションはマスターコントラクトで実行されますか？</span>
 
-### <span id = "question-19">19. Can I create a page without using a template language?</span>
+  * いいえ、コントラクトは特定の機能を実行する自律型のプログラムモジュールです。各コントラクトは指定されたデータを受け取り、それらのデータの正当性を確認し、データベースにトランザクションとして記録されるいくつかの操作を実行するように構成されます。
 
-  * Yes, it can be done using the platform [RESTful API](../reference/api2.md) v2.
+### <span id="question-18">18. アプリケーションを異なる言語にローカライズできますか？</span>
 
-### <span id = "question-20">20. Are the pages stored in the blockchain?</span>
+  * はい、Weaverには組み込みのローカライゼーションサポートメカニズムがあり、任意の言語でページを作成することができます。
 
-  * Yes, the pages and contracts are stored in the blockchain, which prevents them from being forged.
+### <span id="question-19">19. テンプレート言語を使用せずにページを作成できますか？</span>
 
-### <span id = "question-21">21. What types of databases can be used for contract operations?</span>
+  * はい、プラットフォームの[RESTful API](../reference/api2.md) v2を使用して実行できます。
 
-  * Currently, PostgreSQL is used.
+### <span id="question-20">20. ページはブロックチェーンに保存されますか？</span>
 
-### <span id = "question-22">22. How to manage access to the data in the database table?</span>
+  * はい、ページとコントラクトはブロックチェーンに保存されます。これにより、改ざんされることが防止されます。
 
-  * You can add new fields, new entries, or change the permissions of the data in columns for ecosystem members, roles, or specified contract configurations. Except for contracts created by performing specific operations.
+### <span id="question-21">21. コントラクト操作にはどのような種類のデータベースを使用できますか？</span>
 
-### <span id = "question-23">23. Can an application in an ecosystem exchange data with other applications from another ecosystem?</span>
+  * 現在は、PostgreSQLが使用されています。
 
-  * Yes, data exchange can be organized through global data tables that apply to all ecosystems.
+### <span id="question-22">22. データベーステーブル内のデータへのアクセスはどのように管理されますか？</span>
 
-### <span id = "question-24">24. Should all applications in a new ecosystem be written from scratch?</span>
+  * エコシステムメンバー、役割、または指定されたコントラクトの構成に対して、新しいフィールド、新しいエントリ、またはデータの列のアクセス許可を追加または変更することができます。特定の操作を実行して作成されたコントラクトは除外されます。
 
-  * No, every new ecosystem has some applications out of the box:
-      * A mechanism to manage ecosystem members and roles;
-      * Issuing and configuring other tokens;
-      *  A voting system;
-      *  A notification system;
-      *  A messenger between ecosystem members.
+### <span id="question-23">23. エコシステム内のアプリケーションは、他のエコシステムのアプリケーションとデータを交換できますか？</span>
 
- These applications can be edited and configured to meet the special needs of any ecosystem.
+  * はい、データの交換は、すべてのエコシステムに適用されるグローバルデータテーブルを介して組織することができます。
 
-### <span id = "question-25">25. Are there any fees for the operation of applications?</span>
+### <span id="question-24">24. 新しいエコシステム内のすべてのアプリケーションをゼロから作成する必要がありますか？</span>
 
-  * Yes, the use of the resources of the honor node requires payment in the platform.
+  * いいえ、新しいエコシステムにはいくつかのデフォルトのアプリケーションがあります：
+      * エコシステムメンバーと役割を管理する機構
+      * 他のトークンの発行と設定
+      * 投票システム
+      * 通知システム
+      * エコシステムメンバー間のメッセンジャー
 
-### <span id = "question-26">26. Who pays for the operation of applications?</span>
+ これらのアプリケーションは、特定のエコシステムの特別なニーズに合わせて編集および設定することができます。
 
- For corresponding account addresses, there are currently 4 ways to pay for the operation of applications:
-  * For contract callers, the fee will be paid from the user's account by default when the user calls the contract; 
-  * For contract binding parties, the fee will be paid from the binding account specified by the contract creator;
-  * For ecosystem creators, the fee of all applications within an ecosystem will be paid by the ecosystem creator respectively;
+### <span id="question-25">25. アプリケーションの操作には料金が発生しますか？</span>
 
-  * Exclusive ecosystem wallet. Each ecosystem has an exclusive account. If the ecosystem creator activated it, the fee of all applications within the ecosystem will be paid from this account.
+  * はい、アプリケーションのリソース利用にはプラットフォームでの料金が必要です。
 
- Order of payment precedence: Exclusive ecosystem wallet> Ecosystem creator> Contract binding party> Contract caller.
+### <span id="question-26">26. アプリケーションの運用費用は誰が支払いますか？</span>
 
-### <span id = "question-27">27. How to protect the applications in the ecosystem from attacks due to vulnerabilities?</span>
+対応するアカウントアドレスについて、アプリケーションの運用費用を支払う方法は現在4つあります：
+  * コントラクト呼び出し元の場合、ユーザーがコントラクトを呼び出すと、デフォルトでユーザーのアカウントから手数料が支払われます。
+  * コントラクトのバインディング当事者の場合、手数料はコントラクト作成者が指定したバインディングアカウントから支払われます。
+  * エコシステム作成者の場合、エコシステム内のすべてのアプリケーションの手数料は、それぞれのエコシステム作成者によって支払われます。
 
-  * The platform team also knows that there is no way to completely avoid errors in the application code, especially considering that the application can be written by any user. This is why we decided to establish a mechanism to eliminate the consequences of exploiting vulnerabilities. The legal system can stop the attack operation of the application and use some transactions to restore it to its original state. The legal system stipulates the permissions to execute such contracts and the voting procedures for granting these permissions.
+  * 専用エコシステムウォレット。各エコシステムには専用のアカウントがあります。エコシステム作成者がそれをアクティブ化した場合、エコシステム内のすべてのアプリケーションの手数料はこのアカウントから支払われます。
 
-### <span id = "question-28">28. What new features will be implemented in future plans?</span>
+支払いの優先順位：専用エコシステムウォレット>エコシステム作成者>コントラクトバインディング当事者>コントラクト呼び出し元。
 
-  * Visual smart contract designer;
+### <span id="question-27">27. エコシステム内のアプリケーションを脆弱性による攻撃からどのように保護しますか？</span>
 
+  * プラットフォームチームもアプリケーションコードのエラーを完全に回避する方法はないことを認識しています。特に、アプリケーションは任意のユーザーによって作成される可能性があるためです。そのため、脆弱性の悪用による影響を排除するメカニズムを確立することにしました。法的システムは、攻撃操作を停止し、いくつかのトランザクションを使用してアプリケーションを元の状態に復元することができます。法的システムは、そのようなコントラクトを実行する権限と、これらの権限を付与するための投票手続きを定めています。
 
-  * Support for hybrid databases (SQL and NoSQL);
+### <span id="question-28">28. 将来の計画ではどのような新機能が実装される予定ですか？</span>
 
-  * Parallel multi-threaded processing of transactions from different ecosystems;
+  * ビジュアルスマートコントラクトデザイナー
+  * ハイブリッドデータベース（SQLおよびNoSQL）のサポート
+  * 異なるエコシステムからのトランザクションの並行マルチスレッド処理
+  * クライアント上でのリソース集約的な計算の実行
+  * エコシステムのホスティングおよび計算能力の交換
+  * 子ノード。サーバー上で一部のブロックのみを保存
+  * セマンティックリファレンス（オントロジー）を使用して、プラットフォーム内のデータ操作を統一する
 
-  * Perform resource-intensive calculations on the client;
+### <span id="question-29">29. IBAXの機能を証明する方法はありますか？</span>
 
-  * Ecosystem hosting and computing power exchange;
-
-  * Child nodes, only store some blocks on the server;
-
-  * Semantic references (ontology) are used to unify the operation of data in the platform.
-
-### <span id = "question-29">29. How to prove its operability?</span>
-
-  * A number of proof of concept projects and cases have been implemented on the IBax Network: a socialized tax collection and electronic invoice generation and circulation system, a medical apparatus and instruments supervision, forgery prevention and tracing system, a financing and supervision system, a voting/poll system, business registration, trade finance tools, assets registration contract management system, etc.
+  * IBAX Network上で、概念実証プロジェクトや事例がいくつか実装されています。これには、社会化された税金徴収と電子請求書の生成と流通システム、医療機器監視、偽造防止とトレーシングシステム、金融と監視システム、投票/投票システム、ビジネス登録、貿易ファイナンスツール、資産登録契約管理システムなどがあります。
