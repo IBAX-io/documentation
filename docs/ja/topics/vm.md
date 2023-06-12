@@ -1,60 +1,61 @@
-# Compiler and Virtual Machine
+# コンパイラと仮想マシン（Virtual Machine）
 
-  - [Source code storage and compilation](#source-code-storage-and-compilation)
-  - [Virtual machine structures](#virtual-machine-structures)
-    - [VM Structure](#vm-structure)
-    - [Block structure](#block-structure)
-    - [ObjInfo structure](#objinfo-structure)
-      - [ContractInfo structure](#contractinfo-structure)
-      - [FieldInfo structure](#fieldinfo-structure)
-      - [FuncInfo structure](#funcinfo-structure)
-      - [FuncName Structure](#funcname-structure)
-      - [ExtFuncInfo structure](#extfuncinfo-structure)
-      - [VarInfo structure](#varinfo-structure)
-      - [ObjExtend value](#objextend-value)
-  - [Virtual machine commands](#virtual-machine-commands)
-    - [ByteCode structure](#bytecode-structure)
-    - [Command identifiers](#command-identifiers)
-    - [Stack operation commands](#stack-operation-commands)
-    - [Runtime structure](#runtime-structure)
-      - [blockStack structure](#blockstack-structure)
-    - [RunCode function](#runcode-function)
-    - [Other functions for operations with VM](#other-functions-for-operations-with-vm)
-  - [Compiler](#compiler)
-  - [Lexical analyzer](#lexical-analyzer)
-    - [lextable/lextable.go](#lextable-lextable-go)
-    - [lex.go](#lex-go)
-  - [Needle language](#needle-language)
-    - [Lexemes](#lexemes)
-    - [Types](#types)
-    - [Expressions](#expressions)
-    - [Scope](#scope)
-    - [Contract execution](#contract-execution)
-    - [Backus–Naur Form (BNF)](#backus-naur-form-bnf)
+- [ソースコードの保存とコンパイル](#ソースコードの保存とコンパイル)
+- [仮想マシンの構造](#仮想マシンの構造)
+  - [VMの構造](#VMの構造)
+  - [ブロックの構造](#ブロックの構造)
+  - [ObjInfoの構造](#ObjInfoの構造)
+    - [ContractInfoの構造](#ContractInfoの構造)
+    - [FieldInfoの構造](#FieldInfoの構造)
+    - [FuncInfoの構造](#FuncInfoの構造)
+    - [FuncNameの構造](#FuncNameの構造)
+    - [ExtFuncInfoの構造](#ExtFuncInfoの構造)
+    - [VarInfoの構造](#VarInfoの構造)
+    - [ObjExtendの値](#ObjExtendの値)
+- [仮想マシンのコマンド](#仮想マシンのコマンド)
+  - [ByteCodeの構造](#ByteCodeの構造)
+  - [コマンド識別子](#コマンド識別子)
+  - [スタック操作コマンド](#スタック操作コマンド)
+  - [ランタイムの構造](#ランタイムの構造)
+    - [blockStackの構造](#blockStackの構造)
+  - [RunCode関数](#RunCode関数)
+  - [仮想マシンの他の操作用関数](#仮想マシンの他の操作用関数)
+- [コンパイラ](#コンパイラ)
+- [字句解析器](#字句解析器)
+  - [lextable/lextable.go](#lextable/lextable.go)
+  - [lex.go](#lex.go)
+- [Needle言語](#Needle言語)
+  - [字句](#字句)
+  - [型](#型)
+  - [式](#式)
+  - [スコープ](#スコープ)
+  - [コントラクトの実行](#コントラクトの実行)
+  - [バッカス・ナウア形式（BNF）](#バッカス・ナウア形式（BNF）)
 
-This section involves program compilation and Needle language operations in the Virtual Machine (VM).
+このセクションでは、仮想マシン (VM) でのプログラムのコンパイルと Needle 言語の操作について説明します。
 
-## Source code storage and compilation
+## ソースコードの保存とコンパイル
 
-Contracts and functions are written with Golang and stored in the contract tables of ecosystems.
+コントラクトと関数はGolangで書かれ、エコシステムのコントラクトテーブルに保存されます。
 
-When a contract is executed, its source code will be read from the database and compiled into bytecode.
+コントラクトが実行されると、そのソースコードはデータベースから読み取られ、バイトコードにコンパイルされます。
 
-When a contract is changed, its source code will be updated and saved in the database. Then, the source code is compiled, thereby updating the bytecode in the corresponding virtual machine. 
+コントラクトが変更されると、そのソースコードが更新され、データベースに保存されます。そして、ソースコードはコンパイルされ、対応する仮想マシンのバイトコードが更新されます。
 
-As bytecodes are not physically saved, it will be compiled anew when the program is executed again.
+バイトコードは物理的に保存されないため、プログラムが再実行されると再度コンパイルされます。
 
-The entire source code described in the contract table of each ecosystem is compiled into a virtual machine in strict order, and the status of the virtual machine is the same on all nodes.
+各エコシステムのコントラクトテーブルに記述されたソースコードは、厳密な順序で仮想マシンにコンパイルされ、すべてのノードで仮想マシンの状態が同じです。
 
-When the contract is called, the virtual machine will not change its status in any way. The execution of any contract or calling of any function occurs on a separate running stack created during each external call.
+コントラクトが呼び出されると、仮想マシンは状態を変更しません。任意のコントラクトの実行または関数の呼び出しは、外部呼び出し時に作成される個別の実行スタック上で行われます。
 
-Each ecosystem can have a so-called virtual ecosystem, which can be used within a node in conjunction with tables outside the blockchain, without direct affection on the blockchain or other virtual ecosystems. In this case, the node hosting such a virtual ecosystem will compile its contract and create its own virtual machine.
+各エコシステムには、仮想エコシステムと呼ばれるものが存在することがあります。これはブロックチェーンの外部テーブルと組み合わせてノード内で使用され、ブロックチェーンや他の仮想エコシステムに直接的な影響を与えません。この場合、仮想エコシステムをホストするノードは、独自のコントラクトをコンパイルし、独自の仮想マシンを作成します。
 
-## Virtual machine structures
+## 仮想マシンの構造
 
-### VM Structure
+### VMの構造
 
-A virtual machine is organized in memory as a structure like below.
+仮想マシンは、以下のような構造でメモリに組織化されます。
+
 ```
 type VM struct {
    Block
@@ -66,21 +67,22 @@ type VM struct {
 }
 ```
 
-A VM structure has the following elements:
-* Block - contains a [block structure](#block-structure);
-* ExtCost - a function returns the cost of executing an external golang function;
-* FuncCallsDB - a collection of Golang function names. This function returns the execution cost as the first parameter. These functions use EXPLAIN to calculate the cost of database processing;
-* Extern - a Boolean flag indicating whether a contract is an external contract. It is set to true when a VM is created. Contracts called are not displayed when the code is compiled. In other words, it allows to call the contract code determined in the future;
-* ShiftContract - ID of the first contract in the VM;
-* logger - VM error log output.
+仮想マシンの構造は以下の要素を持っています：
 
-### Block structure
+* Block - [ブロックの構造](#ブロックの構造)を含む
+* ExtCost - 外部のGolang関数の実行コストを返す関数
+* FuncCallsDB - Golang関数名のコレクション。この関数は実行コストを最初のパラメータとして返します。これらの関数はEXPLAINを使用してデータベース処理のコストを計算します
+* Extern - コントラクトが外部コントラクトであるかを示すブールフラグ。VMが作成されるとtrueに設定されます。コードがコンパイルされる際に呼び出されるコントラクトは表示されません。つまり、将来決まるコントラクトコードを呼び出すことができます
+* ShiftContract - VM内の最初のコントラクトのID
+* logger - VMのエラーログの出力
 
-A virtual machine is a tree composed of **Block type** objects.
+### ブロックの構造
 
-A block is an independent unit that contains some bytecodes. In simple terms, everything you put in the braces (`{}`) in the language is a block.
+仮想マシンは、**Block型**オブジェクトから構成されるツリーです。
 
-For example, the following code would create a block with functions. This block also contains another block with an if statement, which contains a block with a while statement.
+ブロックは、いくつかのバイトコードを含む独立したユニットです。言語で中括弧(`{}`)内に記述するものすべてがブロックです。
+
+例えば、以下のコードは関数を含むブロックを作成します。このブロックには、if文を含む別のブロックがあり、その中にはwhile文を含むさらなるブロックがあります。
 
 ```
 func my() {
@@ -92,7 +94,8 @@ func my() {
 }
 ```
 
-The block is organized in the memory as a structure like below.
+ブロックは以下のような構造でメモリに組織化されます。
+
 ```
 type Block struct {
    Objects map[string]*ObjInfo
@@ -106,20 +109,21 @@ type Block struct {
 }
 ```
 
-A block structure consists of the following elements:
+ブロックの構造は以下の要素から成り立ちます:
 
-* **Objects** - a map of internal objects of the pointer type [ObjInfo](#objInfo-structure). For example, if there is a variable in the block, you can get information about it by its name;
-* **Type** - the type of the block. For a function block, its type is **ObjFunc**; for a contract block, its type is **ObjContract**;
-* **Owner** - a structure of **OwnerInfo** pointer type. This structure contains information about the owner of the compiled contract, which is specified during contract compilation or obtained from the **contracts** table;
-* **Info** - it contains information about the object, which depends on the block type;
-* **Parent** - a pointer to the parent block;
-* **Vars** - an array containing the types of current block variables;
-* **Code** - the bytecode of the block itself, which will be executed when the control rights are passed to the block, for example, function calls or loop bodies;
-* **Children** - an array containing sub-blocks, such as function nesting, loops, conditional operators.
+* **Objects** - [ObjInfo](#ObjInfoの構造)というポインタ型の内部オブジェクトのマップです。例えば、ブロック内に変数がある場合は、その変数の情報を名前で取得することができます。
+* **Type** - ブロックのタイプです。関数ブロックの場合は**ObjFunc**、コントラクトブロックの場合は**ObjContract**です。
+* **Owner** - **OwnerInfo**というポインタ型の構造体です。この構造体には、コンパイルされたコントラクトの所有者に関する情報が含まれています。所有者情報はコンパイル時に指定されるか、**contracts**テーブルから取得されます。
+* **Info** - ブロックタイプに依存するオブジェクトに関する情報が含まれています。
+* **Parent** - 親ブロックへのポインタです。
+* **Vars** - 現在のブロック変数の型を含む配列です。
+* **Code** - ブロック自体のバイトコードです。制御権がブロックに渡された場合に実行される部分です。例えば、関数呼び出しやループの本体などが該当します。
+* **Children** - サブブロックを含む配列です。関数のネストやループ、条件演算子などがサブブロックとして扱われます。
 
-### ObjInfo structure
+### ObjInfoの構造
 
-The ObjInfo structure contains information about internal objects.
+ObjInfoの構造は、内部オブジェクトに関する情報を含んでいます。
+
 ```
 type ObjInfo struct {
    Type int
@@ -127,19 +131,21 @@ type ObjInfo struct {
 }
 ```
 
-The ObjInfo structure has the following elements:
+### ObjInfoの構造
 
-* **Type** is the object type, which has any of the following values:
-   * **ObjContract** – [contract](#contractInfo-structure);
-   * **ObjFunc** - function;
-   * **ObjExtFunc** - external golang function;
-   * **ObjVar** - variable;
-   * **ObjExtend** - $name variable.
-* **Value** – it contains the structure of each type.
+ObjInfoの構造は以下の要素から成り立ちます:
 
-#### ContractInfo structure
+* **Type** - オブジェクトのタイプであり、以下のいずれかの値を持ちます:
+  * **ObjContract** - [contractInfo](#ContractInfoの構造)
+  * **ObjFunc** - 関数
+  * **ObjExtFunc** - 外部のGolang関数
+  * **ObjVar** - 変数
+  * **ObjExtend** - $name変数
+* **Value** - 各タイプの構造体が含まれています
 
-Pointing to the **ObjContract** type, and the **Value** field contains a **ContractInfo** structure.
+#### ContractInfoの構造
+
+**ObjContract**タイプを指し示し、**Value**フィールドには**ContractInfo**構造体が含まれています。
 
 ```
 type ContractInfo struct {
@@ -151,17 +157,17 @@ type ContractInfo struct {
 }
 ```
 
-The ContractInfo structure has the following elements:
+ContractInfoの構造は以下の要素を持っています:
 
-* **ID** - contract ID, displayed in the blockchain when calling the contract;
-* **Name** - contract name;
-* **Owner** - other information about the contract;
-* **Used** - map of contracts names that has been called;
-* **Tx** - a data array described in the [data section](script.md#data-section) of the contract.
+* **ID** - コントラクトのID。コントラクトを呼び出す際にブロックチェーンに表示されます。
+* **Name** - コントラクトの名前。
+* **Owner** - コントラクトに関するその他の情報。
+* **Used** - 呼び出されたコントラクトの名前のマップ。
+* **Tx** - コントラクトの[data section](script.md#データセクション)に記述されたデータ配列。
 
-#### FieldInfo structure
+#### [FieldInfoの構造
 
-The FieldInfo structure is used in the **ContractInfo** structure and describes elements in [data section](script.md#data-section) of a contract.
+**FieldInfo**構造体は**ContractInfo**構造体で使用され、コントラクトの[data section](script.md#データセクション)内の要素を説明します。
 
 ```
 type FieldInfo struct {
@@ -172,16 +178,17 @@ type FieldInfo struct {
 }
 ```
 
-The FieldInfo structure has the following elements:
+FieldInfoの構造は以下の要素を持っています:
 
-* **Name** - field name;
-* **Type** - field type;
-* **Original** - optional field;
-* **Tags** - additional labels for this field.
+* **Name** - フィールド名
+* **Type** - フィールドの型
+* **Original** - オプションのフィールド
+* **Tags** - このフィールドに対する追加のラベル
 
-#### FuncInfo structure
+#### FuncInfoの構造
 
-Pointing to the ObjFunc type, and the Value field contains a FuncInfo structure.
+ObjFunc タイプを指しており、Value フィールドには FuncInfo 構造体が含まれています。
+
 ```
 type FuncInfo struct {
    Params []reflect.Type
@@ -192,17 +199,18 @@ type FuncInfo struct {
 }
 ```
 
-The FuncInfo structure has the following elements:
+FuncInfoの構造は以下の要素を持っています:
 
-* **Params** - an array of parameter types;
-* **Results** - an array of returned types;
-* **Names** - map of data for tail functions, for example, `DBFind().Columns ()`;
-* **Variadic** - true if the function can have a variable number of parameters;
-* **ID** - function ID.
+* **Params** - パラメータの型の配列
+* **Results** - 戻り値の型の配列
+* **Names** - テール関数のためのデータのマップ。例えば、`DBFind().Columns()`のような場合です。
+* **Variadic** - 関数が可変長のパラメータを持つ場合はtrue
+* **ID** - 関数のID
 
-#### FuncName Structure
+#### FuncNameの構造
 
-The FuncName structure is used for FuncInfo and describes the data of a tail function.
+FuncName 構造体は FuncInfo に使用され、tail 関数のデータを記述します。
+
 ```
 type FuncName struct {
    Params []reflect.Type
@@ -211,15 +219,16 @@ type FuncName struct {
 }
 ```
 
-The FuncName structure has the following elements:
+FuncNameの構造は以下の要素を持っています:
 
-* **Params** - an array of parameter types;
-* **Offset** - the array of offsets for these variables. In fact, the values of all parameters in a function can be initialized with the dot .;
-* **Variadic** - true if the tail function can have a variable number of parameters.
+* **Params** - パラメータの型の配列
+* **Offset** - 変数のオフセットの配列。実際には、関数内のすべてのパラメータの値をドット「.」で初期化することができます。
+* **Variadic** - テール関数が可変長のパラメータを持つ場合はtrue
 
-#### ExtFuncInfo structure
+#### ExtFuncInfoの構造
 
-Pointing to the ObjExtFunc type, and the Value field contains a ExtFuncInfo structure. It is used to describe golang functions.
+ObjExtFuncタイプを指し示し、ValueフィールドにはExtFuncInfoの構造が含まれています。これはGolang関数を説明するために使用されます。
+
 ```
 type ExtFuncInfo struct {
    Name string
@@ -231,15 +240,16 @@ type ExtFuncInfo struct {
 }
 ```
 
-The ExtFuncInfo structure has the following elements:
+ExtFuncInfoの構造は以下の要素を持っています:
 
-* **Name**, **Params**, **Results** parameters have the same structure as [FuncInfo](#funcinfo-structure);
-* **Auto** - an array of variables. If any, passes to the function as an additional parameter. For example, a variable of type SmartContract sc;
-* **Func** - golang functions.
+* **Name**、**Params**、**Results**のパラメータは[FuncInfo](#funcinfo-structure)と同じ構造を持ちます。
+* **Auto** - 変数の配列。存在する場合、関数に追加のパラメータとして渡されます。例えば、SmartContract型の変数scです。
+* **Func** - Golang関数
 
-#### VarInfo structure
+#### VarInfoの構造
 
-Pointing to the **ObjVar** type, and the **Value** field contains a **VarInfo** structure.
+**ObjVar**タイプを指し示し、**Value**フィールドには**VarInfo**の構造が含まれています。
+
 ```
 type VarInfo struct {
    Obj *ObjInfo
@@ -247,19 +257,21 @@ type VarInfo struct {
 }
 ```
 
-The VarInfo structure has the following elements:
+VarInfoの構造は以下の要素を持っています:
 
-* **Obj** - information about the type and value of the variable;
-* **Owner** - Pointer to the owner block.
+* **Obj** - 変数の型と値に関する情報
+* **Owner** - オーナーブロックへのポインタ
 
-#### ObjExtend value
+#### ObjExtendの値
 
-Pointing to the **ObjExtend** type, and the **Value** field contains a string containing the name of the variable or function.
+**ObjExtend**タイプを指し示し、**Value**フィールドには変数や関数の名前を含む文字列が含まれています。
 
-## Virtual machine commands
-### ByteCode structure
+## 仮想マシンのコマンド
 
-A bytecode is a sequence of **ByteCode** type structures.
+### ByteCodeの構造
+
+バイトコードは、**ByteCode**タイプの構造体のシーケンスです。
+
 ```
 type ByteCode struct {
    Cmd uint16
@@ -267,68 +279,70 @@ type ByteCode struct {
 }
 ```
 
-This structure has the following fields:
+この構造体は以下のフィールドを持っています:
 
-* **Cmd** - the identifier of the storage commands;
-* **Value** - contains the operand (value).
+* **Cmd** - ストレージコマンドの識別子です。
+* **Value** - オペランド（値）が含まれています。
 
-In general, commands perform an operation on the top element of the stack and writes the result value into it if necessary.
+一般的に、コマンドはスタックのトップ要素に対して操作を行い、必要に応じて結果値を書き込みます。
 
-### Command identifiers
+### コマンド識別子
 
-Identifiers of the virtual machine commands are described in the vm/cmds_list.go file.
+仮想マシンのコマンドの識別子は、vm/cmds_list.goファイルに記述されています。
 
-* **cmdPush** – put a value from the Value field to the stack. For example, put numbers and lines to the stack;
-* **cmdVar** - put the value of a variable to the stack. Value contains a pointer to the VarInfo structure and information about the variable;
-* **cmdExtend** – put the value of an external variable to the stack. Value contains a string with the variable name (starting with $);
-* **cmdCallExtend** – call an external function (starting with $). The parameters of the function are obtained from the stack, and the results are placed to the stack. Value contains a function name (starting with $);
-* **cmdPushStr** – put the string in Value to the stack;
-* **cmdCall** - calls the virtual machine function. Value contains a **ObjInfo** structure. This command is applicable to the **ObjExtFunc** golang function and **ObjFunc** Needle function. If a function is called, its parameters will be obtained from the stack and the result values will be placed to the stack;
-* **cmdCallVari** - similar to the **cmdCall** command, it calls the virtual machine function. This command is used to call a function with a variable number of parameters;
-* **cmdReturn** - used to exit the function. The return values will be put to the stack, and the Value field is not used;
-* **cmdIf** – transfer control to the bytecode in the **block** structure, which is passed in the Value field. The control will be transferred to the stack only when the top element of the stack is called by the *valueToBool* function and returned `true`. Otherwise, the control will be transferred to the next command;
-* **cmdElse** - this command works in the same way as the **cmdIf**, but only when the top element of the stack is called by the valueToBool function and returned `false`, the control will be transferred to the specified block;
-* **cmdAssignVar** – get a list of variables of type **VarInfo** from Value. These variables use the **cmdAssign** command to get the value;
-* **cmdAssign** – assign the value in the stack to the variable obtained by the **cmdAssignVar** command;
-* **cmdLabel** - defines a label when control is returned during the while loop;
-* **cmdContinue** - this command transfers control to the **cmdLabel** label. When executing a new iteration of the loop, Value is not used;
-* **cmdWhile** – use valueToBool to check the top element of the stack. If this value is `true`, the **block** structure will be called from the value field;
-* **cmdBreak** - exits the loop;
-* **cmdIndex** – put the value in map or array into the stack by index, without using Value. For example, `(map | array) (index value) => (map | array [index value])`;
-* **cmdSetIndex** – assigns the value of the top element of the stack to elements of map or array, without using Value. For example, `(map | array) (index value) (value) => (map | array)`;
-* **cmdFuncName** - adds parameters that are passed using sequential descriptions divided by dot . For example, `func name => Func (...) .Name (...)`;
-* **cmdUnwrapArr** - defines a Boolean flag if the top element of the stack is an array;
-* **cmdMapInit** – initializes the value of map;
-* **cmdArrayInit** – initializes the value of array;
-* **cmdError** - this command is created when a contract or function terminates with a specified `error, warning, info`.
+* **cmdPush** - [Value] フィールドから値をスタックに格納します。例えば、数値や文字列をスタックに格納します。
+* **cmdVar** - 変数の値をスタックに格納します。ValueフィールドにはVarInfo構造体へのポインタと変数に関する情報が含まれます。
+* **cmdExtend** - 外部変数の値をスタックに格納します。Valueフィールドには変数名（\$で始まる）が含まれます。
+* **cmdCallExtend** - 外部関数(\$で始まる)を呼び出します。関数のパラメータはスタックから取得され、結果はスタックに格納されます。Valueフィールドには関数名(\$で始まる)が含まれます。
+* **cmdPushStr** - Valueフィールドの文字列をスタックに格納します。
+* **cmdCall** - 仮想マシンの関数を呼び出します。Valueフィールドには **ObjInfo** 構造体が含まれます。このコマンドは、**ObjExtFunc**のGolang関数と**ObjFunc**のNeedle関数に適用されます。関数が呼び出されると、そのパラメータはスタックから取得され、結果値はスタックに格納されます。
+* **cmdCallVari** - **cmdCall**コマンドと似ていますが、可変長のパラメータを持つ関数を呼び出すために使用されます。
+* **cmdReturn** - 関数から出るために使用されます。戻り値はスタックに格納され、Valueフィールドは使用されません。
+* **cmdIf** - スタックのトップ要素が*valueToBool*関数によって呼び出され、`true`が返される場合にのみ、Valueフィールドに渡された**block**構造に制御が移ります。そうでない場合は、次のコマンドに制御が移ります。
+* **cmdElse** - このコマンドは**cmdIf**と同様に動作しますが、スタックのトップ要素が*valueToBool*関数によって呼び出され、`false`が返された場合に指定されたブロックに制御が移ります。
+* **cmdAssignVar** - Valueから**VarInfo**型の変数のリストを取得します。これらの変数は**cmdAssign**コマンドを使用して値を取得します。
+* **cmdAssign** - スタックの値を**cmdAssignVar**コマンドで取得した変数に割り当てます。
+* **cmdLabel** - ループ中に制御が戻ったときにラベルを定義します。
+* **cmdContinue** - このコマンドは**cmdLabel**ラベルに制御を移します。新しいループのイテレーションを実行する際にValueは使用されません。
+* **cmdWhile** - スタックのトップ要素を**valueToBool**でチェックします。この値が`true`の場合、Valueフィールドに渡された**block**構造が呼び出されます。
+* **cmdBreak** - ループを終了します。
+* **cmdIndex** - mapまたは配列の値をインデックスでスタックに格納します。Valueは使用されません。例: `(map | array) (index value) => (map | array [index value])`
+* **cmdSetIndex** - スタックのトップ要素の値をmapまたは配列の要素に割り当てます。Valueは使用されません。例: `(map | array) (index value) (value) => (map | array)`
+* **cmdFuncName** - ドット`.`で区切られた順序で渡されるパラメータを追加します。例: `func name => Func (...) .Name (...)`
+* **cmdUnwrapArr** - スタックのトップ要素が配列である場合に、真偽値フラグを定義します。
+* **cmdMapInit** - mapの値を初期化します。
+* **cmdArrayInit** - 配列の値を初期化します。
+* **cmdError** - `error、warning、info` 
 
-### Stack operation commands
-> Note
+### スタック操作コマンド
 
-> In the current version, automatic type conversion is not fully applicable for these commands. For example, 
+> 注意
 
-> `string + float | int | decimal => float | int | decimal, float + int | str => float, but int + string => runtime error`.
+> 現在のバージョンでは、これらのコマンドに対して自動型変換は完全に適用されません。例えば、
 
-The following are commands for direct stack processing. The Value field is not used in these commands.
+> `string + float | int | decimal => float | int | decimal, float + int | str => float, しかし int + string => 実行時エラー`。
 
-* **cmdNot** - logical negation. `(val) => (!ValueToBool(val))`;
-* **cmdSign** - change of sign. `(val) => (-val)`;
-* **cmdAdd** - addition. `(val1)(val2) => (val1 + val2)`;
-* **cmdSub** - subtraction. `(val1)(val2) => (val1-val2)`;
-* **cmdMul** - multiplication. `(val1)(val2) => (val1 * val2)`;
-* **cmdDiv** - division. `(val1)(val2) => (val1 / val2)`;
-* **cmdAnd** - logical AND. `(val1)(val2) => (valueToBool(val1) && valueToBool(val2))`;
-* **cmdOr** - logical OR. `(val1)(val2) => (valueToBool(val1) || valueToBool(val2))`;
-* **cmdEqual** - equality comparison, bool is returned. `(val1)(val2) => (val1 == val2)`;
-* **cmdNotEq** - inequality comparison, bool is returned. `(val1)(val2) => (val1 != val2)`;
-* **cmdLess** - less-than comparison, bool is returned. `(val1)(val2) => (val1 <val2)`;
-* **cmdNotLess** - greater-than-or-equal comparison, bool is returned. `(val1)(val2) => (val1 >= val2)`;
-* **cmdGreat** - greater-than comparison, bool is returned. `(val1)(val2) => (val1> val2)`;
-* **cmdNotGreat** - less-than-or-equal comparison, bool is returned. `(val1)(val2) => (val1 <= val2)`.
+以下は、直接スタックを処理するためのコマンドです。これらのコマンドではValueフィールドは使用されません。
 
-### Runtime structure
+* **cmdNot** - 論理否定。 `(val) => (!ValueToBool(val))`
+* **cmdSign** - 符号の変更。 `(val) => (-val)`
+* **cmdAdd** - 加算。 `(val1)(val2) => (val1 + val2)`
+* **cmdSub** - 減算。 `(val1)(val2) => (val1 - val2)`
+* **cmdMul** - 乗算。 `(val1)(val2) => (val1 * val2)`
+* **cmdDiv** - 除算。 `(val1)(val2) => (val1 / val2)`
+* **cmdAnd** - 論理積。 `(val1)(val2) => (valueToBool(val1) && valueToBool(val2))`
+* **cmdOr** - 論理和。 `(val1)(val2) => (valueToBool(val1) || valueToBool(val2))`
+* **cmdEqual** - 等しいかの比較結果を返す。 `(val1)(val2) => (val1 == val2)`
+* **cmdNotEq** - 等しくないかの比較結果を返す。 `(val1)(val2) => (val1 != val2)`
+* **cmdLess** - より小さいかの比較結果を返す。 `(val1)(val2) => (val1 < val2)`
+* **cmdNotLess** - より大きいか、または等しいかの比較結果を返す。 `(val1)(val2) => (val1 >= val2)`
+* **cmdGreat** - より大きいかの比較結果を返す。 `(val1)(val2) => (val1 > val2)`
+* **cmdNotGreat** - より小さいか、または等しいかの比較結果を返す。 `(val1)(val2) => (val1 <= val2)`
 
-The execution of bytecodes will not affect the virtual machine. For example, it allows various functions and contracts to run simultaneously in a single virtual machine. The Runtime structure is used to run functions and contracts, as well as any expressions and bytecode.
+### ランタイムの構造
+
+バイトコードの実行は仮想マシンに影響を与えません。例えば、さまざまな関数やコントラクトを単一の仮想マシンで同時に実行することができます。ランタイムの構造は、関数やコントラクト、および任意の式やバイトコードを実行するために使用されます。
+
 ```
 type RunTime struct {
    stack []interface{}
@@ -341,17 +355,18 @@ type RunTime struct {
 }
 ```
 
-* **stack** - the stack to execute the bytecode;
-* **blocks** - block calls stack;
-* **vars** - stack of variables. Its variable will be added to the stack of variables when the bytecode is called in the block. After exiting the block, the size of the stack of variables will return to the previous value;
-* **extend** - a pointer to map with values of external variables (`$name`);
-* **vm** - a virtual machine pointer;
-* **cost** - fuel unit of the resulting cost of execution;
-* **err** - error occurred during execution.
+* **stack** - バイトコードを実行するためのスタック
+* **blocks** - ブロック呼び出しのスタック
+* **vars** - 変数のスタック。ブロック内でバイトコードが呼び出されると、その変数が変数のスタックに追加されます。ブロックを抜けると、変数のスタックのサイズは前の値に戻ります。
+* **extend** - 外部変数（`$name`）の値のマップへのポインタ
+* **vm** - 仮想マシンへのポインタ
+* **cost** - 実行の結果得られるコストの燃料単位
+* **err** - 実行中に発生したエラー
 
-#### blockStack structure
+#### blockStackの構造
 
-The blockStack structure is used in the Runtime structure.
+blockStackの構造は、Runtimeの構造体で使用されます。
+
 ```
 type blockStack struct {
    Block *Block
@@ -359,20 +374,21 @@ type blockStack struct {
 }
 ```
 
-* **Block** - a pointer to the block being executed;
-* **Offset** – the offset of the last command executed in the bytecode of the specified block.
+* **Block** - 実行中のブロックへのポインタ
+* **Offset** - 指定されたブロックのバイトコード内で実行された最後のコマンドのオフセット
 
-### RunCode function
+### RunCode関数
 
-Bytecodes are executed in the **RunCode** function. It contains a loop that performs the corresponding operation for each bytecode command. Before processing a bytecode, the data required must be initialized.
+バイトコードは **RunCode** 関数で実行されます。各バイトコードのコマンドに対して対応する操作を実行するループが含まれています。バイトコードを処理する前に、必要なデータを初期化する必要があります。
 
-New blocks are added to other blocks.
+新しいブロックは他のブロックに追加されます。
 
 ```
 rt.blocks = append(rt.blocks, &blockStack{block, len(rt.vars)})
 ```
 
-Next, get the information of relevant parameters of the tail function. These parameters are contained in the last element of the stack.
+次に、tail関数の関連パラメータの情報を取得します。 これらのパラメータはスタックの最後の要素に含まれています。
+
 ```
 var namemap map[string][]interface{}
 if block.Type == ObjFunc && block.Info.(*FuncInfo).Names != nil {
@@ -383,7 +399,8 @@ if block.Type == ObjFunc && block.Info.(*FuncInfo).Names != nil {
 }
 ```
 
-Then, all variables defined in the current block must be initialized with their initial values.
+次に、現在のブロックで定義されているすべての変数を初期値で初期化する必要があります。
+
 ```
 start := len(rt.stack)
 varoff := len(rt.vars)
@@ -391,14 +408,17 @@ for vkey, vpar := range block.Vars {
    rt.cost--
    var value interface{}
 ```
-Since variables in the function are also variables, we need to retrieve them from the last element of the stack in the order described by the function itself.
+
+関数内の変数も変数であるため、関数自体で記述された順序でスタックの最後の要素から変数を取得する必要があります。
+
 ```
    if block.Type == ObjFunc && vkey <len(block.Info.(*FuncInfo).Params) {
       value = rt.stack[start-len(block.Info.(*FuncInfo).Params)+vkey]
    } else {
 ```
 
-Initialize local variables with their initial values.
+ローカル変数を初期値で初期化します。
+
 ```
       value = reflect.New(vpar).Elem().Interface()
 
@@ -413,7 +433,8 @@ Initialize local variables with their initial values.
 }
 ```
 
-Next, update the values of variable parameters passed in the tail function.
+次に、tail 関数で渡される変数パラメーターの値を更新します。
+
 ```
 if namemap != nil {
    for key, item := range namemap {
@@ -422,7 +443,8 @@ if namemap != nil {
          if params.Variadic && i >= len(params.Params)-1 {
 ```
 
-If variable parameters passed belongs to a variable number of parameters, then these parameters will be combined into an array of variables.
+渡された変数パラメーターが可変数のパラメーターに属している場合、これらのパラメーターは変数の配列に結合されます。
+
 ```
             off := varoff + params.Offset[len(params.Params)-1]
             rt.vars[off] = append(rt.vars[off].([]interface{}), value)
@@ -434,7 +456,7 @@ If variable parameters passed belongs to a variable number of parameters, then t
 }
 ```
 
-After that, all we have to do is delete values passed from the top of the stack as function parameters, thereby moving the stack. We have copied their values into a variable array.
+あとはスタックの先頭から関数パラメータとして渡された値を削除することでスタックを移動するだけです。 それらの値を変数配列にコピーしました。
 
 ```
 if block.Type == ObjFunc {
@@ -442,20 +464,21 @@ if block.Type == ObjFunc {
 }
 ```
 
+バイトコードのコマンドループが終了したら、スタックを正しくクリアする必要があります。
 
-When a bytecode command loop finished, we must clear the stack correctly.
 ```
 last := rt.blocks[len(rt.blocks)-1]
 ```
 
-Delete the current block from the stack of blocks.
+ブロックのスタックから現在のブロックを削除します。
 
 ```
 rt.blocks = rt.blocks[:len(rt.blocks)-1]
 if status == statusReturn {
 ```
 
-If successfully exited from a function already executed, we will add the return value to the end of the previous stack.
+すでに実行されている関数から正常に終了した場合は、戻り値を前のスタックの最後に追加します。
+
 ```
    if last.Block.Type == ObjFunc {
       for count := len(last.Block.Info.(*FuncInfo).Results); count > 0; count-- {
@@ -465,7 +488,9 @@ If successfully exited from a function already executed, we will add the return 
       status = statusNormal
    } else {
 ```
-As you can see, if we do not execute the function, then we will not restore the stack status and exit the function as is. The reason is that loops and conditional structures that have been executed in the function are also bytecode blocks.
+
+ご覧のとおり、関数を実行しない場合はスタックの状態を復元せず、そのまま関数を終了します。 その理由は、関数内で実行されたループや条件構造もバイトコード ブロックであるためです。
+
 ```
    return
 
@@ -475,22 +500,23 @@ As you can see, if we do not execute the function, then we will not restore the 
 rt.stack = rt.stack[:start]
 ```
 
-### Other functions for operations with VM
+### 仮想マシンの他の操作用関数
 
-Your may create a virtual machine with the **NewVM** function. Each virtual machine will be added with four functions, such as **ExecContract**, **MemoryUsage**, **CallContract**, and **Settings**, through the **Extend** function.
+**NewVM** 関数を使用して仮想マシンを作成することができます。各仮想マシンには、**ExecContract**、**MemoryUsage**、**CallContract**、**Settings** の4つの関数が **Extend** 関数を介して追加されます。
 
 ```
 for key, item := range ext.Objects {
    fobj := reflect.ValueOf(item).Type()
 ```
 
-We traverse all the objects passed and only look at the functions.
+渡されたすべてのオブジェクトを調べて、関数のみを確認します。
 
 ```
    switch fobj.Kind() {
    case reflect.Func:
 ```
-We fill the **ExtFuncInfo** structure according to the information received about the function, and add its structure to the top level map **Objects** by name. 
+
+関数に関して受け取った情報に従って **ExtFuncInfo** 構造体にデータを入力し、その構造体を名前で最上位マップ **Objects** に追加します。
 
 ```
    data := ExtFuncInfo{key, make([]reflect.Type, fobj.NumIn()), make([]reflect.Type, fobj.NumOut()),
@@ -498,26 +524,31 @@ We fill the **ExtFuncInfo** structure according to the information received abou
    for i := 0; i <fobj.NumIn(); i++ {
 ```
 
-The **ExtFuncInfo** structure has an **Auto** parameter array. Usually the first parameter is `sc *SmartContract` or `rt *Runtime`, we cannot pass them from theNeedle language, because they are necessary for us to execute some golang functions. Therefore, we specify that these variables will be used automatically when these functions are called. In this case, the first parameter of the above four functions is `rt *Runtime`.
+**ExtFuncInfo** 構造体には **Auto** パラメーター配列があります。 通常、最初のパラメータは `sc *SmartContract` または `rt *Runtime` ですが、これらはいくつかの golang 関数を実行するために必要であるため、Needle 言語から渡すことはできません。 したがって、これらの関数が呼び出されたときにこれらの変数が自動的に使用されるように指定します。 この場合、上記 4 つの関数の最初のパラメータは `rt *Runtime` です。
+
 ```
    if isauto, ok := ext.AutoPars[fobj.In(i).String()]; ok {
       data.Auto[i] = isauto
    }
 ```
 
-Information about assigning the parameters.
+パラメータの割り当てに関する情報。
+
 ```
       data.Params[i] = fobj.In(i)
    }
 ```
 
-And the types of return values.
+そして戻り値の型。
+
 ```
 for i := 0; i <fobj.NumOut(); i++ {
    data.Results[i] = fobj.Out(i)
 }
 ```
-Adds a function to the root **Objects** so that the compiler can find them later when using the contract.
+
+ルート **Objects** に関数を追加して、後でコントラクトを使用するときにコンパイラーがそれらを見つけられるようにします。
+
 ```
       vm.Objects[key] = &ObjInfo{ObjExtFunc, data}
    }
@@ -525,22 +556,22 @@ Adds a function to the root **Objects** so that the compiler can find them later
 }
 ```
 
-## Compiler
+## コンパイラ
 
-Functions in the compile.go file are responsible for compiling the array of tokens obtained from the lexical analyzer. Compilation can be divided into two levels conditionally. At the top level, we deal with functions, contracts, code blocks, conditional and loop statements, variable definitions, and so on. At the lower level, we compile expressions in code blocks or conditions in loops and conditional statements.
+compile.go ファイルの関数は、字句解析器から得られたトークンの配列をコンパイルする責任を持ちます。コンパイルは条件付きで2つのレベルに分けることができます。トップレベルでは、関数、コントラクト、コードブロック、条件文、ループ文、変数定義などに対処します。低レベルでは、コードブロック内の式やループおよび条件文の条件などをコンパイルします。
 
-First, we will start from the simple lower level. In the **compileEval** function, expressions can be converted to bytecode. Since we use a virtual machine with a stack, it is necessary to convert ordinary infix record expressions into postfix notation or reverse Polish notation. For example, we convert `1+2` to `12+` and put `1` and `2` to the stack. Then, we apply the addition operation to the last two elements in the stack and write the result to the stack. You can find this [conversion](https://master.virmandy.net/perevod-iz-infiksnoy-notatsii-v-postfiksnuyu-obratnaya-polskaya-zapis/) algorithm on the Internet.
+まず、簡単な低レベルから始めましょう。**compileEval** 関数では、式をバイトコードに変換することができます。スタックを使用する仮想マシンを使用しているため、通常の中置記録式を逆ポーランド記法に変換する必要があります。例えば、 `1+2` を `12+` に変換し、 `1` と `2` をスタックに入れます。その後、スタック内の最後の2つの要素に対して加算演算を適用し、結果をスタックに書き込みます。この変換アルゴリズムは、インターネット上で[見つけることができます](https://master.virmandy.net/perevod-iz-infiksnoy-notatsii-v-postfiksnuyu-obratnaya-polskaya-zapis/)。
 
-The global variable `opers = map [uint32] operPrior` contains the priority of operations required for conversion to inverse Polish notation.
+グローバル変数 `opers = map [uint32] operPrior` には、逆ポーランド記法への変換に必要な操作の優先順位が含まれています。
 
-The following variables are defined at the beginning of the **compileEval** function:
+**compileEval** 関数の最初に以下の変数が定義されています：
 
-* **buffer** - temporary buffer for bytecode commands;
-* **bytecode** - final buffer of bytecode commands;
-* **parcount** - temporary buffer used to calculate parameters when calling a function;
-* **setIndex** - variables in the work process will be set to true when we assign map or array elements. For example, `a["my"] = 10`. In this case, we need to use the specified **cmdSetIndex** command.
+* **buffer** - バイトコードコマンドの一時バッファ
+* **bytecode** - バイトコードコマンドの最終バッファ
+* **parcount** - 関数呼び出し時のパラメータ計算に使用される一時バッファ
+* **setIndex** - マップまたは配列の要素を割り当てる場合に変数が設定されます。例えば、 `a["my"] = 10`。この場合、指定された **cmdSetIndex** コマンドを使用する必要があります。
 
-We get a token in a loop and process it accordingly. For example, expression paring will be stopped if braces are found. When moving the string, we check whether the previous statement is an operation and whether it is inside the parentheses, otherwise it will exit the expression is parsed.
+ループ内でトークンを取得し、それに応じて処理します。例えば、括弧が見つかると式のパースが停止されます。文字列を移動する際に、前のステートメントが演算子であり、かつ括弧の内部にあるかどうかをチェックし、そうでない場合は式のパースを終了します。
 
 ```
 case isRCurly, isLCurly:
@@ -559,10 +590,9 @@ case lexNewLine:
    }
 }
 break main
-
 ```
 
-In general, the algorithm itself corresponds to an algorithm for converting to inverse Polish notation. With the consideration of the calling of necessary contracts, functions, and indexes, as well as other things not encountered during parsing and options for parsing lexIdent type tokens, then, variables, functions or contracts with this name will be checked. If nothing is found and this is not a function or contract call, then it will indicate an error.
+一般的には、アルゴリズム自体は逆ポーランド記法への変換アルゴリズムに対応しています。必要な契約、関数、インデックスの呼び出し、およびパース中に遭遇しなかった他の要素を考慮して、lexIdentタイプのトークンのパースオプションを考慮して、その名前の変数、関数、または契約をチェックします。何も見つからない場合、およびこれが関数または契約の呼び出しでない場合は、エラーが発生します。
 
 ```
 objInfo, tobj := vm.findObj(lexem.Value.(string), block)
@@ -571,7 +601,9 @@ if objInfo == nil && (!vm.Extern || i> *ind || i >= len(*lexems)-2 || (*lexems)[
 }
 ```
 
-We may encounter such a situation, and the contract call will be described later. In this example, if no functions or variables with the same name are found, then we think it is necessary to call a contract. In this compiled language, there is no difference between contracts and function calls. But we need to call the contract through the **ExecContract** function used in the bytecode.
+以下のような状況に遭遇することがあります。契約の呼び出しについては後で説明します。この例では、同じ名前の関数や変数が見つからない場合、契約を呼び出す必要があると考えます。このコンパイルされた言語では、契約の呼び出しと関数の呼び出しには違いがありません。ただし、バイトコードで使用される**ExecContract**関数を介して契約を呼び出す必要があります。
+
+
 ```
 if objInfo.Type == ObjContract {
    if objInfo.Value != nil {
@@ -582,7 +614,8 @@ if objInfo.Type == ObjContract {
 }
 ```
 
-We record the number of variables so far in `count`, which will also be written to the stack along with the number of function parameters. In each subsequent detection of parameters, we only need to increase this number by one unit at the last element of the stack.
+`count`には、これまでの変数の数が記録されており、関数のパラメータの数とともにスタックに書き込まれます。パラメータの検出が行われるたびに、スタックの最後の要素に1を加えるだけで、この数を増やす必要があります。
+
 
 ```
 count := 0
@@ -591,7 +624,8 @@ if (*lexems)[i+2].Type != isRPar {
 }
 ```
 
-We have a list Used of called parameters for contracts, then we need to mark the case of the contract is called. If the contract is called without parameters, we must add two empty parameters to call **ExecContract** to get at least two parameters.
+コントラクトの呼び出しにおいて、呼び出されたパラメータのリストUsedが存在します。そのため、コントラクトが呼び出された場合には、このケースをマークする必要があります。もしパラメータなしでコントラクトが呼び出された場合、少なくとも2つの空のパラメータを追加して**ExecContract**を呼び出す必要があります。
+
 ```
 if isContract {
    name := StateName((*block)[0].Info.(uint32), lexem.Value.(string))
@@ -614,7 +648,9 @@ if isContract {
 }
 ```
 
-If we see that there is a square bracket next, then we add the **cmdIndex** command to get the value by the index.
+もし次に角括弧がある場合、**cmdIndex**コマンドを追加してインデックスによって値を取得します。
+
+
 ```
 if (*lexems)[i+1].Type == isLBrack {
    if objInfo == nil || objInfo.Type != ObjVar {
@@ -624,11 +660,12 @@ if (*lexems)[i+1].Type == isLBrack {
 }
 ```
 
-The **CompileBlock** function can generate object trees and expression-independent bytecodes. The compilation process is based on a finite state machine, just like a lexical analyzer, but with the following differences. First, we do not use symbols but tokens; second, we will immediately describe the *states* variables in all states and transitions. It represents an array of objects indexed by token type. Each token has a structure of *compileState*, and a new state is specified in *NewState*. If it is clear what structure we have resolved, we can specify the function of the handler in the *Func* field.
 
-Let us review the main state as an example.
+**CompileBlock**関数は、オブジェクトツリーや式に依存しないバイトコードを生成することができます。コンパイルプロセスは、レキシカルアナライザと同様に有限状態機械に基づいていますが、以下の点が異なります。まず、シンボルではなくトークンを使用します。次に、すべての状態と遷移で*states*変数を直接記述します。これは、トークンタイプでインデックスされるオブジェクトの配列を表しています。各トークンは*compileState*の構造を持ち、*NewState*で新しい状態を指定します。解決した構造が明確な場合、*Func*フィールドにハンドラーの関数を指定できます。
 
-If we encounter a newline or comment, then we will remain in the same state. If we encounter the **contract** keyword, then we change the state to *stateContract* and start parsing the structure. If we encounter the **func** keyword, then we change the state to *stateFunc*. If other tokens are received, the function generating error will be called.
+例として、主な状態を見直しましょう。
+
+改行またはコメントが現れた場合、同じ状態のままにします。**contract**キーワードが現れた場合、状態を*stateContract*に変更し、構造の解析を開始します。**func**キーワードが現れた場合、状態を*stateFunc*に変更します。その他のトークンが受信された場合、エラーを生成する関数が呼び出されます。
 
 ```
 {// stateRoot
@@ -640,7 +677,8 @@ If we encounter a newline or comment, then we will remain in the same state. If 
 },
 ```
 
-Suppose we encountered the **func** keyword and we have changed the state to *stateFunc*. Since the function name must follow the **func** keyword, we will keep the same state when changing the function name. For all other tokens, we will generate corresponding errors. If we get the function name in the token identifier, then we go to the *stateFParams* state, where we can get the parameters of the function.
+例えば、**func**キーワードが現れ、状態が*stateFunc*に変更されたとします。関数名は**func**キーワードの後に続く必要があるため、関数名を変更する際には同じ状態のままにします。その他のトークンに対しては、対応するエラーを生成します。トークン識別子で関数名を取得した場合、*stateFParams*状態に移行し、関数のパラメータを取得できます。
+
 
 ```
 {// stateFunc
@@ -650,7 +688,9 @@ Suppose we encountered the **func** keyword and we have changed the state to *st
 },
 ```
 
-At the same time as the above operations, we will call the **fNameBlock** function. It should be noted that the Block structure is created with the statePush mark, where we get it from the buffer and fill it with the data we need. The **fNameBlock** function is suitable for contracts and functions (including those nested in them). It fills the *Info* field with the corresponding structure and writes itself into the *Objects* of the parent block. In this way, we can call the function or contract with the specified name. Similarly, we create corresponding functions for all states and variables. These functions are usually very small and perform some duties when constructing the virtual machine tree.
+上記の操作と同時に、**fNameBlock**関数を呼び出します。注意点として、Block構造体はstatePushマークで作成されます。ここで、バッファから取得し必要なデータを埋め込みます。**fNameBlock**関数は、関数や契約（それらにネストされたものも含む）に適しています。それは対応する構造体である*Info*フィールドを埋め、自身を親ブロックの*Objects*に書き込みます。これにより、指定した名前で関数または契約を呼び出すことができます。同様に、すべての状態と変数に対して対応する関数を作成します。これらの関数は通常非常に小さく、仮想マシンツリーの構築時にいくつかの作業を行います。
+
+
 ```
 func fNameBlock(buf *[]*Block, state int, lexem *Lexem) error {
    var itype int
@@ -673,67 +713,69 @@ func fNameBlock(buf *[]*Block, state int, lexem *Lexem) error {
 }
 ```
 
-For the **CompileBlock** function, it just traverses all the tokens and switches states according to the tokens described in states. Almost all additional tokens correspond to additional program codes.
+**CompileBlock**関数では、すべてのトークンを走査し、ステートに基づいてステートを切り替えます。ほとんどの追加トークンは、追加のプログラムコードに対応しています。
 
-* **statePush** – adds the **Block** object to the object tree;
-* **statePop** - used when the block ends with a closing brace;
-* **stateStay** - you need to keep the current mark when changing to a new state;
-* **stateToBlock** - transition to the **stateBlock** state for processing *while* and *if*. After processing expressions, you need to process blocks within the braces;
-* **stateToBody** - transition to the **stateBody** state;
-* **stateFork** - save the marked position. When the expression starts with an identifier or a name with `$`, we can make function calls or assignments;
-* **stateToFork** – used to get the token stored in **stateFork**, which will be passed to the process function;
-* **stateLabel** – used to insert **cmdLabel** commands. *while* structure requires this flag;
-* **stateMustEval** – check the availability of conditional expressions at the beginning of *if* and *while* structures.
+- **statePush** - **Block**オブジェクトをオブジェクトツリーに追加します。
+- **statePop** - ブロックが閉じ括弧で終わる場合に使用されます。
+- **stateStay** - 新しいステートに移行する際に、現在のマークを保持する必要があります。
+- **stateToBlock** - *while*や*if*を処理するために**stateBlock**ステートに移行します。式の処理が終わった後、括弧内のブロックを処理する必要があります。
+- **stateToBody** - **stateBody**ステートに移行します。
+- **stateFork** - マークされた位置を保存します。識別子または`$`で始まる名前から式が始まる場合、関数呼び出しや代入が行われる可能性があります。
+- **stateToFork** - **stateFork**に格納されたトークンを取得するために使用され、プロセス関数に渡されます。
+- **stateLabel** - **cmdLabel**コマンドを挿入するために使用されます。*while*構造ではこのフラグが必要です。
+- **stateMustEval** - *if*や*while*構造の先頭で条件式が利用可能かどうかをチェックします。
 
-In addition to the **CompileBlock** function, the **FlushBlock** function should also be mentioned. But the problem is that the block tree is constructed independently of existing virtual machines. More precisely, we obtain information about functions and contracts that exist in a virtual machine, but we collect the compiled blocks into a separate tree. Otherwise, if an error occurs during compilation, we must roll back the virtual machine to the previous state. Therefore, we go to the compilation tree separately, but after the compilation is successful, the **FlushContract** function must be called. This function adds the completed block tree to the current virtual machine. The compilation phase is now complete.
+また、**CompileBlock**関数以外にも**FlushBlock**関数について触れる必要があります。ただし、問題はブロックツリーが既存の仮想マシンとは独立して構築されていることです。より具体的には、仮想マシンに存在する関数やコントラクトの情報を取得しますが、コンパイルされたブロックは別のツリーに収集されます。コンパイル中にエラーが発生した場合、仮想マシンを前の状態に戻す必要があります。そのため、コンパイルツリーは別途移動し、コンパイルが成功した後に**FlushContract**関数を呼び出す必要があります。この関数は完了したブロックツリーを現在の仮想マシンに追加します。コンパイルフェーズはこれで完了です。
 
-## Lexical analyzer
 
-The lexical analyzer processes incoming strings and forms a sequence of tokens of the following types :
+## 字句解析器
 
-* **lexSys** - system token, for example: `{}, [], (), ,, .` etc;
-* **lexOper** - operation token, for example: `+, -, /, \, *`;
-* **lexNumber** - number;
-* **lexident** - identifier;
-* **lexNewline** - newline character;
-* **lexString** - string;
-* **lexComment** - comment;
-* **lexKeyword** - keyword;
-* **lexType** - type;
-* **lexExtend** - reference to external variables or functions, for example: `$myname`.
+字句解析器は入力文字列を処理し、以下の種類のトークンのシーケンスを形成します:
 
-In the current version, a conversion table (finite state machine) is initially constructed with the help of the [script/lextable/lextable.go](#lextablelextablego) file to parse the tokens, which is written to the lex_table.go file. In general, you can get rid of the conversion table initially generated by the file and create a conversion table in the memory (`init()`) immediately upon startup. The lexical analysis itself occurs in the lexParser function in the [lex.go](#lex-go) file.
+* **lexSys** - システムトークン、例: `{}, [], (), ,, .` など;
+* **lexOper** - 演算子トークン、例: `+, -, /, \, *`;
+* **lexNumber** - 数値;
+* **lexident** - 識別子;
+* **lexNewline** - 改行文字;
+* **lexString** - 文字列;
+* **lexComment** - コメント;
+* **lexKeyword** - キーワード;
+* **lexType** - 型;
+* **lexExtend** - 外部変数や関数への参照、例: `$myname`。
 
-### <span id = "lextable-lextable-go">lextable/lextable.go</span>
+現在のバージョンでは、トークンを解析するために最初に [script/lextable/lextable.go](#lextable-lextable-go) ファイルを使用して変換テーブル（有限状態機械）が初期に構築され、lex_table.go ファイルに書き込まれます。一般的には、ファイルで初期に生成された変換テーブルから解放され、起動時にメモリ内に変換テーブルを作成することができます。字句解析自体は、[lex.go](#lex-go) ファイルの lexParser 関数で行われます。
 
-Here we define the alphabet to operate and describe how the finite state machine changes from one state to another based on the next received symbol.
 
-*states* is a JSON object containing a list of states.
+### lextable/lextable.go
 
-Except for specific symbols, `d` stands for all symbols not specified in the state.
-`n` stands for 0x0a, `s` stands for space, `q` stands for backquote, `Q` stands for double quote, `r` stands for character >= 128, `a` stands for AZ and az, and `1` stands for 1- 9.
+ここでは、操作するアルファベットを定義し、受け取った次のシンボルに基づいて有限状態機械がどのように状態から別の状態に変化するかを説明します。
 
-The name of these states are keys, and the possible values are listed in the value object. Then, there is a new state to make transitions for each group. Then there is the name of the token. If we need to return to the initial state, the third parameter is the service token, which indicates how to handle the current symbol.
+*states* は、状態のリストを含む JSON オブジェクトです。
 
-For example, we have the main state and the incoming characters `/`, `"/": ["solidus", "", "push next"]`,
+特定のシンボル以外の場合、`d` は状態で指定されていないすべてのシンボルを示します。
+`n` は 0x0a を、`s` は空白を、`q` はバッククォートを、`Q` はダブルクォートを、`r` は文字 >= 128 を、`a` は AZ と az を、`1` は 1-9 を示します。
 
-* **push** - gives the command to remember that it is in a separate stack ;
-* **next** - goes to the next character, and at the same time we change the status to **solidus**. After that, gets the next character and check the status of **solidus**.
+これらの状態の名前はキーであり、可能な値は値オブジェクトにリストされています。次に、各グループに対して遷移するための新しい状態があります。その後にはトークンの名前があります。初期状態に戻る必要がある場合は、第3パラメーターがサービストークンであり、現在のシンボルの処理方法を示します。
 
-If the next character has `/` or `/*`, then we go to the comment **comment** state because they start with `//` or `/*`. Obviously, each comment has a different state afterwards, because they end with a different symbol.
+たとえば、メインの状態と次の文字 `/` の場合、`"/": ["solidus", "", "push next"]` となります。
 
-If the next character is not `/` and `*`, then we record everything in the stack as **lexOper** type tags, clear the stack and return to the main state.
+- **push** - 別のスタックに存在することを記憶するコマンドを与えます。
+- **next** - 次の文字に進み、同時に状態を **solidus** に変更します。その後、次の文字を取得し、**solidus** の状態をチェックします。
 
-The following module converts the state tree into a numeric array and writes it into the *lex_table.go* file.
+次の文字が `/` または `/*` の場合、`//` または `/*` で始まるため、コメント **comment** の状態に移行します。明らかに、各コメントにはその後に異なる状態がありますが、異なる記号で終了します。
 
-In the first loop:
+次の文字が `/` または `*` でない場合、スタック内のすべてのものを **lexOper** タイプのタグとして記録し、スタックをクリアしてメインの状態に戻ります。
 
-We form an alphabet of valid symbols.
+次のモジュールでは、状態ツリーを数値配列に変換し、*lex_table.go* ファイルに書き込みます。
+
+最初のループでは、有効なシンボルのアルファベットを形成します。
+
 
 ```
 for ind, ch := range alphabet {
    i := byte(ind)
 ```
+
 In addition, in **state2int**, we provide each state with its own sequence identifier.
 
 ```
@@ -751,7 +793,9 @@ All of these are described in more detail in the **lexParser** function in *lex.
 If you want to add some new characters, you need to add them to the *alphabet* array and increase the quantity of the *AlphaSize* constant. If you want to add a new symbol combination, it should be described in the status, similar to the existing options. After the above operation, run the *lextable.go* file to update the *lex_table.go* file.
 
 ### <span id = "lex-go">lex.go</span>
+
 The **lexParser** function directly generates lexical analysis and returns an array of received tags based on incoming strings. Let us analyze the structure of tokens.
+
 ```
 type Lexem struct {
    Type  uint32 // Type of the lexem
@@ -761,91 +805,97 @@ type Lexem struct {
 }
 ```
 
-* **Type** - token type. It has one of the following values: `lexSys, lexOper, lexNumber, lexIdent, lexString, lexComment, lexKeyword, lexType, lexExtend`;
-* **Value** – token value. The type of value depends on the token type, Let us analyze it in more detail:
-   * **lexSys** - includes brackets, commas, etc. In this case, `Type = ch << 8 | lexSys`, please refer to the `isLPar ... isRBrack` constant, and its value is uint32 bits;
-   * **lexOper** - the value represents an equivalent character sequence in the form of uint32. See the `isNot ... isOr` constants;
-   * **lexNumber** - numbers are stored as int64 or float64. If the number has a decimal point, it is float64;
-   * **lexIdent** - identifiers are stored as string;
-   * **lexNewLine** - newline character. Also used to calculate the row and token position;
-   * **lexString** - lines are stored as string;
-   * **lexComment** - comments are stored as string;
-   * **lexKeyword** - for keywords, only the corresponding indexes are stored, see the `keyContract ... keyTail` constant. In this case `Type = KeyID << 8 | lexKeyword`. In addition, it should be noted that the `true, false, nil` keywords will be immediately converted to lexNumber type tokens, and the corresponding `bool` and `intreface {}` types will be used;
-   * **lexType** – this value contains the corresponding `reflect.Type` type value;
-   * **lexExtend** – identifiers beginning with a `$`. These variables and functions are passed from the outside and are therefore assigned to special types of tokens. This value contains the name as a string without a $ at the beginning.
-* **Line** - the line where the token is found;
-* **Column** - in-line position of the token.
+* **Type** - トークンのタイプ。次のいずれかの値を持ちます: `lexSys, lexOper, lexNumber, lexIdent, lexString, lexComment, lexKeyword, lexType, lexExtend`
+* **Value** - トークンの値。値のタイプはトークンのタイプに依存します。詳細は次のようになります:
+  * **lexSys** - 括弧、カンマなどが含まれます。この場合、`Type = ch << 8 | lexSys` となります。`isLPar ... isRBrack` 定数を参照し、その値は uint32 ビットです。
+  * **lexOper** - 値は uint32 形式の等価な文字列です。`isNot ... isOr` 定数を参照してください。
+  * **lexNumber** - 数値は int64 または float64 として格納されます。数値に小数点がある場合、float64 です。
+  * **lexIdent** - 識別子は文字列として格納されます。
+  * **lexNewLine** - 改行文字です。行とトークンの位置を計算するためにも使用されます。
+  * **lexString** - 文字列は文字列として格納されます。
+  * **lexComment** - コメントは文字列として格納されます。
+  * **lexKeyword** - キーワードの場合、対応するインデックスのみが格納されます。`keyContract ... keyTail` 定数を参照してください。この場合、`Type = KeyID << 8 | lexKeyword` となります。さらに、`true, false, nil` のキーワードは直ちに lexNumber タイプのトークンに変換され、対応する `bool` 型および `interface {}` 型が使用されます。
+  * **lexType** - この値には、対応する `reflect.Type` 型の値が含まれます。
+  * **lexExtend** - `$` で始まる識別子。これらの変数と関数は外部から渡されるため、特別な種類のトークンに割り当てられます。この値には、先頭の $ を含まない名前が文字列として格納されます。
+* **Line** - トークンが見つかった行番号。
+* **Column** - トークンの行内位置。
 
-Let us analyze the **lexParser** function in detail. The **todo** function looks up the symbol index in the alphabet based on the current state and the incoming symbol, and obtains a new state, token identifier (if any), and other tokens from the conversion table. The parsing itself involves calling the **todo** function in turn for each next character and switching to a new state. Once the tag is received, we create the corresponding token in the output criteria and continue the parsing process. It should be noted that during the parsing process, we do not accumulate the token symbols into a separate stack or array, because we only save the offset of the start of the token. After getting the token, we move the offset of the next token to the current parsing position.
+**lexParser** 関数を詳細に解析しましょう。**todo** 関数は、現在の状態と入力されたシンボルに基づいて、アルファベット内のシンボルのインデックスを調べ、新しい状態、トークン識別子（存在する場合）、および変換テーブルから他のトークンを取得します。解析自体は、次の文字ごとに**todo**関数を呼び出し、新しい状態に切り替えながら進めることで行われます。タグを受け取ったら、対応するトークンを出力基準に作成し、解析プロセスを続行します。解析プロセスでは、トークンのシンボルを別のスタックや配列に蓄積することはせず、トークンの開始オフセットのみを保存します。トークンを取得した後、次のトークンのオフセットを現在の解析位置に移動します。
 
-All that remains is to check the lexical status tokens used in the parsing:
+解析中に使用される字句ステータストークンをチェックします:
 
-* **lexfPush** - this token means that we start to accumulate symbols in a new token;
-* **lexfNext** - the character must be added to the current token;
-* **lexfPop** - the receipt of the token is complete. Usually, with this flag we have the identifier type of the parsed token;
-* **lexfSkip** - this token is used to exclude characters from parsing. For example, the control slashes in the string are \n \r \". They will be automatically replaced during the lexical analysis stage.
+* **lexfPush** - このトークンは新しいトークンのシンボルの蓄積が開始されたことを意味します。
+* **lexfNext** - 文字を現在のトークンに追加する必要があります。
+* **lexfPop** - トークンの取得が完了しました。通常、解析されたトークンの識別子タイプがあります。
+* **lexfSkip** - このトークンは解析から除外するために使用されます。たとえば、文字列内の制御スラッシュは \n \r \" です。これらは、字句解析の段階で自動的に置き換えられます。
 
-## Needle language
-### Lexemes
+## Needle言語
 
-The source code of a program must be in UTF-8 encoding.
+### 字句
 
-The following lexical types are processed:
+プログラムのソースコードはUTF-8エンコーディングである必要があります。
 
-* **Keywords** - ```action, break, conditions, continue, contract, data, else, error, false, func, If, info, nil, return, settings, true, var, warning, while```;
-* **Number** - only decimal numbers are accepted. There are two basic types: **int** and **float**. If the number has a decimal point, it becomes a float **float**. **int** type is equivalent to **int64** in golang, while **float** type is equivalent to **float64** in golang.
-* **String** - the string can be enclosed in double quotes ```("a string")``` or backquotes ```(\`a string\`)```. Both types of strings can contain newline characters. Strings in double quotes can contain double quotes, newline characters, and carriage returns escaped with slashes. For example, ```"This is a \"first string\".\r\nThis is a second string."```.
-* **Comment** - there are two types of comments. Single-line comments use two slashes (//). For example, // This is a single-line comment. Multi-line comments use slash and asterisk symbols and can span multiple lines. For example, ```/* This is a multi-line comment */```.
-* **Identifier** - the names of variables and functions composed of a-z and A-Z letters, UTF-8 symbols, numbers and underscores. The name can start with a letter, underscore, ```@``` or ```$```. The name starting with ```$``` is the name of the variable defined in the **data section**. The name starting with ```$``` can also be used to define global variables in the scope of **conditions** and **action sections**. Ecosystem contracts can be called using the ```@``` symbol. For example: ```@1NewTable(...)```.
+次の字句タイプが処理されます:
 
-### Types
+* **Keywords** - ```action, break, conditions, continue, contract, data, else, error, false, func, If, info, nil, return, settings, true, var, warning, while```
+* **Number** - 十進数のみが受け入れられます。基本的な2つのタイプがあります: **int** と **float**。数値に小数点が含まれている場合、それは **float** となります。**int** 型は golang の **int64** に相当し、**float** 型は golang の **float64** に相当します。
+* **String** - 文字列は二重引用符 ```("a string")``` またはバッククォート ```(`a string`)``` で囲むことができます。両方のタイプの文字列は改行文字を含むことができます。二重引用符で囲まれた文字列には、スラッシュでエスケープされた二重引用符、改行文字、復帰文字を含めることができます。例: ```"This is a \"first string\".\r\nThis is a second string."```
+* **Comment** - 2つのタイプのコメントがあります。1行コメントは2つのスラッシュ (//) を使用します。例: // This is a single-line comment. 複数行コメントはスラッシュとアスタリスク記号を使用し、複数行にわたることができます。例: ```/* This is a multi-line comment */```
+* **Identifier** - 変数や関数の名前は、a-zおよびA-Zの文字、UTF-8のシンボル、数字、アンダースコアで構成されます。名前は文字、アンダースコア、```@``` または ```$``` で始まることができます。```$``` で始まる名前は、**dataセクション**で定義された変数の名前です。```$``` で始まる名前は、**conditionsセクション**および**actionセクション**のスコープでグローバル変数を定義するためにも使用できます。エコシステムの契約は ```@``` 記号を使用して呼び出すことができます。例: ```@1NewTable(...)```
 
-Corresponding golang types are specified next to theNeedle types.
+### 型
 
-* **bool** - bool, **false** by default;
-* **bytes** - []byte{}, an empty byte array by default;
-* **int** - int64, **0** by default;
-* **address** - uint64, **0** by default;
-* **array** - []interface{}, an empty array by default;
-* **map** - map[string]interface{}, an empty object array by default;
-* **money** - decimal. Decimal, **0** by default;
-* **float** - float64, **0** by default;
-* **string** - string, an empty string by default;
-* **file** - map[string]interface{}, an empty object array by default.
+Needleの型の横に対応するgolangの型が指定されています。
 
-These types of variables are defined with the ```var``` keyword. For example, ```var var1, var2 int```. When defined in this way, a variable will be assigned with a default value by type.
+* **bool** - bool, デフォルトは **false**;
+* **bytes** - []byte{}, デフォルトは空のバイト配列;
+* **int** - int64, デフォルトは **0**;
+* **address** - uint64, デフォルトは **0**;
+* **array** - []interface{}, デフォルトは空の配列;
+* **map** - map[string]interface{}, デフォルトは空のオブジェクト配列;
+* **money** - decimal, デフォルトは **0**;
+* **float** - float64, デフォルトは **0**;
+* **string** - string, デフォルトは空の文字列;
+* **file** - map[string]interface{}, デフォルトは空のオブジェクト配列;
 
-All variable values are of the interface{} type, and then they are assigned to the required golang types. Therefore, for example, array and map types are golang types []interface{} and map[string]interface{}. Both types of arrays can contain elements of any type.
+これらの変数の型は ```var``` キーワードで定義されます。例: ```var var1, var2 int```。このように定義すると、変数は型に応じたデフォルト値で初期化されます。
 
-### Expressions
+すべての変数の値はinterface{}型であり、必要なgolangの型に代入されます。したがって、例えば、arrayとmapの型はgolangの []interface{} および map[string]interface{} です。両方の配列タイプは任意の型の要素を含むことができます。
 
-An expression may include arithmetic operations, logical operations, and function calls. All expressions are evaluated from left to right by priority of operators. If having an equal priority, operators are evaluated from left to right.
 
-Priority of operations from high to low:
+### 式
 
-* **Function call and parentheses** - when a function is called, passed parameters will be calculated from left to right;
-* **Unary Operation** - logical negation ```!``` and arithmetic sign change ```-```;
-* **Multiplication and Division** - arithmetic multiplication ```*``` and division ```/```;
-* **Addition and Subtraction** - arithmetic addition ```+``` and subtraction ```-```;
-* **Logical comparison** - ```>=>> >=```;
-* **Logical equality and inequality** - ```== !=```;
-* **Logical AND** - ```&&```;
-* **Logical OR** - ```||```.
+式には算術演算、論理演算、関数呼び出しが含まれることがあります。すべての式は演算子の優先順位に従って左から右に評価されます。優先順位が等しい場合、演算子は左から右に評価されます。
 
-When evaluating logical AND and OR, both sides of the expression are evaluated in any case.
+演算の優先順位は高から低へと続きます：
 
-Needle has no type checking during compilation. When evaluating operands, an attempt is made to convert the type to a more complex type. The type of complexity order can be as follows: ```string, int, float, money```. Only part of the type conversions is implemented. The string type supports addition operations, and the result will be string concatenation. For example, ```string + string = string, money-int = money, int * float = float```.
+* **関数呼び出しと括弧** - 関数が呼び出されると、渡されたパラメータは左から右に計算されます。
+* **単項演算** - 論理否定 ```!``` および算術符号変更 ```-```
+* **乗算と除算** - 算術乗算 ```*``` および除算 ```/```
+* **加算と減算** - 算術加算 ```+``` および減算 ```-```
+* **論理比較** - ```>=>> >=```
+* **論理等価と不等価** - ```== !=```
+* **論理 AND** - ```&&```
+* **論理 OR** - ```||```
 
-For functions, type checking is performed on the ```string``` and ```int``` types during execution.
+論理 AND および OR の評価では、式の両側が常に評価されます。
 
-**array** and **map** types can be addressed by index. For the **array** type, the **int** value must be specified as the index. For the **map** type, a variable or **string** value must be specified. If you assign a value to an **array** element whose index is greater than the current maximum index, an empty element will be added to the array. The initial value of these elements is **nil**. For example: .. code:
+Needleでは、コンパイル中に型チェックは行われません。オペランドの評価時には、型をより複雑な型に変換しようとします。複雑さの順序に応じた型は次のようになります：```string、int、float、money```。型変換の一部しか実装されていません。string 型では、加算演算がサポートされ、結果は文字列の連結になります。例えば、```string + string = string, money - int = money, int * float = float```。
+
+関数の場合、実行時に ```string``` 型および ```int``` 型の型チェックが行われます。
+
+**array** 型および **map** 型は、インデックスでアクセスできます。**array** 型の場合、インデックスとして **int** 値を指定する必要があります。**map** 型の場合、変数または **string** 値を指定する必要があります。インデックスが現在の最大インデックスよりも大きい **array** 要素に値を割り当てる場合、配列に空の要素が追加されます。これらの要素の初期値は **nil** です。例えば： .. code:
+
+
 ```
 var my array
 my[5] = 0
 var mymap map
 mymap["index"] = my[3]
 ```
+
 In expressions of conditional logical values (such as `if, while, &&, ||, !`), the type is automatically converted to a logical value. If the type is not the default value, it is true.
+
 ```
 var mymap map
 var val string
@@ -853,9 +903,12 @@ if mymap && val {
 ...
 }
 ```
-### Scope
 
-Braces specify a block that can contain local scope variables. By default, the scope of a variable extends to its own blocks and all nested blocks. In a block, you can define a new variable using the name of an existing variable. However, in this case, external variables with the same name become unavailable.
+### スコープ
+
+中括弧は、ローカルスコープ変数を含むことができるブロックを指定します。デフォルトでは、変数のスコープはその独自のブロックとすべてのネストされたブロックに拡張されます。ブロック内で、既存の変数の名前を使用して新しい変数を定義することができます。ただし、この場合、同じ名前の外部変数は利用できなくなります。
+
+
 ```
 var a int
 a = 3
@@ -867,221 +920,261 @@ a = 3
 Println(a) // 3
 ```
 
-### Contract execution
+### コントラクトの実行
 
-When calling a contract, parameters defined in **data** must be passed to it. Before executing a contract, the virtual machine receives these parameters and assigns them to the corresponding variables ($Param). Then, the predefined **conditions** function and **action** function are called.
+コントラクトを呼び出す際には、**data** で定義されたパラメータを渡す必要があります。コントラクトを実行する前に、仮想マシンはこれらのパラメータを受け取り、対応する変数（$Param）に割り当てます。その後、事前に定義された **conditions** 関数と **action** 関数が呼び出されます。
 
-Errors that occur during contract execution can be divided into two types: form errors and environment errors. Form errors are generated using special commands: `error, warning, info` and when the built-in function returns `err` not equal to *nil*.
+コントラクトの実行中に発生するエラーは、フォームエラーと環境エラーの2つのタイプに分類されます。フォームエラーは、特別なコマンド（`error, warning, info`）や、組み込み関数が `err` を *nil* 以外に返す場合に生成されます。
 
-The Needle language does not handle exceptions. Any error will terminate the execution of contracts. Since a separate stack and structure for saving variable values are created when a contract is executed, the golang garbage collection mechanism will automatically delete these data when a contract is executed.
+Needle言語では例外処理は行われません。任意のエラーがコントラクトの実行を終了させます。コントラクトの実行時には、別々のスタックと変数値保存用の構造体が作成されるため、ゴミ回収メカニズムがこれらのデータを自動的に削除します。
 
-### <span id = "backus-naur-form-bnf">Backus–Naur Form (BNF)</span>
+### バッカス・ナウア形式（BNF）
 
-In computer science, BNF is a notation technique for context-free syntax and is usually used to describe the syntax of the language used in computing.
+コンピュータ科学では、BNFはコンテキストフリー構文の表記技法であり、通常、コンピューティングで使用される言語の構文を記述するために使用されます。
+
 
 * &lt;decimal digit&gt;
-```
-'0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
-```
+  
+  ```
+  '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+  ```
 
 * &lt;decimal number&gt;
-```
-<decimal digit> {<decimal digit>}
-```
+  
+  ```
+  <decimal digit> {<decimal digit>}
+  ```
 
 * &lt;symbol code&gt;
-```
-'''<any symbol>'''
-```
+  
+  ```
+  '''<any symbol>'''
+  ```
 
 * &lt;real number&gt;
-```
-['-'] <decimal number'.'[<decimal number>]
-```
+  
+  ```
+  ['-'] <decimal number'.'[<decimal number>]
+  ```
 
 * &lt;integer number&gt;
-```
-['-'] <decimal number> | <symbol code>
-```
+  
+  ```
+  ['-'] <decimal number> | <symbol code>
+  ```
 
 * &lt;number&gt;
-```
-'<integer number> | <real number>'
-```
+  
+  ```
+  '<integer number> | <real number>'
+  ```
 
 * &lt;letter&gt;
-```
-'A' |'B' | ... |'Z' |'a' |'b' | ... |'z' | 0x80 | 0x81 | ... | 0xFF
-```
+  
+  ```
+  'A' |'B' | ... |'Z' |'a' |'b' | ... |'z' | 0x80 | 0x81 | ... | 0xFF
+  ```
 
 * &lt;space&gt;
-```
-'0x20'
-```
+  
+  ```
+  '0x20'
+  ```
 
 * &lt;tabulation&gt;
-```
-'0x09'
-```
+  
+  ```
+  '0x09'
+  ```
 
 * &lt;newline&gt;
-```
-'0x0D 0x0A'
-```
+  
+  ```
+  '0x0D 0x0A'
+  ```
 
 * &lt;special symbol&gt;
-```
-'!' |'"' |'$' |''' |'(' |')' |'\*' |'+' |',' |'-' |'.' |'/ '|'<' |'=' |'>' |'[' |'\\' |']' |'_' |'|' |'}' | '{' | <tabulation> | <space> | <newline>
-```
+  
+  ```
+  '!' |'"' |'$' |''' |'(' |')' |'\*' |'+' |',' |'-' |'.' |'/ '|'<' |'=' |'>' |'[' |'\\' |']' |'_' |'|' |'}' | '{' | <tabulation> | <space> | <newline>
+  ```
 
 * &lt;symbol&gt;
-```
-<decimal digit> | <letter> | <special symbol>
-```
+  
+  ```
+  <decimal digit> | <letter> | <special symbol>
+  ```
 
 * &lt;name&gt;
-```
-(<letter> |'_') {<letter> |'_' | <decimal digit>}
-```
+  
+  ```
+  (<letter> |'_') {<letter> |'_' | <decimal digit>}
+  ```
 
 * &lt;function name&gt;
-```
-<name>
-```
+  
+  ```
+  <name>
+  ```
 
 * &lt;variable name&gt;
-```
-<name>
-```
+  
+  ```
+  <name>
+  ```
 
 * &lt;type name&gt;
-```
-<name>
-```
+  
+  ```
+  <name>
+  ```
 
 * &lt;string symbol&gt;
-```
-<tabulation> | <space> |'!' |'#' | ... |'[' |']' | ...
-```
+  
+  ```
+  <tabulation> | <space> |'!' |'#' | ... |'[' |']' | ...
+  ```
 
 * &lt;string element&gt;
-```
-{<string symbol> |'\"' |'\n' |'\r'}
-```
+  
+  ```
+  {<string symbol> |'\"' |'\n' |'\r'}
+  ```
 
 * &lt;string&gt;
-```
-'"' {<string element>}'"' |'\`' {<string element>}'\`'
-```
+  
+  ```
+  '"' {<string element>}'"' |'\`' {<string element>}'\`'
+  ```
 
 * &lt;assignment operator&gt;
-```
-'='
-```
+  
+  ```
+  '='
+  ```
 
 * &lt;unary operator&gt;
-```
-'-'
-```
+  
+  ```
+  '-'
+  ```
 
 * &lt;binary operator&gt;
-```
-'==' |'!=' |'>' |'<' |'<=' |'>=' |'&&' |'||' |'\*' |'/' |'+ '|'-'
-```
+  
+  ```
+  '==' |'!=' |'>' |'<' |'<=' |'>=' |'&&' |'||' |'\*' |'/' |'+ '|'-'
+  ```
 
 * &lt;operator&gt;
-```
-<assignment operator> | <unary operator> | <binary operator>
-```
+  
+  ```
+  <assignment operator> | <unary operator> | <binary operator>
+  ```
 
 * &lt;parameters&gt;
-```
-<expression> {','<expression>}
-```
+  
+  ```
+  <expression> {','<expression>}
+  ```
 
 * &lt;contract call&gt;
-```
-<contract name>'(' [<parameters>]')'
-```
+  
+  ```
+  <contract name>'(' [<parameters>]')'
+  ```
 
 * &lt;function call&gt;
-```
-<contract call> [{'.' <name>'(' [<parameters>]')'}]
-```
+  
+  ```
+  <contract call> [{'.' <name>'(' [<parameters>]')'}]
+  ```
 
 * &lt;block contents&gt;
-```
-<block command> {<newline><block command>}
-```
+  
+  ```
+  <block command> {<newline><block command>}
+  ```
 
 * &lt;block&gt;
-```
-'{'<block contents>'}'
-```
+  
+  ```
+  '{'<block contents>'}'
+  ```
 
 * &lt;block command&gt;
-```
-(<block> | <expression> | <variables definition> | <if> | <while> | break | continue | return)
-```
+  
+  ```
+  (<block> | <expression> | <variables definition> | <if> | <while> | break | continue | return)
+  ```
 
 * &lt;if&gt;
-```
-'if <expression><block> [else <block>]'
-```
+  
+  ```
+  'if <expression><block> [else <block>]'
+  ```
 
 * &lt;while&gt;
-```
-'while <expression><block>'
-```
+  
+  ```
+  'while <expression><block>'
+  ```
 
 * &lt;contract&gt;
-```
-'contract <name> '{'[<data section>] {<function>} [<conditions>] [<action>]'}''
-```
+  
+  ```
+  'contract <name> '{'[<data section>] {<function>} [<conditions>] [<action>]'}''
+  ```
 
 * &lt;data section&gt;
-```
-'data '{' {<data parameter><newline>} '}''
-```
+  
+  ```
+  'data '{' {<data parameter><newline>} '}''
+  ```
 
 * &lt;data parameter&gt;
-```
-<variable name> <type name>'"'{<tag>}'"'
-```
+  
+  ```
+  <variable name> <type name>'"'{<tag>}'"'
+  ```
 
 * &lt;tag&gt;
-```
-'optional | image | file | hidden | text | polymap | map | address | signature:<name>'
-```
+  
+  ```
+  'optional | image | file | hidden | text | polymap | map | address | signature:<name>'
+  ```
 
 * &lt;conditions&gt;
-```
-'conditions <block>'
-```
+  
+  ```
+  'conditions <block>'
+  ```
 
 * &lt;action&gt;
-```
-'action <block>'
-```
+  
+  ```
+  'action <block>'
+  ```
 
 * &lt;function&gt;
-```
-'func <function name>'('[<variable description>{','<variable description>}]')'[{<tail>}] [<type name>] <block>'
-```
+  
+  ```
+  'func <function name>'('[<variable description>{','<variable description>}]')'[{<tail>}] [<type name>] <block>'
+  ```
 
 * &lt;variable description&gt;
-```
-<variable name> {',' <variable name>} <type name>
-```
+  
+  ```
+  <variable name> {',' <variable name>} <type name>
+  ```
 
 * &lt;tail&gt;
-```
-'.'<function name>'('[<variable description>{','<variable description>}]')'
-```
+  
+  ```
+  '.'<function name>'('[<variable description>{','<variable description>}]')'
+  ```
 
 * &lt;variables definition&gt;
-```
-'var <variable description>{','<variable description>}'
-```
-
-
+  
+  ```
+  'var <variable description>{','<variable description>}'
+  ```
