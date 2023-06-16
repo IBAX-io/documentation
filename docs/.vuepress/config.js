@@ -1,3 +1,35 @@
+const fixSlugify = function (str) {
+    const separator = '-';
+    const preserve = ['#'];
+    const lowercase = true;
+    const pinyin = false;
+
+    let slug = '';
+    const index = str.lastIndexOf('{#');
+    if (index > -1) {
+        slug = str.slice(index + 2, -1);
+    }
+
+    if (lowercase) {
+        slug = slug.toLowerCase();
+    }
+
+    if (pinyin) {
+        // Do pinyin conversion
+    }
+
+    if (preserve.length) {
+        const regexString = preserve.join('|');
+        const preserveRegex = new RegExp(`(${regexString})`, 'g');
+        slug = slug.replace(preserveRegex, (match) => {
+            return encodeURIComponent(match);
+        });
+    }
+
+    slug = encodeURIComponent(slug);
+    return slug;
+}
+
 module.exports = {
 	head: [
         ["link", {rel: "apple-touch-icon", size: "180x180", href: "/apple-touch-icon.png"}],
@@ -6,9 +38,15 @@ module.exports = {
 		["link", {rel: "mask-icon", color: "#5bbad5", href: "/safari-pinned-tab.svg"}],
 		["link", {rel: "manifest", href: "/manifest.webmanifest"}]
     ],
+    markdown: {
+        toc: { slugify: fixSlugify },
+        slugify: fixSlugify,
+    },
 	plugins: [
         '@vuepress/back-to-top',
+        'vuepress-plugin-smooth-scroll',
     ],
+    smoothScroll: true,
     locales: {
         '/': {
             lang: 'en-US',
