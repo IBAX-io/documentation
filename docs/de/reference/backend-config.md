@@ -1,13 +1,13 @@
-# Serverkonfigurationsdatei
+# Serverkonfigurationsdatei {#server-configuration-file}
 
 In diesem Abschnitt stellen wir Parameter in der Serverkonfigurationsdatei vor.
-## Einführung in die Serverkonfigurationsdatei
+## Einführung in die Serverkonfigurationsdatei {#introduction-to-the-server-configuration-file}
 
 Die Serverkonfigurationsdatei definiert die Knotenkonfiguration von IBAX.
-## Standort
+## Standort {#location}
 
 Diese Datei befindet sich im Arbeitsverzeichnis des Servers und heißt `config.toml`.
-## Abschnitte
+## Abschnitte {#sections}
 
 Die Konfigurationsdatei besteht aus den folgenden Abschnitten:
 
@@ -46,7 +46,7 @@ Es definiert Parameter des Protokolldienstes Log.
 
 Es definiert Parameter des Token-Zirkulationsdienstes TokenMovement.
 
-## Eine Beispielkonfigurationsdatei
+## Eine Beispielkonfigurationsdatei {#an-example-configuration-file}
 
 ```
 PidFilePath = "/IBAX-data/go-ibax.pid"

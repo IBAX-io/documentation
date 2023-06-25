@@ -1,149 +1,156 @@
+# 应用程序开发教程 {#tutorial-for-application-development}
 
-# Tutorial for application development
+本章节介绍如何在 IBAX区块链平台 编写一个简单的应用程序。
 
-In this section, we will show you how to  develop a simple application on the IBAX Network.
-
-  - [The Goal](#the-goal)
-  - [Part 1: The Environment](#part-1-the-environment)
-  - [Part 2: Contract](#part-2-contract)
-    - [Creator account](#creator-account)
-    - [New application](#new-application)
-    - [New database table](#new-database-table)
-    - [New contract](#new-contract)
-      - [Contract code](#contract-code)
-      - [Create a contract](#create-a-contract)
-      - [Contract name](#contract-name)
-      - [Data](#data)
-      - [Conditions](#conditions)
-      - [Action](#action)
-      - [Full contract code](#full-contract-code)
-      - [Save and run](#save-and-run)
-  - [Part 3: Page](#part-3-page)
-    - [New field](#new-field)
-    - [Update the contract](#update-the-contract)
-    - [Page](#page)
-      - [Designer views](#designer-views)
-      - [Developer view](#developer-view)
-      - [Fetch data from the database table](#fetch-data-from-the-database-table)
-      - [Save the page](#save-the-page)
-  - [Part 4: Application](#part-4-application)
-    - [Menu](#menu)
-      - [Add a menu item](#add-a-menu-item)
-      - [Test the new menu item](#test-the-new-menu-item)
-    - [Send a message](#send-a-message)
-      - [Form](#form)
-    - [Form navigation](#form-navigation)
-      - [Navigation buttons](#navigation-buttons)
-      - [Variables](#variables)
-      - [Entry count](#entry-count)
-      - [Table offset](#table-offset)
-      - [Button code](#button-code)
-      - [Page refreshing](#page-refreshing)
-  - [Conclusions](#conclusions)
+  - [目标](#the-goal)
+  - [第1部分：环境](#part-1-the-environment)
+  - [第2部分：合约](#part-2-contract)
+    - [创始人账户](#creator-account)
+    - [新应用程序](#new-application)
+    - [新数据表](#new-database-table)
+    - [新合约](#new-contract)
+      - [合约代码部分](#contract-code)
+      - [创建合约](#create-a-contract)
+      - [合约名称](#contract-name)
+      - [数据部分](#data)
+      - [条件部分](#conditions)
+      - [操作部分](#action)
+      - [完整合约代码](#full-contract-code)
+      - [保存并执行](#save-and-run)
+  - [第3部分：页面](#part-3-page)
+    - [新字段](#new-field)
+    - [更改合约](#update-the-contract)
+    - [页面](#page)
+      - [设计器视图](#designer-views)
+      - [开发者视图](#developer-view)
+      - [获取数据表数据](#fetch-data-from-the-database-table)
+      - [保存页面](#save-the-page)
+  - [第4部分：应用程序](#part-4-application)
+    - [菜单](#menu)
+      - [添加菜单项](#add-a-menu-item)
+      - [测试新菜单项](#test-the-new-menu-item)
+    - [发送消息](#send-a-message)
+      - [表单](#form)
+    - [表格导航](#form-navigation)
+      - [导航按钮](#navigation-buttons)
+      - [变量](#variables)
+      - [条目计数](#entry-count)
+      - [表格偏移量](#table-offset)
+      - [按钮代码](#button-code)
+      - [页面刷新](#page-refreshing)
+  - [结论](#conclusions)
 
 
-## The Goal 
+## 目标 {#the-goal}
 
-The application begins with simple functions but grows in complexity as the tutorial progresses. 
+应用程序开始时很简单，随着教程的深入，其复杂性也在增加。
 
-In the final version of the application, some simple messages (strings) are stored in a database table, which contains the timestamps and account identifiers of senders. Users can view the messages list and add a new message from the application page which can be accessed from the menu of the ecosystem. 
+应用程序的最终版本在数据表中存储为简单消息（字符串），其中包含时间戳和消息发送者的帐户标识符。
+用户可以访问这些消息列表并从应用程序页面添加新消息。该应用程序的页面可以从生态系统菜单中访问。
 
-## Part 1: The Environment
+## 第1部分：环境 {#part-1-the-environment}
 
 **Weaver** 
 
-As the only client of IBAX, Weaver provides functions for all users and ecosystem roles. With it, application developers can develop and test their applications, ecosystem administrators can manage their ecosystems, while users can interact with the ecosystems. 
+Weaver 是 IBAX区块链平台 的唯一客户端，Weaver 为所有用户和生态系统角色提供功能。
+应用程序开发人员可以在 Weaver 中开发和测试应用程序，生态系统管理员使用 Weaver 来管理生态系统，用户可以通过 Weaver 与生态系统应用进行交互。
 
-In this tutorial, you are going to code contracts, page templates and perform all other actions in Weaver. Weaver also provides a way to restore, save and execute contract codes, manage data structures (database tables), assign access permissions and create applications.
+在本教程中，你将在 Weaver 中编写合约代码、页面模版代码和执行其他所有操作。
+Weaver 还提供一种恢复、保存和执行合约代码，管理数据结构（数据表），分配访问权限和创建应用程序的方法。
 
-Each node has its own Weaver instance.
-## Part 2: Contract 
+每个节点都有自己的 Weaver 实例。
 
-Your first simple application is "Hello, World!".
+## 第2部分：合约 {#part-2-contract}
 
-> Note
-
-> In this application, strings will be stored in a database table, and there is not a user page. 
-
-### Creator account 
-
-Accounts with the Developer role will be assigned the "root" privileges of the ecosystem. By default, this role can access all actions. In a new ecosystem, the creator account will be assigned the Admin role, which you must use it to introduce major changes to the ecosystem, such as creating new applications and database tables.
-
-Log in to the ecosystem using the creator account.
-
-### New application 
-
-Once you logged in as the ecosystem creator, you can create a new application. 
-
-Create a new application: 
-
-1. Go to the Developer tab;
-
- 2. Select Application in the menu at the left; 
-
- 3. Select New at the application page; 
-
- 4. Specify the application name in the Name field;
-
- 5. Set Conditions to `true`;
-
- `true` means anyone can make changes to the application; 
-
- Another option is `ContractConditions("MainCondition")`, which means no one can make changes to the application except for the creator. 
-
- 6. Your application will be displayed in the applications list, click the Name field of a specific application to activate it.
-
-> Note
-
->  You can access relevant resources by clicking an application in the Developer tab, no impact on the ecosystem. No matter which one you choose, all ecosystem applications are still available.
-
-### New database table 
-
-To store the data, create a database table for the application in Weaver.
-
-Create a data table: 
-
- 1. In the Developer tab, select Application - Name > Database table; 
-
- All database tables in relation to the application selected will be displayed here. If the list is empty, then, no database tables have been created for your application yet. 
-
- 2. Click New；
-
- Weaver will show you the page to create a new database table.
-
- 3. Specify the name in the Name field; 
-
- In this tutorial, the name of the database table will be `apptable`. 
-
- 4. Add the `message` column, set its type as `Text`;
-
- This table must have two columns: `id` (predefine) and `message`. You are going to add more columns later. 
-
- 5. With respect to the read and write permissions, set each field to `true`; 
-
- This will allow anyone to insert, update entries, add columns and read entry data on the database table;
-
- As an option, you may reserve the read and write permissions to the creator account. In this case, set this field to `ContractConditions("MainCondition")`.
-
-### New contract 
-
-#### Contract code 
-
-Each contract has three parts. For more details, please see: [Contract structure](../topics/script.md#contract-structure)。
-
-#### Create a contract 
-
-1. In the Developer tab, select Application - Name > Contract; 
-
- All contracts in relation to the application will be displayed here. The list is empty for new applications. 
-
-2. Click New;
-
- A new contract template will be displayed in the editor. 
-
-An empty contract template is shown as below: 
+您的第一个简单的应用程序为"Hello，World！"。
 
 ```
+应用程序在表中存储为字符串。它没有任何用户页面。
+```
+### 创始人账户 {#creator-account}
+
+具有 *Developer* 角色的帐户可以使用生态系统的"root"特权。默认情况下，该角色可以访问所有操作。
+在新的生态系统中，创始人帐户被分配给*Developer*角色。
+您必须使用这个帐户来引入生态系统的重大更改，比如创建新的应用程序和数据表。
+
+使用创始人的帐户登录生态系统。
+
+### 新应用程序 {#new-application}
+
+一旦您作为生态系统的创始人登录，您就可以创建一个新的应用程序。
+
+创建新应用程序：
+
+> 1.  转到 **Developer** 选项卡；
+>
+> 2.  在左侧的菜单中选择 **应用程序**；
+>
+> 3.  在 **应用程序** 页面选择 **创建**；
+>
+> 4.  在 **名称** 字段中指定应用程序的名称；
+>
+> 5.  在 **更改条件** 指定 `true`：
+>
+>     > `true` 表示任何人都可以更改应用程序；
+>     >
+>     > 另一种选择是指定
+>     > `ContractConditions("MainCondition")`。除了创始人之外，将禁止任何人对进行应用程序更改。
+>
+> 6.  您的应用程序将显示在应用程序列表中，单击指定应用程序的名称字段使其激活。
+>    ````
+>    在 *Developer*选项卡中选择应用程序可以更轻松地导航与所选应用程序相关的资源,它对生态系统没有影响。
+>    无论选择哪一个，所有生态系统应用程序仍然可用。
+>    ````
+
+### 新数据表 {#new-database-table}
+
+要存储数据，应用程序需要一个数据表。在 Weaver 创建该数据表。
+
+创建数据表：
+
+> 1.  在 **Developer** 选项卡，选择 **应用程序** > **APP** > **数据表**；
+>
+>     > 这显示所选应用程序的所有数据表。如果该列表为空，则您的应用还没有任何数据表。
+>
+> 2.  单击 **创建**；
+>
+>     > Weaver 将显示创建数据表页面。
+>
+> 3.  在 **名称** 字段中指定您的数据表名称；
+>
+>     > 本教程使用 `apptable` 数据表名称。
+>
+> 4.  添加列。名为 `message`，其类型为 `Text`；
+>
+>     > 结果，该数据表必须有两列： `id` (预定义)和`message`。您稍后会添加更多列。
+>    ![image](/app-tut-table.png)
+>
+> 5.  对于读写权限，在每个字段指定为 `true`；
+>
+>     > 这将允许任何人在数据表上执行插入条目、更改条目、添加列和读取条目数据；
+>     >
+>     > 作为选项，您可以限定读写权限给创始人帐户，在这种情况下，
+      请在该字段中指定为`ContractConditions("MainCondition")`。
+
+### 新合约 {#new-contract}
+
+#### 合约代码部分 {#contract-code}
+
+每个合约都有三个部分，更多请参阅：[合约结构](../topics/script.md#contract-structure) 。
+
+#### 创建合约 {#create-a-contract}
+
+1.  在 **Developer** 选项卡选择 **应用程序** > **APP** > *合约*；
+
+    > 这将显示所选应用程序的所有合约。新应用程序该列表将为空。
+
+2.  单击 *创建*；
+
+    > 将在编辑器中打开一个新的合约模版。
+
+空合约模版如下所示：
+
+``` js
 contract ... {
     data {
 
@@ -157,33 +164,31 @@ contract ... {
 }
 ```
 
-####  Contract name 
+#### 合约名称 {#contract-name}
 
-First, please specify the contract name. 
+首先，给合约命名。
 
-```  
-    contract AppContract {
-
-    }
+``` js
+contract AppContract {
 ```
 
-#### Data 
+#### 数据部分 {#data}
 
-Fill in the `data` section.
+填写 `data` 部分。
 
-In the following example, `Message` refers to the variable name, while `string` the variable type. 
+在如下示例中，`Message` 是变量名称，`string` 是其类型。
 
+``` js
+data {
+    Message string
+}
 ```
-    data {
-        Message string
-    }
-```
 
-#### Conditions 
+#### 条件部分 {#conditions}
 
-Fill in the `conditions` section. A simple verification condition is to avoid empty strings. If the length of `Message` is `0`, a predefined warning message will be triggered when implementing the contract. 
+填写 `conditions` 部分。简单的验证条件是指定的字符串不能为空，如果 `Message` 长度为 `0`，则合约将在执行时生成带有已定义的消息警告。
 
-```
+``` js
 conditions {
     // avoid writing empty strings
     if Size($Message) == 0 {
@@ -192,23 +197,23 @@ conditions {
 }
 ```
 
-#### Action 
+#### 操作部分 {#action}
 
-Fill in the `action` section. A simple action is to write `Message` into the data table. 
+填写 `action` 部分。 简单的操作是将 `Message` 写入数据表中。
 
+``` js
+action {
+    DBInsert("apptable", {message: $Message})
+}
 ```
-    action {
-        DBInsert("apptable", {message: $Message})
-    }
-```
 
-#### Full contract code 
+#### 完整合约代码 {#full-contract-code}
 
-The full contract code is shown below. 
+以下部分是完整合约的代码。
 
-All contracts in IBAX will be constructed like this, including the `data`, `conditions` and `action` sections. 
+IBAX区块链平台 的所有合约都像这样构建，包含 `data`、`conditions` 和 `action` 部分。
 
-```
+``` js
 contract AppContract {
     data {
         Message string
@@ -224,361 +229,387 @@ contract AppContract {
     }
 }
 ```
-#### Save and run 
 
-Now, we are preparing to test the contract: 
+#### 保存并执行 {#save-and-run}
 
-1. Click Save in the editor's menu; 
+合约准备进行测试：
 
- This will update the contract code, and the updated version will be available to all network nodes. 
+> 1.  在编辑器菜单中，单击 **保存**；
+>
+>     > 这样就会更改合约代码，更改的版本可供所有网络节点使用。
+>
+> 2.  在编辑器菜单中，单击 **执行**；
+>
+>     > 这将显示 **执行合约** 页面。
+>
+> 3.  在 **执行合约** 页面。填写合约的输入参数；
+>
+>     > 该合约有一个参数 `Message`，所以在 **键** 指定 `Message`，在 **值** 指定 `Hello, World`。
+>     >
+>     > ![image](/app-tut-execute.png)
+>
+> 4.  单击 **执行**。
+>
+>     > 结果将显示在右侧。
 
-2. Click Run in the editor's menu; 
+如果成功添加了字符串，则结果将包含引入更改交易的区块ID和结果代码。
 
- This will display the Run the Contract page. 
-
-3. In the Run the Contract page, fill in the input parameters of the contract; 
-
- As this contract has one parameter `Message`, set `Message` at the Key field and `Hello, World` at the Value field.
-
-4. Click Run. 
-
- The result will be displayed at the right. 
-
-If successfully added some strings, then, the result will contain the block ID and result code to introduce the change of transactions. 
-
-```
+``` js
 {
- "block": "31",
- "result": null
+   "block": "31",
+   "result": null
 }
 ```
 
-## Part 3: Page 
+## 第3部分：页面 {#part-3-page}
 
-When the contract becomes effective, it is time to extend it to something useful. In this part, you are going to implement the UI and other functions. 
+在合约生效之后，是时候把它扩展成更有用的东西了。在这部分中，您将实现UI和其他功能。
 
-Note
 
-In this application, strings will be stored in a database table, like entries in a log. Each string will have an author and timestamp. 
+````
+该应用程序将字符串存储在表中，就像日志中的条目一样。每个字符串都有一个作者和一个时间戳。
 
-Users can view the list of strings stored at the application page, which is shown as a simple form then. 
+用户可以从应用程序页面查看存储的字符串列表，此时该页面是一个简单的表格。
+````
 
-### New field 
+### 新字段 {#new-field}
 
-As with the previous, edit the database table at the Developer tab > Application - Name > Database table page; 
+与之前一样，从 **Developer** 选项卡 > **应用程序** > **APP** > **数据表** 页面编辑数据表；
 
-Add the following fields into `apptable`:
+将以下字段添加到 `apptable` 数据表：
 
-*  `author` , field type `Number`, set Change to `true`;
+-   `author` 字段，类型 `Number`，**更改** 设置为 `true`；
 
- This field will store the identifier of the author account. 
+    > 该字段将存储作者帐户的标识符。
 
-*  `timestamp` , field type `Date/Time`, set Change to `true`.
+-   `timestamp` 字段，类型 `Date/Time`，**更改** 设置为 `true`。
 
-### Update the contract 
+### 更改合约 {#update-the-contract}
 
-We will update the contract code to handle the author ID and timestamp. 
+更改合约代码来处理作者ID和时间戳。
 
-The author ID is the account ID of the ecosystem. The timestamp is the date and time executing the contract in Unix time format. 
+作者ID是生态系统帐户ID。时间戳是以Unix时间格式执行合约的日期和时间。
 
-As both values are provided by the [Predefined variables](../topics/script.md#variables) and no need to input or verify the predefined variables, they can only be updated in the action part. 
+这两个值都由 [预定义变量](../topics/script.md#variable) 提供。所以无需输入或验证预定义变量，因此仅在操作部分中进行更改。
 
-Update the contract to write the author ID and timestamp into the database table when adding a message, among which the author ID is defined by `$key_id`, while the timestamp by `$time`.
+更改合约，以便在添加消息时将作者的ID和时间戳写入数据表中。作者的ID由 `$key_id` 定义，时间戳由定义 `$time`。
 
-```
+``` js
 action {
- DBInsert("apptable", {message: $Message, author: $key_id, timestamp: $time})
+    DBInsert("apptable", {message: $Message, author: $key_id, timestamp: $time})
 }
 ```
 
-### Page 
+### 页面 {#page}
 
-For the application page, it is a simple page where displays the messages stored in the database table. 
+对于此部分，应用程序的页面是一个显示存储在表中的信息的简单页面。
 
-Like all other resources, you can create the UI page in Weaver: 
+就像所有其他资源一样，可以在 Weaver 中创建UI页面：
 
-1.Navigate to the Developer tab, click Application - Name > Page; 
+1.  导航到 **Developer** 选项卡 > **应用程序** > **APP** > **页面**；
 
-2.Click New; 
- The visual designer will be opened in a new tab. 
+2.  单击 **创建**；
 
-#### Designer views 
+    > 可视化设计器将在新选项卡中打开。
 
-The default page is empty. You can use the predefine structure to quickly fill in the page. 
+#### 设计器视图 {#designer-views}
 
-Create a basic table: 
+默认页面为空。您可以使用预定义的结构快速填充页面。
 
-1. In the view selector at the right, click Designer; 
- The view will be switched to the visual designer. 
+> ![image](/app-tut-designer.png)
 
-2. In the menu at the left, select Table With Header and drag it on to the page. 
-    A table with multiple elements will be displayed on the page. 
+创建一个基本的表单：
 
-#### Developer view 
+1.  在右侧的视图选择器中，单击 **视图化（Designer）**；
 
-As the user page of IBAX is coded with a [Template Language](../topics/templates2.md), please switch to the Developer view when writing the page code. 
+    > 视图将切换到可视化设计器。
 
-Switch to the Developer view. 
+2.  从左侧菜单中，选择 **Search** > **Table With Header** 并将其拖到页面上。
 
-1. In the view selector at the right, click Developer. 
+    > 将出现包含多个元素的表格。
 
- The view will be switched to the editor with a tab holding the page code. 
+#### 开发者视图 {#developer-view}
 
-#### Fetch data from the database table 
-So far, nothing done with the page template. In the next, we will update the code to allow the page to display data from `apptable`.
+IBAX区块链平台 的用户页面用 [模版语言](../topics/templates2.md) 编写。您需要为页面编写代码，因此请切换到开发者（Developer）的视图。
 
-1. To request data from the database table with the [DBFind](../topics/script.md#dbfind) function; 
+> ![image](/app-tut-developer.png)
 
- In the following example, this function call is used to fetch data from `apptable`. The data will be put it in the source `src_table` and sorted by the timestamp field. `src_table` will be later used as the data source for the page in table view.
+切换到开发者（Developer）视图。
 
- ```
-    DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp)
- ```
+1.  在右侧的视图选择器中，单击 **开发者**。
 
-2. To display the data from `src_table`, specify it as the data source and the header in the `Table` function. 
+    > 视图将切换到包含页面代码的代码编辑器。
 
-```
-    Table(Columns: "AUTHOR=author,TIME=timestamp,MESSAGE=message", Source: src_table)
-```
+#### 获取数据表数据 {#fetch-data-from-the-database-table}
 
-3. In the view selector at the right, click Preview to check whether the data is displayed correctly. 
+目前为止，页面模版并没有做什么。接下来就得更改代码，以便页面显示来自 `apptable` 表的数据。
 
-#### Full page code 
+1. 想要请求表中数据，使用 [DBFind](../topics/script.md#dbfind) 函数；
 
-The following is the full page code for this part. This basic page will be expanded later.
+    > 以下示例中该函数调用从 `apptable` 表中获取数据，并将其放入
+    `src_table` 源中。并按时间戳字段对其进行排序。该 `src_table`
+    源稍后用作页面上表视图的数据源。
+    >
+    > ``` js
+    > DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp)
+    > ```
 
-```
+2. 想要显示 `src_table` 源中的数据，在 `Table` 函数中将其指定为一个源以及列标题。
+
+    > ``` js
+    > Table(Columns: "AUTHOR=author,TIME=timestamp,MESSAGE=message", Source: src_table)
+    > ```
+
+3. 在右侧的视图选择器中，单击 **预览** 以检查数据是否正确显示。
+
+#### 完整页面代码 {#full-page-code-1}
+
+以下是该部分的完整页面代码。该基本页面将在稍后进行扩展。
+
+``` js
 DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp)
 
 Div(Class: panel panel-primary) {
     Div(Class: panel-heading, Body: Table block)
     Table(Columns: "AUTHOR=author,TIME=timestamp,MESSAGE=message", Source: src_table)
     Div(Class: panel-footer text-right) {
-    Button(Class: btn btn-primary, Contract: ContractName, Body: More)
+        Button(Class: btn btn-primary, Contract: ContractName, Body: More)
     }
 }
-
 ```
 
-#### Save the page 
+#### 保存页面 {#save-the-page}
 
-Click Save to save the page: 
+单击 **保存** 以保存页面：
 
-1. Specify `AppPage` or any other name for the page in the Page Name field;
+1.  在 **页面名称** 字段中为页面指定 `AppPage` 或任何其他名称；
+2.  在 **菜单** 中选择 `default_menu`；
+3.  指定 **更改条件** 为 `true`；
+4.  单击 **确认**。
 
-2. Select `default_menu` in the Menu; 
+## 第4部分：应用程序 {#part-4-application}
 
-3. Set Conditions to `true`;
+在前面的部分中，您创建了一个合约，一个用于存储数据的表，以及一个用于显示该数据的基本UI页面。
 
-4. Click OK. 
+在该部分中，您将确定最终的应用程序，因此它的外观和操作类似于实际应用程序。
 
-## Part 4: Application 
+### 菜单 {#menu}
 
-In the previous sections, you created a contract, a table to store data, and a basic UI page to display that data.
+页面需要链接到一个菜单，例如，在 **Home** 选项卡上显示的 `default_page` 页面链接到默认生态系统菜单 `default_menu`。
 
-In this part, you are going to finalize the application to make its appearance and actions are similar to an actual one.
+由于应用程序教程很简单（只有一个页面），因此无需为其创建单独的菜单。默认菜单中的新菜单项就足够了。
 
-### Menu 
 
-The page needs to be linked to a menu, for example, `default_page` displayed on the Home tab is linked to the default ecosystem menu `default_menu`.
+> 您可以通过在 **Developer** 选项卡 > **应用程序** > **APP** > **页面**
+中编辑页面属性来定义页面显示的菜单。例如，如果您的应用程序有多个页面，则可能需要创建一个菜单以在这些页面之间导航并将其分配给应用程序的所有页面。
 
-As this application tutorial is very simple (only having one page), there is no need to create a separate menu for it. The new menu item in the default menu is sufficient. 
 
-> Note
+#### 添加菜单项 {#add-a-menu-item}
 
-> You can define the page menu by editing the page properties at the Developer tab > Application - Name > Page. For example, if your app has multiple pages, you may need to create a menu to navigate between these pages and assign it to all pages of the app.
+与所有其他资源一样，可以在 Weaver 中创建和编辑菜单：
 
-#### Add a menu item 
+1.  导航到 **Developer** 选项卡 > **菜单**;
 
-Like all other resources, menus can be created and edited in Weaver:
+    > ![image](/app-tut-menu-list.png)
 
-1. Navigate to the Developer tab > Menu;
+2.  单击 `default_menu` 条目名称；
 
-2. Click the Name of the `default_menu` entry; 
+    > 编辑器将在新选项卡中打开。
 
- A new tab will be opened in the editor.
+3.  将新菜单项添加到模版的末尾。该菜单项将打开应用程序页面。该图标来自 [FontAwesome](https://fontawesome.com/icons) 图标集。
 
-3. Add a new menu item to the end of the template, which will be linked to open the application page and its icon comes from the [FontAwesome](https://fontawesome.com/icons) icon set. 
+    > ``` js
+    > MenuItem(Title:Messages, Page:AppPage, Icon:"fa fa-envelope")
+    > ```
 
-```
-    MenuItem(Title:Messages, Page:AppPage, Icon:"fa fa-envelope")
-```
+4.  单击 **保存**。
 
-4. Click Save. 
-#### Test the new menu item 
+#### 测试新菜单项 {#test-the-new-menu-item}
 
-Check whether the new menu item is valid:
+检查新菜单项是否有效：
 
-1. Open the Home tab;
+1.  打开 **Home** 选项卡；
 
-2. Click Refresh in the menu;
+2.  单击菜单中的 **刷新**；
 
-    An entry with a header of Messages will appear; 
+    > 将出现标题为 *Messages* 的条目项；
+    >
+    > ![image](/app-tut-menu-messages.png)
 
-3. Click Messages.
+3.  单击 **Messages**.
 
-    The application page will be opened. 
-### Send a message 
+    > 该应用程序的页面将打开。
 
-The buttons in Logicor can be used to implement contracts and open pages, depending on the parameters.
+### 发送消息 {#send-a-message}
 
-The [Button](../topics/templates2.md#button) function has two contract parameters: 
+Logicor 中的按钮可以执行合约和打开页面，具体取决于参数。
+[Button](../topics/templates2.md#button) 函数有合约的两个参数：
 
-*  `Contract`
+-   `Contract`
 
-     Name of the contract activated. 
+    > 激活的合约名称。
 
-*  `Params`
+-   `Params`
 
-    Input parameters of the contract. 
+    > 合约的输入参数。
 
-#### Form 
+#### 表单 {#form}
 
-To send data to the contract, add a form on the application page, which must have an input field for a message and a button to activate the contract AppContract.
+要将数据发送到合约，请将表单添加到应用程序页面。该表单必须具有消息的输入字段，以及将激活AppContract合约的按钮。
 
-The following is an example of this type of form. It is nested in its own [Div](../topics/templates2.md#div). Putting it after the Div element that contains the form view, which defines that the [Input](../topics/templates2.md#input) field has a predefine name `message_input`. The button uses this name to send the value of `Message` to the contract. Finally, the [Val](../topics/templates2.md#calling-contracts) function is used to get the value of the input field.
+以下是该类表格的示例。它嵌套在自己的 [Div](../topics/templates2.md#div) 中。
+将它放在包含表单视图的Div元素之后，该表单定义了 [Input](../topics/templates2.md#input) 字段有一个已定义的名称 `message_input`。
+按钮使用这个名称向合约发送 `Message` 参数值。最后，[Val](../topics/templates2.md#val) 函数用于获取输入字段的值。
 
-```
+```text
 Div(Class: panel panel-primary) {
- Form() {
- Input(Name: message_input, Class: form-control, Type: text, Placeholder: "Write a message...", )
- Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)")
- }
+  Form() {
+        Input(Name: message_input, Class: form-control, Type: text, Placeholder: "Write a message...", )
+        Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)")
+  }
 }
 ```
 
-You may notice that when testing this new feature by sending a message, the form does not refresh. This will be introduced in [page refresh](#page-refreshing).
+您可能会注意到通过发送消息测试该新功能时，表单不会刷新。这将在 [页面刷新](#page-refresh) 介绍。
 
-### Form navigation 
+### 表格导航 {#form-navigation}
 
-Under the default view, the form on the page can only display 25 entries on the first page. Hence, you can add some simple buttons to navigate users to all form entries.
+页面上的默认表格视图第一页仅显示25个条目。添加一个简单的导航，允许用户导航所有表格条目。
 
-#### Navigation buttons 
+#### 导航按钮 {#navigation-buttons}
 
-There will be two navigation buttons, and each of them could reload the application page and pass the parameters to it.
+该导航将使用两个按钮。每个按钮都会重新加载应用程序的页面并将参数传递给它。
 
-*  The Previous button will display the first 25 entries. If there are no other entries, the button will not be displayed;
+> -   *Previous*
+>     按钮将显示前25个条目。如果没有其他条目，则不会显示该按钮；
+> -   *Next* 按钮将显示下25个条目。如果没有其他条目，则不会显示该按钮。
 
-*  The Next button will display the next 25 entries. If there are no other entries, the button will not be displayed.
+#### 变量 {#variables}
 
-#### Variables 
+该导航需要两个变量来存储表视图状态：
 
-The navigation buttons require two variables to store the table view states:
+> -   `#table_view_offset#`
+>
+>     > 该变量存储当前表视图偏移量。
+>     >
+>     > 导航按钮将在重新加载页面时将其作为参数传递。
+>
+> -   `#record_count#`
+>
+>     > 该变量存储表中的条目总数。
+>     >
+>     > 将计算该值。
 
-*  `#table_view_offset#`
+#### 条目计数 {#entry-count}
 
-This variable stores the offset of current table view.
+要计算 `#record_count#`，请修改现有的 [DBFind](../topics/templates2.md#dbfind) 函数调用。在 `. count()` 调用中指定的变量将存储条目计数。
 
-The navigation buttons will pass it as a parameter when the page is reloaded.
+> ```text
+> DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count)
+> ```
 
-*  `#record_count#`
+#### 表格偏移量 {#table-offset}
 
- This variable stores the total number of entries in the table.
+必须在打开页面时将表视图偏移传递给页面。如果 `#table_view_offset#` 未获得值则指定为 `0`。
 
- The value will be calculated.
+将以下代码添加到页面的顶部。
 
-#### Entry count 
+> ``` text
+> If(GetVar(table_view_offset)){
+> }.Else{
+>     SetVar(table_view_offset, 0)
+> }
+> ```
 
-To count `#record_count#`, please modify the existing [DBFind](../topics/script.md#dbfind) function call. The variable specified in the `.count()` call will store the entry count.
+再次修改 [DBFind](../topics/templates2.md#dbfind) 函数调用。这次它必须使用新的表视图偏移量。
 
-```
-DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count)
-```
+> ``` text
+> DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count).Offset(#table_view_offset#)
+> ```
 
-#### Table offset 
+#### 按钮代码 {#button-code}
 
-The table view offset must be passed to the page when the page is opened. If `#table_view_offset#` does not get a value, set it to 0.
+找到定义页脚的 [Div](../topics/templates2.md#div) 函数调用：`Div(Class:panel-footer text-right)`。将按钮代码添加到其中。
 
-Add the following code to the top of the page.
+> ``` text
+> Div(Class: panel-footer text-right) {
+>
+> }
+> ```
 
-```
-If(GetVar(table_view_offset)){
+*Previous* 按钮只有在至少有一个 *Next* 要返回时才会显示。当添加按钮时，将计算页面的新表视图偏移量 `offset_previous`。参数被传递到重新打开页面的 `PageParams` 参数中。
 
-}.Else{
-    SetVar(table_view_offset, 0)
-}
-```
+> ``` text
+> If(#table_view_offset# >= 25) {
+>     SetVar(offset_previous, Calculate(#table_view_offset# - 25))
+>     Button(Class: btn btn-primary, Body: Previous, Page: AppPage, PageParams:"table_view_offset=#offset_previous#")
+> }
+> ```
 
-Modify the [DBFind](../topics/script.md#dbfind) function call again. This time it must use the new table view offset.
+仅当总记录数大于页面上显示的数量时，才会显示 *Next* 按钮。当添加按钮时，将计算页面的新表视图偏移量 `offset_next`。参数被传递到重新打开页面的 `PageParams` 参数中。
 
-```
-DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count).Offset(#table_view_offset#)
-```
+> ``` text
+> If(#record_count# >= Calculate(#table_view_offset# + 25)) {
+>     SetVar(offset_next, Calculate(#table_view_offset# + 25))
+>     Button(Class: btn btn-primary, Body: Next, Page: AppPage, PageParams:"table_view_offset=#offset_next#")
+> }
+> ```
 
-#### Button code 
+![image](/app-tut-navigation.png)
 
-Find the [Div](../topics/templates2.md#div) function call that defines the footer: `Div(Class:panel-footer text-right)`. Add the button code into it.
+添加按钮后，保存页面并从 *Home* > *Messages* 菜单项进行测试。
 
-```
-Div(Class: panel-footer text-right) {
-}
-```
+#### 页面刷新 {#page-refreshing}
 
-The *Previous* button will only appear if there is at least one Next to return. When adding a button, the new table view offset `offset_previous` of the page will be calculated. The parameters are passed to `PageParams` of the reopened page.
+实现的最后一项功能就是自动更新位于页面上的表格，当用户发送新消息时，它必须显示在表格中。
 
-```
-If(#table_view_offset# >= 25) {
-    SetVar(offset_previous, Calculate(#table_view_offset# - 25))
-    Button(Class: btn btn-primary, Body: Previous, Page: AppPage, PageParams:"table_view_offset=#offset_previous#")
-}
-```
+除了执行合同之外，您还可以通过 *Send* 按钮重新打开当前页面来实现这一点。必须将 `#table_view_offset#` 参数传递到该页面，而不进行任何更改。
 
-The Next button will only be displayed when the total number of records is greater than the number displayed on the page. When a button is added, the new table view offset `offset_next` of the page will be calculated. The parameters are passed to `PageParams` of the reopened page.
+添加 `Page` 和 `PageParams` 参数到 *Send* 按钮，代码如下所示：
 
-```
-If(#record_count# >= Calculate(#table_view_offset# + 25)) {
-    SetVar(offset_next, Calculate(#table_view_offset# + 25))
-    Button(Class: btn btn-primary, Body: Next, Page: AppPage, PageParams:"table_view_offset=#offset_next#")
-}
-```
-
-After adding these buttons, save the page and test it from the Home > Messages menu item.
-
-#### Page refreshing 
-
-The last function to be implemented is to automatically update the table on the page. When users send a new message, it must be displayed in the table.
-
-In addition to implementing the contract, you may also use the Send button to reopen the current page to achieve the same. `#table_view_offset#` must be passed to the page without any change.
-
-Add `Page` and `PageParams` to the Send button, the code is as follows:
-
-```
+``` text
 Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)", Page:AppPage, PageParams:"table_view_offset=#table_view_offset#")
 ```
 
+### 完整页面代码 {#full-page-code-2}
 
-### Full page code 
+这部分介绍了应用程序页面的许多更改。以下是该应用程序页面的完整代码。
 
-This part describes many changes to the application page. The following is the full code of the application page.
-
-```
+``` text
 If(GetVar(table_view_offset)){
 }.Else{
     SetVar(table_view_offset, 0)
 }
+
 DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count).Offset(#table_view_offset#)
-    Div(Class: panel panel-primary) {
-        Div(Class: panel-heading, Body: Table block)
-        Table(Columns: "AUTHOR=author,TIME=timestamp,MESSAGE=message", Source: src_table)
-        Div(Class: panel-footer text-right) {
-            If(#table_view_offset# >= 25) {
-                SetVar(offset_previous, Calculate(#table_view_offset# - 25))
-                Button(Class: btn btn-primary, Body: Previous, Page: AppPage, PageParams:"table_view_offset=#offset_previous#")
-            }
-            If(#record_count# >= Calculate(#table_view_offset# + 25)) {
-                SetVar(offset_next, Calculate(#table_view_offset# + 25))
-                Button(Class: btn btn-primary, Body: Next, Page: AppPage, PageParams:"table_view_offset=#offset_next#")
-            }
-        }
-    }
-    Div(Class: panel panel-primary) {
-    Form() {
+
+Div(Class: panel panel-primary) {
+ Div(Class: panel-heading, Body: Table block)
+ Table(Columns: "AUTHOR=author,TIME=timestamp,MESSAGE=message", Source: src_table)
+ Div(Class: panel-footer text-right) {
+
+  If(#table_view_offset# >= 25) {
+    SetVar(offset_previous, Calculate(#table_view_offset# - 25))
+    Button(Class: btn btn-primary, Body: Previous, Page: AppPage, PageParams:"table_view_offset=#offset_previous#")
+  }
+
+  If(#record_count# >= Calculate(#table_view_offset# + 25)) {
+    SetVar(offset_next, Calculate(#table_view_offset# + 25))
+    Button(Class: btn btn-primary, Body: Next, Page: AppPage, PageParams:"table_view_offset=#offset_next#")
+  }
+
+ }
+}
+
+Div(Class: panel panel-primary) {
+  Form() {
         Input(Name: message_input, Class: form-control, Type: text, Placeholder: "Write a message...", )
         Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)", Page:AppPage, PageParams:"table_view_offset=#table_view_offset#")
-    }
-}
+  }
+} 
 ```
 
-## Conclusions 
+## 结论 {#conclusions}
 
-Instead of expounding other important topics for application developers, such as layout styles, access permissions management and interaction between applications and resources, this tutorial introduces how to create a basic application for an ecosystem. For more information on these advanced topics, see other relevant documents.
+本教程将介绍生态系统的基本应用程序。它没有为应用程序开发者解析其他重要的主题，
+比如布局样式、管理访问权限以及应用程序和资源之间的交互。有关这些高级主题的更多信息，请参阅其他文档。

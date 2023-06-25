@@ -16,7 +16,7 @@ features:
 - title: Un mécanisme de consensus personnalisable
 - title: Séparation du front-end et du back-end pour répondre aux divers besoins de cryptage
 
-footer: © Copyright 2019 - 2021, IBAX Updated Date 03/11/2021 | Built with VuePress
+footer: © Copyright 2019 - 2023, IBAX Updated Date 20/06/2023 | Built with VuePress
 ---
 
 

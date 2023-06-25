@@ -16,7 +16,7 @@ features:
 - title: Ein anpassbarer Konsensmechanismus
 - title: Trennung von Front-End und Back-End, um verschiedene Verschlüsselungsanforderungen zu erfüllen
 
-footer: © Copyright 2019 - 2021, IBAX Updated Date 03/11/2021 | Built with VuePress
+footer: © Copyright 2019 - 2023, IBAX Updated Date 06/19/2023 | Built with VuePress
 ---
 
 

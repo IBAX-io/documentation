@@ -1,40 +1,40 @@
-# コンパイラと仮想マシン（Virtual Machine）
+# コンパイラと仮想マシン（Virtual Machine）  {#compiler-and-virtual-machine}
 
-- [ソースコードの保存とコンパイル](#ソースコードの保存とコンパイル)
-- [仮想マシンの構造](#仮想マシンの構造)
-  - [VMの構造](#VMの構造)
-  - [ブロックの構造](#ブロックの構造)
-  - [ObjInfoの構造](#ObjInfoの構造)
-    - [ContractInfoの構造](#ContractInfoの構造)
-    - [FieldInfoの構造](#FieldInfoの構造)
-    - [FuncInfoの構造](#FuncInfoの構造)
-    - [FuncNameの構造](#FuncNameの構造)
-    - [ExtFuncInfoの構造](#ExtFuncInfoの構造)
-    - [VarInfoの構造](#VarInfoの構造)
-    - [ObjExtendの値](#ObjExtendの値)
-- [仮想マシンのコマンド](#仮想マシンのコマンド)
-  - [ByteCodeの構造](#ByteCodeの構造)
-  - [コマンド識別子](#コマンド識別子)
-  - [スタック操作コマンド](#スタック操作コマンド)
-  - [ランタイムの構造](#ランタイムの構造)
-    - [blockStackの構造](#blockStackの構造)
-  - [RunCode関数](#RunCode関数)
-  - [仮想マシンの他の操作用関数](#仮想マシンの他の操作用関数)
-- [コンパイラ](#コンパイラ)
-- [字句解析器](#字句解析器)
-  - [lextable/lextable.go](#lextable/lextable.go)
-  - [lex.go](#lex.go)
-- [Needle言語](#Needle言語)
-  - [字句](#字句)
-  - [型](#型)
-  - [式](#式)
-  - [スコープ](#スコープ)
-  - [コントラクトの実行](#コントラクトの実行)
-  - [バッカス・ナウア形式（BNF）](#バッカス・ナウア形式（BNF）)
+- [ソースコードの保存とコンパイル](#source-code-storage-and-compilation)
+- [仮想マシンの構造](#virtual-machine-structures)
+  - [VMの構造](#vm-structure)
+  - [ブロックの構造](#block-structure)
+  - [ObjInfoの構造](#objinfo-structure)
+    - [ContractInfoの構造](#contractinfo-structure)
+    - [FieldInfoの構造](#fieldinfo-structure)
+    - [FuncInfoの構造](#funcinfo-structure)
+    - [FuncNameの構造](#funcname-structure)
+    - [ExtFuncInfoの構造](#extfuncinfo-structure)
+    - [VarInfoの構造](#varinfo-structure)
+    - [ObjExtendの値](#objextend-value)
+- [仮想マシンのコマンド](#virtual-machine-commands)
+  - [ByteCodeの構造](#bytecode-structure)
+  - [コマンド識別子](#command-identifiers)
+  - [スタック操作コマンド](#stack-operation-commands)
+  - [ランタイムの構造](#runtime-structure)
+    - [blockStackの構造](#blockstack-structure)
+  - [RunCode関数](#runcode-function)
+  - [仮想マシンの他の操作用関数](#other-functions-for-operations-with-vm)
+- [コンパイラ](#compiler)
+- [字句解析器](#lexical-analyzer)
+  - [lextable/lextable.go](#lextable-lextable-go)
+  - [lex.go](#lex-go)
+- [Needle言語](#needle-language)
+  - [字句](#lexemes)
+  - [型](#types)
+  - [式](#expressions)
+  - [スコープ](#scope)
+  - [コントラクトの実行](#contract-execution)
+  - [バッカス・ナウア形式（BNF）](#backus-naur-form-bnf)
 
 このセクションでは、仮想マシン (VM) でのプログラムのコンパイルと Needle 言語の操作について説明します。
 
-## ソースコードの保存とコンパイル
+## ソースコードの保存とコンパイル {#source-code-storage-and-compilation}
 
 コントラクトと関数はGolangで書かれ、エコシステムのコントラクトテーブルに保存されます。
 
@@ -50,9 +50,9 @@
 
 各エコシステムには、仮想エコシステムと呼ばれるものが存在することがあります。これはブロックチェーンの外部テーブルと組み合わせてノード内で使用され、ブロックチェーンや他の仮想エコシステムに直接的な影響を与えません。この場合、仮想エコシステムをホストするノードは、独自のコントラクトをコンパイルし、独自の仮想マシンを作成します。
 
-## 仮想マシンの構造
+## 仮想マシンの構造 {#virtual-machine-structures}
 
-### VMの構造
+### VMの構造 {#vm-structure}
 
 仮想マシンは、以下のような構造でメモリに組織化されます。
 
@@ -76,7 +76,7 @@ type VM struct {
 * ShiftContract - VM内の最初のコントラクトのID
 * logger - VMのエラーログの出力
 
-### ブロックの構造
+### ブロックの構造 {#block-structure}
 
 仮想マシンは、**Block型**オブジェクトから構成されるツリーです。
 
@@ -120,7 +120,7 @@ type Block struct {
 * **Code** - ブロック自体のバイトコードです。制御権がブロックに渡された場合に実行される部分です。例えば、関数呼び出しやループの本体などが該当します。
 * **Children** - サブブロックを含む配列です。関数のネストやループ、条件演算子などがサブブロックとして扱われます。
 
-### ObjInfoの構造
+### ObjInfoの構造 {#objinfo-structure}
 
 ObjInfoの構造は、内部オブジェクトに関する情報を含んでいます。
 
@@ -131,7 +131,7 @@ type ObjInfo struct {
 }
 ```
 
-### ObjInfoの構造
+
 
 ObjInfoの構造は以下の要素から成り立ちます:
 
@@ -143,7 +143,7 @@ ObjInfoの構造は以下の要素から成り立ちます:
   * **ObjExtend** - $name変数
 * **Value** - 各タイプの構造体が含まれています
 
-#### ContractInfoの構造
+#### ContractInfoの構造 {#contractinfo-structure}
 
 **ObjContract**タイプを指し示し、**Value**フィールドには**ContractInfo**構造体が含まれています。
 
@@ -165,7 +165,7 @@ ContractInfoの構造は以下の要素を持っています:
 * **Used** - 呼び出されたコントラクトの名前のマップ。
 * **Tx** - コントラクトの[data section](script.md#データセクション)に記述されたデータ配列。
 
-#### [FieldInfoの構造
+#### FieldInfoの構造 {#fieldinfo-structure}
 
 **FieldInfo**構造体は**ContractInfo**構造体で使用され、コントラクトの[data section](script.md#データセクション)内の要素を説明します。
 
@@ -185,7 +185,7 @@ FieldInfoの構造は以下の要素を持っています:
 * **Original** - オプションのフィールド
 * **Tags** - このフィールドに対する追加のラベル
 
-#### FuncInfoの構造
+#### FuncInfoの構造 {#funcinfo-structure}
 
 ObjFunc タイプを指しており、Value フィールドには FuncInfo 構造体が含まれています。
 
@@ -207,7 +207,7 @@ FuncInfoの構造は以下の要素を持っています:
 * **Variadic** - 関数が可変長のパラメータを持つ場合はtrue
 * **ID** - 関数のID
 
-#### FuncNameの構造
+#### FuncNameの構造 {#funcname-structure}
 
 FuncName 構造体は FuncInfo に使用され、tail 関数のデータを記述します。
 
@@ -225,7 +225,7 @@ FuncNameの構造は以下の要素を持っています:
 * **Offset** - 変数のオフセットの配列。実際には、関数内のすべてのパラメータの値をドット「.」で初期化することができます。
 * **Variadic** - テール関数が可変長のパラメータを持つ場合はtrue
 
-#### ExtFuncInfoの構造
+#### ExtFuncInfoの構造 {#extfuncinfo-structure}
 
 ObjExtFuncタイプを指し示し、ValueフィールドにはExtFuncInfoの構造が含まれています。これはGolang関数を説明するために使用されます。
 
@@ -246,7 +246,7 @@ ExtFuncInfoの構造は以下の要素を持っています:
 * **Auto** - 変数の配列。存在する場合、関数に追加のパラメータとして渡されます。例えば、SmartContract型の変数scです。
 * **Func** - Golang関数
 
-#### VarInfoの構造
+#### VarInfoの構造 {#varinfo-structure}
 
 **ObjVar**タイプを指し示し、**Value**フィールドには**VarInfo**の構造が含まれています。
 
@@ -262,13 +262,13 @@ VarInfoの構造は以下の要素を持っています:
 * **Obj** - 変数の型と値に関する情報
 * **Owner** - オーナーブロックへのポインタ
 
-#### ObjExtendの値
+#### ObjExtendの値 {#objextend-value}
 
 **ObjExtend**タイプを指し示し、**Value**フィールドには変数や関数の名前を含む文字列が含まれています。
 
-## 仮想マシンのコマンド
+## 仮想マシンのコマンド {#virtual-machine-commands}
 
-### ByteCodeの構造
+### ByteCodeの構造 {#bytecode-structure}
 
 バイトコードは、**ByteCode**タイプの構造体のシーケンスです。
 
@@ -286,7 +286,7 @@ type ByteCode struct {
 
 一般的に、コマンドはスタックのトップ要素に対して操作を行い、必要に応じて結果値を書き込みます。
 
-### コマンド識別子
+### コマンド識別子 {#command-identifiers}
 
 仮想マシンのコマンドの識別子は、vm/cmds_list.goファイルに記述されています。
 
@@ -314,7 +314,7 @@ type ByteCode struct {
 * **cmdArrayInit** - 配列の値を初期化します。
 * **cmdError** - `error、warning、info` 
 
-### スタック操作コマンド
+### スタック操作コマンド {#stack-operation-commands}
 
 > 注意
 
@@ -339,7 +339,7 @@ type ByteCode struct {
 * **cmdGreat** - より大きいかの比較結果を返す。 `(val1)(val2) => (val1 > val2)`
 * **cmdNotGreat** - より小さいか、または等しいかの比較結果を返す。 `(val1)(val2) => (val1 <= val2)`
 
-### ランタイムの構造
+### ランタイムの構造 {#runtime-structure}
 
 バイトコードの実行は仮想マシンに影響を与えません。例えば、さまざまな関数やコントラクトを単一の仮想マシンで同時に実行することができます。ランタイムの構造は、関数やコントラクト、および任意の式やバイトコードを実行するために使用されます。
 
@@ -363,7 +363,7 @@ type RunTime struct {
 * **cost** - 実行の結果得られるコストの燃料単位
 * **err** - 実行中に発生したエラー
 
-#### blockStackの構造
+#### blockStackの構造 {#blockstack-structure}
 
 blockStackの構造は、Runtimeの構造体で使用されます。
 
@@ -377,7 +377,7 @@ type blockStack struct {
 * **Block** - 実行中のブロックへのポインタ
 * **Offset** - 指定されたブロックのバイトコード内で実行された最後のコマンドのオフセット
 
-### RunCode関数
+### RunCode関数 {#runcode-function}
 
 バイトコードは **RunCode** 関数で実行されます。各バイトコードのコマンドに対して対応する操作を実行するループが含まれています。バイトコードを処理する前に、必要なデータを初期化する必要があります。
 
@@ -500,7 +500,7 @@ if status == statusReturn {
 rt.stack = rt.stack[:start]
 ```
 
-### 仮想マシンの他の操作用関数
+### 仮想マシンの他の操作用関数 {#other-functions-for-operations-with-vm}
 
 **NewVM** 関数を使用して仮想マシンを作成することができます。各仮想マシンには、**ExecContract**、**MemoryUsage**、**CallContract**、**Settings** の4つの関数が **Extend** 関数を介して追加されます。
 
@@ -556,7 +556,7 @@ for i := 0; i <fobj.NumOut(); i++ {
 }
 ```
 
-## コンパイラ
+## コンパイラ {#compiler}
 
 compile.go ファイルの関数は、字句解析器から得られたトークンの配列をコンパイルする責任を持ちます。コンパイルは条件付きで2つのレベルに分けることができます。トップレベルでは、関数、コントラクト、コードブロック、条件文、ループ文、変数定義などに対処します。低レベルでは、コードブロック内の式やループおよび条件文の条件などをコンパイルします。
 
@@ -728,7 +728,7 @@ func fNameBlock(buf *[]*Block, state int, lexem *Lexem) error {
 また、**CompileBlock**関数以外にも**FlushBlock**関数について触れる必要があります。ただし、問題はブロックツリーが既存の仮想マシンとは独立して構築されていることです。より具体的には、仮想マシンに存在する関数やコントラクトの情報を取得しますが、コンパイルされたブロックは別のツリーに収集されます。コンパイル中にエラーが発生した場合、仮想マシンを前の状態に戻す必要があります。そのため、コンパイルツリーは別途移動し、コンパイルが成功した後に**FlushContract**関数を呼び出す必要があります。この関数は完了したブロックツリーを現在の仮想マシンに追加します。コンパイルフェーズはこれで完了です。
 
 
-## 字句解析器
+## 字句解析器 {#lexical-analyzer}
 
 字句解析器は入力文字列を処理し、以下の種類のトークンのシーケンスを形成します:
 
@@ -746,7 +746,7 @@ func fNameBlock(buf *[]*Block, state int, lexem *Lexem) error {
 現在のバージョンでは、トークンを解析するために最初に [script/lextable/lextable.go](#lextable-lextable-go) ファイルを使用して変換テーブル（有限状態機械）が初期に構築され、lex_table.go ファイルに書き込まれます。一般的には、ファイルで初期に生成された変換テーブルから解放され、起動時にメモリ内に変換テーブルを作成することができます。字句解析自体は、[lex.go](#lex-go) ファイルの lexParser 関数で行われます。
 
 
-### lextable/lextable.go
+### lextable/lextable.go {#lextable-lextable-go}
 
 ここでは、操作するアルファベットを定義し、受け取った次のシンボルに基づいて有限状態機械がどのように状態から別の状態に変化するかを説明します。
 
@@ -792,7 +792,7 @@ We are in the *main* state on the zero row of the *table*. Take the first charac
 All of these are described in more detail in the **lexParser** function in *lex.go*.
 If you want to add some new characters, you need to add them to the *alphabet* array and increase the quantity of the *AlphaSize* constant. If you want to add a new symbol combination, it should be described in the status, similar to the existing options. After the above operation, run the *lextable.go* file to update the *lex_table.go* file.
 
-### <span id = "lex-go">lex.go</span>
+### lex.go {#lex-go}
 
 The **lexParser** function directly generates lexical analysis and returns an array of received tags based on incoming strings. Let us analyze the structure of tokens.
 
@@ -829,9 +829,9 @@ type Lexem struct {
 * **lexfPop** - トークンの取得が完了しました。通常、解析されたトークンの識別子タイプがあります。
 * **lexfSkip** - このトークンは解析から除外するために使用されます。たとえば、文字列内の制御スラッシュは \n \r \" です。これらは、字句解析の段階で自動的に置き換えられます。
 
-## Needle言語
+## Needle言語 {#needle-language}
 
-### 字句
+### 字句 {#lexemes}
 
 プログラムのソースコードはUTF-8エンコーディングである必要があります。
 
@@ -843,7 +843,7 @@ type Lexem struct {
 * **Comment** - 2つのタイプのコメントがあります。1行コメントは2つのスラッシュ (//) を使用します。例: // This is a single-line comment. 複数行コメントはスラッシュとアスタリスク記号を使用し、複数行にわたることができます。例: ```/* This is a multi-line comment */```
 * **Identifier** - 変数や関数の名前は、a-zおよびA-Zの文字、UTF-8のシンボル、数字、アンダースコアで構成されます。名前は文字、アンダースコア、```@``` または ```$``` で始まることができます。```$``` で始まる名前は、**dataセクション**で定義された変数の名前です。```$``` で始まる名前は、**conditionsセクション**および**actionセクション**のスコープでグローバル変数を定義するためにも使用できます。エコシステムの契約は ```@``` 記号を使用して呼び出すことができます。例: ```@1NewTable(...)```
 
-### 型
+### 型 {#types}
 
 Needleの型の横に対応するgolangの型が指定されています。
 
@@ -863,7 +863,7 @@ Needleの型の横に対応するgolangの型が指定されています。
 すべての変数の値はinterface{}型であり、必要なgolangの型に代入されます。したがって、例えば、arrayとmapの型はgolangの []interface{} および map[string]interface{} です。両方の配列タイプは任意の型の要素を含むことができます。
 
 
-### 式
+### 式 {#expressions}
 
 式には算術演算、論理演算、関数呼び出しが含まれることがあります。すべての式は演算子の優先順位に従って左から右に評価されます。優先順位が等しい場合、演算子は左から右に評価されます。
 
@@ -904,7 +904,7 @@ if mymap && val {
 }
 ```
 
-### スコープ
+### スコープ {#scope}
 
 中括弧は、ローカルスコープ変数を含むことができるブロックを指定します。デフォルトでは、変数のスコープはその独自のブロックとすべてのネストされたブロックに拡張されます。ブロック内で、既存の変数の名前を使用して新しい変数を定義することができます。ただし、この場合、同じ名前の外部変数は利用できなくなります。
 
@@ -920,7 +920,7 @@ a = 3
 Println(a) // 3
 ```
 
-### コントラクトの実行
+### コントラクトの実行 {#contract-execution}
 
 コントラクトを呼び出す際には、**data** で定義されたパラメータを渡す必要があります。コントラクトを実行する前に、仮想マシンはこれらのパラメータを受け取り、対応する変数（$Param）に割り当てます。その後、事前に定義された **conditions** 関数と **action** 関数が呼び出されます。
 
@@ -928,7 +928,7 @@ Println(a) // 3
 
 Needle言語では例外処理は行われません。任意のエラーがコントラクトの実行を終了させます。コントラクトの実行時には、別々のスタックと変数値保存用の構造体が作成されるため、ゴミ回収メカニズムがこれらのデータを自動的に削除します。
 
-### バッカス・ナウア形式（BNF）
+### バッカス・ナウア形式（BNF） {#backus-naur-form-bnf}
 
 コンピュータ科学では、BNFはコンテキストフリー構文の表記技法であり、通常、コンピューティングで使用される言語の構文を記述するために使用されます。
 

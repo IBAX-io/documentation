@@ -1,4 +1,4 @@
-# Compiler and Virtual Machine
+# Compiler and Virtual Machine {#compiler-and-virtual-machine}
 
   - [Source code storage and compilation](#source-code-storage-and-compilation)
   - [Virtual machine structures](#virtual-machine-structures)
@@ -34,7 +34,7 @@
 
 This section involves program compilation and Needle language operations in the Virtual Machine (VM).
 
-## Source code storage and compilation
+## Source code storage and compilation {#source-code-storage-and-compilation}
 
 Contracts and functions are written with Golang and stored in the contract tables of ecosystems.
 
@@ -50,9 +50,9 @@ When the contract is called, the virtual machine will not change its status in a
 
 Each ecosystem can have a so-called virtual ecosystem, which can be used within a node in conjunction with tables outside the blockchain, without direct affection on the blockchain or other virtual ecosystems. In this case, the node hosting such a virtual ecosystem will compile its contract and create its own virtual machine.
 
-## Virtual machine structures
+## Virtual machine structures {#virtual-machine-structures}
 
-### VM Structure
+### VM Structure {#vm-structure}
 
 A virtual machine is organized in memory as a structure like below.
 ```
@@ -74,7 +74,7 @@ A VM structure has the following elements:
 * ShiftContract - ID of the first contract in the VM;
 * logger - VM error log output.
 
-### Block structure
+### Block structure {#block-structure}
 
 A virtual machine is a tree composed of **Block type** objects.
 
@@ -117,7 +117,7 @@ A block structure consists of the following elements:
 * **Code** - the bytecode of the block itself, which will be executed when the control rights are passed to the block, for example, function calls or loop bodies;
 * **Children** - an array containing sub-blocks, such as function nesting, loops, conditional operators.
 
-### ObjInfo structure
+### ObjInfo structure {#objinfo-structure}
 
 The ObjInfo structure contains information about internal objects.
 ```
@@ -137,7 +137,7 @@ The ObjInfo structure has the following elements:
    * **ObjExtend** - $name variable.
 * **Value** – it contains the structure of each type.
 
-#### ContractInfo structure
+#### ContractInfo structure {#contractinfo-structure}
 
 Pointing to the **ObjContract** type, and the **Value** field contains a **ContractInfo** structure.
 
@@ -159,7 +159,7 @@ The ContractInfo structure has the following elements:
 * **Used** - map of contracts names that has been called;
 * **Tx** - a data array described in the [data section](script.md#data-section) of the contract.
 
-#### FieldInfo structure
+#### FieldInfo structure {#fieldinfo-structure}
 
 The FieldInfo structure is used in the **ContractInfo** structure and describes elements in [data section](script.md#data-section) of a contract.
 
@@ -179,7 +179,7 @@ The FieldInfo structure has the following elements:
 * **Original** - optional field;
 * **Tags** - additional labels for this field.
 
-#### FuncInfo structure
+#### FuncInfo structure {#funcinfo-structure}
 
 Pointing to the ObjFunc type, and the Value field contains a FuncInfo structure.
 ```
@@ -200,7 +200,7 @@ The FuncInfo structure has the following elements:
 * **Variadic** - true if the function can have a variable number of parameters;
 * **ID** - function ID.
 
-#### FuncName Structure
+#### FuncName Structure {#funcname-structure}
 
 The FuncName structure is used for FuncInfo and describes the data of a tail function.
 ```
@@ -217,7 +217,7 @@ The FuncName structure has the following elements:
 * **Offset** - the array of offsets for these variables. In fact, the values of all parameters in a function can be initialized with the dot .;
 * **Variadic** - true if the tail function can have a variable number of parameters.
 
-#### ExtFuncInfo structure
+#### ExtFuncInfo structure {#extfuncinfo-structure}
 
 Pointing to the ObjExtFunc type, and the Value field contains a ExtFuncInfo structure. It is used to describe golang functions.
 ```
@@ -237,7 +237,7 @@ The ExtFuncInfo structure has the following elements:
 * **Auto** - an array of variables. If any, passes to the function as an additional parameter. For example, a variable of type SmartContract sc;
 * **Func** - golang functions.
 
-#### VarInfo structure
+#### VarInfo structure {#varinfo-structure}
 
 Pointing to the **ObjVar** type, and the **Value** field contains a **VarInfo** structure.
 ```
@@ -252,12 +252,12 @@ The VarInfo structure has the following elements:
 * **Obj** - information about the type and value of the variable;
 * **Owner** - Pointer to the owner block.
 
-#### ObjExtend value
+#### ObjExtend value {#objextend-value}
 
 Pointing to the **ObjExtend** type, and the **Value** field contains a string containing the name of the variable or function.
 
-## Virtual machine commands
-### ByteCode structure
+## Virtual machine commands {#virtual-machine-commands}
+### ByteCode structure {#bytecode-structure}
 
 A bytecode is a sequence of **ByteCode** type structures.
 ```
@@ -274,7 +274,7 @@ This structure has the following fields:
 
 In general, commands perform an operation on the top element of the stack and writes the result value into it if necessary.
 
-### Command identifiers
+### Command identifiers {#command-identifiers}
 
 Identifiers of the virtual machine commands are described in the vm/cmds_list.go file.
 
@@ -302,7 +302,7 @@ Identifiers of the virtual machine commands are described in the vm/cmds_list.go
 * **cmdArrayInit** – initializes the value of array;
 * **cmdError** - this command is created when a contract or function terminates with a specified `error, warning, info`.
 
-### Stack operation commands
+### Stack operation commands {#stack-operation-commands}
 > Note
 
 > In the current version, automatic type conversion is not fully applicable for these commands. For example, 
@@ -326,7 +326,7 @@ The following are commands for direct stack processing. The Value field is not u
 * **cmdGreat** - greater-than comparison, bool is returned. `(val1)(val2) => (val1> val2)`;
 * **cmdNotGreat** - less-than-or-equal comparison, bool is returned. `(val1)(val2) => (val1 <= val2)`.
 
-### Runtime structure
+### Runtime structure {#runtime-structure}
 
 The execution of bytecodes will not affect the virtual machine. For example, it allows various functions and contracts to run simultaneously in a single virtual machine. The Runtime structure is used to run functions and contracts, as well as any expressions and bytecode.
 ```
@@ -349,7 +349,7 @@ type RunTime struct {
 * **cost** - fuel unit of the resulting cost of execution;
 * **err** - error occurred during execution.
 
-#### blockStack structure
+#### blockStack structure {#blockstack-structure}
 
 The blockStack structure is used in the Runtime structure.
 ```
@@ -362,7 +362,7 @@ type blockStack struct {
 * **Block** - a pointer to the block being executed;
 * **Offset** – the offset of the last command executed in the bytecode of the specified block.
 
-### RunCode function
+### RunCode function {#runcode-function}
 
 Bytecodes are executed in the **RunCode** function. It contains a loop that performs the corresponding operation for each bytecode command. Before processing a bytecode, the data required must be initialized.
 
@@ -475,7 +475,7 @@ As you can see, if we do not execute the function, then we will not restore the 
 rt.stack = rt.stack[:start]
 ```
 
-### Other functions for operations with VM
+### Other functions for operations with VM {#other-functions-for-operations-with-vm}
 
 Your may create a virtual machine with the **NewVM** function. Each virtual machine will be added with four functions, such as **ExecContract**, **MemoryUsage**, **CallContract**, and **Settings**, through the **Extend** function.
 
@@ -525,7 +525,7 @@ Adds a function to the root **Objects** so that the compiler can find them later
 }
 ```
 
-## Compiler
+## Compiler {#compiler}
 
 Functions in the compile.go file are responsible for compiling the array of tokens obtained from the lexical analyzer. Compilation can be divided into two levels conditionally. At the top level, we deal with functions, contracts, code blocks, conditional and loop statements, variable definitions, and so on. At the lower level, we compile expressions in code blocks or conditions in loops and conditional statements.
 
@@ -687,7 +687,7 @@ For the **CompileBlock** function, it just traverses all the tokens and switches
 
 In addition to the **CompileBlock** function, the **FlushBlock** function should also be mentioned. But the problem is that the block tree is constructed independently of existing virtual machines. More precisely, we obtain information about functions and contracts that exist in a virtual machine, but we collect the compiled blocks into a separate tree. Otherwise, if an error occurs during compilation, we must roll back the virtual machine to the previous state. Therefore, we go to the compilation tree separately, but after the compilation is successful, the **FlushContract** function must be called. This function adds the completed block tree to the current virtual machine. The compilation phase is now complete.
 
-## Lexical analyzer
+## Lexical analyzer {#lexical-analyzer}
 
 The lexical analyzer processes incoming strings and forms a sequence of tokens of the following types :
 
@@ -702,9 +702,9 @@ The lexical analyzer processes incoming strings and forms a sequence of tokens o
 * **lexType** - type;
 * **lexExtend** - reference to external variables or functions, for example: `$myname`.
 
-In the current version, a conversion table (finite state machine) is initially constructed with the help of the [script/lextable/lextable.go](#lextablelextablego) file to parse the tokens, which is written to the lex_table.go file. In general, you can get rid of the conversion table initially generated by the file and create a conversion table in the memory (`init()`) immediately upon startup. The lexical analysis itself occurs in the lexParser function in the [lex.go](#lex-go) file.
+In the current version, a conversion table (finite state machine) is initially constructed with the help of the [lextable.go](#lextable-lextable-go) file to parse the tokens, which is written to the lex_table.go file. In general, you can get rid of the conversion table initially generated by the file and create a conversion table in the memory (`init()`) immediately upon startup. The lexical analysis itself occurs in the lexParser function in the [lex.go](#lex-go) file.
 
-### <span id = "lextable-lextable-go">lextable/lextable.go</span>
+### lextable/lextable.go {#lextable-lextable-go}
 
 Here we define the alphabet to operate and describe how the finite state machine changes from one state to another based on the next received symbol.
 
@@ -750,7 +750,7 @@ We are in the *main* state on the zero row of the *table*. Take the first charac
 All of these are described in more detail in the **lexParser** function in *lex.go*.
 If you want to add some new characters, you need to add them to the *alphabet* array and increase the quantity of the *AlphaSize* constant. If you want to add a new symbol combination, it should be described in the status, similar to the existing options. After the above operation, run the *lextable.go* file to update the *lex_table.go* file.
 
-### <span id = "lex-go">lex.go</span>
+### lex-go {#lex-go}
 The **lexParser** function directly generates lexical analysis and returns an array of received tags based on incoming strings. Let us analyze the structure of tokens.
 ```
 type Lexem struct {
@@ -785,8 +785,8 @@ All that remains is to check the lexical status tokens used in the parsing:
 * **lexfPop** - the receipt of the token is complete. Usually, with this flag we have the identifier type of the parsed token;
 * **lexfSkip** - this token is used to exclude characters from parsing. For example, the control slashes in the string are \n \r \". They will be automatically replaced during the lexical analysis stage.
 
-## Needle language
-### Lexemes
+## Needle language {#needle-language}
+### Lexemes {#lexemes}
 
 The source code of a program must be in UTF-8 encoding.
 
@@ -798,7 +798,7 @@ The following lexical types are processed:
 * **Comment** - there are two types of comments. Single-line comments use two slashes (//). For example, // This is a single-line comment. Multi-line comments use slash and asterisk symbols and can span multiple lines. For example, ```/* This is a multi-line comment */```.
 * **Identifier** - the names of variables and functions composed of a-z and A-Z letters, UTF-8 symbols, numbers and underscores. The name can start with a letter, underscore, ```@``` or ```$```. The name starting with ```$``` is the name of the variable defined in the **data section**. The name starting with ```$``` can also be used to define global variables in the scope of **conditions** and **action sections**. Ecosystem contracts can be called using the ```@``` symbol. For example: ```@1NewTable(...)```.
 
-### Types
+### Types {#types}
 
 Corresponding golang types are specified next to theNeedle types.
 
@@ -817,7 +817,7 @@ These types of variables are defined with the ```var``` keyword. For example, ``
 
 All variable values are of the interface{} type, and then they are assigned to the required golang types. Therefore, for example, array and map types are golang types []interface{} and map[string]interface{}. Both types of arrays can contain elements of any type.
 
-### Expressions
+### Expressions {#expressions}
 
 An expression may include arithmetic operations, logical operations, and function calls. All expressions are evaluated from left to right by priority of operators. If having an equal priority, operators are evaluated from left to right.
 
@@ -853,7 +853,7 @@ if mymap && val {
 ...
 }
 ```
-### Scope
+### Scope {#scope}
 
 Braces specify a block that can contain local scope variables. By default, the scope of a variable extends to its own blocks and all nested blocks. In a block, you can define a new variable using the name of an existing variable. However, in this case, external variables with the same name become unavailable.
 ```
@@ -867,7 +867,7 @@ a = 3
 Println(a) // 3
 ```
 
-### Contract execution
+### Contract execution {#contract-execution}
 
 When calling a contract, parameters defined in **data** must be passed to it. Before executing a contract, the virtual machine receives these parameters and assigns them to the corresponding variables ($Param). Then, the predefined **conditions** function and **action** function are called.
 
@@ -875,7 +875,7 @@ Errors that occur during contract execution can be divided into two types: form 
 
 The Needle language does not handle exceptions. Any error will terminate the execution of contracts. Since a separate stack and structure for saving variable values are created when a contract is executed, the golang garbage collection mechanism will automatically delete these data when a contract is executed.
 
-### <span id = "backus-naur-form-bnf">Backus–Naur Form (BNF)</span>
+### Backus–Naur Form (BNF) {#backus-naur-form-bnf}
 
 In computer science, BNF is a notation technique for context-free syntax and is usually used to describe the syntax of the language used in computing.
 

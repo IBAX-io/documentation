@@ -1,70 +1,71 @@
-# JSON-RPC Application Programming Interface
+# JSON-RPC 应用程序接口 {#json-rpc-application-programming-interface}
 
-In order for a software application to interact with the IBAX blockchain (fetch block data or send transactions to the network), it must be connected to an IBAX network node.
-
-
-Due to the generality and extensibility of the original REST API interface, it will become more and more complex with more and more interfaces and different clients. We realize the importance of interface unification to ensure that all clients can use the same set of specifications, regardless of the specific node and client implementation.
+为了让软件应用程序与IBAX区块链交互（获取区块数据或向网络发送交易）,它必须连接到IBAX网络节点.
 
 
-JSON-RPC  is  a  stateless,  lightweight  remote  procedure  call  (RPC)  protocol.  It  defines  a number of data structures and their processing rules. It is transport independent, as these concepts can be used in the same process, via an interface, hypertext transfer protocol, or in many different messaging environments. It uses JSON (RFC 4627) as the data format.
+由于原有REST API接口的通用性与扩展性，它会随着接口越来越多，客户端的不同而变得越来越复杂，我们意识到接口统一重要性，保证所有客户端都能使用同一套规范，无论具体的节点与客户端实现如何。
+
+
+JSON-RPC 是一种无状态的、轻量级远程过程调用 (RPC) 协议。 它定义了一些数据结构及其处理规则。 它与传输无关，因为这些概念可以在同一进程，通过接口、超文本传输协议或许多不同的消息传递环境中使用。 它使用 JSON (RFC 4627) 作为数据格式。
 
 
 
-JSON-RPC is compatible with most of the REST API interfaces, retaining the original REST API interface, the client using the REST API interface can easily transfer to the JSON-RPC interface, part of the interface
+JSON-RPC兼容了大部分REST API接口，保留了原有的REST API接口，使用REST API接口的客户端可以很方便的向JSON-RPC接口转移，部分接口：
 - [/data/{id}/data/{hash}](api2.md#data-id-data-hash)
 - [/data/{table}/id/{column}/{hash}](api2.md#data-table-id-column-hash)
-- [avatar/{ecosystem}/{member}](api2.md#avatar-ecosystem-member) 
+- [avatar/{ecosystem}/{member}](api2.md#avatar-ecosystem-member)
 
-Available through the REST API interface.
-
-## Client-side implementation
-Each client can use a different programming language when  implementing  the JSON-RPC specification, and you can use the
-[GO-SDK](https://github.com/IBAX-io/go-ibax-sdk)
+可通过REST API接口获取。
 
 
-## Curl example
-The following provides examples of using the JSON RPC API by making curl requests to IBAX nodes. Each example includes a description of the particular endpoint, its parameters, the return type, and a working example of how it should be used.
+## 客户端实现 {#client-side-implementation}
+每个客户端在执行 JSON-RPC 规范时可以使用不同的编程语言，你可以使用[GO-SDK](https://github.com/IBAX-io/go-ibax-sdk) 。
 
-Curl requests may return an error message related to the content type. This is because the --data option sets the content type to application/x-www-form-urlencoded. If your request has this problem, set the header manually by placing -H "Content-Type: application/json" at the beginning of the call. These examples also do not include the URL/Internet Protocol and port combination that must be the last parameter of the curl (e.g. 127.0.0.1:7079 A full curl request with this additional data takes the form of
+
+## Curl示例 {#curl-example}
+下面提供了通过向IBAX节点发出 curl 请求来使用 JSON_RPC 应用程序接口的示例。 每个示例都包括对特定端点、其参数、返回类型的描述，以及应该如何使用它的工作示例。
+
+Curl 请求可能会返回与内容类型相关的错误消息。 这是因为 --data 选项将内容类型设置为 application/x-www-form-urlencoded。 如果你的请求有此问题，请通过在调用开始时放置 -H "Content-Type: application/json" 来手动设置标头。 这些示例也未包括网址/互联网协议与端口组合，该组合必须是 curl 的最后一个参数（例如 127.0.0.1:7079 包含这些附加数据的完整 curl 请求采用以下形式：
 
 ``` text
 curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","params":[],"id":1}' http://127.0.0.1:7079	
 ```
 
-## Covenant 
+## 约定 {#covenant}
 
-### Hex
-**Hexadecimal code**
+### Hex {#hex}
+**十六进制编码**
 
-When encoding byte arrays, hashes, and bytecode arrays: the encoding is hexadecimal, two hexadecimal digits per byte.
+当对字节数组、哈希、字节码数组进行编码时：编码为十六进制，每字节两个十六进制数字。
 
-### Request type
-**Uniform use**
+### 请求类型 {#request-type}
+**统一使用** 
 - Content-Type: application/json
 
-### Special markers 
-#### Omitempty
-This field is an optional parameter.
+### 特殊标记 {#special-markers}
+#### Omitempty {#omitempty}
+此字段为可选参数。
 
-If there are multiple `Omitempty` fields in a row,
-But only want to pass the value of a certain field, then you need to set the unwanted field to null (the field type null value), Example:
+如果存在连续多个`Omitempty`字段，但是只想传某个字段的值，那么需要将不需要的字段置为空(该字段类型空值)，例：
 - **id** - *Number* - [Omitempty](#omitempty) id
-- **name** - *String* - [Omitempty](#omitempty) Name
-- **column** - *String* - [Omitempty](#omitempty) Filter column names
+- **name** - *String* - [Omitempty](#omitempty) 名称
+- **column** - *String* - [Omitempty](#omitempty) 筛选列名
 
-If only the name value is passed, then the request parameters are passed as follows
-`"params":[0, "testname"]` - *Number* null value is 0
+如果只传name的值，那么请求参数按如下传递：
 
-If only the column value is passed, then the request parameters are passed as follows
-`"params":[0,"", "title,page"]` - *String* empty value for ""
+    `"params":[0,"testname"]` - *Number* 空值为0
+
+如果只传column的值，那么请求参数按如下传递：
+
+    `"params":[0,"","title,page"]` - *String* 空值为""
 
 
 
-#### Authorization
-Authorization header, add Authorization to the request header, example:
+#### Authorization {#authorization}
+Authorization 授权标头，请求头添加Authorization，示例：
 
 **name** : Authorization **value** : Bearer +[login token](#ibax-login)
- 
+
 Example:
 ```` text
     //request
@@ -72,31 +73,31 @@ Example:
 
 ````
 
-#### AccountOrKeyId
-For the account address parameter, you can use two formats of addresses, for example
-1. - *String* - Account Address `"XXXX-XXXX-XXXX-XXXX-XXXX"` or Account Id `"64842...538120"` .538120"`
+#### AccountOrKeyId {#accountorkeyid}
+账户地址参数,可以使用两种格式的地址,例
+1. - *String* - 账户地址 `"XXXX-XXXX-XXXX-XXXX-XXXX"` 或 账户Id `"64842...538120"`
 
-2. - *Object* - Address object
-    - **key_id** - *Number* - Account Id, Example: `{"key_id":-64842	38120}`
-    - **account** - *String* - Account address, Example: `{"account": "1196-... -	-... -3496"}`
+2. - *Object* - 地址对象
+    - **key_id** -  *Number* - 账户Id,例: `{"key_id":-64842...38120}`
+    - **account** - *String* - 账户地址,例: `{"account":"1196-...-...-...-3496"}`
 
-    **Account Id is preferred when both account address and account Id exist**. 
-    
-#### BlockOrHash
-Block height or block HASH, example
+    **账户地址和账户Id同时存在时优先使用账户Id**.
 
-1.	- *String*	-	Block	Height	`"100"`	or	Block	HASH`"4663aa47...a60753c18d9ba9cb4"`
+#### BlockOrHash {#blockorhash}
+区块高度或区块HASH，例
 
-2.	- *Object* - Block information object
-        - **id** - *Number* - block height, example: `{"id":2}`
-        - **hash**	-	*[Hex](#hex)	String*	-	Block	HASH,	Example:	`{"hash": "d36b8996c	c616d3043a0d02a0f59"}`
+1. - *String* - 区块高度 `"100"` 或 区块HASH `"4663aa47...a60753c18d9ba9cb4"`
 
-        **Block Height and Block HASH can only choose one**. 
+2. - *Object* - 区块信息对象
+        - **id** -  *Number* - 区块高度,例: `{"id":2}`
+        - **hash** - *[Hex](#hex) String* - 区块HASH,例: `{"hash":"d36b8996c...c616d3043a0d02a0f59"}`
+        
+        **区块高度和区块HASH只能选一个**.
 
-### Batch requests
-This feature can be used to reduce network latency, especially when acquiring a large number of largely independent data objects.
+### 批量请求 {#batch-requests}
+此功能可用于减少网络延迟，特别是在获取大量基本独立的数据对象时。
 
-The following is an example of obtaining the highest block and total number of transactions:
+下面是一个获取最高区块和总交易数例子：
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '[{"jsonrpc":"2.0","method":"ibax.getTxCount","id":1,"params":[]},{"jsonrpc":"2.0","method":"ibax.maxBlockId","id":2,"params":[]}]' http://127.0.0.1:7079
@@ -117,27 +118,27 @@ The following is an example of obtaining the highest block and total number of t
 ```
 
 
-### Error response handling
+### 错误响应处理 {#error-response-handling}
 
-Returns status `200` in case the request is executed successfully.
+在请求执行成功的情况下返回状态 `200`。
 
-If an error occurs, a JSON object with the following fields will be returned:
+如果出现错误，将返回带有以下字段的JSON对象：
 
--	jsonrpc
+-   jsonrpc
 
-    Error identifier.
+    错误标识符。
 
--	id
+-   id
 
-    Error text message.
+    错误文本信息。
 
--	error
-    -	code
+-   error
+    - code
 
-        Response Status Code
-    -	message
+        响应状态码
+    - message
 
-        Response Status Description
+        响应状态描述
 
 ``` text
 {
@@ -151,26 +152,26 @@ If an error occurs, a JSON object with the following fields will be returned:
 ```
 
 
-## JSON-RPC Namespaces
+## JSON-RPC Namespaces {#json-rpc-namespaces}
 
- ### ibax Namespace
+### ibax Namespace {#ibax-namespace}
 
-#### Authentication Interface
+#### 认证接口 {#authentication-interface}
 - [ibax.getuid](#ibax-getuid)
 - [ibax.login](#ibax-login)
 - [ibax.getAuthStatus](#ibax-getauthstatus)
 
-#### server-side command interface
+#### 服务端命令接口 {server-side-command-interface}
 - [ibax.getVersion](#ibax-getversion)
 
-#### Data Request Function Interface
+#### 数据请求功能接口 {#data-request-function-interface}
 - [ibax.getBalance](#ibax-getbalance)
 - [ibax.getBlocksTxInfo](#ibax-getblockstxinfo)
 - [ibax.detailedBlocks](#ibax-detailedblocks)
 - [ibax.getKeyInfo](#ibax-getkeyinfo)
 - [ibax.detailedBlock](#ibax-detailedblock)
 
-#### Get Metrics Interface
+#### 获取指标接口 {#get-metrics-interface}
 - [ibax.maxBlockId](#ibax-maxblockid)
 - [ibax.getKeysCount](#ibax-getkeyscount)
 - [ibax.getTxCount](#ibax-gettxcount)
@@ -179,7 +180,7 @@ If an error occurs, a JSON object with the following fields will be returned:
 - [ibax.honorNodesCount](#ibax-honornodescount)
 - [ibax.getEcosystemCount](#ibax-getecosystemcount)
 
-#### Ecosystem Interface
+#### 生态系统接口 {#ecosystem-interface}
 - [ibax.ecosystemInfo](#ibax-ecosysteminfo)
 - [ibax.appParams](#ibax-appparams)
 - [ibax.getEcosystemParams](#ibax-getecosystemparams)
@@ -196,7 +197,7 @@ If an error occurs, a JSON object with the following fields will be returned:
 - [ibax.getAppContent](#ibax-getappcontent)
 - [ibax.getMember](#ibax-getmember)
 
-#### Contract Function Interface
+#### 合约功能接口 {#contract-function-interface}
 - [ibax.getContracts](#ibax-getcontracts)
 - [ibax.getContractInfo](#ibax-getcontractinfo)
 - [ibax.sendTx](#ibax-sendtx)
@@ -212,59 +213,59 @@ If an error occurs, a JSON object with the following fields will be returned:
 - [ibax.getBlockInfo](#ibax-getblockinfo)
 - [ibax.getConfig](#ibax-getconfig)
 
-### net Namespace
+### net Namespace {#net-namespace}
 - [net.getNetwork](#net-getnetwork)
 - [net.status](#net-status)
 
-### rpc Namespace
+### rpc Namespace {#rpc-namespace}
 - [rpc.modules](#rpc-modules)
 
-### admin Namespace
+### admin Namespace {#admin-namespace}
 - [admin.startJsonRpc](#admin-startjsonrpc)
 - [admin.stopJsonRpc](#admin-stopjsonrpc)
 
 
-### debug Namespace
+### debug Namespace {#debug-namespace}
 - [debug.getNodeBanStat](#debug-getnodebanstat)
 - [debug.getMemStat](#debug-getmemstat)
  
 
 
-## JSON-RPC Interface Methods 
+## JSON-RPC 接口方法 {#json-rpc-interface-methods}
 
-### **ibax.getUid**
+### **ibax.getUid** {#ibax-getuid}
 
 [Authorization](#authorization) [Omitempty](#omitempty)
 
-Generate a temporary JWT token,	which needs to be passed to [**Authorization**](#authorization) when calling **[login](#ibax-login)**
+生成临时JWT令牌,在调用 **[login](#ibax.login)** 时需要将令牌传递给 [**Authorization**](#authorization)
 
-#### Parameters 
-None
+**参数**
+无
 
-#### Return Value
-- **uid** - *String* - The signature number.
+**返回值**
+- **uid** - *String* - 签名数字。
 
-- **token** - *String* - temporary token passed during login (temporary token has a 5 second lifespan).
+- **token** - *String* -  登录时传递的临时令牌(临时令牌的生命周期为5秒)。
 
-- **network_id** - *String* - The network identifier.
+- **network_id** - *String* - 网络标识符。
 
-- **cryptoer** - *String* - Elliptic curve algorithm.
+- **cryptoer** - *String* - 椭圆曲线算法。
 
-- **hasher** - *String* - hash algorithm.
+- **hasher** - *String* - hash算法。
 
-In the case that no authorization is required(the request contains [Authorization](#authorization), the following message will be returned.
+在不需要授权的情况下(请求包含[Authorization](#authorization))，将返回以下信息: 
 
-- **expire** - *String* - Expiration time.
+- **expire** - *String* - 过期时间。
 
-- **ecosystem** - *String* - Ecosystem ID.
+- **ecosystem** - *String* - 生态系统ID。
 
-- **key_id** - *String* - The account address.
+- **key_id** - *String* - 账户地址。
 
-- **address** - *String* - wallet address `XXXX-XXXXXX-XXXX-XXXX-XXXX`.
+- **address** - *String* - 钱包地址 `XXXX-XXXX-XXXX-XXXX-XXXX`。
 
-- **network_id** - *String* - The network identifier.
+- **network_id** - *String* - 网络标识符。
 
-#### Example
+**示例**
 ```text
     //Request1
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getUid","params":[],"id":1}' http://127.0.0.1:7079
@@ -301,61 +302,61 @@ In the case that no authorization is required(the request contains [Authorizatio
     }
 ```
 
-### **ibax.login**
-User authentication. [Authorization](#authorization)
+### **ibax.login** {#ibax-login}
+用户身份验证。[Authorization](#authorization)
 
-The [**ibax.getUid**](#ibax-getuid) command should be called first in order to receive the unique value and sign it.
-The temporary JWT token for getuid needs to be passed in the request header.
-If the request is successful, the token received in the response is contained in [**Authorization**](#authorization).
+应首先调用 [**ibax.getUid**](#ibax-getuid) 命令，以便接收唯一值并对其进行签名。
+getuid的临时JWT令牌需要放在请求头中传递。
+如果请求成功，则响应中收到的令牌包含在 [**Authorization**](#authorization) 中。
 
-#### Parameters
+**参数**
 
-*Object* - Authentication call object
-- **ecosystem_id** - *Number* - Ecosystem ID. if not specified, defaults to the first ecosystem ID.
+*Object* - 身份认证调用对象
+- **ecosystem_id** - *Number* - 生态系统ID。如果未指定，默认为第一生态系统ID。
 
-- **expire** - *Number* - The lifecycle of the JWT token in seconds, default is 28800,8 hours.
+- **expire** - *Number* - JWT令牌的生命周期，以秒为单位，默认为28800,8小时。
 
-- **public_key** - *[Hex](#hex) String* - Hexadecimal account public key.
+- **public_key** - *[Hex](#hex) String* - 十六进制账户公钥。
 
 - **key_id** - *String* -
-    >	Account address `XXXX-... -XXXX`.
+    > 账户地址 `XXXX-...-XXXX`。
     >
-    >	Use this parameter if the public key is already stored in the blockchain. It cannot be used with *pubkey*
-    >	parameters are used together.
+    > 在公钥已经存储在区块链中的情况下使用此参数。不能与 *pubkey*
+    > 参数一起使用。
 
 - **signature** - *String* -
-    Use the private key to sign the uid received by getuid. 
+    使用私钥对getuid收到的uid签名。
+    
+    签名数据内容:LOGIN+{$network_id}+uid。
 
-    Signature data content:LOGIN+{$network_id}+uid
-
-- **role_id** - *Number* - Role ID, default role 0
+- **role_id** - *Number* - 角色ID，默认角色0。
 
 
-#### Return Value
-*Object* - Authentication object
-- **token** - *String* - JWT token.
+**返回值**
+*Object* - 身份认证对象
+- **token** - *String* - JWT令牌。
 
-- **ecosystem_id** - *String* - Ecosystem ID.
+- **ecosystem_id** - *String* - 生态系统ID。
 
-- **key_id** - *String* - Account Address ID
+- **key_id** - *String* - 账户地址ID。
 
-- **account** - *String* - wallet address `XXXX-XXXXXX-XXXX-XXXX-XXXX`.
+- **account** - *String* - 钱包地址 `XXXX-XXXX-XXXX-XXXX-XXXX`。
 
-- **notify_key** - *String* - The notification ID.
+- **notify_key** - *String* - 通知ID。
 
-- **isnode** - *Bool* - Whether the account address is the owner of the node. Values: `true,false`.
+- **isnode** - *Bool* - 该账户地址是否是该节点的所有者。值： `true,false`。
 
-- **isowner** - *Bool* - Whether the account address is the creator of this ecosystem. Values: `true,false`.
+- **isowner** - *Bool* - 该账户地址是否是该生态系统的创建者。值： `true,false`。
 
-- **clb** - *Bool* - Whether the logged-in ecosystem is a CLB. Values: `true,false`.
+- **clb** - *Bool* - 登录的生态系统是否为 CLB 。值： `true,false`。
 
-- **timestamp** - *String* - current timestamp
- 
-- **roles** - *Array* list of roles, if there are no roles, the field is nil
-    - **role_id** - *Number* - Role ID
-    - **role_name** - *String* - Role name
+- **timestamp** - *String* - 当前时间戳。
 
-#### Example
+- **roles** - *Array* 角色列表，如没有角色，字段为nil。
+    - **role_id** - *Number* - 角色ID。
+    - **role_name** - *String* - 角色名称。
+
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.login","params":[{"ecosystem_id":1,"public_key":"04....","signature","46...","role_id":0}],"id":1}' http://127.0.0.1:7079
@@ -379,20 +380,20 @@ If the request is successful, the token received in the response is contained in
     }
 ```
 
-### **ibax.getAuthStatus** 
-User authentication status 
+### **ibax.getAuthStatus** {#ibax-getauthstatus}
+用户身份认证状态。
 [Authorization](#authorization)
 
-#### Parameters 
-None
+**参数**
+无
 
-#### Return Value
-*Object* - Authentication status object
-- **active** - *Bool* - The current user authentication status. Values: `true,false`
+**返回值**
+*Object* - 身份认证状态对象。
+- **active** - *Bool* - 当前用户身份认证状态， 值： `true,false`。
 
-- **exp** - *Number* - [Omitempty](#omitempty) Token validity cutoff timestamp
- 
-#### Example
+- **exp** - *Number* - [Omitempty](#omitempty) Token有效截止时间戳。
+
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getAuthStatus","id":1}' http://127.0.0.1:7079
@@ -408,16 +409,16 @@ None
     }
 ```
 
-### **ibax.getVersion**
-Returns the current server version.
+### **ibax.getVersion** {#ibax-getversion}
+返回当前服务器版本。
 
-#### Parameters 
-None
+**参数**
+无
 
-#### Return Value
-- **vesion** - *String* - version number (`big Version` + `branch name` + `git commit` + `time` + `node status`)
+**返回值**
+- **vesion** - *String* - 版本号(`big Version` + `branch name` + `git commit` + `time` + `node status`)。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getVersion","id":1}' http://127.0.0.1:7079
@@ -430,28 +431,28 @@ None
     }
 ```
 
-### **ibax.getBalance**
-Get the account address balance.
- 
-#### Parameters
+### **ibax.getBalance** {#ibax-getbalance}
+获取帐户地址余额。
 
-- **key_id or account** - [*AccountOrKeyId*](#accountorkeyid) - account address `XXXX- XXXX-XXXX-XXXX-XXXX` or account ID
+**参数**
 
-- **ecosystem_id** - *Number* - Ecosystem ID [Omitempty](#omitempty) Default 1 
+- **key_id or account** - *[AccountOrKeyId](#accountorkeyid)* - 账户地址 `XXXX-XXXX-XXXX-XXXX-XXXX` 或 账户ID。
 
-#### Return Value
-*Object* - Get the balance object
-- **amount** - *String* - the minimum unit of the contract account balance.
+- **ecosystem_id** - *Number* - 生态系统ID [Omitempty](#omitempty) 默认生态1。
 
-- **total** - *String* - the total balance of the minimum unit account (amount + utxo).
+**返回值**
+*Object* - 获取余额对象。
+- **amount** - *String* - 最小单位的合约帐户余额。
 
-- **utxo** - *String* - Minimum unit UTXO account balance.
+- **total** - *String* - 最小单位帐户总余额(amount + utxo）。
 
-- **digits** - *Number* - Accuracy
+- **utxo** - *String* - 最小单位UTXO帐户余额。
 
-- **token_symbol** - *String* - Token symbols 
+- **digits** - *Number* - 精度。
 
-#### Example
+- **token_symbol** - *String* - 代币符号。
+
+**示例**
 ```text
     //Request1
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBalance","id":1,"params":["648...8120"]}' http://127.0.0.1:7079
@@ -477,32 +478,32 @@ Get the account address balance.
 ```
 
 
-### **ibax.getBlocksTxInfo**
-Returns a list containing additional information about the transactions in each block. 
+### **ibax.getBlocksTxInfo** {#ibax-getblockstxinfo}
+返回其中包含每个区块中交易的相关附加信息列表。
 
-#### Parameters
+**参数**
 
-- **block_id** - *Number* - the starting block height to query
+- **block_id** - *Number* - 要查询的起始区块高度。
 
-- **count** - *Number* - number of blocks, default is 25, maximum request is 100 
+- **count** - *Number* - 区块数量，默认为25，最大请求100。
 
-#### Return Value
-*Object* - Get the block information object
-- **block_id** - *String* - block height
--	List of transactions in the block and additional information for each transaction:
+**返回值**
+*Object* - 获取区块信息对象。
+- **block_id** - *String* - 区块高度。
+- 区块中的交易列表以及每个交易的附加信息：
+    
+    - **hash** - *[Hex](#hex) String* - 交易哈希。
 
-    - **hash** - *[Hex](#hex) String* - The transaction hash.
+    - **contract_name** - *String* -  合约名称。
 
-    - **contract_name** - *String* - The name of the contract.
-
-    - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo).
+    - **params** - *Object* - 合约参数,合约字段可通过 [ibax.getContractInfo](#ibax-getcontractinfo) 查询。
 
     - **key_id** - *Number* -
-        For the first block, it is the account address of the first block that signed the transaction.
+        对于第一个区块，是签署该交易的第一个区块的账户地址。
 
-        For all other blocks, it is the address of the account that signed the transaction.
+        对于所有其他区块，是签署该交易的账户地址。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBlocksTxInfo","id":1,"params":[1,2]}' http://127.0.0.1:7079
@@ -536,43 +537,43 @@ Returns a list containing additional information about the transactions in each 
 ```
 
 
-### **ibax.detailedBlocks**
-Returns a list containing detailed additional information about the transactions in each block.
+### **ibax.detailedBlocks** {#ibax-detailedblocks}
+返回其中包含每个区块中交易的详细附加信息列表。
 
-#### Parameters
-- **block_id** - *Number* - the height of the starting block to query
+**参数**
+- **block_id** - *Number* - 要查询的起始区块高度。
 
-- **count** - *Number* - number of blocks, default is 25, maximum request is 100
+- **count** - *Number* - 区块数量，默认为25，最大请求100。
 
 
-#### Return Value
-*Object* - Get the block details object
-- **block_id** - *String* - block height
-    - **header** - *Object* - block header The block header contains the following fields.
-        - **block_id** - *Number* - the height of the block.
-        - **time** - *Number* - block generation timestamp.
-        - **key_id** - *Number* - the address of the account that signed the block.
-        - **node_position** - *Number* - The position of the node that generated the block in the honor node list.
-        - **version** - *Number* - the block structure version.
-    - **hash** - *[Hex](#hex) String* - The block hash.
-    - **node_position** - *Number* - The position of the node that generated the block in the honor node list.
-    - **key_id** - *Number* - the address of the account that signed the block.
-    - **time** - *Number* - block generation timestamp.
-    - **tx_count** - *Number* - the number of transactions within the block.
-    - **size** - *String* - the size of the block.
-    - **rollback_hash** - *[Hex](#hex) String* - The block rollback hash.
-    - **merkle_root** - *[Hex](#hex) String* - The merkle tree for this block transaction.
-    - **bin_data** - *[Hex](#hex) String* - Serialization of the block header, all transactions within the block, the previous block hash, and the private key of the node that generated the block.
-    -  **transactions** - *Object* - Transactions List of transactions in the block and additional information about each transaction:
-        - **hash** - *[Hex](#hex) String* - The transaction hash.
-        - **contract_name** - *String* - The name of the contract.
-        - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo).
-        - **key_id** - *Number* - The address of the account that signed the transaction.
-        - **time** - *Number* - transaction generation timestamp (unit: ms).
-        - **type** - *Number* - the type of the transaction.
-        - **size** - *String* - The transaction size.
+**返回值**
+*Object* - 获取区块详情对象。
+- **block_id** - *String* - 区块高度。
+    - **header** - *Object* - 区块头 区块头包含以下字段:
+        - **block_id** - *Number* - 区块高度。
+        - **time** - *Number* - 区块生成时间戳。
+        - **key_id** - *Number* - 签署该区块的账户地址。
+        - **node_position** - *Number* - 在 荣誉节点 列表中生成区块的节点的位置。
+        - **version** - *Number* - 区块结构版本。
+    - **hash** - *[Hex](#hex) String* - 区块哈希。
+    - **node_position** - *Number* - 在 荣誉节点 列表中生成区块的节点的位置。
+    - **key_id** - *Number* - 签署该区块的账户地址。
+    - **time** - *Number* - 区块生成时间戳。
+    - **tx_count** - *Number* - 该区块内的交易数。
+    - **size** - *String* - 该区块大小。
+    - **rollback_hash** - *[Hex](#hex) String* - 区块回滚哈希值。
+    - **merkle_root** - *[Hex](#hex) String* - 该区块交易的默克尔树。
+    - **bin_data** - *[Hex](#hex) String* - 区块头、区块内所有交易、上一个区块哈希和生成该区块的节点私钥的序列化。
+    -  **transactions** - *Object* - 交易 区块中的交易列表以及每个交易的附加信息：
+        - **hash** - *[Hex](#hex) String* - 交易哈希。
+        - **contract_name** - *String* - 合约名称。
+        - **params** - *Object* - 合约参数,合约字段可通过 [ibax.getContractInfo](#ibax-getcontractinfo) 查询。
+        - **key_id** - *Number* - 签署该交易的账户地址。
+        - **time** - *Number* - 交易生成时间戳（unit：ms）。
+        - **type** - *Number* - 交易类型。    
+        - **size** - *String* - 交易大小。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.detailedBlocks","id":1,"params":[1,2]}' http://127.0.0.1:7079
@@ -650,25 +651,25 @@ Returns a list containing detailed additional information about the transactions
 ```
 
 
-### **ibax.getKeyInfo**
-Returns a list of ecosystems with roles that are registered to the specified address.
+### **ibax.getKeyInfo** {#ibax-getkeyinfo}
+返回一个生态系统列表，其中包含注册了指定地址的角色。
 
-#### Parameters
-- **account** - *String* - Account Address
+**参数**
+- **account** - *String* - 账户地址。
 
-#### Return Value
-*Object* - Specify the address eco-list object
-- **account** - *String* - Account Address
-- **ecosystems** - *Array* - Eco-List
-    - **ecosystem** - *String* - Ecosystem id
-    - **name** - *String* - Ecosystem name
-    - **digits** - *Number* - Accuracy
-    - **roles** - *Array* - list of roles.
-        - **id** - *String* - role id
-        - **name** - *String* - Character name
+**返回值**
+*Object* - 指定地址生态列表对象。
+- **account** - *String* - 账户地址。
+- **ecosystems** - *Array* - 生态列表。
+    - **ecosystem** - *String* - 生态系统id。
+    - **name** - *String* - 生态系统名称。
+    - **digits** - *Number* - 精度。
+    - **roles** - *Array* - 角色列表。
+        - **id** - *String* - 角色id 。
+        - **name** - *String* - 角色名称。
+
  
-
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getKeyInfo","id":1,"params":["0666-XXXX-XXXX-XXXX-5186"]}' http://127.0.0.1:7079
@@ -699,41 +700,41 @@ Returns a list of ecosystems with roles that are registered to the specified add
         }
     }
 ```
- 
-### **ibax.detailedBlock**
-Returns a detailed list of additional information about the transactions in the block.
 
-#### Parameters
--	**Block or Hash** - *[BlockOrHash](#blockorhash)* - Block Height or Block Hash
+### **ibax.detailedBlock** {#ibax-detailedblock}
+返回区块中交易的详细附加信息列表。
 
-#### Return Value
-*Object* - Get the block details object
-- **header** - *Object* - block header The block header contains the following fields.
-    - **block_id** - *Number* - the height of the block. 
-    - **time** - *Number* - block generation timestamp.
-    - **key_id** - *Number* - the address of the account that signed the block.
-    - **node_position** - *Number* - The position of the node that generated the block in the honor node list.
-    -	**version** - *Number* - the block structure version.
+**参数**
+- **Block or Hash** - *[BlockOrHash](#blockorhash)* - 区块高度或区块Hash。
 
-- **hash** - *[Hex](#hex) String* - The block hash.
-- **node_position** - *Number* - The position of the node that generated the block in the honor node list.
-- **key_id** - *Number* - the address of the account that signed the block.
-- **time** - *Number* - block generation timestamp.
-- **tx_count** - *Number* - the number of transactions within the block.
-- **size** - *String* - the size of the block.
-- **rollback_hash** - *[Hex](#hex) String* - The block rollback hash.
-- **merkle_root** - *[Hex](#hex) String* - The merkle tree for this block transaction.
-- **bin_data** - *[Hex](#hex) String* - Serialization of the block header, all transactions within the block, the previous block hash, and the private key of the node that generated the block.
--  **transactions** - *Array* - Transactions List of transactions in the block and additional information about each transaction:
-    - **hash** - *[Hex](#hex) String* - The transaction hash.
-    - **contract_name** - *String* - The name of the contract.
-    - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo).
-    - **key_id** - *Number* - The address of the account that signed the transaction.
-    - **time** - *Number* - transaction generation timestamp (unit: ms).
-    - **type** - *Number* - the type of the transaction.
-    - **size** - *String* - The transaction size.
+**返回值**
+*Object* - 获取区块详情对象。
+- **header** - *Object* - 区块头 区块头包含以下字段:
+    - **block_id** - *Number* - 区块高度。
+    - **time** - *Number* - 区块生成时间戳。
+    - **key_id** - *Number* - 签署该区块的账户地址。
+    - **node_position** - *Number* - 在 荣誉节点 列表中生成区块的节点的位置。
+    - **version** - *Number* - 区块结构版本。
 
-#### Example
+- **hash** - *[Hex](#hex) String* - 区块哈希。
+- **node_position** - *Number* - 在 荣誉节点 列表中生成区块的节点的位置。
+- **key_id** - *Number* - 签署该区块的账户地址。
+- **time** - *Number* - 区块生成时间戳。
+- **tx_count** - *Number* - 该区块内的交易数。
+- **size** - *String* - 该区块大小。
+- **rollback_hash** - *[Hex](#hex) String* - 区块回滚哈希值。
+- **merkle_root** - *[Hex](#hex) String* - 该区块交易的默克尔树。
+- **bin_data** - *[Hex](#hex) String* - 区块头、区块内所有交易、上一个区块哈希和生成该区块的节点私钥的序列化。
+-  **transactions** - *Array* - 交易 区块中的交易列表以及每个交易的附加信息：
+    - **hash** - *[Hex](#hex) String* - 交易哈希。
+    - **contract_name** - *String* - 合约名称。
+    - **params** - *Object* - 合约参数,合约字段可通过 [ibax.getContractInfo](#ibax-getcontractinfo) 查询。
+    - **key_id** - *Number* - 签署该交易的账户地址。
+    - **time** - *Number* - 交易生成时间戳（unit：ms）。
+    - **type** - *Number* - 交易类型。    
+    - **size** - *String* - 交易大小。
+
+**示例**
 ```text
     //Request1
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.detailedBlock","id":1,"params":["1"]}' http://127.0.0.1:7079
@@ -782,16 +783,16 @@ Returns a detailed list of additional information about the transactions in the 
     }
 ```
 
-### **ibax.maxBlockId**
-Get the highest block ID on the current node
+### **ibax.maxBlockId** {#ibax-maxblockid}
+获取当前节点上的最高区块ID。
 
-#### Parameters 
-None
+**参数**
+无
 
-#### Return Value
--	**Block Id** - *Number* - The highest block on the current node
+**返回值**
+- *Number* - 当前节点上的最高区块。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","id":1,"params":[]}' http://127.0.0.1:7079
@@ -805,15 +806,15 @@ None
 ```
 
 
-### **ibax.getKeysCount**
-Get the total number of addresses on the current node
+### **ibax.getKeysCount** {#ibax-getkeyscount}
+获取当前节点上的总地址数。
 
-#### Parameters 
-None
-#### Return Value
-- **Count** - *Number* - Total number of addresses 
+**参数**
+无
+**返回值**
+- **Count** - *Number* - 总地址数。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getKeysCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -827,16 +828,16 @@ None
 ```
 
 
-### **ibax.getTxCount**
-Get the total number of transactions in the current node
+### **ibax.getTxCount** {#ibax-gettxcount}
+获取当前节点总交易数。
 
-#### Parameters 
-None
+**参数**
+无
 
-#### Return Value
-- **Count** - *Number* - Total number of transactions
+**返回值**
+- **Count** - *Number* - 总交易数。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getTxCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -850,16 +851,16 @@ None
 ```
 
 
-### **ibax.getTransactionCount** 
-Get the number of block transactions
+### **ibax.getTransactionCount** {#ibax-gettransactioncount}
+获取区块交易数。
 
-#### Parameters
-- **block or hash** - *[BlockOrHash](#blockorhash)* - block height or block hash
- 
-#### Return Value
-- **Count** - *Number* - Total number of blocks
+**参数**
+- **block or hash**  - *[BlockOrHash](#blockorhash)* - 区块高度或区块Hash。
 
-#### Example
+**返回值**
+- **Count** - *Number* - 区块总数量。
+
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getTransactionCount","id":1,"params":["efc386f7573269610a34af9cc722f775cca8183ccaa0ed7a96db61ef0bde6d1c"]}' http://127.0.0.1:7079
@@ -873,20 +874,20 @@ Get the number of block transactions
 ```
 
 
-### **ibax.getBlocksCountByNode**
-Get the number of node location packing blocks 
-#### Parameters
-- **nodePosition** - *Number* - node subscript
+### **ibax.getBlocksCountByNode** {#ibax-getblockscountbynode}
+获取节点位置打包区块数。
+**参数**
+- **nodePosition** - *Number* - 节点下标。
 
-- **consensusMode** - *Number* - Consensus Mode, parameters (1: Creator Management Mode 2: DAO Governance Mode)
+- **consensusMode** - *Number* - 共识模式，参数（1: 创建者管理模式 2:DAO治理模式）。
 
-#### Return Value
-*Object* - Get the node subscript packing number object
-- **total_count** - *Number* - Total number of blocks
+**返回值**
+*Object* - 获取节点下标打包数对象。
+- **total_count** - *Number* - 总区块数。
 
-- **partial_count** - *Number* - Number of node subscript packing blocks 
+- **partial_count** - *Number* - 节点下标打包区块数。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBlocksCountByNode","id":1,"params":[0,1]}' http://127.0.0.1:7079
@@ -903,16 +904,16 @@ Get the number of node location packing blocks
 ```
 
 
-### **ibax.honorNodesCount** 
-Get number of honor nodes
+### **ibax.honorNodesCount** {#ibax-honornodescount}
+获取荣誉节点数量。
 
-#### Parameters 
-None
+**参数**
+无
 
-#### Return Value
-- **Count** - *Number* - number of nodes
+**返回值**
+- **Count** - *Number* - 节点数量。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.honorNodesCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -926,16 +927,16 @@ None
 ```
 
 
-### **ibax.getEcosystemCount** 
-Number of ecosystem acquisitions
+### **ibax.getEcosystemCount** {#ibax-getecosystemcount}
+获取生态系统的数量。
 
-#### Parameters 
-None
+**参数**
+无
 
-#### Return Value
-- **Count** - *Number* - Ecological number
+**返回值**
+- **Count** - *Number* - 生态数。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getEcosystemCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -951,28 +952,28 @@ None
 
 
 
-### **ibax.ecosystemInfo** 
-Access to ecological information
+### **ibax.ecosystemInfo** {#ibax-ecosysteminfo}
+获取生态信息。
 
-#### Parameters
-- **ecosystem id** - *Number* - ecological ID
+**参数**
+- **ecosystem id** - *Number* - 生态ID。
 
-#### Return Value
-- **id** - *Number* - Eco-ID
-- **name** - *String* - Ecological name
-- **digits** - *Number* - Accuracy
-- **token_symbol** - *String* - Token symbols
-- **token_name** - *String* - the name of the token
-- **total_amount** - *String* - the number of issues (first issue, or `"0"` if not issued)
-- **is_withdraw** - *Bool* - destructible `true:destructible false:undestructible`
-- **withdraw** - *String* - amount of destruction (`"0"` if not destructible, or not destroyed)
-- **is_emission** - *Bool* - may be incremented `true:may be incremented false:may not be incremented`
-- **emission** - *String* - increment (`"0"` if no increment is available, or if no increment is available)
-- **introduction** - *String* - Eco Introduction
-- **logo** - *Number* - ecoLogo Id (corresponds to Binary table id), available through the RESTFUL API
-- **creator** - *String* - Eco-creator
+**返回值**
+- **id** - *Number* - 生态ID。
+- **name** - *String* - 生态名称。
+- **digits** - *Number* - 精度。
+- **token_symbol** - *String* - 代币符号。
+- **token_name** - *String* - 代币名称。
+- **total_amount** - *String* - 发行量（第一次发行量，如未发行则为 `"0"`）。
+- **is_withdraw** - *Bool* - 可销毁 `true:可销毁 false:不可销毁`。
+- **withdraw** - *String* - 销毁量（如不可销毁，或未销毁则为 `"0"`）。
+- **is_emission** - *Bool* - 可增发 `true:可增发 false:不可增发`。
+- **emission** - *String* - 增发量 (如不可增发，或未增发则为 `"0"`)。
+- **introduction** - *String* - 生态简介。
+- **logo** - *Number* - 生态Logo Id（对应Binary table id），可通过RESTFUL API 获取。
+- **creator** - *String* - 生态创建者。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.ecosystemInfo","id":1,"params":[1]}' http://127.0.0.1:7079
@@ -1000,37 +1001,37 @@ Access to ecological information
 ```
 
 
-### **ibax.appParams**
-Returns a list of application parameters in the current or specified ecosystem 
+### **ibax.appParams** {#ibax-appparams}
+返回当前或指定生态系统中的应用程序参数列表。
 
 [Authorization](#authorization)
 
-#### Parameters
-- **appid** - *Number* - the application ID.
+**参数**
+- **appid** - *Number* - 应用程序ID。
 
-- **ecosystem** - *Number* - [Omitempty](#omitempty) - Ecosystem ID;
+- **ecosystem** - *Number* - [Omitempty](#omitempty) - 生态系统ID；
 
-    If unspecified or 0, the parameters of the current ecosystem will be returned.
+    如果未指定或为0，将返回当前生态系统的参数。
 
-- **names** - *String* - [Omitempty](#omitempty) - Filter the application parameter names.
+- **names** - *String* - [Omitempty](#omitempty) - 筛选应用参数名称。
+    
+    由逗号分隔的名称列表，例如: `name1,name2`。
 
-    A comma-separated list of names, e.g.: `name1,name2`.
+- **offset** - *Number* - [Omitempty](#omitempty) 偏移量，默认为0。
 
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
-
-- **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
+- **limit** - *Number* [Omitempty](#omitempty) 条目条数，默认10条,最多100条。
  
-#### Return Value
+**返回值**
 
-*Array* - List of application parameters
-- **app_id** - *Number* - Application ID
-- **list** - *Number* - Each element of the array contains the following parameters
-    - **id** - *String* - parameter ID, unique;
-    - **name** - *String* - the name of the parameter;
-    - **value** - *String* - the parameter value;
-    - **conditions** - *String* - permissions to change parameters.
+*Array* - 应用参数列表。
+- **app_id** - *Number* - 应用程序ID。
+- **list** - *Number* - 数组中的每个元素包含以下参数。
+    - **id** - *String* - 参数ID，唯一；
+    - **name** - *String* - 参数名称；
+    - **value** - *String* - 参数值；
+    - **conditions** - *String* - 更改参数的权限。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.appParams","id":1,"params":[1,1,"role_developer,role_governancer"]}' http://127.0.0.1:7079
@@ -1058,37 +1059,37 @@ Returns a list of application parameters in the current or specified ecosystem
         }
     }
 ```
- 
 
-### **ibax.getEcosystemParams** 
-Get a list of ecosystem parameters
- 
+
+### **ibax.getEcosystemParams** {#ibax-getecosystemparams}
+获取生态系统参数列表。
+
 [Authorization](#authorization)
 
-#### Parameters
-- **ecosystem** - *Number* - [Omitempty](#omitempty) - Ecosystem ID 
+**参数**
+- **ecosystem** - *Number* - [Omitempty](#omitempty) - 生态系统ID。
+    
+    如果为0或者无此参数时，默认：当前生态id。
 
-    If 0 or no such parameter, default: current ecid.
+- **names** - *String* - [Omitempty](#omitempty) - 筛选参数名称。
+    
+    由逗号分隔的名称列表，例如: `name1,name2`。
+    
+    当有筛选参数时,*offset* 与 *limit* 参数无效。
 
-- **names** - *String* - [Omitempty](#omitempty) - The name of the filter parameter.
+- **offset** - *Number* - [Omitempty](#omitempty) 偏移量，默认为0。
 
-    Comma-separated list of names, e.g.: `name1,name2`
-
-    The *offset* and *limit* parameters are invalid when there is a filter parameter.
-
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
-
-- **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
+- **limit** - *Number* [Omitempty](#omitempty) 条目条数，默认10条,最多100条。
 
 
-#### Return Value
-- **list** - *Array* - Each element of the array contains the following parameters:
-    - **id** - *String* - The id of the parameter, unique.
-    - **name** - *String* - The name of the parameter.
-    - **value** - *String* - The value of the parameter.
-    - **conditions** - *String* - permissions to change parameters.
+**返回值**
+- **list** - *Array* - 数组中的每个元素包含以下参数：
+    - **id** - *String* - 参数id，唯一。
+    - **name** - *String* - 参数名称。
+    - **value** - *String* - 参数值。
+    - **conditions** - *String* - 更改参数的权限。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getEcosystemParams","id":1,"params":[0,"changing_app_params,changing_language"]}' http://127.0.0.1:7079
@@ -1117,26 +1118,26 @@ Get a list of ecosystem parameters
 ```
 
 
-### **ibax.getTableCount**
-Returns a list of data tables for the current ecosystem.
+### **ibax.getTableCount** {#ibax-gettablecount}
+返回当前生态系统的数据表列表。
 
-Offset and number of entries can be set 
+可以设置偏移量和条目条数。
 
 [Authorization](#authorization)
-#### Parameters
+**参数**
 
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
+- **offset** - *Number* - [Omitempty](#omitempty) 偏移量，默认为0。
 
-- **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
+- **limit** - *Number* [Omitempty](#omitempty) 条目条数，默认25条,最多100条。
 
-#### Return Value
-- **count** - *Number* - The total number of sheets of the current ecological data table.
+**返回值**
+- **count** - *Number* - 当前生态数据表总张数。
 
-- **list** - *Array* - Each element of the array contains the following parameters:
-    - **name** - *String* - The name of the data table without prefix.
-    - **count** - *String* - The number of entries in the data table.
+- **list** - *Array* - 数组中的每个元素包含以下参数：
+    - **name** - *String* - 无前缀的数据表名称。
+    - **count** - *String* - 数据表中的条目数。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getTableCount","id":1,"params":[0,2]}' http://127.0.0.1:7079
@@ -1160,35 +1161,35 @@ Offset and number of entries can be set
         }
     }
 ```
- 
 
-### **ibax.getTable**
-Returns information about the current ecosystem request data table. 
+
+### **ibax.getTable** {#ibax-gettable}
+返回当前生态系统请求数据表的相关信息。
 
 [Authorization](#authorization)
 
-#### Parameters
-- **tableName** - *String* - Data table name
+**参数**
+- **tableName** - *String* - 数据表名称。
 
-#### Return Value
-- **name** - *String* - The name of the data table.
+**返回值**
+- **name** - *String* - 数据表名称。
 
-- **insert** - *String* - Add permission to add an entry.
+- **insert** - *String* - 新增条目的权限。
 
-- **new_column** - *String* - Add new field permission.
+- **new_column** - *String* - 新增字段权限。
 
-- **update** - *String* - Change entry permissions.
+- **update** - *String* - 更改条目权限。
 
-- **app_id** - *String* - The application id.
+- **app_id** - *String* - 应用程序id。
 
-- **conditions** - *String* - Conditions for changing permissions.
+- **conditions** - *String* - 更改权限的条件。
 
-- **columns** - *Array* - Array of information related to data table fields:
-    - **name** - *String* - The name of the field.
-    - **type** - *String* - The field data type.
-    - **perm** - *String* - Permission to change the value of this field.
- 
-#### Example
+- **columns** - *Array* - 数据表字段相关信息数组：
+    - **name** - *String* - 字段名称。
+    - **type** - *String* - 字段数据类型。
+    - **perm** - *String* - 更改该字段值的权限。
+
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getTable","id":1,"params":["app_params"]}' http://127.0.0.1:7079
@@ -1241,51 +1242,49 @@ Returns information about the current ecosystem request data table.
 ```
 
 
-### **ibax.getList**
-Returns the entry of the specified data table. 
+### **ibax.getList** {#ibax-getlist}
+返回指定数据表的条目。
 
-You can specify the columns to be returned.
+可以指定要返回的列。
 
-You can set the offset and the number of entries. 
+可以设置偏移量和条目条数。
 
-You can set the query criteria.
+可以设置查询条件。
 
-Hex encoding of data tables of type *BYTEA* (byte arrays, hashes, byte code arrays) 
+对数据表中类型为*BYTEA*(字节数组、哈希、字节码数组)做16进制编码处理。
 
 [Authorization](#authorization)
 
-#### Parameters
-*Object* - Get the data table object
-- **name** - *String* - The name of the data table.
+**参数**
+*Object* - 获取数据表对象。
+- **name** - *String* - 数据表名称。
 
-- **limit** - *Number* - [Omitempty](#omitempty) The number of entries, default 25.
+- **limit** - *Number* - [Omitempty](#omitempty) 条目条数，默认25条。
 
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
+- **offset** - *Number* - [Omitempty](#omitempty) 偏移量，默认为0。
 
-- **order** - *String* - [Omitempty](#omitempty) Sort by, default id ASC.
+- **order** - *String* - [Omitempty](#omitempty) 排序方式，默认id ASC。
 
-- **columns** - *String* - [Omitempty](#omitempty) A comma-separated list of requested columns, if not specified, all columns will be returned.
+- **columns** - *String* - [Omitempty](#omitempty) 请求列的列表，以逗号分隔，如果未指定，将返回所有列。
 
-    The id column will be returned in all cases.
+    在所有情况下都会返回id列。   
 
-- **where** - *Object* - [Omitempty](#omitempty) 
+- **where** - *Object* - [Omitempty](#omitempty)
 
-    Query criteria
+    查询条件，Example:如果要查询 id>2 和 name = john，
 
-    Example:If you want to query id>2 and name = john
- 
-    You can use `where:{"id":{"$gt":2}, "name":{"$eq": "john"}}`
-
-    For details, please refer to [DBFind](../topics/script.md#dbfind) where syntax 
+    你可以使用 `where:{"id":{"$gt":2},"name":{"$eq":"john"}}`，
     
-#### Return Value
-- **count** - *Number* - the total number of entries.
-- **list** - *Array* - Each element of the array contains the following parameters:
+    详情请参考[DBFind](../topics/script.md#dbfind) where 语法。
 
-    - **id** - *String* - The ID of the entry.
-    - **...** - Other columns of the data table.
+**返回值**
+- **count** - *Number* - 条目总数。
+- **list** - *Array* - 数组中的每个元素包含以下参数：
 
-#### Example
+    - **id** - *String* - 条目ID。
+    - **...** - 数据表其他列。
+
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getList","id":1,"params":[{"name":"@1history","where":{"$and": [{"id":{"$gt": 2}}, {"id":{"$lt": 5}}]}}]}' http://127.0.0.1:7079
@@ -1316,37 +1315,35 @@ Hex encoding of data tables of type *BYTEA* (byte arrays, hashes, byte code arra
             ]
         }
     }
-``` 
+```
 
 
-### **ibax.getSections**
-Return to the tab of the current ecosystem
-List of table entries, you can set the offset and the number of entries.
+### **ibax.getSections** {#ibax-getsections}
+返回当前生态系统的 选项卡表条目的列表，可以设置偏移量和条目条数。
 
-If *role_access*
-field contains a list of roles and does not include the current role, no record will be returned. *title*
-The data in the field will be replaced by the *Accept-Language* language resource in the request header.
+如果 *role_access*字段包含角色列表，并且不包括当前角色，则不会返回记录。
+*title*字段内数据将被请求头的 *Accept-Language* 语言资源替换。
 
-[Authorization](#authorization) 
+[Authorization](#authorization)
 
-#### Parameters
+**参数**
 
-- *Object* - Get the actions request object
-    - **limit** - *Number* - [Omitempty](#omitempty) - The number of entries, default 25 entries.
+- *Object* - 获取sections请求对象。
+    - **limit** - *Number* - [Omitempty](#omitempty) - 条目条数，默认25条。
 
-    - **offset** - *Number* - [Omitempty](#omitempty) - The offset, default is 0.
+    - **offset** - *Number* - [Omitempty](#omitempty) - 偏移量，默认为0。
 
-    - **lang** - *String* - [Omitempty](#omitempty) -
+    - **lang** - *String* - [Omitempty](#omitempty) - 
+        
+        该字段指定多语言资源代码或本地化，例如：*en，zh*。如果未找到指定的多语言资源，例如：*en-US*，则在多语言资源组, **default**: **en** 中搜索。
 
-        This field specifies the multilingual resource code or localization, e.g. *en, zh*. If the specified multilingual resource is not found, e.g. *en-US*, then search in the Multilingual Resources group, **default**: **en**.
+**返回值**
 
-#### Return Value
+- **count** - *Number* - 选项卡 条目总数。
 
-- **count** - *Number* - the total number of tab entries.
+- **list** - *Array* - 数组中每个元素都包含sections表中所有列的信息。
 
-- **list** - *Array* - Each element of the array contains information about all columns in the sections table.
-
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getSections","id":1,"params":[{"offset":0,"limit":2}]}' http://127.0.0.1:7079
@@ -1380,33 +1377,33 @@ The data in the field will be replaced by the *Accept-Language* language resourc
         }
     }
 ```
- 
 
-### **ibax.getRow**
-Returns the entries of the specified data table in the current ecosystem. You can specify the columns to be returned.
 
-[Authorization](#authorization) 
-#### Parameters
-- **tableName** - *String* - The name of the data table.
+### **ibax.getRow** {#ibax-getrow}
+返回当前生态系统中指定数据表的条目。可以指定要返回的列。
 
-- **id** - *Number* - the ID of the entry.
+[Authorization](#authorization)
+**参数**
+- **tableName** - *String* - 数据表名称。
+
+- **id** - *Number* - 条目ID。
 
 - **columns** - *String* - [Omitempty](#omitempty)
- 
-    A comma-separated list of requested columns, if not specified, all columns will be returned.
 
-    If you do not filter, you can place a blank "". 
+    请求列的列表，以逗号分隔，如果未指定，将返回所有列。
     
-    The id column will be returned in all cases.
+    如不筛选可置空""。
+    
+    在所有情况下都会返回id列。
 
-- **whereColumn** - *String* - [Omitempty](#omitempty) - Find column name (only Number type columns can be found)
+- **whereColumn** - *String* - [Omitempty](#omitempty) - 查找列名（只可查找Number类型列）。
 
-#### Return Value
-- **value**- *Object* - object that receives column values
-    - **id** - *String* - The ID of the entry.
-    - **...** - The sequence of requested columns.
+**返回值**
+- **value**- *Object* - 接收列值的对象。
+    - **id** - *String* - 条目ID。
+    - **...** - 请求列的序列。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getRow","id":1,"params":["@1history",4,"id,sender_id,recipient_id,amount,ecosystem,created_at","id"]}' http://127.0.0.1:7079
@@ -1429,28 +1426,29 @@ Returns the entries of the specified data table in the current ecosystem. You ca
 ```
 
 
-### **ibax.systemParams**
-Returns the list of platform parameters. 
+### **ibax.systemParams** {#ibax-systemparams}
+返回平台参数列表。
 
 [Authorization](#authorization)
-#### Parameters
-- **names** - *String* [Omitempty](#omitempty) - A list of request parameters, separated by commas.
+**参数**
+- **names** - *String* [Omitempty](#omitempty) - 请求参数列表，用逗号分隔。
 
-    For example `names="name1,name2"`.
+    例如 `names="name1,name2"`。
+    当有筛选参数时,*offset* 与 *limit* 参数无效。
 
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
+- **offset** - *Number* - [Omitempty](#omitempty) 偏移量，默认为0。
 
-- **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
+- **limit** - *Number* [Omitempty](#omitempty) 条目条数，默认10条,最多100条。
 
-#### Return Value
+**返回值**
 
--	**list** - *Array* - Each element of the array contains the following parameters:
-    - **id** - *String* - Unique id
-    - **name** - *String* - The name of the parameter.
-    - **value** - *String* - The value of the parameter.
-    - **conditions** - *String* - permissions to change parameters.
+-   **list** - *Array* - 数组中每个元素包含以下参数：
+    - **id** - *String* - 唯一id。
+    - **name** - *String* - 参数名称。
+    - **value** - *String* - 参数值。
+    - **conditions** - *String* - 更改参数的权限。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.systemParams","id":1,"params":["gap_between_blocks,honor_nodes"]}' http://127.0.0.1:7079
@@ -1479,19 +1477,19 @@ Returns the list of platform parameters.
 ```
 
 
-### **ibax.history**
-Returns the changed records of the entries of the specified data table in the current ecosystem
+### **ibax.history** {#ibax-history}
+返回当前生态系统中指定数据表中条目的更改记录。
 
-[Authorization](#authorization) 
-#### Parameters
+[Authorization](#authorization)
+**参数**
 
-- **name** - *String* - The name of the data table.
-- **tableId** - *Number* - the ID of the entry.
+- **name** - *String* - 数据表名称。
+- **tableId** - *Number* - 条目ID。
 
-#### Return Value
-- **list** - *Array* - Each element of the array contains change records for the requested entry.
+**返回值**
+- **list** - *Array* - 数组中每个元素包含所请求条目的更改记录。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.history","id":1,"params":["contracts",1]}' http://127.0.0.1:7079
@@ -1513,24 +1511,24 @@ Returns the changed records of the entries of the specified data table in the cu
 ```
 
 
-### **ibax.getPageRow**
-Gets the current entry in the ecosystempages data table field. 
+### **ibax.getPageRow** {#ibax-getpagerow}
+获取当前生态系统pages数据表字段的条目。
 
 [Authorization](#authorization)
 
-#### Parameters
-- **name** - *String* - Specifies the name of the entry in the table.
+**参数**
+- **name** - *String* - 指定表中条目的名称。
 
-#### Return Value
-- **id** - *Number* - the ID of the entry.
-- **name** - *String* - The name of the entry.
-- **value** - *String* - The content.
-- **menu** - *String* - Directory.
-- **nodesCount** - *Number* - the number of nodes the page needs to validate
-- **app_id** - *Number* - Application Id
-- **conditions** - *String* - permissions to change parameters
+**返回值**
+- **id** - *Number* - 条目ID。
+- **name** - *String* - 条目名称。
+- **value** - *String* - 内容。
+- **menu** - *String* - 目录。
+- **nodesCount** - *Number* - 页面所需验证的节点数。
+- **app_id** - *Number* - 应用Id。
+- **conditions** - *String* - 更改参数的权限。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getPageRow","id":1,"params":["default_page"]}' http://127.0.0.1:7079
@@ -1553,22 +1551,22 @@ Gets the current entry in the ecosystempages data table field.
 ```
 
 
-### **ibax.getMenuRow**
-Gets the current entry in the ecosystem menu data table field.
- 
+### **ibax.getMenuRow** {#ibax-getmenurow}
+获取当前生态系统menu数据表字段的条目。
+
 [Authorization](#authorization)
 
-#### Parameters
-- **name** - *String* - Specifies the name of the entry in the table.
+**参数**
+- **name** - *String* - 指定表中条目的名称。
 
-#### Return Value
-- **id** - *Number* - the ID of the entry.
-- **name** - *String* - The name of the entry.
-- **title** - *String* - The title.
-- **value** - *String* - The content.
-- **conditions** - *String* - permissions to change parameters
+**返回值**
+- **id** - *Number* - 条目ID。
+- **name** - *String* - 条目名称。
+- **title** - *String* - 标题。
+- **value** - *String* - 内容。
+- **conditions** - *String* - 更改参数的权限。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getMenuRow","id":1,"params":["default_menu"]}' http://127.0.0.1:7079
@@ -1588,21 +1586,21 @@ Gets the current entry in the ecosystem menu data table field.
 ```
 
 
-### **ibax.getSnippetRow**
-Gets the current entry in the ecosystem snippet data table field. 
+### **ibax.getSnippetRow** {#ibax-getsnippetrow}
+获取当前生态系统snippet数据表字段的条目。
 
 [Authorization](#authorization)
 
-#### Parameters
-- **name** - *String* - Specifies the name of the entry in the table. 
+**参数**
+- **name** - *String* - 指定表中条目的名称。
 
-#### Return Value 
-- **id** - *Number* - the ID of the entry.
-- **name** - *String* - The name of the entry.
-- **value** - *String* - The content.
-- **conditions** - *String* - permissions to change parameters.
+**返回值**
+- **id** - *Number* - 条目ID。
+- **name** - *String* - 条目名称。
+- **value** - *String* - 内容。
+- **conditions** - *String* - 更改参数的权限。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getSnippetRow","id":1,"params":["welcome"]}' http://127.0.0.1:7079
@@ -1621,31 +1619,31 @@ Gets the current entry in the ecosystem snippet data table field.
 ```
 
 
-### **ibax.getAppContent**
-Get application related information (including page, snippet, menu) 
+### **ibax.getAppContent** {#ibax-getappcontent}
+获取应用相关信息（包括page、snippet、menu）。
 
 [Authorization](#authorization)
 
-#### Parameters
-- **id** - *Number* - Application id
+**参数**
+- **id** - *Number* - 应用id。
 
-#### Return Value
-- **snippets** - *Array* - Array of code snippet information
+**返回值**
+- **snippets** - *Array* - 代码片段信息数组。
 
-    - **id** - *Number* - id
-    - **name** - *String* - Code snippet name
+    - **id** - *Number* - id。
+    - **name** - *String* - 代码片段名称。
 
-- **pages** - *Array* - Array of page information
+- **pages** - *Array* - 页面信息数组。
 
-    - **id** - *Number* - id
-    - **name** - *String* - page name
- 
-- **contracts** - *Array* - an array of contract information
+    - **id** - *Number* - id。
+    - **name** - *String* - 页面名称。
 
-    - **id** - *Number* - id
-    - **name** - *String* - Contract name
+- **contracts** - *Array* - 合约信息数组。
 
-#### Example
+    - **id** - *Number* - id。
+    - **name** - *String* - 合约名称。
+
+**示例**
 ```text
     //Request
     //Response
@@ -1688,23 +1686,23 @@ Get application related information (including page, snippet, menu)
 ```
 
 
-### **ibax.getMember** 
-Get member information
+### **ibax.getMember** {#ibax-getmember}
+获取成员信息。
 
-#### Parameters
-**account** - *String* - Member Information
+**参数**
+**account** - *String* - 成员信息。
 
-**ecosystemId** - *Number* - ecoid
-
-
-#### Return Value
-- **id** - *Number* - member id
-- **member_name** - *String* - Name
-- **image_id** - *Number* - Avatar id
-- **member_info** - *String* - Introduction
+**ecosystemId** - *Number* - 生态id。
 
 
-#### Example
+**返回值**
+- **id** - *Number* - 成员id。
+- **member_name** - *String* - 名称。
+- **image_id** - *Number* - 头像id。
+- **member_info** - *String* - 简介。
+
+
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}}" -d '{"jsonrpc":"2.0","method":"ibax.getMember","id":1,"params":["1497-2036-4953-3607-1121",1]}' http://127.0.0.1:7079
@@ -1722,31 +1720,31 @@ Get member information
     }
 ```
 
-### **ibax.getContracts**
-Get the list of contracts in the current ecosystem, you can set the offset and the number of entries.
+### **ibax.getContracts** {#ibax-getcontracts}
+获取当前生态系统中的合约列表，可以设置偏移量和条目条数。
 
-[Authorization](#authorization) 
+[Authorization](#authorization)
 
-#### Parameters
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
-- **limit** - *Number* - [Omitempty](#omitempty) The number of entries, default 25.
+**参数**
+- **offset** - *Number* - [Omitempty](#omitempty) 偏移量，默认为0。
+- **limit** - *Number* - [Omitempty](#omitempty) 条目条数，默认25条。
 
-#### Return Value
-- **count** - *Number* - the total number of entries.
+**返回值**
+- **count** - *Number* - 条目总数。
 
-- **list** - *Array* - Each element of the array contains the following parameters:
-    - **id** - *String* - Contract ID.
-    - **name** - *String* - The name of the contract.
-    - **value** - *String* - The content of the contract.
-    - **wallet_id** - *String* - The address of the account to which the contract is bound.
-    - **address** - *String* - the address of the contract-bound wallet `XXXX-... -XXXX`.
-    - **ecosystem_id** - *String* - The ecosystem ID to which the contract belongs.
-    - **app_id** - *String* - The ID of the application to which the contract belongs.
-    - **conditions** - *String* - Change the permissions of the contract.
-    - **token_id** - *String* - The ID of the ecosystem where the pass is used as a payment for the contract.
+- **list** - *Array* - 数组中每个元素包含以下参数：
+    - **id** - *String* - 合约ID。
+    - **name** - *String* - 合约名称。
+    - **value** - *String* - 合约内容。
+    - **wallet_id** - *String* - 合约绑定的账户地址。
+    - **address** - *String* - 合约绑定的钱包地址 `XXXX-...-XXXX`。
+    - **ecosystem_id** - *String* - 合约所属的生态系统ID。
+    - **app_id** - *String* - 合约所属的应用程序ID。
+    - **conditions** - *String* - 更改合约的权限。
+    - **token_id** - *String* - 作为支付合约费用的通证所在的生态系统ID。
 
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getContracts","id":1,"params":[0,1]}' http://127.0.0.1:7079
@@ -1773,31 +1771,31 @@ Get the list of contracts in the current ecosystem, you can set the offset and t
         }
     }
 ```
- 
 
-### **ibax.getContractInfo**
-Returns information about the specified contract. 
+
+### **ibax.getContractInfo** {#ibax-getcontractinfo}
+返回指定合约的相关信息。
 
 [Authorization](#authorization)
 
-#### Parameters
-- **contractName**	-	*String*	-	The	name	of	the	contract.	The	format	is `@ecosystem_id%%contractName%`, e.g. @1contractName (the specified eco1contract name contractName) or contractName (the current eco-contract name contractName).
+**参数**
+- **contractName** - *String* - 合约名称。格式为 `@ecosystem_id%%contractName%`,例@1contractName(指定生态1合约名称contractName)或者contractName(当前生态合约名称contractName)。
+    
+**返回值**
 
-#### Return Value
+- **id** - *Number* - VM中合约ID。
+- **name** - *String* - 带生态系统ID的合约名称 `@1MainCondition`。
+- **state** - *Number* - 合约所属的生态系统ID。
+- **walletid** - *String* - 合约绑定的账户地址
+- **tokenid** - *String* - 作为支付合约费用的通证所在的生态系统ID。
+- **address** - *String* - 合约绑定的钱包地址 `XXXX-...-XXXX`。
+- **tableid** - *String* - *contracts* 表中合约所在的条目ID。
+- **fields** - *Array* - 数组中包含合约 **data** 部分每个参数的结构信息：
+    - **name** - *String* - 参数名称。
+    - **type** - *String* - 参数类型。
+    - **optional** - *Bool* - 参数选项，`true` 表示可选参数，`false` 表示必选参数。
 
-- **id** - *Number* - the contract ID in the VM.
-- **name** - *String* - Contract name with ecosystem ID `@1MainCondition`.
-- **state** - *Number* - the ecosystem ID to which the contract belongs.
-- **walletid** - *String* - the address of the account to which the contract is bound
-- **tokenid** - *String* - the ecosystem ID of the pass that is used as the payment for the contract.
-- **address** - *String* - the address of the contract-bound wallet `XXXX-... -XXXX`.
-- **tableid** - *String* - ID of the entry in the *contracts* table where the contract is located.
-- **fields** - *Array* - array containing structural information for each parameter of the contract **data** section:
-    - **name** - *String* - The name of the parameter.
-    - **type** - *String* - The type of the parameter.
-    - **optional** - *Bool* - parameter options, `true` means optional parameters, `false` means mandatory parameters.
-
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getContractInfo","id":1,"params":["@1TokensSend"]}' http://127.0.0.1:7079
@@ -1844,23 +1842,23 @@ Returns information about the specified contract.
         }
     }
 ```
- 
 
-### **ibax.sendTx**
-Receives the transactions in the parameters and adds them to the transaction queue, returning a transaction hash if the request is executed successfully. This hash yields the corresponding transaction within the block and is included in the error text message in case of an error response.
 
-[Authorization](#authorization) 
+### **ibax.sendTx** {#ibax-sendtx}
+接收参数中的交易并将其添加到交易队列，如果请求执行成功，则返回交易哈希。该哈希可获得区块内对应的交易，在发生错误响应时，该哈希包含在错误文本信息中。
 
-#### Parameters
-- *Object* - Transaction data object
-    - **tx_key** - *String* - the content of the transaction, this parameter can specify any name and supports receiving multiple transactions.
+[Authorization](#authorization)
 
-#### Return Value
-- **hashes** - *Array* - transaction hash arrays:
-    - **tx1** - *String* - Hash of transaction 1.
-    - **txN** - *String* - Hash of transaction N.
+**参数**
+- *Object* - 交易数据对象
+    - **tx_key** - *String* - 交易内容，该参数可指定任何名称，支持接收多个交易。
 
-#### Example
+**返回值**
+- **hashes** - *Array* - 交易哈希数组：
+   - **tx1** - *String* - 交易1的哈希。
+   - **txN** - *String* - 交易N的哈希。
+
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.sendTx","id":1,"params":[{"tx1":...,"txN":...}]}' http://127.0.0.1:7079
@@ -1879,27 +1877,27 @@ Receives the transactions in the parameters and adds them to the transaction que
 ```
 
 
-### **ibax.txStatus**
-Gets the block ID and error message of the specified transaction hash. If the return value of the block ID and error text message is null, then the transaction is not yet contained in the block.
- 
+### **ibax.txStatus** {#ibax-txstatus}
+获取指定交易哈希的区块ID和错误信息，如果区块ID和错误文本信息的返回值为空，则该交易尚未包含在区块中。
+
 [Authorization](#authorization)
 
-#### Parameters
-- **hashes** - *String* - transaction hash, split using `,`.
+**参数**
+- **hashes** - *String* - 交易哈希,使用 `,` 分割。
 
-#### Return Value
-- **hash** - *Object* - The transaction hash.
-    - **blockid** - *String* - returns the block ID if the transaction was executed successfully;
+**返回值**
+- **hash** - *Object* - 交易哈希。
+    - **blockid** - *String* - 如果交易执行成功，则返回区块ID； 
 
-        If the transaction execution fails, *blockid* will be `0`, and the corresponding block ID will be returned if the transaction execution error is penalized.
+        如果交易执行失败，则 *blockid* 为 `0`, 如果交易执行错误被惩罚会返回对应区块ID。
+    
+    - **result** - *String* - 通过 **\$result** 变量返回交易结果。
+    - **errmsg** - *Object* - [Omitempty](#omitempty) 如果执行交易失败，则返回错误文本信息。
+        - **type** - *String* - 错误类型。
+        - **error** - *String* - 错误信息。
+    - **penalty** - *Number* - 如果交易执行失败，（0：无惩罚 1：惩罚）。
 
-    - **result** - *String* - Returns the result of the transaction via the **\$result** variable.
-    - **errmsg** - *Object* - [Omitempty](#omitempty) Returns an error text message if the execution of the transaction failed.
-        - **type** - *String* - Error type
-        - **error** - *String* - error message
-    - **penalty** - *Number* - if the transaction execution fails, (0: no penalty 1: penalty)
-
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.txStatus","id":1,"params":["cf46ef1ce7ecfcf48ccf209577fb8a2130426b71adc3a3855aff7f68d114fca9,4a458232de2ab2a3f5361da68e409b925c775346d14139263a69c0e8ecf0166b"]}' http://127.0.0.1:7079
@@ -1928,36 +1926,36 @@ Gets the block ID and error message of the specified transaction hash. If the re
 ```
 
 
-### **ibax.txInfo**
-Returns information about the transaction for the specified hash, including the block ID and the number of confirmations. If optional parameters are specified, the contract name and its associated parameters can also be returned.
+### **ibax.txInfo** {#ibax-txinfo}
+返回指定哈希的交易相关信息，包括区块ID和确认数。如果指定可选参数，还可返回合约名称及其相关参数。
 
-#### Parameters
-- **hash** - *String* - The transaction hash.
+**参数**
+- **hash** - *String* - 交易哈希。
 
-- **contractinfo** - *Bool* [Omitempty](#omitempty) - Contract detail parameter identifier, get contract details related to this transaction, default is `false`
+- **contractinfo** - *Bool* [Omitempty](#omitempty) - 合约详细参数标识，获取该交易相关的合约详情,默认为`false`。
 
-#### Return Value
-- **blockid** - *Number* - The block ID containing the transaction.
-    If the value is `0`, no transactions are found for this hash.
-    If the transaction occurred on the current node, it can be obtained via [ibax.txStatus](#ibax-txstatus)
+**返回值**
+- **blockid** - *Number* - 包含该交易的区块ID。
+    如果该值为 `0`，则找不到该哈希的交易。
+    如果交易发生在当前节点上，可通过[ibax.txStatus](#ibax-txstatus)获取。
 
-- **confirm** - *Number* - the number of node confirmations for this block *blockid*.
+- **confirm** - *Number* - 该区块 *blockid* 的节点确认数。
 
-- **data** - *Object* - Returns contract details if `contentinfo=true` is specified. null if not specified
-    - **block_id** - *Number* - block height
-    - **block_hash** - *String* - block_hash
-    - **address** - *String* - transaction creation address
-    - **ecosystem** - *String* - transaction sending ecid
-    - **hash** - *String* - transaction hash
-    - **expedite** - *String* - expedited fee, or "" if not available
-    - **contract_name** - *String* - Contract name
-    - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo)
-    - **created_at** - *Number* - when the transaction was created
-    - **size** - *String* - transaction size unit: B;KiB;MiB;GiB;TiB
-    - **status** - *String* - status (0:success 1:penalty)
- 
+- **data** - *Object* - 如果指定了 `contentinfo=true`，则返回合约详情信息。未指定时为null。
+    - **block_id** - *Number* - 区块高度。
+    - **block_hash** - *String* - 区块hash。
+    - **address** - *String* - 交易创建地址。
+    - **ecosystem** - *String* - 交易发送生态id。
+    - **hash** - *String* - 交易hash。
+    - **expedite** - *String* - 加急费,如果没有则为""。
+    - **contract_name** - *String* - 合约名称。
+    - **params** - *Object* - 合约参数,合约字段可通过 [ibax.getContractInfo](#ibax-getcontractinfo) 查询。
+    - **created_at** - *Number* - 交易产生时间。
+    - **size** - *String* - 交易大小 unit：B;KiB;MiB;GiB;TiB。
+    - **status** - *String* - 状态（0:成功 1:惩罚）。
 
-#### Example
+
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.txInfo","id":1,"params":["020d8c004b3a0c00a6bfffa36e2746509295e5ea6dbb14e7cd6098c3d906bb58",true]}' http://127.0.0.1:7079
@@ -1990,33 +1988,33 @@ Returns information about the transaction for the specified hash, including the 
 ```
 
 
-### **ibax.txInfoMultiple**
-Returns transaction-related information for the specified hash list.
+### **ibax.txInfoMultiple** {#ibax-txinfomultiple}
+返回指定哈希列表的交易相关信息。
 
-#### Parameters
-- **hashes** - *Array* - A list of transaction hashes.
- 
-- **contractinfo** - *Bool* [Omitempty](#omitempty) - Contract detail parameter identifier, get contract details related to this transaction, default is `false`
+**参数**
+- **hashes** - *Array* - 交易哈希列表。
 
-#### Return Value
--	**results** - *Array* - Data dictionary with transaction hash as key and transaction details as value.
-    - **hash** - *String* - The transaction hash.
-        - **blockid** - *Number* - The block ID containing the transaction. if the value is `0`, then no transaction was found for that hash.
-        - **confirm** - *Number* - the number of confirmations for this block *blockid*.
-        - **data** - *Object* - If `contentinfo=true`is specified, the contract details are returned to this parameter. null when not specified
-            - **block_id**- *Number* - Block height
-            - **block_hash** - *String* - block_hash
-            - **address** - *String* - transaction creation address
-            - **ecosystem** - *String* - transaction sending ecid
-            - **hash** - *String* - transaction hash
-            - **expedite** - *String* - expedited fee, or "" if not available
-            - **contract_name** - *String* - Contract name
-            - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo)
-            - **created_at** - *Number* - when the transaction was created
-            - **size** - *String* - transaction size unit: B;KiB;MiB;GiB;TiB
-            - **status** - *String* - status (0:success 1:penalty)
+- **contractinfo** - *Bool* [Omitempty](#omitempty) - 合约详细参数标识，获取该交易相关的合约详情,默认为`false`。
 
-#### Example
+**返回值**
+-   **results** - *Array* - 数据字典中交易哈希作为键，交易详细作为值。
+    - **hash** - *String* - 交易哈希。
+        - **blockid** - *Number* - 包含该交易的区块ID。如果该值为 `0`，则找不到该哈希的交易。
+        - **confirm** - *Number* - 该区块 *blockid* 的确认数。
+        - **data** - *Object* - 如果指定了 `contentinfo=true`，则合约详情返回给该参数。未指定时为null。
+            - **block_id**- *Number* - 区块高度。
+            - **block_hash** - *String* - 区块hash。
+            - **address** - *String* - 交易创建地址。
+            - **ecosystem** - *String* - 交易发送生态id。
+            - **hash** - *String* - 交易hash。
+            - **expedite** - *String* - 加急费,如果没有则为""
+            - **contract_name** - *String* - 合约名称。
+            - **params** - *Object* - 合约参数,合约字段可通过 [ibax.getContractInfo](#ibax-getcontractinfo) 查询。
+            - **created_at** - *Number* - 交易产生时间
+            - **size** - *String* - 交易大小 unit：B;KiB;MiB;GiB;TiB。
+            - **status** - *String* - 状态（0:成功 1:惩罚）。
+
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getPageValidatorsCount","id":1,"params":[["1875b4fc02a8bf5ccf0d3fbce83011dd6711d8d325c7d731ac659b8beffc0284","4a458232de2ab2a3f5361da68e409b925c775346d14139263a69c0e8ecf0166b"],true]}' http://127.0.0.1:7079
@@ -2059,17 +2057,17 @@ Returns transaction-related information for the specified hash list.
 ```
 
 
-### **ibax.getPageValidatorsCount**
-Returns the number of nodes to be validated for the specified page.
+### **ibax.getPageValidatorsCount** {#ibax-getpagevalidatorscount}
+返回指定页面所需验证的节点数。
 
-#### Parameters
-- **name**  -  *String*  -  page  name  in  the  format  `@ecosystem_id%%%page_name%`,  e.g. @1params_list (specifying ecology 1 page name params_list) or params_list (current ecology page name params_list)
+**参数**
+- **name** - *String* - 页面名称，格式为 `@ecosystem_id%%page_name%`,例@1params_list(指定生态1页面名称params_list)或者params_list(当前生态页面名称params_list)。
 
 
-#### Return Value
-- **validate_count** - *Number* - Specifies the number of nodes to be validated by the page.
- 
-#### Example
+**返回值**
+- **validate_count** - *Number* - 指定页面所需验证的节点数。
+
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getPageValidatorsCount","id":1,"params":["@1params_list"]}' http://127.0.0.1:7079
@@ -2085,25 +2083,24 @@ Returns the number of nodes to be validated for the specified page.
 ```
 
 
-### **ibax.getPage**
-Gets the tree of code JSON objects for the specified page name, which is the result of processing by the templating engine.
+### **ibax.getPage** {#ibax-getpage}
+获取指定页面名称的代码JSON对象树，这是模版引擎处理的结果。
 
 [Authorization](#authorization)
 
-#### Parameters
--	**name** - *String* - the name of the page with the ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
-`@1main_page`.
+**参数**
+-   **name** - *String* - 带生态系统ID的页面名称，格式为 `@ecosystem_id%%page_name%`，例如 `@1main_page`。
 
-    If you don't have an ecosystem ID, the default is to find the current ecological page, e.g. `main_page`
+    如果不带生态系统ID，则默认查找当前生态的页面，例如 `main_page`。
 
-#### Return Value
-- **menu** - *String* - The name of the menu to which the page belongs.
+**返回值**
+- **menu** - *String* - 页面所属的菜单名称。
 
-- **menutree** - *Array* - JSON object tree of the page's menus.
+- **menutree** - *Array* - 页面的菜单JSON对象树。
 
-- **tree** - *Array* - page JSON object tree. 
+- **tree** - *Array* - 页面JSON对象树。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getPage","id":1,"params":["@1params_list"]}' http://127.0.0.1:7079
@@ -2137,25 +2134,23 @@ Gets the tree of code JSON objects for the specified page name, which is the res
 ```
 
 
-### **ibax.getMenu**
-Gets the tree of code JSON objects for the specified menu name, which is the result of processing by the template engine.
+### **ibax.getMenu** {#ibax-getmenu}
+获取指定菜单名称的代码JSON对象树，这是模版引擎处理的结果。
 
-[Authorization](#authorization) 
+[Authorization](#authorization)
 
-#### Parameters
--	**name** - *String* -
-    > Menu name with ecosystem ID in the format `@ecosystem_id%%%menu_name%`, e.g.
-    > `@1main_menu`.
-    > If you don't bring the ecosystem ID, the menu of the current ecology will be found by default, for example
-    > `main_menu`
- 
-#### Return Value
+**参数**
+-   **name** - *String* -
+    > 带生态系统ID的菜单名称，格式为 `@ecosystem_id%%menu_name%`，例如 `@1main_menu`。
+    > 如果不带生态系统ID，则默认查找当前生态的菜单，例如 `main_menu`
 
-- **title** - *String* - the menu title.
+**返回值**
 
-- **tree** - *Array* - Menu JSON object tree. 
+- **title** - *String* - 菜单标题。
 
-#### Example
+- **tree** - *Array* - 菜单JSON对象树。
+
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getMenu","id":1,"params":["@1default_menu"]}' http://127.0.0.1:7079
@@ -2182,21 +2177,21 @@ Gets the tree of code JSON objects for the specified menu name, which is the res
 ```
 
 
-### **ibax.getSource**
-Returns a tree of coded JSON objects for the specified page name. Does not execute any functions or receive any data. The returned JSON object tree corresponds to the page template and can be used in the visual page designer. If the page is not found, a 404 error is returned.
+### **ibax.getSource** {#ibax-getsource}
+返回指定页面名称的代码JSON对象树。不执行任何函数或接收任何数据。返回的JSON对象树对应于页面模版，可以在可视化页面设计器中使用。如果找不到页面，则返回404错误。
 
 
 [Authorization](#authorization)
- 
-#### Parameters
--	**name** - *String* -
-    Page  name  with  ecosystem  ID  in  the  format  `@ecosystem_id%%%page_name%`,  for example `@1main_page`.
-    If you don't have an ecosystem ID, the default is to find the current ecological page e.g. `main_page`
 
-#### Return Value
--	**tree** - *Array* - JSON object tree for the page.
+**参数**
+-   **name** - *String* -
+    带生态系统ID的页面名称，格式为 `@ecosystem_id%%page_name%`，例如 `@1main_page`。
+    如果不带生态系统ID，则默认查找当前生态的页面例如 `main_page`。
+    
+**返回值**
+-   **tree** - *Array* - 页面的JSON对象树。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getSource","id":1,"params":["@1params_list"]}' http://127.0.0.1:7079
@@ -2280,27 +2275,26 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
 ```
 
 
-### **ibax.getPageHash**
-Returns a SHA256 hash of the specified page name, or a 404 error if the page is not found.
+### **ibax.getPageHash** {#ibax-getpagehash}
+返回指定页面名称的SHA256哈希，如果找不到页面，则返回404错误。
 
-To receive the correct hash when making requests to other nodes, you must also pass the
-*ecosystem,key_id,role_id*
-parameter. To receive pages from other ecosystems, the ecosystem ID must be prefixed to the page name. For example: `@2mypage`.
+要向其他节点发出请求时接收正确的哈希，还必须传递 *ecosystem,key_id,role_id*参数。
+要从其他生态系统接收页面，生态系统ID必须在页面名称中添加前缀。例如：`@2mypage`。
 
-#### Parameters
-- **name** - *String* - The name of the page with the ecosystem ID. The format is `@ecosystem_id%%%page_name%`, e.g. `@1main_page`, you can specify the eco ID
+**参数**
+- **name** - *String* - 带生态系统ID的页面名称。格式为 `@ecosystem_id%%page_name%`，例如 `@1main_page`,可指定生态ID
 
-- **ecosystem** - *Number* - [Omitempty](#omitempty) Ecosystem ID.
+- **ecosystem** - *Number* - [Omitempty](#omitempty) 生态系统ID。
 
-- *Object* - [Omitempty](#omitempty) Get the specified page object
-    - **key_id** - *String* - The account address.
-    - **role_id** - *String* - The role ID.
+- *Object* - [Omitempty](#omitempty) 获取指定页面对象。
+    - **key_id** - *String* - 账户地址。
+    - **role_id** - *String* - 角色ID。
 
-#### Return Value
+**返回值**
 - *Object* -
-    - **hash** - *String* - Hexadecimal hash.
+    - **hash** - *String* - 十六进制哈希值。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getPageHash","id":1,"params":["@1params_list",0,{"role_id":"1","key_id":"-6484253546138538120"}]}' http://127.0.0.1:7079
@@ -2316,20 +2310,20 @@ parameter. To receive pages from other ecosystems, the ecosystem ID must be pref
 ```
 
 
-### **ibax.getContent**
-Returns the number of JSON objects for the page code from the **template** parameter, if the optional parameter
-**source** Specified as `true`, this JSON object tree does not perform any functions and receive data. This JSON object tree can be used in the visual page designer.
+### **ibax.getContent** {#ibax-getcontent}
+从 **template** 参数返回页面代码的JSON对象数，如果将可选参数。
+**source** 指定为 `true`，则该JSON对象树不执行任何函数和接收数据。该JSON对象树可以在可视化页面设计器中使用。
 
-#### Parameters
+**参数**
 - *Object*
-    - **template** - *String* - page code.
+    - **template** - *String* - 页面代码。
 
-    - **source** - *Bool* - If specified as `true`, the JSON object tree does not perform any functions and receives data.
+    - **source** - *Bool* - 如果指定为 `true`，则JSON对象树不执行任何函数和接收数据。
 
-#### Return Value
-- **tree** - *Object* - JSON object tree.
+**返回值**
+- **tree** - *Object* - JSON对象树。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getContent","id":1,"params":[{"template","..."source":true}]}' http://127.0.0.1:7079
@@ -2352,29 +2346,29 @@ Returns the number of JSON objects for the page code from the **template** param
 ```
 
 
-### **ibax.getBlockInfo**
-Returns information about the specified block ID.
+### **ibax.getBlockInfo** {#ibax-getblockinfo}
+返回指定区块ID的相关信息。
 
-#### Parameters
--	**id** - *Number* - the height of the block. 
+**参数**
+- **id** - *Number* - 区块高度。
 
-#### Return Value
+**返回值**
 
-- **hash** - *String* - The block hash value.
+- **hash** - *String* - 区块哈希值。
 
-- **key_id** - *Number* - the address of the account that signed the block.
+- **key_id** - *Number* - 签署该区块的账户地址。
 
-- **time** - *Number* block generation timestamp.
+- **time** - *Number* 区块生成时间戳。
 
-- **tx_count** - *Number* - the total number of transactions within the block.
+- **tx_count** - *Number* - 该区块内的交易总数。
 
-- **rollbacks_hash** - *String* - The block rollback hash.
+- **rollbacks_hash** - *String* - 区块回滚哈希值。
 
-- **node_position** - *Number* - The position of the block in the honor node list.
+- **node_position** - *Number* - 该区块在 荣誉节点 列表的位置。
 
-- **consensus_mode** *Number* - Consensus mode, parameters (1: creator management mode 2: DAO governance mode)
+- **consensus_mode** *Number* - 共识模式，参数（1: 创建者管理模式 2:DAO治理模式）
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBlockInfo","id":1,"params":[12]}' http://127.0.0.1:7079
@@ -2396,20 +2390,20 @@ Returns information about the specified block ID.
 ```
 
 
-### **ibax.getConfig**
-Get the host address and port of centrifugo
+### **ibax.getConfig** {#ibax-getconfig}
+获取centrifugo的主机地址和端口。
 
-#### Parameters
-- **option** - *String* - Configuration item
+**参数**
+- **option** - *String* - 配置项。
 
-    1. "centrifugo" - messaging service
+    1."centrifugo" - 消息服务。
 
 
-#### Return Value
+**返回值**
 
-- **centrifugo** - *String* - [Omitempty](#omitempty) host address and port of centrifugo Result format `http://address:port`, e.g.: `http://127.0.0.1:8100`.
+- **centrifugo** - *String* - [Omitempty](#omitempty) centrifugo的主机地址和端口 结果格式 `http://address:port`，例如: `http://127.0.0.1:8100`。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getConfig","id":1,"params":["centrifugo"]}' http://127.0.0.1:7079
@@ -2427,25 +2421,25 @@ Get the host address and port of centrifugo
 
 
 
-### **net.getNetwork** 
-Get node information
- 
-#### Parameters 
-None
+### **net.getNetwork** {#net-getnetwork}
+获取节点信息。
 
-#### Return Value
-- **network_id** - *String* - The network identifier.
-- **centrifugo_url** - *String* - centrifugo message service address
-- **test** - *Bool* - whether it is a test chain
-- **private** - *Bool* - whether the chain is private
-- **honor_nodes** - *Object* - List of honor nodes
-    - **tcp_address** - *String* - tcp address
-    - **api_address** - *String* - api address
-    - **public_key** - *String* - node public key
-    - **unban_time** - *String* - Unlock time
+**参数**
+无
+
+**返回值**
+- **network_id** - *String* - 网络标识符。
+- **centrifugo_url** - *String* - centrifugo消息服务地址。
+- **test** - *Bool* - 是否为测试链。
+- **private** - *Bool* - 是否为私有链。
+- **honor_nodes** - *Object* - 荣誉节点列表。
+    - **tcp_address** - *String* - tcp地址。
+    - **api_address** - *String* - api地址。
+    - **public_key** - *String* - 节点公钥。
+    - **unban_time** - *String* - 解锁时间。
 
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"net.getNetwork","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2470,21 +2464,21 @@ None
         }
     }
 ```
- 
 
-### **net.status**
-Get the current node status
 
-#### Parameters 
-None
+### **net.status** {#net-status}
+获取当前节点状态。
 
-#### Return Value
-- **status** - *String* - Node Status
-    "node server status is running" - the node is running 
-    "node server is updating" - node is being updated 
-    "node server is stopped" - node suspended
+**参数**
+无
 
-#### Example
+**返回值**
+- **status** - *String* - 节点状态。
+    "node server status is running" - 节点运行中。
+    "node server is updating" - 节点更新中。
+    "node server is stopped" - 节点暂停。
+
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"net.status","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2500,16 +2494,16 @@ None
 
 
 
-### **rpc.modules**
-Get the currently registered JSON-RPC interface
+### **rpc.modules** {#rpc-modules}
+获取当前已注册的JSON-RPC接口。
 
-#### Parameters 
-None
+**参数**
+无
 
-#### Return Value
-- *Array* - JSON-RPC interface array
+**返回值**
+- *Array* - JSON-RPC接口数组。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"rpc.modules","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2534,16 +2528,16 @@ None
 
 
 
-### **admin.startJsonRpc**
-Can be used to switch between JSON-RPC change namespace services
+### **admin.startJsonRpc** {#admin-startjsonrpc}
+可用于切换JSON-RPC更改命名空间服务。
 
-#### Parameters
-**methods** - *String* - JSON-RPC module, default: "ibax,net"
+**参数**
+**methods** - *String* - JSON-RPC 模块,default: "ibax,net"。
 
-#### Return Value
-- *bool* - execution status
+**返回值**
+- *bool* - 执行状态。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"admin.startJsonRpc","id":1,"params":["ibax,net,admin"]}' http://127.0.0.1:8385
@@ -2557,16 +2551,16 @@ Can be used to switch between JSON-RPC change namespace services
 ```
 
 
-### **admin.stopJsonRpc** 
-Close the JSON-RPC service
+### **admin.stopJsonRpc** {#admin-stopjsonrpc}
+关闭JSON-RPC服务。
 
-#### Parameters 
-None
+**参数**
+无
 
-#### Return Value
-- *bool* - execution status
+**返回值**
+- *bool* - 执行状态。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"admin.stopJsonRpc","id":1,"params":[]}' http://127.0.0.1:8385
@@ -2581,17 +2575,17 @@ None
 
 
 
-### **debug.getNodeBanStat** 
-Get node disable status
+### **debug.getNodeBanStat** {#debug-getnodebanstat}
+获取节点禁用状态。
 
-#### Parameters 
-None
+**参数**
+无
 
-#### Return Value
-**node_position** - *Number* - node subscript
-**status** - *Bool* - Disable status, `true` ban status, `false` not disabled
+**返回值**
+**node_position** - *Number* - 节点下标。
+**status** - *Bool* - 禁用状态，`true`禁令状态，`false`未禁用。
 
-#### Example
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"debug.getNodeBanStat","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2608,19 +2602,19 @@ None
         ]
     }
 ```
- 
 
-### **debug.getMemStat**
-Get the current node memory usage
 
-#### Parameters 
-None
+### **debug.getMemStat** {#debug-getmemstat}
+获取当前节点内存使用情况。
 
-#### Return Value
-- **alloc** - *Number* - Number of bytes requested and still in use
-- **sys** - *Number* - Number of bytes fetched from the system
+**参数**
+无
 
-#### Example
+**返回值**
+- **alloc** - *Number* - 已申请且仍在使用的字节数。
+- **sys** - *Number* - 从系统中获取的字节数。
+
+**示例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"debug.getMemStat","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2635,3 +2629,4 @@ None
         }
     }
 ```
+

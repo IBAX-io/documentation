@@ -1,26 +1,26 @@
-# Şablon Dili
+# Şablon Dili {#template-language}
 
-  - [Sayfa yapımı](#sayfa-yapımı)
-    - [Şablon Engine](#şablon-engine)
-    - [Sayfalar oluşturun](#sayfalar-oluşturun)
-      - [Görsel sayfa tasarımcısı](#görsel-sayfa-tasarımcısı)
-      - [Uygulanabilir stiller](#uygulanabilir-stiller)
-      - [Sayfa modülü](#sayfa-modülü)
-      - [Dil kaynağı düzenleyicisi](#dil-kaynağı-düzenleyicisi)
-  - [Logicor şablon dili](#logicor-şablon-dili)
-    - [Logicor'a genel bakış](#logicor'a-genel-bakış)
-      - [Sayfalara parametreler iletmek için PageParams kullanın](#sayfalara-parametreler-iletmek-için-PageParams-kullanın)
-      - [Arama sözleşmeleri](#arama-sözleşmeleri)
-  - [Mantıksal fonksiyon sınıflandırması](#mantıksal-fonksiyon-sınıflandırması)
-    - [Değişkenler üzerinde işlemler:](#değişkenler-üzerinde-işlemler)
-    - [Navigasyon işlemleri:](#navigasyon-işlemleri)
-    - [Veri işleme:](#veri-işleme)
-    - [Veri sunumu:](#Veri-sunumu)
-    - [Verilerin kabulü:](#verilerin-kabulü)
-    - [Veri biçimlendirme öğeleri:](#veri-biçimlendirme-öğeleri)
-    - [Form element:](#form-element)
-    - [Kod bloklarındaki işlemler:](#kod-bloklarındaki-işlemler)
-  - [Mantıksal işlev başvuruları](#mantıksal-işlev-başvuruları)
+  - [Sayfa yapımı](#page-construction)
+    - [Şablon Engine](#template-engine)
+    - [Sayfalar oluşturun](#create-pages)
+      - [Görsel sayfa tasarımcısı](#visual-page-designer)
+      - [Uygulanabilir stiller](#applicable-styles)
+      - [Sayfa modülü](#page-module)
+      - [Dil kaynağı düzenleyicisi](#language-resource-editor)
+  - [Logicor şablon dili](#logicor-template-language)
+    - [Logicor'a genel bakış](#logicor-overview)
+      - [Sayfalara parametreler iletmek için PageParams kullanın](#use-pageparams-to-pass-parameters-to-pages)
+      - [Arama sözleşmeleri](#calling-contracts)
+  - [Mantıksal fonksiyon sınıflandırması](#logicor-function-classification)
+    - [Değişkenler üzerinde işlemler:](#operations-on-variables)
+    - [Navigasyon işlemleri:](#navigational-operations)
+    - [Veri işleme:](#data-manipulation)
+    - [Veri sunumu:](#data-presentation)
+    - [Verilerin kabulü:](#accepting-of-data)
+    - [Veri biçimlendirme öğeleri:](#data-formatting-elements)
+    - [Form element:](#form-elements)
+    - [Kod bloklarındaki işlemler:](#operations-on-code-blocks)
+  - [Mantıksal işlev başvuruları](#logicor-function-references)
     - [Address](#address)
     - [AddressToId](#addresstoid)
     - [AddToolButton](#addtoolbutton)
@@ -87,15 +87,15 @@
       - [Button](#button-app)
       - [Icon](#icon)
 
-## Sayfa yapımı
+## Sayfa yapımı {#page-construction}
 
 Weaver'ın Entegre Geliştirme Ortamı (IDE), bir JavaScript kitaplığı olan React kullanılarak oluşturulmuştur. Sayfa düzenleyicisi ve görsel sayfa tasarımcısı vardır. Sayfalar, tablolardan veri almak ve görüntülemek, kullanıcı girdi verilerini almak için formlar oluşturmak, sözleşmelere veri iletmek ve uygulama sayfaları arasında gezinmek için kullanılan bir uygulamanın temel parçalarıdır. Sözleşmeler gibi, sayfalar da blok zincirinde depolanır, bu da yazılım istemcisine yüklendiğinde kurcalamaya karşı dayanıklı olmalarını sağlayabilir.
 
-### Şablon Engine
+### Şablon Engine {#template-engine}
 
 Sayfa öğeleri (sayfalar ve menüler), geliştiriciler tarafından Weaver'ın sayfa düzenleyicisindeki şablon dilini kullanarak bir doğrulama düğümünün şablon motorunda oluşturulur. Tüm sayfalar, IBAX'in geliştirme ekibi tarafından geliştirilen Logicor dili kullanılarak oluşturulmuştur. Ağdaki düğümlerden sayfa istemek için content/... API komutlarını kullanın. Şablon motorunun bu tür bir isteğe yanıt olarak gönderdiği şey bir HTML sayfası değil, şablon yapısına uygun bir ağaç oluşturan HTML etiketlerinden oluşan bir JSON kodudur. Şablon motorunu test etmek istiyorsanız, [content](../reference/api2.md#content) API komutuna başvurabilirsiniz.
 
-### Sayfalar oluşturun
+### Sayfalar oluşturun {#create-pages}
 
 Weaver'ın yönetim aracının Sayfalar bölümünde bulunabilen sayfaları oluşturmak ve düzenlemek için sayfa düzenleyiciyi kullanabilirsiniz. Düzenleyici şunlar için kullanılabilir:
 
@@ -106,19 +106,19 @@ Weaver'ın yönetim aracının Sayfalar bölümünde bulunabilen sayfaları olu�
 * Görsel sayfa tasarımcısını başlatın;
 * Önizleme sayfaları.
 
-#### Görsel sayfa tasarımcısı
+#### Görsel sayfa tasarımcısı {#visual-page-designer}
 
 Görsel sayfa tasarımcısı, Logicor dilinde arayüz kodlarını kullanmadan sayfa düzenleri oluşturmak için kullanılabilir. Bununla, bu tür öğeleri sürükleyip bırakarak sayfalardaki form öğelerinin ve metnin konumunu ayarlayabilir ve sayfa bloklarının boyutunu yapılandırabilirsiniz. Standart veri modellerini sunmak için bir dizi kullanıma hazır blok sağlar: başlıklar, formlar ve bilgi panelleri ile. Görsel sayfa tasarımcısında bir sayfa oluşturduktan sonra sayfa düzenleyicide veri almak için program mantığı ve koşullu yapı yazabilirsiniz. Gelecekte, ek işlevlere sahip görsel bir sayfa tasarımcısı oluşturmayı planlıyoruz.
 
-#### Uygulanabilir stiller
+#### Uygulanabilir stiller {#applicable-styles}
 
 Varsayılan olarak, sayfalar Angular'ın Bootstrap Angle stiliyle sunulur. Kullanıcılar ihtiyaçlarına göre kendi stillerini oluşturabilirler. Stil, ekosistem parametre tablosundaki stil parametresi stil sayfasında saklanır.
 
-#### Sayfa modülü
+#### Sayfa modülü {#page-module}
 
 Bir kod bloğunu birden çok sayfada kullanmak için, onu tutmak ve sayfa koduna gömmek için bir sayfa modülü oluşturabilirsiniz. Sayfa modülleri Weaver'ın Modül Bloklarında oluşturulabilir ve düzenlenebilir. Sayfalar gibi düzenleme izinleri tanımlanabilir.
 
-#### Dil kaynağı düzenleyicisi
+#### Dil kaynağı düzenleyicisi {#language-resource-editor}
 
 Weaver, Logicor şablon dilinin **LangRes** işlevini kullanarak sayfa yerelleştirme için bir mekanizma içerir. Sayfadaki dil kaynak etiketlerini, yazılım istemcisinde veya tarayıcıda kullanıcı tarafından seçilen dile karşılık gelen metin satırlarıyla değiştirebilir. **LangRes** işlevi yerine **$lable$** kısa sözdizimini kullanabilirsiniz. Sözleşme tarafından başlatılan açılır pencerelerdeki mesajların çevirisi, Needle'ın **LangRes** işlevi tarafından gerçekleştirilir.
 
@@ -126,7 +126,7 @@ Weaver'ın Dil kaynakları bölümünde dil kaynakları oluşturabilir ve düzen
 
 Dil kaynakları ekleme ve değiştirme izinleri, diğer tablolarla aynı şekilde tanımlanabilir.
 
-## Logicor şablon dili
+## Logicor şablon dili {#logicor-template-language}
 
 Logicor işlevleri aşağıdaki işlemleri sağlar:
 
@@ -143,7 +143,7 @@ Logicor işlevleri aşağıdaki işlemleri sağlar:
 * Çok seviyeli menüler oluşturma;
 * Sayfa yerelleştirme.
 
-### Logicor'a genel bakış
+### Logicor'a genel bakış {#logicor-overview}
 
 Logicor sayfa şablonu dili, bir işlevin başka bir işlevi ``FuncName(parameters)``` çağırmasına ve işlevleri iç içe yerleştirmesine izin veren işlevsel bir dildir. Parametreleri tırnak işaretleri olmadan belirtebilir ve gereksiz parametreleri silebilirsiniz.
 
@@ -170,7 +170,7 @@ Aşağıdaki değişkenler önceden tanımlanmıştır:
 * `#guest_key#` - Konuk hesabının adresi;
 * `#isMobile#` - 1, Weaver bir mobil cihazda çalışıyorsa.
 
-#### Sayfalara parametreler iletmek için PageParams kullanın
+#### Sayfalara parametreler iletmek için PageParams kullanın {#use-pageparams-to-pass-parameters-to-pages}
 
 Birçok işlev, yeni bir sayfaya yeniden yönlendirme yaparken parametreleri iletmek için kullanılan PageParams parametresini destekler. Örneğin: PageParams: `"param1=değer1,param2=değer2"`. Parametre değeri, basit bir dize veya referans değerine sahip bir değişken olabilir. Parametreleri sayfalara aktarırken, parametre adına sahip bir değişken oluşturulur, örn. "#param1#" ve "#param2#".
 
@@ -181,32 +181,32 @@ Ayrıca Val işlevi, yeniden yönlendirmede belirtilen formlardan veri alabilir.
 
 * `PageParams: "hello=Val(world)"` - Yeni sayfa, world form öğesinin değeriyle merhaba parametresini alır.
 
-#### Arama sözleşmeleri
+#### Arama sözleşmeleri {#calling-contracts}
 
 Logicor, bir formdaki Düğme işlevine tıklayarak sözleşme çağrılarını uygular. Bir olay tetiklendiğinde, kullanıcının sayfadaki bir form alanına girdiği veriler sözleşmeye aktarılacaktır. Form alan adı, çağrılan sözleşmenin veri bölümündeki değişken adına karşılık geliyorsa, veriler otomatik olarak aktarılacaktır. Düğme işlevi, kullanıcının sözleşmenin yürütüldüğünü doğrulaması için kalıcı bir pencere açmasına ve sözleşme başarıyla yürütüldüğünde belirtilen sayfaya yeniden yönlendirmeyi başlatmasına ve belirli parametreleri sayfaya geçirmesine olanak tanır.
 
-## Mantıksal fonksiyon sınıflandırması
+## Mantıksal fonksiyon sınıflandırması {#logicor-function-classification}
 
-### Değişkenler üzerinde işlemler:
+### Değişkenler üzerinde işlemler: {#operations-on-variables}
 
 |        |        |         |
 | ------ | ------ | ------- |
 | [GetVar](#getvar) | [SetVar](#setvar) | [VarAsIs](#varasis) |
 
-### Navigasyon işlemleri:
+### Navigasyon işlemleri: {#navigational-operations} 
 
 |               |        |          |
 | ------------- | ------ | -------- |
 | [AddToolButton](#addtoolbutton) | [Button](#button) | [LinkPage](#linkpage) |
 
-### Veri işleme:
+### Veri işleme: {#data-manipulation}
 
 |           |          |       |
 | --------- | -------- | ----- |
 | [Calculate](#calculate) | [DateTime](#datetime) | [Money](#money) |
 | [CmpTime](#cmptime)   |          |       |
 
-### Veri sunumu:
+### Veri sunumu: {#data-presentation}
 
 |          |           |          |
 | -------- | --------- | -------- |
@@ -215,7 +215,7 @@ Logicor, bir formdaki Düğme işlevine tıklayarak sözleşme çağrılarını 
 | [Chart](#chart)    | [MenuGroup](#menugroup) | [Table](#table)    |
 | [ForList](#forlist)  |           |          |
 
-### Verilerin kabulü:
+### Verilerin kabulü: {#accepting-of-data}
 
 |             |               |                 |
 | ----------- | ------------- | --------------- |
@@ -225,7 +225,7 @@ Logicor, bir formdaki Düğme işlevine tıklayarak sözleşme çağrılarını 
 | [Data](#data)        | [JsonToSource](#jsontosource)  | [Binary](#binary)          |
 | [DBFind](#dbfind)      | [ArrayToSource](#arraytosource) | [TransactionInfo](#transactioninfo) |
 
-### Veri biçimlendirme öğeleri:
+### Veri biçimlendirme öğeleri: {#data-formatting-elements}
 
 |      |          |        |
 | ---- | -------- | ------ |
@@ -233,7 +233,7 @@ Logicor, bir formdaki Düğme işlevine tıklayarak sözleşme çağrılarını 
 | [Em](#em)   | [Label](#label)    | [Strong](#strong) |
 | [P](#p)    |          |        |
 
-### Form element: 
+### Form element:  {#form-elements}
 
 |            |            |          |
 | ---------- | ---------- | -------- |
@@ -241,7 +241,7 @@ Logicor, bir formdaki Düğme işlevine tıklayarak sözleşme çağrılarını 
 | [ImageInput](#imageinput) | [RadioGroup](#radiogroup) | [Map](#map)      |
 | [Input](#input)      | [Select](#select)     |          |
 
-### Kod bloklarındaki işlemler: 
+### Kod bloklarındaki işlemler:  {#operations-on-code-blocks}
 
 |      |      |         |
 | ---- | ---- | ------- |
@@ -250,13 +250,13 @@ Logicor, bir formdaki Düğme işlevine tıklayarak sözleşme çağrılarını 
 
 
 
-## Mantıksal işlev başvuruları
+## Mantıksal işlev başvuruları {#logicor-function-references}
 
-### Address
+### Address {#address}
 
 Bu işlev, belirli bir hesap adresinin `xxxx-xxxx-...-xxxx` cüzdan adresini döndürür; adres belirtilmemişse, parametre olarak mevcut kullanıcının hesap adresi kullanılacaktır.
 
-#### Syntax
+**Syntax**
 
 ```
 Address(account)
@@ -267,17 +267,17 @@ Address(account)
   
     Hesap adresi.
 
-#### Example
+**Example**
 
 ```
 Span(Your wallet: Address(#account#))
 ```
 
-### AddressToId
+### AddressToId {#addresstoid}
 
 Belirli bir cüzdan adresinin xxxx-xxxx-...-xxxx hesap adresini döndürür.
 
-#### Syntax
+**Syntax**
 
 ```
 AddressToId(Wallet)
@@ -288,17 +288,17 @@ AddressToId(Wallet)
   
     The wallet address in XXXX-...-XXXX format.
 
-#### Example
+**Example**
 
 ```
 AddressToId(#wallet#)
 ```
 
-### AddToolButton
+### AddToolButton {#addtoolbutton}
 
 addtoolbutton öğesiyle bir düğme paneli oluşturun.
 
-#### Syntax
+**Syntax**
 
 ```
 AddToolButton(Title, Icon, Page, PageParams)
@@ -338,33 +338,33 @@ AddToolButton(Title, Icon, Page, PageParams)
       Pencere genişliğinin yüzdesi.
        Aralığı 1 ila 100 arasındadır.
 
-#### Example
+**Example**
 
 ```
 AddToolButton(Title: $@1broadcast$, Page: @1notifications_broadcast, Icon: icon-plus).Popup(Header: $@1notifications_broadcast$, Width: "50")
 ```
 
-### And
+### And {#and}
 
 Mantıksal bir işlemin sonucunu döndürür. Parantez içinde listelenen tüm parametreler virgülle ayrılır. Parametrelerden biri boş bir dize, sıfır veya `false` ise, parametre değeri `false`, aksi takdirde parametre değeri `true` olur. Parametre değeri `true` ise, fonksiyon `1`, aksi halde `0` döndürür.
 
-#### Syntax
+**Syntax**
 
 ```
 And(parameters)
 ```
 
-#### Example
+**Example**
 
 ```
 If(And(#myval1#,#myval2#), Span(OK))
 ```
 
-### AppParam
+### AppParam {#appparam}
 
 Geçerli ekosistemin app_params tablosundan alınan uygulama parametresi değerini çıktılayın. Belirtilen ada sahip bir dil kaynağı varsa, değeri otomatik olarak değiştirilecektir.
 
-#### Syntax
+**Syntax**
 ```
 AppParam(App, Name, Index, Source)
 
@@ -388,17 +388,17 @@ AppParam(App, Name, Index, Source)
      Öğeleri belirli parametrelerin değerleri olan bir veri nesnesi oluşturun. Bu nesne, [Tablo](#table) ve [Seç](#select) işlevleri için bir veri kaynağı olarak kullanılabilir.
      Index parametresi ile birlikte kullanılamaz.
 
-#### Example
+**Example**
 
 ```
 AppParam(1, type, Source: mytype)
 ```
 
-### ArrayToSource
+### ArrayToSource {#arraytosource}
 
 Bir arraytosource öğesi oluşturun ve onu bir JSON dizisinin anahtar/değer çiftleriyle doldurun. Elde edilen veriler, daha sonra kaynak giriş işlevinde (örn. Tablo) kullanılabilecek olan Kaynak öğesine yerleştirilir.
 
-#### Syntax
+**Syntax**
 ```
 ArrayToSource(Source, Data)
 
@@ -412,18 +412,18 @@ ArrayToSource(Source, Data)
 
     Bir JSON dizisi veya bir JSON dizisi (`#name#`) içeren bir değişken adı.
 
-#### Example
+**Example**
 
 ```
 ArrayToSource(src, #myjsonarr#)
 ArrayToSource(dat, [1, 2, 3])
 ```
 
-### Binary
+### Binary {#binary}
 
 İkili tablo ikili dosyalarında depolanan statik dosyalara bağlantılar döndürür.
 
-#### Syntax
+**Syntax**
 ```
 Binary(Name, AppID, MemberID)[.ById(ID)][.Ecosystem(ecosystem)]
 ```
@@ -445,7 +445,7 @@ Binary(Name, AppID, MemberID)[.ById(ID)][.Ecosystem(ecosystem)]
 
     Ekosistem ID. Belirtilmezse, mevcut ekosistemden ikili dosya istenir.
 
-#### Example
+**Example**
 
 ```
 Image(Src: Binary("my_image", 1))
@@ -453,18 +453,18 @@ Image(Src: Binary().ById(2))
 Image(Src: Binary().ById(#id#).Ecosystem(#eco#))
 ```
 
-### Button
+### Button {#button}
 
 Bir sözleşme çağırmak veya bir sayfa açmak için bir düğme oluşturacak bir düğme HTML öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 Button(Body, Page, Class, Contract, Params, PageParams)
  [.CompositeContract(Contract, Data)]
  [.Alert(Text, ConfirmButton, CancelButton, Icon)]
  [.Popup(Width, Header)]
  [.Style(Style)]
- [.ErrorRedirect((ErrorID,PageName,PageParams)]
+ [.ErrorRedirect(ErrorID,PageName,PageParams)]
 ```
 
 > Button
@@ -543,17 +543,17 @@ Button(Body, Page, Class, Contract, Params, PageParams)
 
     Sayfaya aktarılan parametreler.
 
-#### Example
+**Example**
 
 ```
 Button(Submit, default_page, mybtn_class).Alert(Alert message)
 Button(Contract: MyContract, Body:My Contract, Class: myclass, Params:"Name=myid,Id=i10,Value")
 ```
 
-### Calculate
+### Calculate {#calculate}
 Exp parametresinde geçirilen aritmetik ifadenin sonucunu döndürür. Aşağıdaki işlemler uygulanabilir: +, -, *, / ve parantezler ().
 
-#### Syntax
+**Syntax**
 ```
 Calculate(Exp, Type, Prec)
 ```
@@ -569,7 +569,7 @@ Calculate(Exp, Type, Prec)
 
     ondalık noktadan sonra iki önemli basamak ile kayan nokta ve para verileri.
 
-#### Example
+**Example**
 
 ```
 Calculate( Exp: (342278783438+5000)\*(#val#-932780000), Type: money, Prec:18 )
@@ -577,11 +577,11 @@ Calculate(10000-(34+5)\*#val#)
 Calculate("((10+#val#-45)\*3.0-10)/4.5 + #val#", Prec: 4)
 ```
 
-### Chart
+### Chart {#chart}
 
 HTML çizelgeleri oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 Chart(Type, Source, FieldLabel, FieldValue, Colors)
 ```
@@ -603,7 +603,7 @@ Chart(Type, Source, FieldLabel, FieldValue, Colors)
 
     Renklerin listesi.
 
-#### Example
+**Example**
 
 ```
 Data(mysrc,"name,count"){
@@ -614,12 +614,12 @@ Data(mysrc,"name,count"){
 Chart(Type: "bar", Source: mysrc, FieldLabel: "name", FieldValue: "count", Colors: "red, green")
 ```
 
-### CmpTime
+### CmpTime {#cmptime}
 
 Aynı formatta iki zaman değerini karşılaştırır.
 Unixtime, `YYYY-AA-GG SS:DD:SS` ve `YYYYMMDD` gibi herhangi bir zaman biçimini destekler.
 
-#### Syntax
+**Syntax**
 
 ```
 CmpTime(Time1, Time2)
@@ -632,18 +632,18 @@ Geri dönüş değeri
 * `0` - Time1 = Time2;
 * `1` - Time1> Time2.
 
-#### Example
+**Example**
 
 ```
 If(CmpTime(#time1#, #time2#)<0){...}
 ```
 
-### Code
+### Code {#code}
 
 Belirtilen kodu görüntülemek için bir kod öğesi oluşturun.
 
 Bir değişkeni değişkenin değeriyle değiştirir (örneğin, `#name#`).
-#### Syntax
+**Syntax**
 ```
 Code(Text)
 ```
@@ -653,7 +653,7 @@ Code(Text)
 
     Kaynak kodu.
 
-#### Example
+**Example**
 
 ```
 Code( P(This is the first line.
@@ -661,12 +661,12 @@ Code( P(This is the first line.
 )
 ```
 
-### CodeAsIs
+### CodeAsIs {#codeasis}
 
 Belirtilen kodu görüntülemek için bir kod öğesi oluşturun.
 Bir değişkeni değeriyle değiştirmez. Örneğin, `#name#` olduğu gibi görüntülenecektir.
 
-#### Syntax
+**Syntax**
 ```
 CodeAsIs(Text)
 ```
@@ -676,7 +676,7 @@ CodeAsIs(Text)
 
     Kyanak kodu.
 
-#### Example
+**Example**
 
 ```
 CodeAsIs( P(This is the #test1#.
@@ -684,11 +684,11 @@ CodeAsIs( P(This is the #test1#.
 )
 ```
 
-### Data
+### Data {#data}
 
 Bir veri öğesi oluşturun, belirtilen verilerle doldurun ve Kaynağa koyun. Ardından, [Tablo](#table) ve diğer işlevlerde veri girişi olarak Kaynak alabilirsiniz. Sütun adlarının sırası, veri giriş değerlerinin sırasına karşılık gelir.
 
-#### Syntax
+**Syntax**
 ```
 Data(Source,Columns,Data)
  [.Custom(Column){Body}]
@@ -713,7 +713,7 @@ Data(Source,Columns,Data)
 
     
 
-### Custom
+### Custom {#custom}
 
     Verilere hesaplanmış sütunlar atayabilirsiniz. Örneğin, düğmeler ve diğer sayfa düzeni öğeleri için alan şablonları belirleyebilirsiniz. Bu alan şablonları genellikle [Tablo](#tablo)'ya ve veri almak için diğer işlevlere atanır.
      Birden çok hesaplanmış sütun atamak istiyorsanız, birden çok Özel işlev kullanın.
@@ -726,7 +726,7 @@ Data(Source,Columns,Data)
 
     Kod bloğu. Girişteki diğer sütunlardan değerler almak için `#columnname#` kullanabilir ve ardından bu değerleri kod bloklarında kullanabilirsiniz.
 
-#### Example
+**Example**
 
 ```
 Data(mysrc,"id,name"){
@@ -736,11 +736,11 @@ Data(mysrc,"id,name"){
  }.Custom(link){Button(Body: View, Class: btn btn-link, Page: user, PageParams: "id=#id#"}
 ```
 
-### DateTime
+### DateTime {#datetime}
 
 Saati ve tarihi belirtilen biçimde görüntüleyin.
 
-#### Syntax
+**Syntax**
 ```
 DateTime(DateTime, Format)
 ```
@@ -754,18 +754,18 @@ DateTime(DateTime, Format)
     Format şablonu: yıl 2 basamaklı `YY`, 4 basamaklı `YYYY`, ay `AA`, gün `GG`, saat SS, dakika AA, saniye SS , örneğin: `YY/AA/GG SS:DD"`
      Belirtilmemiş veya eksik ise `YYYY-AA-GG SS:MI:SS` kullanılacaktır.
 
-#### Example
+**Example**
 
 ```
 DateTime(2017-11-07T17:51:08)
 DateTime(#mytime#,HH:MI DD.MM.YYYY)
 ```
 
-### DBFind
+### DBFind {#dbfind}
 
 Bir dbfind öğesi oluşturun, onu tablo tablosunun verileriyle doldurun ve daha sonra [Table](#table) ve diğer Kaynak fonksiyonlarının giriş verileri için kullanılabilecek olan Source yapısına yerleştirin.
 
-#### Syntax
+**Syntax**
 ```
 DBFind(table, Source)
     [.Columns(columns)]
@@ -865,7 +865,7 @@ DBFind(table, Source)
 
    Değişken adına eklenen önek. Biçimi `#prefix_columnname#` şeklindedir, burada sütun adı alt çizgi sembolünü hemen takip eder. JSON alanı içeren bir sütun varsa, oluşturulan değişken şu biçimde olacaktır: `#prefix_columnname_field#`.
 
-#### Example
+**Example**
 
 ```
 DBFind(parameters,myparam)
@@ -875,11 +875,11 @@ DBFind(parameters,myparam).Custom(myid){Strong(#id#)}.Custom(myname){
 }
 ```
 
-### Div
+### Div {#div}
 
 Bir div HTML öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 Div(Class, Body)
  [.Style(Style)]
@@ -913,7 +913,7 @@ Div'i gizlemek için koşulları tanımlayın.
 
    İfade biçimi `GirdiAdı=Değer` şeklindedir; tüm ifadeler doğru olduğunda, *Koşul* doğrudur ve `GirişAdı`nın değeri "Değer"e eşit olduğunda, *Koşul* doğrudur. Birden fazla *Show* veya *Hide* çağrılırsa, en az bir *Koşul* parametresi true olmalıdır.
 
-#### Example
+**Example**
 
 ```
 Form(){
@@ -929,11 +929,11 @@ Form(){
 }
 ```
 
-### EcosysParam
+### EcosysParam {#ecosysparam}
 
 Bu işlev, mevcut ekosistemin ekosistem parametre tablosundan parametre değerlerini alır. Döndürülen sonuç adı dil kaynaklarını içeriyorsa, buna göre çevrilecektir.
 
-#### Syntax
+**Syntax**
 ```
 EcosysParam(Name, Index, Source)
 ```
@@ -960,11 +960,11 @@ EcosysParam(Name: gender_list, Source: src_gender)
 Select(Name: gender, Source: src_gender, NameColumn: name, ValueColumn: id)
 ```
 
-### Em
+### Em {#em}
 
 Bir em HTML öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 Em(Body, Class)
 ```
@@ -977,17 +977,17 @@ Em(Body, Class)
 
     em sınıfı adı.
 
-#### Example
+**Example**
 
 ```
 This is an Em(important news).
 ```
 
-### ForList
+### ForList {#forlist}
 
 Kaynak veri kaynağındaki öğelerin listesini Body'de ayarlanan şablon biçiminde görüntüleyin ve bir **forlist** öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 ForList(Source, Index){Body}
 ```
@@ -1008,10 +1008,10 @@ ForList(Source, Index){Body}
 ForList(mysrc){Span(#mysrc_index#. #name#)}
 ```
 
-### Form
+### Form {#form}
    Bir form HTML öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 Form(Class, Body) [.Style(Style)]
 ```
@@ -1028,18 +1028,18 @@ Form(Class, Body) [.Style(Style)]
 
    CSS stili.
 
-#### Example
+**Example**
 
 ```
 Form(class1 class2, Input(myid))
 ```
 
-### GetColumnType
+### GetColumnType {#getcolumntype}
 
 Belirli bir tablonun alan veri türünü döndürür.
 
 Döndürülen türler şunları içerir: `text, varchar, number, money, double, bytes, json, datetime, double`.
-#### Syntax
+**Syntax**
 
 ```
 GetColumnType(Table, Column)
@@ -1053,19 +1053,19 @@ GetColumnType(Table, Column)
 
     Field adı.
 
-#### Example
+**Example**
 
 ```
 SetVar(coltype,GetColumnType(members, member_name))Div(){#coltype#}
 ```
 
-### GetHistory
+### GetHistory {#gethistory}
 
 Bir gethistory öğesi oluşturun ve bunu belirtilen tablodaki girişlerin geçmiş değişiklik kayıtlarıyla doldurun. Oluşturulan veriler, daha sonra kaynak giriş işlevinde kullanılabilecek olan Kaynak öğesine yerleştirilecektir (örneğin, [Tablo](#tablo)).
 Dizi, son değiştirilenden itibaren sıralanır.
 Dizideki kimlik alanı, rollback_tx tablosunun kimliğini gösterir. block_id, blok kimliğini temsil eder, blok_zamanı, blok oluşturma zaman damgasını temsil eder.
 
-#### Syntax
+**Syntax**
 ```
 GetHistory(Source, Name, Id, RollbackId)
 ```
@@ -1084,18 +1084,18 @@ GetHistory(Source, Name, Id, RollbackId)
 
     İsteğe bağlı bir parametre. Belirtilirse, rollback_tx tablosundan belirtilen kimliğe sahip yalnızca bir kayıt döndürülür.
 
-#### Example
+**Example**
 
 ```
 GetHistory(blocks, BlockHistory, 1)
 ```
 
-### GetVar
+### GetVar {#getvar}
 
 Zaten var olan belirtilen değişkenin değerini veya yoksa boş bir dize döndürür.
 Getvar öğesi yalnızca düzenlenebilir bir ağaç istendiğinde oluşturulur. `GetVar(varname)` ve `#varname` arasındaki fark, varname yoksa GetVar'ın boş bir dize döndürmesi, #varname# ise bir dize değeri olarak yorumlanmasıdır.
 
-#### Syntax
+**Syntax**
 ```
 GetVar(Name)
 ```
@@ -1105,17 +1105,17 @@ GetVar(Name)
 
     Variable adı.
 
-#### Example
+**Example**
 
 ```
 If(GetVar(name)){#name#}.Else{Name is unknown}
 ```
 
-### Hint
+### Hint {#hint}
 
 İpuçları için bir ipucu öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 Hint(Icon,Title,Text)
 ```
@@ -1131,18 +1131,18 @@ Hint(Icon,Title,Text)
 
     Hint text.
 
-#### Example
+**Example**
 
 ```
 Hint(Icon: "icon-wrench",Title:$@1pa_settings$,Text: This is a hint text)
 ```
 
-### If
+### If {#if}
 
 Durum bildirimi.
 Koşul'u karşılayan ilk If veya ElseIf alt öğesini döndürür. Aksi takdirde, Else alt öğesini döndürün.
 
-#### Syntax
+**Syntax**
 ```
 If(Condition){ Body}
  [.ElseIf(Condition){ Body }]
@@ -1157,7 +1157,7 @@ If(Condition){ Body}
 
     Child element.
 
-#### Example
+**Example**
 
 ```
 If(#value#){
@@ -1168,10 +1168,10 @@ If(#value#){
 }
 ```
 
-### Image
+### Image {#image}
 Bir görüntü HTML öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 Image(Src, Alt, Class)
  [.Style(Style)]
@@ -1188,17 +1188,17 @@ Image(Src, Alt, Class)
 
     Image class adı.
 
-#### Example
+**Example**
 
 ```
 Image(Src: Binary().ById(#id#), Class: preview).Style(height: 40px; widht 40px;)
 ```
 
-### ImageInput
+### ImageInput {#imageinput}
 
 Bir resim yüklemek için bir imageinput öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 ImageInput(Name, Width, Ratio, Format)
 ```
@@ -1217,17 +1217,17 @@ ImageInput(Name, Width, Ratio, Format)
 
     Yüklenen görüntünün formatı.
 
-#### Example
+**Example**
 
 ```
 ImageInput(avatar, 100, 2/1)
 ```
 
-### Include
+### Include {#include}
 
 Belirtilen ada sahip şablonu sayfa koduna ekleyin.
 
-#### Syntax
+**Syntax**
 ```
 Include(Name)
 ```
@@ -1237,17 +1237,17 @@ Include(Name)
 
     Şablon adı.
 
-#### Example
+**Example**
 
 ```
 Div(myclass, Include(mywidget))
 ```
 
-### Input
+### Input {#input}
 
 Bir giriş HTML öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 Input(Name, Class, Placeholder, Type, Value, Disabled)
  [.Validate(validation parameters)]
@@ -1283,18 +1283,18 @@ Input(Name, Class, Placeholder, Type, Value, Disabled)
 
     CSS stili.
 
-#### Example
+**Example**
 
 ```
 Input(Name: name, Type: text, Placeholder: Enter your name)
 Input(Name: num, Type: text).Validate(minLength: 6, maxLength: 20)
 ```
 
-### InputErr
+### InputErr {#inputerr}
 
 Hata metnini doğrulamak için bir inputerr öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 InputErr(Name,validation errors)]
 ```
@@ -1307,7 +1307,7 @@ InputErr(Name,validation errors)]
 
     Bir veya daha fazla parametre için doğrulama hata mesajı.
 
-#### Example
+**Example**
 
 ```
 InputErr(Name: name,
@@ -1315,11 +1315,11 @@ minLength: Value is too short,
 maxLength: The length of the value must be less than 20 characters)
 ```
 
-### InputMap
+### InputMap {#inputmap}
 
 Harita üzerinde koordinatları seçebilen adres için bir metin giriş alanı oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 InputMap(Name, Type, MapType, Value)
 ```
@@ -1343,18 +1343,18 @@ InputMap(Name, Type, MapType, Value)
     Harita türü.
      Şu değerlere sahiptir: `hibrit, yol haritası, uydu, arazi`.
 
-#### Example
+**Example**
 
 ```
 InputMap(Name: Coords,Type: polygon, MapType: hybrid, Value: `{"zoom":8, "center":{"lat":55.749942860682545,"lng":37.6207172870636}}`)
 ```
 
-### JsonToSource
+### JsonToSource {#jsontosource}
 
 Bir jsontosource öğesi oluşturun ve onu bir JSON dizisinin anahtar/değer çiftleriyle doldurun. Elde edilen veriler, daha sonra kaynak giriş işlevinde kullanılabilecek olan Kaynak öğesine yerleştirilir (ör. [Tablo](#tablo)).
 Sonuç verilerindeki kayıtlar JSON anahtarına göre alfabetik olarak sıralanır.
 
-#### Syntax
+**Syntax**
 ```
 JsonToSource(Source, Data)
 ```
@@ -1367,18 +1367,18 @@ JsonToSource(Source, Data)
 
     Bir JSON nesnesi veya bir JSON nesnesi (`#name#`) içeren bir değişken adı.
 
-#### Example
+**Example**
 
 ```
 JsonToSource(src, #myjson#)
 JsonToSource(dat, {"param":"value", "param2": "value 2"})
 ```
 
-### Label
+### Label {#label}
 
 Bir etiket HTML öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 Label(Body, Class, For)
  [.Style(Style)]
@@ -1399,16 +1399,16 @@ Label(Body, Class, For)
 
     CSS stili.
 
-#### Example
+**Example**
 
 ```
 Label(The first item).
 ```
 
-### LangRes
+### LangRes {#langres}
 
 Belirli bir dil kaynağı döndürür. Ağacı düzenlemeniz istenirse, langres öğesi döndürülür ve kısa biçim sembolünü $langres$ kullanabilirsiniz.
-#### Syntax
+**Syntax**
 
 ```
 LangRes(Name)
@@ -1419,17 +1419,17 @@ LangRes(Name)
 
     Dil kaynağının adı.
 
-#### Example
+**Example**
 
 ```
 LangRes(name)
 LangRes(myres)
 ```
 
-### LinkPage
+### LinkPage {#linkpage}
 
 Sayfaya bağlantı veren bir bağlantı sayfası öğesi oluşturun.
-#### Syntax
+**Syntax**
 
 ```
 LinkPage(Body, Page, Class, PageParams)
@@ -1456,17 +1456,17 @@ LinkPage(Body, Page, Class, PageParams)
 
   CSS stili
   
-#### Example
+**Example**
 
 ```
 LinkPage(Class: #style_link# h5 text-bold, Page: @1roles_view, PageParams: "v_role_id=#recipient.role_id#")
 ```
 
-### Map
+### Map {#map}
 
 Görsel bir harita oluşturun ve koordinatları herhangi bir biçimde görüntüleyin.
 
-#### Syntax
+**Syntax**
 ```
 Map(Hmap, MapType, Value)
 ```
@@ -1485,17 +1485,17 @@ Map(Hmap, MapType, Value)
     Harita türü.
      Şu değerlere sahiptir: `hibrit, yol haritası, uydu, arazi`.
 
-#### Example
+**Example**
 
 ```
 Map(MapType:hybrid, Hmap:400, Value:{"coords":[{"lat":55.58774531752405,"lng":36.97260184619233},{"lat":55.58396161622043,"lng":36.973803475831005},{"lat":55.585222890513975,"lng":36.979811624024364},{"lat":55.58803635636347,"lng":36.978781655762646}],"area":146846.65783403456,"address":"Unnamed Road, Moscow, Russia, 143041"})
 ```
 
-### MenuGroup
+### MenuGroup {#menugroup}
 
 Menüde iç içe bir alt menü oluşturun ve menü grubu öğesini döndürün. Bunu dil kaynağıyla değiştirmeden önce name parametresi Title değerini döndürür.
 
-#### Syntax
+**Syntax**
 ```
 MenuGroup(Title, Body, Icon)
 ```
@@ -1513,7 +1513,7 @@ MenuGroup(Title, Body, Icon)
 
     Icon.
 
-#### Example
+**Example**
 
 ```
 MenuGroup(My Menu){
@@ -1522,11 +1522,11 @@ MenuGroup(My Menu){
 }
 ```
 
-### MenuItem
+### MenuItem {#menuitem}
 
 Bir menü öğesi oluşturun ve menü öğesi öğesini döndürün.
 
-#### Syntax
+**Syntax**
 ```
 MenuItem(Title, Page, Params, Icon)
 ```
@@ -1549,17 +1549,17 @@ MenuItem(Title, Page, Params, Icon)
 
     Icon.
 
-#### Example
+**Example**
 
 ```
 MenuItem(Title:$@1roles$, Page:@1roles_list, Icon:"icon-pie-chart")
 ```
 
-### Money
+### Money {#money}
 
 exp / 10 ^ basamağının dize değerini döndürür.
 
-#### Syntax
+**Syntax**
 ```
 Money(Exp, Digit)
 ```
@@ -1574,33 +1574,33 @@ Money(Exp, Digit)
 
     "Exp/10^digit" ifadesinde 10'un üssü. Değer pozitif veya negatif olabilir ve pozitif bir değer, ondalık noktadan sonraki basamak sayısını belirler.
 
-#### Example
+**Example**
 
 ```
 Money(Exp, Digit)
 ```
 
-### Or
+### Or {#or}
 
 Bir if mantıksal işleminin sonucunu döndürür. Parantez içinde listelenen tüm parametreler virgülle ayrılır. Değer olan bir parametreye sahip olmak boş bir dize, sıfır veya `false` değilse, parametre değeri `true` olur, aksi takdirde parametre değeri `false` olur. Parametre değeri `true` ise, fonksiyon `1`, aksi halde `0` döndürür.
 
-#### Syntax
+**Syntax**
 ```
 Or(parameters)
 ```
 
 
-#### Example
+**Example**
 
 ```
 If(Or(#myval1#,#myval2#), Span(OK))
 ```
 
-### P
+### P {#p}
 
 Bir p HTML öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 P(Body, Class)
  [.Style(Style)]
@@ -1624,18 +1624,18 @@ Belirtilen CSS stili.
 
     CSS stili.
 
-#### Example
+**Example**
 
 ```
 P(This is the first line.
   This is the second line.)
 ```
 
-### QRcode
+### QRcode {#qrcode}
 
 Belirtilen metinle QR kodunu döndürür ve bir qrcode öğesi oluşturur.
 
-#### Syntax
+**Syntax**
 ```
 QRcode(Text)
 ```
@@ -1645,17 +1645,17 @@ QRcode(Text)
 
     QR kod metni.
 
-#### Example
+**Example**
 
 ```
 QRcode(#name#)
 ```
 
-### RadioGroup
+### RadioGroup {#radiogroup}
 
 Bir radyo grubu öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class)
  [.Validate(validation parameters)]
@@ -1701,17 +1701,17 @@ RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class)
 
     CSS stili.
 
-#### Example
+**Example**
 
 ```
 RadioGroup(Name: type_decision, Source: numbers_type_decisions, NameColumn: name, ValueColumn: value)
 ```
 
-### Range
+### Range {#range}
 
 Bir aralık öğesi oluşturun, tamsayı öğelerini doldurmak için Adımdan Şuna (Kime dahil değil) adım boyutunu kullanın. Oluşturulan veriler Kaynağa konulacak ve daha sonra kaynak girişinin işlevinde kullanılabilir (ör. [Tablo](#tablo)). Geçersiz bir parametre belirtilirse, boş bir Kaynak döndürülür.
 
-#### Syntax
+**Syntax**
 ```
 Range(Source,From,To,Step)
 ```
@@ -1734,7 +1734,7 @@ Range(Source,From,To,Step)
 
     Değer değişikliği adımı. Belirtilmemişse, varsayılan değer 1'dir.
 
-#### Example
+**Example**
 
 ```
 Range(my,0,5)
@@ -1742,11 +1742,11 @@ SetVar(from, 5).(to, -4).(step,-2)
 Range(Source: neg, From: #from#, To: #to#, Step: #step#)
 ```
 
-### Select
+### Select {#select}
 
 Seçili bir HTML öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 Select(Name, Source, NameColumn, ValueColumn, Value, Class)
  [.Validate(validation parameters)]
@@ -1792,18 +1792,18 @@ Select(Name, Source, NameColumn, ValueColumn, Value, Class)
 
     CSS stili.
 
-#### Example
+**Example**
 
 ```
 DBFind(mytable, mysrc)
 Select(mysrc, name)
 ```
 
-### SetTitle
+### SetTitle {#settitle}
 
 Sayfa başlığını ayarlamak ve bir settitle öğesi oluşturmak için.
 
-#### Syntax
+**Syntax**
 ```
 SetTitle(Title)
 ```
@@ -1813,17 +1813,17 @@ SetTitle(Title)
 
     Sayfa başlığı
 
-#### Example
+**Example**
 
 ```
 SetTitle(My page)
 ```
 
-### SetVar
+### SetVar {#setvar}
 
 Belirtilen değişken Adına Değer değerini atayın.
 
-#### Syntax
+**Syntax**
 ```
 SetVar(Name, Value)
 ```
@@ -1838,18 +1838,18 @@ SetVar(Name, Value)
 
     Değişken değeri, başka bir değişkene referans içerebilir.
 
-#### Example
+**Example**
 
 ```
 SetVar(name, John Smith).(out, I am #name#)
 Span(#out#)
 ```
 
-### Span
+### Span {#span}
 
 Bir yayılma HTML öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 Span(Body, Class)
  [.Style(Style)]
@@ -1873,17 +1873,17 @@ Span(Body, Class)
 
     CSS style.
 
-#### Example
+**Example**
 
 ```
 This is Span(the first item, myclass1).
 ```
 
-### Strong
+### Strong {#strong}
 
 Güçlü bir HTML öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 Strong(Body, Class)
 ```
@@ -1898,17 +1898,17 @@ Strong(Body, Class)
 
     Class adı.
 
-#### Example
+**Example**
 
 ```
 This is Strong(the first item, myclass1).
 ```
 
-### SysParam
+### SysParam {#sysparam}
 
 System_parameters platform parametre tablosunda belirli bir parametrenin değerini alın.
 
-#### Syntax
+**Syntax**
 ```
 SysParam(Name)
 ```
@@ -1918,17 +1918,17 @@ SysParam(Name)
 
     Platform parametresinin adı.
 
-#### Example
+**Example**
 
 ```
 SysParam(max_columns)
 ```
 
-### Table
+### Table {#table}
 
 Bir tablo HTML öğesi oluşturun.
 
-#### Syntax
+**Syntax**
 ```
 Table(Source, Columns)
  [.Style(Style)]
@@ -1952,18 +1952,18 @@ Table(Source, Columns)
 
     CSS stili.
 
-#### Example
+**Example**
 
 ```
 DBFind(mytable, mysrc)
 Table(mysrc,"ID=id,Name=name")
 ```
 
-### TransactionInfo
+### TransactionInfo {#transactioninfo}
 
 İşlemleri belirtilen hash ile sorgular ve yürütülen sözleşmeler ve parametreleri hakkında bilgi verir.
 
-#### Syntax
+**Syntax**
 ```
 TransactionInfo(Hash)
 ```
@@ -1986,19 +1986,19 @@ Neresi:
 * `params` - Sözleşme parametrelerine aktarılan veriler;
 * `block` - İşlemi işleyen bloğun ID'si.
 
-#### Example
+**Example**
 
 ```
 P(TransactionInfo(#hash#))
 ```
 
-### VarAsIs
+### VarAsIs {#varasis}
 
 Değeri, değeri yerine belirli bir değişkenin adı olan belirli bir değişken Adına atar.
 
 Değişken ikameli sürümler için bkz. [SetVar](#setvar).
 
-#### Syntax
+**Syntax**
 ```
 VarAsIs(Name, Value)
 ```
@@ -2013,7 +2013,7 @@ VarAsIs(Name, Value)
 
     Değişken bir değer. Değerdeki değişken adı değiştirilmeyecektir. Örneğin, Değer örnek #varname# ise, değişken değeri de örnek #varname# olur.
 
-#### Example
+**Example**
 
 ```
 SetVar(Name,"John")
@@ -2021,15 +2021,15 @@ VarAsIs(name, I am #Name#)
 Span(#name#) // I am #Name#
 ```
 
-## App styles for mobile devices
+## App styles for mobile devices {#app-styles-for-mobile-devices}
 
-### Layout
+### Layout {#layout}
 
-#### Title
+#### Title {#title}
 
 * `h1`… `h6`
 
-#### Strong-class names
+#### Strong-class names {#strong-class-names}
 
 * `.text-muted`
 * `.text-primary`
@@ -2038,7 +2038,7 @@ Span(#name#) // I am #Name#
 * `.text-warning`
 * `.text-danger`
 
-#### Color
+#### Color {#color}
 
 * `.bg-danger-dark`
 * `.bg-danger`
@@ -2061,24 +2061,24 @@ Span(#name#) // I am #Name#
 * `.bg-gray-light`
 * `.bg-gray-lighter`
 
-#### Grid
+#### Grid {#grid}
 
 * `.row`
 * `.row.row-table`
 * `.col-xs-1`… `.col-xs-12`, only used in `.row.row-table`.
 
-#### Panel
+#### Panel {#panel}
 
 * `.panel`
 * `.panel.panel-heading`
 * `.panel.panel-body`
 * `.panel.panel-footer`
 
-#### <span id ="form-app">Form</span>
+#### Form {#form-app}
 
 * `.form-control`
 
-#### <span id = "button-app">Button</span>
+#### Button {#button-app}
 
 * `.btn.btn-default`
 * `.btn.btn-link`
@@ -2088,7 +2088,7 @@ Span(#name#) // I am #Name#
 * `.btn.btn-warning`
 * `.btn.btn-danger`
 
-#### Icon
+#### Icon {#icon}
 
 * All fa-class icons are from FontAwesome: `fa fa-<icon-name></icon-name>`.
 * All icon-class icons are from SimpleLineIcons: `icon-<icon-name>`.

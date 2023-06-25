@@ -1,77 +1,103 @@
-# Platform Parameters
-These are parameters to configure IBAX. They are applicable to the blockchain network and all ecosystems within it.
+# 平台参数 {#platform-parameters}
 
-## Location to store platform parameters
-Platform parameters are stored in the `system parameters` table.
+平台参数是 IBAX区块链平台的配置参数。这些参数适用于区块链网络和网络中的所有生态系统。
 
-This table is located in the first (default) ecosystem created on the blockchain network.
+## 存储平台参数的位置 {#location-to-store-platform-parameters}
 
-## Change of platform parameters
-Change of platform parameters can only be made through voting. You can only use the UpdateSysParam contract to change any platform parameter, which is managed by definitions in the legal system of the platform.
+平台参数存储在 `platform ecosystem` 数据表。
 
-## Configure platform parameters
-### Configure the blockchain network
+该数据表在区块链网络上创建的第一个（默认）生态系统中。
 
-Nodes:
-* [full nodes](#full-nodes)
+## 更改平台参数 {#change-of-platform-parameters}
+
+必须在投票通过后才能更改平台参数。更改平台参数只能使用**UpdateSysParam** 合约，该合约的管理在平台的法律系统中定义。
+
+## 平台参数配置 {#configure-platform-parameters}
+
+### 区块链网络配置 {#configure-the-blockchain-network}
+
+节点:
+
+* [honor_nodes](#honor-nodes)
 * [number of nodes](#number-of-nodes)
 
-Node bans:
+
+节点禁令:
+
 * [incorrect blocks per day](#incorrect-blocks-per-day)
 * [node ban time](#node-ban-time)
 * [node ban time local](#node-ban-time-local)
 
-### Configure a new ecosystem
+### 新生态系统配置 {#configure-a-new-ecosystem}
 
-Default page and menu:
+默认页面和菜单:
+
 * [default ecosystem page](#default-ecosystem-page)
 * [default ecosystem menu](#default-ecosystem-menu)
 
-Default contract: 
-* [default ecosystem contract](#default-ecosystem-contract)
 
-### Configure the database
+默认合约:
 
-Table limits:
+-   [default ecosystem contract](#default-ecosystem-contract)
+
+### 数据库配置 {#configure-the-database}
+
+数据表限制:
+
 * [max columns](#max-columns)
 * [max indexes](#max-indexes)
 
-### Configure the generation of blocks
-Time limits:
+### 区块生成配置 {#configure-the-generation-of-blocks}
+
+时间限制:
+
 * [gap between blocks](#gap-between-blocks)
 * [max block generation time](#max-block-generation-time)
 
-Transaction limits:
+
+交易数量限制:
+
 * [max tx block](#max-tx-block)
 * [max tx block per user](#max-tx-block-per-user)
 
-Size limits:
+
+大小限制:
+
 * [max tx size](#max-tx-size)
 * [max block size](#max-block-size)
 * [max forsign size](#max-forsign-size)
 
-Fuel limits:
+
+燃料限制:
+
 * [max fuel block](#max-fuel-block)
 * [max fuel tx](#max-fuel-tx)
 
-Block rollback limits:
+
+区块回滚限制:
+
 * [rollback blocks](#rollback-blocks)
 
-### Configure the fuel tokens
-Rewards and commissions:
+## 燃料通证配置 {#configure-the-fuel-tokens}
+
+奖励和佣金:
+
 * [block reward](#block-reward)
 * [commission wallet](#commission-wallet)
 * [commission size](#commission-size)
 
-Fuel rate conversion:
+燃料费率转换:
+
 * [fuel rate](#fuel-rate)
 * [price create rate](#price-create-rate)
 
-Transaction size and data price:
+交易大小数据价格:
+
 * [price tx data](#price-tx-data)
 * [price tx size wallet](#price-tx-size-wallet)
 
-Price for new elements:
+新建元素价格:
+
 * [price create ecosystem](#price-create-ecosystem)
 * [price create table](#price-create-table)
 * [price create column](#price-create-column)
@@ -80,7 +106,7 @@ Price for new elements:
 * [price create page](#price-create-page)
 * [price create application](#price-create-application)
 
-Price for operations:
+运营价格:
 <!-- TOC -->
 
 - [Platform Parameters](#platform-parameters)
@@ -167,306 +193,383 @@ Price for operations:
 
 <!-- /TOC -->
 
-### Depreciated
-Depreciated parameters:
+
+## 弃用配置 {#depreciated}
+
+已弃用参数:
+
 * [blockchain url](#blockchain-url)
 
-## Details of platform parameters
+## 平台参数详情 {#details-of-platform-parameters}
+
+### block reward {#block-reward}
+
+> 授予生成区块的 荣誉节点 的 IBXC 通证数量。
+>
+> 接受奖励的帐户在 [honor_nodes](#honor_nodes) 参数中指定。
+
+### blockchain url {#blockchain-url}
+
+> 该参数已弃用。
 
-### block reward
-The number of IBXC tokens granted to the honor node that generates the block.
+### commission size {#commission-size}
 
-The account that receives the reward is specified in the [full nodes](#full-nodes) parameter.
+> 佣金百分比。
+>
+> 这笔佣金数量为执行合约总费用按百分比计算得出。该佣金通证单位 IBXC。
+>
+> 佣金将转移到 [commission_wallet](#commission_wallet) 参数中指定的帐户地址。
 
-### blockchain url
-Depreciated. 
+### commission wallet {#commission-wallet}
 
-### commission size
-Percentage of the commission.
+> 收取佣金的账户地址。
+>
+> 佣金数量由 [commission_size](#commission_size) 参数指定。
 
-The amount of the commission is calculated as a percentage of the total cost of implement the contract. The unit of the commission token is IBXC.
+### default ecosystem contract {#default-ecosystem-contract}
 
-The commission will be transferred to the account address specified in the commission_wallet parameter.
+> 新生态系统默认合约的源代码。
+>
+> 该合约为生态系统创建者提供访问权限。
 
-### commission wallet
-The account address to receive the commission.
+### default ecosystem menu {#default-ecosystem-menu}
 
-The amount of commission is specified by the commission_size parameter.
+> 新生态系统的默认菜单的源代码。
 
-### default ecosystem contract
-The source code of the default contract in the new ecosystem.
+### default ecosystem page {#default-ecosystem-page}
 
-This contract provides access to the ecosystem creator.
+> 新生态系统的默认页面的源代码。
 
-### default ecosystem menu
-The source code of the default menu of the new ecosystem.
+### fuel rate {#fuel-rate}
 
-### default ecosystem page
-The source code of the default page of the new ecosystem.
+> 不同生态系统通证对燃料单位的费率。
+>
+> 该参数的格式：
+>
+> > `[["ecosystem_id", "token_to_fuel_rate"], ["ecosystem_id2", "token_to_fuel_rate2"], ...]`
+> >
+> > -   `ecosystem_id`
+> >
+> >     > 生态系统ID。
+> >
+> > -   `token_to_fuel_rate`
+> >
+> >     > 通证对燃料单位的费率。
+>
+> 例如:
+>
+> > `[["1","1000000000000"], ["2", "1000"]]`
+> >
+> > 生态系统1的一个通证被交换到1000000000000个燃料单位。生态系统2的一个通证被交换到1000个燃料单位。
 
-### fuel rate
-The exchange rates of different ecosystem tokens by fuel unit.
+### price create rate {#price-create-rate}
 
-The format of this parameter:
+> 新建元素的燃料费率。
 
-`[["ecosystem_id", "token_to_fuel_rate"], ["ecosystem_id2", "token_to_fuel_rate2"], ...]`
+## honor nodes {#honor-nodes}
 
-* ``ecosystem_id``
+> 区块链网络的 荣誉节点 列表。
+>
+> 该参数的格式：
+>
+> > `[{"api_address":"https://apihost1:port1","public_key":"nodepub1","tcp_address":"tcphost1:port2"},{"api_address":"https://apihost2:port1","public_key":"nodepub2","tcp_address":"tcphost2:port2"}]`
+> >
+> > -   `tcp_address`
+> >
+> >     > 节点主机的TCP地址和端口。
+> >     >
+> >     > 交易和新区块将发送到该主机地址。该主机地址还可用于从第一个区块开始获取完整的区块链。
+> >
+> > -   `api_address`
+> >
+> >     > 节点主机的API地址和端口。
+> >     >
+> >     > 通过API地址可以在不使用 Weaver 的情况下访问平台的任何功能。详情[RESTful API](api2.md) 。
+> >
+> > -   `public_key`
+> >
+> >     > 节点的公钥。此公钥用于验证区块签名。
 
-    Ecosystem ID.
-* `token_to_fuel_rate`
+### gap between blocks {#gap-between-blocks}
 
-    Exchange rate of the token by fuel unit.
+> 节点生成前后区块的时间间隔(以秒为单位)。
+>
+> 网络中的所有节点都使用它来确定何时生成新区块，如果当前节点在此时间段内未生成新区块，则转向传递到 荣誉节点 列表中的下一个节点。
+>
+> 该参数最小值为 `1` 秒。
 
-For example:
+### incorrect blocks per day {#incorrect-blocks-per-day}
 
-`[["1","1000000000000"], ["2", "1000"]]`
+> 节点每天在被禁令前允许生成的坏区块数量。
+>
+> 当网络中超过一半的节点从某个节点收到此数量的坏区块时，此节点将在 [node_ban_time](#node_ban_time) 时间内从网络中被禁令。
 
-One token of Ecosystem 1 is exchanged for 1,000,000,000,000 fuel units. One token of Ecosystem 2 is exchanged for 1,000 fuel units.
+### max block generation time {#max-block-generation-time}
 
-### price create rate
-The fuel rate of a new element.
+> 生成区块的最大时间，单位毫秒，该时间内如果未能成功生成区块，则报错超时。
 
-### full nodes
-The list of honor nodes of the blockchain network.
+### max block size {#max-block-size}
 
-The format of this parameter: 
+> 区块最大大小，单位字节。
 
-`
-[{"api_address":"https://apihost1:port1","public_key":"nodepub1","tcp_address":"tcphost1:port2"},{"api_address":"https://apihost2:port1","public_key":"nodepub2","tcp_address":"tcphost2:port2"}]
-`
+### max columns {#max-columns}
 
-* `tcp_address`
+> 单个数据表的最大字段数。
+>
+> 这个最大值不包括预定义的 `id` 列。
 
-     TCP address and port of the node host.
-     Transactions and new blocks will be sent to this host address, which can also be used to obtain the complete blockchain from the first block.
-* `api_address`
+### max forsign size {#max-forsign-size}
 
-    API address and port of the node host.
-    Through the API address, you can access any function of the platform without using Weaver. See details in RESTful API.
-* `public_key`
+> 交易签名最大大小，单位字节。
 
-    Public key of the node, which is used to verify the block signature.
+### max fuel block {#max-fuel-block}
 
+> 单个区块的最大总燃料费用。
 
-### gap between blocks
-The time interval (in seconds) of generating two blocks on a node.
+### max fuel tx {#max-fuel-tx}
 
-All nodes in the network use it to determine when to generate a new block. If the current node does not generate a new block within this time period, the turn passes to the next node in the list of honor nodes.
+> 单笔交易的最高总燃料费用。
 
-The minimum value of this parameter is `1` second.
+### max indexes {#max-indexes}
 
-### incorrect blocks per day
-The number of bad blocks that a node is allowed to generate per day before being banned.
+> 单个数据表中的最大主键字段数。
 
-When more than half of the nodes in the network receive the same number of bad blocks from a node, the node will be banned from the network within a time period specified in [node ban time](#node-ban-time).
+### max tx block {#max-tx-block}
 
-### max block generation time
-The maximum time for generating a block, in milliseconds. If a block is not successfully generated within this time period, a timeout error will be reported.
+> 单个区块中的最大交易数。
 
-### max block size
-The maximum size of a block, in bytes.
+### max tx block per user {#max-tx-block-per-user}
 
-### max columns
-The maximum number of fields in a single table.
+> 一个账户在一个区块内的最大交易数。
 
-However, it does not include the predefined `id` column.
+### max tx size {#max-tx-size}
 
-### max forsign size
-The maximum size of a transaction signature in bytes. 
+> 最大交易大小，以字节为单位。
 
-### max fuel block
-The maximum total fuel fee of a single block.
+### node ban time {#node-ban-time}
 
-### max fuel tx
-The maximum total fuel fee of a single transaction.
+> 节点的全局禁令期，以毫秒为单位。
+>
+> 当网络中超过一半的节点从某个节点收到坏区块达到 [incorrect_blocks_per_day](#incorrect_blocks_per_day) 数量时，该节点将在该时间内从网络中被禁令。
 
-### max indexes
-The maximum number of primary key fields in a single table.
+### node ban time local {#node-ban-time-local}
 
-### max tx block
-The maximum number of transactions in a single block.
+> 节点的本地禁令期，以毫秒为单位。
+>
+> 当一个节点从另一个节点接收到不正确的块时，它将在这段时间内本地禁令发送方节点。
 
-### max tx block per user
-The maximum number of transactions of an account in a block.
+### number of nodes {#number-of-nodes}
 
-### max tx size
-The maximum size of a transaction in bytes.
+> [honor_nodes](#honor_nodes) 参数中的最大荣誉节点数量。
 
-### node ban time
-The global ban period of the node, in milliseconds.
+### price create ecosystem {#price-create-ecosystem}
 
-When more than half of the nodes in the network receive bad blocks from a node up to the number of [incorrect blocks per day](#incorrect-blocks-per-day), the node will be banned in the network for this time period.
+> 创建新单个生态系统的燃料费用。
+>
+> 该参数定义了 `@1NewEcosystem`。
+> 合约的额外燃料费用。执行该合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
+>
+> 该参数以燃料单位计算。使用 [fuel_rate](#fuel_rate) 和 [price_create_rate](#price_create_rate) 将燃料单位转换为IBXC 通证。
 
-### node ban time local
-The local ban period of the node, in milliseconds.
+### price create application {#price-create-application}
 
-When a node receives an incorrect block from another node, it will locally ban the sender's node during this time period.
+> 创建新单个应用程序的燃料费用。
+>
+> 该参数定义了 `@1NewApplication` 合约的额外燃料费用。执行该合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
+>
+> 该参数以燃料单位计算。使用 [fuel_rate](#fuel_rate) 和 [price_create_rate](#price_create_rate) 将燃料单位转换为IBXC 通证。
 
-### number of nodes
-The maximum number of honor nodes in the [full nodes](#full-nodes) parameter. 
+### price create table {#price-create-table}
 
-### price create ecosystem
-The fuel fee to create a new single ecosystem.
+> 创建新单个数据表的燃料费用。
+>
+> 该参数定义了 `@1NewTable`。
+> 合约的额外燃料费用。执行该合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
+>
+> 该参数以燃料单位计算。使用 [fuel_rate](#fuel_rate) 和 [price_create_rate](#price_create_rate) 将燃料单位转换为IBXC 通证。
 
-This parameter defines the additional fuel fee of the `@1NewEcosystem` contract. When the contract is implemented, the fuel fee for executing various functions of this contract will also be calculated and included in the total cost.
+### price create column {#price-create-column}
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+> 创建新单个表字段的燃料费用。
+>
+> 该参数定义了 `@1NewColumn`合约的额外燃料费用。执行该合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
+>
+> 该参数以燃料单位计算。使用 [fuel_rate](#fuel_rate) 和 [price_create_rate](#price_create_rate) 将燃料单位转换为IBXC 通证。
 
-### price create application
-The fuel fee to create a new single application.
+### price create contract {#price-create-contract}
 
-This parameter defines the additional fuel fee of the `@1NewApplication` contract. When the contract is implemented, the fuel fee for executing various functions of this contract will also be calculated and included in the total cost.
+> 创建新单个合约的燃料费用。
+>
+> 该参数定义了 `@1NewContract`合约的额外燃料费用。执行该合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
+>
+> 该参数以燃料单位计算。使用 [fuel_rate](#fuel_rate) 和 [price_create_rate](#price_create_rate) 将燃料单位转换为IBXC 通证。
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+### price create menu {#price-create-menu}
 
-### price create table
-The fuel fee to create a new single table.
+> 创建新单个菜单的燃料费用。
+>
+> 该参数定义了 `@1NewMenu`合约的额外燃料费用。执行该合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
+>
+> 该参数以燃料单位计算。使用 [fuel_rate](#fuel_rate) 和 [price_create_rate](#price_create_rate) 将燃料单位转换为IBXC 通证。
 
-This parameter defines the additional fuel cost of the `@1NewTable` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
+### price create page {#price-create-page}
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+> 创建新单个页面的燃料费用。
+>
+> 该参数定义了 `@1NewPage`合约的额外燃料费用。执行该合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
+>
+> 该参数以燃料单位计算。使用 [fuel_rate](#fuel_rate) 和 [price_create_rate](#price_create_rate) 将燃料单位转换为IBXC 通证。
 
-### price create column
-The fuel fee to create a new single table field.
+### price exec address to id {#price-exec-address-to-id}
 
-This parameter defines the additional fuel cost of the `@1NewColumn` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
+> 调用 `AddressToId()`函数的燃料费用，以燃料单位计算。
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+### price exec bind wallet {#price-exec-bind-wallet}
 
-### price create contract
-The fuel fee to create a new single contract.
+> 调用 `Activate()`函数的燃料费用，以燃料单位计算。
 
-This parameter defines the additional fuel cost of the `@1NewContract` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
+### price exec column condition {#price-exec-column-condition}
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+> 调用 `ColumnCondition()`函数的燃料费用，以燃料单位计算。
 
-### price create menu
-The fuel fee to create a new single menu.
+### price exec compile contract {#price-exec-compile-contract}
 
-This parameter defines the additional fuel cost of the `@1NewMenu` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
+> 调用 `CompileContract()`函数的燃料费用，以燃料单位计算。
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+### price exec contains {#price-exec-contains}
 
-### price create page
-The fuel fee to create a new single page.
+> 调用 `Contains()`函数的燃料费用，以燃料单位计算。
 
-This parameter defines the additional fuel cost of the `@1NewPage` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
+### price exec contract by id {#price-exec-contract-by-id}
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+> 调用 `GetContractById()`函数的燃料费用，以燃料单位计算。
 
-### price exec address to id
-The fuel fee of calling the `AddressToId()` function, calculated in fuel units. 
+### price exec contract by name {#price-exec-contract-by-name}
 
-### price exec bind wallet
-The fuel fee of calling the `Activate()` function, calculated in fuel units. 
+> 调用 `GetContractByName()`函数的燃料费用，以燃料单位计算。
 
-### price exec column condition
-The fuel fee of calling the `ColumnCondition()` function, calculated in fuel units. 
+### price exec contracts list {#price-exec-contracts-list}
 
-### price exec compile contract
-The fuel fee of calling the `CompileContract()` function, calculated in fuel units. 
+> 调用 `ContractsList()`函数的燃料费用，以燃料单位计算。
 
-### price exec contains
-The fuel fee of calling the `Contains()` function, calculated in fuel units. 
+### price exec create column {#price-exec-create-column}
 
-### price exec contract by id
-The fuel fee of calling the `GetContractById()` function, calculated in fuel units. 
+> 调用 `CreateColumn()`函数的燃料费用，以燃料单位计算。
 
-### price exec contract by name
-The fuel fee of calling the GetContractByName() function, calculated in fuel units. 
+### price exec create ecosystem {#price-exec-create-ecosystem}
 
-### price exec contracts list
-The fuel fee of calling the `ContractsList()` function, calculated in fuel units. 
+> 调用 `CreateEcosystem()`函数的燃料费用，以燃料单位计算。
 
-### price exec create column
-The fuel fee of calling the `CreateColumn()` function, calculated in fuel units. 
+### price exec create table {#price-exec-create-table}
 
-### price exec create ecosystem
-The fuel fee of calling the `CreateEcosystem()` function, calculated in fuel units. 
+> 调用 `CreateTable()`函数的燃料费用，以燃料单位计算。
 
-### price exec create table
-The fuel fee of calling the `CreateTable()` function, calculated in fuel units. 
+### price exec ecosys param {#price-exec-ecosys-param}
 
-### price exec ecosys param
-The fuel fee of calling the `EcosysParam()` function, calculated in fuel units. 
+> 调用 `EcosysParam()`函数的燃料费用，以燃料单位计算。
 
-### price exec eval
-The fuel fee of calling the `Eval()` function, calculated in fuel units. 
+### price exec eval {#price-exec-eval}
 
-### price exec eval condition
-The fuel fee of calling the `EvalCondition()` function, calculated in fuel units. 
+> 调用 `Eval()`函数的燃料费用，以燃料单位计算。
 
-### price exec flush contract
-The fuel fee of calling the `FlushContract()` function, calculated in fuel units. 
+### price exec eval condition {#price-exec-eval-condition}
 
-### price exec has prefix
-The fuel fee of calling the `HasPrefix()` function, calculated in fuel units. 
+> 调用 `EvalCondition()`函数的燃料费用，以燃料单位计算。
 
-### price exec id to address
-The fuel fee of calling the `IdToAddress()` function, calculated in fuel units. 
+### price exec flush contract {#price-exec-flush-contract}
 
-### price exec is object
-The fuel fee of calling the `IsObject()` function, calculated in fuel units. 
+> 调用 `FlushContract()`函数的燃料费用，以燃料单位计算。
 
-### price exec join
-The fuel fee of calling the `Join()` function, calculated in fuel units. 
+### price exec has prefix {#price-exec-has-prefix}
 
-### price exec json to map
-The fuel fee of calling the `JSONToMap()` function, calculated in fuel units. 
+> 调用 `HasPrefix()`函数的燃料费用，以燃料单位计算。
 
-### price exec len
-The fuel fee of calling the `Len()` function, calculated in fuel units. 
+### price exec id to address {#price-exec-id-to-address}
 
-### price exec perm column
-The fuel fee of calling the `PermColumn()` function, calculated in fuel units. 
+> 调用 `IdToAddress()`函数的燃料费用，以燃料单位计算。
 
-### price exec perm table
-The fuel fee of calling the `PermTable()` function, calculated in fuel units. 
+### price exec is object {#price-exec-is-object}
 
-### price exec pub to id
-The fuel fee of calling the `PubToID()` function, calculated in fuel units. 
+> 调用 `IsObject()`函数的燃料费用，以燃料单位计算。
 
-### price exec replace
-The fuel fee of calling the `Replace()` function, calculated in fuel units. 
+### price exec join {#price-exec-join}
 
-### price exec sha256
-The fuel fee of calling the `Sha256()` function, calculated in fuel units. 
+> 调用 `Join()`函数的燃料费用，以燃料单位计算。
 
-### price exec size
-The fuel fee of calling the `Size()` function, calculated in fuel units. 
+### price exec json to map {#price-exec-json-to-map}
 
-### price exec substr
-The fuel fee of calling `theSubstr()` function, calculated in fuel units. 
+> 调用 `JSONToMap()`函数的燃料费用，以燃料单位计算。
 
-### price exec sys fuel
-The fuel fee of calling the `SysFuel()` function, calculated in fuel units. 
+### price exec len {#price-exec-len}
 
-### price exec sys param int
-The fuel fee of calling the `SysParamInt()` function, calculated in fuel units. 
+> 调用 `Len()`函数的燃料费用，以燃料单位计算。
 
-### price exec sys param string
-The fuel fee of calling the `SysParamString()` function, calculated in fuel units. 
+### price exec perm column {#price-exec-perm-column}
 
-### price exec table conditions
-The fuel fee of calling the `TableConditions()` function, calculated in fuel units. 
+> 调用 `PermColumn()`函数的燃料费用，以燃料单位计算。
 
-### price exec unbind wallet
-The fuel fee of calling the `Deactivate()` function, calculated in fuel units. 
+### price exec perm table {#price-exec-perm-table}
 
-### price exec update lang
-The fuel fee of calling the `UpdateLang()` function, calculated in fuel units. 
+> 调用 `PermTable()`函数的燃料费用，以燃料单位计算。
 
-### price exec validate condition
-The fuel fee of calling the `ValidateCondition()` function, calculated in fuel units. 
+### price exec pub to id {#price-exec-pub-to-id}
 
-### price tx data
-The fuel fee for every 1024 bytes of a transaction, calculated in fuel units. 
+> 调用 `PubToID()`函数的燃料费用，以燃料单位计算。
 
-### price tx size wallet
-The fee by transaction size, its unit is the IBXC token.
+### price exec replace {#price-exec-replace}
 
-Except the ecosystem 1, a block space usage fee will be incurred proportionally when implementing a contract in other ecosystems, and its rate is *price tx size wallet* IBXC tokens per megabyte.
+> 调用 `Replace()`函数的燃料费用，以燃料单位计算。
 
-### rollback blocks
-Maximum number of blocks that can be rolled back when detecting a fork in the blockchain.
+### price exec sha256 {#price-exec-sha256}
+
+> 调用 `Sha256()`函数的燃料费用，以燃料单位计算。
+
+### price exec size {#price-exec-size}
+
+> 调用 `Size()`函数的燃料费用，以燃料单位计算。
+
+### price exec substr {#price-exec-substr}
+
+> 调用 `Substr()`函数的燃料费用，以燃料单位计算。
+
+### price exec sys fuel {#price-exec-sys-fuel}
+
+> 调用 `SysFuel()`函数的燃料费用，以燃料单位计算。
+
+### price exec sys param int {#price-exec-sys-param-int}
+
+> 调用 `SysParamInt()`函数的燃料费用，以燃料单位计算。
+
+### price exec sys param string {#price-exec-sys-param-string}
+
+> 调用 `SysParamString()`函数的燃料费用，以燃料单位计算。
+
+### price exec table conditions {#price-exec-table-conditions}
+
+> 调用 `TableConditions()`函数的燃料费用，以燃料单位计算。
+
+### price exec unbind wallet {#price-exec-unbind-wallet}
+
+> 调用 `Deactivate()`函数的燃料费用，以燃料单位计算。
+
+### price exec update lang {#price-exec-update-lang}
+
+> 调用 `UpdateLang()`函数的燃料费用，以燃料单位计算。
+
+### price exec validate condition {#price-exec-validate-condition}
+
+> 调用 `ValidateCondition()`函数的燃料费用，以燃料单位计算。
+
+### price tx data {#price-tx-data}
+
+> 交易每1024字节数据的燃料费用，以燃料单位计算。
+
+### price tx size wallet {#price-tx-size-wallet}
+
+> 交易大小费用，以 IBXC 通证为单位。
+>
+> 除生态系统1之外，在其它生态系统内执行合约将按照比例产生区块空间使用费用，每兆交易大小产生**price_tx_size_wallet** IBXC 通证费用。
+
+### rollback blocks {#rollback-blocks}
+
+> 在区块链中检测到分叉时可以回滚的最大区块数。

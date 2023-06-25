@@ -1,4 +1,4 @@
-# Template Language
+# Template Language {#template-language}
 
   - [Page construction](#page-construction)
     - [Template engine](#template-engine)
@@ -87,15 +87,15 @@
       - [Button](#button-app)
       - [Icon](#icon)
 
-## Page construction
+## Page construction {#page-construction}
 
 Weaver's Integrated Development Environment (IDE) is created using React, a JavaScript library. It has a page editor and a visual page designer. Pages are basic parts of an application, which are used to retrieve and display data from tables, create forms for receiving user input data, pass data to contracts, and navigate between application pages. Like contracts, pages are stored in the blockchain, which can ensure they are tamper-proof when loaded in the software client.
 
-### Template engine
+### Template engine {#template-engine}
 
 Page elements (pages and menus) are formed by developers in the template engine of a verification node using the template language in Weaver's page editor. All pages are constructed using the Logicor language developed by IBAX's development team. Use content/... API commands to request pages from nodes on the network. What the template engine sent as a response to this type of request is not an HTML page, but a JSON code composed of HTML tags that form a tree in accordance with the template structure. If you want to test the template engine, you can refer to the [content](../reference/api2.md#content) API command.
 
-### Create pages
+### Create pages {#create-pages}
 
 You can use the page editor to create and edit pages, which can be found in the Pages section of Weaver's management tool. The editor can be used to:
 
@@ -106,19 +106,19 @@ You can use the page editor to create and edit pages, which can be found in the 
 * Start the visual page designer;
 * Preview pages.
 
-#### Visual page designer
+#### Visual page designer {#visual-page-designer}
 
 The visual page designer can be used to create page layouts without using interface codes in the Logicor language. With it, you can set the position of form elements and text on pages by dragging and dropping such elements, and configure the size of page blocks. It provides a set of ready-to-use blocks for presenting standard data models: with titles, forms and information panels. After creating a page in the visual page designer, you can write program logic for receiving data and conditional structure in the page editor. In the future, we plan to create a visual page designer with additional functions.
 
-#### Applicable styles
+#### Applicable styles {#applicable-styles}
 
 By default, pages are presented with Angular's Bootstrap Angle style. Users can create their own styles according to needs. The style is stored in the style parameter stylesheet in the ecosystem parameter table.
 
-#### Page module
+#### Page module {#page-module}
 
 To use a code block in multiple pages, you can create a page module to hold and embed it into the page code. Page modules can be created and edited in Weaver's Module Blocks. Like pages, editing permissions can be defined.
 
-#### Language resource editor
+#### Language resource editor {#language-resource-editor}
 
 Weaver includes a mechanism for page localization using a function **LangRes** of the Logicor template language. It could replace language resource tags on the page with text lines corresponding to the language selected by the user in the software client or browser. You can use the short syntax **$lable$** instead of the **LangRes** function. The translation of messages in popups initiated by the contract is performed by Needle's **LangRes** function.
 
@@ -126,7 +126,7 @@ You can create and edit language resources in the Language resources section of 
 
 The permissions for adding and changing language resources can be defined in the same way as other tables.
 
-## Logicor template language
+## Logicor template language {#logicor-template-language}
 
 Logicor functions provide the following operations:
 
@@ -143,7 +143,7 @@ Logicor functions provide the following operations:
 * Creating multi-level menus;
 * Page localization.
 
-### Logicor overview
+### Logicor overview {#logicor-overview}
 
 The Logicor page template language is a functional language that allows a function calling another function ```FuncName(parameters)``` and nesting functions into each other. You can specify parameters without quotes, and delete unnecessary parameters.
 
@@ -170,7 +170,7 @@ The following variables are predefined:
 * `#guest_key#` - Address of the guest account;
 * `#isMobile#` - 1, if Weaver runs on a mobile device.
 
-#### Use PageParams to pass parameters to pages
+#### Use PageParams to pass parameters to pages {#use-pageparams-to-pass-parameters-to-pages}
 
 Many functions support the PageParams parameter, which is used to pass parameters when redirecting to a new page. For example: PageParams: `"param1=value1,param2=value2"`. The parameter value can be a simple string or a variable with a reference value. When passing parameters to pages, a variable with the parameter name is created, e.g. `#param1#` and `#param2#`.
 
@@ -181,32 +181,32 @@ In addition, the Val function can get data from forms, which is specified in the
 
 * `PageParams: "hello=Val(world)"` - The new page receives the hello parameter with the value of the world form element.
 
-#### Calling contracts
+#### Calling contracts {#calling-contracts}
 
 Logicor implements contract calls by clicking the Button function in a form. Once an event is triggered, the data entered by the user in a form field on the page will be passed to the contract. If the form field name corresponds to the variable name in the data section of the contract called, the data will be automatically transferred. The Button function allows to open a modal window for the user to verify the contract execution, and initiate the redirection to the specified page when the contract is successfully executed, and pass certain parameters to the page.
 
-## Logicor function classification
+## Logicor function classification {#logicor-function-classification}
 
-### Operations on variables: 
+### Operations on variables: {#operations-on-variables}
 
 |        |        |         |
 | ------ | ------ | ------- |
 | [GetVar](#getvar) | [SetVar](#setvar) | [VarAsIs](#varasis) |
 
-### Navigational operations: 
+### Navigational operations: {#navigational-operations} 
 
 |               |        |          |
 | ------------- | ------ | -------- |
 | [AddToolButton](#addtoolbutton) | [Button](#button) | [LinkPage](#linkpage) |
 
-### Data manipulation: 
+### Data manipulation: {#data-manipulation}
 
 |           |          |       |
 | --------- | -------- | ----- |
 | [Calculate](#calculate) | [DateTime](#datetime) | [Money](#money) |
 | [CmpTime](#cmptime)   |          |       |
 
-### Data presentation: 
+### Data presentation: {#data-presentation}
 
 |          |           |          |
 | -------- | --------- | -------- |
@@ -215,7 +215,7 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [Chart](#chart)    | [MenuGroup](#menugroup) | [Table](#table)    |
 | [ForList](#forlist)  |           |          |
 
-### Accepting of data: 
+### Accepting of data: {#accepting-of-data}
 
 |             |               |                 |
 | ----------- | ------------- | --------------- |
@@ -225,7 +225,7 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [Data](#data)        | [JsonToSource](#jsontosource)  | [Binary](#binary)          |
 | [DBFind](#dbfind)      | [ArrayToSource](#arraytosource) | [TransactionInfo](#transactioninfo) |
 
-### Data formatting elements: 
+### Data formatting elements: {#data-formatting-elements}
 
 |      |          |        |
 | ---- | -------- | ------ |
@@ -233,7 +233,7 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [Em](#em)   | [Label](#label)    | [Strong](#strong) |
 | [P](#p)    |          |        |
 
-### Form elements: 
+### Form elements: {#form-elements}
 
 |            |            |          |
 | ---------- | ---------- | -------- |
@@ -241,7 +241,7 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [ImageInput](#imageinput) | [RadioGroup](#radiogroup) | [Map](#map)      |
 | [Input](#input)      | [Select](#select)     |          |
 
-### Operations on code blocks: 
+### Operations on code blocks: {#operations-on-code-blocks}
 
 |      |      |         |
 | ---- | ---- | ------- |
@@ -250,13 +250,13 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 
 
 
-## Logicor function references
+## Logicor function references {#logicor-function-references}
 
-### Address
+### Address {#address}
 
 This function returns the wallet address `xxxx-xxxx-...-xxxx` of a specific account address; if no address is specified, the account address of the current user will be used as the parameter.
 
-#### Syntax
+**Syntax**
 
 ```
 Address(account)
@@ -267,17 +267,17 @@ Address(account)
   
     Account address.
 
-#### Example
+**Example**
 
 ```
 Span(Your wallet: Address(#account#))
 ```
 
-### AddressToId
+### AddressToId {#addresstoid}
 
 It returns the account address of a specific wallet address xxxx-xxxx-...-xxxx.
 
-#### Syntax
+**Syntax**
 
 ```
 AddressToId(Wallet)
@@ -288,17 +288,17 @@ AddressToId(Wallet)
   
     The wallet address in XXXX-...-XXXX format.
 
-#### Example
+**Example**
 
 ```
 AddressToId(#wallet#)
 ```
 
-### AddToolButton
+### AddToolButton {#addtoolbutton}
 
 Create a button panel with an addtoolbutton element.
 
-#### Syntax
+**Syntax**
 
 ```
 AddToolButton(Title, Icon, Page, PageParams)
@@ -338,33 +338,33 @@ AddToolButton(Title, Icon, Page, PageParams)
       Percentage of window width.
       Its range is 1 to 100.
 
-#### Example
+**Example**
 
 ```
 AddToolButton(Title: $@1broadcast$, Page: @1notifications_broadcast, Icon: icon-plus).Popup(Header: $@1notifications_broadcast$, Width: "50")
 ```
 
-### And
+### And {#and}
 
 It returns the result of an and logical operation. All parameters listed in parentheses are separated by commas. If one of the parameters is an empty string, zero or `false`, the parameter value is `false`, otherwise the parameter value is `true`. If the parameter value is `true`, the function returns `1`, otherwise it returns `0`.
 
-#### Syntax
+**Syntax**
 
 ```
 And(parameters)
 ```
 
-#### Example
+**Example**
 
 ```
 If(And(#myval1#,#myval2#), Span(OK))
 ```
 
-### AppParam
+### AppParam {#appparam}
 
 Output the application parameter value, which is taken from the app_params table of the current ecosystem. If there is a language resource with the specified name, its value will be automatically replaced.
 
-#### Syntax
+**Syntax**
 ```
 AppParam(App, Name, Index, Source)
 
@@ -388,17 +388,17 @@ AppParam(App, Name, Index, Source)
     Create a data object whose elements are the values of specific parameters. This object can be used as a data source for the [Table](#table) and [Select](#select) functions.
     It cannot be used in conjunction with the Index parameter.
 
-#### Example
+**Example**
 
 ```
 AppParam(1, type, Source: mytype)
 ```
 
-### ArrayToSource
+### ArrayToSource {#arraytosource}
 
 Create an arraytosource element and fill it with the key-value pairs of a JSON array. The data obtained is put into the Source element, which can be used later in the source input function (e.g. Table).
 
-#### Syntax
+**Syntax**
 ```
 ArrayToSource(Source, Data)
 
@@ -412,18 +412,18 @@ ArrayToSource(Source, Data)
 
     A JSON array or a variable name containing a JSON array (`#name#`).
 
-#### Example
+**Example**
 
 ```
 ArrayToSource(src, #myjsonarr#)
 ArrayToSource(dat, [1, 2, 3])
 ```
 
-### Binary
+### Binary {#binary}
 
 Returns links to static files stored in the binary table binaries.
 
-#### Syntax
+**Syntax**
 ```
 Binary(Name, AppID, MemberID)[.ById(ID)][.Ecosystem(ecosystem)]
 ```
@@ -445,7 +445,7 @@ Binary(Name, AppID, MemberID)[.ById(ID)][.Ecosystem(ecosystem)]
 
     Ecosystem ID. If it is not specified, the binary file is requested from the current ecosystem.
 
-#### Example
+**Example**
 
 ```
 Image(Src: Binary("my_image", 1))
@@ -453,18 +453,18 @@ Image(Src: Binary().ById(2))
 Image(Src: Binary().ById(#id#).Ecosystem(#eco#))
 ```
 
-### Button
+### Button {#button}
 
 Create a button HTML element which will create a button to call a contract or open a page.
 
-#### Syntax
+**Syntax**
 ```
 Button(Body, Page, Class, Contract, Params, PageParams)
  [.CompositeContract(Contract, Data)]
  [.Alert(Text, ConfirmButton, CancelButton, Icon)]
  [.Popup(Width, Header)]
  [.Style(Style)]
- [.ErrorRedirect((ErrorID,PageName,PageParams)]
+ [.ErrorRedirect(ErrorID,PageName,PageParams)]
 ```
 
 > Button
@@ -543,17 +543,17 @@ Button(Body, Page, Class, Contract, Params, PageParams)
 
     Parameters passed to the page.
 
-#### Example
+**Example**
 
 ```
 Button(Submit, default_page, mybtn_class).Alert(Alert message)
 Button(Contract: MyContract, Body:My Contract, Class: myclass, Params:"Name=myid,Id=i10,Value")
 ```
 
-### Calculate
+### Calculate {#calculate}
 It returns the result of the arithmetic expression passed in the Exp parameter. The following operations are applicable: +, -, *, / and brackets ().
 
-#### Syntax
+**Syntax**
 ```
 Calculate(Exp, Type, Prec)
 ```
@@ -569,7 +569,7 @@ Calculate(Exp, Type, Prec)
 
     float and money data, with two significant digits after the decimal point.
 
-#### Example
+**Example**
 
 ```
 Calculate( Exp: (342278783438+5000)\*(#val#-932780000), Type: money, Prec:18 )
@@ -577,11 +577,11 @@ Calculate(10000-(34+5)\*#val#)
 Calculate("((10+#val#-45)\*3.0-10)/4.5 + #val#", Prec: 4)
 ```
 
-### Chart
+### Chart {#chart}
 
 Create HTML charts.
 
-#### Syntax
+**Syntax**
 ```
 Chart(Type, Source, FieldLabel, FieldValue, Colors)
 ```
@@ -603,7 +603,7 @@ Chart(Type, Source, FieldLabel, FieldValue, Colors)
 
     List of colors.
 
-#### Example
+**Example**
 
 ```
 Data(mysrc,"name,count"){
@@ -614,12 +614,12 @@ Data(mysrc,"name,count"){
 Chart(Type: "bar", Source: mysrc, FieldLabel: "name", FieldValue: "count", Colors: "red, green")
 ```
 
-### CmpTime
+### CmpTime {#cmptime}
 
 It compares two time values in the same format.
 It supports unixtime, `YYYY-MM-DD HH:MM:SS` and any time format, such as `YYYYMMDD`.
 
-#### Syntax
+**Syntax**
 
 ```
 CmpTime(Time1, Time2)
@@ -632,18 +632,18 @@ Return value
 * `0` - Time1 = Time2;
 * `1` - Time1> Time2.
 
-#### Example
+**Example**
 
 ```
 If(CmpTime(#time1#, #time2#)<0){...}
 ```
 
-### Code
+### Code {#code}
 
 Create a code element to display the specified code.
 
 It substitute a variable with the value of the variable (for example, `#name#`).
-#### Syntax
+**Syntax**
 ```
 Code(Text)
 ```
@@ -653,7 +653,7 @@ Code(Text)
 
     Source code.
 
-#### Example
+**Example**
 
 ```
 Code( P(This is the first line.
@@ -661,12 +661,12 @@ Code( P(This is the first line.
 )
 ```
 
-### CodeAsIs
+### CodeAsIs {#codeasis}
 
 Create a code element to display the specified code.
 It does not replace a variable with its value. For example, `#name#` will be displayed as is.
 
-#### Syntax
+**Syntax**
 ```
 CodeAsIs(Text)
 ```
@@ -676,7 +676,7 @@ CodeAsIs(Text)
 
     Source code.
 
-#### Example
+**Example**
 
 ```
 CodeAsIs( P(This is the #test1#.
@@ -684,11 +684,11 @@ CodeAsIs( P(This is the #test1#.
 )
 ```
 
-### Data
+### Data {#data}
 
 Create a data element, fill it with the specified data and put it in Source. Then, you can receive Source as a data input in [Table](#table) and other functions. The sequence of column names corresponds to the sequence of data entry values.
 
-#### Syntax
+**Syntax**
 ```
 Data(Source,Columns,Data)
  [.Custom(Column){Body}]
@@ -713,7 +713,7 @@ Data(Source,Columns,Data)
 
     
 
-### Custom
+### Custom {#custom}
 
     You can assign calculated columns to Data. For example, you can specify field templates for buttons and other page layout elements. These field templates are usually assigned to [Table](#table) and other functions to receive data.
     Use multiple Custom functions if you want to assign multiple calculated columns.
@@ -726,7 +726,7 @@ Data(Source,Columns,Data)
 
     Code block. You can use `#columnname#` to get values from other columns in the entry, and then use those values in code blocks.
 
-#### Example
+**Example**
 
 ```
 Data(mysrc,"id,name"){
@@ -736,11 +736,11 @@ Data(mysrc,"id,name"){
  }.Custom(link){Button(Body: View, Class: btn btn-link, Page: user, PageParams: "id=#id#"}
 ```
 
-### DateTime
+### DateTime {#datetime}
 
 Display the time and date in the specified format.
 
-#### Syntax
+**Syntax**
 ```
 DateTime(DateTime, Format)
 ```
@@ -754,18 +754,18 @@ DateTime(DateTime, Format)
     Format template: year in 2-digit format `YY`, 4-digit format `YYYY`, month in `MM`, day in `DD`, hour in `HH`, minute in `MM`, second in `SS`, e.g.: `YY/MM/DD HH:MM`.
     If it is not specified or missing, `YYYY-MM-DD HH:MI:SS` will be used.
 
-#### Example
+**Example**
 
 ```
 DateTime(2017-11-07T17:51:08)
 DateTime(#mytime#,HH:MI DD.MM.YYYY)
 ```
 
-### DBFind
+### DBFind {#dbfind}
 
 Create a dbfind element, fill it with the data of the table table and put it in the Source structure, which can later be used for the input data of [Table](#table) and other functions Source.
 
-#### Syntax
+**Syntax**
 ```
 DBFind(table, Source)
     [.Columns(columns)]
@@ -865,7 +865,7 @@ DBFind(table, Source)
 
    The prefix added to the variable name. Its format is `#prefix_columnname#`, where the column name immediately follows the underscore symbol. If there is a column containing a JSON field, the variable generated will be in the following format: `#prefix_columnname_field#`.
 
-#### Example
+**Example**
 
 ```
 DBFind(parameters,myparam)
@@ -875,11 +875,11 @@ DBFind(parameters,myparam).Custom(myid){Strong(#id#)}.Custom(myname){
 }
 ```
 
-### Div
+### Div {#div}
 
 Create a div HTML element.
 
-#### Syntax
+**Syntax**
 ```
 Div(Class, Body)
  [.Style(Style)]
@@ -913,7 +913,7 @@ Div(Class, Body)
 
    The expression format is `InputName=Value`, when all expressions are true, *Condition* is true, and when the value of `InputName` is equal to `Value`, *Condition* is true. If multiple *Show* or *Hide* are called, there must be at least one *Condition* parameter is true.
 
-#### Example
+**Example**
 
 ```
 Form(){
@@ -929,11 +929,11 @@ Form(){
 }
 ```
 
-### EcosysParam
+### EcosysParam {#ecosysparam}
 
 This function obtains parameter values from the ecosystem parameter table of the current ecosystem. If the returned result name contains the language resources, it will be translated accordingly.
 
-#### Syntax
+**Syntax**
 ```
 EcosysParam(Name, Index, Source)
 ```
@@ -960,11 +960,11 @@ EcosysParam(Name: gender_list, Source: src_gender)
 Select(Name: gender, Source: src_gender, NameColumn: name, ValueColumn: id)
 ```
 
-### Em
+### Em {#em}
 
 Create an em HTML element.
 
-#### Syntax
+**Syntax**
 ```
 Em(Body, Class)
 ```
@@ -977,17 +977,17 @@ Em(Body, Class)
 
     The em class name.
 
-#### Example
+**Example**
 
 ```
 This is an Em(important news).
 ```
 
-### ForList
+### ForList {#forlist}
 
 Display the list of elements in the Source data source in the template format set in Body and create a **forlist** element.
 
-#### Syntax
+**Syntax**
 ```
 ForList(Source, Index){Body}
 ```
@@ -1008,10 +1008,10 @@ ForList(Source, Index){Body}
 ForList(mysrc){Span(#mysrc_index#. #name#)}
 ```
 
-### Form
+### Form {#form}
    Create a form HTML element.
 
-#### Syntax
+**Syntax**
 ```
 Form(Class, Body) [.Style(Style)]
 ```
@@ -1028,18 +1028,18 @@ Form(Class, Body) [.Style(Style)]
 
    CSS style.
 
-#### Example
+**Example**
 
 ```
 Form(class1 class2, Input(myid))
 ```
 
-### GetColumnType
+### GetColumnType {#getcolumntype}
 
 Returns the field data type of a specific table.
 
 Types returned include: `text, varchar, number, money, double, bytes, json, datetime, double`.
-#### Syntax
+**Syntax**
 
 ```
 GetColumnType(Table, Column)
@@ -1053,19 +1053,19 @@ GetColumnType(Table, Column)
 
     Field name.
 
-#### Example
+**Example**
 
 ```
 SetVar(coltype,GetColumnType(members, member_name))Div(){#coltype#}
 ```
 
-### GetHistory
+### GetHistory {#gethistory}
 
 Create a gethistory element and fill it with the history change records of the entries in the specified table. The data generated will be placed in the Source element, which can be used later in the source input function (for example, [Table](#table)).
 The array is sorted in order from the last modified.
 The id field in the array points to the id of the rollback_tx table. block_id represents the block ID, block_time represents the block generation timestamp.
 
-#### Syntax
+**Syntax**
 ```
 GetHistory(Source, Name, Id, RollbackId)
 ```
@@ -1084,18 +1084,18 @@ GetHistory(Source, Name, Id, RollbackId)
 
     An optional parameter. If specified, only one record with the specified ID will be returned from the rollback_tx table.
 
-#### Example
+**Example**
 
 ```
 GetHistory(blocks, BlockHistory, 1)
 ```
 
-### GetVar
+### GetVar {#getvar}
 
 It returns the value of the specified variable that already exists, or an empty string if it does not exist.
 The getvar element is only created when an editable tree is requested. The difference between `GetVar(varname)` and `#varname` is that if varname does not exist, GetVar will return an empty string, while #varname# will be interpreted as a string value.
 
-#### Syntax
+**Syntax**
 ```
 GetVar(Name)
 ```
@@ -1105,17 +1105,17 @@ GetVar(Name)
 
     Variable name.
 
-#### Example
+**Example**
 
 ```
 If(GetVar(name)){#name#}.Else{Name is unknown}
 ```
 
-### Hint
+### Hint {#hint}
 
 Create a hint element for hints.
 
-#### Syntax
+**Syntax**
 ```
 Hint(Icon,Title,Text)
 ```
@@ -1131,18 +1131,18 @@ Hint(Icon,Title,Text)
 
     Hint text.
 
-#### Example
+**Example**
 
 ```
 Hint(Icon: "icon-wrench",Title:$@1pa_settings$,Text: This is a hint text)
 ```
 
-### If
+### If {#if}
 
 Condition statement.
 Returns the first If or ElseIf child element that satisfies Condition. Otherwise, return the Else child element.
 
-#### Syntax
+**Syntax**
 ```
 If(Condition){ Body}
  [.ElseIf(Condition){ Body }]
@@ -1157,7 +1157,7 @@ If(Condition){ Body}
 
     Child element.
 
-#### Example
+**Example**
 
 ```
 If(#value#){
@@ -1168,10 +1168,10 @@ If(#value#){
 }
 ```
 
-### Image
+### Image {#image}
 Create a image HTML element.
 
-#### Syntax
+**Syntax**
 ```
 Image(Src, Alt, Class)
  [.Style(Style)]
@@ -1188,17 +1188,17 @@ Image(Src, Alt, Class)
 
     Image class name.
 
-#### Example
+**Example**
 
 ```
 Image(Src: Binary().ById(#id#), Class: preview).Style(height: 40px; widht 40px;)
 ```
 
-### ImageInput
+### ImageInput {#imageinput}
 
 Create an imageinput element to upload an image.
 
-#### Syntax
+**Syntax**
 ```
 ImageInput(Name, Width, Ratio, Format)
 ```
@@ -1217,17 +1217,17 @@ ImageInput(Name, Width, Ratio, Format)
 
     The format of the uploaded image.
 
-#### Example
+**Example**
 
 ```
 ImageInput(avatar, 100, 2/1)
 ```
 
-### Include
+### Include {#include}
 
 Insert the template with a specified name into the page code.
 
-#### Syntax
+**Syntax**
 ```
 Include(Name)
 ```
@@ -1237,17 +1237,17 @@ Include(Name)
 
     Template name.
 
-#### Example
+**Example**
 
 ```
 Div(myclass, Include(mywidget))
 ```
 
-### Input
+### Input {#input}
 
 Create an input HTML element.
 
-#### Syntax
+**Syntax**
 ```
 Input(Name, Class, Placeholder, Type, Value, Disabled)
  [.Validate(validation parameters)]
@@ -1283,18 +1283,18 @@ Input(Name, Class, Placeholder, Type, Value, Disabled)
 
     CSS style.
 
-#### Example
+**Example**
 
 ```
 Input(Name: name, Type: text, Placeholder: Enter your name)
 Input(Name: num, Type: text).Validate(minLength: 6, maxLength: 20)
 ```
 
-### InputErr
+### InputErr {#inputerr}
 
 Create an inputerr element to validate the error text.
 
-#### Syntax
+**Syntax**
 ```
 InputErr(Name,validation errors)]
 ```
@@ -1307,7 +1307,7 @@ InputErr(Name,validation errors)]
 
     Validation error message for one or more parameters.
 
-#### Example
+**Example**
 
 ```
 InputErr(Name: name,
@@ -1315,11 +1315,11 @@ minLength: Value is too short,
 maxLength: The length of the value must be less than 20 characters)
 ```
 
-### InputMap
+### InputMap {#inputmap}
 
 Create an text input field for address, able to select coordinates on the map.
 
-#### Syntax
+**Syntax**
 ```
 InputMap(Name, Type, MapType, Value)
 ```
@@ -1343,18 +1343,18 @@ InputMap(Name, Type, MapType, Value)
     Map type.
     It has the following values: `hybrid, roadmap, satellite, terrain`.
 
-#### Example
+**Example**
 
 ```
 InputMap(Name: Coords,Type: polygon, MapType: hybrid, Value: `{"zoom":8, "center":{"lat":55.749942860682545,"lng":37.6207172870636}}`)
 ```
 
-### JsonToSource
+### JsonToSource {#jsontosource}
 
 Create a jsontosource element and fill it with the key-value pairs of a JSON array. The data obtained is put into the Source element, which can be used later in the source input function (e.g. [Table](#table)).
 The records in the result data are sorted alphabetically by JSON key.
 
-#### Syntax
+**Syntax**
 ```
 JsonToSource(Source, Data)
 ```
@@ -1367,18 +1367,18 @@ JsonToSource(Source, Data)
 
     A JSON object or a variable name containing a JSON object (`#name#`).
 
-#### Example
+**Example**
 
 ```
 JsonToSource(src, #myjson#)
 JsonToSource(dat, {"param":"value", "param2": "value 2"})
 ```
 
-### Label
+### Label {#label}
 
 Create a label HTML element.
 
-#### Syntax
+**Syntax**
 ```
 Label(Body, Class, For)
  [.Style(Style)]
@@ -1399,16 +1399,16 @@ Label(Body, Class, For)
 
     CSS style.
 
-#### Example
+**Example**
 
 ```
 Label(The first item).
 ```
 
-### LangRes
+### LangRes {#langres}
 
 Returns a specific language resource. If requested to edit the tree, the langres element is returned, and you may use the short format symbol $langres$.
-#### Syntax
+**Syntax**
 
 ```
 LangRes(Name)
@@ -1419,17 +1419,17 @@ LangRes(Name)
 
     Name of the language resource.
 
-#### Example
+**Example**
 
 ```
 LangRes(name)
 LangRes(myres)
 ```
 
-### LinkPage
+### LinkPage {#linkpage}
 
 Create a linkpage element, linking to the page.
-#### Syntax
+**Syntax**
 
 ```
 LinkPage(Body, Page, Class, PageParams)
@@ -1456,17 +1456,17 @@ LinkPage(Body, Page, Class, PageParams)
 
   CSS styles
   
-#### Example
+**Example**
 
 ```
 LinkPage(Class: #style_link# h5 text-bold, Page: @1roles_view, PageParams: "v_role_id=#recipient.role_id#")
 ```
 
-### Map
+### Map {#map}
 
 Create a visual map and display coordinates in any format.
 
-#### Syntax
+**Syntax**
 ```
 Map(Hmap, MapType, Value)
 ```
@@ -1485,17 +1485,17 @@ Map(Hmap, MapType, Value)
     Map type.
     It has the following values: `hybrid, roadmap, satellite, terrain`.
 
-#### Example
+**Example**
 
 ```
 Map(MapType:hybrid, Hmap:400, Value:{"coords":[{"lat":55.58774531752405,"lng":36.97260184619233},{"lat":55.58396161622043,"lng":36.973803475831005},{"lat":55.585222890513975,"lng":36.979811624024364},{"lat":55.58803635636347,"lng":36.978781655762646}],"area":146846.65783403456,"address":"Unnamed Road, Moscow, Russia, 143041"})
 ```
 
-### MenuGroup
+### MenuGroup {#menugroup}
 
 Create a nested submenu in the menu and return the menugroup element. Before replacing it with the language resource, the name parameter will return the value of Title.
 
-#### Syntax
+**Syntax**
 ```
 MenuGroup(Title, Body, Icon)
 ```
@@ -1513,7 +1513,7 @@ MenuGroup(Title, Body, Icon)
 
     Icon.
 
-#### Example
+**Example**
 
 ```
 MenuGroup(My Menu){
@@ -1522,11 +1522,11 @@ MenuGroup(My Menu){
 }
 ```
 
-### MenuItem
+### MenuItem {#menuitem}
 
 Create a menu item and return the menuitem element.
 
-#### Syntax
+**Syntax**
 ```
 MenuItem(Title, Page, Params, Icon)
 ```
@@ -1549,17 +1549,17 @@ MenuItem(Title, Page, Params, Icon)
 
     Icon.
 
-#### Example
+**Example**
 
 ```
 MenuItem(Title:$@1roles$, Page:@1roles_list, Icon:"icon-pie-chart")
 ```
 
-### Money
+### Money {#money}
 
 Returns the string value of exp / 10 ^ digit.
 
-#### Syntax
+**Syntax**
 ```
 Money(Exp, Digit)
 ```
@@ -1574,33 +1574,33 @@ Money(Exp, Digit)
 
     The exponent of 10 in the expression `Exp/10^digit`. The value can be positive or negative, and a positive value determines the number of digits after the decimal point.
 
-#### Example
+**Example**
 
 ```
 Money(Exp, Digit)
 ```
 
-### Or
+### Or {#or}
 
 It returns the result of an if logical operation. All parameters listed in parentheses are separated by commas. If having one parameter that is value is not an empty string, zero or `false`, the parameter value is `true`, otherwise the parameter value is `false`. If the parameter value is `true`, the function returns `1`, otherwise it returns `0`.
 
-#### Syntax
+**Syntax**
 ```
 Or(parameters)
 ```
 
 
-#### Example
+**Example**
 
 ```
 If(Or(#myval1#,#myval2#), Span(OK))
 ```
 
-### P
+### P {#p}
 
 Create a p HTML element.
 
-#### Syntax
+**Syntax**
 ```
 P(Body, Class)
  [.Style(Style)]
@@ -1624,18 +1624,18 @@ The CSS style specified.
 
     CSS style.
 
-#### Example
+**Example**
 
 ```
 P(This is the first line.
   This is the second line.)
 ```
 
-### QRcode
+### QRcode {#qrcode}
 
 Returns the QR code with the specified text and create a qrcode element.
 
-#### Syntax
+**Syntax**
 ```
 QRcode(Text)
 ```
@@ -1645,17 +1645,17 @@ QRcode(Text)
 
     QR code text.
 
-#### Example
+**Example**
 
 ```
 QRcode(#name#)
 ```
 
-### RadioGroup
+### RadioGroup {#radiogroup}
 
 Create a radiogroup element.
 
-#### Syntax
+**Syntax**
 ```
 RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class)
  [.Validate(validation parameters)]
@@ -1701,17 +1701,17 @@ RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class)
 
     CSS style.
 
-#### Example
+**Example**
 
 ```
 RadioGroup(Name: type_decision, Source: numbers_type_decisions, NameColumn: name, ValueColumn: value)
 ```
 
-### Range
+### Range {#range}
 
 Create a range element, use step size Step from From to To (not including To) to fill integer elements. The data generated will be put into Source and can be used later in the function of the source input (e.g. [Table](#table)). If an invalid parameter is specified, an empty Source is returned.
 
-#### Syntax
+**Syntax**
 ```
 Range(Source,From,To,Step)
 ```
@@ -1734,7 +1734,7 @@ Range(Source,From,To,Step)
 
     Step of value change. If it is not specified, the default value is 1.
 
-#### Example
+**Example**
 
 ```
 Range(my,0,5)
@@ -1742,11 +1742,11 @@ SetVar(from, 5).(to, -4).(step,-2)
 Range(Source: neg, From: #from#, To: #to#, Step: #step#)
 ```
 
-### Select
+### Select {#select}
 
 Create a select HTML element.
 
-#### Syntax
+**Syntax**
 ```
 Select(Name, Source, NameColumn, ValueColumn, Value, Class)
  [.Validate(validation parameters)]
@@ -1792,18 +1792,18 @@ Select(Name, Source, NameColumn, ValueColumn, Value, Class)
 
     CSS style.
 
-#### Example
+**Example**
 
 ```
 DBFind(mytable, mysrc)
 Select(mysrc, name)
 ```
 
-### SetTitle
+### SetTitle {#settitle}
 
 To set the page title and create a settitle element.
 
-#### Syntax
+**Syntax**
 ```
 SetTitle(Title)
 ```
@@ -1813,17 +1813,17 @@ SetTitle(Title)
 
     Page title.
 
-#### Example
+**Example**
 
 ```
 SetTitle(My page)
 ```
 
-### SetVar
+### SetVar {#setvar}
 
 Assign the value Value to the specified variable Name.
 
-#### Syntax
+**Syntax**
 ```
 SetVar(Name, Value)
 ```
@@ -1838,18 +1838,18 @@ SetVar(Name, Value)
 
     Variable value, may contain a reference to another variable.
 
-#### Example
+**Example**
 
 ```
 SetVar(name, John Smith).(out, I am #name#)
 Span(#out#)
 ```
 
-### Span
+### Span {#span}
 
 Create a span HTML element.
 
-#### Syntax
+**Syntax**
 ```
 Span(Body, Class)
  [.Style(Style)]
@@ -1873,17 +1873,17 @@ Span(Body, Class)
 
     CSS style.
 
-#### Example
+**Example**
 
 ```
 This is Span(the first item, myclass1).
 ```
 
-### Strong
+### Strong {#strong}
 
 Create a strong HTML element.
 
-#### Syntax
+**Syntax**
 ```
 Strong(Body, Class)
 ```
@@ -1898,17 +1898,17 @@ Strong(Body, Class)
 
     Class name.
 
-#### Example
+**Example**
 
 ```
 This is Strong(the first item, myclass1).
 ```
 
-### SysParam
+### SysParam {#sysparam}
 
 Get the value of a specific parameter in the platform parameter table system_parameters.
 
-#### Syntax
+**Syntax**
 ```
 SysParam(Name)
 ```
@@ -1918,17 +1918,17 @@ SysParam(Name)
 
     Name of the platform parameter.
 
-#### Example
+**Example**
 
 ```
 SysParam(max_columns)
 ```
 
-### Table
+### Table {#table}
 
 Create a table HTML element.
 
-#### Syntax
+**Syntax**
 ```
 Table(Source, Columns)
  [.Style(Style)]
@@ -1952,18 +1952,18 @@ Table(Source, Columns)
 
     CSS style.
 
-#### Example
+**Example**
 
 ```
 DBFind(mytable, mysrc)
 Table(mysrc,"ID=id,Name=name")
 ```
 
-### TransactionInfo
+### TransactionInfo {#transactioninfo}
 
 It queries transactions by specified hash and returns information about the executed contracts and their parameters.
 
-#### Syntax
+**Syntax**
 ```
 TransactionInfo(Hash)
 ```
@@ -1986,18 +1986,18 @@ Where:
 * `params` - Data passed to the contract parameters;
 * `block` - ID of the block that processed the transaction.
 
-#### Example
+**Example**
 
 ```
 P(TransactionInfo(#hash#))
 ```
 
-### VarAsIs
+### VarAsIs {#varasis}
 
 Assigns the value Value to a specific variable Name, which is the name of a specific variable instead of its value.
 
 For versions with variable substitution, see [SetVar](#setvar).
-#### Syntax
+**Syntax**
 ```
 VarAsIs(Name, Value)
 ```
@@ -2012,7 +2012,7 @@ VarAsIs(Name, Value)
 
     A variable value. Variable name in the value will not be substituted. For example, if Value is example #varname#, then the variable value is also example #varname#.
 
-#### Example
+**Example**
 
 ```
 SetVar(Name,"John")
@@ -2020,15 +2020,15 @@ VarAsIs(name, I am #Name#)
 Span(#name#) // I am #Name#
 ```
 
-## App styles for mobile devices
+## App styles for mobile devices {#app-styles-for-mobile-devices}
 
-### Layout
+### Layout {#layout}
 
-#### Title
+#### Title {#title}
 
 * `h1`… `h6`
 
-#### Strong-class names
+#### Strong-class names {#strong-class-names}
 
 * `.text-muted`
 * `.text-primary`
@@ -2037,7 +2037,7 @@ Span(#name#) // I am #Name#
 * `.text-warning`
 * `.text-danger`
 
-#### Color
+#### Color {#color}
 
 * `.bg-danger-dark`
 * `.bg-danger`
@@ -2060,24 +2060,24 @@ Span(#name#) // I am #Name#
 * `.bg-gray-light`
 * `.bg-gray-lighter`
 
-#### Grid
+#### Grid {#grid}
 
 * `.row`
 * `.row.row-table`
 * `.col-xs-1`… `.col-xs-12`, only used in `.row.row-table`.
 
-#### Panel
+#### Panel {#panel}
 
 * `.panel`
 * `.panel.panel-heading`
 * `.panel.panel-body`
 * `.panel.panel-footer`
 
-#### <span id ="form-app">Form</span>
+#### Form {#form-app}
 
 * `.form-control`
 
-#### <span id = "button-app">Button</span>
+#### Button {#button-app}
 
 * `.btn.btn-default`
 * `.btn.btn-link`
@@ -2087,7 +2087,7 @@ Span(#name#) // I am #Name#
 * `.btn.btn-warning`
 * `.btn.btn-danger`
 
-#### Icon
+#### Icon {#icon}
 
 * All fa-class icons are from FontAwesome: `fa fa-<icon-name></icon-name>`.
 * All icon-class icons are from SimpleLineIcons: `icon-<icon-name>`.

@@ -1,4 +1,4 @@
-# Dezentraler Proof-of-Authority-Konsens
+# Dezentraler Proof-of-Authority-Konsens {#decentralized-proof-of-authority-consensus}
 
 * Was ist ein Konsens über einen dezentralen Berechtigungsnachweis?
 
@@ -11,18 +11,18 @@
 In diesem Abschnitt beschreiben wir den Konsens zum dezentralen Proof-of-Authority und seine Implementierung in IBAX.
 
 
- - [Was ist ein dezentraler Proof-of-Authority-Konsens?](#was-ist-ein-dezentraler-proof-of-authority-konsens?)
-  - [Vorteile des DPoA-Konsenses](#vertoile-des-dpoa-konsensus)
+ - [Was ist ein dezentraler Proof-of-Authority-Konsens?](#what-is-decentralized-proof-of-authority-consensus)
+  - [Vorteile des DPoA-Konsenses](#advantages-of-dpoa-consensus)
   - [DPoA consensus and common means of attack](#dpoa-consensus-and-common-means-of-attack)
     - [DoS](#dos)
     - [51 percent attack](#percent-attack-51)
   - [Implementation of DPoA consensus in IBAX](#implementation-of-dpoa-consensus-in-ibax)
-    - [Honor-Knoten](#honor-knoten)
-    - [Leader-Knoten](#leader-knoten)
+    - [Honor-Knoten](#honor-node)
+    - [Leader-Knoten](#leader-node)
     - [Generierung neuer Blöcke](#generation-of-new-blocks)
-    - [Gabeln](#gabeln)
+    - [Gabeln](#forks)
 
-## Was ist ein dezentraler Proof-of-Authority-Konsens?
+## Was ist ein dezentraler Proof-of-Authority-Konsens? {#what-is-decentralized-proof-of-authority-consensus}
 
 Unter Berücksichtigung kommerzieller Anwendungsszenarien und realer Umgebungen hat IBAX Network einen neuen Konsensmechanismus entwickelt, DPoA (Decentralized Proof of Authority).
 
@@ -32,7 +32,7 @@ IBAX Network hat einen neuen Konsensmechanismus geschaffen, der Verteilung, schw
 
 DPoA verfügt über einen Präventionsmechanismus gegen Netzwerkangriffe und ermöglicht die Erstellung von Mint Nodes, die das Netzwerk schützen und neue IBXC-Coins prägen. IBAXCoin-Inhaber können einen Teil ihres IBXC-Liquiditätsguthabens in Mint Nodes für Mint & Stake Emission Rewards einsetzen. Das Prägen und Abstecken dient dazu, die Kosten und die Schwierigkeit von Angriffen zu erhöhen und den Gesamtwert der IBXC-Münzen proportional zu erhöhen. Mit diesem Mechanismus sind die Wahrscheinlichkeit und der Schaden jedes Angriffs unendlich nahe bei Null.
 
-## Vorteile des DPoA-Konsenses
+## Vorteile des DPoA-Konsenses {#advantages-of-dpoa-consensus}
 
 Im Vergleich zum Proof-of-Work (PoW)- oder Proof-of-Stake (PoS)-Konsens hat der DPoA-Konsens folgende Vorteile:
 
@@ -44,9 +44,9 @@ Im Vergleich zum Proof-of-Work (PoW)- oder Proof-of-Stake (PoS)-Konsens hat der 
 
 * Toleranz gegenüber kompromittierten und bösartigen Knoten, solange 51 % der Knoten nicht kompromittiert sind. IBAX implementiert einen Mechanismus zum Sperren von Knoten und Widerrufen von Rechten zur Blockgenerierung.
 
-## DPoA-Konsens und gemeinsame Angriffsmittel
+## DPoA-Konsens und gemeinsame Angriffsmittel {#dpoa-consensus-and-common-means-of-attack}
 
-### DoS
+### DoS {#dos}
 
 Ein Angreifer kann große Mengen an Transaktionen und Blöcken an einen Zielknoten im Netzwerk senden und versuchen, dessen Betrieb zu stören und seine Dienste nicht verfügbar zu machen.
 
@@ -56,21 +56,21 @@ Der DPoA-Mechanismus ist zur Abwehr von DoS-Angriffen möglich:
 
 * Wenn ein Ehrenknoten für einen bestimmten Zeitraum nicht verfügbar ist, kann er von der Liste der Ehrenknoten ausgeschlossen werden.
 
-### <spn id = "percent-attack-51">51 percent attack</span>
+### 51 percent attack {#percent-attack-51}
 
 Was das Szenario mit dem DPoA-Konsens betrifft, erfordert der 51-%-Angriff, dass ein Angreifer die Kontrolle über 51 % der Netzwerkknoten erlangt. Aber das Szenario für den PoW-Konsens ist anders, den ein Angreifer benötigt, um 51 % der Rechenleistung des Netzwerks zu erhalten. Die Kontrolle über Knoten in einem zugelassenen Blockchain-Netzwerk zu erlangen, ist viel schwieriger als die Erlangung der Rechenleistung.
 
 Beispielsweise kann ein Angreifer in einem Netzwerk, das den PoW-Konsens implementiert, die Rechenleistung (Leistung) des kontrollierten Netzwerksegments erhöhen und somit den Prozentsatz der kontrollierten Knoten erhöhen. Dies macht für den DPoA-Konsens keinen Sinn, da die Rechenleistung des Knotens keinen Einfluss auf die Blockchain-Netzwerkentscheidungen hat.
 
-## Implementierung des DPoA-Konsenses in IBAX
+## Implementierung des DPoA-Konsenses in IBAX {#implementation-of-dpoa-consensus-in-ibax}
 
-### Honor-knoten
+### Honor-knoten {#honor-node}
 
 In IBAX können nur Ehrenknoten neue Blöcke generieren, die das Blockchain-Netzwerk und das verteilte Hauptbuch aufrechterhalten.
 
 Die Liste der Ehrenknoten wird in der Blockchain-Registrierung geführt. Die Reihenfolge der Knoten bestimmt die Reihenfolge, in der Knoten neue Blöcke erzeugen.
 
-### Leader-Knoten
+### Leader-Knoten {#leader-node}
 
 Die folgende Formel bestimmt den aktuellen **Leader-Knoten**, also einen Knoten, der zum aktuellen Zeitpunkt einen neuen Block erzeugen muss.
 ```
@@ -97,7 +97,7 @@ Anzahl der Sekunden im Blockgenerierungsintervall.
 
 Gesamtzahl der Ehrenknoten.
 
-### Generierung neuer Blöcke
+### Generierung neuer Blöcke {#generation-of-new-blocks}
 
 Neue Blöcke werden durch einen [Leader-Knoten] (#Leader-Node) des aktuellen Zeitintervalls generiert. Bei jedem Zeitintervall wird die Führungsrolle an den nächsten Ehrenknoten aus der Liste der Ehrenknoten weitergegeben.
 ![avatar](/block-generation.png)
@@ -138,7 +138,7 @@ Schritte zum Verifizieren neuer Blöcke auf anderen Ehrenknoten:
 
      – Wenn der Ehrenknoten, der diesen ungültigen Block erstellt hat, weiterhin fehlerhafte Blöcke generiert, kann er gesperrt oder von der Liste der Ehrenknoten ausgeschlossen werden.
 
-### Gabeln
+### Gabeln {#forks}
 
 Ein **Fork** ist eine alternative Version der Blockchain, die einen oder mehrere Blöcke enthält, die unabhängig vom Rest der Blockchain generiert wurden.
 

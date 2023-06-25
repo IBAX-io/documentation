@@ -1,18 +1,18 @@
-# Platform Parameters
-These are parameters to configure IBAX. They are applicable to the blockchain network and all ecosystems within it.
+# プラットフォームパラメータ {#platform-parameters}
+これらは IBAX を設定するためのパラメーターです。 これらは、ブロックチェーン ネットワークとその中のすべてのエコシステムに適用できます。
 
-## Location to store platform parameters
-Platform parameters are stored in the `system parameters` table.
+## プラットフォームパラメータを保存する場所 {#location-to-store-platform-parameters}
+プラットフォーム パラメータは「システム パラメータ」テーブルに保存されます。
 
-This table is located in the first (default) ecosystem created on the blockchain network.
+このテーブルは、ブロックチェーン ネットワーク上に作成された最初の (デフォルト) エコシステムにあります。
 
-## Change of platform parameters
-Change of platform parameters can only be made through voting. You can only use the UpdateSysParam contract to change any platform parameter, which is managed by definitions in the legal system of the platform.
+## プラットフォームパラメータの変更 {#change-of-platform-parameters}
+プラットフォームパラメータの変更は投票によってのみ行うことができます。 UpdateSysParam コントラクトを使用してのみ、プラットフォームの法的システムの定義によって管理されるプラットフォーム パラメーターを変更できます。
 
-## Configure platform parameters
-### Configure the blockchain network
+## プラットフォームパラメータを設定する {#configure-platform-parameters}
+### ブロックチェーン ネットワークを構成する {#configure-the-blockchain-network}
 
-Nodes:
+ノード:
 * [full nodes](#full-nodes)
 * [number of nodes](#number-of-nodes)
 
@@ -21,57 +21,57 @@ Node bans:
 * [node ban time](#node-ban-time)
 * [node ban time local](#node-ban-time-local)
 
-### Configure a new ecosystem
+### 新しいエコシステムを構成する {#configure-a-new-ecosystem}
 
-Default page and menu:
+デフォルトのページとメニュー:
 * [default ecosystem page](#default-ecosystem-page)
 * [default ecosystem menu](#default-ecosystem-menu)
 
-Default contract: 
+デフォルトのスマートコントラクト:
 * [default ecosystem contract](#default-ecosystem-contract)
 
-### Configure the database
+### データベースを構成する {#configure-the-database}
 
-Table limits:
+テーブルの制限:
 * [max columns](#max-columns)
 * [max indexes](#max-indexes)
 
-### Configure the generation of blocks
-Time limits:
+### ブロックの生成を構成する {#configure-the-generation-of-blocks}
+制限時間:
 * [gap between blocks](#gap-between-blocks)
 * [max block generation time](#max-block-generation-time)
 
-Transaction limits:
+トランザクション制限:
 * [max tx block](#max-tx-block)
 * [max tx block per user](#max-tx-block-per-user)
 
-Size limits:
+サイズ制限:
 * [max tx size](#max-tx-size)
 * [max block size](#max-block-size)
 * [max forsign size](#max-forsign-size)
 
-Fuel limits:
+燃料制限:
 * [max fuel block](#max-fuel-block)
 * [max fuel tx](#max-fuel-tx)
 
-Block rollback limits:
+ブロックのロールバック制限:
 * [rollback blocks](#rollback-blocks)
 
-### Configure the fuel tokens
-Rewards and commissions:
+### 燃料トークンを構成する {#configure-the-fuel-tokens}
+報酬とコミッション:
 * [block reward](#block-reward)
 * [commission wallet](#commission-wallet)
 * [commission size](#commission-size)
 
-Fuel rate conversion:
+燃料比率換算:
 * [fuel rate](#fuel-rate)
 * [price create rate](#price-create-rate)
 
-Transaction size and data price:
+トランザクションサイズとデータ料金:
 * [price tx data](#price-tx-data)
 * [price tx size wallet](#price-tx-size-wallet)
 
-Price for new elements:
+新しい要素の価格:
 * [price create ecosystem](#price-create-ecosystem)
 * [price create table](#price-create-table)
 * [price create column](#price-create-column)
@@ -80,7 +80,7 @@ Price for new elements:
 * [price create page](#price-create-page)
 * [price create application](#price-create-application)
 
-Price for operations:
+操作の価格:
 <!-- TOC -->
 
 - [Platform Parameters](#platform-parameters)
@@ -167,70 +167,72 @@ Price for operations:
 
 <!-- /TOC -->
 
-### Depreciated
-Depreciated parameters:
+### Depreciated {#depreciated}
+廃止されたパラメータ:
 * [blockchain url](#blockchain-url)
 
-## Details of platform parameters
+## プラットフォームパラメータの詳細 {#details-of-platform-parameters}
 
-### block reward
-The number of IBXC tokens granted to the honor node that generates the block.
+### ブロックリワード {#block-reward}
+ブロックを生成する名誉ノードに付与されるIBXCトークンの数。
 
-The account that receives the reward is specified in the [full nodes](#full-nodes) parameter.
+報酬を受け取るアカウントは、[full nodes](#full-nodes)パラメータで指定されます。
 
-### blockchain url
-Depreciated. 
+### ブロックチェーンURL {#blockchain-url}
+廃止されました。
 
-### commission size
-Percentage of the commission.
+### 手数料の大きさ {#commission-size}
+手数料のパーセンテージ。
 
-The amount of the commission is calculated as a percentage of the total cost of implement the contract. The unit of the commission token is IBXC.
+手数料の金額は、コントラクトの実装コストの総額のパーセンテージとして計算されます。手数料トークンの単位はIBXCです。
 
-The commission will be transferred to the account address specified in the commission_wallet parameter.
+手数料は、commission_walletパラメータで指定されたアカウントアドレスに送金されます。
 
-### commission wallet
-The account address to receive the commission.
+### 手数料ウォレット {#commission-wallet}
+手数料を受け取るアカウントアドレス。
 
-The amount of commission is specified by the commission_size parameter.
+手数料の金額は、commission_sizeパラメータで指定されます。
 
-### default ecosystem contract
-The source code of the default contract in the new ecosystem.
+### デフォルトエコシステムコントラクト {#default-ecosystem-contract}
+新しいエコシステムのデフォルトコントラクトのソースコード。
 
-This contract provides access to the ecosystem creator.
+このコントラクトは、エコシステム作成者にアクセスを提供します。
 
-### default ecosystem menu
-The source code of the default menu of the new ecosystem.
+### デフォルトエコシステムメニュー {#default-ecosystem-menu}
+新しいエコシステムのデフォルトメニューのソースコード。
 
-### default ecosystem page
-The source code of the default page of the new ecosystem.
+### デフォルトエコシステムページ {#default-ecosystem-page}
+新しいエコシステムのデフォルトページのソースコード。
 
-### fuel rate
-The exchange rates of different ecosystem tokens by fuel unit.
+### 燃料レート {#fuel-rate}
+燃料ユニットによる異なるエコシステムトークンの交換レート。
 
-The format of this parameter:
+このパラメータの形式:
 
 `[["ecosystem_id", "token_to_fuel_rate"], ["ecosystem_id2", "token_to_fuel_rate2"], ...]`
 
 * ``ecosystem_id``
 
-    Ecosystem ID.
+    エコシステムID。
 * `token_to_fuel_rate`
 
-    Exchange rate of the token by fuel unit.
+    燃料ユニットによるトークンの交換レート。
 
-For example:
+例:
 
 `[["1","1000000000000"], ["2", "1000"]]`
 
-One token of Ecosystem 1 is exchanged for 1,000,000,000,000 fuel units. One token of Ecosystem 2 is exchanged for 1,000 fuel units.
+エコシステム1のトークン1つは1,000,000,000,000の燃料ユニットと交換されます。エコシステム2のトークン1つは1,000の燃料ユニットと交換されます。
 
-### price create rate
-The fuel rate of a new element.
+エコシステム 1 の 1 トークンは 1,000,000,000,000 燃料ユニットと交換されます。 Ecosystem 2 の 1 トークンは 1,000 燃料ユニットと交換されます。
 
-### full nodes
-The list of honor nodes of the blockchain network.
+### 価格作成率 {#price-create-rate}
+新しい要素の燃料比率。
 
-The format of this parameter: 
+### フルノード {#full-nodes}
+ブロックチェーンネットワークの優等ノードのリスト。
+
+このパラメータの形式は次のとおりです。
 
 `
 [{"api_address":"https://apihost1:port1","public_key":"nodepub1","tcp_address":"tcphost1:port2"},{"api_address":"https://apihost2:port1","public_key":"nodepub2","tcp_address":"tcphost2:port2"}]
@@ -238,235 +240,222 @@ The format of this parameter:
 
 * `tcp_address`
 
-     TCP address and port of the node host.
-     Transactions and new blocks will be sent to this host address, which can also be used to obtain the complete blockchain from the first block.
+    ノードホストのTCPアドレスとポート。
+    このホストアドレスに対してトランザクションや新しいブロックが送信され、最初のブロックから完全なブロックチェーンを取得するためにも使用できます。
+
 * `api_address`
 
-    API address and port of the node host.
-    Through the API address, you can access any function of the platform without using Weaver. See details in RESTful API.
+    ノードホストのAPIアドレスとポート。
+    APIアドレスを介して、Weaverを使用せずにプラットフォームの任意の機能にアクセスすることができます。RESTful APIの詳細については、詳細をご覧ください。
+
 * `public_key`
 
-    Public key of the node, which is used to verify the block signature.
+    ノードの公開鍵。これはブロックの署名を検証するために使用されます。
 
+### gap between blocks {#gap-between-blocks}
 
-### gap between blocks
-The time interval (in seconds) of generating two blocks on a node.
+ノード上で2つのブロックを生成する間隔（秒単位）。
 
-All nodes in the network use it to determine when to generate a new block. If the current node does not generate a new block within this time period, the turn passes to the next node in the list of honor nodes.
+ネットワーク内のすべてのノードは、新しいブロックを生成するタイミングを決定するためにこれを使用します。現在のノードがこの時間内に新しいブロックを生成しない場合、次の名誉ノードリスト内のノードにターンが移ります。
 
-The minimum value of this parameter is `1` second.
+このパラメータの最小値は「1」秒です。
 
-### incorrect blocks per day
-The number of bad blocks that a node is allowed to generate per day before being banned.
+### incorrect blocks per day {#incorrect-blocks-per-day}
 
-When more than half of the nodes in the network receive the same number of bad blocks from a node, the node will be banned from the network within a time period specified in [node ban time](#node-ban-time).
+ノードが許可される1日あたりの不正なブロックの数。
 
-### max block generation time
-The maximum time for generating a block, in milliseconds. If a block is not successfully generated within this time period, a timeout error will be reported.
+ネットワーク内のノードの半数以上が同じ数の不正なブロックを受信すると、指定された時間内にノードはネットワークから禁止されます。 [node ban time]（#node-ban-time）を参照してください。
 
-### max block size
-The maximum size of a block, in bytes.
+### max block generation time {#max-block-generation-time}
 
-### max columns
-The maximum number of fields in a single table.
+ブロック生成の最大時間（ミリ秒単位）。この時間内にブロックが正常に生成されない場合、タイムアウトエラーが報告されます。
 
-However, it does not include the predefined `id` column.
+### max block size {#max-block-size}
+ブロックの最大サイズ（バイト単位）。
 
-### max forsign size
-The maximum size of a transaction signature in bytes. 
+### max columns {#max-columns}
+単一のテーブル内のフィールドの最大数です。
 
-### max fuel block
-The maximum total fuel fee of a single block.
+ただし、事前定義された `id` 列は含まれていません。
 
-### max fuel tx
-The maximum total fuel fee of a single transaction.
+### max forsign size {#max-forsign-size}
+トランザクションの署名の最大サイズ（バイト単位）。
 
-### max indexes
-The maximum number of primary key fields in a single table.
+### max fuel block {#max-fuel-block}
+単一ブロックの最大燃料手数料の合計。
 
-### max tx block
-The maximum number of transactions in a single block.
+### max fuel tx {#max-fuel-tx}
+単一トランザクションの最大燃料手数料。
 
-### max tx block per user
-The maximum number of transactions of an account in a block.
+### max indexes {#max-indexes}
+単一のテーブル内のプライマリキーの最大数です。
 
-### max tx size
-The maximum size of a transaction in bytes.
+### max tx block {#max-tx-block}
+単一ブロック内のトランザクションの最大数。
 
-### node ban time
-The global ban period of the node, in milliseconds.
+### max tx block per user {#max-tx-block-per-user}
+ブロック内のアカウントの最大トランザクション数。
 
-When more than half of the nodes in the network receive bad blocks from a node up to the number of [incorrect blocks per day](#incorrect-blocks-per-day), the node will be banned in the network for this time period.
+### max tx size {#max-tx-size}
+トランザクションの最大サイズ（バイト単位）。
 
-### node ban time local
-The local ban period of the node, in milliseconds.
+### node ban time {#node-ban-time}
+ノードのグローバルな禁止期間（ミリ秒単位）。
 
-When a node receives an incorrect block from another node, it will locally ban the sender's node during this time period.
+ネットワーク内のノードの半数以上が、特定のノードから[incorrect blocks per day](#incorrect-blocks-per-day)の数までの不正なブロックを受信すると、ノードはこの時間だけネットワークから禁止されます。
 
-### number of nodes
-The maximum number of honor nodes in the [full nodes](#full-nodes) parameter. 
+### node ban time local {#node-ban-time-local}
+ノードのローカルな禁止期間（ミリ秒単位）。
 
-### price create ecosystem
-The fuel fee to create a new single ecosystem.
+ノードが別のノードから不正なブロックを受信した場合、この期間中は送信元のノードをローカルに禁止します。
 
-This parameter defines the additional fuel fee of the `@1NewEcosystem` contract. When the contract is implemented, the fuel fee for executing various functions of this contract will also be calculated and included in the total cost.
+### number of nodes {#number-of-nodes}
+[full nodes](#full-nodes)パラメータの名誉ノードの最大数。
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+### price create ecosystem {#price-create-ecosystem}
+新しい単一エコシステムを作成するための燃料手数料。
 
-### price create application
-The fuel fee to create a new single application.
+このパラメータは、`@1NewEcosystem` コントラクトの追加燃料手数料を定義します。コントラクトが実行されると、このコントラクトのさまざまな機能を実行するための燃料手数料も計算され、総コストに含まれます。
 
-This parameter defines the additional fuel fee of the `@1NewApplication` contract. When the contract is implemented, the fuel fee for executing various functions of this contract will also be calculated and included in the total cost.
+このパラメータは燃料単位で計算されます。[fuel rate](#fuel-rate)および[price create rate](#price-create-rate)を使用して、燃料単位をIBXCトークンに変換します。
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+### price create application {#price-create-application}
+新しい単一アプリケーションを作成するための燃料手数料。
 
-### price create table
-The fuel fee to create a new single table.
+このパラメータは、`@1NewApplication` コントラクトの追加燃料手数料を定義します。コントラクトが実行されると
+### price create contract {#price-create-column}
+新しい単一契約を作成するための燃料手数料。
 
-This parameter defines the additional fuel cost of the `@1NewTable` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
+このパラメータは、`@1NewContract` コントラクトの追加燃料手数料を定義します。コントラクトが実行されると、このコントラクトのさまざまな機能を実行するための燃料手数料も計算され、総コストに含まれます。
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+このパラメータは燃料単位で計算されます。[fuel rate](#fuel-rate) および [price create rate](#price-create-rate) を使用して、燃料単位をIBXCトークンに変換します。
 
-### price create column
-The fuel fee to create a new single table field.
+### price create menu {#price-create-menu}
+新しい単一メニューを作成するための燃料手数料。
 
-This parameter defines the additional fuel cost of the `@1NewColumn` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
+このパラメータは、`@1NewMenu` コントラクトの追加燃料手数料を定義します。コントラクトが実行されると、このコントラクトのさまざまな機能を実行するための燃料手数料も計算され、総コストに含まれます。
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+このパラメータは燃料単位で計算されます。[fuel rate](#fuel-rate) および [price create rate](#price-create-rate) を使用して、燃料単位をIBXCトークンに変換します。
 
-### price create contract
-The fuel fee to create a new single contract.
+### price create page {#price-create-page}
+新しい単一ページを作成するための燃料手数料。
 
-This parameter defines the additional fuel cost of the `@1NewContract` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
+このパラメータは、`@1NewPage` コントラクトの追加燃料手数料を定義します。コントラクトが実行されると、このコントラクトのさまざまな機能を実行するための燃料手数料も計算され、総コストに含まれます。
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+このパラメータは燃料単位で計算されます。[fuel rate](#fuel-rate) および [price create rate](#price-create-rate) を使用して、燃料単位をIBXCトークンに変換します。
 
-### price create menu
-The fuel fee to create a new single menu.
+### price exec address to id {#price-exec-address-to-id}
+`AddressToId()` 関数の燃料手数料。燃料単位で計算されます。
 
-This parameter defines the additional fuel cost of the `@1NewMenu` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
+### price exec bind wallet {#price-exec-bind-wallet}
+`Activate()` 関数の燃料手数料。燃料単位で計算されます。
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+### price exec column condition {#price-exec-column-condition}
+`ColumnCondition()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price create page
-The fuel fee to create a new single page.
+### price exec compile contract {#price-exec-compile-contract}
+`CompileContract()` 関数の燃料手数料。燃料単位で計算されます。
 
-This parameter defines the additional fuel cost of the `@1NewPage` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
+### price exec contains {#price-exec-contains}
+`Contains()` 関数の燃料手数料。燃料単位で計算されます。
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+### price exec contract by id {#price-exec-contract-by-id}
+`GetContractById()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec address to id
-The fuel fee of calling the `AddressToId()` function, calculated in fuel units. 
+### price exec contract by name {#price-exec-contract-by-name}
+`GetContractByName()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec bind wallet
-The fuel fee of calling the `Activate()` function, calculated in fuel units. 
+### price exec contracts list {#price-exec-contracts-list}
+`ContractsList()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec column condition
-The fuel fee of calling the `ColumnCondition()` function, calculated in fuel units. 
+### price exec create column {#price-exec-create-column}
+`CreateColumn()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec compile contract
-The fuel fee of calling the `CompileContract()` function, calculated in fuel units. 
+### price exec create ecosystem {#price-exec-create-ecosystem}
+`CreateEcosystem()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec contains
-The fuel fee of calling the `Contains()` function, calculated in fuel units. 
+### price exec create table {#price-exec-create-table}
+`CreateTable()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec contract by id
-The fuel fee of calling the `GetContractById()` function, calculated in fuel units. 
+### price exec ecosys param {#price-exec-ecosys-param}
+`EcosysParam()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec contract by name
-The fuel fee of calling the GetContractByName() function, calculated in fuel units. 
+### price exec eval {#price-exec-eval}
+`Eval()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec contracts list
-The fuel fee of calling the `ContractsList()` function, calculated in fuel units. 
+### price exec eval condition {#price-exec-eval-condition}
+`EvalCondition()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec create column
-The fuel fee of calling the `CreateColumn()` function, calculated in fuel units. 
+### price exec flush contract {#price-exec-flush-contract}
+`FlushContract()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec create ecosystem
-The fuel fee of calling the `CreateEcosystem()` function, calculated in fuel units. 
+### price exec has prefix {#price-exec-has-prefix}
+`HasPrefix()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec create table
-The fuel fee of calling the `CreateTable()` function, calculated in fuel units. 
+### price exec id to address {#price-exec-id-to-address}
+`IdToAddress()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec ecosys param
-The fuel fee of calling the `EcosysParam()` function, calculated in fuel units. 
+### price exec is object {#price-exec-is-object}
+`IsObject()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec eval
-The fuel fee of calling the `Eval()` function, calculated in fuel units. 
+### price exec join {#price-exec-join}
+`Join()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec eval condition
-The fuel fee of calling the `EvalCondition()` function, calculated in fuel units. 
+### price exec json to map {#price-exec-json-to-map}
+`JSONToMap()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec flush contract
-The fuel fee of calling the `FlushContract()` function, calculated in fuel units. 
+### price exec len {#price-exec-len}
+`Len()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec has prefix
-The fuel fee of calling the `HasPrefix()` function, calculated in fuel units. 
+### price exec perm column {#price-exec-perm-column}
+`PermColumn()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec id to address
-The fuel fee of calling the `IdToAddress()` function, calculated in fuel units. 
+### price exec perm table {#price-exec-perm-table}
+`PermTable()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec is object
-The fuel fee of calling the `IsObject()` function, calculated in fuel units. 
+### price exec pub to id {#price-exec-pub-to-id}
+`PubToID()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec join
-The fuel fee of calling the `Join()` function, calculated in fuel units. 
+### price exec replace {#price-exec-replace}
+`Replace()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec json to map
-The fuel fee of calling the `JSONToMap()` function, calculated in fuel units. 
+### price exec sha256 {#price-exec-sha256}
+`Sha256()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec len
-The fuel fee of calling the `Len()` function, calculated in fuel units. 
+### price exec size {#price-exec-size}
+`Size()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec perm column
-The fuel fee of calling the `PermColumn()` function, calculated in fuel units. 
+### price exec substr {#price-exec-substr}
+`Substr()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec perm table
-The fuel fee of calling the `PermTable()` function, calculated in fuel units. 
+### price exec sys fuel {#price-exec-sys-fuel}
+`SysFuel()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec pub to id
-The fuel fee of calling the `PubToID()` function, calculated in fuel units. 
+### price exec sys param int {#price-exec-sys-param-int}
+`SysParamInt()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec replace
-The fuel fee of calling the `Replace()` function, calculated in fuel units. 
+### price exec sys param string {#price-exec-sys-param-string}
+`SysParamString()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec sha256
-The fuel fee of calling the `Sha256()` function, calculated in fuel units. 
+### price exec table conditions {#price-exec-table-conditions}
+`TableConditions()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec size
-The fuel fee of calling the `Size()` function, calculated in fuel units. 
+### price exec unbind wallet {#price-exec-unbind-wallet}
+`Deactivate()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec substr
-The fuel fee of calling `theSubstr()` function, calculated in fuel units. 
+### price exec update lang {#price-exec-update-lang}
+`UpdateLang()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec sys fuel
-The fuel fee of calling the `SysFuel()` function, calculated in fuel units. 
+### price exec validate condition {#price-exec-validate-condition}
+`ValidateCondition()` 関数の燃料手数料。燃料単位で計算されます。
 
-### price exec sys param int
-The fuel fee of calling the `SysParamInt()` function, calculated in fuel units. 
+### price tx data {#price-tx-data}
+トランザクションごとの1024バイトあたりの燃料手数料。燃料単位で計算されます。
 
-### price exec sys param string
-The fuel fee of calling the `SysParamString()` function, calculated in fuel units. 
+### price tx size wallet {#price-tx-size-wallet}
+トランザクションサイズごとの手数料。単位はIBXCトークンです。
 
-### price exec table conditions
-The fuel fee of calling the `TableConditions()` function, calculated in fuel units. 
+エコシステム1以外のエコシステムで契約を実装する場合、メガバイトごとのブロックスペースの使用料が比例して発生し、そのレートは *price tx size wallet* IBXCトークンです。
 
-### price exec unbind wallet
-The fuel fee of calling the `Deactivate()` function, calculated in fuel units. 
-
-### price exec update lang
-The fuel fee of calling the `UpdateLang()` function, calculated in fuel units. 
-
-### price exec validate condition
-The fuel fee of calling the `ValidateCondition()` function, calculated in fuel units. 
-
-### price tx data
-The fuel fee for every 1024 bytes of a transaction, calculated in fuel units. 
-
-### price tx size wallet
-The fee by transaction size, its unit is the IBXC token.
-
-Except the ecosystem 1, a block space usage fee will be incurred proportionally when implementing a contract in other ecosystems, and its rate is *price tx size wallet* IBXC tokens per megabyte.
-
-### rollback blocks
-Maximum number of blocks that can be rolled back when detecting a fork in the blockchain.
+### rollback blocks {#rollback-blocks}
+ブロックチェーンでフォークを検出した場合にロールバックできるブロックの最大数です。

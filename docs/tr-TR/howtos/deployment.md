@@ -1,6 +1,6 @@
-# Bir IBAX Ağının Kurulması
+# Bir IBAX Ağının Kurulması {#deployment-of-a-ibax-network}
 Bu bölümde, size kendi blok zinciri ağınızı nasıl kuracağınızı göstereceğiz.
-## Bir dağıtım örneği
+## Bir dağıtım örneği {#an-deployment-example}
 
 Örnek olarak aşağıdaki üç düğümle bir blok zinciri ağı kurulacaktır.
 
@@ -32,50 +32,50 @@ Düğümler tarafından kullanılan örnek adresler ve bağlantı noktaları aş
 |  3   | go-ibax (TCP service) | 192.168.1.3:7078 |
 |  3   | go-ibax (API service) | 192.168.1.3:7079 |
 
-## Dağıtım aşaması
+## Dağıtım aşaması {#deploy-phase}
 Kendi blok zinciri ağınız birkaç aşamada devreye alınmalıdır:
-- [Bir IBAX Ağının Dağıtımı](#bir-ibax-ağının-dağıtımı)
-  - [Bir dağıtım örneği](#bir-dağıtım-örneği)
-  - [Dağıtım aşaması](#dağıtım-aşaması)
-  - [Sunucu dağıtımı](#sunucu-dağıtımı)
-    - [İlk düğümü dağıtın](#ilk-düğümü-dağıtın)
-    - [Bağımlılıklar ve ortam ayarları](#bağımlılıklar-ve-ortam-ayarları)
+- [Bir IBAX Ağının Dağıtımı](#deployment-of-a-ibax-network)
+  - [Bir dağıtım örneği](#an-deployment-example)
+  - [Dağıtım aşaması](#deploy-phase)
+  - [Sunucu dağıtımı](#server-deployment)
+    - [İlk düğümü dağıtın](#deploy-the-first-node)
+    - [Bağımlılıklar ve ortam ayarları](#dependencies-and-environment-settings)
       - [sudo](#sudo)
     - [Golang](#golang)
     - [PostgreSQL](#postgresql)
-    - [Centrifugo](#Centrifugo)
-    - [Dizin yapısı](#dizin-yapısı)
-    - [Veritabanı oluştur](#veritabanı-oluştur)
-    - [Centrifugo'yu Yapılandır](#centrifugo-yapılandırın)
-    - [go-ibax'ı yükleyin](#go-ibax'ı-kurun)
-    - [İlk düğümü yapılandırın](#İlk-düğümü-yapılandırın)
-    - [İlk düğüm sunucusunu başlat](#İlk-düğüm-sunucusunu-başlatın)
-  - [Diğer düğümleri dağıtın](#Diğer-düğümleri-dağıtın)
-    - [Düğüm 2](#düğüm-2)
-    - [Düğüm 3](#düğüm-3)
-  - [Frontend dağıtım](#front-end-dağıtımı)
-    - [Yazılım önkoşulları](#yazılım-önkoşulları)
-    - [Bir Weaver uygulaması oluşturun](#Bir-Weaver-uygulaması-oluşturun)
-    - [Blockchain ağı için yapılandırma dosyasını ekleyin](#Blok-zinciri-ağı-için-yapılandırma-dosyasını-ekleyin)
-    - [Weaver Web Uygulaması Oluşturun](#Weaver-Web-Uygulaması-Oluşturun)
-  - [Blockchain ağını yapılandırın](#Blok-zinciri-ağını-yapılandırın)
-    - [İçerik oluşturucu hesabını oluşturun](#İçerik-oluşturucu-hesabını-oluşturun)
-    - [Uygulamaları, rolleri ve şablonları içe aktarın](#Uygulamaları,-rolleri-ve-şablonları-içe-aktarın)
-    - [İlk düğümü düğüm listesine ekleyin](#İlk-düğümü-düğüm-listesine-ekleyin)
-  - [Diğer onur düğümleri ekleyin](#Başka-Honor-düğümleri-ekleyin)
-    - [Konsensüs rol grubuna üye ekleyin](#Konsensüs-rol-grubuna-üye-ekleyin)
-    - [Diğer düğümler için sahip hesabı oluşturun](#Diğer-düğümler-için-sahip-hesabı-oluşturun)
-    - [Düğüm sahibini Doğrulayıcı rolüyle atayın](#Doğrulayıcı-rolüyle-düğüm-sahibini-atayın)
+    - [Centrifugo](#centrifugo)
+    - [Dizin yapısı](#directory-structure)
+    - [Veritabanı oluştur](#create-a-database)
+    - [Centrifugo'yu Yapılandır](#configure-centrifugo)
+    - [go-ibax'ı yükleyin](#install-go-ibax)
+    - [İlk düğümü yapılandırın](#configure-the-first-node)
+    - [İlk düğüm sunucusunu başlat](#initiate-the-first-node-server)
+  - [Diğer düğümleri dağıtın](#deploy-other-nodes)
+    - [Düğüm 2](#node-2)
+    - [Düğüm 3](#node-3)
+  - [Frontend dağıtım](#front-end-deployment)
+    - [Yazılım önkoşulları](#software-prerequisites)
+    - [Bir Weaver uygulaması oluşturun](#build-a-weaver-application)
+    - [Blockchain ağı için yapılandırma dosyasını ekleyin](#add-the-configuration-file-for-the-blockchain-network)
+    - [Weaver Web Uygulaması Oluşturun](#build-weaver-web-application)
+  - [Blockchain ağını yapılandırın](#configure-the-blockchain-network)
+    - [İçerik oluşturucu hesabını oluşturun](#create-the-creator-account)
+    - [Uygulamaları, rolleri ve şablonları içe aktarın](#import-applications-roles-and-templates)
+    - [İlk düğümü düğüm listesine ekleyin](#add-the-first-node-to-the-node-list)
+  - [Diğer onur düğümleri ekleyin](#add-other-honor-nodes)
+    - [Konsensüs rol grubuna üye ekleyin](#add-members-into-the-consensus-role-group)
+    - [Diğer düğümler için sahip hesabı oluşturun](#create-the-owner-account-for-other-nodes)
+    - [Düğüm sahibini Doğrulayıcı rolüyle atayın](#assign-the-node-owner-with-the-validators-role)
 
-## Sunucu dağıtımı
+## Sunucu dağıtımı {#server-deployment}
 
-### İlk düğümü dağıtın
+### İlk düğümü dağıtın {#deploy-the-first-node}
 
 İlk düğüm özel bir düğümdür çünkü blok zinciri ağını başlatmak çok önemlidir. Blok zincirinin ilk bloğu, ilk düğüm tarafından oluşturulur ve diğer tüm düğümler blok zincirini ondan indirir. İlk düğümün sahibi platform yaratıcısıdır.
 
-### Bağımlılıklar ve ortam ayarları
+### Bağımlılıklar ve ortam ayarları {#dependencies-and-environment-settings}
 
-#### sudo
+#### sudo {#sudo}
 
 Debian 9'un tüm komutları, root olmayan bir kullanıcı olarak çalıştırılmalıdır. Ancak, bazı sistem komutlarının yürütülmesi için süper kullanıcı izinleri gerekir. Varsayılan olarak, sudo Debian 9'da kurulu değildir, önce onu kurmalısınız.
 
@@ -105,7 +105,7 @@ usermod -a -G sudo user
 
 5. Yeniden başlattıktan sonra değişiklikler geçerli olur.
    
-### Golang
+### Golang {#golang}
 
 Go'yu [Resmi Dokümantasyona](https://golang.org/doc/install#tarball) göre yükleyin.
 
@@ -139,7 +139,7 @@ source $HOME/.profile
 rm go1.11.2.linux-amd64.tar.gz
 ```
 
-### PostgreSQL
+### PostgreSQL {#postgresql}
 
 1. PostgreSQL (> v.10) ve psql'yi kurun:
 
@@ -147,7 +147,7 @@ rm go1.11.2.linux-amd64.tar.gz
 sudo apt install -y postgresql
 ```
 
-### Centrifugo
+### Centrifugo {#centrifugo}
 
 1. Centrifugo V.1.8.0'ı [GitHub](https://github.com/centrifugal/centrifugo/releases/) adresinden veya komut satırından indirin:
 
@@ -165,7 +165,7 @@ rm -R centrifugo-1.8.0-linux-amd64 \
 && rm centrifugo-1.8.0-linux-amd64.zip
 ```
 
-### Dizin yapısı
+### Dizin yapısı {#directory-structure}
 
 Debian 9 sistemi için blockchain platformu tarafından kullanılan tüm yazılımların ayrı bir dizinde saklanması önerilir.
 
@@ -191,7 +191,7 @@ mkdir /opt/backenddir/go-ibax/node1 \
 mkdir /opt/backenddir/centrifugo \
 ```
 
-### Veritabanı oluştur
+### Veritabanı oluştur {#create-a-database}
 
 1. Kullanıcı parolasını postgres varsayılan parolası *123456* ile değiştirin. Kendi parolanızı belirleyebilirsiniz, ancak bunu *config.toml* düğüm yapılandırma dosyasında değiştirmelisiniz.
 
@@ -205,7 +205,7 @@ sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '123456'"
 sudo -u postgres psql -c "CREATE DATABASE chaindb"
 ```
 
-### Centrifugo Yapılandırın
+### Centrifugo Yapılandırın {#configure-centrifugo}
 
 1. Centrifugo yapılandırma dosyasını oluşturun:
 
@@ -215,7 +215,7 @@ echo '{"secret":"CENT_SECRET"}' > /opt/backenddir/centrifugo/config.json
 
 Kendi *gizlinizi* ayarlayabilirsiniz, ancak bunu *config.toml* düğüm yapılandırma dosyasında da değiştirmelisiniz.
 
-### go-ibax'ı kurun
+### go-ibax'ı kurun {#install-go-ibax}
 
 1. GitHub'dan github-backend'i indirin:
 2. go-ibax ikili dosyasını `/opt/backenddir/go-ibax` dizinine kopyalayın. Varsayılan Go çalışma alanını kullanıyorsanız, ikili dosyalar `$HOME/go/bin` dizininde bulunur:
@@ -224,7 +224,7 @@ Kendi *gizlinizi* ayarlayabilirsiniz, ancak bunu *config.toml* düğüm yapılan
 cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
 ```
 
-### İlk düğümü yapılandırın
+### İlk düğümü yapılandırın {#configure-the-first-node}
 
 3. Düğüm 1 için yapılandırma dosyasını oluşturun:
 
@@ -264,11 +264,11 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
  --config=/opt/backenddir/node1/config.toml
 ```
 
-### İlk düğüm sunucusunu başlatın
+### İlk düğüm sunucusunu başlatın {#initiate-the-first-node-server}
 
 İlk düğüm sunucusunu başlatmak için aşağıdaki iki hizmeti başlatmanız gerekir:
 * Centrifugo
-* go-imax
+* go-ibax
 
 Bu dosyalarla [hizmetler](#https://wiki.debian.org/systemd/Services) oluşturamadıysanız, farklı konsollardaki dizinlerden ikili dosyaları çalıştırabilirsiniz.
 
@@ -287,7 +287,7 @@ Bu dosyalarla [hizmetler](#https://wiki.debian.org/systemd/Services) oluşturama
  --config=/opt/backenddir/node1/config.toml
 ```
 
-## Diğer düğümleri dağıtın
+## Diğer düğümleri dağıtın {#deploy-other-nodes}
 
 Diğer tüm düğümlerin (Düğüm 2 ve Düğüm 3) konuşlandırılması birincisine benzer olsa da, üç fark vardır:
 
@@ -295,7 +295,7 @@ Diğer tüm düğümlerin (Düğüm 2 ve Düğüm 3) konuşlandırılması birin
 * Düğüm, `--nodesAddr` seçeneğini yapılandırarak Düğüm 1'den blokları indirmelidir;
 * Düğüm kendi adreslerini ve portlarını kullanmalıdır.
 
-### Düğüm 2
+### Düğüm 2 {#node-2}
 
 Aşağıda gösterildiği gibi çalıştırma talimatlarını izleyin:
 
@@ -353,7 +353,7 @@ Aşağıda gösterildiği gibi çalıştırma talimatlarını izleyin:
 
 Sonuç olarak, düğüm bloğu ilk düğümden indirir. Bu düğüm bir doğrulama düğümü olmadığı için yeni bir blok oluşturamaz. Düğüm 2, daha sonra doğrulama düğümleri listesine eklenecektir.
 
-### Düğüm 3
+### Düğüm 3 {#node-3}
 
 Aşağıda gösterildiği gibi çalıştırma talimatlarını izleyin:
 
@@ -415,11 +415,11 @@ Aşağıda gösterildiği gibi çalıştırma talimatlarını izleyin:
 
 Sonuç olarak, düğüm bloğu ilk düğümden indirir. Bu düğüm bir doğrulama düğümü olmadığı için yeni bir blok oluşturamaz. İstemci düğüme bağlı olabilir ve ağa işlemler gönderebilir.
 
-## Front-end dağıtımı
+## Front-end dağıtımı {#front-end-deployment}
 
 Yalnızca Debian 9 (Stretch) 64-bit Resmi Sürümüne **GNOME GUI** yüklendikten sonra, Govis istemcisi "yarn" paket yöneticisiyle oluşturulabilir.
 
-### Yazılım önkoşulları
+### Yazılım önkoşulları {#software-prerequisites}
 
 1. Node.js LTS sürüm 8.11'i Node.js resmi web sitesinden veya komut satırından indirin:
 
@@ -446,7 +446,7 @@ cd/opt/backenddir \
 sudo dpkg -i yarn_1.7.0_all.deb && rm yarn_1.7.0_all.deb
 ```
 
-### Bir Weaver uygulaması oluşturun
+### Bir Weaver uygulaması oluşturun {#build-a-weaver-application}
 
 1. Weaver'ın en son sürümünü github-frontend'den git aracılığıyla indirin:
 
@@ -462,7 +462,7 @@ cd/opt/backenddir/ibax-front/ \
 && yarn install
 ```
 
-### Blok zinciri ağı için yapılandırma dosyasını ekleyin
+### Blok zinciri ağı için yapılandırma dosyasını ekleyin {#add-the-configuration-file-for-the-blockchain-network}
 
 1. Düğüm bağlantısı hakkında bilgi içeren bir *settings.json* dosyası oluşturun:
 
@@ -506,7 +506,7 @@ yarn release --publish never -l
 
 Oluşturulduktan sonra uygulamanız kullanılabilir ancak bağlantı konfigürasyonu değiştirilemez. Bu ayarların değiştirilmesi gerekiyorsa, uygulamanın yeni bir sürümü oluşturulmalıdır.
 
-### Weaver Web Uygulaması Oluşturun
+### Weaver Web Uygulaması Oluşturun {#build-weaver-web-application}
 
 1. Bir web uygulaması oluşturun:
 
@@ -526,9 +526,9 @@ sudo yarn global add serve \
 
 Bundan sonra, Weaver web uygulamanız şu konumda kullanılabilir olacaktır: `http://localhost:5000`.
 
-## Blok zinciri ağını yapılandırın
+## Blok zinciri ağını yapılandırın {#configure-the-blockchain-network}
 
-### İçerik oluşturucu hesabını oluşturun
+### İçerik oluşturucu hesabını oluşturun {#create-the-creator-account}
 
 İlk düğüm sahibi için bir hesap oluşturun. Bu hesap, yeni blok zinciri platformunun yaratıcısıdır ve yönetici erişimine sahiptir.
 
@@ -544,7 +544,7 @@ Bundan sonra, Weaver web uygulamanız şu konumda kullanılabilir olacaktır: `h
 
 3.Hesaba giriş yaptıktan sonra, şu anda herhangi bir rol oluşturulmadığı için lütfen Rolsüz seçeneğini seçiniz.
 
-### Uygulamaları, rolleri ve şablonları içe aktarın
+### Uygulamaları, rolleri ve şablonları içe aktarın {#import-applications-roles-and-templates}
 
 Şu anda, blockchain platformu boş bir durumda. Temel ekosistem işlevlerini destekleyen roller, şablonlar ve uygulama çerçeveleri ekleyerek yapılandırabilirsiniz.
 
@@ -573,7 +573,7 @@ cd/opt/backenddir \
 
 7. Ana Sayfa> Oy> Şablon Listesi'ne gidin ve Varsayılan Şablonu Yükle'ye tıklayın.
 
-### İlk düğümü düğüm listesine ekleyin
+### İlk düğümü düğüm listesine ekleyin {#add-the-first-node-to-the-node-list}
 
 1.Geliştirici> Platform Parametreleri'ne gidin ve first_nodes parametresini tıklayın;
 
@@ -585,9 +585,9 @@ cd/opt/backenddir \
 {"api_address":"http://192.168.1.1:7079","public_key":"%node_public_key%","tcp_address":"192.168.1.1:7078"}
 ```
 
-## Başka Honor düğümleri ekleyin
+## Başka Honor düğümleri ekleyin {#add-other-honor-nodes}
 
-### Konsensüs rol grubuna üye ekleyin
+### Konsensüs rol grubuna üye ekleyin {#add-members-into-the-consensus-role-group}
 
 Varsayılan olarak, yalnızca fikir birliği rolü (Consensus) grubundaki üyeler, diğer ana düğümleri eklemek için gereken oylamaya katılabilir. Bu, yeni bir ana düğüm eklemeden önce ekosistem üyelerinin role atanması gerektiği anlamına gelir.
 Bu bölümde, içerik oluşturucunun hesabı, fikir birliği rol grubunun tek üyesi olarak belirlenir. Bir üretim ortamında, bu rolün yönetişimi gerçekleştiren platform üyelerine atanması gerekir.
@@ -596,7 +596,7 @@ Bu bölümde, içerik oluşturucunun hesabı, fikir birliği rol grubunun tek ü
 
 2. Oluşturanın hesabını role atamak için Ata'yı tıklayın.
 
-### Diğer düğümler için sahip hesabı oluşturun
+### Diğer düğümler için sahip hesabı oluşturun {#create-the-owner-account-for-other-nodes}
 
 1. Weaver'ı çalıştırın;
 
@@ -609,7 +609,7 @@ Bu bölümde, içerik oluşturucunun hesabı, fikir birliği rol grubunun tek ü
 
 5. Hesap ayrıntılarını ekleyin (kişisel bilgi başlığı, açıklama vb.).
 
-### Doğrulayıcı rolüyle düğüm sahibini atayın
+### Doğrulayıcı rolüyle düğüm sahibini atayın {#assign-the-node-owner-with-the-validators-role}
 
 1. Yeni düğüm sahibi tarafından yapılan işlemler:
     1. Ana Sayfa> Doğrulayıcı'ya gidin;

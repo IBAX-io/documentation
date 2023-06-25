@@ -1,147 +1,151 @@
 
-# Tutorial for application development
+# アプリケーション開発チュートリアル {#tutorial-for-application-development}
 
-In this section, we will show you how to  develop a simple application on the IBAX Network.
+このセクションでは、IBAXネットワーク上でシンプルなアプリケーションを開発する方法を説明します。
 
-  - [The Goal](#the-goal)
-  - [Part 1: The Environment](#part-1-the-environment)
-  - [Part 2: Contract](#part-2-contract)
-    - [Creator account](#creator-account)
-    - [New application](#new-application)
-    - [New database table](#new-database-table)
-    - [New contract](#new-contract)
-      - [Contract code](#contract-code)
-      - [Create a contract](#create-a-contract)
-      - [Contract name](#contract-name)
-      - [Data](#data)
-      - [Conditions](#conditions)
-      - [Action](#action)
-      - [Full contract code](#full-contract-code)
-      - [Save and run](#save-and-run)
-  - [Part 3: Page](#part-3-page)
-    - [New field](#new-field)
-    - [Update the contract](#update-the-contract)
-    - [Page](#page)
-      - [Designer views](#designer-views)
-      - [Developer view](#developer-view)
-      - [Fetch data from the database table](#fetch-data-from-the-database-table)
-      - [Save the page](#save-the-page)
-  - [Part 4: Application](#part-4-application)
-    - [Menu](#menu)
-      - [Add a menu item](#add-a-menu-item)
-      - [Test the new menu item](#test-the-new-menu-item)
-    - [Send a message](#send-a-message)
-      - [Form](#form)
-    - [Form navigation](#form-navigation)
-      - [Navigation buttons](#navigation-buttons)
-      - [Variables](#variables)
-      - [Entry count](#entry-count)
-      - [Table offset](#table-offset)
-      - [Button code](#button-code)
-      - [Page refreshing](#page-refreshing)
-  - [Conclusions](#conclusions)
+- [目標](#the-goal)
+- [パート1：環境](#part-1-the-environment)
+- [パート2：スマートコントラクト](#part-2-contract)
+    - [作成者アカウント](#creator-account)
+    - [新規アプリケーション](#new-application)
+    - [新規データベーステーブル](#new-database-table)
+    - [新規スマートコントラクト](#new-contract)
+        - [スマートコントラクトコード](#contract-code)
+        - [スマートコントラクトの作成](#create-a-contract)
+        - [スマートコントラクト名](#contract-name)
+        - [データ](#data)
+        - [条件](#conditions)
+        - [アクション](#action)
+        - [完全なスマートコントラクトコード](#full-contract-code)
+        - [保存して実行](#save-and-run)
+- [パート3：ページ](#part-3-page)
+    - [新規フィールド](#new-field)
+    - [スマートコントラクトの更新](#update-the-contract)
+    - [ページ](#page)
+        - [デザイナービュー](#designer-views)
+        - [開発者ビュー](#developer-view)
+        - [データベーステーブルからのデータの取得](#fetch-data-from-the-database-table)
+        - [ページの保存](#save-the-page)
+- [パート4：アプリケーション](#part-4-application)
+    - [メニュー](#menu)
+        - [メニューアイテムの追加](#add-a-menu-item)
+        - [新しいメニューアイテムのテスト](#test-the-new-menu-item)
+    - [メッセージの送信](#send-a-message)
+        - [フォーム](#form)
+    - [フォームのナビゲーション](#form-navigation)
+        - [ナビゲーションボタン](#navigation-buttons)
+        - [変数](#variables)
+        - [エントリ数](#entry-count)
+        - [テーブルオフセット](#table-offset)
+        - [ボタンコード](#button-code)
+        - [ページのリフレッシュ](#page-refreshing)
+- [結論](#conclusions)
 
 
-## The Goal 
+## 目標 {#the-goal}
 
-The application begins with simple functions but grows in complexity as the tutorial progresses. 
+チュートリアルでは、最初はシンプルな機能から始めて、徐々に複雑さを増していきます。
 
-In the final version of the application, some simple messages (strings) are stored in a database table, which contains the timestamps and account identifiers of senders. Users can view the messages list and add a new message from the application page which can be accessed from the menu of the ecosystem. 
+アプリケーションの最終バージョンでは、いくつかのシンプルなメッセージ（文字列）がデータベーステーブルに格納されます。このテーブルには、送信者のタイムスタンプとアカウント識別子も含まれます。ユーザーはメッセージの一覧を表示し、エコシステムのメニューからアクセスできるアプリケーションページから新しいメッセージを追加することができます。
 
-## Part 1: The Environment
+## パート1：環境 {#part-1-the-environment}
 
-**Weaver** 
+**Weaver**
 
-As the only client of IBAX, Weaver provides functions for all users and ecosystem roles. With it, application developers can develop and test their applications, ecosystem administrators can manage their ecosystems, while users can interact with the ecosystems. 
+WeaverはIBAXの唯一のクライアントであり、すべてのユーザーとエコシステムの役割に対して機能を提供します。アプリケーション開発者は、Weaverを使用してアプリケーションを開発およびテストできます。エコシステムの管理者はエコシステムを管理し、ユーザーはエコシステムと対話できます。
 
-In this tutorial, you are going to code contracts, page templates and perform all other actions in Weaver. Weaver also provides a way to restore, save and execute contract codes, manage data structures (database tables), assign access permissions and create applications.
+このチュートリアルでは、Weaverを使用してスマートコントラクトのコーディングやページテンプレートの作成など、すべての操作を行います。Weaverはスマートコントラクトコードの復元、保存、実行、データ構造（データベーステーブル）の管理、アクセス許可の割り当て、アプリケーションの作成などもサポートしています。
 
-Each node has its own Weaver instance.
-## Part 2: Contract 
+各ノードには独自のWeaverインスタンスがあります。
 
-Your first simple application is "Hello, World!".
+## パート2：スマートコントラクト {#part-2-contract}
 
-> Note
+最初のシンプルなアプリケーションは "Hello, World!" です。
 
-> In this application, strings will be stored in a database table, and there is not a user page. 
+> 注意
+>
+> このアプリケーションでは、文字列はデータベーステーブルに格納され、ユーザーページはありません。
 
-### Creator account 
+### 作成者アカウント {#creator-account}
 
-Accounts with the Developer role will be assigned the "root" privileges of the ecosystem. By default, this role can access all actions. In a new ecosystem, the creator account will be assigned the Admin role, which you must use it to introduce major changes to the ecosystem, such as creating new applications and database tables.
+開発者の役割を持つアカウントには、エコシステムの`root`特権が割り当てられます。デフォルトでは、この役割はすべてのアクションにアクセスできます。新しいエコシステムでは、作成者アカウントには管理者の役割が割り当てられます。作成者アカウントを使用して、新しいアプリケーションやデータベーステーブルなど、エコシステムの重要な変更を行う必要があります。
 
-Log in to the ecosystem using the creator account.
+作成者アカウントでエコシステムにログインします。
 
-### New application 
+### 新規アプリケーション {#new-application}
 
-Once you logged in as the ecosystem creator, you can create a new application. 
+エコシステムの作成者としてログインしたら、新しいアプリケーションを作成できます。
 
-Create a new application: 
+新しいアプリケーションを作成します：
 
-1. Go to the Developer tab;
+1. 開発者タブに移動してください。
 
- 2. Select Application in the menu at the left; 
+2. 左側のメニューで「アプリケーション」を選択してください。
 
- 3. Select New at the application page; 
+3. アプリケーションページで「新規作成」を選択してください。
 
- 4. Specify the application name in the Name field;
+4. 「名前」フィールドにアプリケーション名を指定してください。
 
- 5. Set Conditions to `true`;
+5. 条件を`true`に設定してください。
 
- `true` means anyone can make changes to the application; 
 
- Another option is `ContractConditions("MainCondition")`, which means no one can make changes to the application except for the creator. 
+`true`は、誰でもアプリケーションに変更を加えることができることを意味します。
 
- 6. Your application will be displayed in the applications list, click the Name field of a specific application to activate it.
+もう一つのオプションは`ContractConditions("MainCondition")`で、これは作成者以外はアプリケーションに変更を加えることができません。
 
-> Note
+6. 特定のアプリケーションの「名前」フィールドをクリックしてアクティブにします。
 
->  You can access relevant resources by clicking an application in the Developer tab, no impact on the ecosystem. No matter which one you choose, all ecosystem applications are still available.
+> 注意
+>
+> デベロッパータブのアプリケーションをクリックすると、関連するリソースにアクセスできますが、エコシステムには影響しません。どのアプリケーションを選んでも、エコシステムのすべてのアプリケーションにアクセスできます。
 
-### New database table 
 
-To store the data, create a database table for the application in Weaver.
+### 新しいデータベーステーブル {#new-database-table}
 
-Create a data table: 
+データを保存するために、Weaverでアプリケーションのためのデータベーステーブルを作成します。
 
- 1. In the Developer tab, select Application - Name > Database table; 
+データベーステーブルを作成する手順：
 
- All database tables in relation to the application selected will be displayed here. If the list is empty, then, no database tables have been created for your application yet. 
+1. デベロッパータブで、「アプリケーション - 名前 > データベーステーブル」を選択します。
 
- 2. Click New；
+選択したアプリケーションに関連するすべてのデータベーステーブルが表示されます。リストが空の場合は、まだアプリケーションにデータベーステーブルが作成されていません。
 
- Weaver will show you the page to create a new database table.
+2. 「新規」をクリックします。
 
- 3. Specify the name in the Name field; 
+Weaverは、新しいデータベーステーブルを作成するためのページを表示します。
 
- In this tutorial, the name of the database table will be `apptable`. 
+3. 「名前」フィールドに名前を指定します。
 
- 4. Add the `message` column, set its type as `Text`;
+このチュートリアルでは、データベーステーブルの名前は`apptable`とします。
 
- This table must have two columns: `id` (predefine) and `message`. You are going to add more columns later. 
+4. `message`列を追加し、そのタイプを`Text`に設定します。
 
- 5. With respect to the read and write permissions, set each field to `true`; 
+このテーブルには、`id`（事前定義済み）と`message`の2つの列が必要です。後でさらに列を追加します。
 
- This will allow anyone to insert, update entries, add columns and read entry data on the database table;
+5. 読み取りと書き込みの権限について、各フィールドを`true`に設定します。
 
- As an option, you may reserve the read and write permissions to the creator account. In this case, set this field to `ContractConditions("MainCondition")`.
+これにより、誰でもデータベーステーブルにエントリを挿入、更新、列を追加し、エントリデータを読み取ることができます。
 
-### New contract 
+オプションとして、読み取りと書き込みの権限を作成者アカウントに予約することもできます。その場合は、このフィールドを`ContractConditions("MainCondition")`に設定します。
 
-#### Contract code 
+### 新しいスマートコントラクト {#new-contract}
 
-Each contract has three parts. For more details, please see: [Contract structure](../topics/script.md#contract-structure)。
+#### スマートコントラクトコード {#contract-code}
 
-#### Create a contract 
+各スマートコントラクトには3つのパートがあります。詳細については、[スマートコントラクトの構造](../topics/script.md#contract-structure)をご覧ください。
 
-1. In the Developer tab, select Application - Name > Contract; 
+#### スマートコントラクトの作成 {#create-a-contract}
 
- All contracts in relation to the application will be displayed here. The list is empty for new applications. 
+1. デベロッパータブで、「アプリケーション - 名前 > スマートコントラクト」を選択します。
 
-2. Click New;
+アプリケーションに関連するすべてのスマートコントラクトがここに表示されます。新しいアプリケーションの場合は、リストは空です。
 
- A new contract template will be displayed in the editor. 
+2. 「新規」をクリックします。
 
-An empty contract template is shown as below: 
+エディタに新しいスマートコントラクトのテンプレートが表示されます。
+
+以下は空のスマートコントラクトテンプレートの例です：
+
 
 ```
 contract ... {
@@ -157,9 +161,9 @@ contract ... {
 }
 ```
 
-####  Contract name 
+#### スマートコントラクト名 {#contract-name}
 
-First, please specify the contract name. 
+まず、スマートコントラクト名を指定してください。
 
 ```  
     contract AppContract {
@@ -167,11 +171,12 @@ First, please specify the contract name.
     }
 ```
 
-#### Data 
+#### データ {#data}
 
-Fill in the `data` section.
+`data`セクションを入力してください。
 
-In the following example, `Message` refers to the variable name, while `string` the variable type. 
+以下の例では、`Message`は変数名を表し、`string`は変数の型を表しています。
+
 
 ```
     data {
@@ -179,9 +184,9 @@ In the following example, `Message` refers to the variable name, while `string` 
     }
 ```
 
-#### Conditions 
+#### 条件 {#conditions}
 
-Fill in the `conditions` section. A simple verification condition is to avoid empty strings. If the length of `Message` is `0`, a predefined warning message will be triggered when implementing the contract. 
+`conditions`セクションを入力してください。空の文字列を回避するための簡単な検証条件を設定します。もし`Message`の長さが`0`の場合、スマートコントラクトを実装する際に予め定義された警告メッセージがトリガーされます。
 
 ```
 conditions {
@@ -192,9 +197,9 @@ conditions {
 }
 ```
 
-#### Action 
+#### アクション  {#action}
 
-Fill in the `action` section. A simple action is to write `Message` into the data table. 
+`action`セクションを入力してください。簡単なアクションとして、`Message`をデータテーブルに書き込むことがあります。
 
 ```
     action {
@@ -202,11 +207,11 @@ Fill in the `action` section. A simple action is to write `Message` into the dat
     }
 ```
 
-#### Full contract code 
+#### フルコントラクトコード  {#full-contract-code}
 
-The full contract code is shown below. 
+以下にフルコントラクトコードを示します。
 
-All contracts in IBAX will be constructed like this, including the `data`, `conditions` and `action` sections. 
+IBAXの全てのスマートコントラクトは、`data`、`conditions`、`action`のセクションを含めてこのように構築されます。
 
 ```
 contract AppContract {
@@ -224,27 +229,27 @@ contract AppContract {
     }
 }
 ```
-#### Save and run 
+#### 保存して実行  {#save-and-run}
 
-Now, we are preparing to test the contract: 
+以下の手順でスマートコントラクトのテストを準備します：
 
-1. Click Save in the editor's menu; 
+1. エディタのメニューで「保存」をクリックしてください；
 
- This will update the contract code, and the updated version will be available to all network nodes. 
+ これにより、スマートコントラクトコードが更新され、更新されたバージョンがすべてのネットワークノードで利用可能になります。
 
-2. Click Run in the editor's menu; 
+2. エディタのメニューで「実行」をクリックしてください；
 
- This will display the Run the Contract page. 
+ これにより、スマートコントラクトを実行するページが表示されます。
 
-3. In the Run the Contract page, fill in the input parameters of the contract; 
+3. 「スマートコントラクトを実行する」ページで、スマートコントラクトの入力パラメータを入力してください；
 
- As this contract has one parameter `Message`, set `Message` at the Key field and `Hello, World` at the Value field.
+ このスマートコントラクトはパラメータ `Message` を持っているため、Keyフィールドに `Message` を、Valueフィールドに `Hello, World` を設定してください。
 
-4. Click Run. 
+4. 「実行」をクリックしてください。
 
- The result will be displayed at the right. 
+ 結果は右側に表示されます。
 
-If successfully added some strings, then, the result will contain the block ID and result code to introduce the change of transactions. 
+もし文字列を正常に追加できた場合、結果にはトランザクションの変更を示すブロックIDと結果コードが含まれます。
 
 ```
 {
@@ -253,37 +258,38 @@ If successfully added some strings, then, the result will contain the block ID a
 }
 ```
 
-## Part 3: Page 
+## パート3：ページ {#part-3-page}
 
-When the contract becomes effective, it is time to extend it to something useful. In this part, you are going to implement the UI and other functions. 
+スマートコントラクトが有効になったら、それを何か有用なものに拡張する時が来ました。このパートでは、UIやその他の機能を実装します。
 
-Note
+注意
 
-In this application, strings will be stored in a database table, like entries in a log. Each string will have an author and timestamp. 
+このアプリケーションでは、文字列はログのエントリのようにデータベーステーブルに保存されます。各文字列には著者とタイムスタンプがあります。
 
-Users can view the list of strings stored at the application page, which is shown as a simple form then. 
+ユーザーはアプリケーションページで保存されている文字列のリストを表示できます。これは単純なフォームとして表示されます。
 
-### New field 
+### 新しいフィールド {#new-field}
 
-As with the previous, edit the database table at the Developer tab > Application - Name > Database table page; 
+前と同様に、データベーステーブルを編集します。開発者タブ > アプリケーション - 名前 > データベーステーブルページに移動してください。
 
-Add the following fields into `apptable`:
+以下のフィールドを `apptable` に追加してください：
 
-*  `author` , field type `Number`, set Change to `true`;
+* `author`、フィールドタイプは `Number`、Changeを `true` に設定してください。
 
- This field will store the identifier of the author account. 
+ このフィールドには著者アカウントの識別子が格納されます。
 
-*  `timestamp` , field type `Date/Time`, set Change to `true`.
+* `timestamp`、フィールドタイプは `Date/Time`、Changeを `true` に設定してください。
 
-### Update the contract 
+### スマートコントラクトの更新 {#update-the-contract}
 
-We will update the contract code to handle the author ID and timestamp. 
+スマートコントラクトコードを更新して、著者IDとタイムスタンプを処理します。
 
-The author ID is the account ID of the ecosystem. The timestamp is the date and time executing the contract in Unix time format. 
+著者IDはエコシステムのアカウントIDです。タイムスタンプはスマートコントラクトの実行日時をUnix時間形式で表します。
 
-As both values are provided by the [Predefined variables](../topics/script.md#variables) and no need to input or verify the predefined variables, they can only be updated in the action part. 
+両方の値は[事前定義された変数](../topics/script.md#variables)によって提供され、入力や検証の必要はないため、アクションの部分でのみ更新されます。
 
-Update the contract to write the author ID and timestamp into the database table when adding a message, among which the author ID is defined by `$key_id`, while the timestamp by `$time`.
+スマートコントラクトを更新して、メッセージを追加する際に著者IDとタイムスタンプをデータベーステーブルに書き込むようにしてください。著者IDは `$key_id` で定義され、タイムスタンプは `$time` で定義されます。
+
 
 ```
 action {
@@ -291,61 +297,63 @@ action {
 }
 ```
 
-### Page 
+### ページ {#page}
 
-For the application page, it is a simple page where displays the messages stored in the database table. 
+アプリケーションページは、データベーステーブルに保存されたメッセージが表示されるシンプルなページです。
 
-Like all other resources, you can create the UI page in Weaver: 
+他のリソースと同様に、WeaverでUIページを作成できます。
 
-1.Navigate to the Developer tab, click Application - Name > Page; 
+1. 開発者タブに移動し、アプリケーション - 名前 > ページをクリックしてください。
 
-2.Click New; 
- The visual designer will be opened in a new tab. 
+2. 「新規作成」をクリックしてください。
+   ビジュアルデザイナーが新しいタブで開かれます。
 
-#### Designer views 
+#### デザイナービュー {#designer-views}
 
-The default page is empty. You can use the predefine structure to quickly fill in the page. 
+デフォルトのページは空です。事前に定義された構造を使用してページを素早く埋めることができます。
 
-Create a basic table: 
+基本的なテーブルを作成します。
 
-1. In the view selector at the right, click Designer; 
- The view will be switched to the visual designer. 
+1. 右側のビューセレクターで「デザイナー」をクリックしてください。
+   ビューがビジュアルデザイナーに切り替わります。
 
-2. In the menu at the left, select Table With Header and drag it on to the page. 
-    A table with multiple elements will be displayed on the page. 
+2. 左側のメニューで「ヘッダー付きテーブル」を選択し、ページにドラッグします。
+   複数の要素を含むテーブルがページに表示されます。
 
-#### Developer view 
+#### 開発者ビュー {#developer-view}
 
-As the user page of IBAX is coded with a [Template Language](../topics/templates2.md), please switch to the Developer view when writing the page code. 
+IBAXのユーザーページは[テンプレート言語](../topics/templates2.md)でコード化されているため、ページコードを記述する際には開発者ビューに切り替えてください。
 
-Switch to the Developer view. 
+開発者ビューに切り替えてください。
 
-1. In the view selector at the right, click Developer. 
+1. 右側のビューセレクターで「開発者」をクリックしてください。
+   ページコードを保持するタブがあるエディタに切り替わります。
 
- The view will be switched to the editor with a tab holding the page code. 
+#### データベーステーブルからデータを取得する {#fetch-data-from-the-database-table}
 
-#### Fetch data from the database table 
-So far, nothing done with the page template. In the next, we will update the code to allow the page to display data from `apptable`.
+現時点では、ページテンプレートには何も行われていません。次に、コードを更新してページが`apptable`からデータを表示できるようにします。
 
-1. To request data from the database table with the [DBFind](../topics/script.md#dbfind) function; 
+1. [DBFind](../topics/script.md#dbfind)関数を使用してデータベーステーブルからデータを取得してください。
 
- In the following example, this function call is used to fetch data from `apptable`. The data will be put it in the source `src_table` and sorted by the timestamp field. `src_table` will be later used as the data source for the page in table view.
+   以下の例では、この関数呼び出しは`apptable`からデータを取得します。データは`src_table`に配置され、タイムスタンプフィールドでソートされます。`src_table`は後でテーブルビューのページのデータソースとして使用されます。
+
 
  ```
     DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp)
  ```
 
-2. To display the data from `src_table`, specify it as the data source and the header in the `Table` function. 
+2. `src_table` からのデータを表示するには、`Table` 関数のデータ ソースおよびヘッダーとして指定します。
 
 ```
     Table(Columns: "AUTHOR=author,TIME=timestamp,MESSAGE=message", Source: src_table)
 ```
 
-3. In the view selector at the right, click Preview to check whether the data is displayed correctly. 
+3. 右側のビューセレクターで「プレビュー」をクリックして、データが正しく表示されるか確認してください。
 
-#### Full page code 
+#### ページの全体コード {#full-page-code-1}
 
-The following is the full page code for this part. This basic page will be expanded later.
+以下はこのパートの完全なページコードです。この基本的なページは後で拡張されます。
+
 
 ```
 DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp)
@@ -360,83 +368,83 @@ Div(Class: panel panel-primary) {
 
 ```
 
-#### Save the page 
+#### ページを保存する {#save-the-page}
 
-Click Save to save the page: 
+ページを保存するには、保存をクリックしてください：
 
-1. Specify `AppPage` or any other name for the page in the Page Name field;
+1. 「ページ名」フィールドに`AppPage`または任意の名前を指定してください。
 
-2. Select `default_menu` in the Menu; 
+2. メニューで`default_menu`を選択してください。
 
-3. Set Conditions to `true`;
+3. 条件を`true`に設定してください。
 
-4. Click OK. 
+4. OKをクリックしてください。
 
-## Part 4: Application 
+## パート4：アプリケーション {#part-4-application}
 
-In the previous sections, you created a contract, a table to store data, and a basic UI page to display that data.
+前のセクションでは、スマートコントラクトを作成し、データを保存するためのテーブルを作成し、そのデータを表示するための基本的なUIページを作成しました。
 
-In this part, you are going to finalize the application to make its appearance and actions are similar to an actual one.
+このパートでは、アプリケーションを最終的に完成させ、外観や動作が実際のアプリケーションに類似するようにします。
 
-### Menu 
+### メニュー {#menu}
 
-The page needs to be linked to a menu, for example, `default_page` displayed on the Home tab is linked to the default ecosystem menu `default_menu`.
+ページはメニューにリンクする必要があります。たとえば、ホームタブに表示される`default_page`は、デフォルトのエコシステムメニュー`default_menu`にリンクされています。
 
-As this application tutorial is very simple (only having one page), there is no need to create a separate menu for it. The new menu item in the default menu is sufficient. 
+このアプリケーションチュートリアルは非常にシンプルです（1つのページしかないため）、それに個別のメニューを作成する必要はありません。デフォルトメニューの新しいメニューアイテムで十分です。
 
-> Note
+> 注意
+>
+> ページのプロパティを編集して、ページメニューを定義することもできます。開発者タブ > アプリケーション - 名前 > ページでページのプロパティを編集します。たとえば、アプリに複数のページがある場合、これらのページ間を移動するためのメニューを作成し、それをアプリのすべてのページに割り当てる必要があります。
 
-> You can define the page menu by editing the page properties at the Developer tab > Application - Name > Page. For example, if your app has multiple pages, you may need to create a menu to navigate between these pages and assign it to all pages of the app.
+#### メニューアイテムの追加 {#add-a-menu-item}
 
-#### Add a menu item 
+他のリソースと同様に、メニューはWeaverで作成および編集できます：
 
-Like all other resources, menus can be created and edited in Weaver:
+1. 開発者タブに移動し、メニューをクリックしてください。
 
-1. Navigate to the Developer tab > Menu;
+2. `default_menu`のエントリの「名前」をクリックしてください。
+   エディタに新しいタブが開きます。
 
-2. Click the Name of the `default_menu` entry; 
-
- A new tab will be opened in the editor.
-
-3. Add a new menu item to the end of the template, which will be linked to open the application page and its icon comes from the [FontAwesome](https://fontawesome.com/icons) icon set. 
+3. テンプレートの末尾に新しいメニューアイテムを追加してください。このメニューアイテムは、アプリケーションページを開くためのリンクと、そのアイコンは[FontAwesome](https://fontawesome.com/icons)アイコンセットから取得されます。
 
 ```
     MenuItem(Title:Messages, Page:AppPage, Icon:"fa fa-envelope")
 ```
 
-4. Click Save. 
-#### Test the new menu item 
+4. 保存をクリックしてください。
 
-Check whether the new menu item is valid:
+#### 新しいメニューアイテムのテスト {#test-the-new-menu-item}
 
-1. Open the Home tab;
+新しいメニューアイテムが有効かどうかを確認してください：
 
-2. Click Refresh in the menu;
+1. ホームタブを開いてください。
 
-    An entry with a header of Messages will appear; 
+2. メニューで「更新」をクリックしてください。
+   「メッセージ」のヘッダーが表示されます。
 
-3. Click Messages.
+3. 「メッセージ」をクリックしてください。
+   アプリケーションページが開かれます。
 
-    The application page will be opened. 
-### Send a message 
+### メッセージの送信 {#send-a-message}
 
-The buttons in Logicor can be used to implement contracts and open pages, depending on the parameters.
+Logicorのボタンは、パラメータに応じてスマートコントラクトを実行したりページを開いたりするために使用できます。
 
-The [Button](../topics/templates2.md#button) function has two contract parameters: 
+[Button](../topics/templates2.md#button)関数には2つのスマートコントラクトパラメータがあります：
 
 *  `Contract`
 
-     Name of the contract activated. 
+     有効化されたスマートコントラクトの名前。
 
 *  `Params`
 
-    Input parameters of the contract. 
+    コントラクトのパラメータを入力します。
 
-#### Form 
+#### フォーム {#form}
 
-To send data to the contract, add a form on the application page, which must have an input field for a message and a button to activate the contract AppContract.
+スマートコントラクトにデータを送信するために、アプリケーションページにフォームを追加します。このフォームには、メッセージ用の入力フィールドとスマートコントラクトAppContractをアクティブにするためのボタンが必要です。
 
-The following is an example of this type of form. It is nested in its own [Div](../topics/templates2.md#div). Putting it after the Div element that contains the form view, which defines that the [Input](../topics/templates2.md#input) field has a predefine name `message_input`. The button uses this name to send the value of `Message` to the contract. Finally, the [Val](../topics/templates2.md#calling-contracts) function is used to get the value of the input field.
+以下はこの種のフォームの例です。これは独自の[Div](../topics/templates2.md#div)内にネストされています。フォームビューを含むDiv要素の後に配置されており、[Input](../topics/templates2.md#input)フィールドには事前に定義された名前`message_input`が設定されています。ボタンはこの名前を使用して`Message`の値をスマートコントラクトに送信します。最後に、[Val](../topics/templates2.md#calling-contracts)関数を使用して入力フィールドの値を取得します。
+
 
 ```
 Div(Class: panel panel-primary) {
@@ -447,49 +455,50 @@ Div(Class: panel panel-primary) {
 }
 ```
 
-You may notice that when testing this new feature by sending a message, the form does not refresh. This will be introduced in [page refresh](#page-refreshing).
+実際にメッセージを送信してこの新機能をテストすると、フォームがリフレッシュされないことに気付くかもしれません。これについては[ページのリフレッシュ](#page-refreshing)で説明します。
 
-### Form navigation 
+### フォームのナビゲーション {#form-navigation}
 
-Under the default view, the form on the page can only display 25 entries on the first page. Hence, you can add some simple buttons to navigate users to all form entries.
+デフォルトのビューでは、ページ上のフォームは最初のページで25のエントリしか表示できません。そのため、いくつかのシンプルなボタンを追加して、ユーザーをすべてのフォームエントリにナビゲートできるようにします。
 
-#### Navigation buttons 
+#### ナビゲーションボタン {#navigation-buttons}
 
-There will be two navigation buttons, and each of them could reload the application page and pass the parameters to it.
+2つのナビゲーションボタンがあり、それぞれがアプリケーションページをリロードしてパラメータを渡すことができます。
 
-*  The Previous button will display the first 25 entries. If there are no other entries, the button will not be displayed;
+* 「前へ」ボタンは最初の25のエントリを表示します。他のエントリがない場合、ボタンは表示されません。
 
-*  The Next button will display the next 25 entries. If there are no other entries, the button will not be displayed.
+* 「次へ」ボタンは次の25のエントリを表示します。他のエントリがない場合、ボタンは表示されません。
 
-#### Variables 
+#### 変数 {#variables}
 
-The navigation buttons require two variables to store the table view states:
+ナビゲーションボタンには、テーブルビューの状態を格納するための2つの変数が必要です：
 
-*  `#table_view_offset#`
+* `#table_view_offset#`
 
-This variable stores the offset of current table view.
+ この変数は現在のテーブルビューのオフセットを格納します。
 
-The navigation buttons will pass it as a parameter when the page is reloaded.
+ ナビゲーションボタンは、ページがリロードされる際にこの変数をパラメータとして渡します。
 
-*  `#record_count#`
+* `#record_count#`
 
- This variable stores the total number of entries in the table.
+ この変数はテーブル内のエントリの総数を格納します。
 
- The value will be calculated.
+ 値は計算されます。
 
-#### Entry count 
+#### エントリ数のカウント {#entry-count}
 
-To count `#record_count#`, please modify the existing [DBFind](../topics/script.md#dbfind) function call. The variable specified in the `.count()` call will store the entry count.
+`#record_count#`をカウントするために、既存の[DBFind](../topics/script.md#dbfind)関数呼び出しを修正してください。`.count()`呼び出しで指定された変数にエントリ数が格納されます。
+
 
 ```
 DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count)
 ```
 
-#### Table offset 
+#### テーブルオフセット {#table-offset}
 
-The table view offset must be passed to the page when the page is opened. If `#table_view_offset#` does not get a value, set it to 0.
+テーブルビューのオフセットは、ページが開かれる際にページに渡す必要があります。`#table_view_offset#`に値が設定されない場合は、0に設定してください。
 
-Add the following code to the top of the page.
+以下のコードをページの先頭に追加してください。
 
 ```
 If(GetVar(table_view_offset)){
@@ -499,22 +508,22 @@ If(GetVar(table_view_offset)){
 }
 ```
 
-Modify the [DBFind](../topics/script.md#dbfind) function call again. This time it must use the new table view offset.
+[DBFind](../topics/script.md#dbfind) 関数呼び出しを再度変更します。 今回は、新しいテーブル ビュー オフセットを使用する必要があります。
 
 ```
 DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count).Offset(#table_view_offset#)
 ```
 
-#### Button code 
+#### ボタンのコード {#button-code}
 
-Find the [Div](../topics/templates2.md#div) function call that defines the footer: `Div(Class:panel-footer text-right)`. Add the button code into it.
+フッターを定義する[Div](../topics/templates2.md#div)関数呼び出し`Div(Class:panel-footer text-right)`を見つけてください。その中にボタンのコードを追加してください。
 
 ```
 Div(Class: panel-footer text-right) {
 }
 ```
 
-The *Previous* button will only appear if there is at least one Next to return. When adding a button, the new table view offset `offset_previous` of the page will be calculated. The parameters are passed to `PageParams` of the reopened page.
+*Previous* ボタンは、返す次へが少なくとも 1 つある場合にのみ表示されます。 ボタンを追加すると、ページの新しいテーブル ビュー オフセット `offset_previous` が計算されます。 パラメータは、再度開かれたページの `PageParams` に渡されます。
 
 ```
 If(#table_view_offset# >= 25) {
@@ -523,7 +532,7 @@ If(#table_view_offset# >= 25) {
 }
 ```
 
-The Next button will only be displayed when the total number of records is greater than the number displayed on the page. When a button is added, the new table view offset `offset_next` of the page will be calculated. The parameters are passed to `PageParams` of the reopened page.
+「次へ」ボタンは、レコードの総数がページに表示されている数より大きい場合にのみ表示されます。 ボタンが追加されると、ページの新しいテーブル ビュー オフセット `offset_next` が計算されます。 パラメータは、再度開かれたページの `PageParams` に渡されます。
 
 ```
 If(#record_count# >= Calculate(#table_view_offset# + 25)) {
@@ -532,24 +541,25 @@ If(#record_count# >= Calculate(#table_view_offset# + 25)) {
 }
 ```
 
-After adding these buttons, save the page and test it from the Home > Messages menu item.
+これらのボタンを追加した後、ページを保存し、ホーム > メッセージのメニューアイテムからテストしてください。
 
-#### Page refreshing 
+#### ページのリフレッシュ {#page-refreshing}
 
-The last function to be implemented is to automatically update the table on the page. When users send a new message, it must be displayed in the table.
+実装する最後の機能は、ページ上のテーブルを自動的に更新することです。ユーザーが新しいメッセージを送信すると、テーブルに表示される必要があります。
 
-In addition to implementing the contract, you may also use the Send button to reopen the current page to achieve the same. `#table_view_offset#` must be passed to the page without any change.
+スマートコントラクトの実装に加えて、同じ効果を得るためにSendボタンを使用して現在のページを再オープンすることもできます。`#table_view_offset#`は変更せずにページに渡す必要があります。
 
-Add `Page` and `PageParams` to the Send button, the code is as follows:
+Sendボタンに`Page`と`PageParams`を追加し、コードは次のようになります：
+
 
 ```
 Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)", Page:AppPage, PageParams:"table_view_offset=#table_view_offset#")
 ```
 
 
-### Full page code 
+#### ページ全体のコード {#full-page-code-2}
 
-This part describes many changes to the application page. The following is the full code of the application page.
+このパートでは、アプリケーションページに多くの変更が加えられます。以下はアプリケーションページの完全なコードです。
 
 ```
 If(GetVar(table_view_offset)){
@@ -579,6 +589,7 @@ DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,mes
 }
 ```
 
-## Conclusions 
+## 結論 {#conclusions}
 
-Instead of expounding other important topics for application developers, such as layout styles, access permissions management and interaction between applications and resources, this tutorial introduces how to create a basic application for an ecosystem. For more information on these advanced topics, see other relevant documents.
+このチュートリアルでは、レイアウトスタイル、アクセス権限管理、アプリケーションとリソースの相互作用など、アプリケーション開発者にとって重要な他のトピックについては説明しませんでした。これはエコシステム向けの基本的なアプリケーションの作成方法を紹介しています。これらの高度なトピックに関する詳細な情報については、他の関連文書を参照してください。
+

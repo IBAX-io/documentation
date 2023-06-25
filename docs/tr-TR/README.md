@@ -16,7 +16,7 @@ features:
 - title: Özelleştirilebilir bir fikir birliği mekanizması
 - title: Farklı şifreleme ihtiyaçlarını karşılamak için front-end ve back-end ayrımı
 
-footer: © Copyright 2019 - 2021, IBAX Updated Date 06/03/2022 | Built with VuePress
+footer: © Copyright 2019 - 2023, IBAX Updated Date 06/20/2023 | Built with VuePress
 ---
 
 

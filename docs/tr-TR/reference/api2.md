@@ -1,41 +1,43 @@
-# RESTful API v2
+# RESTful API v2 {#restful-api-v2}
 
 Kimlik doğrulama, ekosistem veri alımı, hata işleme, veritabanı tablosu işlemleri, sayfalar ve sözleşmelerin uygulanması dahil olmak üzere Weaver tarafından sağlanan tüm işlevler, IBAX'in REST API'si kullanılarak kullanılabilir.
 
 REST API ile geliştiriciler, Weaver kullanmadan tüm platform işlevlerine erişebilir.
 
-API komut çağrıları, "/api/v2/command/[param]" adresiyle yürütülür; burada "komut" komut adıdır ve "param" ek bir parametredir. İstek parametreleri 'Content-Type: x-www-form-urlencoded' formatında gönderilmelidir. Sunucu yanıtı sonucu JSON biçimindedir.
+API komut çağrıları, `/api/v2/command/[param]` adresiyle yürütülür; burada "komut" komut adıdır ve "param" ek bir parametredir. İstek parametreleri 'Content-Type: x-www-form-urlencoded' formatında gönderilmelidir. Sunucu yanıtı sonucu JSON biçimindedir.
 
 
-* [Hata yönetimi](#Hata-yönetimi)
-    * [Hata listesi](#Hata-listesi)
+<!-- TOC -->
 
-* [Kimlik doğrulama](#Kimlik-doğrulama)
+* [Kimlik doğrulama](#error-response-handling)
+    * [Error list](#error-list)
+* [Request Type](#request-type)
+* [Authentication Interface](#authentication-interface)
     * [getuid](#getuid)
-    * [Giriş](#Giriş)
-
-* [API'ler CLB tarafından kullanılamıyor](#API'ler-CLB-tarafından-kullanılamıyor)
-
-* [Servis komutları](#Servis-komutları)
+    * [Giriş](#login)
+* [Servis komutları](#server-side-command-interface)
     * [Versiyon](#version)
 
-* [Veri talebi işlevleri](#Veri-talebi-işlevleri)
+* [Veri talebi işlevleri](#data-request-function-interface)
     * [Balans](#balance)
-    * [Bloklar](#bloklar)
-    * [Detaylı bloklar](#detaylı-bloklar)
+    * [Bloklar](#blocks)
+    * [Detaylı bloklar](#detailed-blocks)
+    * [/data/{id}/data/{hash}](#data-id-data-hash)
     * [/data/{table}/{id}/{column}/{hash}](#data-table-id-column-hash)
     * [keyinfo](#keyinfo)
 
-* [Metrikleri al](#Metrikleri-al)
-    * [keys](#keys)
-    * [blocks](#blocks)
-    * [işlemler](#İşlemler)
-    * [ekosistemler](#Ekosistemler)
-    * [fullnodes](#fullnodes)
+    * [Metrikleri al](#wallethistory)
+    * [listWhere/{name}](#listwhere-name)
+    * [nodelistWhere/{name}](#nodelistwhere-name)
+* [Get Metrics Interface](#get-metrics-interface)
+    * [keys](#metrics-keys)
+    * [blocks](#metrics-blocks)
+    * [işlemler](#metrics-transactions)
+    * [ekosistemler](#metrics-ecosystems)
+    * [fullnodes](#metrics-honornodes)
 
-* [Ekosistem](#ecosystem)
+* [Ekosistem](#ecosystem-interface)
     * [ekosistemadı](#ecosystemname)
-    * [ekosistemler](#ecosystems)
     * [appparams/{appID}](#appparams-appid)
     * [appparam/{appid}/{name}](#appparam-appid-name)
     * [ecosystemparams](#ecosystemparams)
@@ -47,9 +49,9 @@ API komut çağrıları, "/api/v2/command/[param]" adresiyle yürütülür; bura
     * [row/{name}/{id}[?columns=]](#row-name-id-colums)
     * [systemparams](#systemparams)
     * [history/{name}/{id}](#history-name-id)
-    * [interface/{page|menu|block}/{name}](#interface-page-menu-block-name)
+    * [interface/{page|menu|snippet}/{name}](#interface-page-menu-snippet-name)
 
-* [Contract functions](#contract-functions)
+* [Contract functions](#contract-function-interface)
     * [contracts[?limit=…&offset=…]](#contracts-limit-offset)
     * [contract/{name}](#contract-name)
     * [sendTX](#sendtx)
@@ -67,8 +69,9 @@ API komut çağrıları, "/api/v2/command/[param]" adresiyle yürütülür; bura
     * [config/centrifugo](#config-centrifugo)
     * [updnotificator](#updnotificator)
 
+<!-- /TOC -->
 
-## Hata yönetimi
+## Hata yönetimi {#error-response-handling}
 
 İstek başarıyla yürütülürse, "200" durum kodu döndürülür. Bir hata oluşursa, hata durumuna ek olarak aşağıdaki alanlara sahip bir JSON nesnesi döndürülür:
 
@@ -97,129 +100,128 @@ Content-Type: application/json
 }
 ```
 
-### Hata listesi
+### Hata listesi {#error-list}
 
-> E_CONTRACT
+> `E_CONTRACT`
 
 `%s` kontratı mevcut değil
 
-> E_DBNIL
+> `E_DBNIL`
 
 Boş database
 
-> E_DELETEDKEY
+> `E_DELETEDKEY`
 
 Hesap adresi askıya alındı
 
-> E_ECOSYSTEM
+> `E_ECOSYSTEM`
 
 Ekosistem "%d" mevcut değil
 
-> E_EMPTYPUBLIC
+> `E_EMPTYPUBLIC`
 
 Hesap için geçersiz public key
 
-> E_KEYNOTFOUND
+> `E_KEYNOTFOUND`
 
 Hesap adresi bulunamadı
 
-> E_HASHWRONG
+> `E_HASHWRONG`
 
 Yanlış hash
 
-> E_HASHNOTFOUND
+> `E_HASHNOTFOUND`
 
 Hash bulunamadı
 
-> E_HEAVYPAGE
+> `E_HEAVYPAGE`
 
 Çok fazla sayfa yüklendi
 
-> E_INVALIDWALLET
+> `E_INVALIDWALLET`
 
 Geçersiz cüzdan adresi "%s" 
 
-> E_LIMITTXSIZE
+> `E_LIMITTXSIZE`
 
 Limit dışı bir işlemin boyutu
 
-> E_NOTFOUND
+> `E_NOTFOUND`
 
 Sayfa veya menü içeriği bulunamadı
 
-> E_PARAMNOTFOUND
+> `E_PARAMNOTFOUND`
 
 Parametre bulunamadı
 
-> E_PERMISSION
+> `E_PERMISSION`
 
 İzin yok
 
-> E_QUERY
+> `E_QUERY`
 
 Veritabanı sorgu hatası
 
-> E_RECOVERED
+> `E_RECOVERED`
 
 API'de panik hatası var.
 Panik hatası varsa bir hata döndürün.
 Bulunması ve düzeltilmesi gereken bir hatayla karşılaştığınız anlamına gelir.
 
-> E_SERVER
+> `E_SERVER`
 
 Server hatası.
 golang library işlevinde bir hata varsa, geri döner. Mesaj alanı, bir hata durumunda döndürülen metni içerir.
 
 Herhangi bir komuta yanıt olarak bir **E_SERVER** hatası oluşabilir. Hatalı giriş parametreleri nedeniyle oluşursa, bunu ilgili bir hatayla değiştirebilirsiniz. Başka bir durumda, bu hata, daha ayrıntılı bir araştırma raporu gerektiren geçersiz işlem veya yanlış sistem yapılandırması bildirir.
 
-> E_SIGNATURE
+> `E_SIGNATURE`
 
 Yanlış imza
 
-> E_STATELOGIN
+> `E_STATELOGIN`
 
 `%s` ekosisteminin bir üyesi değil
 
-> E_TABLENOTFOUND
+> `E_TABLENOTFOUND`
 
 `%s` tablosu bulunamadı
 
-> E_TOKENEXPIRED
+> `E_TOKENEXPIRED`
 
 `%s` oturumunun süresi doldu
 
-> E_UNAUTHORIZED
+> `E_UNAUTHORIZED`
 
 Yetkisiz.
 
 Giriş yapılmadıysa veya oturumun süresi dolduysa, `getuid, login` dışında herhangi bir komut
 E_UNAUTHORIZED error.
 
-> E_UNKNOWNUID
+> `E_UNKNOWNUID`
 Unknown UID
 
-> E_UPDATING
+> `E_UPDATING`
 
 Düğüm blok zincirini güncelliyor
 
-> E_STOPPING
+> `E_STOPPING`
 
 Düğüm Durdu
 
-> E_NOTIMPLEMENTED
+> `E_NOTIMPLEMENTED`
 
 Henüz uygulanmadı
 
-> E_BANNED
+> `E_BANNED`
 
 Hesap adresi `%s` içinde yasaklandı
 
-> E_CHECKROLE
+> `E_CHECKROLE`
 
 Erişim reddedildi
 
-## API'ler CLB tarafından kullanılamıyor
-CLB düğümü için arabirim isteği kullanılamıyor:
+> API'ler CLB tarafından kullanılamıyor CLB düğümü için arabirim isteği kullanılamıyor:
 * metrics
 * txinfo
 * txinfoMultiple
@@ -239,58 +241,58 @@ CLB düğümü için arabirim isteği kullanılamıyor:
 * ecosystemname
 * walletHistory
 * tx_record
+## Request Type {#request-type}
+**Uniform use** 
+- application/x-www-form-urlencoded
 
-## Kimlik doğrulama
-Kimlik doğrulama için [JWT token](#https://jwt.io/) kullanılır. JWT belirtecini aldıktan sonra, her istek başlığına yerleştirilmelidir: `Yetkilendirme: Taşıyıcı TOKEN_HERE`.
+## Authentication Interface {#authentication-interface}
 
-### getuid
-GET/ benzersiz bir değer döndürür, özel anahtarla imzalar ve ardından [login](#login) komutunu kullanarak sunucuya geri gönderir.
+[JWT token](https://jwt.io)
+Used for authentication. The JWT token must be placed in each request header after it is received: `Authorization: Bearer TOKEN_HERE`.
 
-Geçici bir JWT belirteci oluşturmak için, **login** çağrılırken belirteci **Yetkilendirme**'ye iletmeniz gerekir.
+### getuid {#getuid}
 
-#### İstek
-> GET /api/v2/getuid
+**GET**/ returns a unique value, signs it with the private key, and then uses
+The [login](#login) command sends it back to the server.
 
-#### Cevap
+Generate a temporary JWT token that needs to be passed to **Authorization** when calling **login**.
+ 
+**Request**
 
-* uid
+``` text
+GET
+/api/v2/getuid
+```
 
-İmza numaraları.
+**Response**
 
-* token
+- `uid`
 
-Oturum açma sırasında geçici belirteç iletildi.
+    > Signature number.
 
-Geçici bir tokenın ömrü 5 saniyedir.
+- `token`
 
-* network_id
+    > The temporary token passed during login.
+    >
+    > The life cycle of a temporary token is 5 seconds.
 
- Sunucu identifier.
+- `network_id`
 
- Yetkilendirme gerekli değilse, aşağıdaki bilgiler iade edilecektir:
+    > Server identifier.
 
-* expire
+- `cryptoer`
 
- Son kullanma süresi.
+    > Elliptic curve algorithm.
 
-* ecosystem
+- `hasher`
 
- Ecosystem ID.
+    > hash algorithm.
 
-* key_id
+**Response Example 1**
 
- Hesap adresi.
-
-* address
-
- Cüzdan adresi `XXXX-XXXX-.....-XXXX`.
-
-#### Cevap example
-
+``` text
 200 (OK)
-
 Content-Type: application/json
-
 ```json
 {
     "uid": "4999317241855959593",
@@ -299,119 +301,174 @@ Content-Type: application/json
 }
 ```
 
-#### Hatalı Cevap
-E_SERVER
+In the case that no authorization is required (the request contains **Authorization**), the following message will be returned:
 
-### Giriş
-POST/ Kullanıcı kimliğinin doğrulanması.
+- `expire`
 
-Benzersiz bir değer almak ve imzalamak için önce **getuid** komutu çağrılmalıdır. Getuid'in geçici JWT belirtecinin istek başlığında iletilmesi gerekir.
+    > Expiration time.
 
-İstek başarılı olursa yanıtta alınan belirteç **Yetkilendirme**'ye dahil edilir.
+- `ecosystem`
 
-#### İstek
-> POST /api/v2/login
+    > Ecosystem ID.
 
-* [ecosystem]
+- `key_id`
 
- Ecosystem ID.
+    > Account address.
 
- Belirtilmezse, varsayılan olarak ilk ekosistemin kimliği.
+- `address`
 
-* [expire]
+    > Wallet address `XXXX-XXXX-..... -XXXX`.
 
-JWT tokenın ömrü, saniye cinsinden varsayılan olarak 28800.
+- `network_id`
 
-* [pubkey]
+    > Server identifier.
 
- Hesabın onaltılık sistemde public keyi.
+**Response Example 2**
 
-* [key_id]
-
- Hesap adresi `XXXX-...-XXXX`.
-
- Public key blok zincirinde zaten depolanmışsa bu parametreyi kullanın. pubkey parametresi ile aynı anda kullanılamaz.
-
-* signature
-
- Getuid aracılığıyla alınan UID imzası.
-
-#### Cevap
-* token
-
-    JWT token.
-
-* ecosystem
-
-    Ecosystem ID.
-
-* key_id
-
-    Hesap adres ID
-
-* address
-
-    Cüzdan adresi `XXXX-XXXX-.....-XXXX`.
-
-* notify_key
-
-    Bildirim ID.
-
-* isnode
-
-   Hesap adresinin düğümün sahibi olup olmadığı. Değer: `true, false`.
-
-* isowner
-
-    Hesap adresinin ekosistemin yaratıcısı olup olmadığı. Değer: `doğru, yanlış`.
-
-* obs
-
-    Kayıtlı ekosistemin CLB olup olmadığı. Değer: `doğru, yanlış`.
-
-#### Cevap example
-
+``` text
 200 (OK)
-
 Content-Type: application/json
-
-```json
 {
- "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9........AHDRDqDFBoWEHw-9lfIcLobehvNEeIYBB4BIb5J72aQ",
- "ecosystem":"1",
- "key_id":"54321",
- "address": "4321-....-2223"
+    "expire": "2159h59m49.4310543s",
+    "ecosystem_id": "1",
+    "key_id": "-654321",
+    "address": "1196-...... -3496",
+    "network_id": "1"
 }
 ```
 
-#### Hatalı Cevap
+**Error Response**
 
-E_SERVER, E_UNKNOWNUID, E_SIGNATURE, E_STATELOGIN, E_EMPTYPUBLIC
+*E_SERVER*
 
-## Servis komutları
-### Versiyon
+### login {#login}
+
+**POST**/ User authentication.
+
+> **getuid** should be called first
+> command in order to receive the unique value and sign it. getuid's temporary JWT token needs to be passed in the request header.
+>
+> If the request is successful, the token received in the response is contained in **Authorization**.
+
+**Request**
+
+``` text
+POST
+/api/v2/login
+```
+
+- `ecosystem`
+
+    > Ecosystem ID.
+    >
+    > If not specified, defaults to the first ecosystem ID.
+
+- `expire`
+
+    > Lifecycle of the JWT token, in seconds, default is 28800.
+
+- `pubkey`
+
+    > Hexadecimal account public key.
+
+- `key_id`
+
+    > Account address `XXXX-... -XXXX`.
+    >
+    > Use this parameter if the public key is already stored in the blockchain. It cannot be used with *pubkey*
+    > parameters are used together.
+
+- `signature`
+
+    > The uid signature received via getuid.
+
+**Response**
+
+- `token`
+
+    > JWT token.
+
+- `ecosystem_id`
+
+    > Ecosystem ID.
+
+- `key_id`
+
+    > Account Address ID
+
+- `account`
+
+    > Wallet address `XXXX-XXXX-..... -XXXX`.
+
+- `notify_key`
+
+    > Notification ID.
+
+- `isnode`
+
+    > Whether the account address is the owner of the node. Values: `true,false`.
+
+- `isowner`
+
+    > Whether the account address is the creator of the ecosystem. Values: `true,false`.
+
+- `clb`
+
+    > Whether the logged-in ecosystem is CLB. Values: `true,false`.
+
+- `roles` [Omitempty](#omitempty)
+
+    > Role list: `[{Role ID,Role Name}]`.
+
+**Response Example**
+
+```text
+200 (OK)
+Content-Type: application/json
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.....30l665h3v7lH85rs5jgk0",
+    "ecosystem_id": "1",
+    "key_id": "-54321",
+    "account": "1285-... -7743-4282",
+    "notify_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..... _JTFfheD0K4CfMbvVNpOJVMNDPx25zIDGir9g3ZZM0w",
+    "timestamp": "1451309883",
+    "roles": [
+        {
+            "role_id": 1,
+            "role_name": "Developer"
+        }
+    ]
+} 
+```
+
+**Error Response**
+
+*E_SERVER, E_UNKNOWNUID, E_SIGNATURE, E_STATELOGIN, E_EMPTYPUBLIC*
+
+## Servis komutları {#server-side-command-interface}
+### Versiyon {#version}
 
 GET/ Geçerli sunucunun sürümünü döndürür.
 
 Bu istek için oturum açma yetkisi gerekli değildir.
 
-#### İstek
+**İstek**
 > GET /api/v2/version
 
-#### Cevap example
+**Cevap Örneği**
 ```
 200 (OK)
 Content-Type: application/json
 "1.2.6"
 ```
 
-## Veri talebi işlevleri
+## Veri talebi işlevleri {#data-request-function-interface}
 
-### Balans
+### Balans {#balance}
 
 GET/ Mevcut ekosistemdeki hesap adresinin bakiyesini isteyin.
 
-#### İstek
+**İstek**
 
 > GET /api/v2/balance/{wallet}
 
@@ -419,7 +476,7 @@ GET/ Mevcut ekosistemdeki hesap adresinin bakiyesini isteyin.
 
 Adres tanımlayıcı. Herhangi bir biçimde `int64, uint64, XXXX-...-XXXX` belirtebilirsiniz. Bu adres, kullanıcının şu anda oturum açtığı ekosistemde sorgulanacaktır.
 
-#### Cevap
+**Cevap**
 
 * amount
 
@@ -429,7 +486,7 @@ Adres tanımlayıcı. Herhangi bir biçimde `int64, uint64, XXXX-...-XXXX` belir
 
     Hesap bakiyesi.
 
-#### Cevap example
+**Cevap Örneği**
 
 200 (OK)
 
@@ -442,14 +499,14 @@ Content-Type: application/json
 }
 ```
 
-#### Hatalı Cevap
+**Hatalı Cevap**
 E_SERVER, E_INVALIDWALLET
 
-### Bloklar
+### Bloklar {#blocks}
 GET/, her bloktaki işlemlerle ilgili ek bilgileri içeren bir liste döndürür.
 Bu istek için oturum açma yetkisi gerekli değildir.
 
-#### İstek
+**İstek**
 > GET /api/v2/blocks
 * block_id
 
@@ -459,7 +516,7 @@ Sorgulanacak başlangıç ​​bloğunun yüksekliği.
 
 blok sayısı
 
-#### Cevap
+**Cevap**
 
 * Block Height
 
@@ -477,8 +534,9 @@ blok sayısı
 
         İlk blok için, işlemi imzalayan ilk bloğun hesap adresi.
         Diğer tüm bloklar için, işlemi imzalayan hesabın adresi.
-#### Cevap Örneği
-```
+
+**Cevap Örneği**
+```text
 200 (OK)
 Content-Type: application/json
 {"1":
@@ -489,20 +547,20 @@ Content-Type: application/json
 }
 ```
 
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 
 E_SERVER, E_NOTFOUND
 
-### Detaylı bloklar
+### Detaylı bloklar {#detailed-blocks}
 
 GET/, her bloktaki işlemlerle ilgili ayrıntılı ek bilgileri içeren bir liste döndürür.
 
 Bu istek için oturum açma yetkisi gerekli değildir.
 
-#### İstek
+**İstek**
 > GET /api/v2/detailed_blocks
 
-#### Cevap 
+**Cevap** 
 * Blok Height
     * Başlık bloğu
 
@@ -571,7 +629,7 @@ Bu istek için oturum açma yetkisi gerekli değildir.
 
             İşlem tipi.
 
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -612,38 +670,86 @@ Content-Type: application/json
     }
 }
 ```
-#### Hatalı Cevap 
-E_SERVER, E_NOTFOUND
+**Hatalı Cevap** 
 
-### <span id = "data-table-id-column-hash">/data/{table}/{id}/{column}/{hash}</span>
+*E_SERVER, E_NOTFOUND*
+
+### /data/{id}/data/{hash} {#data-id-data-hash}
+
+**GET**/ If the specified hash matching the data in the binary watch, field, and records, this request will return the data. Otherwise, return error.
+
+The request does not require login authorization.
+
+**Request**
+
+```text
+GET
+/data/{id}/data/{hash}
+```
+
+- `id`
+
+    > Record ID.
+
+- `hash`
+
+    > Hash request data.
+
+**Response**
+
+> Binary data
+
+**Response Example**
+
+``` text
+200 (OK)
+Content-Type: *
+{
+    "name": "NFT Miner",
+    "conditions": "ContractConditions(\"@1DeveloperCondition\")",
+    "data": [
+        {
+            "Type": "contracts",
+            "Name": "NewNFTMiner",
+        },
+        ...
+    ]
+}
+```
+
+**Error Response**
+
+*E_SERVER, E_NOTFOUND, E_HASHWRONG*
+
+### /data/{table}/{id}/{column}/{hash} {#data-table-id-column-hash}
 GET/ Belirtilen hash, belirtilen tablo, alan ve kayıttaki verilerle eşleşirse, bu istek verileri döndürür. Aksi takdirde, bir hata döndürülür.
 
 Bu istek için oturum açma yetkisi gerekli değildir.
 
-#### İstek
+**İstek**
 > GET /data/{table}/{id}/{column}/{hash}
 
-* table
+- `table`
 
     Tablo ismi.
-* id
+- `id`
 
     Kayıt ID.
-* column
+- `column`
 
     Alan adı.
-* hash
+- `hash`
 
     İstenen verilerin hash'i.
 
-#### Cevap 
+**Cevap** 
 Ikili veri
 
-### keyinfo
+### keyinfo {#keyinfo}
 GET/, belirtilen adrese kayıtlı roller de dahil olmak üzere bir ekosistem listesi döndürür.
 Bu istek için oturum açma yetkisi gerekli değildir.
 
-#### İstek
+**İstek**
 > GET /api/v2/keyinfo/{key_id}
 
 * key_id
@@ -651,17 +757,17 @@ Bu istek için oturum açma yetkisi gerekli değildir.
     Adres tanımlayıcı, herhangi bir biçimde `int64, uint64, XXXX-...-XXXX` şeklinde belirtebilirsiniz.
 
     Tüm ekosistemlerde sorgulanan istek.
-#### Cevap 
-* ecosystem
+**Cevap** 
+- `ecosystem`
 
     Ecosystem ID.
-* name
+- `name`
 
     ekosistem adı.
-* roles
+- `roles`
 
     Kimlik ve ad alanlarına sahip roller listesi.
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -671,23 +777,261 @@ Content-Type: application/json
 [{
     "ecosystem":"1",
     "name":"platform ecosystem",
-    "roles":[{"id":"1","name":"Admin"},{"id":"2","name":"Developer"}]
+    "roles":[{"id":"1","name":"Governancer"},{"id":"2","name":"Developer"}]
 }]
 ```
-#### Hatalı Cevap 
-E_SERVER, E_INVALIDWALLET
+**Hatalı Cevap** 
 
-## Metrikleri al
+*E_SERVER, E_INVALIDWALLET*
+### walletHistory {#wallethistory}
+**GET**/ Return to the current account transaction history record, find it according to the ID of the ID
 
-### keys
+[Authorization](#authorization)
+
+**Request**
+
+- `searchType`
+
+  > Find Type (Income: Turn into Outcom: Turn out all: All, default).
+
+- `page` [Omitempty](#omitempty)
+  > Find the number of pages, the first page default, min: 1
+
+- `limit` [Omitempty](#omitempty)
+
+  > Credit number, default 20 articles. min: 1, MAX: 500
+
+``` text
+GET
+/api/v2/walletHistory?searchType=all&page=1&limit=10
+```
+
+**Response**
+
+- `total`
+
+  > Total number of entries.
+- `page`
+
+  > Number of current page.
+
+- `limit`
+
+  > Currently find the number of bars.
+
+- `list` Each element in the array contains the following parameters:
+    - `id` Stripe ID.
+    - `sender_id` Send key_id
+    - `sender_add` Send the account address
+    - `recipient_id` Accept key_id
+    - `recipient_add` Accept the account address
+    - `amount` Transaction amount
+    - `comment` Trading remarks
+    - `block_id` Block height
+    - `tx_hash` Trading hash
+    - `created_at` Transaction creation time, millisecond time stamp
+    - `money` Transaction amount
+
+**Response Example**
+
+``` text
+200 (OK)
+Content-Type: application/json
+{
+    "page": 1,
+    "limit": 10,
+    "total": 617,
+    "list": [
+        {
+            "id": 650,
+            "sender_id": 666081971617879...,
+            "sender_add": "0666-0819-7161-xxxx-5186",
+            "recipient_id": 666081971617879...,
+            "recipient_add": "0666-0819-7161-xxxx-5186",
+            "amount": "242250000",
+            "comment": "taxes for execution of @1Export contract",
+            "block_id": 209,
+            "tx_hash": "a213bc767d710a223856d83515d53518075b56fb9e9c063bce8a256c20ff0775",
+            "created_at": 1666001092090,
+            "money": "0.00024225"
+        }
+        ...
+    ]
+}  
+```
+
+**Error Response**
+
+*E_SERVER*
+
+
+
+### listWhere/{name} {#listwhere-name}
+**GET**/ Return to the entry of the data table specified in the current ecosystem. You can specify columns to be returned.
+
+[Authorization](#authorization)
+
+**Request**
+
+- `name`
+
+  > Data table name.
+
+-   `limit` [Omitempty](#omitempty)
+
+    > Credit number, default 25.
+
+-   `offset` [Omitempty](#omitempty)
+
+    > Disposal, default to 0.
+
+-   `order` [Omitempty](#omitempty)
+
+    > Sorting method, default `id ASC`.
+
+-   `columns` [Omitempty](#omitempty)
+
+    > The list of request columns is separated by commas. If it is not specified, all columns will be returned. In all cases, the `id` column will be returned.
+
+-   `where` [Omitempty](#omitempty)
+
+    > Query condition
+    >
+    > Example: If you want to query id> 2 and name = john
+    >
+    > You can use: where: {"id": {"$ gt": 2}, "name": {"$eq": "john"}}
+    >
+    > For details, please refer to [DBFind](../ topics/script.md#dbfind) where syntax
+
+``` text
+GET
+/api/v2/listWhere/mytable
+```
+
+**Response**
+
+- `count`
+
+  > Total number of entries.
+- `list`
+  > Each element in the array contains the following parameters:
+  - `id`
+    > Stripe ID.
+  - `...`
+    > Data tables other columns
+
+**Response Example**
+
+``` text
+200 (OK)
+Content-Type: application/json
+{
+    "count": 1,
+    "list": [
+        {
+            "account": "xxxx-0819-7161-xxxx-xxxx",
+            "ecosystem": "1",
+            "id": "12",
+            "key": "avatar",
+            "value": "{\"binary_id\": 4}"
+        }
+    ]
+}
+```
+
+**Error Response**
+
+*E_SERVER*,*E_TABLENOTFOUND*
+
+
+### nodelistWhere/{name} {#nodelistwhere-name}
+**GET**/ Return to the specified data table. You can specify columns to be returned. The type in the data table is **BYTEA** Do hexadecimal encoding processing
+
+[Authorization](#authorization)
+
+**Request**
+
+- `name`
+
+  > Data table name.
+
+-   `limit` [Omitempty](#omitempty)
+
+    > Credit number, default 25.
+
+-   `offset` [Omitempty](#omitempty)
+
+    > Disposal, default to 0.
+
+-   `order` [Omitempty](#omitempty)
+
+    > Sorting method, default `id ASC`.
+
+-   `columns` [Omitempty](#omitempty)
+
+    > The list of request columns is separated by commas. If it is not specified, all columns will be returned. In all cases, the `id` column will be returned.
+
+-   `where` [Omitempty](#omitempty)
+
+    > Query condition
+    >
+    > Example: If you want to query id> 2 and name = john
+    >
+    > You can use: where: {"id": {"$ gt": 2}, "name": {"$eq": "john"}}
+    >
+    > For details, please refer to [DBFind](../ topics/script.md#dbfind) where syntax
+
+``` text
+GET
+/api/v2/nodelistWhere/mytable
+```
+
+**Response**
+
+- `count`
+
+  > Total number of entries.
+- `list`
+  > Each element in the array contains the following parameters:
+    - `id`
+      > Stripe ID.
+    - `...`
+      > Data tables other columns
+
+**Response Example**
+
+``` text
+200 (OK)
+Content-Type: application/json
+{
+    "count": 1,
+    "list": [
+        {
+            "account": "xxxx-0819-7161-xxxx-xxxx",
+            "ecosystem": "1",
+            "id": "12",
+            "key": "avatar",
+            "value": "{\"binary_id\": 4}"
+        }
+    ]
+}
+```
+
+**Error Response**
+
+*E_SERVER*,*E_TABLENOTFOUND*
+
+## Get Metrics Interface {#get-metrics-interface}
+
+### metrics/keys {#metrics-keys}
 
 GET/ Hesap adreslerinin sayısını verir.
 
-#### İstek
+**İstek**
 
 > GET /api/v2/metrics/keys
 
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -699,13 +1043,13 @@ Content-Type: application/json
 }
 ```
 
-### blocks
+### metrics/blocks {#metrics-blocks}
 GET/ Blok sayısını verir.
 
-#### İstek
+**İstek**
 > GET /api/v2/metrics/blocks
 
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -717,13 +1061,13 @@ Content-Type: application/json
 }
 ```
 
-### İşlemler
+### metrics/transactions {#metrics-transactions}
 GET/ Toplam işlem sayısını verir.
 
-#### İstek
+**İstek**
 > GET /api/v2/metrics/transactions
 
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -734,13 +1078,13 @@ Content-Type: application/json
  "count": 28
 }
 ```
-### Ekosistemler
+### metrics/ecosystems {#metrics-ecosystems}
 GET/ Ekosistemlerin sayısını verir.
 
-#### İstek
+**İstek**
 > GET /api/v2/metrics/ecosystems
 
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -752,12 +1096,15 @@ Content-Type: application/json
 }
 ```
 
-### fullnodes
-GET/, honor node sayısını döndürür.
+### metrics/honornodes {#metrics-honornodes}
+**GET**/, honor node sayısını döndürür.
 
-> GET /api/v2/metrics/fullnodes
+``` 
+GET
+/api/v2/metrics/honornodes
+```
 
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -769,20 +1116,20 @@ Content-Type: application/json
 }
 ```
 
-## Ekosistem
-### ecosystemname
+## Ekosistem {#ecosystem-interface}
+### ecosystemname {#ecosystemname}
 
 GET/, tanımlayıcısına göre ekosistemin adını döndürür.
 Bu istek için oturum açma yetkisi gerekli değildir.
 
-#### İstek
+**İstek**
 > GET /api/v2/ecosystemname?id=..
 
 * id
 
     Ekosistem ID.
 
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -794,57 +1141,39 @@ Content-Type: application/json
 }
 ```
 
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 
 E_PARAMNOTFOUND
 
-### ecosystems
-GET/ Ekosistemlerin sayısını verir.
-
-> GET /api/v2/ecosystems/
-
-#### Cevap 
-* number
-
- Kurulan ekosistemlerin sayısı.
-
-#### Cevap Örneği
-
-200 (OK)
-
-Content-Type: application/json
-
-```json
-{
-    "number": 100,
-}
-```
-
-### <span id = "appparams-appid">appparams/{appID}</span>
+### appparams/{appid} {#appparams-appid}
 GET/ Geçerli veya belirtilen ekosistemdeki uygulama parametrelerinin bir listesini döndürür.
 
-#### İstek
-> GET /api/v2/appparams
+**İstek**
 
-* [appid]
+``` text
+GET
+/api/v2/appparams/{appid}
+```
+
+* `appid`
 
     Application ID.
-* [ecosystem]
+* `ecosystem`
 
     Ecosystem ID. Belirtilmezse, mevcut ekosistemin parametreleri döndürülür.
-* [names]
+* `names`
 
     Alınan parametrelerin listesi.
     Virgülle ayrılmış parametre adlarının listesini belirleyebilirsiniz. Örneğin: `/api/v2/appparams/1?names=name,mypar`.
-#### Cevap 
-* list
+**Cevap** 
+* `list`
   
     Each element in the array contains the following parameters:
-    * name, parameter name;
-    * value, parameter value;
-    * conditions, permission to change parameters.
+    * `name`, parameter name;
+    * `value`, parameter value;
+    * `conditions`, permission to change parameters.
 
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -855,52 +1184,58 @@ Content-Type: application/json
     "list": [{
         "name": "name",
         "value": "MyState",
-        "conditions": "true",
+        "conditions": "true"
     },
     {
         "name": "mypar",
         "value": "My value",
-        "conditions": "true",
-    },
+        "conditions": "true"
+    }
     ]
 }
 ```
 
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_ECOSYSTEM
 
-### <span id = "appparam-appid-name">appparam/{appid}/{name}</span>
+### appparam/{appid}/{name} {#appparam-appid-name}
 GET/ Geçerli veya belirtilen ekosistemdeki {appid} uygulamasının {name} parametresiyle ilgili bilgileri döndürür.
 
-#### İstek
-> GET /api/v2/appparam/{appid}/{name}[?ecosystem=1]
+**İstek**
 
-* appid
+``` text
+GET
+/api/v2/appparam/{appid}/{name}[?ecosystem=1]
+```
+
+
+* `appid`
 
     Uygulama ID.
-* name
+* `name`
 
     İstenen parametrenin adı.
-* [ecosystem]
+
+* `ecosystem` [Omitempty](#omitempty)
 
     Ekosistem Kimliği (isteğe bağlı parametre).
     Varsayılan olarak mevcut ekosistemi döndürür.
-#### Cevap 
+**Cevap** 
 
-* id
+* `id`
 
     Parametre ID.
-* name
+* `name`
 
     Parametre adı.
-* value
+* `value`
 
     Parametre değeri.
-* conditions
+* `conditions`
 
     Parametreleri değiştirme izni.
 
-#### Cevap Örneği
+**Cevap Örneği**
 200 (OK)
 Content-Type: application/json
 
@@ -912,38 +1247,38 @@ Content-Type: application/json
     "conditions": "true"
 }
 ```
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_ECOSYSTEM, E_PARAMNOTFOUND
 
-### ecosystemparams
+### ecosystemparams {#ecosystemparams}
 GET/ Ekosistem parametrelerinin listesini döndürür.
 
-#### İstek
+**İstek**
 > GET /api/v2/ecosystemparams/[?ecosystem=...&names=...]
 
-* [ecosystem]
+* `ecosystem` [Omitempty](#omitempty)
 
     Ekosistem ID. Belirtilmezse mevcut ekosistem kimliği döndürülür.
 
-* [names]
+* `names` [Omitempty](#omitempty)
     Virgülle ayrılmış istek parametrelerinin listesi.
     Örnek `/api/v2/ecosystemparams/?names=name,currency,logo*`.
 
-#### Cevap 
-* list
+**Cevap** 
+* `list`
 
     Dizideki her öğe aşağıdaki parametreleri içerir:
-* name
+	* `name`
 
-    Parametre adı.
-* value
+	    Parametre adı.
+	* `value`
 
-    Parametre değeri.
-* conditions
+	    Parametre değeri.
+	* `conditions`
 
-    Parametreleri değiştirme izni.
+	    Parametreleri değiştirme izni.
 
-#### Cevap Örneği
+**Cevap Örneği**
 200 (OK)
 Content-Type: application/json
 
@@ -952,43 +1287,49 @@ Content-Type: application/json
     "list": [{
             "name": "name",
             "value": "MyState",
-            "conditions": "true",
+            "conditions": "true"
         },
         {
         "name": "currency",
         "value": "MY",
-        "conditions": "true",
-        },
+        "conditions": "true"
+        }
     ]
 }
 ```
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_ECOSYSTEM
 
-### <span id = "ecosystemparam-name">ecosystemparam/{name}</span>
+### ecosystemparam/{name} {#ecosystemparam-name}
 
 GET/ Geçerli veya belirtilen ekosistemdeki {name} parametresiyle ilgili bilgileri döndürür.
 
-#### İstek
-> GET /api/v2/ecosystemparam/{name}[?ecosystem=1]
-* name
+**İstek**
+
+
+``` text
+GET
+/api/v2/ecosystemparam/{name}[?ecosystem=1]
+```
+- `name`
 
     İstek parametresinin adı.
-* [ecosystem]
+
+- `ecosystem` [Omitempty](#omitempty)
 
     Ekosistem kimliğini belirtebilirsiniz. Varsayılan olarak, mevcut ekosistem id döndürülür.
-#### Cevap 
-* name
+**Cevap** 
+- `name`
 
     Parametre adı.
-* value
+- `value`
 
     Parametre değeri.
-* conditions
+- `conditions`
 
     Parametreleri değiştirme izni.
 
-#### Cevap Örneği
+**Cevap Örneği**
 200 (OK)
 Content-Type: application/json
 
@@ -1000,37 +1341,43 @@ Content-Type: application/json
 }
 ```
 
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_ECOSYSTEM
 
-### <span id = "tables-limit-offset">tables/[?limit=…&offset=…]</span>
+### tables/\[?limit=\... &offset=\... \] {#tables-limit-offset}
 
 GET/ Ofseti ve giriş sayısını ayarlayabileceğiniz mevcut ekosistemin tablolarının listesini döndürür.
 
-#### İstek
-* [limit]
+**İstek**
+
+- `limit` [Omitempty](#omitempty)
 
     Giriş sayısı, varsayılan olarak 25.
-* [offset]
+
+- `offset` [Omitempty](#omitempty)
 
     Ofset, varsayılan olarak 0.
-> GET /api/v2/tables
 
-#### Cevap 
-* count
+``` text
+GET
+/api/v2/tables?limit=... &offset=...
+```
+
+**Cevap** 
+- `count`
 
     Tablodaki toplam girişler.
-* list
+- `list`
 
     Dizideki her öğe aşağıdaki parametreleri içerir:
-* name
+	* `name`
 
-    Ön eki olmayan tablo adı.
-* count
+	    Ön eki olmayan tablo adı.
+	* `count`
 
-    Tablodaki giriş sayısı.
+	    Tablodaki giriş sayısı.
 
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -1038,20 +1385,20 @@ Content-Type: application/json
 
 ```json
 {
-    "count": "100"
+    "count": "100",
     "list": [{
             "name": "accounts",
-            "count": "10",
+            "count": "10"
         },
         {
             "name": "citizens",
-            "count": "5",
-        },
+            "count": "5"
+        }
     ]
 }
 ```
 
-### <span id = "table-name">table/{name}</span>
+### table/{name} {#table-name}
 GET/ Mevcut ekosistem tarafından istenen tabloyla ilgili bilgileri döndürür.
 Aşağıdaki alan bilgilerini döndürür:
 
@@ -1080,13 +1427,17 @@ Aşağıdaki alan bilgilerini döndürür:
 
     Bu alanın değerini değiştirme izni.
 
-#### İstek
-> GET /api/v2/table/mytable
+**İstek**
+
+``` text
+GET
+/api/v2/table/{table_name}
+```
 
 * name
 
     Ekosistem ön eki olmayan tablo adı.
-#### Cevap 
+**Cevap** 
 * name
 
     Ekosistem ön eki olmayan tablo adı.
@@ -1114,7 +1465,7 @@ Aşağıdaki alan bilgilerini döndürür:
 * perm
 
     Bu alanın değerini değiştirme izni.
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -1140,14 +1491,14 @@ Content-Type: application/json
 }
 ```
 
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_TABLENOTFOUND
 
-### <span id = "list-name-limit-offset-colums">list/{name}[?limit=…&offset=…&columns=…]</span>
+### list/{name}\[?limit=\... &offset=\... &columns=\... \] {#list-name-limit-offset-columns}
 
 GET/ Geçerli ekosistemdeki belirtilen tablo girişlerinin listesini ve girişlerin ofsetini ve sayısını ayarlayabileceğiniz yeri döndürür.
 
-#### İstek
+**İstek**
 
 * name
 
@@ -1163,7 +1514,7 @@ GET/ Geçerli ekosistemdeki belirtilen tablo girişlerinin listesini ve girişle
     İstenen sütunların virgülle ayrılmış listesi. Belirtilmezse, tüm sütunlar döndürülür. Çağrı durumlarında, id sütunu döndürülür.
 > GET /api/v2/list/mytable?columns=name
 
-#### Cevap 
+**Cevap** 
 
 * count
 
@@ -1176,7 +1527,7 @@ GET/ Geçerli ekosistemdeki belirtilen tablo girişlerinin listesini ve girişle
     Entry ID.
     İstenen sütunların sırası.
 
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -1188,23 +1539,23 @@ Content-Type: application/json
     "count": "10",
     "list": [{
         "id": "1",
-        "name": "John",
+        "name": "John"
     },
     {
         "id": "2",
-        "name": "Mark",
-    },
+        "name": "Mark"
+    }
     ]
 }
 ```
 
-### <span id = "sections-limit-offset-lang">sections[?limit=…&offset=…&lang=]</span>
+### sections\[?limit=\... &offset=\... &lang=\] {#sections-limit-offset-lang}
 
 GET/ Mevcut ekosistemin tablo bölümlerindeki girişlerin listesini ve girişlerin ofset ve sayısının ayarlanabileceği yeri döndürür.
 
 role_access alanı bir roller listesi içeriyorsa ve mevcut rolü içermiyorsa, hiçbir kayıt döndürülmez. Başlık alanındaki veriler, istek başlığındaki Kabul Et-Dil dil kaynağı ile değiştirilecektir.
 
-#### İstek
+**İstek**
 
 * [limit]
 
@@ -1218,7 +1569,7 @@ role_access alanı bir roller listesi içeriyorsa ve mevcut rolü içermiyorsa, 
 
 > GET /api/v2/sections
 
-#### Cevap 
+**Cevap** 
 
 * count
 
@@ -1227,11 +1578,11 @@ role_access alanı bir roller listesi içeriyorsa ve mevcut rolü içermiyorsa, 
 
     Dizideki her öğe, tablo bölümlerindeki tüm sütunların bilgilerini içerir.
 
-#### Cevap Örneği
+**Cevap Örneği**
 200 (OK)
 Content-Type: application/json
 
-```json
+```text
 {
     "count": "2",
     "list": [{
@@ -1239,20 +1590,21 @@ Content-Type: application/json
         "title": "Development",
         "urlpage": "develop",
         ...
-        },
+        }
     ]
 }
 ```
 
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_TABLENOTFOUND
 
-### <span id = "row-name-id-colums">row/{name}/{id}[?columns=]</span>
-### 
+### row/{name}/{id}\[?columns=\] {#row-name-id-columns}
+
+[Authorization](#authorization)
 
 GET/ Geçerli ekosistemde belirtilen tablonun girişini döndürür. Döndürülecek sütunları belirtebilirsiniz.
 
-#### İstek
+**İstek**
 * name
 
     Tablo ismi.
@@ -1265,7 +1617,7 @@ GET/ Geçerli ekosistemde belirtilen tablonun girişini döndürür. Döndürül
 
 > GET /api/v2/row/mytable/10?columns=name
 
-#### Cevap 
+**Cevap** 
 
 * value
 
@@ -1275,7 +1627,7 @@ GET/ Geçerli ekosistemde belirtilen tablonun girişini döndürür. Döndürül
     Giriş ID.
     * Sequence of İsteked columns. 
 
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -1285,42 +1637,105 @@ Content-Type: application/json
 {
     "values": {
         "id": "10",
-        "name": "John",
+        "name": "John"
     }
 }
 ```
 
-#### Hatalı Cevap 
-E_NOTFOUND
+**Error Response**
 
-### systemparams
+*E_NOTFOUND*
+
+### row/{name}/{column}/{id} {#row-name-colorn-id}
+
+[Authorization] (#authorization)
+
+**GET**/ Return to the entry of the data table specified in the current ecosystem. You can specify columns to be returned.
+
+**Request**
+
+- `Name`
+
+     > Data table name.
+
+- `colorn`
+
+     > Data list name.
+
+- `ID`
+
+     > Stripe ID.
+
+- `columns` [omitempty] (#omitempty)
+
+     > The list of request lists is separated by commas. If it is not specified, all columns will be returned. In all cases, the ID column will be returned.
+
+```text
+GET
+/API/V2/ROW/MyTable/name/John? Columns = name
+```
+
+**Response**
+
+- `Value`
+
+     > Array of receiving column values
+     Forecast
+     > - `ID`
+     >>
+     >>> Strip ID.
+     >>
+     > - -The sequence of the request column.
+
+**Response Example**
+
+```text
+200 (OK)
+Content-type: Application/JSON
+{{
+     "Values": {
+     "ID": "10",
+     "name": "John",
+     }
+}
+```
+
+**Error Response**
+
+*E_NOTFOUND*
+
+### systemparams {#systemparams}
 GET/ Returns the list of platform parameters.
 
-#### İstek
-> GET /api/v2/systemparams/[?names=...]
+**İstek**
 
-* [names]
+``` text
+GET
+/api/v2/systemparams/[?names=...]
+```
+
+- `names` [Omitempty](#omitempty)
 
     Virgülle ayrılmış bir istek parametreleri listesi. Örneğin, /api/v2/systemparams/?names=max_columns,max_indexes.
-#### Cevap 
-* list
+**Cevap** 
+- `list`
 
     Dizideki her öğe aşağıdaki parametreleri içerir:
     * name
 
         Parametre adı.
-* value
+    * value
 
-    Parametre değeri.
-* conditions
+    	Parametre değeri.
+    * conditions
 
-    Parametreyi değiştirme izinleri.
+    	Parametreyi değiştirme izinleri.
 
-#### Cevap Örneği
+**Cevap Örneği**
 200 (OK)
 Content-Type: application/json
 
-```json
+```text
 {
     "list": [{
         "name": "max_columns",
@@ -1335,13 +1750,13 @@ Content-Type: application/json
     ]
 }
 ```
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_PARAMNOTFOUND
 
-### <span id = "history-name-id">history/{name}/{id}</span>
+### history/{name}/{id} {#history-name-id}
 GET/ Geçerli ekosistemde belirtilen tablodaki girişin değişiklik kaydını döndürür.
 
-#### İstek
+**İstek**
 * name
 
     Tablo adı.
@@ -1349,50 +1764,53 @@ GET/ Geçerli ekosistemde belirtilen tablodaki girişin değişiklik kaydını d
 
     Giriş ID.
 
-#### Cevap 
+**Cevap** 
 * list
 
     Öğeleri istenen girişin değiştirilmiş parametrelerini içeren bir dizideki her öğe.
 
-#### Cevap Örneği
+**Cevap Örneği**
 
+``` text
 200 (OK)
-
 Content-Type: application/json
-
-
-```json
 {
-    "list": [{
-        "name": "default_page",
-        "value": "P(class, Default Ecosystem Page)"
+    "list": [
+        {
+            "name": "default_page",
+            "value": "P(class, Default Ecosystem Page)"
         },
         {
-        "menu": "default_menu"
+            "menu": "default_menu"
         }
     ]
 }
 ```
 
-### <span id = "interface-page-menu-block-name">interface/{page|menu|block}/{name}</span>
+### interface/{page|menu|snippet}/{name} {#interface-page-menu-snippet-name}
 GET/ Geçerli ekosistemin belirtilen tablosundaki (sayfalar, menü veya bloklar) ad alanının girişini döndürür.
 
-> GET /api/v2/interface/page/default_page
-#### İstek
-* name
+``` text
+GET
+/api/v2/interface/page/default_page
+/api/v2/interface/menu/default_menu
+/api/v2/interface/snippet/welcome
+```
+**İstek**
+- `name`
 
     Tabloda belirtilen girdinin adı.
-#### Cevap 
-* id
+**Cevap** 
+- `id`
 
     Giriş ID.
-* name
+- `name`
 
     Giriş adı.
-* other
+- `other`
 
     Tablonun diğer sütunları.
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -1408,24 +1826,27 @@ Content-Type: application/json
 }
 ```
 
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_QUERY, E_NOTFOUND
 
-## Contract functions
+## Contract functions {#contract-function-interface}
 
-### <span id = "contracts-limit-offset">contracts[?limit=…&offset=…]</span>
+### contracts\[?limit=\... &offset=\... \] {#contracts-limit-offset}
 GET/ Mevcut ekosistemdeki sözleşmelerin listesini verir ve girişlerin mahsup ve sayısını ayarlayabilir.
+[Authorization](#authorization)
 
-#### İstek
-* [limit]
+**İstek**
+
+- `limit` [Omitempty](#omitempty)
 
     Giriş sayısı, varsayılan olarak 25.
-* [offset]
+
+- `offset` [Omitempty](#omitempty)
 
     Ofset, varsayılan olarak 0.
 > GET /api/v2/contracts
 
-#### Cevap 
+**Cevap** 
 * count
 
     Toplam giriş sayısı.
@@ -1459,21 +1880,19 @@ GET/ Mevcut ekosistemdeki sözleşmelerin listesini verir ve girişlerin mahsup 
     * token_id
 
         Kontrat ücretini ödemek için kullanılan jetonun bulunduğu ekosistemin ID.
-#### Cevap Örneği
 
- 200 (OK)
+**Cevap Örneği**
 
- Content-Type: application/json
-
- 
-```json
- {
- "count": "10"
-    "list": [{
+``` text
+200 (OK)
+Content-Type: application/json
+{
+    "count": "10"
+    "list": [{ 
         "id": "1",
         "name": "MainCondition",
-        "token_id":"1",
-        "wallet_id":"0",
+        "token_id": "1", 
+        "wallet_id": "0", 
         "value": "contract MainCondition {
                 conditions {
                 if(EcosysParam(`founder_account`)!=$key_id)
@@ -1490,74 +1909,73 @@ GET/ Mevcut ekosistemdeki sözleşmelerin listesini verir ve girişlerin mahsup 
  }
  ```
 
-### <span id = "contract-name">contract/{name}</span>
+### contract/{name} {#contract-name}
 GET/ Belirtilen kontratın ilgili bilgilerini döndürür. Varsayılan olarak, kontrat mevcut ekosistemde sorgulanır.
 
-#### İstek
-* name
+**İstek**
+- `name`
 
     Kontrat adı.
 > GET /api/v2/contract/mycontract
 
-#### Cevap 
-* id
+**Cevap** 
+- `id`
 
     Sanal makinede kontrat ID.
-* name
+- `name`
 
     Ekosistem ID sahip kontrat adı "@1MainCondition".
-* state
+- `state`
 
     Kontratın ait olduğu ekosistemin ID.
-* walletid
+- `walletid`
 
     Kontrata bağlı hesap adresi.
-* tokenid
+- `tokenid`
 
     Kontrat ücretini ödemek için kullanılan token bulunduğu ekosistemin ID.
-* address
+- `address`
 
     Cüzdan adresi `XXXX-...-XXXX` sözleşmeye bağlı.
-* tableid
+- `tableid`
 
     Kontrat tablosundaki kontratın giriş ID.
-* fields
+- `fields`
 
     Dizi, kontrat veri bölümündeki her parametrenin yapı bilgilerini içerir:
-    * name
+    * `name`
 
     Parametre adı.
-    * type
+    * `type`
 
     Parametre türü.
-    * optional
+    * `optional`
 
     Parametre seçeneği, true isteğe bağlı parametre anlamına gelir, false zorunlu parametre anlamına gelir.
-#### Cevap Örneği
+**Cevap Örneği**
 
+``` text
 200 (OK)
-
 Content-Type: application/json
-
-```json
 {
     "fields" : [
-    {"name":"amount", "type":"int", "optional": false},
-    {"name":"name", "type":"string", "optional": true}
+        {"name": "amount", "type": "int", "optional": false},
+        {"name": "name", "type": "string", "optional": true}
     ],
     "id": 150,
-    "name": "@1mycontract",
+    "name":"@1mycontract",
     "tableid" : 10,
-}
+} 
 ```
 
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_CONTRACT
 
-### sendTX
+### sendTX {#sendtx}
 POST/ Parametredeki işlemi alın ve işlem kuyruğuna ekleyin. İstek başarıyla yürütülürse, işlem hash döndürülür. Hash ile bloktaki ilgili işlemi elde edebilirsiniz. Bir hata yanıtı oluştuğunda, hash, hata metin mesajına dahil edilir.
+[Authorization](#authorization)
 
-#### İstek
+**İstek**
 * tx_key
 
     İşlem içeriği. Bu parametre ile herhangi bir isim belirleyebilir ve birden fazla işlem almayı destekleyebilirsiniz.
@@ -1570,18 +1988,18 @@ tx1 - transaction 1
 txN - transaction N
 ```
 
-#### Cevap 
-* hashes
+**Cevap** 
+- `hashes`
 
     Array of transaction hashes:
-* tx1
+* `tx1`
 
     Hash of transaction 1.
-* txN
+* `txN`
 
     Hash of transaction N.
 
-#### Cevap Örneği
+**Cevap Örneği**
 200 (OK)
 Content-Type: application/json
 
@@ -1589,17 +2007,20 @@ Content-Type: application/json
 ```json
 {
     "hashes": {
-    "tx1": "67afbc435634.....",
-    "txN": "89ce4498eaf7.....",
+      "tx1": "67afbc435634.....",
+      "txN": "89ce4498eaf7....."
+    }
 }
 ```
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_LIMITTXSIZE,*E_BANNED*
 
-### txstatus
-POST/ Belirtilen işlem hashinin blok id ve hata mesajını döndürür. Blok id ve hata metin mesajının dönüş değeri boşsa, işlem bloğa dahil edilmemiştir.
+### txstatus {#txstatus}
 
-#### İstek
+POST/ Belirtilen işlem hashinin blok id ve hata mesajını döndürür. Blok id ve hata metin mesajının dönüş değeri boşsa, işlem bloğa dahil edilmemiştir.
+[Authorization](#authorization)
+
+**İstek**
 * data
     JSON list of transaction hashes.
     ```
@@ -1607,7 +2028,7 @@ POST/ Belirtilen işlem hashinin blok id ve hata mesajını döndürür. Blok id
     ```
 > POST /api/v2/txstatus/
 
-#### Cevap 
+**Cevap** 
 * results
     Veri sözlüğünde, anahtar olarak işlem hash'i, değer olarak işlem detayı.
 
@@ -1625,7 +2046,7 @@ POST/ Belirtilen işlem hashinin blok id ve hata mesajını döndürür. Blok id
 
     İşlem gerçekleştirilemezse, bir hata metin mesajı döndürülür.
 
-#### Cevap Örneği
+**Cevap Örneği**
 200 (OK)
 
 Content-Type: application/json
@@ -1635,25 +2056,25 @@ Content-Type: application/json
 {"results":
     {
         "hash1": {
-        "blockid": "3123",
-        "result": "",
+          "blockid": "3123",
+          "result": ""
         },
         "hash2": {
-        "blockid": "3124",
-        "result": "",
+          "blockid": "3124",
+          "result": ""
         }
     }
 }
 ```
 
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_HASHWRONG, E_HASHNOTFOUND
 
-### <span id = "txinfo-hash">txinfo/{hash}</span>
+### txinfo/{hash} {#txinfo-hash}
 GET/ Blok kimliği ve onay sayısı da dahil olmak üzere, işlemle ilişkili belirtilen hash bilgilerini döndürür. İsteğe bağlı parametreler belirtilirse, kontrat adı ve ilgili parametreler de döndürülebilir.
 
-#### İstek
-* hash
+**İstek**
+- `hash`
 
     İşlem hash.
 * [contractinfo]
@@ -1661,7 +2082,7 @@ GET/ Blok kimliği ve onay sayısı da dahil olmak üzere, işlemle ilişkili be
     Ayrıntılı kontrat parametresi tanımlayıcısı. İşlemle ilgili kontrat ayrıntılarını elde etmek için `contractinfo=1` belirtin.
 > GET /api/v2/txinfo/c7ef367b494c7ce855f09aa3f1f2af7402535ea627fa615ebd63d437db5d0c8a?contractinfo=1
 
-#### Cevap 
+**Cevap** 
 * blockid
 
    İşlemin blok id içerir. Değer "0" ise, bu hash ile işlem bulunamaz.
@@ -1672,7 +2093,7 @@ GET/ Blok kimliği ve onay sayısı da dahil olmak üzere, işlemle ilişkili be
  
     `contentinfo=1` belirtilirse, sözleşme detayları bu parametreye döndürülecektir.
 
-#### Cevap Örneği
+**Cevap Örneği**
 200 (OK)
 
 Content-Type: application/json
@@ -1693,13 +2114,13 @@ Content-Type: application/json
 }
 ```
 
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_HASHWRONG
 
-### txinfoMultiple/
+### txinfoMultiple {#txinfomultiple}
 GET/ Bir işlemle ilgili olarak belirtilen hash bilgilerini döndürür.
 
-#### İstek
+**İstek**
 * hash
 
     İşlem hashlerinin listesi.
@@ -1711,7 +2132,7 @@ GET/ Bir işlemle ilgili olarak belirtilen hash bilgilerini döndürür.
     ```
 > GET /api/v2/txinfoMultiple/
 
-#### Cevap 
+**Cevap** 
 * results
 
     Veri sözlüğünde, anahtar olarak işlem hash'leri ve değer olarak işlem ayrıntıları.
@@ -1732,7 +2153,7 @@ GET/ Bir işlemle ilgili olarak belirtilen hash bilgilerini döndürür.
 
     `contentinfo=1` belirtilirse, sözleşme detayları bu parametreye döndürülecektir.
 
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -1742,55 +2163,55 @@ Content-Type: application/json
 {"results":
     {
         "hash1": {
-        "blockid": "3123",
-        "confirm": "5",
+          "blockid": "3123",
+          "confirm": "5"
         },
         "hash2": {
-        "blockid": "3124",
-        "confirm": "3",
+          "blockid": "3124",
+          "confirm": "3"
         }
     }
  }
 ```
 
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_HASHWRONG
 
-### <span id = "page-validators_count-name">/page/validators_count/{name}</span>
+### /page/validators_count/{name} {#page-validators-count-name}
 GET/ Belirtilen sayfayı doğrulamak için gereken düğüm sayısını döndürür.
 
-#### İstek
+**İstek**
 * name
 
     Ekosistem id sahip sayfa adı: `@ecosystem_id%%page_name%`. Örneğin, "@1main_page".
 > GET /api/v2/page/validators_count/@1page_name
 
-#### Cevap 
+**Cevap** 
 
 * validate_count
 
     Belirtilen sayfayı doğrulamak için gereken node sayısı
 
-#### Cevap Örneği
+**Cevap Örneği**
 ```
 200 (OK)
 Content-Type: application/json
 {"validate_count":1}
 ```
 
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_NOTFOUND, E_SERVER
 
-### <span id = "content-menu-page-name">content/menu|page/{name}</span>
+### content/menu\|page/{name} {#content-menu-page-name}
 POST/ Şablon motoru işlemenin sonucu olan, belirtilen sayfa veya menü adının kodunun JSON nesne ağacını döndürür.
 
-#### İstek
+**İstek**
 * name
 
     Sayfa veya menü adı.
 > POST /api/v2/content/page/default
 
-#### Cevap 
+**Cevap** 
 * menu
  
     İçerik/sayfa/… isteğinde bulunulurken sayfanın menü adı
@@ -1803,46 +2224,44 @@ POST/ Şablon motoru işlemenin sonucu olan, belirtilen sayfa veya menü adını
 * tree
 
     Bir sayfanın veya menünün JSON nesne ağacı.
-#### Cevap Örneği
+**Cevap Örneği**
 
+``` text
 200 (OK)
-
 Content-Type: application/json
-
-```json
 {
-    "tree": {"type":"......",
-    "children": [
-        {...},
-        {...}
-    ]
+    "tree": {"type":"......" , 
+          "children": [
+               {...} ,
+               {...}
+          ]
     },
-}
+} 
 ```
 
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_NOTFOUND
 
-### <span id = "content-source-name">content/source/{name}</span>
+### content/source/{name} {#content-source-name}
 POST/ Belirtilen sayfa adı kodunun JSON nesne ağacını döndürür. Herhangi bir işlevi yürütmez veya herhangi bir veri almaz. Döndürülen JSON nesne ağacı, sayfa şablonuna karşılık gelir ve görsel sayfa tasarımcısında kullanılabilir. Sayfa bulunamazsa, 404 hatası döndürülür. İstek """""""
 
 * name
 
     Sayfa adı.
-#### Cevap 
+**Cevap** 
 
 > POST /api/v2/content/source/default
 
 * tree
 
     Sayfanın bir JSON nesne ağacı.
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
 Content-Type: application/json
 
-```json
+```text
 {
     "tree": {"type":"......",
     "children": [
@@ -1853,15 +2272,15 @@ Content-Type: application/json
 }
 ```
 
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_NOTFOUND, E_SERVER
 
-### <span id = "content-hash-name">content/hash/{name}</span>
+### content/hash/{name} {#content-hash-name}
 POST/ Belirtilen sayfa adının SHA256 hashi veya sayfa bulunamazsa 404 hatasını döndürür.
 
 Bu istek için oturum açma yetkisi gerekli değildir. Diğer nodelara istekte bulunurken doğru hash almak için ekosistem, keyID, roleID, isMobile parametrelerini de iletmelisiniz. Diğer ekosistemlerden sayfa almak için, ekosistem idnin sayfa adının önüne eklenmesi gerekir. Örneğin: "@2sayfam".
 
-#### İstek
+**İstek**
 * name
 
     Ekosistem id sahip sayfa adı.
@@ -1879,28 +2298,28 @@ Bu istek için oturum açma yetkisi gerekli değildir. Diğer nodelara istekte b
     Mobil platformun parametre tanımlayıcısı.
 > POST /api/v2/content/hash/default
 
-#### Cevap 
+**Cevap** 
 * hex
 
     Hexadecimal hash.
 
-#### Cevap Örneği
+**Cevap Örneği**
 ```
 200 (OK)
 Content-Type: application/json
 {
- "hash": "b631b8c28761b5bf03c2cfbc2b49e4b6ade5a1c7e2f5b72a6323e50eae2a33c6"
-}
+    "hash": "b631b8c28761b5bf03c2cfbc2b49e4b6ade5a1c7e2f5b72a6323e50eae2a33c6"
+} 
 ```
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_NOTFOUND, E_SERVER, E_HEAVYPAGE
 
-### İçerik
+### content {#content}
 POST/ Şablon parametresinden sayfa kodunu döndüren JSON nesnelerinin sayısı. İsteğe bağlı parametre kaynağı "true" veya "1" olarak belirtilirse, JSON nesne ağacı alınan herhangi bir işlevi ve veriyi yürütmez. JSON nesne ağacı, görsel sayfa tasarımcısında kullanılabilir.
 
 Bu istek için oturum açma yetkisi gerekli değildir.
 
-#### İstek
+**İstek**
 * template
 
     Sayfa kodu.
@@ -1909,18 +2328,18 @@ Bu istek için oturum açma yetkisi gerekli değildir.
     `true` veya `1` olarak belirtilirse, JSON nesne ağacı, alınan herhangi bir işlevi ve veriyi yürütmez.
 > POST /api/v2/content
 
-#### Cevap 
+**Cevap** 
 
 * tree
 
     JSON nesne ağacı.
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
 Content-Type: application/json
 
-```json
+```text
 {
     "tree": {"type":"......",
     "children": [
@@ -1931,23 +2350,23 @@ Content-Type: application/json
 }
 ```
 
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_NOTFOUND, E_SERVER
 
-### maxblockid
+### maxblockid {#maxblockid}
 GET/ Geçerli nodedaki en yüksek bloğun idsini döndürür.
 
 Bu istek için oturum açma yetkisi gerekli değildir.
 
-#### İstek
+**İstek**
 
 > GET /api/v2/maxblockid
 
-#### Cevap 
+**Cevap** 
 * max_block_id
 
     Geçerli nodedaki en yüksek bloğun id.
-#### Cevap Örneği
+**Cevap Örneği**
 
 200 (OK)
 
@@ -1955,23 +2374,23 @@ Content-Type: application/json
 
 ```json
 {
-    "max_block_id" : 341,
+    "max_block_id" : 341
 }
 ```
-#### Hatalı Cevap 
+**Hatalı Cevap** 
 E_NOTFOUND
 
-### <span id = "block-id">block/{id}</span>
+### block/{id} {#block-id}
 GET/ Belirtilen ID ile bloğun ilgili bilgilerini döndürür.
 
 Bu istek için oturum açma yetkisi gerekli değildir.
 
-#### İstek
+**İstek**
 * id
     Block ID.
 > POST /api/v2/block/32
 
-#### Cevap
+**Cevap**
 * hash
 
     Hash of the block.
@@ -1991,7 +2410,7 @@ Bu istek için oturum açma yetkisi gerekli değildir.
 
     Honor node listesinde bloğun konumu.
 
-#### Cevap example
+**Cevap Örneği**
 
 200 (OK)
 
@@ -2004,18 +2423,18 @@ Content-Type: application/json
     "time": 1551145365,
     "tx_count": 3,
     "rollbacks_hash": "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
-    "node_position": 0,
+    "node_position": 0
 }
 ```
 
-#### Hatalı Cevap
+**Hatalı Cevap**
 E_NOTFOUND
 
 
-### <span id = "avatar-ecosystem-member">avatar/{ecosystem}/{member}</span>
+### avatar/{ecosystem}/{member} {#avatar-ecosystem-member}
 GET/ Üye tablosundaki kullanıcının avatarını döndürür (oturum açmadan kullanabilirsiniz).
 
-#### İstek
+**İstek**
 * ecosystem
 
     Ekosistem ID.
@@ -2024,37 +2443,37 @@ GET/ Üye tablosundaki kullanıcının avatarını döndürür (oturum açmadan 
     Kullanıcının hesap adresi.
 > GET /api/v2/avatar/1/-118432674655542910
 
-#### Cevap
+**Cevap**
 İçerik Tipi istek başlığının türü resimdir ve resim verileri yanıt gövdesinde döndürülür.
 
-#### Cevap example
+**Cevap Örneği**
 ```
 200 (OK)
 Content-Type: image/png
 ```
 
-#### Hatalı Cevap
+**Hatalı Cevap**
 E_NOTFOUND E_SERVER
 
-### <span id = "config-centrifugo">config/centrifugo</span>
+### config/centrifugo {#config-centrifugo}
 GET/ Centrifugo ana bilgisayar adresini ve portunu döndürür.
 Bu istek için oturum açma yetkisi gerekli değildir.
 
-#### İstek
+**İstek**
 > GET /api/v2/config/centrifugo
 
-#### Cevap
+**Cevap**
 Yanıt biçimi `http://adres:port` şeklindedir, örneğin: `http://127.0.0.1:8100`.
 
-#### Hatalı Cevap
+**Hatalı Cevap**
 E_SERVER
 
-### updnotificator
+### updnotificator {#updnotificator}
 POST/ Henüz gönderilmemiş tüm mesajları centrifugo bildirim hizmetine gönderin. Yalnızca belirtilen ekosistemler ve üyeler için mesaj gönderin.
 
 Bu istek için oturum açma yetkisi gerekli değildir.
 
-#### İstek
+**İstek**
 * id
 
     Üye hesap adresi. 
@@ -2063,7 +2482,7 @@ Bu istek için oturum açma yetkisi gerekli değildir.
     Ekosistem ID.
 > POST /api/v2/updnotificator
 
-#### Cevap example
+**Cevap Örneği**
 
 200 (OK)
 
@@ -2073,4 +2492,19 @@ Content-Type: application/json
 {
     "result": true
 }
+```
+
+### Special instructions {#special-instructions}
+
+#### Omitempty {#omitempty}
+If the field has an omitempty attribute, it means that the field is an optional parameter
+
+#### Authorization {#authorization}
+If the interface with Authorization tag, that this interface requires login authorization, add Authorization to the request header, example.
+
+key = Authorization
+value = "Bearer + [login token](#login)"
+
+``` text
+Authorization Bearer eyJhbGciOiJI..... kBZgGIlPhfXNZJ73RiZtM
 ```

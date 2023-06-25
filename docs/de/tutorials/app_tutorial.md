@@ -1,50 +1,50 @@
-# Tutorial für die Anwendungsentwicklung
+# Tutorial für die Anwendungsentwicklung {#tutorial-for-application-development}
 
 In diesem Abschnitt zeigen wir Ihnen, wie Sie eine einfache Anwendung im IBAX-Netzwerk entwickeln.
 - [Das Ziel](#the-goal)
-   - [Teil 1: Die Umwelt](#part-1-die-unwelt)
-   - [Teil 2: Vertrag](#teil-2-vertrag)
-     - [Creator-Konto](#creator-konto)
-     - [Neuer Antrag](#neuer-antrag)
-     - [Neue Datenbanktabelle](#neue-datenbanktabelle)
-     - [Neuer Vertrag](#neuer-Vertrag)
-       - [Vertragscode](#vertragscode)
-       - [Vertrag erstellen](#vertrag-erstellen)
-       - [Vertragsname](#vertragsname)
-       - [Daten](#daten)
-       - [Bedingungen](#bedingungen)
-       - [Aktion](#aktion)
-       - [Vollständiger Vertragscode](#vollständiger-vertragscode)
-       - [Speichern und ausführen](#speichern-und-ausführen)
-  - [Teil 3: Seite](#teil-3-seite)
-     - [Neues Feld](#neues-Feld)
-     - [Vertrag aktualisieren](#vertrag-aktualisieren)
-     - [Seite](#Seite)
-       - [Designer-Ansichten](#designer-ansichten)
-       - [Entwickleransicht](#entwickleransicht)
-       - [Daten aus der Datenbanktabelle holen](#daten-aus-der-datenbanktabelle-holen)
-       - [Seite speichern](#seite-speichern)
-  - [Teil 4: Bewerbung](#Teil-4-Bewerbung)
-     - [Menü](#Menü)
-       - [Einen Menüpunkt hinzufügen](#einen-menüpunkt-hinzufügen)
-       - [Neues Menüelement testen](#neues-menülement-testen)
-     - [Nachricht senden](#nachrict-senden)
-       - [Formular](#Formular)
-     - [Formularnavigation](#formularnavigation)
-       - [Navigationsschaltflächen](#navigationsschaltflächen)
-       - [Variablen](#variablen)
-       - [Anzahl der Einträge](#anzahl-der-einträge)
-       - [Tabellenoffset](#tabellenoffset)
-       - [Schaltflächencode](#schaltflächencode)
-       - [Seitenaktualisierung](#seitenaktualisierung)
-   - [Schlussfolgerungen](#schlussfolgerungen)
+   - [Teil 1: Die Umwelt](#part-1-the-environment)
+   - [Teil 2: Vertrag](#part-2-contract)
+     - [Creator-Konto](#creator-account)
+     - [Neuer Antrag](#new-application)
+     - [Neue Datenbanktabelle](#new-database-table)
+     - [Neuer Vertrag](#new-contract)
+       - [Vertragscode](#contract-code)
+       - [Vertrag erstellen](#create-a-contract)
+       - [Vertragsname](#contract-name)
+       - [Daten](#data)
+       - [Bedingungen](#conditions)
+       - [Aktion](#action)
+       - [Vollständiger Vertragscode](#full-contract-code)
+       - [Speichern und ausführen](#save-and-run)
+  - [Teil 3: Seite](#part-3-page)
+     - [Neues Feld](#new-field)
+     - [Vertrag aktualisieren](#update-the-contract)
+     - [Seite](#page)
+       - [Designer-Ansichten](#designer-views)
+       - [Entwickleransicht](#developer-view)
+       - [Daten aus der Datenbanktabelle holen](#fetch-data-from-the-database-table)
+       - [Seite speichern](#save-the-page)
+  - [Teil 4: Bewerbung](#part-4-application)
+     - [Menü](#menu)
+       - [Einen Menüpunkt hinzufügen](#add-a-menu-item)
+       - [Neues Menüelement testen](#test-the-new-menu-item)
+     - [Nachricht senden](#send-a-message)
+       - [Formular](#form)
+     - [Formularnavigation](#form-navigation)
+       - [Navigationsschaltflächen](#navigation-buttons)
+       - [Variablen](#variables)
+       - [Anzahl der Einträge](#entry-count)
+       - [Tabellenoffset](#table-offset)
+       - [Schaltflächencode](#button-code)
+       - [Seitenaktualisierung](#page-refreshing)
+   - [Schlussfolgerungen](#conclusions)
 
-## Das Ziel
+## Das Ziel {#the-goal}
 
 Die Anwendung beginnt mit einfachen Funktionen, wird aber im Laufe des Tutorials immer komplexer.
 
 In der endgültigen Version der Anwendung werden einige einfache Nachrichten (Strings) in einer Datenbanktabelle gespeichert, die die Zeitstempel und Kontokennungen der Absender enthält. Benutzer können die Nachrichtenliste anzeigen und eine neue Nachricht von der Anwendungsseite hinzufügen, auf die über das Menü des Ökosystems zugegriffen werden kann.
-## Teil 1: Die Umwelt
+## Teil 1: Die Umwelt {#part-1-the-environment}
 
 **Weber**
 
@@ -53,7 +53,7 @@ Als einziger Client von IBAX stellt Weaver Funktionen für alle Benutzer und Ök
 In diesem Tutorial codieren Sie Verträge, Seitenvorlagen und führen alle anderen Aktionen in Weaver aus. Weaver bietet auch eine Möglichkeit, Vertragscodes wiederherzustellen, zu speichern und auszuführen, Datenstrukturen (Datenbanktabellen) zu verwalten, Zugriffsberechtigungen zuzuweisen und Anwendungen zu erstellen.
 
 Jeder Knoten hat seine eigene Weaver-Instanz.
-## Teil 2: Vertrag
+## Teil 2: Vertrag {#part-2-contract}
 
 Ihre erste einfache Anwendung ist „Hello, World!“.
 
@@ -61,12 +61,12 @@ Ihre erste einfache Anwendung ist „Hello, World!“.
 
 > In dieser Anwendung werden Zeichenfolgen in einer Datenbanktabelle gespeichert, und es gibt keine Benutzerseite.
 
-### Creator-Konto
+### Creator-Konto {#creator-account}
 
 Konten mit der Entwicklerrolle werden die „Root“-Privilegien des Ökosystems zugewiesen. Standardmäßig kann diese Rolle auf alle Aktionen zugreifen. In einem neuen Ökosystem wird dem Erstellerkonto die Admin-Rolle zugewiesen, die Sie verwenden müssen, um größere Änderungen am Ökosystem vorzunehmen, z. B. das Erstellen neuer Anwendungen und Datenbanktabellen.
 
 Melden Sie sich mit dem Erstellerkonto beim Ökosystem an.
-### Neue Bewerbung
+### Neue Bewerbung {#new-application}
 
 Sobald Sie sich als Ersteller des Ökosystems angemeldet haben, können Sie eine neue Anwendung erstellen.
 
@@ -90,7 +90,7 @@ Erstellen Sie eine neue Anwendung:
 
 > Sie können auf relevante Ressourcen zugreifen, indem Sie auf der Registerkarte „Entwickler“ auf eine Anwendung klicken, ohne Auswirkungen auf das Ökosystem. Egal für welche Sie sich entscheiden, alle Ökosystemanwendungen sind weiterhin verfügbar.
 
-### Neue Datenbanktabelle
+### Neue Datenbanktabelle {#new-database-table}
 Erstellen Sie zum Speichern der Daten eine Datenbanktabelle für die Anwendung in Weaver.
 
 Erstellen Sie eine Datentabelle:
@@ -115,13 +115,13 @@ Erstellen Sie eine Datentabelle:
     Dies ermöglicht es jedem, Einträge in die Datenbanktabelle einzufügen, zu aktualisieren, Spalten hinzuzufügen und Eintragsdaten zu lesen;
 
     Optional können Sie die Lese- und Schreibrechte für das Erstellerkonto reservieren. Setzen Sie in diesem Fall dieses Feld auf `ContractConditions("MainCondition")`.
-### Neuer Vertrag
+### Neuer Vertrag {#new-contract}
 
-#### Vertragscode
+#### Vertragscode {#contract-code}
 
 Jeder Vertrag besteht aus drei Teilen. Weitere Einzelheiten finden Sie unter: [Contract scructure](../topics/script.md#contract-structure)。
 
-#### Vertrag erstellen
+#### Vertrag erstellen {#create-a-contract}
 1. Wählen Sie auf der Registerkarte „Entwickler“ Anwendung – Name > Vertrag;
 
   Hier werden alle Verträge im Zusammenhang mit der Bewerbung angezeigt. Bei Neuanmeldungen ist die Liste leer.
@@ -146,7 +146,7 @@ contract ... {
     }
 }
 ```
-#### Vertragsname
+#### Vertragsname {#contract-name}
 
 Bitte geben Sie zunächst den Vertragsnamen an.
 
@@ -156,7 +156,7 @@ Bitte geben Sie zunächst den Vertragsnamen an.
 
     }
 ```
-#### Daten
+#### Daten {#data}
 
 Füllen Sie den Abschnitt `data` aus.
 
@@ -167,7 +167,7 @@ Im folgenden Beispiel bezieht sich `message` auf den Variablennamen, während `s
         Message string
     }
 ```
-#### Bedingungen
+#### Bedingungen {#conditions}
 
 Füllen Sie den Abschnitt "`condition`" aus. Eine einfache Überprüfungsbedingung besteht darin, leere Zeichenfolgen zu vermeiden. Wenn die Länge von `Message` `0` ist, wird eine vordefinierte Warnmeldung bei der Ausführung des Vertrags ausgelöst.
 
@@ -179,7 +179,7 @@ conditions {
     }
 }
 ```
-#### Handlung
+#### Handlung {#action}
 
 Füllen Sie den Abschnitt `action` aus. Eine einfache Aktion besteht darin, `Message` in die Datentabelle zu schreiben.
 
@@ -188,7 +188,7 @@ Füllen Sie den Abschnitt `action` aus. Eine einfache Aktion besteht darin, `Mes
         DBInsert("apptable", {message: $Message})
     }
 ```
-#### Vollständiger Vertragscode
+#### Vollständiger Vertragscode {#full-contract-code}
 
 Der vollständige Vertragscode wird unten angezeigt.
 
@@ -210,7 +210,7 @@ contract AppContract {
     }
 }
 ```
-#### Speichern und ausführen
+#### Speichern und ausführen {#save-and-run}
 
 Jetzt bereiten wir uns darauf vor, den Vertrag zu testen:
 
@@ -238,7 +238,7 @@ If successfully added some strings, then, the result will contain the block ID a
  "result": null
 }
 ```
-## Teil 3: Seite
+## Teil 3: Seite {#part-3-page}
 
 Wenn der Vertrag in Kraft tritt, ist es an der Zeit, ihn um etwas Sinnvolles zu erweitern. In diesem Teil implementieren Sie die Benutzeroberfläche und andere Funktionen.
 
@@ -248,7 +248,7 @@ In dieser Anwendung werden Zeichenfolgen wie Einträge in einem Protokoll in ein
 
 Benutzer können die Liste der auf der Anwendungsseite gespeicherten Zeichenfolgen anzeigen, die dann als einfaches Formular angezeigt wird.
 
-### Neues Feld
+### Neues Feld {#new-field}
 
 Bearbeiten Sie wie zuvor die Datenbanktabelle auf der Registerkarte Entwickler > Anwendung - Name > Seite Datenbanktabelle;
 
@@ -260,7 +260,7 @@ Bearbeiten Sie wie zuvor die Datenbanktabelle auf der Registerkarte Entwickler >
 
 * `timestamp` , Feldtyp `Date/Time`, setze Change auf `true`.
 
-### Aktualisieren Sie den Vertrag
+### Aktualisieren Sie den Vertrag {#update-the-contract}
 
 Wir werden den Vertragscode aktualisieren, um die Autoren-ID und den Zeitstempel zu verarbeiten.
 
@@ -275,7 +275,7 @@ action {
  DBInsert("apptable", {message: $Message, author: $key_id, timestamp: $time})
 }
 ```
-### Buchseite
+### Buchseite {#page}
 
 Bei der Anwendungsseite handelt es sich um eine einfache Seite, auf der die in der Datenbanktabelle gespeicherten Nachrichten angezeigt werden.
 
@@ -286,7 +286,7 @@ Wie alle anderen Ressourcen können Sie die UI-Seite in Weaver erstellen:
 2.Klicken Sie auf Neu;
   Der visuelle Designer wird in einem neuen Tab geöffnet.
 
-#### Designeransichten
+#### Designeransichten {#designer-views}
 Die Standardseite ist leer. Sie können die vordefinierte Struktur verwenden, um die Seite schnell auszufüllen.
 
 Erstellen Sie eine einfache Tabelle:
@@ -306,7 +306,7 @@ Wechseln Sie in die Entwickleransicht.
 
   Die Ansicht wird auf den Editor mit einem Reiter umgeschaltet, der den Seitencode enthält.
 
-#### Daten aus der Datenbanktabelle holen
+#### Daten aus der Datenbanktabelle holen {#fetch-data-from-the-database-table}
 
 Bisher nichts mit der Seitenvorlage gemacht. Als Nächstes werden wir den Code aktualisieren, damit die Seite Daten von `apptable` anzeigen kann.
 1. Anfordern von Daten aus der Datenbanktabelle mit der Funktion [DBFind](../topics/script.md#dbfind);
@@ -325,7 +325,7 @@ Bisher nichts mit der Seitenvorlage gemacht. Als Nächstes werden wir den Code a
 
 3. Klicken Sie rechts in der Ansichtsauswahl auf Vorschau, um zu prüfen, ob die Daten korrekt angezeigt werden.
 
-#### Ganzseitiger Code
+#### Ganzseitiger Code {#full-page-code-1}
 
 Das Folgende ist der ganzseitige Code für diesen Teil. Diese Basisseite wird später erweitert.
 
@@ -341,7 +341,7 @@ Div(Class: panel panel-primary) {
 }
 
 ```
-#### Seite speichern
+#### Seite speichern {#save-the-page}
 
 Klicken Sie auf Speichern, um die Seite zu speichern:
 
@@ -353,13 +353,13 @@ Klicken Sie auf Speichern, um die Seite zu speichern:
 
 4. Klicken Sie auf OK.
 
-## Teil 4: Bewerbung
+## Teil 4: Bewerbung {#part-4-application}
 
 In den vorherigen Abschnitten haben Sie einen Vertrag, eine Tabelle zum Speichern von Daten und eine einfache UI-Seite zum Anzeigen dieser Daten erstellt.
 
 In diesem Teil werden Sie die Anwendung fertigstellen, damit ihr Aussehen und ihre Aktionen denen einer tatsächlichen ähneln.
 
-### Speisekarte
+### Speisekarte {#menu}
 
 Die Seite muss mit einem Menü verknüpft sein, z. B. ist `default_page`, das auf der Registerkarte „Startseite“ angezeigt wird, mit dem standardmäßigen Ökosystemmenü `default_menu` verknüpft.
 
@@ -369,7 +369,7 @@ Da dieses Anwendungs-Tutorial sehr einfach ist (nur eine Seite hat), muss dafür
 
 > Sie können das Seitenmenü definieren, indem Sie die Seiteneigenschaften auf der Registerkarte Entwickler > Anwendung - Name > Seite bearbeiten. Wenn Ihre App beispielsweise mehrere Seiten hat, müssen Sie möglicherweise ein Menü erstellen, um zwischen diesen Seiten zu navigieren, und es allen Seiten der App zuweisen.
 
-#### Menüpunkt hinzufügen
+#### Menüpunkt hinzufügen {#add-a-menu-item}
 
 Wie alle anderen Ressourcen können Menüs in Weaver erstellt und bearbeitet werden:
 
@@ -386,7 +386,7 @@ Wie alle anderen Ressourcen können Menüs in Weaver erstellt und bearbeitet wer
 ```
 4. Klicken Sie auf Speichern.
 
-#### Testen Sie das neue Menüelement
+#### Testen Sie das neue Menüelement {#test-the-new-menu-item}
 
 Prüfen Sie, ob der neue Menüpunkt gültig ist:
 
@@ -400,7 +400,7 @@ Prüfen Sie, ob der neue Menüpunkt gültig ist:
 
      Die Bewerbungsseite wird geöffnet.
 
-### Eine Nachricht schicken
+### Eine Nachricht schicken {#send-a-message}
 
 Die Schaltflächen in Logicor können je nach Parameter zum Ausführen von Verträgen und Aufrufen von Seiten verwendet werden.
 Die Funktion [Button](../topics/templates2.md#button) hat zwei Vertragsparameter:
@@ -413,7 +413,7 @@ Die Funktion [Button](../topics/templates2.md#button) hat zwei Vertragsparameter
 
      Eingabeparameter des Vertrags.
 
-#### Form 
+#### Form {#form}
 
 Um Daten an den Vertrag zu senden, fügen Sie auf der Antragsseite ein Formular hinzu, das über ein Eingabefeld für eine Nachricht und einen Button zur Aktivierung des Vertrags AppContract verfügen muss.
 
@@ -430,17 +430,17 @@ Div(Class: panel panel-primary) {
 
 Möglicherweise stellen Sie fest, dass das Formular beim Testen dieser neuen Funktion durch Senden einer Nachricht nicht aktualisiert wird. Dies wird in [Seitenaktualisierung](#page-refreshing) eingeführt.
 
-### Formularnavigation
+### Formularnavigation {#form-navigation}
 
 In der Standardansicht kann das Formular auf der Seite nur 25 Einträge auf der ersten Seite anzeigen. Daher können Sie einige einfache Schaltflächen hinzufügen, um Benutzer zu allen Formulareinträgen zu navigieren.
-#### Navigationstasten
+#### Navigationstasten {#navigation-buttons}
 
 Es wird zwei Navigationsschaltflächen geben, und jede von ihnen könnte die Anwendungsseite neu laden und die Parameter an sie übergeben.
 
 * Die Schaltfläche Zurück zeigt die ersten 25 Einträge an. Wenn keine weiteren Einträge vorhanden sind, wird die Schaltfläche nicht angezeigt;
 
 * Die Schaltfläche Weiter zeigt die nächsten 25 Einträge an. Wenn keine weiteren Einträge vorhanden sind, wird die Schaltfläche nicht angezeigt.
-#### Variablen
+#### Variablen {#variables}
 
 Die Navigationsschaltflächen erfordern zwei Variablen zum Speichern der Tabellenansichtszustände:
 
@@ -457,14 +457,14 @@ Diese Variable speichert die Gesamtzahl der Einträge in der Tabelle.
 
   Der Wert wird berechnet.
   
-#### Anzahl der Einträge
+#### Anzahl der Einträge {#entry-count}
 
 Um `#record_count#` zu zählen, ändern Sie bitte den bestehenden Funktionsaufruf [DBFind](../topics/script.md#dbfind). Die im `.count()`-Aufruf angegebene Variable speichert die Eintragsanzahl.
 
 ```
 DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count)
 ```
-#### Tabellen-Offset
+#### Tabellen-Offset {#table-offset}
 
 Der Offset der Tabellenansicht muss beim Öffnen der Seite an die Seite übergeben werden. Wenn `#table_view_offset#` keinen Wert bekommt, setzen Sie ihn auf 0.
 
@@ -483,7 +483,7 @@ If(GetVar(table_view_offset)){
 ```
 DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count).Offset(#table_view_offset#)
 ```
-#### Tastencode
+#### Tastencode {#button-code}
 
 Suchen Sie den Funktionsaufruf [Div](../topics/templates2.md#div), der die Fußzeile definiert: `Div(Class:panel-footer text-right)`. Fügen Sie den Schaltflächencode hinzu.
 
@@ -510,7 +510,7 @@ If(#record_count# >= Calculate(#table_view_offset# + 25)) {
 
 Nachdem Sie diese Schaltflächen hinzugefügt haben, speichern Sie die Seite und testen Sie sie über das Menüelement Startseite > Nachrichten.
 
-#### Seite wird aktualisiert
+#### Seite wird aktualisiert {#page-refreshing}
 
 Die letzte zu implementierende Funktion ist die automatische Aktualisierung der Tabelle auf der Seite. Wenn Benutzer eine neue Nachricht senden, muss diese in der Tabelle angezeigt werden.
 
@@ -522,7 +522,7 @@ Fügen Sie „Page“ und `PageParams` zur Schaltfläche „Senden“ hinzu. Der
 Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)", Page:AppPage, PageParams:"table_view_offset=#table_view_offset#")
 ```
 
-### Vollständiger Seitencode
+### Vollständiger Seitencode {#full-page-code-2}
 
 Dieser Teil beschreibt viele Änderungen an der Anwendungsseite. Das Folgende ist der vollständige Code der Anwendungsseite.
 
@@ -554,6 +554,6 @@ DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,mes
 }
 ```
 
-## Schlussfolgerungen
+## Schlussfolgerungen {#conclusions}
 
 Anstatt andere wichtige Themen für Anwendungsentwickler zu erläutern, wie z. B. Layoutstile, Verwaltung von Zugriffsberechtigungen und Interaktion zwischen Anwendungen und Ressourcen, führt dieses Tutorial ein, wie eine grundlegende Anwendung für ein Ökosystem erstellt wird. Weitere Informationen zu diesen fortgeschrittenen Themen finden Sie in anderen relevanten Dokumenten.

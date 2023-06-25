@@ -1,4 +1,4 @@
-# Senkronize İzleme Aracı
+# Senkronize İzleme Aracı {#synchronized-monitoring-tool}
 
 Desync_monitor, belirtilen düğümdeki veritabanının senkronize edilip edilmediğini doğrulamak için kullanılabilecek özel bir araçtır.
 
@@ -10,10 +10,10 @@ Aletin çalışma prensibi aşağıdakilere dayanmaktadır:
 2.Ardından tüm düğümlerden bu ID ile bir blok talep edin ve yukarıdaki hash'leri karşılaştırın;
 3.Eğer hashler farklı ise, komutta belirtilen e-posta adresine bir senkronizasyon hata mesajı gönderilecektir.
 
-## Konum
+## Konum {#location}
 Araç, `tools/desync_monitor/` dizininde bulunur.
 
-## Komut istemi bayrakları
+## Komut istemi bayrakları {#command-prompt-flags}
 Komut isteminden aşağıdaki bayraklar kullanılabilir:
 * confPath - Yapılandırma dosyasının yolu. Varsayılan dosya adı `config.toml`dur;
 * nodeList - İstenen bloğun virgülle ayrılmış düğüm listesi. Varsayılan "127.0.0.1:7079"dur;
@@ -27,7 +27,7 @@ Komut isteminden aşağıdaki bayraklar kullanılabilir:
     * smtpUsername - SMTP sunucusu kullanıcı adı, varsayılan olarak `""`;
     * smtpPassword - SMTP sunucu şifresi, varsayılan olarak `""`.
 
-## Yapılandırma
+## Yapılandırma {#configuration}
 Araç, toml formatında bir yapılandırma dosyası kullanır.
 
 Varsayılan olarak, ikili dosyanın başlatılacağı klasördeki config.toml dosyasını arayacaktır.
@@ -53,21 +53,21 @@ username = ""
 password = ""
 ```
 
-### node_list
+### node_list {#nodes-list}
 * knot_list - Bilgi isteyen düğümlerin (ana bilgisayarların) listesi.
 
-### [arka plan programı]
+### [arka plan programı] {#daemon}
 Daemon modunun konfigürasyonu.
 * daemon_mode – Bir araç, bir arka plan programı olarak çalışır ve senkronizasyon kontrollerini gerçekleştirir.
 * querying_period - Senkronizasyon kontrolleri arasındaki zaman aralığı.
 
-### [uyarı mesajı]
+### [uyarı mesajı] {#alert-message}
 Uyarı mesajı parametreleri.
 * için - alıcının senkronizasyon hatası uyarı mesajlarının e-postası;
 * konu - mesaj konusu;
 * gönderenin e-posta adresinden.
 
-### [smtp]
+### [smtp] {#smtp}
 Senkronizasyon hata mesajlarını göndermek için kullanılan Basit Posta Aktarım Protokolü (SMTP) sunucu parametreleri.
 * ana bilgisayar – SMTP sunucu host;
 * bağlantı noktası –SMTP sunucu bağlantı noktası;

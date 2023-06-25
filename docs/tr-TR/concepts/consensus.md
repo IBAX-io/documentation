@@ -1,5 +1,5 @@
 
-# Decentralized Proof-of-Authority Consensus
+# Decentralized Proof-of-Authority Consensus {#decentralized-proof-of-authority-consensus}
 
 * Merkezi Olmayan Yetki Kanıtı fikir birliği nedir
 
@@ -12,18 +12,18 @@
 Bu bölümde, Merkezi Olmayan Yetki Kanıtı fikir birliğini ve bunun IBAX'teki uygulamasını açıklayacağız.
 
 
- - [Decentralized Proof-of-Authority Consensus nedir?](#Decentralized-Proof-of-Authority-Consensus-nedir?)
-  - [DPoA fikir birliğinin avantajları](#DPoA-fikir-birliğinin-avantajları)
-  - [DPoA fikir birliği ve ortak saldırı araçları](#DPoA fikir birliği-ve-ortak-saldırı-araçları)
+ - [Decentralized Proof-of-Authority Consensus nedir?](#what-is-decentralized-proof-of-authority-consensus)
+  - [DPoA fikir birliğinin avantajları](#advantages-of-dpoa-consensus)
+  - [DPoA fikir birliği ve ortak saldırı araçları](#dpoa-consensus-and-common-means-of-attack)
     - [DoS](#dos)
-    - [51 yüzde saldırı](#51-yüzde-saldırı)
-  - [IBAX'te DPoA konsensüsünün uygulanması](#IBAX'te-DPoA-konsensüsünün-uygulanması)
+    - [51 yüzde saldırı](#percent-attack-51)
+  - [IBAX'te DPoA konsensüsünün uygulanması](#implementation-of-dpoa-consensus-in-ibax)
     - [Honor node](#honor-node)
     - [Leader node](#leader-node)
-    - [Yeni blokların oluşturulması](#Yeni-blokların-oluşturulması)
+    - [Yeni blokların oluşturulması](#generation-of-new-blocks)
     - [Forks](#forks)
 
-## Decentralized Proof-of-Authority Consensus nedir?
+## Decentralized Proof-of-Authority Consensus nedir? {#what-is-decentralized-proof-of-authority-consensus}
 
 Ticari uygulama senaryolarını ve gerçek dünya ortamlarını göz önünde bulunduran IBAX Ağı, yeni bir fikir birliği mekanizması olan DPoA (Merkezi Olmayan Yetki Kanıtı) oluşturmuştur.
 
@@ -33,7 +33,7 @@ IBAX Ağı, dağıtımı, zayıf merkezileştirmeyi ve bir sertifika yetkilisini
 
 DPoA, ağ saldırılarına karşı bir önleme mekanizmasına sahiptir ve ağı koruyan ve yeni IBXC paraları basan Darphane Düğümlerinin oluşturulmasına izin verir. IBAXCoin sahipleri, IBXC likidite bakiyelerinin bir kısmını Mint & Stake Emission Rewards için Mint Nodes'ta stake edebilirler. Darphane ve staking, saldırıların maliyetini ve zorluğunu artırmaya ve IBXC madeni paralarının toplam değerini orantılı olarak artırmaya hizmet eder. Bu mekanizma ile herhangi bir saldırının olasılığı ve zararı sonsuz derecede sıfıra yakındır.
 
-## DPoA fikir birliğinin avantajları
+## DPoA fikir birliğinin avantajları {#advantages-of-dpoa-consensus}
 
 İş Kanıtı (PoW) veya Hisse Kanıtı (PoS) konsensüsü ile karşılaştırıldığında, DPoA konsensüsü aşağıdaki avantajlara sahiptir:
 
@@ -45,9 +45,9 @@ DPoA, ağ saldırılarına karşı bir önleme mekanizmasına sahiptir ve ağı 
 
 * Düğümlerin %51'inin güvenliği ihlal edilmediği sürece, güvenliği ihlal edilmiş ve kötü niyetli düğümlere karşı tolerans. IBAX, düğümleri yasaklayan ve blok oluşturma haklarını iptal eden bir mekanizma uygular.
 
-## DPoA fikir birliği ve ortak saldırı araçları
+## DPoA fikir birliği ve ortak saldırı araçları {#dpoa-consensus-and-common-means-of-attack}
 
-### DoS
+### DoS {#dos}
 
 Saldırgan, ağdaki hedeflenen bir düğüme büyük miktarda işlem ve blok göndererek, çalışmasını kesintiye uğratmaya ve hizmetlerini kullanılamaz hale getirmeye çalışabilir.
 
@@ -57,21 +57,21 @@ DPoA mekanizmasını DoS saldırılarına karşı savunmak mümkündür:
 
 * Bir onur düğümü belirli bir süre için kullanılamıyorsa, onur düğümleri listesinden çıkarılabilir.
 
-### <spn id = "percent-attack-51">yüzde 51 saldırı</span>
+### yüzde 51 saldırı {#percent-attack-51}
 
 DPoA fikir birliği senaryosuna göre, %51 saldırısı, bir saldırganın ağ düğümlerinin %51'inin kontrolünü ele geçirmesini gerektirir. Ancak, bir saldırganın ağ hesaplama gücünün %51'ini elde etmesi gereken PoW fikir birliği senaryosu farklıdır. İzin verilen bir blok zinciri ağındaki düğümler üzerinde kontrolü elde etmek, hesaplama gücünü elde etmekten çok daha zordur.
 
 Örneğin, PoW konsensüsünü uygulayan bir ağda, bir saldırgan, kontrollü ağ segmentinin hesaplama gücünü (performansını) artırabilir ve böylece kontrollü düğümlerin yüzdesini artırabilir. Bu, DPoA konsensüsü için bir anlam ifade etmiyor, çünkü düğümün hesaplama gücünün blok zinciri ağ kararları üzerinde hiçbir etkisi yok.
 
-## IBAX'te DPoA konsensüsünün uygulanması
+## IBAX'te DPoA konsensüsünün uygulanması {#implementation-of-dpoa-consensus-in-ibax}
 
-### Honor node
+### Honor node {#honor-node}
 
 IBAX'te yalnızca honor nodeları, blok zinciri ağını ve dağıtılmış defteri tutan yeni bloklar oluşturabilir.
 
 Onur düğümlerinin listesi, blok zinciri kayıt defterinde tutulur. Düğümlerin sırası, düğümlerin yeni bloklar oluşturma sırasını belirler.
 
-### Leader node
+### Leader node {#leader-node}
 
 Aşağıdaki formül, mevcut **leadernode**, yani mevcut zamanda yeni bir blok oluşturması gereken bir düğümü belirler.
 
@@ -99,7 +99,7 @@ Blok oluşturma aralığındaki saniye sayısı.
 
 Toplam honor node sayısı.
 
-### Yeni blokların oluşturulması
+### Yeni blokların oluşturulması {#generation-of-new-blocks}
 
 Yeni bloklar, geçerli zaman aralığının bir [leader node](#leader-node) tarafından oluşturulur. Her zaman aralığında lider rolü, onur düğümleri listesinden bir sonraki onur düğümüne iletilir.
 
@@ -141,7 +141,7 @@ Diğer onur düğümlerinde yeni blokları doğrulama adımları:
 
     – Bu geçersiz bloğu oluşturan onur düğümü hatalı bloklar oluşturmaya devam ederse, yasaklanabilir veya honor nodeları listesinden çıkarılabilir.
 
-### Forks
+### Forks {#forks}
 
 Bir **fork**, blok zincirinin geri kalanından bağımsız olarak oluşturulmuş bir veya daha fazla blok içeren alternatif bir blok zinciri sürümüdür.
 

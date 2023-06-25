@@ -1,31 +1,29 @@
-# IBAX Überblick
+# IBAX Überblick {#ibax-overview}
 
-- [IBAX Überblick](#ibax-überblick)
-  - [Merkmale](#merkmale)
-  - [Architektur](#architektur)
-    - [Netzwerk](#netzwerk)
+- [IBAX Überblick](#ibax-overview)
+  - [Merkmale](#features)
+  - [Architektur](#architecture)
+    - [Netzwerk](#network)
     - [Honor Node](#honor-node)
-    - [Transaktionen](#transaktionen)
-    - [Netzwerkprotokoll](#Netzwerk-protokoll)
-    - [Transaktionsverifizierung](#transaktionsverifizierung)
-    - [Datenbank](#datenbank)
+    - [Transaktionen](#transactions)
+    - [Netzwerkprotokoll](#network-protocol)
+    - [Transaktionsverifizierung](#block-and-transaction-verification)
+    - [Datenbank](#database)
   - [ECOLIB](#ecolib)
     - [IDE](#ide)
-    - [Anwendungen](#anwendungen)
-    - [Tische](#tische)
-    - [Ökosystem Parameter](#ökosystem-parameter)
-  - [Kontrollmechanismus für Zugriffsrechte](#kontrollmechanismus-für-zugriffsrechte)
-    - [Zugriffsrechteverwaltung](#zugriffsrechteverwaltung)
-    - [Exklusive Rechte](#exklusive-rechte)
-  - [Virtuelles privates Ökosystem](#virtuelles-privates-ökosystem)
-    - [Anfragen an Webressourcen](#anfragen-an-webressourcen)
-    - [Rechte zum Lesen von Daten](#rechte-zum-lesen-von-daten)
-    - [CLB Schaffung](#clb-schaffung)
-    - [CLB Verwendung](#clb-verwendung)
-
-
-
-## Merkmale
+    - [Anwendungen](#applications)
+    - [Tische](#tables)
+    - [Ökosystem Parameter](#ecosystem-parameters)
+  - [Kontrollmechanismus für Zugriffsrechte](#access-rights-control-mechanism)
+    - [Zugriffsrechteverwaltung](#access-rights-management)
+    - [Exklusive Rechte](#exclusive-rights)
+  - [Virtuelles privates Ökosystem](#virtual-private-ecosystem)
+    - [Anfragen an Webressourcen](#requests-to-web-resources)
+    - [Rechte zum Lesen von Daten](#rights-to-read-data)
+    - [CLB Schaffung](#clb-creation)
+    - [CLB Verwendung](#clb-usage)
+    
+## Merkmale {#features}
 
 Das IBAX Network (IBAX) verfügt über eine integrierte Anwendungsentwicklungsumgebung (IDE). Es ist ein mehrstufiges Zugriffskontrollsystem für Daten, Benutzerseiten und intelligente Verträge.
 
@@ -38,9 +36,9 @@ In Bezug auf seine Struktur und Funktionen unterscheidet sich IBAX erheblich von
 
 * Der Zugriff auf **registrieren** und die Kontrolle der Beziehungen zwischen den Mitgliedern des Ökosystems werden durch eine Reihe von Regeln verwaltet, die als **intelligente Gesetze** bezeichnet werden.
 
-## Architektur
+## Architektur {#architecture}
 
-### Netzwerk
+### Netzwerk {#network}
 
 IBAX basiert auf einem Peer-to-Peer (P2P)-Netzwerk.
 
@@ -48,7 +46,7 @@ Guardian-Knoten im Netzwerk speichern die neueste Version der Blockchain-Datenba
 
 Netzwerkbenutzer können Daten empfangen, indem sie Anfragen von der Guardian Node-Datenbank über **Weaver**- oder REST-API-Befehle senden. Nach der Unterzeichnung durch Benutzer werden neue Anforderungen als Transaktionen im Binärformat an das Netzwerk gesendet. Im Wesentlichen handelt es sich bei diesen Transaktionen um Befehle zum Ändern relevanter Datenbankeinträge. Transaktionen werden in Blöcken aggregiert und diese Blöcke werden an die Blockchains aller Netzwerkknoten gesendet. Jeder Wächterknoten verarbeitet die Transaktionen im Block und aktualisiert dadurch die entsprechenden Daten in der Datenbank.
 
-### Honor Node
+### Honor Node {#honor-node}
 
 Ein Wächterknoten, der privilegiert ist, neue Blöcke im Netzwerk zu erzeugen, wird Ehrenknoten genannt. Die maximale Anzahl von Ehrenknoten wird durch [Anzahl der Knoten](../reference/platform-parameters.md#Anzahl der Knoten) in der Plattformparametertabelle definiert, was zeigt, dass die Anzahl von Ehrenknoten begrenzt ist.
 
@@ -60,7 +58,7 @@ Ein Ehrenknoten im Nichtverpackungszustand ist hauptsächlich für die Blockveri
 
 Um die Effizienz der Transaktionsausführung sicherzustellen, sammeln Honor Nodes ständig Transaktionsinformationen. 
 
-### Transaktionen
+### Transaktionen {#transactions}
 
 Transaktionen, einschließlich Daten, die zur Implementierung von **intelligente Verträge** verwendet werden, werden von Weaver generiert.
 
@@ -82,7 +80,7 @@ Die Struktur einer Transaktion entspricht dem folgenden Format:
 
 * ТokenEcosystem - ID des Ökosystems, standardmäßig 1, und darin enthaltene Token werden verwendet, um die Transaktionskosten zu decken.
 
-### Netzwerkprotokoll
+### Netzwerkprotokoll {#network-protocol}
 
 Transaktionen werden von Benutzern an Ehrenknoten gesendet, wo sie einer grundlegenden Überprüfung unterzogen werden, um sicherzustellen, dass die Formate korrekt sind, und dann der Warteschlange hinzugefügt werden. Transaktionen werden auch an andere Ehrenknoten im Netzwerk gesendet und der jeweiligen Warteschlange hinzugefügt.
 
@@ -92,7 +90,7 @@ Neue Blöcke sollten überprüft werden, um sicherzustellen, dass keine Fehler v
 
 Ein neuer Block wird der Blockwarteschlange hinzugefügt, wenn er von einem anderen Ehrenknoten empfangen wird, und nach Überprüfung der Blockchain des Ehrenknotens, wo er sich befindet, um Transaktionen in dem Block zu verarbeiten und dadurch Datensätze in der Datenbank zu aktualisieren.
 
-### Transaktionsverifizierung
+### Transaktionsverifizierung {#block-and-transaction-verification}
 
 Nach dem Generieren oder Empfangen eines neuen Blocks wird dieser auf allen anderen Ehrenknoten verifiziert, die Folgendes abdecken:
 
@@ -126,7 +124,7 @@ Um die Korrektheit jeder Transaktion im Block mit den folgenden Methoden zu übe
 
 * Der Benutzer, der den Vertrag umsetzt, muss genügend Token auf seinem Konto haben, um die Transaktionskosten zu bezahlen.
 
-### Datenbank
+### Datenbank {#database}
  
  Die zugrunde liegende Datenspeicherschicht des IBAX-Netzwerks ist eine vollständig öffentlich zugängliche „`PGSQL`-Datenbank. Basierend auf dem Berechtigungsdesign der IBAX Operating System Platform müssen sich Benutzer keine Sorgen um die Datensicherheit machen. Mit einer objektorientierten Designphilosophie kompiliert IBAX Network Daten über eine relationale PGSQL-Datenbank vor und verbessert die Datenverarbeitungseffizienz.
 
@@ -134,7 +132,7 @@ Das Folgende könnte Sie interessieren, wenn Sie ein technischer Spezialist sind
 ①Alle Tische ohne Zahlenpräfix im Namen gehören zu Berechtigungstabellen von IBAX Network Basic; 
 ② Alle Tabellen mit einem Zahlenpräfix im Namen gehören zu Berechtigungstabellen von ecoLibs.
 
-## ECOLIB
+## ECOLIB {#ecolib}
 
 Es ist für Benutzer, sogar normale Benutzer, ganz einfach, eine eigene ecoLib auf der IBAX Network System Platform zu erstellen. Wir haben eine Anwendung integriert und entwickelt, bei der die Erstellung von ecoLibs nur einen Klick erfordert.
 
@@ -150,7 +148,7 @@ Es kann mehrere DApps in einer ecoLib geben, und jede von ihnen kann unabhängig
 
 Um Entwickler von Ökosystemen besser zu unterstützen, stellen wir das Bearbeitungs-, Verwaltungs- und Entwicklungstool Weaver zur Verfügung. Es wird die Kosten für die Entwicklung, Wartung und Verwaltung des Ökosystems erheblich reduzieren.
 
-### IDE
+### IDE {#ide}
 
 Weaver verfügt über eine vollständig integrierte Entwicklungsumgebung (IDE) zum Erstellen von Blockchain-Anwendungen, die von Softwareentwicklern kein tiefes Verständnis der Blockchain-Technologie erfordert.
 
@@ -170,11 +168,11 @@ Die IDE umfasst hauptsächlich die folgenden Teile:
 
 * Import-/Exportfunktionen für Anwendungen.
 
-### Anwendungen
+### Anwendungen {#applications}
 
 Eine Anwendung ist eine Sammlung von Elementen wie Datenbanktabellen, Smart Contracts und Benutzerseiten mit Zugriffsrechten für die Konfiguration. Das Ökosystem, zu dem das Anwendungselement gehört, wird durch das Präfix im Elementnamen angegeben, z. B.`@1ElementName`, wobei die Ökosystem-ID durch die Zahl `1` nach dem Symbol `@` angegeben wird. Bei der Verwendung von Anwendungselementen im aktuellen Ökosystem kann das Präfix `@1` weggelassen werden. Diese Anwendungen können nützliche Funktionen ausführen oder verschiedene Dienste implementieren.
 
-### Tische
+### Tische {#tables}
 
 In der Datenbank von IBAX kann jedes Ökosystem eine unbegrenzte Anzahl von Tabellen erstellen. Tabellen eines bestimmten Ökosystems können durch ein Präfix identifiziert werden, das die Ökosystem-ID enthält, die in Weaver nicht angezeigt wird.
 
@@ -192,7 +190,16 @@ Sie finden das Tabellenverwaltungstool im Weaver-Menü Tabelle, das die folgende
 
 * Erstellen Sie neue Tabellen;
 
-* Fügen Sie ein Tabellenfeld hinzu und geben Sie seinen Datentyp an, z `Text, Date/Time, Varchar, Character, JSON, Number, Money, Double, Binary`;
+* Fügen Sie ein Tabellenfeld hinzu und geben Sie seinen Datentyp an, z 
+  - `Text` correspond `postgresql` `text`
+  - `Date/Time` correspond `postgresql` `timestamp`
+  - `Varchar` correspond `postgresql` `varchar(102400)`
+  - `Character` correspond `postgresql` `character(1) NOT NULL DEFAULT '0'`
+  - `JSON` correspond `postgresql` `jsonb`
+  - `Number` correspond `postgresql` `bigint NOT NULL DEFAULT '0'`
+  - `Money` correspond `postgresql` `decimal (30, 0) NOT NULL DEFAULT '0'`
+  - `Double` correspond `postgresql` `double precision`
+  - `Binary` correspond `postgresql` `bytea NOT NULL DEFAULT '\x'`
 
 * Verwalten Sie Berechtigungen zum Einfügen, Aktualisieren von Daten und Ändern der Tabellenstruktur.
 
@@ -204,7 +211,7 @@ Die Funktion **DBInsert** der Vertragssprache dient zum Hinzufügen von Einträg
 
 Um die Vertragsimplementierungszeit zu minimieren, kann die **DBFind**-Funktion nicht mehrere Tabellen gleichzeitig abfragen, und JOIN wird nicht unterstützt. Daher empfehlen wir, Anwendungstabellen nicht zu normalisieren, sondern alle verfügbaren Informationen in Einträgen zu speichern oder die verfügbaren Informationen in anderen Tabellen zu wiederholen. Dies ist nicht obligatorisch, aber für eine Blockchain-Anwendung erforderlich. In diesem Fall sollten Daten vollständig gespeichert werden, die nicht aktualisiert werden können, selbst wenn dieselben Daten in anderen Tabellen aktualisiert werden, obwohl sie in einer relationalen Datenbank synchron aktualisiert werden.
 
-### Ökosystem Parameter
+### Ökosystem Parameter {#ecosystem-parameters}
 
 Sie können die Liste der Ökosystemparameter (**1_parameters**) im Weaver-Menü anzeigen und bearbeiten. Ökosystemparameter können in folgende Gruppen eingeteilt werden:
 
@@ -230,7 +237,7 @@ Sie können die Bearbeitungsberechtigung für Parameter jedes Ökosystems angebe
 
 Sie können die Funktion EcosysParam verwenden, um den Wert eines Ökosystemparameters abzurufen, indem Sie ihm den Titel des Ökosystemparameters als Parameter übergeben.
 
-## Kontrollmechanismus für Zugriffsrechte
+## Kontrollmechanismus für Zugriffsrechte {#access-rights-control-mechanism}
 IBAX verfügt über ein mehrstufiges Zugriffsberechtigungsverwaltungssystem. Durch die Konfiguration von Zugriffsrechten können Sie beliebige Anwendungselemente wie Verträge, Tabellen, Benutzerseiten und Ökosystemparameter erstellen und ändern. Sie können die Zugriffsrechte auch über die Konfiguration ändern.
 
 Standardmäßig werden alle Rechte im IBAX-Ökosystem von seinem Ersteller verwaltet, der im MainCondition-Vertrag jedes Ökosystems definiert ist. Aber nach der Schaffung intelligenter Gesetze kann die Zugriffskontrolle auf alle oder eine Gruppe von Ökosystemmitgliedern übertragen werden.
@@ -238,7 +245,7 @@ Kontrolle der Zugriffsrechte
 
 Die Zugriffsrechte werden in Vertragstabellen (**1_contracts** ), Datentabellen (**1_tables** ), Benutzerseitentabellen (**1_pages** ), Menütabellen (**1_menu** ) und Codeblöcken definiert Tabellen (**1_blocks** ). Die entsprechenden Menüs finden Sie in Weaver.
 
-### Zugriffsrechteverwaltung
+### Zugriffsrechteverwaltung {#access-rights-management}
 
 Die Regeln der Zugriffsrechte werden konfiguriert, indem die entsprechenden Vertragsausdrücke **ContractConditions(“@1MainCondition”)**, **ContractAccess(“@1MainCondition”)** oder logische Ausdrücke im Berechtigungsfeld ausgefüllt werden. Wenn das Ergebnis des Anforderungsausdrucks erfolgreich ist (true), wird der Zugriff gewährt. Andernfalls wird der Zugriff verweigert und zugehörige Operationen werden beendet.
 
@@ -248,25 +255,25 @@ Die gebräuchlichste und empfohlene Methode zum Definieren von Rechten ist die V
 
 Eine andere Möglichkeit, Rechte zu definieren, ist die Verwendung der Funktion `ContractAccess("@1ContractsName3","@1ContractsName4")`. Als Parameter kann der Funktion der Vertrag **ContractsName** übergeben werden, der zur Implementierung der entsprechenden Operation qualifiziert ist. Wenn beispielsweise das rechte Feld der Betragsspalte als `ContractAccess("@1TokenTransfer")` konfiguriert ist, dann können Sie den Vertrag **@1TokenTransfer** nur implementieren, wenn Sie den Wert in der Betragsspalte ändern möchten. Das Zugriffsrecht auf den Vertrag selbst kann im Bereich Bedingungen verwaltet werden, der ziemlich komplex ist und viele andere Verträge enthalten kann.
 
-### Exklusive Rechte
+### Exklusive Rechte {#exclusive-rights}
 Bei Notfällen oder Situationen, die für den Betrieb eines Ökosystems kritisch sind, gibt es viele spezielle Parameter in der Liste der Ökosystemparameter (**1_parameters**) (wie *changing_contracts*, *changing_pages* ) usw., die definiert Zugriffsrechte auf alle Verträge, Datentabellen und Seiten des aktuellen Ökosystems. Diese Rechte werden durch Schlüsselverträge konfiguriert.
 
-## Virtuelles privates Ökosystem
+## Virtuelles privates Ökosystem {#virtual-private-ecosystem}
 
 In IBAX können Sie ein virtuelles privates Ökosystem erstellen – **Cross Ledgers Base (CLB)**. Ein CLB hat die volle Funktionalität des Standard-Ökosystems, arbeitet aber außerhalb der Blockchain. In CLB können Sie Verträge und Vorlagensprachen sowie Tabellen verwenden und erstellen und mit Weaver Anwendungen erstellen. Sie können Verträge im Blockchain-Ökosystem über die API aufrufen.
 
-### Anfragen an Webressourcen
+### Anfragen an Webressourcen {#requests-to-web-resources}
 
     Der Hauptunterschied zwischen einem CLB und einem Standard-Ökosystem besteht darin, dass Sie Vertragsfunktionen ([HTTPRequest](../topics/script.md#httprequest)) und ([HTTPPostJSON](../topics/script.md#httppostjson )) jede Webressource innerhalb des Vertrags über HTTP/HTTPS-Anfragen anzufordern. Zu den an diese Funktion übergebenen Parametern gehören: URLs, Anforderungsmethoden (GET oder POST), Anforderungsheader und Anforderungsparameter.
 
-### Rechte zum Lesen von Daten
+### Rechte zum Lesen von Daten {#rights-to-read-data}
 
 Obwohl es lesbar ist, werden Daten in CLB nicht in der Blockchain gespeichert. Sie können die Leseberechtigung für Datenbanktabellen erteilen. Sie können Leserechte für einzelne Spalten oder für jede Zeile mit einem speziellen Vertrag festlegen.
 
-### CLB Schaffung
+### CLB Schaffung {#clb-creation}
 
 Sie können einen CLB-Knoten im Netzwerk erstellen. Wie vordefiniert, ist der CLB-Knotenadministrator berechtigt, die Ökosystemliste mit der CLB-Funktionalität zu verwenden und einen Benutzer mit Ökosystemerstellerrechten zu benennen, um Anwendungen zu installieren, neue Mitglieder zu erhalten und die Ressourcenzugriffsberechtigungen zu konfigurieren.
 
-### CLB Verwendung
+### CLB Verwendung {#clb-usage}
 
 Sie können einen CLB verwenden, um Registrierungsformulare zu erstellen, Verifizierungsinformationen per E-Mail oder Telefon an Benutzer zu senden und öffentlich zugängliche Daten zu speichern. Sie können Anwendungen schreiben und testen und sie dann in das Blockchain-Ökosystem importieren. In einem CLB können Sie Planungsvertragsaufgaben verwenden, Oracle-Maschinen erstellen, um Daten von Webressourcen zu empfangen, und diese Daten an das Blockchain-Ökosystem senden.

@@ -1,183 +1,182 @@
+# 常见问题 {#faq}
 
-# FAQ
+  - [1. 请简短描述一下 IBAX区块链平台?](#question-1)
+  - [2. IBAX区块链平台 是否适用于比特币、以太坊或其他区块链？](#question-2)
+  - [3. 其他内置执行智能合约机制的公共区块链平台的主要区别是什么?](#question-3)
+  - [4. 有自己的加密货币吗？](#question-4)
+  - [5. 什么是荣誉节点，谁可以维护？](#question-5)
+  - [6. 什么是平台生态系统？](#question-6)
+  - [7. 谁可以创建生态系统？](#question-7)
+  - [8. 用户如何成为生态系统的成员？](#question-8)
+  - [9. 一位用户可以创建多个生态系统吗？](#question-9)
+  - [10. 什么是平台应用程序？](#question-10)
+  - [11. 什么编程语言用于创建应用程序？](#question-11)
+  - [12. 什么软件用于创建应用程序和用户交互?](#question-12)
+  - [13. 平台合约可以使用第三方API接口访问数据吗？](#question-13)
+  - [14. 保存在区块链中的合约可以更改吗？](#question-14)
+  - [15. 什么是智能法律？](#question-15)
+  - [16. 合约可以调用执行其他合约吗？](#question-16)
+  - [17. 应用程序工作是否需要主合约？](#question-17)
+  - [18. 应用程序可以为不同语言本地化吗？](#question-18)
+  - [19. 可以在不使用模版语言的情况下创建页面吗?](#question-19)
+  - [20. 页面是否存储在区块链中？](#question-20)
+  - [21. 哪些类型的数据库可以用于合约的操作？](#question-21)
+  - [22. 如何管理对数据表中数据的访问？](#question-22)
+  - [23. 生态系统中的应用程序可以与来自另一个生态系统的应用程序交换数据吗？](#question-23)
+  - [24. 是否应该从头开始编写新生态系统中的所有应用程序？](#question-24)
+  - [25. 应用程序的运作是否有任何费用?](#question-25)
+  - [26. 谁支付应用程序的运作费用？](#question-26)
+  - [27. 如何保护生态系统内的应用程序免受其漏洞的攻击？](#question-27)
+  - [28. 在未来的计划中实现哪些新功能？](#question-28)
+  - [29. 如何证明可操作性?](#question-29)
 
-  - [1. Please briefly describe IBAX?](#question-1)
-  - [2. Is IBax applicable for Bitcoin, Ethereum or other blockchains?](#question-2)
-  - [3. What are the main differences between IBax and other public blockchain platforms with built-in mechanisms for executing smart contracts?](#question-3)
-  - [4. Do you have your own cryptocurrency?](#question-4)
-  - [5. What is a honor node and who can maintain it?](#question-5)
-  - [6. What is a platform ecosystem?](#question-6)
-  - [7. Who can create an ecosystem?](#question-7)
-  - [8. How do users become members of the ecosystem?](#question-8)
-  - [9. Can one user create multiple ecosystems?](#question-9)
-  - [10. What is a platform application?](#question-10)
-  - [11. What programming language is used to create the application?](#question-11)
-  - [12. What software is used to create applications and interact with users?](#question-12)
-  - [13. Can platform contracts use third-party APIs to access data?](#question-13)
-  - [14. Can the contract stored in the blockchain be changed?](#question-14)
-  - [15. What is smart law?](#question-15)
-  - [16. Can the contract call and execute other contracts?](#question-16)
-  - [17. Does the application run with a master contract?](#question-17)
-  - [18. Can the application be localized for different languages?](#question-18)
-  - [19. Can I create a page without using a template language?](#question-19)
-  - [20. Are the pages stored in the blockchain?](#question-20)
-  - [21. What types of databases can be used for contract operations?](#question-21)
-  - [22. How to manage access to the data in the database table?](#question-22)
-  - [23. Can an application in an ecosystem exchange data with other applications from another ecosystem?](#question-23)
-  - [24. Should all applications in a new ecosystem be written from scratch?](#question-24)
-  - [25. Are there any fees for the operation of applications?](#question-25)
-  - [26. Who pays for the operation of applications?](#question-26)
-  - [27. How to protect the applications in the ecosystem from attacks due to vulnerabilities?](#question-27)
-  - [28. What new features will be implemented in future plans?](#question-28)
-  - [29. How to prove its operability?](#question-29)
+## 1.  请简短描述一下 IBAX区块链平台? {#question-1}
 
-### <span id = "question-1">1. Please briefly describe IBAX?</span>
+    -   是一个区块链平台，旨在构建一个基于集成应用程序开发环境的数字生态系统，该环境具有用于管理数据、接口和智能合约访问权限的多级权限系统。
 
-  * It is a blockchain platform that aims to build a digital ecosystem based on an integrated application development environment that has a multi-level permission system for managing the access rights to data, interfaces, and smart contracts.
+## 2.  IBAX区块链平台 是否适用于比特币、以太坊或其他区块链？ {#question-2}
 
-### <span id = "question-2">2. Is IBax applicable for Bitcoin, Ethereum or other blockchains?</span>
+    -   不适用 IBAX区块链平台 构建在自身原始区块链的基础上。
 
-  * Not applicable. IBax is built on the basis of its own original blockchain.
+## 3.  其他内置执行智能合约机制的公共区块链平台的主要区别是什么? {#question-3)
 
-### <span id = "question-3">3. What are the main differences between IBax and other public blockchain platforms with built-in mechanisms for executing smart contracts?</span>
+    -   IBAX区块链平台 具有上述区块链无法找到的独特功能：
+         -   在单个客户端软件中实现集成应用程序开发环境；
+         -   用于页面设计的专用模版语言 Logicor 与合约语言 Needle相互协调；
+         -   具有用于管理数据、接口和智能合约访问权限的多级权限系统，其中可以将权限授予成员、角色和合约；
+         -   生态系统，用于创建区块链应用程序和用户与其交互的自治软件环境；
+         -   法律体系，一套以智能法律(专用的智能合约)编写的规则，规范了平台用户之间的关系，定义了用于解决问题的协议参数变化过程。
 
-  * IBax has unique features that cannot be found in the above-mentioned blockchains:
-    *  has an integrated application development environment in a single client software;
-      *  the special template language Logicor for page design and the contract language Needle coordinate with each other;
-      *  has a multi-level permission system for managing the access rights to data, interfaces and smart contracts, in which permissions can be granted to members, roles and contracts;
-      * the ecosystem, used to create blockchain applications and autonomous software environments for users to interact with them;
-      * the legal system, a set of rules written in smart laws (dedicated smart contracts), regulates the relationship between platform users and defines the process of changing protocol parameters for problem solving.
+## 4.  有自己的加密货币吗？ {#question-4}
 
-### <span id = "question-4">4. Do you have your own cryptocurrency?</span>
+    -   有，IBAX区块链平台使用自己的通证IBXC。
 
-  * Yes, IBax uses its own token, IBXC.
+## 5.  什么是荣誉节点，谁可以维护？ {#question-5}
 
-### <span id = "question-5">5. What is a honor node and who can maintain it?</span>
+    - 荣誉节点 是有权验证交易和生成新区块的网络节点。
+    - 具有足够处理能力和容错能力的任何网络节点都可以成为荣誉节点。 
+      IBAX区块链平台使用权威证明（DPoA）共识机制，节点可以基于生态系统的投票成为验证节点，
+      但只有被平台通证拥有者证明具有正常运作能力的生态系统才能参与此类投票。
+      使用这种授权算法，荣誉节点由主要生态系统运行，因为维护网络运行最符合他们的利益。
 
-  * The honor node is the network node that has the authority to verify transactions and generate new blocks.
-  * Any network node with sufficient processing power and fault tolerance can become a honor node. IBax uses a Proof of Authority (PoA) consensus mechanism. Nodes can become verification nodes based on ecosystem voting, but only ecosystems that are proven by the platform's token owner to have normal operational capabilities can participate in such voting. Using this authorization algorithm, the master node is run by major ecosystems because it is in their best interest to maintain the network operation.
+## 6.  什么是平台生态系统？ {#question-6}
 
-### <span id = "question-6">6. What is a platform ecosystem?</span>
+    - 生态系统实际上是用于创建区块链应用程序和其中用户的操作的自治软件环境。
 
-  * An ecosystem is actually an autonomous software environment used to create blockchain applications and the operations of users in them.
+## 7.  谁可以创建生态系统？ {#question-7}
 
-### <span id = "question-7">7. Who can create an ecosystem?</span>
+    - 平台的所有用户都可以创建新的生态系统。
 
-  * All users of the platform can create new ecosystems.
+## 8.  用户如何成为生态系统的成员？ {#question-8}
 
-### <span id = "question-8">8. How do users become members of the ecosystem?</span>
+    - 平台网络的生态系统成员注册可在现有任何生态系统中进行，生态系统的策略定义了不同的成员加入程序，该策略在专门的生态系统目录中发布了新生态系统的关键公开信息。
 
-  * Users may be registered as members of any existing ecosystem. The ecosystem strategy defines different member admission procedures, which publishes key public information of the new ecosystem in a dedicated ecosystem catalog.
+## 9.  一位用户可以创建多个生态系统吗？ {#question-9}
 
-### <span id = "question-9">9. Can one user create multiple ecosystems?</span>
+    - 是的，每位用户都可以创建任意数量的生态系统，同时也可以成为多个生态系统的成员。
 
-  * Yes, each user can create any number of ecosystems and can also become a member of multiple ecosystems.
+## 10. 什么是平台应用程序？ {#question-10}
 
-### <span id = "question-10">10. What is a platform application?</span>
+    - 应用程序是实现功能或服务的完整软件产品。应用程序由数据库表、合约和页面组成。
 
-  * An application is a complete software product that implements a function or service. The application consists of database tables, contracts and pages.
-### <span id = "question-11">11. What programming language is used to create the application?</span>
-  * The contract is written in the Needle language, which is developed by the platform team, For more information, see: [Smart Contract](../topics/script.md).
+## 11. 什么编程语言用于创建应用程序？ {#question-11}
 
-  * The page is written in Logicor language, which is a page template language. For more information, see: [Template Language](../topics/templates2.md).
+    - 合约使用 Needle 语言编写，该语言由平台团队开发，更多参阅：
+    [智能合约](../topics/script.md)
+    - 页面使用 Logicor 语言编写，是一种页面模版语言，更多参阅：
+    [模版语言](../topics/templates2.md)
 
-### <span id = "question-12">12. What software is used to create applications and interact with users?</span>
+## 12. 什么软件用于创建应用程序和用户交互? {#question-12}
 
-  * The application program is written and executed in Weaver, no other software is required.
+    - 应用程序在 Weaver 中编写和执行，不需要其他软件。
 
-### <span id = "question-13">13. Can platform contracts use third-party APIs to access data?</span>
+## 13. 平台合约可以使用第三方API接口访问数据吗？ {#question-13}
 
-  * No, the contract can only directly access the data stored in the blockchain. [CLB](about-the-platform.md#virtual-private-ecosystem) is used to process external data sources.
+    - 不可以，合约只能直接访问区块链中存储的数据，[CLB](about-the-platform.md#虚拟专用生态系统)用于处理外部数据源。
 
-### <span id = "question-14">14. Can the contract stored in the blockchain be changed?</span>
+## 14. 保存在区块链中的合约可以更改吗？ {#question-14}
 
-  * Yes, the contract can be changed. The permission to change the contract is specified by its creator, who can grant the permission to refuse to change, or grant permission to make changes with contracts or by members, or configure a complex set of conditions in the smart law.
-  * Weaver provides access to all versions of contracts.
+    -   是的，合约可以更改。更改合约的权限由其创建者指定，合约创建者可以指定拒绝更改的权限，或者指定合约和成员进行更改的权限，或者在智能法律中配置一组复杂的条件。
+    -   Weaver 提供对所有合约版本的访问。
 
-### <span id = "question-15">15. What is smart law?</span>
+## 15. 什么是智能法律？ {#question-15}
 
-  * Smart law is a contract designed to control and restrict the operation of conventional contracts, thereby controlling and restricting the activities of ecosystem members.
-  * A set of smart laws can be regarded as the legal system of an ecosystem.
+    - 智能法律是一种合约，旨在控制和限制常规合约的运作，从而控制和限制生态系统成员的活动。
+    - 一套智能法律可以被视为一个生态系统的法律体系。
 
-### <span id = "question-16">16. Can the contract call and execute other contracts?</span>
+## 16. 合约可以调用执行其他合约吗？ {#question-16}
 
-  * Yes, the contract can call other contracts by direct addressing and provide parameters for it, or call the contract by link name. For more information, see: [Smart Contract](../topics/script.md).
+    - 可以，合约可以通过直接寻址的方式并为其提供参数来调用其他合约，或者通过链接名称调用合约，更多参阅：[智能合约](../topics/script.md)
 
-### <span id = "question-17">17. Does the application run with a master contract?</span>
+## 17. 应用程序工作是否需要主合约？ {#question-17}
 
-  * No, the contract is an autonomous program module that performs certain functions. Each contract is configured to receive specified data, then check the correctness of these data, and perform some operations that are recorded in the database as transactions.
+    - 不需要，合约是执行某些功能的自治程序模块。每个合约配置了接收指定的数据，然后检查这些数据的正确性，并执行一些操作，这些操作当作交易被记录在数据库。
 
-### <span id = "question-18">18. Can the application be localized for different languages?</span>
+## 18. 应用程序可以为不同语言本地化吗？ {#question-18}
 
-  * Yes, Weaver has a built-in localization support mechanism and can create pages in any language.
+    - 可以，Weaver拥有内置的本地化支持机制，可以创建任何语言的页面。
 
-### <span id = "question-19">19. Can I create a page without using a template language?</span>
+## 19. 可以在不使用模版语言的情况下创建页面吗? {#question-19}
 
-  * Yes, it can be done using the platform [RESTful API](../reference/api2.md) v2.
+    - 可以，使用平台 [RESTful API](../reference/api2.md) 可以做到。
 
-### <span id = "question-20">20. Are the pages stored in the blockchain?</span>
+## 20. 页面是否存储在区块链中？ {#question-20}
 
-  * Yes, the pages and contracts are stored in the blockchain, which prevents them from being forged.
+    - 是的，页面和合约都存储在区块链中，这可以防止它们被伪造。
 
-### <span id = "question-21">21. What types of databases can be used for contract operations?</span>
+## 21. 哪些类型的数据库可以用于合约的操作？ {#question-21}
 
-  * Currently, PostgreSQL is used.
+    - 目前使用PostgreSQL数据库。
 
-### <span id = "question-22">22. How to manage access to the data in the database table?</span>
+## 22. 如何管理对数据表中数据的访问？ {#question-22}
 
-  * You can add new fields, new entries, or change the permissions of the data in columns for ecosystem members, roles, or specified contract configurations. Except for contracts created by performing specific operations.
+    - 可以为生态系统成员、角色或指定合约配置添加新字段、新条目或更改列中数据的权限。但执行特定操作而创建的合约除外。
 
-### <span id = "question-23">23. Can an application in an ecosystem exchange data with other applications from another ecosystem?</span>
+## 23. 生态系统中的应用程序可以与来自另一个生态系统的应用程序交换数据吗？ {#question-23}
 
-  * Yes, data exchange can be organized through global data tables that apply to all ecosystems.
+    - 可以，通过适用于所有生态系统的全局数据表可以组织数据交换。
 
-### <span id = "question-24">24. Should all applications in a new ecosystem be written from scratch?</span>
+## 24. 是否应该从头开始编写新生态系统中的所有应用程序？ {#question-24}
 
-  * No, every new ecosystem has some applications out of the box:
-      * A mechanism to manage ecosystem members and roles;
-      * Issuing and configuring other tokens;
-      *  A voting system;
-      *  A notification system;
-      *  A messenger between ecosystem members.
+    - 不需要，每个新的生态系统都有一些开箱即用的应用程序:
+          - 管理生态系统成员和角色的机制；
+          - 发行和配置其他通证；
+          - 投票系统；
+          - 通知系统；
+          - 生态系统成员间的消息通信。
+    
+    可以对这些应用程序进行编辑和配置，以满足任何生态系统的特殊需求。
 
- These applications can be edited and configured to meet the special needs of any ecosystem.
+## 25. 应用程序的运作是否有任何费用? {#question-25}
 
-### <span id = "question-25">25. Are there any fees for the operation of applications?</span>
+    -   是的，使用 荣誉节点 的资源需要在平台中支付通证。
 
-  * Yes, the use of the resources of the honor node requires payment in the platform.
+## 26. 谁支付应用程序的运作费用？ {#question-26}
 
-### <span id = "question-26">26. Who pays for the operation of applications?</span>
+     相应的账户地址，目前有4种方式支付应用程序的运作费用：
+    
+     -   合约调用者，默认账户地址，当用户调用合约时，该用户的账户地址支付；
+     -   合约绑定者，合约创建者指定的账户地址，所有用户调用该合约的费用，由该账户地址支付；
+     -   生态系统创建者，生态系统内所有应用程序的运作费用由生态系统创建者支付；
+     -   生态系统专属钱包，每个生态系统都有独有的账户地址，如果生态系统创建者激活了该账户地址，生态系统内所有应用程序的运作费用由该账户地址支付。
+    
+     支付优先级：*生态系统专属钱包* > *生态系统创建者* >
+     *合约绑定者* > *合约调用者*。
 
- For corresponding account addresses, there are currently 4 ways to pay for the operation of applications:
-  * For contract callers, the fee will be paid from the user's account by default when the user calls the contract; 
-  * For contract binding parties, the fee will be paid from the binding account specified by the contract creator;
-  * For ecosystem creators, the fee of all applications within an ecosystem will be paid by the ecosystem creator respectively;
+## 27. 如何保护生态系统内的应用程序免受其漏洞的攻击？ {#question-27}
 
-  * Exclusive ecosystem wallet. Each ecosystem has an exclusive account. If the ecosystem creator activated it, the fee of all applications within the ecosystem will be paid from this account.
+    -   平台团队也知道没有办法完全避免应用程序代码中的错误，特别是考虑到应用程序可以由任何用户编写。这就是我们决定建立一种消除利用漏洞后果机制的原因。法律体系可以停止应用程序的攻击操作，并使用一些交易来恢复到原来状态。法律体系中规定了执行该类合约的权限和授予这些权限的投票程序。
 
- Order of payment precedence: Exclusive ecosystem wallet> Ecosystem creator> Contract binding party> Contract caller.
+## 28. 在未来的计划中实现哪些新功能？ {#question-28}
 
-### <span id = "question-27">27. How to protect the applications in the ecosystem from attacks due to vulnerabilities?</span>
+    -   可视化智能合约设计器；
+    -   支持混合数据库(SQL和NoSQL) ；
+    -   来自不同生态系统的交易的并行多线程处理；
+    -   在客户端执行资源密集型计算；
+    -   生态系统托管和计算能力交换；
+    -   轻节点，只存储服务器上部分区块；
+    -   语义参考（本体）用于统一平台内数据的操作等。
 
-  * The platform team also knows that there is no way to completely avoid errors in the application code, especially considering that the application can be written by any user. This is why we decided to establish a mechanism to eliminate the consequences of exploiting vulnerabilities. The legal system can stop the attack operation of the application and use some transactions to restore it to its original state. The legal system stipulates the permissions to execute such contracts and the voting procedures for granting these permissions.
+## 29. 如何证明可操作性? {#question-29}
 
-### <span id = "question-28">28. What new features will be implemented in future plans?</span>
-
-  * Visual smart contract designer;
-
-
-  * Support for hybrid databases (SQL and NoSQL);
-
-  * Parallel multi-threaded processing of transactions from different ecosystems;
-
-  * Perform resource-intensive calculations on the client;
-
-  * Ecosystem hosting and computing power exchange;
-
-  * Child nodes, only store some blocks on the server;
-
-  * Semantic references (ontology) are used to unify the operation of data in the platform.
-
-### <span id = "question-29">29. How to prove its operability?</span>
-
-  * A number of proof of concept projects and cases have been implemented on the IBax Network: a socialized tax collection and electronic invoice generation and circulation system, a medical apparatus and instruments supervision, forgery prevention and tracing system, a financing and supervision system, a voting/poll system, business registration, trade finance tools, assets registration contract management system, etc.
+    -   在 IBAX区块链平台上实施了一系列概念论证项目和案例：社会化代收税及电子发票生成和流转系统、医疗器械监管及防伪追溯系统、融资及监管系统、投票/民调系统、工商登记、贸易金融工具、资产登记合约管理系统等。

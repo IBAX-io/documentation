@@ -16,7 +16,7 @@ features:
 - title: Un meccanismo di consenso personalizzabile
 - title: Separazione di front-end e back-end per soddisfare le diverse esigenze di crittografia
 
-footer: © Copyright 2019 - 2021, IBAX Updated Date 03/11/2021 | Built with VuePress
+footer: © Copyright 2019 - 2023, IBAX Updated Date 06/20/2023 | Built with VuePress
 ---
 
 

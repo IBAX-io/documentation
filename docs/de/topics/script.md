@@ -1,68 +1,68 @@
-# Intelligente Verträge
-   - [Vertragsstruktur](#Vertragsstruktur)
-     - [Datenabschnitt](#Datenabschnitt)
-     - [Abschnitt Bedingungen](#abschnitt-bedingungen)
-     - [Aktionsabschnitt](#aktionsabschnitt)
-   - [Variablen](#variablen)
-   - [Verschachtelte Verträge](#verschachtelte-verträge)
-   - [Datei-Upload](#datei-upload)
-   - [Abfragen im JSON-Format](#abfragen-im-json-format)
-   - [Abfragen mit Datums- und Zeitoperationen](#abfragen-mit-datums-und-zeitoperationen)
-   - [Nadelvertragssprache](#nadelvertragssprache)
-     - [Basiselemente und Struktur](#basiselemente-und-struktur)
-     - [Datentypen und Variablen](#datentypen-und-variablen)
-     - [Reihe](#reihe)
-     - [If- und While-Anweisungen](#If-und-While-Anweisungen)
-  - [Funktionen](#Funktionen)
-     - [Funktionsdeklaration](#Funktionsdeklaration)
-     - [Parameter variabler Länge](#parameter-variabler-länge)
-     - [Optionale Parameter](#optionale-parameter)
-   - [Klassifizierung der Nadelfunktionen](#klassifizierung-der-nadelfunktionen)
-   - [Referenz der Nadelfunktionen](#referenz-der-Nadelfunktionen)
+# Intelligente Verträge {#smart-contracts}
+   - [Vertragsstruktur](#contract-structure)
+     - [Datenabschnitt](#data-section)
+     - [Abschnitt Bedingungen](#conditions-section)
+     - [Aktionsabschnitt](#action-section)
+   - [Variablen](#variables)
+   - [Verschachtelte Verträge](#nested-contracts)
+   - [Datei-Upload](#file-upload)
+   - [Abfragen im JSON-Format](#queries-in-json-format)
+   - [Abfragen mit Datums- und Zeitoperationen](#queries-with-date-and-time-operations)
+   - [Nadelvertragssprache](#needle-contract-language)
+     - [Basiselemente und Struktur](#basic-elements-and-structure)
+     - [Datentypen und Variablen](#data-types-and-variables)
+     - [Reihe](#array)
+     - [If- und While-Anweisungen](#if-and-while-statements)
+  - [Funktionen](#functions)
+     - [Funktionsdeklaration](#function-declaration)
+     - [Parameter variabler Länge](#variable-length-parameters)
+     - [Optionale Parameter](#optional-parameters)
+   - [Klassifizierung der Nadelfunktionen](#needle-functions-classification)
+   - [Referenz der Nadelfunktionen](#needle-functions-reference)
     - [AppParam](#appparam)
-    - [DBSuche](#dbsuche)
-    - [DBReihe](#dbreihe)
-    - [DBWählen Sie Metriken aus](#dbwählen-sie-metriken-aus)
+    - [DBSuche](#dbfind)
+    - [DBReihe](#dbrow)
+    - [DBWählen Sie Metriken aus](#dbselectmetrics)
     - [EcosysParam](#ecosysparam)
-    - [WerdenGeschichte](#werdengeschichte)
-    - [Verlaufszeile erhalten](#verlaufszeile-erhalten)
-    - [Spaltentyp erhalten](#spaltentyp-erhalten)
-    - [Daten abrufen vonXLSX](#daten-abrufen-von-XLSX)
-    - [Reihe bekommen CountXLSX](#reihe-bekommen-countXLSX)
+    - [WerdenGeschichte](#gethistory)
+    - [Verlaufszeile erhalten](#gethistoryrow)
+    - [Spaltentyp erhalten](#getcolumntype)
+    - [Daten abrufen vonXLSX](#getdatafromxlsx)
+    - [Reihe bekommen CountXLSX](#getrowscountxlsx)
     - [LangRes](#langres)
-    - [Block bekommen](#block-bekommen)
-    - [DBEinfügung](#dbeinfügung)
-    - [DBAktualisieren](#dbaktualisieren)
-    - [DBAktualisierenExt](#dbaktualisieren-ext)
-    - [Spalte löschen](#Spalte-löschen)
-    - [Tabelle löschen](#Tabelle-löschen)
+    - [Block bekommen](#getblock)
+    - [DBEinfügung](#dbinsert)
+    - [DBAktualisieren](#dbupdate)
+    - [DBAktualisierenExt](#dbupdateext)
+    - [Spalte löschen](#delcolumn)
+    - [Tabelle löschen](#deltable)
     - [Anhängen](#append)
-    - [Beitreten](#beitreten)
-    - [Teilt](#teilt)
+    - [Beitreten](#join)
+    - [Teilt](#split)
     - [Len](#len)
-    - [Reihe](#reihe)
+    - [Reihe](#row)
     - [One](#one)
-    - [Kartenschlüssel erhalten](#kartenschlüssel-erhalten)
-    - [Sortierte Schlüssel](#sortierte-schlüssel)
-    - [Anrufvertrag](#anrufvertrag)
-    - [Vertragszugang](#Vertragszugang)
-    - [Vertragsbedingungen](#vertragsbedingungen)
-    - [Eval Zustand](#eval-zustand)
-    - [Vertrag erhalten von ID](#vertrag-erhalten-von-ID)
-    - [Vertrag namentlich erhalten](#vertrag-namentlich-erhalten)
-    - [Rollenzugriff](#rollenzugriff)
-    - [Transaktionsinfo](#transaktionsinfo)
-    - [Wurf](#Wurf)
-    - [Bedingung validieren](#bedingung-validieren)
-    - [Adresse an ID](#adresse-an-ID)
-    - [ID an Adresse](#ID-an-adresse)
-    - [Pub zu ID](#bub-zu-ID)
-    - [DekodierenBase64](#dekodieren-base64)
-    - [KodierenBase64](#kodieren-base64)
-    - [Schweben](#Schweben)
+    - [Kartenschlüssel erhalten](#getmapkeys)
+    - [Sortierte Schlüssel](#sortedkeys)
+    - [Anrufvertrag](#callcontract)
+    - [Vertragszugang](#contractaccess)
+    - [Vertragsbedingungen](#contractconditions)
+    - [Eval Zustand](#evalcondition)
+    - [Vertrag erhalten von ID](#getcontractbyid)
+    - [Vertrag namentlich erhalten](#getcontractbyname)
+    - [Rollenzugriff](#roleaccess)
+    - [Transaktionsinfo](#transactioninfo)
+    - [Wurf](#throw)
+    - [Bedingung validieren](#validatecondition)
+    - [Adresse an ID](#addresstoid)
+    - [ID an Adresse](#idtoaddress)
+    - [Pub zu ID](#pubtoid)
+    - [DekodierenBase64](#decodebase64)
+    - [KodierenBase64](#encodebase64)
+    - [Schweben](#float)
     - [HexToBytes](#hextobytes)
-    - [Geld formatieren](#Geld-formatieren)
-    - [Zufällig](#zufällig)
+    - [Geld formatieren](#formatmoney)
+    - [Zufällig](#random)
     - [Int](#int)
     - [Hash](#hash)
     - [Sha256](#sha256)
@@ -71,71 +71,71 @@
     - [JSONEncodeIndent](#jsonencodeindent)
     - [JSONDecode](#jsondecode)
     - [HasPrefix](#hasprefix)
-    - [Enthält](#enthält)
-    - [Ersetzen](#ersetzen)
-    - [Größe](#größe)
+    - [Enthält](#contains)
+    - [Ersetzen](#replace)
+    - [Größe](#size)
     - [Sprintf](#sprintf)
     - [Substr](#substr)
-    - [Zu senken](#zu-senken)
-    - [NachOber](#nachOber)
+    - [Zu senken](#tolower)
+    - [NachOber](#toupper)
     - [TrimSpace](#trimspace)
-    - [Boden](#boden)
-    - [Protokoll](#protokoll)
-    - [Protokoll10](#protokoll10)
-    - [Puh](#puh)
-    - [Runden](#runden)
-    - [Quadrat](#quadrat)
-    - [Zeichenfolge zu Bytes](#zeichenfolge-zu-bytes)
-    - [Byte zu Zeichenfolge](#byte-zu-zeichenfolge)
+    - [Boden](#floor)
+    - [Protokoll](#log)
+    - [Protokoll10](#log10)
+    - [Puh](#pow)
+    - [Runden](#round)
+    - [Quadrat](#sqrt)
+    - [Zeichenfolge zu Bytes](#stringtobytes)
+    - [Byte zu Zeichenfolge](#bytestostring)
     - [SysParamString](#sysparamstring)
     - [SysParamInt](#sysparamint)
-    - [DBAktualisierenSysParam](#DBAktualisierenSysParam)
-    - [Benachrichtigungen aktualisieren](#benachrichtigungen-aktualisieren)
-    - [UpdateRoles-Benachrichtigungen](#UpdateRoles-Benachrichtigungen)
+    - [DBAktualisierenSysParam](#dbupdatesysparam)
+    - [Benachrichtigungen aktualisieren](#updatenotifications)
+    - [UpdateRoles-Benachrichtigungen](#updaterolesnotifications)
     - [HTTPRequest](#httprequest)
     - [HTTPPostJSON](#httppostjson)
-    - [Blockzeit](#Blockzeit)
-    - [Terminzeit](#Terminzeit)
-    - [Unix-DateTime](#Unix-DateTime)
-    - [OBS erstellen](#OBS-erstellen)
-    - [WerdenOBSList](#WerdenOBSList)
-    - [LaufOBS](#LaufOBS)
-    - [HaltOBS](#HaltOBS)
-    - [EntfernenOBS](#EntfernenOBS)
-  - [Systemverträge](#Systemverträge)
-    - [Neues Ökosystem](#Neues-Ökosystem)
-    - [Ökosystemname bearbeiten](#ökosystemname-bearbeiten)
-    - [Neuer Vertrag](#Neuer-vertrag)
-    - [Vertrag bearbeiten](#Vertrag-bearbeiten)
-    - [Brieftasche binden](#Brieftasche-binden)
-    - [Wallet entbinden](#Wallet-entbinden)
-    - [Neuer Parameter](#Neuer-Parameter)
-    - [Parameter bearbeiten](#Parameter-bearbeiten)
-    - [NeuesMenü](#Neues-Menü)
-    - [Menü bearbeiten](#Menü-bearbeiten)
-    - [Menü anhängen](#Menü-anhängen)
-    - [Neue Seite](#Neue-Seite)
-    - [Seite bearbeiten](#Seite-bearbeiten)
-    - [Seite anhängen](#Seite-anhängen)
-    - [NeuerBlock](#NeuerBlock)
-    - [Block bearbeiten](#Block-bearbeiten)
-    - [NeueTabelle](#NeueTabelle)
-    - [Tabelle bearbeiten](#Tabelle-bearbeiten)
-    - [NeueSpalte](#neueSpalte)
-    - [Spalte bearbeiten](#Spalte-bearbeiten)
-    - [NeuLang](#NeuLang)
-    - [BearbeitenLang](#BearbeitenLang)
-    - [Importieren](#Importieren)
-    - [ImportHochladen](#ImportHochladen)
+    - [Blockzeit](#blocktime)
+    - [Terminzeit](#datetime)
+    - [Unix-DateTime](#unixdatetime)
+    - [OBS erstellen](#createobs)
+    - [WerdenOBSList](#getobslist)
+    - [LaufOBS](#runobs)
+    - [HaltOBS](#stopobs)
+    - [EntfernenOBS](#removeobs)
+  - [Systemverträge](#system-contracts)
+    - [Neues Ökosystem](#newecosystem)
+    - [Ökosystemname bearbeiten](#editecosystemname)
+    - [Neuer Vertrag](#newcontract)
+    - [Vertrag bearbeiten](#editcontract)
+    - [Brieftasche binden](#bindwallet)
+    - [Wallet entbinden](#unbindwallet)
+    - [Neuer Parameter](#newparameter)
+    - [Parameter bearbeiten](#editparameter)
+    - [NeuesMenü](#newmenu)
+    - [Menü bearbeiten](#editmenu)
+    - [Menü anhängen](#appendmenu)
+    - [Neue Seite](#newpage)
+    - [Seite bearbeiten](#editpage)
+    - [Seite anhängen](#appendpage)
+    - [NeuerBlock](#newblock)
+    - [Block bearbeiten](#editblock)
+    - [NeueTabelle](#newtable)
+    - [Tabelle bearbeiten](#edittable)
+    - [NeueSpalte](#newcolumn)
+    - [Spalte bearbeiten](#editcolumn)
+    - [NeuLang](#newlang)
+    - [BearbeitenLang](#editlang)
+    - [Importieren](#import)
+    - [ImportHochladen](#importupload)
     - [NewAppParam](#newappparam)
-    - [BearbeitenAppParam](#bearbeitenappparam)
-    - [Neuer verzögerter Vertrag](#Neuer-verzögerter-Vertrag)
-    - [Verspäteten Vertrag bearbeiten](#Verspäteten-Vertrag-bearbeiten)
-    - [Binär hochladen](#Binär-hochladen)
+    - [BearbeitenAppParam](#editappparam)
+    - [Neuer verzögerter Vertrag](#newdelayedcontract)
+    - [Verspäteten Vertrag bearbeiten](#editdelayedcontract)
+    - [Binär hochladen](#uploadbinary)
 
 Smart Contract (im Folgenden Vertrag genannt) ist eines der Grundelemente einer Anwendung. Die Implementierung eines Vertrages auf einer Seite durch den Benutzer ist in der Regel ein einmaliger Vorgang, dessen Zweck es ist, einen Datenbankeintrag zu aktualisieren oder zu erstellen. Alle Datenoperationen einer Anwendung bilden ein Vertragssystem, und diese Verträge interagieren miteinander durch Datenbank- oder Vertragsinhaltsfunktionen.
 
-## Vertragsstruktur
+## Vertragsstruktur {#contract-structure}
 
 Verwenden Sie das Schlüsselwort `vertrag`, um einen Vertrag zu deklarieren, gefolgt vom Vertragsnamen, und der Vertragsinhalt muss in geschweiften Klammern eingeschlossen sein. Ein Vertrag besteht im Wesentlichen aus drei Teilen:
 
@@ -163,7 +163,7 @@ contract MyContract {
 
 
 
-### Datenbereich
+### Datenbereich {#data-section}
 
 Der Abschnitt `data` beschreibt die Vertragsdateneingaben und die empfangenen Formularparameter.
 
@@ -188,7 +188,7 @@ contract my {
 
 
 
-### Abschnitt Bedingungen
+### Abschnitt Bedingungen {#conditions-section}
 
 Der Abschnitt `condition` beschreibt die Validierung der empfangenen Daten.
 
@@ -206,7 +206,7 @@ if idexist > 0 {
 }
 ```
 
-### Aktionsabschnitt
+### Aktionsabschnitt {#action-section}
 
 Der Abschnitt `action` beschreibt den Hauptcode des Vertrags, der andere Daten abruft und die Ergebniswerte in Tabellen aufzeichnet. Zum Beispiel:
 
@@ -220,7 +220,7 @@ DBUpdate("keys", $recipient, {"+amount": $amount, "pub": $Pub})
 
 
 
-## Variablen
+## Variablen {#variables}
 
 Im Datenabschnitt deklarierte Variablen werden über das `$`-Symbol gefolgt vom Variablennamen an andere Vertragsabschnitte übergeben. Das Symbol „$“ kann auch verwendet werden, um andere Variablen zu deklarieren, die sich nicht im Datenabschnitt befinden und als globale Variablen dieses Vertrags und aller Verträge gelten, in die dieser Vertrag verschachtelt ist.
 
@@ -266,11 +266,11 @@ contract my {
 }
 ```
 
-## Verschachtelte Verträge
+## Verschachtelte Verträge {#nested-contracts}
 
 Sie können Verträge in den Abschnitten „Bedingungen“ und „Aktionen“ des Vertrags verschachteln. Verschachtelte Verträge können direkt aufgerufen werden, und die Vertragsparameter werden in Klammern hinter dem Vertragsnamen angegeben, z. B. `@1NameContract(Params)`. Sie können auch verschachtelte Verträge mit der Funktion [CallContract](#callcontract) aufrufen.
 
-## Datei-Upload
+## Datei-Upload {#file-upload}
 
 Um eine Datei über ein Formular im Format `multipart/form-data` hochzuladen, muss der Datentyp des Vertrages `file` sein.
 ```
@@ -284,7 +284,7 @@ contract Upload {
 
 Der Vertrag [UploadBinary](#uploadbinary) wird zum Hochladen und Speichern von Dateien verwendet. Mit der Logicor-Sprachfunktion [Binary](templates2.md#binary) im Seiteneditor erhalten Sie den Link zum Herunterladen der Datei.
 
-## Abfragen im JSON-Format
+## Abfragen im JSON-Format {#queries-in-json-format}
 
 In der Vertragssprache kann als Feldtyp **JSON** angegeben werden. Sie können die Syntax: **columnname->fieldname** verwenden, um das Eingabefeld zu verarbeiten. Der erhaltene Wert wird in **columnname.fieldname** aufgezeichnet. Die obige Syntax kann in Columns,One,Where der Funktion [DBFind](#dbfind) verwendet werden.
 
@@ -301,7 +301,7 @@ val = DBFind("mytable").WhereId($Id).One("doc->check")
 
 
 
-## Abfragen mit Datums- und Zeitoperationen
+## Abfragen mit Datums- und Zeitoperationen {#queries-with-date-and-time-operations}
 
 Sie können das Datum und die Uhrzeit nicht direkt mit den Vertragssprachenfunktionen abfragen und aktualisieren, aber Sie können PostgreSQL-Funktionen und -Features in der Where-Anweisung wie im folgenden Beispiel verwenden. Beispielsweise müssen Sie das Feld date_column mit der aktuellen Uhrzeit vergleichen. Wenn date_column ein Zeitstempeltyp ist, sollte der Ausdruck `date_column <NOW()` sein; wenn date_column ein Unix-Typ ist, sollte der Ausdruck `to_timestamp(date_column)> NOW()` lauten.
 
@@ -312,11 +312,11 @@ Where("date_column <NOW() - 30 * interval '1 day'")
 
 Die folgende Needle-Funktion wird verwendet, um Datum und Uhrzeit im SQL-Format zu verarbeiten:
 
-* [Blockzeit](#Blockzeit)
-* [Terminzeit](#Terminzeit)
-* [Unix-DateTime](#Unix-DateTime)
+* [Blockzeit](#blocktime)
+* [Terminzeit](#datetime)
+* [Unix-DateTime](#unixdatetime)
 
-## Nadelvertragssprache
+## Nadelvertragssprache {#needle-contract-language}
 
 Die Vertragssprache umfasst eine Reihe von Funktionen, Operatoren und Strukturen, die Datenalgorithmusverarbeitung und Datenbankoperationen realisieren können.
 
@@ -324,9 +324,9 @@ Der Vertragsinhalt kann geändert werden, wenn die Vertragsbearbeitungsberechtig
 
 Datenoperationen in der Blockchain werden gemäß der neuesten Vertragsversion ausgeführt.
 
-### Grundelemente und Struktur
+### Grundelemente und Struktur {#basic-elements-and-structure}
 
-### Datentypen und Variablen
+### Datentypen und Variablen {#data-types-and-variables}
 
 Der Datentyp muss für jede Variable definiert werden. Normalerweise werden Datentypen automatisch konvertiert. Folgende Datentypen können verwendet werden:
 
@@ -363,7 +363,7 @@ func myfunc( val int) int {
 ```
 
 
-### Array
+### Array {#array}
 
 Die Vertragssprache unterstützt zwei Array-Typen:
 * `Array` - ein Array mit Index beginnend bei 0;
@@ -419,7 +419,7 @@ val = my["param"]
 MyFunc({key: val, sub: {name: "My name", "color": "Red"}})
 ```
 
-### If- und While-Anweisungen
+### If- und While-Anweisungen {#if-and-while-statements}
 
 Die Vertragssprache unterstützt standardmäßige **if**-Bedingungsanweisungen und **while**-Schleifen, die in Verträgen und Funktionen verwendet werden können. Diese Anweisungen können ineinander verschachtelt werden.
 
@@ -458,11 +458,11 @@ Zusätzlich zu bedingten Anweisungen unterstützt Needle auch Standardarithmetik
 
 Variablen vom Typ String und Bytes können als bedingte Anweisung verwendet werden. Wenn die Länge des Typs größer als Null ist, ist die Bedingung wahr, andernfalls ist sie falsch.
 
-## Funktionen
+## Funktionen {#functions}
 
 Funktionen können einige Operationen mit den vom [data section](#data-section) eines Vertrags empfangenen Daten ausführen: Daten aus der Datenbank lesen und schreiben, den Werttyp konvertieren und die Interaktion zwischen Verträgen herstellen.
 
-### Funktionsdeklaration
+### Funktionsdeklaration {#function-declaration}
 
 Verwenden Sie das Schlüsselwort func, um eine Funktion zu deklarieren, gefolgt vom Namen und der Liste der übergebenen Parameter und ihrer Typen. Alle Parameter sind in Klammern eingeschlossen und durch Kommas getrennt. Nach den Klammern muss der Datentyp des von der Funktion zurückgegebenen Werts deklariert werden. Der Funktionskörper muss in geschweifte Klammern eingeschlossen werden. Wenn die Funktion keine Parameter hat, können die geschweiften Klammern weggelassen werden. Um einen Wert von einer Funktion zurückzugeben, verwenden Sie das Schlüsselwort `return`.
 
@@ -480,7 +480,7 @@ func ooops {
 
 Funktion gibt keine Fehler zurück, da alle Fehlerprüfungen automatisch durchgeführt werden. Wenn in irgendeiner Funktion ein Fehler auftritt, beendet der Vertrag seinen Betrieb und zeigt die Fehlerbeschreibung in einem Fenster an.
 
-### Parameter variabler Länge
+### Parameter variabler Länge {#variable-length-parameters}
 
 Funktionen können Parameter mit variabler Länge definieren, verwenden Sie das Symbol `...` als letzten Parametertyp der Funktion, um Parameter mit variabler Länge mit einem Datentyp von `Array` anzugeben. Parameter mit variabler Länge umfassen alle Variablen ab dem Zeitpunkt, an dem der Parameter im Aufruf übergeben wird. Alle Arten von Variablen können übergeben werden, aber Sie müssen mit Konflikten durch Nichtübereinstimmung von Datentypen umgehen.
 
@@ -507,7 +507,7 @@ func main() {
 
 
 
-### Optionale Parameter
+### Optionale Parameter {#optional-parameters}
 
 Eine Funktion hat viele Parameter, aber wir brauchen nur einige davon, wenn wir sie aufrufen. In diesem Fall können Sie optionale Parameter folgendermaßen deklarieren: `func myfunc(name string).Param1(param string).Param2(param2 int) {...}`, dann können Sie die angegebenen Parameter in beliebiger Reihenfolge aufrufen : `myfunc("name").Param2(100)`.
 
@@ -525,7 +525,7 @@ func names() string {
 }
 ```
 
-## Needle Funktionsklassifizierung
+## Needle Funktionsklassifizierung {#needle-functions-classification}
 
 Abrufen von Werten aus der Datenbank:
 
@@ -635,14 +635,14 @@ Funktionen für Master-CLB-Knoten:
 
 
 
-## Needle Funktionen Referenz
+## Needle Funktionen Referenz {#needle-functions-reference}
 
 
-### AppParam
+### AppParam {#appparam}
 
 Gibt den Wert eines angegebenen Anwendungsparameters (aus der Anwendungsparametertabelle app_params) zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 AppParam(app int, name string, ecosystemid int) string
@@ -660,7 +660,7 @@ AppParam(app int, name string, ecosystemid int) string
 
     Ökosystem-ID.
 
-#### Beispiel
+**Beispiel**
 
 ```
 AppParam(1, "app_account", 1)
@@ -668,13 +668,13 @@ AppParam(1, "app_account", 1)
 
 
 
-### DBFind
+### DBFind {#dbfind}
 
 Fragt Daten aus einer angegebenen Tabelle mit den angegebenen Parametern ab und gibt ein Array zurück, das aus einem Array von Objekten besteht.
 
 `.Row()` kann das erste Kartenelement in der Abfrage erhalten, `.One(column string)` kann das erste Kartenelement einer angegebenen Spalte in der Abfrage erhalten.
 
-#### Syntax
+**Syntax**
 
 ```
 DBFind(table string)
@@ -793,7 +793,7 @@ Achten Sie darauf, die Schlüssel von Objekt-Arrays nicht zu überschreiben. Wen
 
      
 
-#### Beispiel
+**Beispiel**
 
 ```
 var i int
@@ -816,11 +816,11 @@ if ret != nil {
 ​     
 
 
-### DBZeile
+### DBZeile {#dbrow}
 
 Fragt Daten aus einer angegebenen Tabelle mit den angegebenen Parametern ab. Gibt ein Array zurück, bestehend aus einem Array von Objekten map.
 
-#### Syntax
+**Syntax**
 
 ```
 DBRow(table string)
@@ -862,7 +862,7 @@ DBRow(table string)
 
    Ökosystem-ID. Standardmäßig wird die Tabelle des aktuellen Ökosystems abgefragt.
 
-#### Beispiel
+**Beispiel**
 
 
 ```
@@ -873,13 +873,13 @@ Println(ret)
 
 
 
-### DBSelectMetrics
+### DBSelectMetrics {#dbselectmetrics}
 
 Gibt die aggregierten Daten einer Metrik zurück.
 
 Die Metriken werden jedes Mal aktualisiert, wenn 100 Blöcke generiert werden. Und die aggregierten Daten werden in einem 1-Tages-Zyklus gespeichert.
 
-#### Syntax
+**Syntax**
 
 ```
 DBSelectMetrics(metric string, timeInterval string, aggregateFunc string) array
@@ -913,7 +913,7 @@ DBSelectMetrics(metric string, timeInterval string, aggregateFunc string) array
 
     Aggregatfunktion. Zum Beispiel, `max`, `min`, `avg`.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var rows array
@@ -928,11 +928,11 @@ while(i <Len(rows)) {
 
 
 
-### EcosysParam
+### EcosysParam {#ecosysparam}
 
 Gibt den Wert eines angegebenen Parameters in den Parametern der Ökosystemparametertabelle zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 EcosysParam(name string) string
@@ -943,7 +943,7 @@ EcosysParam(name string) string
 
   Parametername.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Println(EcosysParam("founder_account"))
@@ -951,11 +951,11 @@ Println(EcosysParam("founder_account"))
 
 
 
-### GetHistory
+### GetHistory {#gethistory}
 
 Gibt den Verlauf der Änderungen an Einträgen in einer angegebenen Tabelle zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 GetHistory(table string, id int) array
@@ -977,7 +977,7 @@ GetHistory(table string, id int) array
   
    Das ID-Feld im Array zeigt auf die ID der rollback_tx-Tabelle. block_id stellt die Block-ID dar, während block_time den Zeitstempel der Blockgenerierung darstellt.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var list array
@@ -990,11 +990,11 @@ if Len(list) > 0 {
 
 
 
-### GetHistoryRow
+### GetHistoryRow {#gethistoryrow}
 
 Gibt einen einzelnen Snapshot aus dem Änderungsverlauf eines angegebenen Eintrags in einer angegebenen Tabelle zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 GetHistoryRow(table string, id int, rollbackId int) map
@@ -1021,11 +1021,11 @@ GetHistoryRow(table string, id int, rollbackId int) map
   
 
 
-### GetColumnType
+### GetColumnType {#getcolumntype}
 
 Gibt den Datentyp eines angegebenen Felds in einer angegebenen Tabelle zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 GetColumnType(table, column string) string
@@ -1042,7 +1042,7 @@ GetColumnType(table, column string) string
 
   Folgende Typen können zurückgegeben werden: `text, varchar, number, money, double, bytes, json, datetime, double`.
 
-####  Beispiel
+**Beispiel**
 
 ```
 var coltype string
@@ -1051,11 +1051,11 @@ coltype = GetColumnType("members", "member_name")
 
 
 
-### Daten abrufen vonXLSX
+### Daten abrufen vonXLSX {#getdatafromxlsx}
 
 Gibt Daten aus XLSX-Tabellen zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 GetDataFromXLSX(binId int, line int, count int, sheet int) string
@@ -1075,7 +1075,7 @@ GetDataFromXLSX(binId int, line int, count int, sheet int) string
 
    Listennummer, beginnend standardmäßig bei 1.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var a array
@@ -1084,11 +1084,11 @@ a = GetDataFromXLSX(3, 12, 10, 1)
 
 
 
-### GetRowsCountXLSX
+### GetRowsCountXLSX {#getrowscountxlsx}
 
 Gibt die Anzahl der Zeilen in einer angegebenen XLSX-Datei zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 GetRowsCountXLSX(binId int, sheet int) int
@@ -1101,7 +1101,7 @@ GetRowsCountXLSX(binId int, sheet int) int
 
   List number, starting from 1 by default.
 
-#### Example
+**Beispiel**
 
 ```
 var count int
@@ -1110,10 +1110,10 @@ count = GetRowsCountXLSX(binid, 1)
 
 
 
-### LangRes
+### LangRes {#langres}
 
 Gibt eine mehrsprachige Ressource mit Namensbeschriftung für die Sprache lang zurück, die als zweistelliger Code angegeben ist, zum Beispiel: `en`, `zh`. Wenn für eine ausgewählte Sprache keine Sprache vorhanden ist, wird die Sprachressource des `en`-Labels zurückgegeben.,
-#### Syntax
+**Syntax**
 
 ```
 LangRes(label string, lang string) string
@@ -1126,7 +1126,7 @@ LangRes(label string, lang string) string
 
   Zweistelliger Sprachcode.
 
-#### Beispiel
+**Beispiel**
 
 ```
 warning LangRes("@1confirm", "en")
@@ -1135,11 +1135,11 @@ error LangRes("@1problems", "zh")
 
 
 
-### Block bekommen
+### Block bekommen {#getblock}
 
 Gibt relevante Informationen zu einem angegebenen Block zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 GetBlock(blockID int64) map
@@ -1162,7 +1162,7 @@ GetBlock(blockID int64) map
   
       Die Kontoadresse des Verifizierungsknotens hat den Block generiert.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var b map
@@ -1172,11 +1172,11 @@ Println(b)
 
 
 
-### DBEinfügen
+### DBEinfügen {#dbinsert}
 
 Fügt einer angegebenen Tabelle einen Eintrag hinzu und gibt die Eintrags-ID zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 DBInsert(table string, params map) int
@@ -1190,18 +1190,18 @@ DBInsert(table string, params map) int
 
    Ein Array von Objekten, bei dem Schlüssel Feldnamen und Werte eingefügte Werte sind.
 
-#### Beispiel
+**Beispiel**
 
 ```
 DBInsert("mytable", {name: "John Smith", amount: 100})
 ```
 
 
-### DB-Update
+### DB-Update {#dbupdate}
 
 Ändert den Spaltenwert einer angegebenen Eintrags-ID in einer angegebenen Tabelle. Wenn die Eintrags-ID nicht in der Tabelle vorhanden ist, wird ein Fehler zurückgegeben.
 
-#### Syntax
+**Syntax**
 
 ```
 DBUpdate(tblname string, id int, params map)
@@ -1218,7 +1218,7 @@ DBUpdate(tblname string, id int, params map)
 
    Ein Array von Objekten, bei dem Schlüssel Feldnamen und Werte neue Werte nach Änderungen sind.
 
-#### Beispiel
+**Beispiel**
 
 ```
 DBUpdate("mytable", myid, {name: "John Smith", amount: 100})
@@ -1226,11 +1226,11 @@ DBUpdate("mytable", myid, {name: "John Smith", amount: 100})
 
 
 
-### DB-UpdateExt
+### DB-UpdateExt {#dbupdateext}
 
 Ändert den Wert einer Spalte in einer angegebenen Tabelle, die der Abfragebedingung entspricht.
 
-#### Syntax
+**Syntax**
 
 ```
 DBUpdateExt(tblname string, where map, params map)
@@ -1249,7 +1249,7 @@ DBUpdateExt(tblname string, where map, params map)
 
 Ein Array von Objekten, bei dem Schlüssel Feldnamen und Werte neue Werte nach Änderungen sind.
 
-#### Beispiel
+**Beispiel**
 
 ```
 DBUpdateExt("mytable", {id: $key_id, ecosystem: $ecosystem_id}, {name: "John Smith", amount: 100})
@@ -1257,11 +1257,11 @@ DBUpdateExt("mytable", {id: $key_id, ecosystem: $ecosystem_id}, {name: "John Smi
 
 
 
-### Spalte löschen
+### Spalte löschen {#delcolumn}
 
 Löscht ein Feld in einer angegebenen Tabelle, das keine Datensätze enthält.
 
-#### Syntax
+**Syntax**
 
 ```
 DelColumn(tblname string, column string)
@@ -1283,11 +1283,11 @@ DelColumn("mytable", "mycolumn")
   
 
 
-### Spalte löschen
+### Spalte löschen {#deltable}
 
 Löscht eine angegebene Tabelle, die keine Datensätze enthält.
 
-#### Syntax
+**Syntax**
 
 ```
 DelTable(tblname string)
@@ -1298,7 +1298,7 @@ DelTable(tblname string)
 
   Table name.
 
-#### Example
+**Beispiel***
 
 ```
 DelTable("mytable")
@@ -1306,11 +1306,11 @@ DelTable("mytable")
 
 
 
-### Anhängen
+### Anhängen {#append}
 
 Fügt einen beliebigen Werttyp in das src-Array ein.
 
-#### Syntax
+**Syntax**
 
 Append(src array, val anyType) array
 
@@ -1321,7 +1321,7 @@ Append(src array, val anyType) array
 
   Der einzufügende Wert.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var list array
@@ -1330,11 +1330,11 @@ list = Append(list, "new_val")
 
 
 
-### Beitreten
+### Beitreten {#join}
 
 Kombiniert Elemente des in-Arrays zu einer Zeichenfolge mit einem angegebenen Sep-Trennzeichen.
 
-#### Syntax
+**Syntax**
 
 ```
 Join(in array, sep string) string
@@ -1348,7 +1348,7 @@ Join(in array, sep string) string
 
   Separator.
 
-#### Beispiel
+**Beispiel**
 
 ```
  var val string, myarr array
@@ -1359,11 +1359,11 @@ Join(in array, sep string) string
 
 
 
-### Teilt
+### Teilt {#split}
 
 Verwendet das Trennzeichen sep, um den in-String in Elemente aufzuteilen und sie in ein Array einzufügen.
 
-#### Syntax
+**Syntax**
 
 ```
 Split(in string, sep string) array
@@ -1376,7 +1376,7 @@ Split(in string, sep string) array
 
    Separator.
 
-#### Example
+**Beispiel***
 
 ```
 var myarr array
@@ -1385,11 +1385,11 @@ myarr = Split("first,second,third", ",")
 
 
 
-### Len
+### Len {#len}
 
 Gibt die Anzahl der Elemente in einem angegebenen Array zurück.
 
-#### Syntax
+**Syntax**
 
  
 
@@ -1401,7 +1401,7 @@ Len(val array) int
 
    Array.
 
-#### Example
+**Beispiel***
 
 ```
 if Len(mylist) == 0 {
@@ -1411,11 +1411,11 @@ if Len(mylist) == 0 {
 
 
 
-### Reihe
+### Reihe {#row}
 
  Der Listenparameter darf in diesem Fall nicht angegeben werden. Gibt das erste Objekt-Array in der Array-Liste zurück. Wenn die Liste leer ist, wird ein leeres Ergebnis zurückgegeben. Diese Funktion wird meistens in Verbindung mit der Funktion [DBFind](#dbfind) verwendet. Bei Verwendung dieser Funktion können Sie keine Parameter angeben.
 
-#### Syntax
+**Syntax**
 
 ```
  Row(list array) map
@@ -1425,7 +1425,7 @@ if Len(mylist) == 0 {
 
 Das Array von Objekten, das von der DBFind-Funktion zurückgegeben wird.
 
-#### Beispiel
+**Beispiel**
 
 ```
  var ret map
@@ -1435,11 +1435,11 @@ Das Array von Objekten, das von der DBFind-Funktion zurückgegeben wird.
 
 
 
-### Ein
+### Ein {#one}
 
  Gibt den Feldwert des ersten Objekt-Arrays in der Array-Liste zurück. Wenn das Listenarray leer ist, wird nil zurückgegeben. Es wird meistens in Verbindung mit der Funktion [DBFind](#dbfind) verwendet. Bei Verwendung dieser Funktion können Sie keine Parameter angeben.
 
-#### Syntax
+**Syntax**
 
 ```
 One(list array, column string) string
@@ -1453,7 +1453,7 @@ One(list array, column string) string
 
   Feldname.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var ret string
@@ -1465,11 +1465,11 @@ if ret != nil {
 
 
 
-### Holen Sie sich Kartenschlüssel
+### Holen Sie sich Kartenschlüssel {#getmapkeys}
 
 Gibt das Schlüsselarray im Objektarray zurück.
 
-#### Syntax
+**Syntax**
 
  
 
@@ -1481,7 +1481,7 @@ GetMapKeys(val map) array
 
     Objekt-Array.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var val map
@@ -1493,11 +1493,11 @@ arr = GetMapKeys(val)
 
 
 
-### Sortierte Schlüssel
+### Sortierte Schlüssel {#sortedkeys}
 
 Gibt ein sortiertes Schlüsselarray im Objektarray zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 SortedKeys(val map) array
@@ -1508,7 +1508,7 @@ SortedKeys(val map) array
 
     Objeckt array.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var val map
@@ -1520,11 +1520,11 @@ arr = SortedKeys(val)
 
 
 
-### Anrufvertrag
+### Anrufvertrag {#callcontract}
 
 Ruft den Vertrag mit einem angegebenen Namen auf. Alle Parameter des Datenabschnitts im Vertrag müssen in einem Objektarray enthalten sein. Diese Funktion gibt den Wert zurück, der der Variable **$result** durch einen bestimmten Vertrag zugewiesen wurde.
 
-#### Syntax
+**Syntax**
 
 ```
 CallContract(name string, params map)
@@ -1538,7 +1538,7 @@ CallContract(name string, params map)
 
    Ein assoziatives Array der Vertragseingabedaten.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var par map
@@ -1548,11 +1548,11 @@ CallContract("MyContract", par)
 
 
 
-### Vertragszugang
+### Vertragszugang {#contractaccess}
 
 Überprüft, ob der Name des ausgeführten Vertrags mit einem der in den Parametern aufgeführten Namen übereinstimmt. Normalerweise wird es verwendet, um den Vertragszugriff auf Tabellen zu steuern. Beim Bearbeiten von Tabellenfeldern oder beim Einfügen und Hinzufügen neuer Spaltenfelder im Berechtigungsabschnitt der Tabelle geben Sie diese Funktion bitte in den Berechtigungsfeldern an.
 
-#### Syntax
+**Syntax**
 
   
 
@@ -1564,7 +1564,7 @@ ContractAccess(name string, [name string]) bool
 
     Vertragsname.
 
-#### Beispiel
+**Beispiel**
 
 ```
 ContractAccess("MyContract")
@@ -1573,13 +1573,13 @@ ContractAccess("MyContract","SimpleContract")
 
 
 
-### Vertragsbedingungen
+### Vertragsbedingungen {#contractconditions}
 
 Ruft den Abschnitt Bedingungen im Vertrag mit einem angegebenen Namen auf.
 
 Für diese Art von Verträgen muss der Datenabschnitt leer sein. Wenn der Abschnitt Bedingungen ohne Fehler ausgeführt wird, gibt er wahr zurück. Kommt es bei der Ausführung zu einem Fehler, wird auch der Muttervertrag aufgrund des Fehlers gekündigt. Diese Funktion dient in der Regel dazu, den Zugriff des Vertrags auf Tabellen zu steuern und kann bei der Bearbeitung von Systemtabellen in den Berechtigungsfeldern aufgerufen werden.
 
-#### Syntax
+**Syntax**
 
 ```
 ContractConditions(name string, [name string]) bool
@@ -1590,7 +1590,7 @@ ContractConditions(name string, [name string]) bool
 
     Vertragsname.
 
-#### Beispiel
+**Beispiel**
 
 ```
 ContractConditions("MainCondition")
@@ -1598,11 +1598,11 @@ ContractConditions("MainCondition")
 
 
 
-### Eval Zustand
+### Eval Zustand {#evalcondition}
 
 Ruft den Wert des condfield-Felds im Datensatz mit einem 'name'-Feld aus der tablename-Tabelle ab und prüft die Bedingungen des condfield-Feldwerts.
 
-#### Syntax
+**Syntax**
 
 ```
 EvalCondition(tablename string, name string, condfield string)
@@ -1619,7 +1619,7 @@ EvalCondition(tablename string, name string, condfield string)
 
     Der Name des Felds, dessen Bedingungen überprüft werden müssen.
 
-#### Beispiel
+**Beispiel**
 
 ```
 EvalCondition(`menu`, $Name, `conditions`)
@@ -1627,11 +1627,11 @@ EvalCondition(`menu`, $Name, `conditions`)
 
 
 
-### Vertrag per ID erhalten
+### Vertrag per ID erhalten {#getcontractbyid}
 
 Gibt seinen Vertragsnamen nach Vertrags-ID zurück. Wenn der Vertrag nicht gefunden wird, wird eine leere Zeichenfolge zurückgegeben.
 
-#### Syntax
+**Syntax**
 
 ```
 GetContractById(id int) string
@@ -1642,7 +1642,7 @@ GetContractById(id int) string
 
   Die Vertrags-ID in den Verträgen der Vertragstabelle.
 
-#### Beispiel
+**Beispiel**
 
 
 ```
@@ -1652,11 +1652,11 @@ name = GetContractById($IdContract)
 
 
 
-### Vertrag nach Namen abrufen
+### Vertrag nach Namen abrufen {#getcontractbyname}
 
 Diese Funktion gibt ihre Vertrags-ID nach Vertragsname zurück. Wenn der Vertrag nicht gefunden wird, wird Null zurückgegeben.
 
-#### Syntax
+**Syntax**
 
 ```
 GetContractByName(name string) int
@@ -1666,7 +1666,7 @@ GetContractByName(name string) int
 
     Der Vertragsname in der Vertragstabelle Contracts.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var id int
@@ -1675,13 +1675,13 @@ id = GetContractByName(`NewBlock`)
 
 
 
-### Rollenzugriff
+### Rollenzugriff {#roleaccess}
 
 Überprüft, ob die Rollen-ID des Vertragsaufrufers mit einer der im Parameter angegebenen IDs übereinstimmt.
 
 Mit dieser Funktion können Sie den Vertragszugriff auf Tabellen und andere Daten steuern.
 
-#### Syntax
+**Syntax**
 
  
 
@@ -1693,7 +1693,7 @@ RoleAccess(id int, [id int]) bool
 
     Role ID.
 
-#### Example
+**Beispiel***
 
 ```
 RoleAccess(1)
@@ -1702,11 +1702,11 @@ RoleAccess(1, 3)
 
 
 
-### Transaktionsinfo
+### Transaktionsinfo {#transactioninfo}
 
 Fragt Transaktionen anhand des angegebenen Hash-Werts ab und gibt Informationen über den ausgeführten Vertrag und seine Parameter zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 TransactionInfo(hash: string)
@@ -1737,7 +1737,7 @@ TransactionInfo(hash: string)
 
       ID des Blocks, der die Transaktion verarbeitet hat.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var out map
@@ -1746,11 +1746,11 @@ out = JSONDecode(TransactionInfo(hash))
 
 
 
-### Wurf
+### Wurf {#throw}
 
    Erzeugt einen Fehler vom Typ Ausnahme.
 
-#### Syntax
+**Syntax**
 
   
 
@@ -1774,7 +1774,7 @@ Throw(ErrorId string, ErrDescription string)
 {"type":"exception","error":"Error description","id":"Error ID"}
 ```
 
-#### Beispiel
+**Beispiel**
 
 ```
 Throw("Problem", "There is a problem")
@@ -1782,11 +1782,11 @@ Throw("Problem", "There is a problem")
 
 
 
-### Bedingung validieren
+### Bedingung validieren {#validatecondition}
 
    Versucht, die vom Bedingungsparameter angegebenen Bedingungen zu kompilieren. Tritt während des Kompiliervorgangs ein Fehler auf, wird ein Fehler generiert und der aufgerufene Vertrag beendet. Diese Funktion dient dazu, die Korrektheit des bedingten Formats zu überprüfen.
 
-#### Syntax
+**Syntax**
 
 ```
 ValidateCondition(condition string, state int)
@@ -1799,7 +1799,7 @@ ValidateCondition(condition string, state int)
 
      Ökosystem-ID. Wenn Sie die globale Bedingung überprüfen, geben Sie sie bitte als 0 an.
 
-#### Beispiel
+**Beispiel**
 
 ```
 ValidateCondition(`ContractAccess("@1MyContract")`, 1)
@@ -1807,11 +1807,11 @@ ValidateCondition(`ContractAccess("@1MyContract")`, 1)
 
 
 
-### Adresse bis ID
+### Adresse bis ID {#addresstoid}
 
 Gibt die entsprechende Kontoadresse nach Wallet-Adresse zurück. Wenn eine ungültige Adresse angegeben wird, wird '0' zurückgegeben.
 
-#### Syntax
+**Syntax**
 
 ```
 AddressToId(address string) int
@@ -1822,7 +1822,7 @@ AddressToId(address string) int
 
     Wallet address in `XXXX-...-XXXX` format or number format.
 
-#### Beispiel
+**Beispiel**
 
 ```
 wallet = AddressToId($Recipient)
@@ -1830,11 +1830,11 @@ wallet = AddressToId($Recipient)
 
 
 
-### ID zu Adresse
+### ID zu Adresse {#idtoaddress}
 
 Gibt die entsprechende Brieftaschenadresse nach Kontoadresse zurück. Wenn eine ungültige Adresse angegeben wird, wird die ungültige Adresse `invalid` zurückgegeben.
 
-#### Syntax
+**Syntax**
 
 ```
 IdToAddress(id int) string
@@ -1845,7 +1845,7 @@ IdToAddress(id int) string
 
     Kontoadresse.
 
-#### Beispiel
+**Beispiel**
 
 ```
 $address = IdToAddress($id)
@@ -1853,11 +1853,11 @@ $address = IdToAddress($id)
 
 
 
-### Pub zu ID
+### Pub zu ID {#pubtoid}
 
 Die Kontoadresse wird per öffentlichem Schlüssel im Hexadezimalformat zurückgegeben.
 
-#### Syntax
+**Syntax**
 
 ```
 PubToID(hexkey string) int
@@ -1868,7 +1868,7 @@ PubToID(hexkey string) int
 
     Der öffentliche Schlüssel im Hexadezimalformat.
 
-#### Beispiel
+**Beispiel**
 
   
 
@@ -1879,11 +1879,11 @@ wallet = PubToID("04fa5e78.....34abd6")
 
 
 
-### DekodierenBase64
+### DekodierenBase64 {#decodebase64}
 
 Gibt eine Zeichenfolge zurück, indem das base64-Format angegeben wird
 
-#### Syntax
+**Syntax**
 
 ```
 DecodeBase64(input string) string
@@ -1894,7 +1894,7 @@ DecodeBase64(input string) string
 
     String in base64 format.
 
-#### Beispiel
+**Beispiel**
 
 ```
 val = DecodeBase64(mybase64)
@@ -1902,11 +1902,11 @@ val = DecodeBase64(mybase64)
 
 
 
-### KodierenBase64
+### KodierenBase64 {#encodebase64}
 
 Gibt eine Zeichenfolge im Base64-Format zurück, indem eine Zeichenfolge angegeben wird.
 
-#### Syntax
+**Syntax**
 
 ```
 EncodeBase64(input string) string
@@ -1917,7 +1917,7 @@ EncodeBase64(input string) string
 
     Die zu codierende Zeichenfolge.
 
-#### Beispiel
+**Beispiel**
 
  
 
@@ -1928,11 +1928,11 @@ base64str = EncodeBase64("my text")
 
 
 
-### Schweben
+### Schweben {#float}
 
 Konvertiert eine ganze Zahl oder einen String in eine Gleitkommazahl.
 
-#### Syntax
+**Syntax**
 
 ```
 Float(val int|string) float
@@ -1943,7 +1943,7 @@ Float(val int|string) float
 
     Eine Ganzzahl oder Zeichenfolge.
 
-#### Beispiel
+**Beispiel**
 
 ```
 val = Float("567.989") + Float(232)
@@ -1951,11 +1951,11 @@ val = Float("567.989") + Float(232)
 
 
 
-### HexToBytes
+### HexToBytes {#hextobytes}
 
 Konvertiert eine Zeichenfolge im Hexadezimalformat in Bytes vom Typ Bytes.
 
-#### Syntax
+**Syntax**
 
 ```
   HexToBytes(hexdata string) bytes
@@ -1966,7 +1966,7 @@ Konvertiert eine Zeichenfolge im Hexadezimalformat in Bytes vom Typ Bytes.
 
    Eine Zeichenfolge im Hexadezimalformat.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var val bytes
@@ -1975,12 +1975,12 @@ val = HexToBytes("34fe4501a4d80094")
 
 
 
-### Geld formatieren
+### Geld formatieren {#formatmoney}
 
 Gibt den Zeichenfolgenwert von exp / 10 ^ Ziffer zurück.
 
 
-#### Syntax
+**Syntax**
 
   
 
@@ -1995,7 +1995,7 @@ FormatMoney(exp string, digit int) string
 
     Der Exponent (positiv oder negativ) von 10 im Ausdruck `Exp/10^digit`. Positive Werte bestimmen Nachkommastellen.
 
-#### Beispiel
+**Beispiel**
 
 ```
   s = FormatMoney("78236475917384", 0)
@@ -2003,12 +2003,12 @@ FormatMoney(exp string, digit int) string
 
 
 
-###  Zufällig
+### Zufällig {#random}
 ```
 Returns a random number between min and max (min <= result <max). Both min and max must be positive numbers.
 ```
 
-#### Syntax
+**Syntax**
 
  
 
@@ -2024,7 +2024,7 @@ Random(min int, max int) int
 
     Die Obergrenze von Zufallszahlen. Die generierte Zufallszahl ist kleiner als dieser Wert.
 
-#### Beispiel
+**Beispiel**
 
 ```
 i = Random(10,5000)
@@ -2032,11 +2032,11 @@ i = Random(10,5000)
 
 
 
-### Int
+### Int {#int}
 
 Konvertiert einen Wert im String-Format in eine ganze Zahl.
 
-#### Syntax
+**Syntax**
 
 ```
 Int(val string) int
@@ -2046,7 +2046,7 @@ Int(val string) int
 
     Eine Zahl im Zeichenfolgenformat.
 
-#### Beispiel
+**Beispiel**
 
 ```
 mystr = "-37763499007332"
@@ -2055,11 +2055,11 @@ val = Int(mystr)
 
 
 
-### Hash
+### Hash {#hash}
 
   Gibt den Hash eines angegebenen Byte-Arrays oder -Strings zurück, der von der Systemverschlüsselungsbibliothek crypto generiert wird.
 
-#### Syntax
+**Syntax**
 
  
 
@@ -2071,7 +2071,7 @@ Hash(val interface{}) string, error
 
     Ein String- oder Byte-Array.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var hash string
@@ -2080,11 +2080,11 @@ hash = Hash("Test message")
 
 
 
-### Sha256
+### Sha256 {#sha256}
 
   Gibt den SHA256-Hash einer angegebenen Zeichenfolge zurück.
 
-#### Syntax
+**Syntax**
 
  
 
@@ -2096,7 +2096,7 @@ Sha256(val string) string
 
     Eine Zeichenfolge erfordert die Sha256-Hash-Operation.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var sha string
@@ -2105,11 +2105,11 @@ sha = Sha256("Test message")
 
 
 
-### Str
+### Str {#str}
 
 Wandelt eine Integer-Int- oder Float-Float-Zahl in einen String um.
 
-#### Syntax
+**Syntax**
 
   
 
@@ -2121,7 +2121,7 @@ Str(val int|float) string
 
     Eine Integer- oder Gleitkommazahl.
 
-#### Beispiel
+**Beispiel**
 
 ```
 myfloat = 5.678
@@ -2130,11 +2130,11 @@ val = Str(myfloat)
 
 
 
-### JSONEncode
+### JSONEncode {#jsonencode}
 
 Konvertiert eine Zahl, einen String oder ein Array in einen String im JSON-Format.
 
-#### Syntax
+**Syntax**
 
 ```
 JSONEncode(src int|float|string|map|array) string
@@ -2145,7 +2145,7 @@ JSONEncode(src int|float|string|map|array) string
 
     Zu konvertierende Daten.
 
-#### Beispiel
+**Beispiel**
 
   
 
@@ -2158,11 +2158,11 @@ json = JSONEncode(mydata)
 
 
 
-### JSONEncodeIndent
+### JSONEncodeIndent {#jsonencodeindent}
 
 Uses the specified indentation to convert a number, string, or array to a string in JSON format.
 
-#### Syntax
+**Syntax**
 
 ```
 JSONEncodeIndent(src int|float|string|map|array, indent string) string
@@ -2177,7 +2177,7 @@ JSONEncodeIndent(src int|float|string|map|array, indent string) string
 
      Die Zeichenfolge wird als Einrückung verwendet.
 
-#### Beispiel
+**Beispiel**
 
   
 
@@ -2190,11 +2190,11 @@ json = JSONEncodeIndent(mydata, "\t")
 
 
 
-### JSONDecode
+### JSONDecode {#jsondecode}
 
 Konvertiert einen String im JSON-Format in eine Zahl, einen String oder ein Array.
 
-#### Syntax
+**Syntax**
 
 ```
 JSONDecode(src string) int|float|string|map|array
@@ -2205,7 +2205,7 @@ JSONDecode(src string) int|float|string|map|array
 
     Eine Zeichenfolge, die Daten im JSON-Format enthält.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var mydata map
@@ -2214,11 +2214,11 @@ mydata = JSONDecode(`{"name": "John Smith", "company": "Smith's company"}`)
 
 
 
-### HasPrefix
+### HasPrefix {#hasprefix}
 
 Überprüft, ob die Zeichenfolge mit einer angegebenen Zeichenfolge beginnt.
 
-#### Syntax
+**Syntax**
 
   
 
@@ -2238,7 +2238,7 @@ HasPrefix(s string, prefix string) bool
 
    Wenn die Zeichenfolge mit einer angegebenen Zeichenfolge beginnt, wird `true` zurückgegeben.
 
-#### Beispiel
+**Beispiel**
 
 ```
 if HasPrefix($Name, `my`) {
@@ -2248,10 +2248,10 @@ if HasPrefix($Name, `my`) {
 
 
 
-### Enthält
+### Enthält {#contains}
 
 Überprüft, ob die Zeichenfolge eine angegebene Teilzeichenfolge enthält.
-#### Syntax
+**Syntax**
 
  
 
@@ -2271,7 +2271,7 @@ Contains(s string, substr string) bool
 
    Wenn der String den Teilstring enthält, gibt er `true` zurück.
 
-#### Beispiel
+**Beispiel**
 
 ```
 if Contains($Name, `my`) {
@@ -2281,11 +2281,11 @@ if Contains($Name, `my`) {
 
 
 
-### Ersetzen
+### Ersetzen {#replace}
 
 Ersetzt alt (die alte Zeichenfolge) durch neu (die neue Zeichenfolge) in der Zeichenfolge.
 
-#### Syntax
+**Syntax**
 
 ```
 Replace(s string, old string, new string) string
@@ -2304,18 +2304,18 @@ Replace(s string, old string, new string) string
 
      Die neue Saite.
 
-#### Beispiel
+**Beispiel**
 ```
 s = Replace($Name, `me`, `you`)
 ```
 
 
 
-### Größe
+### Größe {#size}
 
 Gibt die Anzahl der Bytes in einer angegebenen Zeichenfolge zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 Size(val string) int
@@ -2326,7 +2326,7 @@ Size(val string) int
 
     Ein Faden.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var len int
@@ -2335,7 +2335,7 @@ len = Size($Name)
 
 
 
-### Sprintf
+### Sprintf {#sprintf}
 
 Diese Funktion erstellt eine Zeichenfolge unter Verwendung der angegebenen Vorlage und Parameter.
 
@@ -2344,7 +2344,7 @@ Verfügbare Platzhalter:
 * `%s` (string)
 * `%f` (float)
 * `%v` (any type)
-#### Syntax
+**Syntax**
 
 ```
 Sprintf(pattern string, val ...) string
@@ -2355,7 +2355,7 @@ Sprintf(pattern string, val ...) string
 
     Eine Zeichenfolgenvorlage.
 
-#### Beispiel
+**Beispiel**
 
 ```
 out = Sprintf("%s=%d", mypar, 6448)
@@ -2363,7 +2363,7 @@ out = Sprintf("%s=%d", mypar, 6448)
 
 
 
-### Substr
+### Substr {#substr}
 
 Gibt die Teilzeichenfolge zurück, die aus einer angegebenen Zeichenfolge erhalten wird, beginnend mit dem Offset offset (standardmäßig von 0 berechnet), und die maximale Länge ist auf length beschränkt.
 
@@ -2371,7 +2371,7 @@ Wenn der Offset oder die Länge kleiner als Null oder der Offset größer als di
 
 Wenn die Summe aus Offset und Länge größer als die Stringgröße ist, wird der Teilstring ab dem Offset bis zum Ende des Strings zurückgegeben.
 
-#### Syntax
+**Syntax**
 
 ```
 Substr(s string, offset int, length int) string
@@ -2390,7 +2390,7 @@ Substr(s string, offset int, length int) string
 
     Länge des Teilstrings.
 
-#### Beispiel
+**Beispiel**
 
 ```
 var s string
@@ -2399,11 +2399,11 @@ s = Substr($Name, 1, 10)
 
 
 
-### ToLower
+### ToLower {#tolower}
 
 Gibt eine angegebene Zeichenfolge in Kleinbuchstaben zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 ToLower(val string) string
@@ -2414,7 +2414,7 @@ ToLower(val string) string
 
     Ein Faden.
 
-#### Beispiel
+**Beispiel**
 
 ```
 val = ToLower(val)
@@ -2422,11 +2422,11 @@ val = ToLower(val)
 
 
 
-### ToUpper
+### ToUpper {#toupper}
 
 Gibt eine angegebene Zeichenfolge in Großbuchstaben zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 ToUpper(val string) string
@@ -2437,7 +2437,7 @@ ToUpper(val string) string
 
     Ein Faden.
 
-#### Beispiel
+**Beispiel**
 
 ```
 val = ToUpper(val)
@@ -2445,11 +2445,11 @@ val = ToUpper(val)
 
 
 
-### TrimSpace
+### TrimSpace {#trimspace}
 
 Löscht die führenden und nachfolgenden Leerzeichen, Tabulatoren und Zeilenumbrüche einer angegebenen Zeichenfolge.
 
-#### Syntax
+**Syntax**
 
 ```
 TrimSpace(val string) string
@@ -2460,7 +2460,7 @@ TrimSpace(val string) string
 
     Ein Faden.
 
-#### Beispiel
+**Beispiel**
 
  
 
@@ -2471,11 +2471,11 @@ val = TrimSpace(" mystr ")
 
 
 
-### Boden
+### Boden {#floor}
 
 Gibt den größten ganzzahligen Wert zurück, der kleiner oder gleich einer angegebenen Zahl, Gleitkommazahl und Zeichenfolge ist.
 
-#### Syntax
+**Syntax**
 
 ```
 Floor(x float|int|string) int
@@ -2485,7 +2485,7 @@ Floor(x float|int|string) int
 
     Eine Zahl, eine Gleitkommazahl und eine Zeichenfolge.
 
-#### Beispiel
+**Beispiel**
 
 ```
 val = Floor(5.6) // returns 5
@@ -2493,11 +2493,11 @@ val = Floor(5.6) // returns 5
 
 
 
-### Protokoll
+### Protokoll {#log}
 
 Gibt den natürlichen Logarithmus einer angegebenen Zahl, Gleitkommazahl und Zeichenfolge zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 Log(x float|int|string) float
@@ -2508,7 +2508,7 @@ Log(x float|int|string) float
 
     Eine Zahl, eine Gleitkommazahl und eine Zeichenfolge.
 
-#### Beispiel
+**Beispiel**
 
 ```
 val = Log(10)
@@ -2516,11 +2516,11 @@ val = Log(10)
 
 
 
-### Protokoll10
+### Protokoll10 {#log10}
 
 Gibt den Basis-10-Logarithmus einer angegebenen Zahl, Gleitkommazahl und Zeichenfolge zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 Log10(x float|int|string) float
@@ -2531,7 +2531,7 @@ Log10(x float|int|string) float
 
     A number, float number, and string.
 
-#### Beispiel
+**Beispiel**
 
  
 
@@ -2541,11 +2541,11 @@ val = Log10(100)
 
 
 
-### Puh
+### Puh {#pow}
 
 Gibt die angegebene Basis zur angegebenen Potenz (xy) zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 Pow(x float|int|string, y float|int|string) float
@@ -2560,18 +2560,18 @@ Pow(x float|int|string, y float|int|string) float
 
     Exponent.
 
-#### Beispiel
+**Beispiel**
 
 ```
 val = Pow(2, 3)
 
 ```
 
-### Runde
+### Runde {#round}
 
 Gibt den Wert einer angegebenen Zahl gerundet auf die nächste ganze Zahl zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 Round(x float|int|string) int
@@ -2582,13 +2582,13 @@ Round(x float|int|string) int
 
     Eine Zahl.
 
-#### Beispiel
+**Beispiel**
 
 ```
 val = Round(5.6)
 ```
 
-### Quadrat
+### Quadrat {#sqrt}
 
 Gibt die Quadratwurzel einer angegebenen Zahl zurück.
 
@@ -2601,7 +2601,7 @@ Sqrt(x float|int|string) float
 
     Eine Zahl.
 
-#### Beispiel
+**Beispiel**
 
 ```
 val = Sqrt(225)
@@ -2609,11 +2609,11 @@ val = Sqrt(225)
 
 
 
-### StringToBytes
+### StringToBytes {#stringtobytes}
 
 Konvertiert einen String in Bytes.
 
-#### Syntax
+**Syntax**
 
 ```
 StringToBytes(src string) bytes
@@ -2624,7 +2624,7 @@ StringToBytes(src string) bytes
 
     Ein Faden.
 
-#### Beispiel
+**Beispiel**
 
  
 
@@ -2635,11 +2635,11 @@ b = StringToBytes("my string")
 
 
 
-### BytesToString
+### BytesToString {#bytestostring}
 
 Konvertiert Bytes in Strings.
 
-#### Syntax
+**Syntax**
 
 ```
 BytesToString(src bytes) string
@@ -2650,7 +2650,7 @@ BytesToString(src bytes) string
 
     Byte.
 
-#### Biespiel
+**Beispiel**
 
 ```
 var s string
@@ -2659,11 +2659,11 @@ s = BytesToString($Bytes)
 
 
 
-### SysParamString
+### SysParamString {#sysparamstring}
 
 Gibt den Wert eines angegebenen Plattformparameters zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 SysParamString(name string) string
@@ -2674,7 +2674,7 @@ SysParamString(name string) string
 
     Parametername.
 
-#### Biespiel
+**Beispiel**
 
 ```
 url = SysParamString(`blockchain_url`)
@@ -2682,11 +2682,11 @@ url = SysParamString(`blockchain_url`)
 
 
 
-### SysParamInt
+### SysParamInt {#sysparamint}
 
 Gibt den Wert eines angegebenen Plattformparameters in Form einer Zahl zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 SysParamInt(name string) int
@@ -2697,7 +2697,7 @@ SysParamInt(name string) int
 
     Parametername.
 
-#### Biespiel
+**Beispiel**
 
 ```
 maxcol = SysParam(`max_columns`)
@@ -2705,11 +2705,11 @@ maxcol = SysParam(`max_columns`)
 
 
 
-### DBUpdateSysParam
+### DBUpdateSysParam {#dbupdatesysparam}
 
 Aktualisiert den Wert und die Bedingungen eines Plattformparameters. Wenn Sie den Wert oder die Bedingungen nicht ändern müssen, geben Sie im entsprechenden Parameter bitte eine leere Zeichenfolge an.
 
-#### Syntax
+**Syntax**
 
 ```
 DBUpdateSysParam(name, value, conditions string)
@@ -2728,18 +2728,18 @@ DBUpdateSysParam(name, value, conditions string)
 
      Neue Bedingungen für die Aktualisierung eines Parameters.
 
-#### Beispiel
+**Beispiel**
 
 ```
 DBUpdateSysParam(`fuel_rate`, `400000000000`, ``)
 
 ```
 
-### UpdateNotifications
+### UpdateNotifications {#updatenotifications}
 
 Ruft die Benachrichtigungsliste eines angegebenen Schlüssels aus der Datenbank ab und sendet die erhaltene Benachrichtigung an Centrifugo.
 
-#### Syntax
+**Syntax**
 
 ```
 UpdateNotifications(ecosystemID int, keys int...)
@@ -2754,7 +2754,7 @@ UpdateNotifications(ecosystemID int, keys int...)
 
     Eine durch Kommas getrennte Liste von Kontoadressen. Oder Sie können ein Array verwenden, um eine Liste mit Kontoadressen anzugeben.
 
-#### Beispiel
+**Beispiel**
 
 ```
 UpdateNotifications($ecosystem_id, $key_id, 23345355454, 35545454554)
@@ -2763,12 +2763,12 @@ UpdateNotifications(1, [$key_id, 23345355454, 35545454554])
 
 
 
-### UpdateRolesNotifications
+### UpdateRolesNotifications {#updaterolesnotifications}
 
 Ruft die Benachrichtigungsliste aller Kontoadressen einer angegebenen Rollen-ID in der Datenbank ab und sendet die erhaltene Benachrichtigung an Centrifugo.
 
 
-#### Syntax
+**Syntax**
 
 ```
 UpdateRolesNotifications(ecosystemID int, roles int ...)
@@ -2783,21 +2783,21 @@ UpdateRolesNotifications(ecosystemID int, roles int ...)
 
     Eine durch Kommas getrennte Liste von Rollen-IDs. Oder Sie können ein Array verwenden, um eine Liste von Rollen-IDs anzugeben.
 
-#### Beispiel
+**Beispiel**
 
 ```
 UpdateRolesNotifications(1, 1, 2)
 
 ```
 
-### HTTPRequest
+### HTTPRequest {#httprequest}
 
 Sendet HTTP-Anforderungen an die angegebene Adresse.
 > Hinweis
 
 > Diese Funktion ist nur in CLB-Verträgen nutzbar.
 
-#### Syntax
+**Syntax**
 
 ```
 HTTPRequest(url string, method string, heads map, pars map) string
@@ -2820,7 +2820,7 @@ HTTPRequest(url string, method string, heads map, pars map) string
 
     Parameter anfordern.
 
-#### Biespiel
+**Beispiel**
 
 ```
 var ret string
@@ -2835,7 +2835,7 @@ json = JSONToMap(ret)
 
 
 
-### HTTPPostJSON
+### HTTPPostJSON {#httppostjson}
 
 Diese Funktion ähnelt der HTTPRequest-Funktion, sendet jedoch eine POST-Anforderung und die Anforderungsparameter sind Zeichenfolgen.
 
@@ -2843,7 +2843,7 @@ Diese Funktion ähnelt der HTTPRequest-Funktion, sendet jedoch eine POST-Anforde
 
 > Diese Funktion ist nur in CLB-Verträgen nutzbar
 
-#### Syntax
+**Syntax**
 
 ```
 HTTPPostJSON(url string, heads map, pars string) string
@@ -2861,7 +2861,7 @@ HTTPPostJSON(url string, heads map, pars string) string
 
     Fordern Sie Parameter als JSON-String an.
 
-####  Biespiel
+**Beispiel**
 
 ```
 var ret string
@@ -2875,11 +2875,11 @@ json = JSONToMap(ret)
 
 
 
-### BlockTime
+### BlockTime {#blocktime}
 
 Gibt die Generierungszeit des Blocks im SQL-Format zurück.
 
-####   Syntax
+**Syntax**
 
 ```
 BlockTime()
@@ -2887,7 +2887,7 @@ BlockTime()
 
 
 
-#### Biespiel
+**Beispiel**
 
 ```
 var mytime string
@@ -2897,11 +2897,11 @@ DBInsert("mytable", myid, {time: mytime})
 
 
 
-### Terminzeit
+### Terminzeit {#datetime}
 
 Konvertiert den Zeitstempel unixtime in einen String im Format YYYY-MM-DD HH:MI:SS.
 
-#### Syntax
+**Syntax**
 
 ```
 DateTime(unixtime int) string
@@ -2909,18 +2909,18 @@ DateTime(unixtime int) string
 
 
 
-#### Biespiel
+**Beispiel**
 
 ```
 DateTime(1532325250)
 
 ```
 
-### UnixDateTime
+### UnixDateTime {#unixdatetime}
 
 Konvertiert einen String im Format JJJJ-MM-TT HH:MI:SS in einen Zeitstempel unixtime
 
-#### Syntax
+**Syntax**
 
 ```
 UnixDateTime(datetime string) int
@@ -2928,7 +2928,7 @@ UnixDateTime(datetime string) int
 
 
 
-#### Biespiel
+**Beispiel**
 
 ```
 UnixDateTime("2018-07-20 14:23:10")
@@ -2936,13 +2936,13 @@ UnixDateTime("2018-07-20 14:23:10")
 
 
 
-### OBS erstellen
+### OBS erstellen {#createobs}
 
 Erstellt einen untergeordneten CLB.
 
 Diese Funktion kann nur im Master-CLB-Modus verwendet werden.
 
-#### Syntax
+**Syntax**
 
 ```
 CreateOBS(OBSName string, DBUser string, DBPassword string, OBSAPIPort int)
@@ -2965,20 +2965,20 @@ CreateOBS(OBSName string, DBUser string, DBPassword string, OBSAPIPort int)
 
     Der Port der API-Anforderung.
 
-#### Biespiel
+**Beispiel**
 
 ```
 CreateOBS("obsname", "obsuser", "obspwd", 8095)
 
 ```
 
-### GetOBSList
+### GetOBSList {#getobslist}
 
 Gibt die Liste der untergeordneten CLBs zurück.
 
 Diese Funktion kann nur im Master-CLB-Modus verwendet werden.
 
-#### Syntax
+**Syntax**
 
 ```
 GetOBSList()
@@ -2989,13 +2989,13 @@ GetOBSList()
 
 Ein Array von Objekten, wobei der Schlüssel der CLB-Name und der Wert der Prozessstatus ist.
 
-### LaufOBS
+### LaufOBS {#runobs}
 
 Ein Prozess, der den CLB ausführt.
 
 Diese Funktion kann nur im Master-CLB-Modus verwendet werden.
 
-#### Syntax
+**Syntax**
 
 ```
 RunOBS(OBSName string)
@@ -3008,13 +3008,13 @@ RunOBS(OBSName string)
 
    Es darf nur Buchstaben und Zahlen enthalten, das Leerzeichen darf nicht verwendet werden.
 
-### StoppenOBS
+### StoppenOBS {#stopobs}
 
 Stoppt den Prozess eines angegebenen CLB.
 
 Diese Funktion kann nur im Master-CLB-Modus verwendet werden.
 
-#### Syntax
+**Syntax**
 
 ```
 StopOBS(OBSName string)
@@ -3027,13 +3027,13 @@ StopOBS(OBSName string)
 
    Es darf nur Buchstaben und Zahlen enthalten, das Leerzeichen darf nicht verwendet werden.
 
-### LöschenOBS
+### LöschenOBS {#removeobs}
 
 Löscht den Prozess eines angegebenen CLB.
 
 Diese Funktion kann nur im Master-CLB-Modus verwendet werden.
 
-#### Syntax
+**Syntax**
 
 ```
 RemoveOBS(OBSName string)
@@ -3046,18 +3046,18 @@ CLB-Name.
 
 Es darf nur Buchstaben und Zahlen enthalten, das Leerzeichen darf nicht verwendet werden.
 
-## Systemverträge
+## Systemverträge {#system-contracts}
 
 Systemverträge werden standardmäßig erstellt, wenn die IBax-Blockchain-Plattform gestartet wird. Alle diese Verträge wurden im ersten Ökosystem erstellt. Aus diesem Grund müssen Sie ihre vollständigen Namen angeben, wenn Sie sie aus anderen Ökosystemen aufrufen, z. B. `@1NewContract`.
 
-### Neues Ökosystem
+### Neues Ökosystem {#newecosystem}
 
 Dieser Vertrag schafft ein neues Ökosystem. Um die ID des erstellten Ökosystems zu erhalten, müssen Sie das in [txstatus](../reference/api2.md#txstatus) zurückgegebene Ergebnisfeld zitieren.
 
 Parameter:
    * Zeichenfolge **Name** - Name des Ökosystems. Es kann später geändert werden.
    
-### Ökosystemname-bearbeiten
+### Ökosystemname-bearbeiten {#editecosystemname}
 
 Ändert den Namen des Ökosystems in der Tabelle 1_ecosystems, das nur im ersten Ökosystem existiert.
 
@@ -3065,7 +3065,7 @@ Parameters:
   * **EcosystemID** int - changes the name of the ecosystem ID;
   * **NewName** string - new name of the ecosystem.
 
-### Neuer Vertrag
+### Neuer Vertrag {#newcontract}
 
 Erstellt einen neuen Vertrag im aktuellen Ökosystem.
 
@@ -3075,7 +3075,7 @@ Parameters:
   * **Conditions** string - die Vertragsbedingungen ändert;
   * **TokenEcosystem** int "optional" - Ökosystem-ID. Es bestimmt, welches Token für Transaktionen verwendet wird, wenn der Vertrag aktiviert wird.
 
-### Vertrag bearbeiten
+### Vertrag bearbeiten {#editcontract}
 
 Bearbeitet den Vertrag im aktuellen Ökosystem.
 
@@ -3084,21 +3084,21 @@ Parameters:
   * **Value** Zeichenfolge "optional" - Quellcode des Vertrags;
   * **Conditions** string "optional" - ändert die Vertragsbedingungen.
 
-### Geldbörse binden
+### Geldbörse binden {#bindwallet}
 Binden des Vertrags an die Wallet-Adresse im aktuellen Ökosystem. Nach Zustandekommen des Vertrages wird die Vertragsabwicklungsgebühr unter dieser Adresse bezahlt.
 
 Parameters:
   * **Id** int - die zu bindende Vertrags-ID.
   * **WalletId** string "optional" - die an den Vertrag gebundene Wallet-Adresse.
 
-### Wallet entbinden
+### Wallet entbinden {#unbindwallet}
 
 Lösen des Vertrags von der Wallet-Adresse im aktuellen Ökosystem. Nur vertragsgebundene Adressen können entbunden werden. Nach dem Entbinden des Vertrages zahlen Benutzer, die den Vertrag ausführen, die Ausführungsgebühr.
 
 Parameters:
   * **Id** int - die ID des zu bindenden Vertrags.
 
-### NeuerParameter
+### NeuerParameter {#newparameter}
 
 A new ecosystem parameter has been added to the current ecosystem.
 
@@ -3107,7 +3107,7 @@ Parameter:
    * Zeichenfolge **Value** - Parameterwert;
    * Zeichenfolge **Conditions** - Bedingungen zum Ändern des Parameters.
 
-### Parameter bearbeiten
+### Parameter bearbeiten {#editparameter}
 
 Chängt bestehende Ökosystemparameter in das aktuelle Ökosystem ein.
 
@@ -3116,7 +3116,7 @@ Parameter:
    * Zeichenfolge **Value** - neuer Parameterwert;
    * Zeichenfolge **Conditions** - neue Bedingungen zum Ändern des Parameters.
 
-### NeuesMenü
+### NeuesMenü {#newmenu}
 
 Fügt ein neues Menü im aktuellen Ökosystem hinzu.
 
@@ -3126,7 +3126,7 @@ Parameter:
    * **Title** Zeichenfolge "optional" - Menütitel;
    * Zeichenfolge **Conditions** - Bedingungen zum Wechseln des Menüs.
 
-### Menü bearbeiten
+### Menü bearbeiten {#editmenu}
 
 Chängt das vorhandene Menü in das aktuelle Ökosystem ein.
 
@@ -3136,7 +3136,7 @@ Parameter:
    * **Title** string "optional" - Titel des neuen Menüs;
    * **Conditions** Zeichenfolge "optional" - neue Bedingungen zum Ändern des Menüs.
 
-### Menü anhängen
+### Menü anhängen {#appendmenu}
 
 Afügt den Quellcodeinhalt zu bestehenden Menüs im aktuellen Ökosystem hinzu
 
@@ -3144,7 +3144,7 @@ Parameter:
    * **Id** int - Menü-ID;
    * Zeichenfolge **Value** - hinzuzufügender Quellcode.
 
-### Neue Seite
+### Neue Seite {#newpage}
 
 Fügt eine neue Seite im aktuellen Ökosystem hinzu.
 
@@ -3157,7 +3157,7 @@ Parameter:
 
    * **ValidateMode** int "optional" - Modus der Seitengültigkeitsprüfung. Die Seite wird beim Laden überprüft, wenn der Wert dieses Parameters 0 ist; oder überprüft, wenn es geladen wird, oder verlassen Sie die Seite, wenn der Wert dieses Parameters 1 ist.
 
-### Seite bearbeiten
+### Seite bearbeiten {#editpage}
 
 Ändert vorhandene Seiten im aktuellen Ökosystem.
 
@@ -3169,7 +3169,7 @@ Parameter:
    * **ValidateCount** int "optional" - Anzahl der Knoten, die für die Seitenvalidierung erforderlich sind. Wenn dieser Parameter nicht angegeben ist, wird der Wert des Ökosystemparameters min_page_validate_count verwendet. Der Wert dieses Parameters darf nicht kleiner als min_page_validate_count und größer als max_page_validate_count sein;
    * **ValidateMode** int "optional" - Modus der Seitengültigkeitsprüfung. Die Seite wird beim Laden überprüft, wenn der Wert dieses Parameters 0 ist; oder überprüft, wenn es geladen wird, oder verlassen Sie die Seite, wenn der Wert dieses Parameters 1 ist.
 
-### Seite anhängen
+### Seite anhängen {#appendpage}
 
 Fügt den Quellinhalt zu vorhandenen Seiten im aktuellen Ökosystem hinzu.
 
@@ -3177,7 +3177,7 @@ Parameter:
 * **Id** int - ID der zu ändernden Seite;
 * Zeichenfolge **Value** - der hinzuzufügende Quellcode.
 
-### Neuer Block
+### Neuer Block {#newblock}
 
 Fügt dem aktuellen Ökosystem ein Seitenmodul hinzu.
 
@@ -3186,7 +3186,7 @@ Parameter:
    * String **Value** - Quellcode des Moduls;
    * Zeichenfolge **Conditions** - Bedingungen zum Wechseln des Moduls.
 
-### Block bearbeiten
+### Block bearbeiten {#editblock}
 
 Changes existing page modules in the current ecosystem.
 
@@ -3195,7 +3195,7 @@ Parameter:
    * Value string - Quellcode des neuen Moduls;
    * Bedingungszeichenfolge - neue Bedingungen zum Wechseln des Moduls.
 
-### NeueTabelle
+### NeueTabelle {#newtable}
 
 Fügt dem aktuellen Ökosystem eine neue Tabelle hinzu.
 
@@ -3213,7 +3213,7 @@ Parameter:
     * **update** - Erlaubnis, Eingabedaten zu ändern;
     * **read** - Erlaubnis, Eintragsdaten zu lesen.
 
-### Tabelle bearbeiten
+### Tabelle bearbeiten {#edittable}
 
 Ändert die Zugriffsberechtigungen einer Tabelle im aktuellen Ökosystem.
 
@@ -3224,7 +3224,7 @@ Parameter:
    * Zeichenfolge **ReadPerm** - Berechtigung zum Lesen von Einträgen in der Tabelle;
    * String **NewColumnPerm** - Berechtigung zum Erstellen einer neuen Spalte;
 
-### NeueSpalte
+### NeueSpalte {#newcolumn}
 
 Fügt der Tabelle des aktuellen Ökosystems ein neues Feld hinzu.
 
@@ -3235,7 +3235,7 @@ Parameter:
    * Zeichenfolge **UpdatePerm** - Berechtigung zum Ändern des Werts in der Spalte;
    * Zeichenfolge **ReadPerm** - Berechtigung zum Lesen des Werts in der Spalte.
 
-### Spalte bearbeiten
+### Spalte bearbeiten {#editcolumn}
 
 Chängt die Berechtigung eines bestimmten Tabellenfelds im aktuellen Ökosystem.
 
@@ -3245,7 +3245,7 @@ Parameter:
    * Zeichenfolge **UpdatePerm** - neue Berechtigung zum Ändern des Werts in der Spalte;
    * Zeichenfolge **ReadPerm** - neue Berechtigung zum Lesen des Werts in der Spalte.
 
-### NeuSprache
+### NeuSprache {#newlang}
 
 Fügt dem aktuellen Ökosystem Sprachressourcen hinzu, und die Berechtigung dazu wird im Changing_language-Parameter der Ökosystemparameter festgelegt.
 
@@ -3254,7 +3254,7 @@ Parameter:
    * Zeichenfolge **Name** - Name der Sprachressourcen in lateinischen Buchstaben;
    * **Trans** String - String im JSON-Format, mit einem zweistelligen Langcode als Schlüssel und dem übersetzten String als Wert. Beispiel: `{"en": "englischer Text", "zh": "chinesischer Text"}`.
 
-### BearbeitenSprache
+### BearbeitenSprache {#editlang}
 
 Ändert die Sprachressourcen im aktuellen Ökosystem, und die Berechtigung dazu wird im Parameter „changing_language“ des Parameters „Ökosystem“ festgelegt.
 
@@ -3263,7 +3263,7 @@ Parameter:
    * **Id** int - Sprachressourcen-ID.
    * **Trans** - Zeichenfolge im JSON-Format mit einem zweistelligen Langcode als Schlüssel und der übersetzten Zeichenfolge als Wert. Beispiel: `{"en": "englischer Text", "zh": "chinesischer Text"}`.
 
-### Importieren
+### Importieren {#import}
 
 Importiert eine Anwendung in das aktuelle Ökosystem und importiert die aus dem [ImportUpload](#importupload)-Vertrag geladenen Daten.
 
@@ -3271,14 +3271,14 @@ Parameter:
 
    * Zeichenfolge **Data** - im Textformat importierte Daten, die aus einer vom Ökosystem exportierten Datei stammen.
 
-### ImportHochladen
+### ImportHochladen {#importupload}
 
 Lädt eine externe Anwendungsdatei in die Tabelle buffer_data des aktuellen Ökosystems für den anschließenden Import.
 
 Parameter:
    * Datei **InputFile** - eine Datei, die in die Tabelle buffer_data des aktuellen Ökosystems geschrieben wird.
 
-### NewAppParam
+### NewAppParam {#newappparam}
 
 Fügt dem aktuellen Ökosystem neue Anwendungsparameter hinzu.
 
@@ -3288,7 +3288,7 @@ Parameter:
    * Zeichenfolge **Value** - Parameterwert;
    * Zeichenfolge **Conditions** - Berechtigung zum Ändern des Parameters.
 
-### App-Param bearbeiten
+### App-Param bearbeiten {#editappparam}
 
 Ändert bestehende Anwendungsparameter im aktuellen Ökosystem.
 
@@ -3297,7 +3297,7 @@ Parameter:
    * **Value** string "optional" - neuer Parameterwert;
    * **Conditions** Zeichenfolge "optional" - neue Berechtigungen zum Ändern des Parameters.
 
-### Neuer verzögerter Vertrag
+### Neuer verzögerter Vertrag {#newdelayedcontract}
 
 Fügt dem Scheduler-Daemon für verzögerte Verträge eine neue Aufgabe hinzu.
 
@@ -3310,7 +3310,7 @@ Parameter:
    * **BlockID** int "optional" - die Block-ID, wo der Vertrag ausgeführt werden muss. Wenn nicht angegeben, wird sie automatisch berechnet, indem die "aktuelle Block-ID" + EveryBlock addiert wird;
    * **Limit** int "optional" - die maximale Anzahl der Aufgabenausführungen. Wenn nicht angegeben, wird die Aufgabe unbegrenzt oft ausgeführt.
 
-### Verspäteten Vertrag bearbeiten
+### Verspäteten Vertrag bearbeiten {#editdelayedcontract}
 
 Ändert eine Aufgabe im Scheduler-Daemon für verzögerte Verträge.
 
@@ -3323,7 +3323,7 @@ Parameter:
    * **Limit** int "optional" - die maximale Anzahl der Aufgabenausführungen. Wenn nicht angegeben, wird die Aufgabe unbegrenzt oft ausgeführt.
    * **Deleted** int "optional" - Taskwechsel. Ein Wert von "1" deaktiviert die Aufgabe. Ein Wert von "0" aktiviert die Aufgabe.
 
-### Binär hochladen
+### Binär hochladen {#uploadbinary}
 
 Fügt eine statische Datei in der X_binaries-Tabelle hinzu oder überschreibt sie. Beim Aufruf eines Vertrags über die HTTP-API muss die Anfrage im Format „multipart/form-data“ vorliegen; Der DataMimeType-Parameter wird in Verbindung mit den Formulardaten verwendet.
 

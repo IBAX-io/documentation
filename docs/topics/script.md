@@ -1,5 +1,5 @@
 
-# Smart Contracts
+# Smart Contracts {#smart-contracts}
   - [Contract Structure](#contract-structure)
     - [Data section](#data-section)
     - [Conditions section](#conditions-section)
@@ -137,7 +137,7 @@
 
 Smart Contract (hereinafter referred to as Contract) is one of the basic elements of an application. The implementation of a contract on a page by the user is usually a single operation that the purpose is to update or create a database entry. All data operations of an application form a contract system, and these contracts interact with each other through database or contract content functions.
 
-## Contract Structure
+## Contract Structure {#contract-structure}
 
 Use the keyword `contract` to declare a contract, followed by the contract name, and the contract content must be enclosed in braces. A contract mainly consists of three sections:
 
@@ -164,7 +164,7 @@ contract MyContract {
 
 
 
-### Data section
+### Data section {#data-section}
 
 The `data` section describes the contract data inputs and the form parameters received.
 
@@ -189,7 +189,7 @@ contract my {
 
 
 
-### Conditions section
+### Conditions section {#conditions-section}
 
 The `conditions` section describes the validation of data received.
 
@@ -207,7 +207,7 @@ if idexist > 0 {
 }
 ```
 
-### Action section
+### Action section {#action-section}
 
 The `action` section describes the main code of the contract, which retrieves other data and records the result values in tables. For example:
 
@@ -220,7 +220,7 @@ DBUpdate("keys", $recipient, {"+amount": $amount, "pub": $Pub})
 
 
 
-## Variables
+## Variables {#variables}
 
 Variables declared in the data section are passed to other contract sections through the `$` symbol followed by the variable name. The `$` symbol can also be used to declare other variables that are not within the data section, which are considered as global variables of this contract and all contracts that this contract is nested.
 
@@ -266,11 +266,11 @@ contract my {
 }
 ```
 
-## Nested Contracts
+## Nested Contracts {#nested-contracts}
 
 You can nest contracts in the conditions and action sections of the contract. Nested contracts can be called directly, and the contract parameters are specified in parentheses after the contract name, for example, `@1NameContract(Params)`. You may also call nested contracts with the [CallContract](#callcontract) function.
 
-## File upload
+## File upload {#file-upload}
 
 To upload a file using a form in the format of `multipart/form-data`, the data type of the contract must be `file`.
 
@@ -285,7 +285,7 @@ contract Upload {
 
 The [UploadBinary](#uploadbinary) contract is used to upload and store files. With the Logicor language function [Binary](templates2.md#binary) in the page editor, you can get the file download link.
 
-## Queries in JSON format
+## Queries in JSON format {#queries-in-json-format}
 
 In the contract language, **JSON** can be specified as a field type. You can use the syntax: **columnname->fieldname** to process the entry field. The value obtained is recorded in **columnname.fieldname**. The above syntax can be used in Columns,One,Where of the [DBFind](#dbfind) function.
 
@@ -302,7 +302,7 @@ val = DBFind("mytable").WhereId($Id).One("doc->check")
 
 
 
-## Queries with date and time operations
+## Queries with date and time operations {#queries-with-date-and-time-operations}
 
 You cannot directly query and update the date and time with the contract language functions, but you can use PostgreSQL functions and features in the Where statement as in the example below. For example, you need to compare the field date_column with the current time. If date_column is a timestamp type, the expression should be `date_column <NOW()`; if date_column is a Unix type, the expression should be `to_timestamp(date_column)> NOW()`.
 
@@ -317,7 +317,7 @@ The following Needle function is used to process date and time in SQL format:
 * [DateTime](#datetime)
 * [UnixDateTime](#unixdatetime)
 
-## Needle contract language
+## Needle contract language {#needle-contract-language}
 
 The contract language includes a set of functions, operators and structures, which can realize data algorithm processing and database operations.
 
@@ -325,9 +325,9 @@ The contract content can be modified if the contract editing permission is not s
 
 Data operations in the blockchain are executed in accordance with the latest version of the contract.
 
-### Basic elements and structure
+### Basic elements and structure {#basic-elements-and-structure}
 
-### Data types and variables
+### Data types and variables {#data-types-and-variables}
 
 Data type must be defined for every variables. Normally, data types are converted automatically. The following data types can be used:
 
@@ -364,7 +364,7 @@ func myfunc( val int) int {
 
 
 
-### Array
+### Array {#array}
 
 The contract language supports two array types:
 * `Array` - an array with index starting from 0;
@@ -420,7 +420,7 @@ val = my["param"]
 MyFunc({key: val, sub: {name: "My name", "color": "Red"}})
 ```
 
-### If and While statements
+### If and While statements {#if-and-while-statements}
 
 The contract language supports standard **if** conditional statements and **while** loops, which can be used in contracts and functions. These statements can be nested within each other.
 
@@ -459,11 +459,11 @@ In addition to conditional statements, Needle also supports standard arithmetic 
 
 Variables of string and bytes types can be used as a conditional statement. If the length of the type is greater than zero, the condition is true, otherwise it is false.
 
-## Functions
+### Functions {#functions}
 
 Functions can perform some operations on the data received by the [data section](#data-section) of a contract: read and write data from the database, convert the type of value, and establish the interaction between contracts.
 
-### Function declaration
+#### Function declaration {#function-declaration}
 
 Use the func keyword to declare a function, followed by the name and the list of parameters passed to it and their types. All parameters are enclosed in parentheses and separated by commas. After the parentheses, the data type of the value returned by the function must be declared. The function body must be enclosed in braces. If the function has no parameters, the braces can be omitted. To return a value from a function, use the `return` keyword.
 
@@ -481,7 +481,7 @@ func ooops {
 
 Function do not return errors, because all error checks are performed automatically. If there is an error in any function, the contract will terminate its operation and present the error description in a window.
 
-### Variable-length parameters
+#### Variable-length parameters {#variable-length-parameters}
 
 Functions can define variable-length parameters, use the `...` symbol as the last parameter type of the function to indicate variable-length parameters, with a data type of `array`. Variable-length parameters include all variables from the time the parameter is passed in the call. All types of variables can be passed, but you need to deal with conflicts of mismatching of data types.
 
@@ -508,7 +508,7 @@ func main() {
 
 
 
-### Optional parameters
+#### Optional parameters {#optional-parameters}
 
 A function has many parameters, but we only need some of them when calling it. In this case, you can declare optional parameters in the following way: `func myfunc(name string).Param1(param string).Param2(param2 int) {...}`, then you can call the specified parameters in any order: `myfunc("name").Param2(100)`.
 
@@ -526,7 +526,7 @@ func names() string {
 }
 ```
 
-## Needle functions classification
+## Needle functions classification {#needle-functions-classification}
 
 Retrieving values from the database:
 
@@ -619,7 +619,12 @@ Operations with date and time in SQL format:
 
 
 Operations with platform parameters:
+|           |          |              |
+| --------- | -------- | ------------ |
+| [SysParamString](#sysparamstring) | [SysParamInt](#sysparamint) | [DBUpdateSysParam](#dbupdatesysparam) |
+| [UpdateNotifications](#updatenotifications) | [UpdateRolesNotifications](#updaterolesnotifications) | |
 
+CLB mode function operation:
 |             |              |      |
 | ----------- | ------------ | ---- |
 | [HTTPRequest](#httprequest) | [HTTPPostJSON](#httppostjson) |      |
@@ -636,14 +641,14 @@ Functions for master CLB nodes:
 
 
 
-## Needle functions reference
+## Needle functions reference {#needle-functions-reference}
 
 
-### AppParam
+### AppParam {#appparam}
 
 Returns the value of a specified application parameter (from the application parameter table app_params).
 
-#### Syntax
+**Syntax**
 
 ```
 AppParam(app int, name string, ecosystemid int) string
@@ -661,7 +666,7 @@ AppParam(app int, name string, ecosystemid int) string
 
     Ecosystem ID.
 
-#### Example
+**Example**
 
 ```
 AppParam(1, "app_account", 1)
@@ -669,13 +674,13 @@ AppParam(1, "app_account", 1)
 
 
 
-### DBFind
+### DBFind {#dbfind}
 
 Queries data from a specified table with the specified parameters and returns an array array consisting of an array of objects map.
 
 `.Row()` can get the first map element in the query, `.One(column string)` can get the first map element of a specified column in the query.
 
-#### Syntax
+**Syntax**
 
 ```
 DBFind(table string)
@@ -794,7 +799,7 @@ Make sure not to overwrite the keys of object arrays. For example, if you want t
 
      
 
-#### Example
+**Example**
 
 ```
 var i int
@@ -814,14 +819,12 @@ if ret != nil {
 }
 ```
 
-​     
 
-
-### DBRow
+### DBRow {#dbrow}
 
 Queries data from a specified table with the specified parameters. Returns an array array consisting of an array of objects map.
 
-#### Syntax
+**Syntax**
 
 ```
 DBRow(table string)
@@ -862,7 +865,7 @@ DBRow(table string)
 
   Ecosystem ID. By default, the table of the current ecosystem is queried.
 
-#### Example
+**Example**
 
 ```
 var ret map
@@ -872,13 +875,13 @@ Println(ret)
 
 
 
-### DBSelectMetrics
+### DBSelectMetrics {#dbselectmetrics}
 
 Returns the aggregated data of a metric.
 
 The metrics are updated each time 100 blocks are generated. And the aggregated data is stored on a 1-day cycle.
 
-#### Syntax
+**Syntax**
 
 ```
 DBSelectMetrics(metric string, timeInterval string, aggregateFunc string) array
@@ -913,7 +916,7 @@ DBSelectMetrics(metric string, timeInterval string, aggregateFunc string) array
 
     Aggregate function. For example, `max`, `min`, `avg`.
 
-#### Example
+**Example**
 
 ```
 var rows array
@@ -928,11 +931,11 @@ while(i <Len(rows)) {
 
 
 
-### EcosysParam
+### EcosysParam {#ecosysparam}
 
 Returns the value of a specified parameter in the ecosystem parameters table parameters.
 
-#### Syntax
+**Syntax**
 
 ```
 EcosysParam(name string) string
@@ -943,7 +946,7 @@ EcosysParam(name string) string
 
   Parameter name.
 
-#### Example
+**Example**
 
 ```
 Println(EcosysParam("founder_account"))
@@ -951,11 +954,11 @@ Println(EcosysParam("founder_account"))
 
 
 
-### GetHistory
+### GetHistory {#gethistory}
 
 Returns the history of changes to entries in a specified table.
 
-#### Syntax
+**Syntax**
 
 ```
 GetHistory(table string, id int) array
@@ -968,7 +971,8 @@ GetHistory(table string, id int) array
 * **Id**
 
   Entry ID.
-> **Return value**
+
+**Return value**
 
   Returns an array of objects of type map, which specify the history of changes to entries in tables.
 
@@ -977,7 +981,7 @@ GetHistory(table string, id int) array
   
   The id field in the array points to the id of the rollback_tx table. block_id represents the block ID, while block_time represents the block generation timestamp.
 
-#### Example
+**Example**
 
 ```
 var list array
@@ -990,11 +994,11 @@ if Len(list) > 0 {
 
 
 
-### GetHistoryRow
+### GetHistoryRow {#gethistoryrow}
 
 Returns a single snapshot from the change history of a specified entry in a specified table.
 
-#### Syntax
+**Syntax**
 
 ```
 GetHistoryRow(table string, id int, rollbackId int) map
@@ -1021,11 +1025,11 @@ GetHistoryRow(table string, id int, rollbackId int) map
   
 
 
-### GetColumnType
+### GetColumnType {#getcolumntype}
 
 Returns the data type of a specified field in a specified table.
 
-#### Syntax
+**Syntax**
 
 ```
 GetColumnType(table, column string) string
@@ -1042,7 +1046,7 @@ GetColumnType(table, column string) string
 
   The following types can be returned: `text, varchar, number, money, double, bytes, json, datetime, double`.
 
-#### Example
+**Example**
 
 ```
 var coltype string
@@ -1051,11 +1055,11 @@ coltype = GetColumnType("members", "member_name")
 
 
 
-### GetDataFromXLSX
+### GetDataFromXLSX {#getdatafromxlsx}
 
 Returns data from XLSX spreadsheets.
 
-#### Syntax
+**Syntax**
 
 ```
 GetDataFromXLSX(binId int, line int, count int, sheet int) string
@@ -1075,7 +1079,7 @@ GetDataFromXLSX(binId int, line int, count int, sheet int) string
 
   List number, starting from 1 by default.
 
-#### Example
+**Example**
 
 ```
 var a array
@@ -1084,11 +1088,11 @@ a = GetDataFromXLSX(3, 12, 10, 1)
 
 
 
-### GetRowsCountXLSX
+### GetRowsCountXLSX {#getrowscountxlsx}
 
 Returns the number of lines in a specified XLSX file.
 
-#### Syntax
+**Syntax**
 
 ```
 GetRowsCountXLSX(binId int, sheet int) int
@@ -1101,7 +1105,7 @@ GetRowsCountXLSX(binId int, sheet int) int
 
   List number, starting from 1 by default.
 
-#### Example
+**Example**
 
 ```
 var count int
@@ -1110,11 +1114,11 @@ count = GetRowsCountXLSX(binid, 1)
 
 
 
-### LangRes
+### LangRes {#langres}
 
 Returns a multilingual resource with name label for language lang, specified as a two-character code, for example: `en`, `zh`. If there is no language for a selected language, then the language resource of the `en` label is returned.
 
-#### Syntax
+**Syntax**
 
 ```
 LangRes(label string, lang string) string
@@ -1127,7 +1131,7 @@ LangRes(label string, lang string) string
 
   Two-character language code.
 
-#### Example
+**Example**
 
 ```
 warning LangRes("@1confirm", "en")
@@ -1136,11 +1140,11 @@ error LangRes("@1problems", "zh")
 
 
 
-### GetBlock
+### GetBlock {#getblock}
 
 Returns relevant information about a specified block.
 
-#### Syntax
+**Syntax**
 
 ```
 GetBlock(blockID int64) map
@@ -1163,7 +1167,7 @@ GetBlock(blockID int64) map
   
      The account address of the verification node generated the block.
 
-#### Example
+**Example**
 
 ```
 var b map
@@ -1173,11 +1177,11 @@ Println(b)
 
 
 
-### DBInsert
+### DBInsert {#dbinsert}
 
 Adds an entry to a specified table and return the entry ID.
 
-#### Syntax
+**Syntax**
 
 ```
 DBInsert(table string, params map) int
@@ -1191,7 +1195,7 @@ DBInsert(table string, params map) int
 
   An array of objects where keys are field names and values are inserted values.
 
-#### Example
+**Example**
 
 ```
 DBInsert("mytable", {name: "John Smith", amount: 100})
@@ -1199,11 +1203,11 @@ DBInsert("mytable", {name: "John Smith", amount: 100})
 
 
 
-### DBUpdate
+### DBUpdate {#dbupdate}
 
 Changes the column value of a specified entry ID in a specified table. If the entry ID does not exist in the table, an error is returned.
 
-#### Syntax
+**Syntax**
 
 ```
 DBUpdate(tblname string, id int, params map)
@@ -1220,7 +1224,7 @@ DBUpdate(tblname string, id int, params map)
 
   An array of objects where keys are field names and values are new values after changes.
 
-#### Example
+**Example**
 
 ```
 DBUpdate("mytable", myid, {name: "John Smith", amount: 100})
@@ -1228,11 +1232,11 @@ DBUpdate("mytable", myid, {name: "John Smith", amount: 100})
 
 
 
-### DBUpdateExt
+### DBUpdateExt {#dbupdateext}
 
 Changes the value of a column in a specified table that matches the query condition.
 
-#### Syntax
+**Syntax**
 
 ```
 DBUpdateExt(tblname string, where map, params map)
@@ -1251,7 +1255,7 @@ DBUpdateExt(tblname string, where map, params map)
 
   An array of objects where keys are field names and values are new values after changes.
 
-#### Example
+**Example**
 
 ```
 DBUpdateExt("mytable", {id: $key_id, ecosystem: $ecosystem_id}, {name: "John Smith", amount: 100})
@@ -1259,11 +1263,11 @@ DBUpdateExt("mytable", {id: $key_id, ecosystem: $ecosystem_id}, {name: "John Smi
 
 
 
-### DelColumn
+### DelColumn {#delcolumn}
 
 Deletes a field in a specified table that has no records.
 
-#### Syntax
+**Syntax**
 
 ```
 DelColumn(tblname string, column string)
@@ -1285,11 +1289,11 @@ DelColumn("mytable", "mycolumn")
   
 
 
-### DelTable
+### DelTable {#deltable}
 
 Deletes a specified table that has e no records.
 
-#### Syntax
+**Syntax**
 
 ```
 DelTable(tblname string)
@@ -1300,7 +1304,7 @@ DelTable(tblname string)
 
   Table name.
 
-#### Example
+**Example**
 
 ```
 DelTable("mytable")
@@ -1308,11 +1312,11 @@ DelTable("mytable")
 
 
 
-### Append
+### Append {#append}
 
 Inserts any type of val into the src array.
 
-#### Syntax
+**Syntax**
 
 Append(src array, val anyType) array
 
@@ -1323,7 +1327,7 @@ Append(src array, val anyType) array
 
   The value to be inserted.
 
-#### Example
+**Example**
 
 ```
 var list array
@@ -1332,11 +1336,11 @@ list = Append(list, "new_val")
 
 
 
-### Join
+### Join {#join}
 
 Combines elements of the in array into a string with a specified sep separator.
 
-#### Syntax
+**Syntax**
 
 ```
 Join(in array, sep string) string
@@ -1350,7 +1354,7 @@ Join(in array, sep string) string
 
   Separator.
 
-#### Example
+**Example**
 
 ```
  var val string, myarr array
@@ -1361,11 +1365,11 @@ Join(in array, sep string) string
 
 
 
-### Split
+### Split {#split}
 
 Uses the sep separator to split the in string into elements and put them into an array.
 
-#### Syntax
+**Syntax**
 
 ```
 Split(in string, sep string) array
@@ -1378,7 +1382,7 @@ Split(in string, sep string) array
 
    Separator.
 
-#### Example
+**Example**
 
 ```
 var myarr array
@@ -1387,11 +1391,11 @@ myarr = Split("first,second,third", ",")
 
 
 
-### Len
+### Len {#len}
 
 Returns the number of elements in a specified array.
 
-#### Syntax
+**Syntax**
 
  
 
@@ -1403,7 +1407,7 @@ Len(val array) int
 
    Array.
 
-#### Example
+**Example**
 
 ```
 if Len(mylist) == 0 {
@@ -1413,11 +1417,11 @@ if Len(mylist) == 0 {
 
 
 
-### Row
+### Row {#row}
 
  The list parameter must not be specified in this case. Return the first object array in the array list. If the list is empty, an empty result is returned. This function is mostly used in conjunction with the [DBFind](#dbfind) function. When using this function, you cannot specify parameters.
 
-#### Syntax
+**Syntax**
 
 ```
  Row(list array) map
@@ -1427,7 +1431,7 @@ if Len(mylist) == 0 {
 
    The array of objects returned by the DBFind function.
 
-#### Example
+**Example**
 
 ```
  var ret map
@@ -1437,11 +1441,11 @@ if Len(mylist) == 0 {
 
 
 
-### One
+### One {#one}
 
  Returns the field value of the first object array in the array list. If the list array is empty, nil is returned. It is mostly used in conjunction with the [DBFind](#dbfind) function. When using this function, you cannot specify parameters.
 
-#### Syntax
+**Syntax**
 
 ```
 One(list array, column string) string
@@ -1455,7 +1459,7 @@ One(list array, column string) string
 
   Field Name.
 
-#### Example
+**Example**
 
 ```
 var ret string
@@ -1467,13 +1471,11 @@ if ret != nil {
 
 
 
-### GetMapKeys
+### GetMapKeys {#getmapkeys}
 
 Returns the key array in the object array.
 
-#### Syntax
-
- 
+**Syntax**
 
 ```
 GetMapKeys(val map) array
@@ -1483,7 +1485,7 @@ GetMapKeys(val map) array
 
     Object array.
 
-#### Example
+**Example**
 
 ```
 var val map
@@ -1495,11 +1497,11 @@ arr = GetMapKeys(val)
 
 
 
-### SortedKeys
+### SortedKeys {#sortedkeys}
 
 Returns a sorted key array in the object array.
 
-#### Syntax
+**Syntax**
 
 ```
 SortedKeys(val map) array
@@ -1510,7 +1512,7 @@ SortedKeys(val map) array
 
     Object array.
 
-#### Example
+**Example**
 
 ```
 var val map
@@ -1522,11 +1524,11 @@ arr = SortedKeys(val)
 
 
 
-### CallContract
+### CallContract {#callcontract}
 
 Calls the contract with a specified name. All parameters of the data section in the contract must be included in an object array. This function returns the value assigned to the **$result** variable by a specified contract.
 
-#### Syntax
+**Syntax**
 
 ```
 CallContract(name string, params map)
@@ -1540,7 +1542,7 @@ CallContract(name string, params map)
 
     An associative array of the contract input data.
 
-#### Example
+**Example**
 
 ```
 var par map
@@ -1550,11 +1552,11 @@ CallContract("MyContract", par)
 
 
 
-### ContractAccess
+### ContractAccess {#contractaccess}
 
 Checks if the name of contract being executed matches one of the names listed in the parameters. Usually it is used to control contract access to tables. When editing table fields or inserting and adding new column fields in the permissions section of the table, please specify this function in the permissions fields.
 
-#### Syntax
+**Syntax**
 
   
 
@@ -1566,7 +1568,7 @@ ContractAccess(name string, [name string]) bool
 
     Contract name.
 
-#### Example
+**Example**
 
 ```
 ContractAccess("MyContract")
@@ -1575,13 +1577,13 @@ ContractAccess("MyContract","SimpleContract")
 
 
 
-### ContractConditions
+### ContractConditions {#contractconditions}
 
 Calls the conditions section in the contract with a specified name.
 
 For this type of contracts, the data section must be empty. If the conditions section is executed without error, it returns true. If there is an error during execution, the parent contract will also be terminated due to the error. This function is usually used to control the contract's access to tables and can be called in the permission fields when editing system tables.
 
-#### Syntax
+**Syntax**
 
 ```
 ContractConditions(name string, [name string]) bool
@@ -1592,7 +1594,7 @@ ContractConditions(name string, [name string]) bool
 
     Contract name.
 
-#### Example
+**Example**
 
 ```
 ContractConditions("MainCondition")
@@ -1600,11 +1602,11 @@ ContractConditions("MainCondition")
 
 
 
-### EvalCondition
+### EvalCondition {#evalcondition}
 
 Gets the value of the condfield field in the record with a 'name' field from the tablename table, and checks the conditions of the condfield field value.
 
-#### Syntax
+**Syntax**
 
 ```
 EvalCondition(tablename string, name string, condfield string)
@@ -1621,7 +1623,7 @@ EvalCondition(tablename string, name string, condfield string)
 
     The name of the field whose conditions needs to be checked.
 
-#### Example
+**Example**
 
 ```
 EvalCondition(`menu`, $Name, `conditions`)
@@ -1629,11 +1631,11 @@ EvalCondition(`menu`, $Name, `conditions`)
 
 
 
-### GetContractById
+### GetContractById {#getcontractbyid}
 
 Returns its contract name by contract ID. If not found the contract, an empty string is returned.
 
-#### Syntax
+**Syntax**
 
 ```
 GetContractById(id int) string
@@ -1644,7 +1646,7 @@ GetContractById(id int) string
 
   The contract ID in the contract table contracts.
 
-#### Example
+**Example**
 
 ```
 var name string
@@ -1653,11 +1655,11 @@ name = GetContractById($IdContract)
 
 
 
-### GetContractByName
+### GetContractByName {#getcontractbyname}
 
 This function returns its contract ID by contract name. If not found the contract, zero is returned.
 
-#### Syntax
+**Syntax**
 
 ```
 GetContractByName(name string) int
@@ -1667,7 +1669,7 @@ GetContractByName(name string) int
 
     The contract name in the contract table contracts.
 
-#### Example
+**Example**
 
 ```
 var id int
@@ -1676,13 +1678,13 @@ id = GetContractByName(`NewBlock`)
 
 
 
-### RoleAccess
+### RoleAccess {#roleaccess}
 
 Checks whether the role ID of the contract caller matches one of the IDs specified in the parameter.
 
 You can use this function to control contract access to tables and other data.
 
-#### Syntax
+**Syntax**
 
  
 
@@ -1694,7 +1696,7 @@ RoleAccess(id int, [id int]) bool
 
     Role ID.
 
-#### Example
+**Example**
 
 ```
 RoleAccess(1)
@@ -1703,11 +1705,11 @@ RoleAccess(1, 3)
 
 
 
-### TransactionInfo
+### TransactionInfo {#transactioninfo}
 
 Queries transactions by specified hash value and returns information about the contract executed and its parameters.
 
-#### Syntax
+**Syntax**
 
 ```
 TransactionInfo(hash: string)
@@ -1738,7 +1740,7 @@ TransactionInfo(hash: string)
 
       ID of the block that processed the transaction.
 
-#### Example
+**Example**
 
 ```
 var out map
@@ -1747,11 +1749,11 @@ out = JSONDecode(TransactionInfo(hash))
 
 
 
-### Throw
+### Throw {#throw}
 
   Generates an error of type exception.
 
-#### Syntax
+**Syntax**
 
   
 
@@ -1775,7 +1777,7 @@ Throw(ErrorId string, ErrDescription string)
 {"type":"exception","error":"Error description","id":"Error ID"}
 ```
 
-#### Example
+**Example**
 
 ```
 Throw("Problem", "There is a problem")
@@ -1783,11 +1785,11 @@ Throw("Problem", "There is a problem")
 
 
 
-### ValidateCondition
+### ValidateCondition {#validatecondition}
 
   Tries to compile the conditions specified by the condition parameter. If there is an error during the compilation process, an error is generated and the contract called is terminated. This function is designed to check the correctness of the conditional format.
 
-#### Syntax
+**Syntax**
 
 ```
 ValidateCondition(condition string, state int)
@@ -1800,7 +1802,7 @@ ValidateCondition(condition string, state int)
 
     Ecosystem ID. If you check the global condition, please specify it as 0.
 
-#### Example
+**Example**
 
 ```
 ValidateCondition(`ContractAccess("@1MyContract")`, 1)
@@ -1808,11 +1810,11 @@ ValidateCondition(`ContractAccess("@1MyContract")`, 1)
 
 
 
-### AddressToId
+### AddressToId {#addresstoid}
 
 Returns the corresponding account address by wallet address. If an invalid address is specified, '0' is returned.
 
-#### Syntax
+**Syntax**
 
 ```
 AddressToId(address string) int
@@ -1823,7 +1825,7 @@ AddressToId(address string) int
 
     Wallet address in `XXXX-...-XXXX` format or number format.
 
-#### Example
+**Example**
 
 ```
 wallet = AddressToId($Recipient)
@@ -1831,11 +1833,11 @@ wallet = AddressToId($Recipient)
 
 
 
-### IdToAddress
+### IdToAddress {#idtoaddress}
 
 Returns the corresponding wallet address by account address. If an invalid address is specified, the invalid address 'invalid' is returned.
 
-#### Syntax
+**Syntax**
 
 ```
 IdToAddress(id int) string
@@ -1846,7 +1848,7 @@ IdToAddress(id int) string
 
     Account address.
 
-#### Example
+**Example**
 
 ```
 $address = IdToAddress($id)
@@ -1854,11 +1856,11 @@ $address = IdToAddress($id)
 
 
 
-### PubToID
+### PubToID {#pubtoid}
 
 The account address is returned by public key in hexadecimal format.
 
-#### Syntax
+**Syntax**
 
 ```
 PubToID(hexkey string) int
@@ -1869,7 +1871,7 @@ PubToID(hexkey string) int
 
     The public key in hexadecimal format.
 
-#### Example
+**Example**
 
   
 
@@ -1880,11 +1882,11 @@ wallet = PubToID("04fa5e78.....34abd6")
 
 
 
-### DecodeBase64
+### DecodeBase64 {#decodebase64}
 
 Returns a string by specifying the base64 format
 
-#### Syntax
+**Syntax**
 
 ```
 DecodeBase64(input string) string
@@ -1895,7 +1897,7 @@ DecodeBase64(input string) string
 
     String in base64 format.
 
-#### Example
+**Example**
 
 ```
 val = DecodeBase64(mybase64)
@@ -1903,11 +1905,11 @@ val = DecodeBase64(mybase64)
 
 
 
-### EncodeBase64
+### EncodeBase64 {#encodebase64}
 
 Returns a string in base64 format by specifying a string.
 
-#### Syntax
+**Syntax**
 
 ```
 EncodeBase64(input string) string
@@ -1918,7 +1920,7 @@ EncodeBase64(input string) string
 
     The string to be encoded.
 
-#### Example
+**Example**
 
  
 
@@ -1929,11 +1931,11 @@ base64str = EncodeBase64("my text")
 
 
 
-### Float
+### Float {#float}
 
 Converts an integer or string to a float number.
 
-#### Syntax
+**Syntax**
 
 ```
 Float(val int|string) float
@@ -1944,7 +1946,7 @@ Float(val int|string) float
 
     An integer or string.
 
-#### Example
+**Example**
 
 ```
 val = Float("567.989") + Float(232)
@@ -1952,11 +1954,11 @@ val = Float("567.989") + Float(232)
 
 
 
-### HexToBytes
+### HexToBytes {#hextobytes}
 
 Converts a string in hexadecimal format to byte type bytes.
 
-#### Syntax
+**Syntax**
 
 ```
   HexToBytes(hexdata string) bytes
@@ -1967,7 +1969,7 @@ Converts a string in hexadecimal format to byte type bytes.
 
     A string in hexadecimal format.
 
-#### Example
+**Example**
 
 ```
 var val bytes
@@ -1976,11 +1978,11 @@ val = HexToBytes("34fe4501a4d80094")
 
 
 
-### FormatMoney
+### FormatMoney {#formatmoney}
 
 Returns the string value of exp / 10 ^ digit.
 
-#### Syntax
+**Syntax**
 
   
 
@@ -1995,7 +1997,7 @@ FormatMoney(exp string, digit int) string
 
     The exponent (positive or negative) of 10 in the expression `Exp/10^digit`. Positive values determine decimal places.
 
-#### Example
+**Example**
 
 ```
   s = FormatMoney("78236475917384", 0)
@@ -2003,12 +2005,12 @@ FormatMoney(exp string, digit int) string
 
 
 
-### Random
+### Random {#random}
 ```
 Returns a random number between min and max (min <= result <max). Both min and max must be positive numbers.
 ```
 
-#### Syntax
+**Syntax**
 
  
 
@@ -2024,7 +2026,7 @@ Random(min int, max int) int
 
     The upper limit of random numbers. The random number generated will be less than this value.
 
-#### Example
+**Example**
 
 ```
 i = Random(10,5000)
@@ -2032,11 +2034,11 @@ i = Random(10,5000)
 
 
 
-### Int
+### Int {#int}
 
 Converts a value in string format to an integer.
 
-#### Syntax
+**Syntax**
 
 ```
 Int(val string) int
@@ -2046,7 +2048,7 @@ Int(val string) int
 
     A number in string format.
 
-#### Example
+**Example**
 
 ```
 mystr = "-37763499007332"
@@ -2055,11 +2057,11 @@ val = Int(mystr)
 
 
 
-### Hash
+### Hash {#hash}
 
   Returns the hash of a specified byte array or string, which is generated by the system encryption library crypto.
 
-#### Syntax
+**Syntax**
 
  
 
@@ -2071,7 +2073,7 @@ Hash(val interface{}) string, error
 
     A string or byte array.
 
-#### Example
+**Example**
 
 ```
 var hash string
@@ -2080,11 +2082,11 @@ hash = Hash("Test message")
 
 
 
-### Sha256
+### Sha256 {#sha256}
 
   Returns the SHA256 hash of a specified string.
 
-#### Syntax
+**Syntax**
 
  
 
@@ -2096,7 +2098,7 @@ Sha256(val string) string
 
     A string requires the Sha256 hash operation.
 
-#### Example
+**Example**
 
 ```
 var sha string
@@ -2105,11 +2107,11 @@ sha = Sha256("Test message")
 
 
 
-### Str
+### Str {#str}
 
 Converts an integer int or float float number to a string.
 
-#### Syntax
+**Syntax**
 
   
 
@@ -2121,7 +2123,7 @@ Str(val int|float) string
 
     An integer or float number.
 
-#### Example
+**Example**
 
 ```
 myfloat = 5.678
@@ -2130,11 +2132,11 @@ val = Str(myfloat)
 
 
 
-### JSONEncode
+### JSONEncode {#jsonencode}
 
 Converts a number, string or array to a string in JSON format.
 
-#### Syntax
+**Syntax**
 
 ```
 JSONEncode(src int|float|string|map|array) string
@@ -2145,7 +2147,7 @@ JSONEncode(src int|float|string|map|array) string
 
     Data to convert.
 
-#### Example
+**Example**
 
   
 
@@ -2158,11 +2160,11 @@ json = JSONEncode(mydata)
 
 
 
-### JSONEncodeIndent
+### JSONEncodeIndent {#jsonencodeindent}
 
 Uses the specified indentation to convert a number, string, or array to a string in JSON format.
 
-#### Syntax
+**Syntax**
 
 ```
 JSONEncodeIndent(src int|float|string|map|array, indent string) string
@@ -2177,7 +2179,7 @@ JSONEncodeIndent(src int|float|string|map|array, indent string) string
 
     The string will be used as indentation.
 
-#### Example
+**Example**
 
   
 
@@ -2190,11 +2192,11 @@ json = JSONEncodeIndent(mydata, "\t")
 
 
 
-### JSONDecode
+### JSONDecode {#jsondecode}
 
 Converts a string in JSON format to a number, string or array.
 
-#### Syntax
+**Syntax**
 
 ```
 JSONDecode(src string) int|float|string|map|array
@@ -2205,7 +2207,7 @@ JSONDecode(src string) int|float|string|map|array
 
     A string containing data in JSON format.
 
-#### Example
+**Example**
 
 ```
 var mydata map
@@ -2214,11 +2216,11 @@ mydata = JSONDecode(`{"name": "John Smith", "company": "Smith's company"}`)
 
 
 
-### HasPrefix
+### HasPrefix {#hasprefix}
 
 Checks whether the string starts with a specified string.
 
-#### Syntax
+**Syntax**
 
   
 
@@ -2238,7 +2240,7 @@ HasPrefix(s string, prefix string) bool
 
   If the string starts with a specified string, `true` is returned.
 
-#### Example
+**Example**
 
 ```
 if HasPrefix($Name, `my`) {
@@ -2248,11 +2250,11 @@ if HasPrefix($Name, `my`) {
 
 
 
-### Contains
+### Contains {#contains}
 
 Checks whether the string contains a specified substring.
 
-#### Syntax
+**Syntax**
 
  
 
@@ -2272,7 +2274,7 @@ Contains(s string, substr string) bool
 
   If the string contains the substring, it returns `true`.
 
-#### Example
+**Example**
 
 ```
 if Contains($Name, `my`) {
@@ -2282,11 +2284,11 @@ if Contains($Name, `my`) {
 
 
 
-### Replace
+### Replace {#replace}
 
 Replaces old (the old string) with new (the new string) in the string.
 
-#### Syntax
+**Syntax**
 
 ```
 Replace(s string, old string, new string) string
@@ -2305,7 +2307,7 @@ Replace(s string, old string, new string) string
 
     The new string.
 
-#### Example
+**Example**
 
 ```
 s = Replace($Name, `me`, `you`)
@@ -2313,11 +2315,11 @@ s = Replace($Name, `me`, `you`)
 
 
 
-### Size
+### Size {#size}
 
 Returns the number of bytes in a specified string.
 
-#### Syntax
+**Syntax**
 
 ```
 Size(val string) int
@@ -2328,7 +2330,7 @@ Size(val string) int
 
     A string.
 
-#### Example
+**Example**
 
 ```
 var len int
@@ -2337,7 +2339,7 @@ len = Size($Name)
 
 
 
-### Sprintf
+### Sprintf {#sprintf}
 
 This function creates a string using the specified template and parameters.
 
@@ -2346,7 +2348,7 @@ Available wildcards:
 * `%s` (string)
 * `%f` (float)
 * `%v` (any type)
-#### Syntax
+**Syntax**
 
 ```
 Sprintf(pattern string, val ...) string
@@ -2357,7 +2359,7 @@ Sprintf(pattern string, val ...) string
 
     A string template.
 
-#### Example
+**Example**
 
 ```
 out = Sprintf("%s=%d", mypar, 6448)
@@ -2365,7 +2367,7 @@ out = Sprintf("%s=%d", mypar, 6448)
 
 
 
-### Substr
+### Substr {#substr}
 
 Returns the substring obtained from a specified string starting from the offset offset (calculated from 0 by default), and the maximum length is limited to length.
 
@@ -2373,7 +2375,7 @@ If the offset or length is less than zero, or the offset is greater than the len
 
 If the sum of the offset and length is greater than the string size, then, the substring will be returned starting from the offset to the end of the string.
 
-#### Syntax
+**Syntax**
 
 ```
 Substr(s string, offset int, length int) string
@@ -2392,7 +2394,7 @@ Substr(s string, offset int, length int) string
 
     Length of the substring.
 
-#### Example
+**Example**
 
 ```
 var s string
@@ -2401,11 +2403,11 @@ s = Substr($Name, 1, 10)
 
 
 
-### ToLower
+### ToLower {#tolower}
 
 Returns a specified string in lowercase.
 
-#### Syntax
+**Syntax**
 
 ```
 ToLower(val string) string
@@ -2416,7 +2418,7 @@ ToLower(val string) string
 
     A string.
 
-#### Example
+**Example**
 
 ```
 val = ToLower(val)
@@ -2424,11 +2426,11 @@ val = ToLower(val)
 
 
 
-### ToUpper
+### ToUpper {#toupper}
 
 Returns a specified string in uppercase.
 
-#### Syntax
+**Syntax**
 
 ```
 ToUpper(val string) string
@@ -2439,7 +2441,7 @@ ToUpper(val string) string
 
     A string.
 
-#### Example
+**Example**
 
 ```
 val = ToUpper(val)
@@ -2447,11 +2449,11 @@ val = ToUpper(val)
 
 
 
-### TrimSpace
+### TrimSpace {#trimspace}
 
 Deletes the leading and trailing spaces, tabs and newlines of a specified string.
 
-#### Syntax
+**Syntax**
 
 ```
 TrimSpace(val string) string
@@ -2462,7 +2464,7 @@ TrimSpace(val string) string
 
     A string.
 
-#### Example
+**Example**
 
  
 
@@ -2473,11 +2475,11 @@ val = TrimSpace(" mystr ")
 
 
 
-### Floor
+### Floor {#floor}
 
 Returns the largest integer value less than or equal to a specified number, float number, and string.
 
-#### Syntax
+**Syntax**
 
 ```
 Floor(x float|int|string) int
@@ -2487,7 +2489,7 @@ Floor(x float|int|string) int
 
     A number, float number, and string.
 
-#### Example
+**Example**
 
 ```
 val = Floor(5.6) // returns 5
@@ -2495,11 +2497,11 @@ val = Floor(5.6) // returns 5
 
 
 
-### Log
+### Log {#log}
 
 Returns the natural logarithm of a specified number, float number, and string.
 
-#### Syntax
+**Syntax**
 
 ```
 Log(x float|int|string) float
@@ -2510,7 +2512,7 @@ Log(x float|int|string) float
 
     A number, float number, and string.
 
-#### Example
+**Example**
 
 ```
 val = Log(10)
@@ -2518,11 +2520,11 @@ val = Log(10)
 
 
 
-### Log10
+### Log10 {#log10}
 
 Returns the base-10 logarithm of a specified number, float number, and string.
 
-#### Syntax
+**Syntax**
 
 ```
 Log10(x float|int|string) float
@@ -2533,7 +2535,7 @@ Log10(x float|int|string) float
 
     A number, float number, and string.
 
-#### Example
+**Example**
 
  
 
@@ -2543,11 +2545,11 @@ val = Log10(100)
 
 
 
-### Pow
+### Pow {#pow}
 
 Returns the specified base to the specified power (xy).
 
-#### Syntax
+**Syntax**
 
 ```
 Pow(x float|int|string, y float|int|string) float
@@ -2562,18 +2564,18 @@ Pow(x float|int|string, y float|int|string) float
 
     Exponent.
 
-#### Example
+**Example**
 
 ```
 val = Pow(2, 3)
 
 ```
 
-### Round
+### Round {#round}
 
 Returns the value of a specified number rounded to the nearest integer.
 
-#### Syntax
+**Syntax**
 
 ```
 Round(x float|int|string) int
@@ -2584,13 +2586,13 @@ Round(x float|int|string) int
 
     A number.
 
-#### Example
+**Example**
 
 ```
 val = Round(5.6)
 ```
 
-### Sqrt
+### Sqrt {#sqrt}
 
 Returns the square root of a specified number.
 
@@ -2603,7 +2605,7 @@ Sqrt(x float|int|string) float
 
     A number.
 
-#### Example
+**Example**
 
 ```
 val = Sqrt(225)
@@ -2611,11 +2613,11 @@ val = Sqrt(225)
 
 
 
-### StringToBytes
+### StringToBytes {#stringtobytes}
 
 Converts a string to bytes.
 
-#### Syntax
+**Syntax**
 
 ```
 StringToBytes(src string) bytes
@@ -2626,7 +2628,7 @@ StringToBytes(src string) bytes
 
     A string.
 
-#### Example
+**Example**
 
  
 
@@ -2637,11 +2639,11 @@ b = StringToBytes("my string")
 
 
 
-### BytesToString
+### BytesToString {#bytestostring}
 
 Converts bytes to string.
 
-#### Syntax
+**Syntax**
 
 ```
 BytesToString(src bytes) string
@@ -2652,7 +2654,7 @@ BytesToString(src bytes) string
 
     Byte.
 
-#### Example
+**Example**
 
 ```
 var s string
@@ -2661,11 +2663,11 @@ s = BytesToString($Bytes)
 
 
 
-### SysParamString
+### SysParamString {#sysparamstring}
 
 Returns the value of a specified platform parameter.
 
-#### Syntax
+**Syntax**
 
 ```
 SysParamString(name string) string
@@ -2676,7 +2678,7 @@ SysParamString(name string) string
 
     Parameter name.
 
-#### Example
+**Example**
 
 ```
 url = SysParamString(`blockchain_url`)
@@ -2684,11 +2686,11 @@ url = SysParamString(`blockchain_url`)
 
 
 
-### SysParamInt
+### SysParamInt {#sysparamint}
 
 Returns the value of a specified platform parameter in the form of a number.
 
-#### Syntax
+**Syntax**
 
 ```
 SysParamInt(name string) int
@@ -2699,7 +2701,7 @@ SysParamInt(name string) int
 
     Parameter name.
 
-#### Example
+**Example**
 
 ```
 maxcol = SysParam(`max_columns`)
@@ -2707,11 +2709,11 @@ maxcol = SysParam(`max_columns`)
 
 
 
-### DBUpdateSysParam
+### DBUpdateSysParam {#dbupdatesysparam}
 
 Updates the value and conditions of a platform parameter. If you do not need to change the value or conditions, please specify an empty string in the corresponding parameter.
 
-#### Syntax
+**Syntax**
 
 ```
 DBUpdateSysParam(name, value, conditions string)
@@ -2730,18 +2732,18 @@ DBUpdateSysParam(name, value, conditions string)
 
     New conditions for updating a parameter.
 
-#### Example
+**Example**
 
 ```
 DBUpdateSysParam(`fuel_rate`, `400000000000`, ``)
 
 ```
 
-### UpdateNotifications
+### UpdateNotifications {#updatenotifications}
 
 Obtains the notification list of a specified key from the database, and sends the notification obtained to Centrifugo.
 
-#### Syntax
+**Syntax**
 
 ```
 UpdateNotifications(ecosystemID int, keys int...)
@@ -2756,7 +2758,7 @@ UpdateNotifications(ecosystemID int, keys int...)
 
     A list of account addresses, separated by commas. Or you can use an array to specify a list of account addresses.
 
-#### Example
+**Example**
 
 ```
 UpdateNotifications($ecosystem_id, $key_id, 23345355454, 35545454554)
@@ -2765,11 +2767,11 @@ UpdateNotifications(1, [$key_id, 23345355454, 35545454554])
 
 
 
-### UpdateRolesNotifications
+### UpdateRolesNotifications {#updaterolesnotifications}
 
 Obtains the notification list of all account addresses of a specified role ID in the database, and sends the notification obtained to Centrifugo.
 
-#### Syntax
+**Syntax**
 
 ```
 UpdateRolesNotifications(ecosystemID int, roles int ...)
@@ -2784,21 +2786,21 @@ UpdateRolesNotifications(ecosystemID int, roles int ...)
 
     A list of role IDs, separated by commas. Or you can use an array to specify a list of role IDs.
 
-#### Example
+**Example**
 
 ```
 UpdateRolesNotifications(1, 1, 2)
 
 ```
 
-### HTTPRequest
+### HTTPRequest {#httprequest}
 
 Sends HTTP requests to the specified address.
 > Note
 
 > This function can only be used in CLB contracts.
 
-#### Syntax
+**Syntax**
 
 ```
 HTTPRequest(url string, method string, heads map, pars map) string
@@ -2821,7 +2823,7 @@ HTTPRequest(url string, method string, heads map, pars map) string
 
     Request parameters.
 
-#### Example
+**Example**
 
 ```
 var ret string
@@ -2836,7 +2838,7 @@ json = JSONToMap(ret)
 
 
 
-### HTTPPostJSON
+### HTTPPostJSON {#httppostjson}
 
 This function is similar to the HTTPRequest function, but it sends a POST request and the request parameters are strings.
 
@@ -2844,7 +2846,7 @@ This function is similar to the HTTPRequest function, but it sends a POST reques
 
 >  This function can only be used in CLB contracts
 
-#### Syntax
+**Syntax**
 
 ```
 HTTPPostJSON(url string, heads map, pars string) string
@@ -2862,7 +2864,7 @@ HTTPPostJSON(url string, heads map, pars string) string
 
     Request parameters as a JSON string. 
 
-####   Example
+**Example**
 
 ```
 var ret string
@@ -2876,11 +2878,11 @@ json = JSONToMap(ret)
 
 
 
-### BlockTime
+### BlockTime {#blocktime}
 
 Returns the generation time of the block in SQL format.
 
-####   Syntax
+**Syntax**
 
 ```
 BlockTime()
@@ -2888,7 +2890,7 @@ BlockTime()
 
 
 
-#### Example
+**Example**
 
 ```
 var mytime string
@@ -2898,11 +2900,11 @@ DBInsert("mytable", myid, {time: mytime})
 
 
 
-### DateTime
+### DateTime {#datetime}
 
 Converts the timestamp unixtime to a string in YYYY-MM-DD HH:MI:SS format.
 
-#### Syntax
+**Syntax**
 
 ```
 DateTime(unixtime int) string
@@ -2910,18 +2912,18 @@ DateTime(unixtime int) string
 
 
 
-#### Example
+**Example**
 
 ```
 DateTime(1532325250)
 
 ```
 
-### UnixDateTime
+### UnixDateTime {#unixdatetime}
 
 Converts a string in YYYY-MM-DD HH:MI:SS format to a timestamp unixtime
 
-#### Syntax
+**Syntax**
 
 ```
 UnixDateTime(datetime string) int
@@ -2929,7 +2931,7 @@ UnixDateTime(datetime string) int
 
 
 
-#### Example
+**Example**
 
 ```
 UnixDateTime("2018-07-20 14:23:10")
@@ -2937,13 +2939,13 @@ UnixDateTime("2018-07-20 14:23:10")
 
 
 
-### CreateOBS
+### CreateOBS {#createobs}
 
 Creates a child CLB.
 
 This function can only be used in the master CLB mode.
 
-#### Syntax
+**Syntax**
 
 ```
 CreateOBS(OBSName string, DBUser string, DBPassword string, OBSAPIPort int)
@@ -2966,20 +2968,20 @@ CreateOBS(OBSName string, DBUser string, DBPassword string, OBSAPIPort int)
 
     The port of the API request.
 
-#### Example
+**Example**
 
 ```
 CreateOBS("obsname", "obsuser", "obspwd", 8095)
 
 ```
 
-### GetOBSList
+### GetOBSList {#getobslist}
 
 Returns the list of child CLBs.
 
 This function can only be used in the master CLB mode.
 
-#### Syntax
+**Syntax**
 
 ```
 GetOBSList()
@@ -2990,13 +2992,13 @@ GetOBSList()
 
 An array of objects, where the key is the CLB name and the value is the process state.
 
-### RunOBS
+### RunOBS {#runobs}
 
 A process running the CLB.
 
 This function can only be used in the master CLB mode.
 
-#### Syntax
+**Syntax**
 
 ```
 RunOBS(OBSName string)
@@ -3009,13 +3011,13 @@ RunOBS(OBSName string)
 
   It can only contain letters and numbers, and the space symbol cannot be used.
 
-### StopOBS
+### StopOBS {#stopobs}
 
 Stop the process of a specified CLB.
 
 This function can only be used in the master CLB mode.
 
-#### Syntax
+**Syntax**
 
 ```
 StopOBS(OBSName string)
@@ -3028,13 +3030,13 @@ StopOBS(OBSName string)
 
   It can only contain letters and numbers, and the space symbol cannot be used.
 
-### RemoveOBS
+### RemoveOBS {#removeobs}
 
 Deletes the process of a specified CLB.
 
 This function can only be used in the master CLB mode.
 
-#### Syntax
+**Syntax**
 
 ```
 RemoveOBS(OBSName string)
@@ -3047,18 +3049,18 @@ CLB name.
 
 It can only contain letters and numbers, and the space symbol cannot be used.
 
-## System Contracts
+## System Contracts {#system-contracts}
 
 System contracts are created by default when the IBax blockchain platform is launched. All these contracts were created in the first ecosystem. This is why you need to specify their full names when calling them from other ecosystems, for example, `@1NewContract`.
 
-### NewEcosystem
+### NewEcosystem {#newecosystem}
 
 This contract creates a new ecosystem. To obtain the ID of the ecosystem created, you must quote the result filed returned in [txstatus](../reference/api2.md#txstatus).
 
 Parameters:
   * **Name** string - name of the ecosystem. It can be changed later.
 
-### EditEcosystemName
+### EditEcosystemName {#editecosystemname}
 
 Changes the name of the ecosystem in the 1_ecosystems table that only exists in the first ecosystem.
 
@@ -3066,7 +3068,7 @@ Parameters:
   * **EcosystemID** int - changes the name of the ecosystem ID;
   * **NewName** string - new name of the ecosystem.
 
-### NewContract
+### NewContract {#newcontract}
 
 Creates a new contract in the current ecosystem.
 
@@ -3076,7 +3078,7 @@ Parameters:
   * **Conditions** string - changes the conditions of the contract;
   * **TokenEcosystem** int "optional" - ecosystem ID. It determines which token will be used for transactions when the contract is activated.
 
-### EditContract
+### EditContract {#editcontract}
 
 Edits the contract in the current ecosystem.
 
@@ -3085,21 +3087,21 @@ Parameters:
   * **Value** string "optional" - source code of the contract;
   * **Conditions** string "optional" - changes the conditions of the contract.
 
-### BindWallet
+### BindWallet {#bindwallet}
 Binding the contract to the wallet address in the current ecosystem. After binding with the contract, the contract execution fee will be paid under this address. 
 
 Parameters:
   * **Id** int - the contract ID to be bound.
   * **WalletId** string "optional" - the wallet address bound to the contract.
 
-### UnbindWallet
+### UnbindWallet {#unbindwallet}
 
 Unbinding the contract from the wallet address in the current ecosystem. Only addresses bound to the contract can be unbound. After unbinding the contract, users who execute the contract will pay the execution fee.
 
 Parameters:
   * **Id** int - the ID of the contract being bound.
 
-### NewParameter
+### NewParameter {#newparameter}
 
 A new ecosystem parameter has been added to the current ecosystem.
 
@@ -3108,7 +3110,7 @@ Parameters:
   * **Value** string - parameter value;
   * **Conditions** string - conditions to change the parameter.
 
-### EditParameter
+### EditParameter {#editparameter}
 
 Changes existing ecosystem parameters in the current ecosystem.
 
@@ -3117,7 +3119,7 @@ Parameters:
   * **Value** string - new parameter value;
   * **Conditions** string - new conditions to change the parameter.
 
-### NewMenu
+### NewMenu {#newmenu}
 
 Adds a new menu in the current ecosystem.
 
@@ -3127,7 +3129,7 @@ Parameters:
   * **Title** string "optional" - menu title;
   * **Conditions** string - conditions to change the menu.
 
-### EditMenu
+### EditMenu {#editmenu}
 
 Changes the existing menu in the current ecosystem.
 
@@ -3137,7 +3139,7 @@ Parameters:
   * **Title** string "optional" - title of the new menu;
   * **Conditions** string "optional" - new conditions to change the menu.
 
-### AppendMenu
+### AppendMenu {#appendmenu}
 
 Adds the source code content to existing menus in the current ecosystem
 
@@ -3145,7 +3147,7 @@ Parameters:
   * **Id** int - menu ID;
   * **Value** string - source code to be added.
 
-### NewPage
+### NewPage {#newpage}
 
 Adds a new page in the current ecosystem.
 
@@ -3158,7 +3160,7 @@ Parameters:
 
   * **ValidateMode** int "optional" - mode of page validity check. The page will be checked when it is loaded if the value of this parameter is 0; or checked when it is loaded or exit the page if the value of this parameter is 1. 
 
-### EditPage
+### EditPage {#editpage}
 
 Changes existing pages in the current ecosystem.
 
@@ -3170,7 +3172,7 @@ Parameters:
   * **ValidateCount** int "optional" - number of nodes required for page validation. If this parameter is not specified, the min_page_validate_count ecosystem parameter value is used. The value of this parameter cannot be less than min_page_validate_count and greater than max_page_validate_count;
   * **ValidateMode** int "optional" - mode of page validity check. The page will be checked when it is loaded if the value of this parameter is 0; or checked when it is loaded or exit the page if the value of this parameter is 1. 
 
-### AppendPage
+### AppendPage {#appendpage}
 
 Adds the source content to existing pages in the current ecosystem.
 
@@ -3178,7 +3180,7 @@ Parameters:
 * **Id** int - ID of the page to be changed;
 * **Value** string - the source code to be added.
 
-### NewBlock
+### NewBlock {#newblock}
 
 Adds a page module to the current ecosystem.
 
@@ -3187,7 +3189,7 @@ Parameters:
   * **Value** string - source code of the module;
   * **Conditions** string - conditions to change the module.
 
-### EditBlock
+### EditBlock {#editblock}
 
 Changes existing page modules in the current ecosystem.
 
@@ -3196,7 +3198,7 @@ Parameters:
   * Value string - source code of the new module;
   * Conditions string - new conditions to change the module.
 
-### NewTable
+### NewTable {#newtable}
 
 Adds a new table to the current ecosystem.
 
@@ -3214,7 +3216,7 @@ Parameters:
     * **update** - permission to change entry data;
     * **read** - permission to read entry data.
 
-### EditTable
+### EditTable {#edittable}
 
 Changes the access permissions of a table in the current ecosystem.
 
@@ -3225,7 +3227,7 @@ Parameters:
   * **ReadPerm** string - permission to read entries in the table;
   * **NewColumnPerm** string - permission to create a new column;
 
-### NewColumn
+### NewColumn {#newcolumn}
 
 Adds a new field to the table of the current ecosystem.
 
@@ -3236,7 +3238,7 @@ Parameters:
   * **UpdatePerm** string - permission to change the value in the column;
   * **ReadPerm** string - permission to read the value in the column.
 
-### EditColumn
+### EditColumn {#editcolumn}
 
 Changes the permission of a specified table field in the current ecosystem.
 
@@ -3246,7 +3248,7 @@ Parameters:
   * **UpdatePerm** string - new permission to change the value in the column;
   * **ReadPerm** string - new permission to read the value in the column.
 
-### NewLang
+### NewLang {#newlang}
 
 Adds language resources to the current ecosystem, and the permission to do so is set in the changing_language parameter of the ecosystem parameters.
 
@@ -3255,7 +3257,7 @@ Parameters:
   * **Name** string - name of the language resources in Latin characters;
   * **Trans** string - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "zh": "Chinese text"}`.
 
-### EditLang
+### EditLang {#editlang}
 
 Changes the language resources in the current ecosystem, and the permission to do so is set in the changing_language parameter of the ecosystem parameter.
 
@@ -3264,7 +3266,7 @@ Parameters:
   * **Id** int - language resources ID.
   * **Trans** - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "zh": "Chinese text"}`.
 
-### Import
+### Import {#import}
 
 Imports an application into the current ecosystem and imports the data loaded from the [ImportUpload](#importupload) contract.
 
@@ -3272,14 +3274,14 @@ Parameters:
 
   * **Data** string - data imported in text format, which comes from a file exported by the ecosystem.
 
-### ImportUpload
+### ImportUpload {#importupload}
 
 Loads an external application file into the buffer_data table of the current ecosystem for subsequent import.
 
 Parameters:
   * **InputFile** file - a file written to the buffer_data table of the current ecosystem.
 
-### NewAppParam
+### NewAppParam {#newappparam}
 
 Adds new application parameters to the current ecosystem.
 
@@ -3289,7 +3291,7 @@ Parameters:
   * **Value** string - parameter value;
   * **Conditions** string - permission to change the parameter.
 
-### EditAppParam
+### EditAppParam {#editappparam}
 
 Changes existing application parameters in the current ecosystem.
 
@@ -3298,7 +3300,7 @@ Parameters:
   * **Value** string "optional" - new parameter value;
   * **Conditions** string "optional" - new permissions to change the parameter.
 
-### NewDelayedContract
+### NewDelayedContract {#newdelayedcontract}
 
 Adds a new task to the delayed contracts scheduler daemon.
 
@@ -3311,7 +3313,7 @@ Parameters:
   * **BlockID** int "optional" - the block ID where the contract must be executed. If not specified, it will be calculated automatically by adding the "current block ID" + EveryBlock;
   * **Limit** int "optional" - the maximum number of task execution. If not specified, the task will be executed for an unlimited times.
 
-### EditDelayedContract
+### EditDelayedContract {#editdelayedcontract}
 
 Changes a task in the delayed contracts scheduler daemon. 
 
@@ -3324,7 +3326,7 @@ Parameters:
   * **Limit** int "optional" - the maximum number of task execution. If not specified, the task will be executed for an unlimited times.
   * **Deleted** int "optional" - task switching. A value of `1` will disable the task. A value of `0` will enable the task.
 
-### UploadBinary
+### UploadBinary {#uploadbinary}
 
 Adds or overwrites a static file in the X_binaries table. When calling a contract via HTTP API, the request must be in `multipart/form-data` format; the DataMimeType parameter will be used in conjunction with the form data.
 

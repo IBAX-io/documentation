@@ -1,25 +1,27 @@
+# 智能合约 {#smart-contracts}
 
-# Smart Contracts
-  - [Contract Structure](#contract-structure)
-    - [Data section](#data-section)
-    - [Conditions section](#conditions-section)
-    - [Action section](#action-section)
-  - [Variables](#variables)
-  - [Nested Contracts](#nested-contracts)
-  - [File upload](#file-upload)
-  - [Queries in JSON format](#queries-in-json-format)
-  - [Queries with date and time operations](#queries-with-date-and-time-operations)
-  - [Needle contract language](#needle-contract-language)
-    - [Basic elements and structure](#basic-elements-and-structure)
-    - [Data types and variables](#data-types-and-variables)
-    - [Array](#array)
-    - [If and While statements](#if-and-while-statements)
-  - [Functions](#functions)
-    - [Function declaration](#function-declaration)
-    - [Variable-length parameters](#variable-length-parameters)
-    - [Optional parameters](#optional-parameters)
-  - [Needle functions classification](#needle-functions-classification)
-  - [Needle functions reference](#needle-functions-reference)
+<!-- TOC -->
+
+- [合约结构](#contract-structure)
+    - [数据部分](#data-section)
+    - [条件部分](#conditions-section)
+    - [操作部分](#action-section)
+- [变量](#variables)
+- [嵌套合约](#nested-contracts)
+- [文件上传](#file-upload)
+- [JSON格式查询语句](#queries-in-json-format)
+- [日期时间格式查询语句](#queries-with-date-and-time-operations)
+- [needle 合约语言](#needle-contract-language)
+    - [基本要素和结构](#basic-elements-and-structure)
+    - [数据类型和变量](#data-types-and-variables)
+    - [数组](#array)
+    - [If和While语句](#if-and-while-statements)
+    - [函数](#functions)
+        - [函数声明](#function-declaration)
+        - [可变长度参数](#variable-length-parameters)
+        - [可选参数](#optional-parameters)
+- [needle 函数功能分类](#needle-functions-classification)
+- [needle 函数参考](#needle-functions-reference)
     - [AppParam](#appparam)
     - [DBFind](#dbfind)
     - [DBRow](#dbrow)
@@ -103,7 +105,7 @@
     - [RunOBS](#runobs)
     - [StopOBS](#stopobs)
     - [RemoveOBS](#removeobs)
-  - [System Contracts](#system-contracts)
+- [系统合约](#system-contracts)
     - [NewEcosystem](#newecosystem)
     - [EditEcosystemName](#editecosystemname)
     - [NewContract](#newcontract)
@@ -134,162 +136,165 @@
     - [EditDelayedContract](#editdelayedcontract)
     - [UploadBinary](#uploadbinary)
 
+<!-- /TOC -->
 
-Smart Contract (hereinafter referred to as Contract) is one of the basic elements of an application. The implementation of a contract on a page by the user is usually a single operation that the purpose is to update or create a database entry. All data operations of an application form a contract system, and these contracts interact with each other through database or contract content functions.
 
-## Contract Structure
+智能合约（下文称为合约）是应用程序的基本元素。用户在页面中执行合约通常是单个操作，结果是更改或创建数据库的条目。
+应用程序的所有数据操作形成了合约系统，这些合约通过数据库或者合约内容的函数彼此交互。
 
-Use the keyword `contract` to declare a contract, followed by the contract name, and the contract content must be enclosed in braces. A contract mainly consists of three sections:
+## 合约结构 {#contract-structure}
 
-1. **data** - [data section](#data-section), where declares the variables of the input data, including variable name and variable type;
+使用 **contract**关键字声明合约，后面接上合约名称，合约内容必须用大括号括起来。合约结构有三个主要部分：
 
-2. **conditions** - [conditions section](#conditions-section), where validates the correctness of the data;
+> 1.  **data** - [数据部分](#data-section)，声明输入数据的变量，包括变量名称和变量类型；
+> 2.  **conditions** - [条件部分](#conditions-section)，验证数据的正确性；
+> 3.  **action** - [操作部分](#action-section)，执行数据操作的动作。
 
-3. **action** - [action section](#action-section), where defines the data manipulations.
-```
+``` js
 contract MyContract {
-  data {
-    FromId int
-    ToId int
-    Amount money
-  }
-  func conditions {
-    ...
-  }
-  func action {
-    ...
-  }
+    data {
+        FromId int
+        ToId   int
+        Amount money
+    }
+    func conditions {
+        ...
+    }
+    func action {
+        ...
+    }
 }
 ```
 
+### 数据部分 {#data-section}
 
+`data` 部分描述了合约数据输入以及接收的表单参数。
 
-### Data section
+每行的依次顺序结构：
 
-The `data` section describes the contract data inputs and the form parameters received.
+> -   *变量名称* - 只接收变量，不支持接收数组；
+> -   *变量数据类型* - 变量的 [数据类型](#data-types-and-variables)；
+> -   *optional* - 可选参数，不需要填充的表单元素。
 
-The structure of each line by sequence:
-
-* Variable name - only receive variables, not arrays;
-* Variable data type - the [data type](#data-types-and-variables) of the variable;
-* optional - an optional parameter that do not need to fill in the form element.
-
-```
+``` js
 contract my {
   data {
-  Name string
-  RequestId int
-  Photo file "optional"
-  Amount money
-  Private bytes
+      Name string
+      RequestId int
+      Photo file "optional"
+      Amount money
+      Private bytes
   }
   ...
 }
 ```
 
+### 条件部分 {#conditions-section}
 
+`conditions` 部分描述了对接收的数据进行验证。
 
-### Conditions section
+以下命令用于错误警告：严重性错误 `error`、警告性错误`warning`、提示性错误`info`，
+这三种命令都会生成一个终止合约执行的错误，每个错误都会打印不同类型的错误日志信息。例如：
 
-The `conditions` section describes the validation of data received.
-
-The following commands are used for error warnings: serious errors `error`, warning errors `warning`, suggestive errors `info`. These three commands will generate an error that terminates the execution of contracts, and each error will print a different type of error log information. For example:
-
-```
+``` js
 if fuel == 0 {
-    error "fuel cannot be zero!"
+      error "fuel cannot be zero!"
 }
 if money < limit {
-    warning Sprintf("You don't have enough money: %v <%v", money, limit)
+      warning Sprintf("You don't have enough money: %v < %v", money, limit)
 }
 if idexist > 0 {
-    info "You have already been registered"
+      info "You have already been registered"
 }
 ```
 
-### Action section
+### 操作部分 {#action-section}
 
-The `action` section describes the main code of the contract, which retrieves other data and records the result values in tables. For example:
+`action`部分描述了合约的主要代码，该代码检索其他数据并将结果值记录到数据库表中。例如：
 
-```
+``` js
 action {
-DBUpdate("keys", $key_id, {"-amount": $amount})
-DBUpdate("keys", $recipient, {"+amount": $amount, "pub": $Pub})
+    DBUpdate("keys", $key_id, {"-amount": $amount})
+    DBUpdate("keys", $recipient, {"+amount": $amount, "pub": $Pub})
 }
 ```
 
+## 变量 {#variables}
 
+**data** 部分声明的变量通过 `$`符号后面跟上变量名称传递给其他合约部分。`$`符号也可以声明其他不在数据部分内的变量。
+这些变量被认为是这个合约和所有嵌套该合约的全局变量。
 
-## Variables
+合约内可以使用预定义变量，这些变量包含调用该合约的交易数据：
 
-Variables declared in the data section are passed to other contract sections through the `$` symbol followed by the variable name. The `$` symbol can also be used to declare other variables that are not within the data section, which are considered as global variables of this contract and all contracts that this contract is nested.
+> -   `$time` -- 交易时间戳；
+> -   `$ecosystem_id` -- 生态系统ID；
+> -   `$block` -- 包含该交易的区块ID；
+> -   `$key_id` -- 签署当前交易的账户地址；
+> -   `$type` 虚拟机中合约ID；
+> -   `$block_key_id` -- 生成区块的节点账户地址；
+> -   `$block_time` -- 区块生成时间戳；
+> -   `$original_contract` -- 最初进行交易处理的合约名称。如果该变量为空字符串，表示交易在验证过程中调用了该合约。
+      要检查该合约是由另一个合约调用还是直接从交易调用，需要比较 *\$original_contract* 和 *\$this_contract* 的值。
+      如果它们相等，则表示合约是从交易调用的；
+> -   `$this_contract` -- 当前执行合约名称；
+> -   `$guest_key` -- 访客账户地址；
+> -   `$stack` -- 合约数组堆栈，\*array\* 类型，包含所有执行的合约，数组第一个元素表示当前执行的合约名称，最后一个元素表示最初进行交易处理的合约名称；
+> -   `$node_position` -- 区块所在的验证节点数组的索引号；
+> -   `$txhash` -- 交易哈希；
+> -   `$contract` -- 当前合约结构数组。
 
-Pre-defined variables can be used in contracts, which contain transaction data that called the contract:
+预定义变量不仅可以在合约中访问，还可以在定义应用程序元素的访问权限条件的权限字段中访问。当用于权限字段时，关于区块信息的预定义变量始终等于零，例如`$time`， `$block` 等。
 
-* `$time` - transaction timestamp;
-* `$ecosystem_id` - ecosystem ID;
-* `$block` - ID of the block containing the transaction;
-* `$key_id` - address of the account that signed the current transaction;
-* `$type` - contract ID in the virtual machine;
-* `$block_key_id` - account address of the node generated the block;
-* `$block_time` - block generation timestamp;
-* `$original_contract` - name of the contract that initially processed the transaction. It means the contract is called during transaction validation if the variable is an empty string. To check whether the contract is called by another contract or directly by the transaction, you need to compare the values of $original_contract and $this_contract. It means that the contract is called by the transaction if they are equal;
-* `$this_contract` - name of the contract currently being executed;
-* `$guest_key` - guest account address;
-* `$stack` - contract array stack with a data type of array, containing all contracts executed. The first element of the array represents the name of the contract currently being executed, while the last element represents the name of the contract that initially processed the transaction;
-* `$node_position` - the index number of the verification node array where the block is located;
-* `$txhash` - transaction hash;
-* `$contract` - the current contract structure array.
+预定义变量 `$result` 赋值于合约的返回结果。
 
-Predefined variables can be accessed not only in contracts, but also in permission fields that defines the access permission conditions of the application elements. When used in permission fields, predefined variables for block information are always equal to zero, such as `$time`, `$block`, etc.
-
-A predefined variable `$result` is assigned with the return result of the contract.
-
-```
+``` js
 contract my {
- data {
-     Name string
-     Amount money
- }
- func conditions {
-     if $Amount <= 0 {
-     error "Amount cannot be 0"
-     }
-     $ownerId = 1232
- }
- func action {
-     var amount money
-     amount = $Amount - 10
-     DBUpdate("mytable", $ownerId, {name: $Name,amount: amount})
-     DBUpdate("mytable2", $ownerId, {amount: 10})
- }
+  data {
+      Name string 
+      Amount money
+  }
+  func conditions {
+      if $Amount <= 0 {
+         error "Amount cannot be 0"
+      }
+      $ownerId = 1232
+  }
+  func action {
+      var amount money
+      amount = $Amount - 10
+      DBUpdate("mytable", $ownerId, {name: $Name,amount: amount})
+      DBUpdate("mytable2", $ownerId, {amount: 10})
+  }
 }
 ```
 
-## Nested Contracts
+## 嵌套合约 {#nested-contracts}
 
-You can nest contracts in the conditions and action sections of the contract. Nested contracts can be called directly, and the contract parameters are specified in parentheses after the contract name, for example, `@1NameContract(Params)`. You may also call nested contracts with the [CallContract](#callcontract) function.
+在合约的 *conditions* 和 *action*部分可以嵌套合约。嵌套合约可以直接调用，合约参数在其合约名称后面的括号中指定，
+例如，`@1NameContract(Params)`。也可以使用[CallContract](#CallContract) 函数调用。
 
-## File upload
+## 文件上传 {#file-upload}
 
-To upload a file using a form in the format of `multipart/form-data`, the data type of the contract must be `file`.
+使用 `multipart/form-data` 格式的表单上传文件，合约的数据类型必须是`file`。
 
-```
+``` js
 contract Upload {
-     data {
-  	   File file
-     }
-     ...
+    data {
+        File file
+    }
+    ...
 }
 ```
+[UploadBinary](#UploadBinary) 合约用于上传和存储文件。在页面编辑器使用 Logicor 语言的函数[Binary](templates2.md#binary) 可以获取文件下载链接。
 
-The [UploadBinary](#uploadbinary) contract is used to upload and store files. With the Logicor language function [Binary](templates2.md#binary) in the page editor, you can get the file download link.
+## JSON格式查询语句 {#queries-in-json-format}
 
-## Queries in JSON format
+在合约语言中，**JSON** 格式类型可以指定为字段类型。使用语法：
+**columnname->fieldname** 来处理条目字段。获得的值记录在**columnname.fieldname**。 
 
-In the contract language, **JSON** can be specified as a field type. You can use the syntax: **columnname->fieldname** to process the entry field. The value obtained is recorded in **columnname.fieldname**. The above syntax can be used in Columns,One,Where of the [DBFind](#dbfind) function.
+上述语法可以在[DBFind](templates2.md#dbfind) 函数的*Columns,One,Where* 中使用。
 
-```
+``` js
 var ret map
 var val str
 var list array
@@ -300,79 +305,88 @@ list = DBFind("mytable").Columns("myname,doc,doc->ind").Where("doc->ind = ?", "1
 val = DBFind("mytable").WhereId($Id).One("doc->check")
 ```
 
+## 日期时间格式查询语句 {#queries-with-date-and-time-operations}
 
+合约语言函数不能直接查询和更新日期时间，但是可以像示例中在Where语句中使用PostgreSQL的函数和功能。
+例如，需要比较字段*date_column* 和当前时间，如果 *date_column*是timestamp类型，那么表达式为 `date_column < NOW()`；
+如果 *date_column*是Unix类型，那么表达式为 `to_timestamp(date_column) > NOW()`。
 
-## Queries with date and time operations
-
-You cannot directly query and update the date and time with the contract language functions, but you can use PostgreSQL functions and features in the Where statement as in the example below. For example, you need to compare the field date_column with the current time. If date_column is a timestamp type, the expression should be `date_column <NOW()`; if date_column is a Unix type, the expression should be `to_timestamp(date_column)> NOW()`.
-
+``` js
+Where("to_timestamp(date_column) > NOW()")
+Where("date_column < NOW() - 30 * interval '1 day'")
 ```
-Where("to_timestamp(date_column)> NOW()")
-Where("date_column <NOW() - 30 * interval '1 day'")
-```
 
-The following Needle function is used to process date and time in SQL format:
+以下 Needle 函数是处理SQL格式的日期和时间：
 
 * [BlockTime](#blocktime)
 * [DateTime](#datetime)
 * [UnixDateTime](#unixdatetime)
 
-## Needle contract language
+## needle 合约语言 {#needle-contract-language}
 
-The contract language includes a set of functions, operators and structures, which can realize data algorithm processing and database operations.
+该语言包括一组函数、运算符和结构，可实现数据算法处理和数据库操作。
 
-The contract content can be modified if the contract editing permission is not set to `false`. The complete history of contract changes is stored in the blockchain, which is available in Weaver.
+在编辑合约权限不为 `false`的条件下，合约内容可以修改。对合约更改的完整历史记录存储在区块链中，从Weaver 可获知更改情况。
 
-Data operations in the blockchain are executed in accordance with the latest version of the contract.
+区块链中的数据操作由最新版本的合约执行。
 
-### Basic elements and structure
+### 基本要素和结构 {#basic-elements-and-structure}
 
-### Data types and variables
+### 数据类型和变量 {#data-types-and-variables}
 
-Data type must be defined for every variables. Normally, data types are converted automatically. The following data types can be used:
+每个变量必须定义数据类型，通常情况下，数据类型会自动转换。可以使用以下数据类型：
 
-* `bool` - Boolean, `true` or `false`;
-* `bytes` - a byte format;
-* `Int` - a 64-bit integer;
-* `Array` - an array of any type;
-* `map` - an object array;
-* `money` - a big integer;
-* `float` - a 64-bit float number;
-* `string` - a string must be defined with double quotes or escape format: "This is a string" or \`This is a string\`;
-* `file` - an object array:
-  * `Name` - file name, `string` type;
-  * `MimeType` - **mime-type** file, `string` type;
-  * `Body` - file content, `bytes` type.
+> -   `bool` - 布尔值，`true` 和 `false`；
+>
+> -   `bytes` - 字节格式；
+>
+> -   `int` - 64位整数型；
+>
+> -   `array` - 任意类型值的数组；
+>
+> -   `map` - 对象数组；
+>
+> -   `money` - 大整数类型；
+>
+> -   `float` - 64位浮点型；
+>
+> -   `string` - 字符串，双引号或转义格式： \"This is a string\" 或者
+>     \`This is a string\`；
+>
+> -   `file` - 对象数组：
+>
+>     > -   `Name` - 文件名称，`string` 类型；
+>     > -   `MimeType` - **mime-type** 文件格式，`string` 类型；
+>     > -   `Body` - 文件内容，，`bytes` 类型。
 
-All identifiers, including the names of variables, functions and contracts, are case sensitive (MyFunc and myFunc are different names).
+所有标识符，包括变量、函数和合约等的名称都区分大小写（MyFunc和myFunc是不同的名称）。
 
-Use the **var** keyword to declare a variable, followed by the name and type of the variable. Variables declared in braces must be used in the same pair of braces.
+使用 **var**关键字声明变量，后跟变量的名称和类型。在大括号内声明的变量必须在同一对大括号内使用。
 
-The default value of any variable declared is zero: the zero value of bool type is false, the zero value of all numeric types is 0, and the zero value, for strings, empty strings. An example of variable declaration:
+声明的变量具有默认零值：bool类型的零值false，所有数字类型的零值0，字符串类型的零值空字符串，变量声明示例：
 
-```
+``` js
 func myfunc( val int) int {
-  var mystr1 mystr2 string, mypar int
-  var checked bool
-  ...
-  if checked {
-    var temp int
+    var mystr1 mystr2 string, mypar int
+    var checked bool
     ...
-  }
+    if checked {
+         var temp int
+         ...
+    }
 }
 ```
 
+### 数组 {#array}
 
+该语言支持两种数组类型：
 
-### Array
+-   `array` - 索引从0开始的数组；
+-   `map` - 对象数组。
 
-The contract language supports two array types:
-* `Array` - an array with index starting from 0;
-* `map` - an array of objects.
+分配和检索数组元素时，索引必须放在方括号中。数组中不支持多个索引，不能将数组元素作为 *myarr\[i\]\[j\]* 来处理。
 
-When allocating and retrieving array elements, the index must be placed in square brackets. Multiple indexes are not supported in the array, and the array elements cannot be treated as myarr[i][j].
-
-```
+``` js
 var myarr array
 var mymap map
 var s string
@@ -386,32 +400,32 @@ s = Sprintf("%v, %v, %v", myarr[0] + mymap["value"], myarr[1], mymap["param"])
 // s = 877, This is a line, Parameter
 ```
 
-You can also define arrays of array type by specifying elements in `[]`. For map type `arrays`, please use `{}`.
+您还可以在 `[]` 通过指定元素定义 `array` 类型。对于 `map`类型数组，请使用 `{}`。
 
-```
+``` js
 var my map
 my={"key1": "value1", key2: i, "key3": $Name}
 var mya array
 mya=["value1", {key2: i}, $Name]
 ```
 
-You can use such initialization in expressions. For example, use it in function parameters.
+您可以在表达式中使用这样的初始化。例如，在函数参数中使用。
 
-```
+``` js
 DBFind...Where({id: 1})
 ```
 
-For an array of objects, you must specify a key. Key are specified as strings in double quotes (`""`). If the key name is limited to letters, numbers and underscores, you can omit the double quotes.
+对于对象数组，您必须指定一个键。键用双引号（`""`）指定字符串。如果键名仅限于字母，数字和下划线，则可以省略双引号。
 
-```
+``` js
 {key1: "value1", key2: "value2"}
 ```
 
-An array can contain strings, numbers, variable names of any type, and variable names with the `$` symbol. It supports nested arrays. You can specify different maps or arrays as values.
+数组可以包含字符串、数字、任何类型的变量名称和带 `$`符号的变量名称。支持嵌套数组，可以将不同的映射或数组指定为值。
 
-Expressions cannot be used as array elements. Use a variable to store the expression result and specify this variable as an array element.
+表达式不能用作数组元素，使用一个变量来存储表达式结果并指定这个变量为数组元素。
 
-```
+``` js
 [1+2, myfunc(), name["param"]] // don't do this
 [1, 3.4, mystr, "string", $ext, myarr, mymap, {"ids": [1,2, i], company: {"Name": "MyCompany"}} ] // this is ok
 
@@ -420,54 +434,57 @@ val = my["param"]
 MyFunc({key: val, sub: {name: "My name", "color": "Red"}})
 ```
 
-### If and While statements
+### If和While语句 {#if-and-while-statements}
 
-The contract language supports standard **if** conditional statements and **while** loops, which can be used in contracts and functions. These statements can be nested within each other.
+合约语言支持标准 **if** 条件语句和 **while**循环，可以在合约和函数中使用。这些语句可以相互嵌套。
 
-**if** and **while** must be followed by a conditional statement. If the conditional statement returns a number, it is regarded as false when its value is 0.
+**if** 和 **while**
+关键字后必须跟条件语句。如果条件语句返回一个数字，则当其值为0，被视为*false*。
 
-val == 0 is equal to !val, val != 0 is equal to val. The **if** statement can have an **else** code block, and the **else** is executed when the **if** conditional statement is false.
+*val == 0* 等于 *!val*，*val != 0* 等于 *val*。**if** 语句可以有**else** 代码块，在 **if** 条件语句为 *false* 时执行 **else** 。
 
-The following comparison operators can be used in conditional statements: `<, >, >=, <=, ==, !=, ||, &&`
+以下比较运算符可用于条件语句：`<, >, >=, <=, ==, !=, ||, &&`
 
-```
-if val> 10 || id != $block_key_id {
- ...
+``` js
+if val > 10 || id != $block_key_id {
+    ...
 } else {
- ...
+    ...
 }
 ```
 
-The code block is executed when the conditional statement of the **while** loop is true. **break** means to terminate the loop of the code block. If you want to start a loop from the beginning, use **continue**.
+**while** 循环的条件语句为 *true* 时执行代码块。**break**表示结束代码块的循环，想要从头开始循环请使用 **continue**。
 
-```
+``` js
 var i int
 while true {
-  if i > 100 {
-    break
-  }
-  ...
-  if i == 50 {
-    continue
-  }
-  ...
-  i = i + 1
+    if i > 100 {
+        break
+    }
+    ...
+    if i == 50 {
+        continue
+    }
+    ...
+    i = i + 1
 }
 ```
 
-In addition to conditional statements, Needle also supports standard arithmetic operations: `+`, `-`, `*`, `/`.
+除了条件语句外，needle 还支持标准的算术运算：`+`, `-`, `*`, `/`。
 
-Variables of string and bytes types can be used as a conditional statement. If the length of the type is greater than zero, the condition is true, otherwise it is false.
+**string** 和 **bytes**类型可以作为条件语句，如果类型长度大于零时，条件为 *true*，反之为 *false*。
 
-## Functions
+### 函数 {#functions}
 
-Functions can perform some operations on the data received by the [data section](#data-section) of a contract: read and write data from the database, convert the type of value, and establish the interaction between contracts.
+函数可以对合约 [数据部分](#data-section)接收的数据执行一些操作：读取和写入数据库的数据、转换值的类型以及建立合约之间的交互。
 
-### Function declaration
+#### 函数声明 {#function-declaration}
 
-Use the func keyword to declare a function, followed by the name and the list of parameters passed to it and their types. All parameters are enclosed in parentheses and separated by commas. After the parentheses, the data type of the value returned by the function must be declared. The function body must be enclosed in braces. If the function has no parameters, the braces can be omitted. To return a value from a function, use the `return` keyword.
+使用 **func**关键词声明一个函数，后面是函数名称和传递给它的参数列表及其参数类型，所有参数都用小括号括起来，用逗号分隔。
+在小括号之后，必须声明函数返回值的数据类型。函数体必须用大括号括起来。如果函数没有参数，那么大括号可以省略。 
+使用`return` 关键字返回函数返回值。
 
-```
+``` js
 func myfunc(left int, right int) int {
     return left*right + left - right
 }
@@ -479,56 +496,55 @@ func ooops {
 }
 ```
 
-Function do not return errors, because all error checks are performed automatically. If there is an error in any function, the contract will terminate its operation and present the error description in a window.
+函数不会返回错误，因为所有错误检查都是自动执行的。当在任何函数中出现错误时，合约将停止其操作并显示包含错误描述的窗口。
 
-### Variable-length parameters
+#### 可变长度参数 {#variable-length-parameters}
 
-Functions can define variable-length parameters, use the `...` symbol as the last parameter type of the function to indicate variable-length parameters, with a data type of `array`. Variable-length parameters include all variables from the time the parameter is passed in the call. All types of variables can be passed, but you need to deal with conflicts of mismatching of data types.
+函数可以定义可变长度参数，使用 `...`符号作为函数的最后一个参数类型，表示可变长度参数，其数据类型为`array`。
+可变长度参数包含从调用传递该参数变量开始的所有变量。
+任何类型的变量都可以传递，但是您需要处理与数据类型不匹配的冲突。
 
-```
+``` js
 func sum(out string, values ...) {
-var i, res int
+    var i, res int
 
-while i <Len(values) {
-
-   res = res + values[i]
-
-   i = i + 1
-
-}
-
-Println(out, res)
-
+    while i < Len(values) {
+       res = res + values[i]
+       i = i + 1
+    }
+    Println(out, res)
 }
 
 func main() {
-  sum("Sum:", 10, 20, 30, 40)
+   sum("Sum:", 10, 20, 30, 40)
 }
 ```
 
+#### 可选参数 {#optional-parameters}
 
+函数有很多参数，但在调用它时我们只需要其中某些参数。这样的情况下，您可以通过以下方式声明可选参数：
+`func myfunc(name string).Param1(param string).Param2(param2 int) {...}`，
+这样您就可以调用任意顺序指定的参数：`myfunc("name").Param2(100)`。
 
-### Optional parameters
+在函数体中，您可以像正常处理这些变量。如果未调用指定的可选参数，它们默认为零值。
+您还可以使用`...`指定可变长度参数：`func DBFind(table string).Where(request string, params ...)`。
+然后调用它：`DBFind("mytable").Where({"id": $myid, "type": 2})`。
 
-A function has many parameters, but we only need some of them when calling it. In this case, you can declare optional parameters in the following way: `func myfunc(name string).Param1(param string).Param2(param2 int) {...}`, then you can call the specified parameters in any order: `myfunc("name").Param2(100)`.
-
-In the function body, you can handle these variables normally. If no specified optional parameters called, their default values are zero. You can also use ... to specify a variable-length parameter: `func DBFind(table string).Where(request string, params ...)` and then call it: `DBFind("mytable").Where({" id": $myid, "type": 2})`
-
-```
+``` js
 func DBFind(table string).Columns(columns string).Where(format string, tail ...)
-  .Limit(limit int).Offset(offset int) string {
-  ...
+         .Limit(limit int).Offset(offset int) string  {
+   ...
 }
 
 func names() string {
-  ...
-  return DBFind("table").Columns("name").Where({"id": 100}).Limit(1)
+   ...
+   return DBFind("table").Columns("name").Where({"id": 100}).Limit(1)
 }
 ```
 
-## Needle functions classification
+## needle 函数功能分类 {#needle-functions-classification}
 
-Retrieving values from the database:
+数据库检索值：
 
 |                 |               |                 |
 | --------------- | ------------- | --------------- |
@@ -537,14 +553,15 @@ Retrieving values from the database:
 | [DBRow](#dbrow)           | [GetHistoryRow](#gethistoryrow) | [GetBlock](#getblock)        |
 | [DBSelectMetrics](#dbselectmetrics) | [GetColumnType](#getcolumntype) | [LangRes](#langres)         |
 
-Updating data in tables:
+更改数据表值：
 
 |          |             |          |
 | -------- | ----------- | -------- |
 | [DBInsert](#dbinsert) | [DBUpdateExt](#dbupdateext) | [DelTable](#deltable) |
 | [DBUpdate](#dbupdate) | [DelColumn](#delcolumn)   |          |
 
-Operations with arrays:
+
+数组操作：
 
 |        |      |            |
 | ------ | ---- | ---------- |
@@ -552,7 +569,7 @@ Operations with arrays:
 | [Join](#join)   | [Row](#row)  | [SortedKeys](#sortedkeys) |
 | [Split](#split)  | [One](#one)  |            |
 
-Operations with contracts and permissions:
+合约和权限操作：
 
 |                    |                   |                   |
 | ------------------ | ----------------- | ----------------- |
@@ -561,15 +578,13 @@ Operations with contracts and permissions:
 | [ContractConditions](#contractconditions) | [GetContractByName](#getcontractbyname) | [ValidateCondition](#validatecondition) |
 | [EvalCondition](#evalcondition)      |                   |                   |
 
-
-Operations with addresses:
+地址操作：
 
 |             |             |         |
 | ----------- | ----------- | ------- |
 | [AddressToId](#addresstoid) | [IdToAddress](#idtoaddress) | [PubToID](#pubtoid) |
 
-
-Operations with variable values:
+变量值操作：
 
 |              |             |        |
 | ------------ | ----------- | ------ |
@@ -578,24 +593,21 @@ Operations with variable values:
 | [Float](#float)        | [Int](#int)         | [Str](#str)    |
 | [HexToBytes](#hextobytes)   |             |        |
 
-Arithmetic operations:
+算术运算：
 
 |       |       |       |
 | ----- | ----- | ----- |
 | [Floor](#floor) | [Log10](#log10) | [Round](#round) |
 | [Log](#log)   | [Pow](#pow)   | [Sqrt](#sqrt)  |
 
-
-
-
-Operations with JSON:
+JSON格式操作：
 
 |            |                  |            |
 | ---------- | ---------------- | ---------- |
 | [JSONEncode](#jsonencode) | [JSONEncodeIndent](#jsonencodeindent) | [JSONDecode](#jsondecode) |
 
 
-Operations with strings:
+字符串操作：
 
 |           |         |           |
 | --------- | ------- | --------- |
@@ -604,888 +616,873 @@ Operations with strings:
 | [Replace](#replace)   | [Substr](#substr)  | [TrimSpace](#trimspace) |
 
 
-Operations with bytes:
+字节操作：
 
 |               |               |      |
 | ------------- | ------------- | ---- |
 | [StringToBytes](#stringtobytes) | [BytesToString](#bytestostring) |      |
 
 
-Operations with date and time in SQL format:
+SQL格式的日期和时间操作：
 
 |           |          |              |
 | --------- | -------- | ------------ |
 | [BlockTime](#blocktime) | [DateTime](#datetime) | [UnixDateTime](#unixdatetime) |
 
+平台参数操作：
 
-Operations with platform parameters:
-
-|             |              |      |
-| ----------- | ------------ | ---- |
-| [HTTPRequest](#httprequest) | [HTTPPostJSON](#httppostjson) |      |
-
-
+|           |          |              |
+| --------- | -------- | ------------ |
+| [SysParamString](#sysparamstring) | [SysParamInt](#sysparamint) | [DBUpdateSysParam](#dbupdatesysparam) |
+| [UpdateNotifications](#updatenotifications) | [UpdateRolesNotifications](#updaterolesnotifications) | |
 
 
-Functions for master CLB nodes:
+CLB 模式函数操作：
 
-|            |         |           |
-| ---------- | ------- | --------- |
-| [CreateOBS](#createobs)  | [RunOBS](#runobs)  | [RemoveOBS](#removeobs) |
-| [GetOBSList](#getobslist) | [StopOBS](#stopobs) |           |
-
+|           |          |              |
+| --------- | -------- | ------------ |
+| [HTTPRequest](#httprequest) | [HTTPPostJSON](#httppostjson) | |
 
 
-## Needle functions reference
+主 CLB 节点函数操作：
+
+|                         |                           |                  |
+|-------------------------|---------------------------|------------------|
+| [CreateOBS](#createobs) | [GetOBSList](#getobslist) | [RunOBS](#runobs) |
+| [StopOBS](#stopobs)     | [RemoveOBS](#removeobs)   | |
 
 
-### AppParam
+## needle 函数参考 {#needle-functions-reference}
 
-Returns the value of a specified application parameter (from the application parameter table app_params).
+### AppParam {#appparam}
 
-#### Syntax
+返回指定应用程序参数的值（来自应用程序参数表 *app_params*）。
 
-```
+**语法**
+
+``` text
 AppParam(app int, name string, ecosystemid int) string
 ```
 
-* **App**
+> app
 
-  Application ID.
+    应用程序ID。
 
-* **name**
+> name
 
-    Application parameter name.
+    应用程序参数名称。
 
-* **Ecosystemid**
+> ecosystemid
 
-    Ecosystem ID.
+    生态系统ID。
 
-#### Example
+**示例**
 
-```
+``` js
 AppParam(1, "app_account", 1)
 ```
 
+### DBFind {#dbfind}
 
+根据指定参数从指定数据表中查询数据。返回一个由对象数组 *map* 组成的数组*array*。
 
-### DBFind
+`.Row()` 可获得请求记录的第一个 *map* 元素，`.One(column string)` 可获得请求记录中指定列的第一个 *map* 元素。
 
-Queries data from a specified table with the specified parameters and returns an array array consisting of an array of objects map.
+**语法**
 
-`.Row()` can get the first map element in the query, `.One(column string)` can get the first map element of a specified column in the query.
-
-#### Syntax
-
-```
+``` text
 DBFind(table string)
- [.Columns(columns array|string)]
- [.Where(where map)]
- [.WhereId(id int)]
- [.Order(order string)]
- [.Limit(limit int)]
- [.Offset(offset int)]
- [.Row()]
- [.One(column string)]
- [.Ecosystem(ecosystemid int)] array
+    [.Columns(columns array|string)]
+    [.Where(where map)]
+    [.WhereId(id int)]
+    [.Order(order string)]
+    [.Limit(limit int)]
+    [.Offset(offset int)]
+    [.Row()]
+    [.One(column string)]
+    [.Ecosystem(ecosystemid int)] array
 ```
 
-* **table**
+> table
 
-  Table name.
+    数据表名称。
 
-* **сolumns**
+> сolumns
 
-  Returns a list of columns. If not specified, all columns will be returned.
+    返回列的列表。如果未指定，则将返回所有列。
+    该值为数组或使用逗号分隔的字符串。
 
-  The value is an array or a string separated by commas.
+> where
 
-* **where**
+    查询条件。
 
-  Query conditions.
+    示例： `.Where({name: "John"})` 或者 `.Where({"id": {"$gte": 4}})`。
+    
+    此参数必须包含具有搜索条件的对象数组。该数组可以包含嵌套元素。
+    
+    遵循句法结构如下：
 
-  Example: `.Where({name: "John"})` or `.Where({"id": {"$gte": 4}})`.
+-   `{"field1": "value1", "field2" : "value2"}`
 
-  This parameter must contain an array of objects with search criteria. The array can contain nested elements.
+    > 等价于 `field1 = "value1" AND field2 = "value2"`。
 
-  Following syntactic constructions are used:
-  * `{"field1": "value1", "field2": "value2"}`
-     Equivalent to `field1 = "value1" AND field2 = "value2"`.
+-   `{"field1": {"$eq":"value"}}`
 
-  * `{"field1": {"$eq":"value"}}`
-     Equivalent to `field = "value"`.
+    > 等价于 `field = "value"`。
 
-  * `{"field1": {"$neq": "value"}}`
-     Equivalent to `field != "value"`.
+-   `{"field1": {"$neq": "value"}}`
 
-  * `{"field1: {"$in": [1,2,3]}`
-     Equivalent to `field IN (1,2,3)`.
+    > 等价于 `field != "value"`。
 
-  * `{"field1": {"$nin": [1,2,3]}`
-     Equivalent to field NOT IN (1,2,3).
+-   `{"field1: {"$in": [1,2,3]}`
 
-  * `{"field": {"$lt": 12}}`
-     Equivalent to `field <12`.
+    > 等价于 `field IN (1,2,3)`。
 
-  * `{"field": {"$lte": 12}}`
-     Equivalent to f`ield <= 12`.
+-   `{"field1": {"$nin" : [1,2,3]}`
 
-  * `{"field": {"$gt": 12}}`
-     Equivalent to `field> 12`.
+    > 等价于 `field NOT IN (1,2,3)`。
 
-  * `{"field": {"$gte": 12}}`
-     Equivalent to `field >= 12`.
+-   `{"field": {"$lt": 12}}`
 
-  * `{"$and": [<expr1>, <expr2>, <expr3>]}`
-     Equivalent to `expr1 AND expr2 AND expr3`.
+    > 等价于 `field < 12`。
 
-  * `{"$or": [<expr1>, <expr2>, <expr3>]}`
-     Equivalent to `expr1 OR expr2 OR expr3`.
+-   `{"field": {"$lte": 12}}`
 
-  * `{field: {"$like": "value"}}`
-     Equivalent to `field like'%value%'` (fuzzy search).
+    > 等价于 `field <= 12`。
 
-  * `{field: {"$begin": "value"}}`
-     Equivalent to `field like'value%'` (starts with `value`).
+-   `{"field": {"$gt": 12}}`
 
-  * `{field: {"$end": "value"}}`
-     Equivalent to `field like'%value'` (ends with `value`).
+    > 等价于 `field > 12`。
 
-  * `{field: "$isnull"}`
-     Equivalent to field is null.
+-   `{"field": {"$gte": 12}}`
 
-     
+    > 等价于 `field >= 12`。
 
-Make sure not to overwrite the keys of object arrays. For example, if you want to query with `id>2 and id<5`, you cannot use `{id:{"$gt": 2}, id:{"$lt": 5}}`, because the first element will be overwritten by the second element. You should use the following query structure:
-```
+-   `{"$and": [<expr1>, <expr2>, <expr3>]}`
+
+    > 等价于 `expr1 AND expr2 AND expr3`。
+
+-   `{"$or": [<expr1>, <expr2>, <expr3>]}`
+
+    > 等价于 `expr1 OR expr2 OR expr3`。
+
+-   `{field: {"$like": "value"}}`
+
+    > 等价于 `field like '%value%'` (模糊搜索)。
+
+-   `{field: {"$begin": "value"}}`
+
+    > 等价于 `field like 'value%'` (以 `value` 开头)。
+
+-   `{field: {"$end": "value"}}`
+
+    > 等价于 `field like '%value'` (以 `value` 结尾)。
+
+-   `{field: "$isnull"}`
+
+    > 等价于 `field is null`。
+
+请确保不要覆盖对象数组的键。例如，如果想用 `id>2 and id<5`语句查询，不能使用`{id:{"$gt": 2}, id:{"$lt": 5}}`，
+因为第一个元素会被第二个元素覆盖。应该使用如下结构查询：
+
+``` js
 {id: [{"$gt": 2}, {"$lt": 5}]}
 ```
-```
+
+``` js
 {"$and": [{id:{"$gt": 2}}, {id:{"$lt": 5}}]}
 ```
 
-* **Id**
+> id
 
-     Queries by ID. For example, .WhereId(1).
+    根据ID查询。例如，`.WhereId(1)`。
 
-     
+> order
 
-* **Order**
+    用于根据指定的列对结果集进行排序。默认按照 *id* 排序。
+    如果仅用一个字段进行排序，则可以将其指定为字符串。多个字段排序需要指定一个字符串对象数组：
+    
+降序： `{"field": "-1"}` 等价于 `field desc`。
 
-     Used to sort the result set by a specified column, or by id by default.
+升序： `{"field": "1"}` 等价于 `field asc`。
+    
+> limit
 
-     If you use only one field for sorting, you can specify it as a string. To sort multiple fields, you need to specify an array of string objects:
+    返回条目数。默认25条，最大10000条。
 
-     Descending order: `{"field": "-1"}` Equivalent to `field desc`.
+> offset
 
-     Ascending order: `{"field": "1"}` Equivalent to `field asc`.
+    偏移量。
 
-* **limit**
+> ecosystemid
 
-     Returns the number of entries. 25, by default. The maximum number is 10,000.
+    生态系统ID。默认为查询当前生态系统的数据表。
 
-* **Offset**
+**示例**
 
-     Offset.
-
-* **Ecosystemid**
-
-     Ecosystem ID. By default, the table of the current ecosystem is queried.
-
-     
-
-#### Example
-
-```
+``` js
 var i int
 var ret string
-ret = DBFind("contracts").Columns("id,value").Where({id: [{"$gt": 2}, {"$lt": 5}]}).Order( "id")
-while i <Len(ret) {
-  var vals map
-  vals = ret[0]
-  Println(vals["value"])
-  i = i + 1
+
+ret = DBFind("contracts").Columns("id,value").Where({id: [{"$gt": 2}, {"$lt": 5}]}).Order("id")
+while i < Len(ret) {
+    var vals map
+    vals = ret[0]
+    Println(vals["value"])
+    i = i + 1
 }
 ret = DBFind("contracts").Columns("id,value").WhereId(10).One("value")
 if ret != nil {
-  Println(ret)
-  Println(ret)
-  Println(ret)
+ Println(ret)
+ Println(ret) 
+ Println(ret)
 }
 ```
 
-​     
+### DBRow {#dbrow}
 
+根据指定参数从指定数据表中查询数据。返回一个由对象数组 *map* 组成的数组*array*。
 
-### DBRow
+**语法**
 
-Queries data from a specified table with the specified parameters. Returns an array array consisting of an array of objects map.
-
-#### Syntax
-
-```
+``` text
 DBRow(table string)
- [.Columns(columns array|string)]
- [.Where(where map)]
- [.WhereId(id int)]
- [.Order(order array|string)]
- [.Ecosystem(ecosystemid int)] map
+    [.Columns(columns array|string)]
+    [.Where(where map)]
+    [.WhereId(id int)]
+    [.Order(order array|string)]
+    [.Ecosystem(ecosystemid int)] map
 ```
 
-* **table**
+* table
 
-  Table name.
+    数据表名称。
 
-* **columns**
-  
-  Returns a list of columns. If not specified, all columns will be returned.
 
-  The value is an array or a string separated by commas.
-* **where**
+* columns
 
-  Query conditions.
+    返回列的列表。如果未指定，则将返回所有列。
 
-  For example: `.Where({name: "John"})` or `.Where({"id": {"$gte": 4}})`.
+    该值为数组或使用逗号分隔的字符串。
 
-  For more details, see [DBFind](#dbfind).
-* **Id**
-  
-  Query by ID. For example, `.WhereId(1)`.
+* where
 
-* **Order**
+    查询条件。
 
-  Used to sort the result set by a specified column, or by id by default.
+    例如： `.Where({name: "John"})` 或者 `.Where({"id": {"$gte": 4}})`。
 
-  For more details, see [DBFind](#dbfind).
+    更多详细信息，请参考[DBFind](../topics/templates2.md#dbfind) 。
 
-* **Ecosystemid**
+* id
 
-  Ecosystem ID. By default, the table of the current ecosystem is queried.
+    根据ID查询。例如，`.WhereId(1)`。
 
-#### Example
+* order
 
-```
+    用于根据指定的列对结果集进行排序。默认按照 *id* 排序。
+
+    更多详细信息，请参考[DBFind](../topics/templates2.md#dbfind) 。
+
+* ecosystemid
+
+    生态系统ID。默认为查询当前生态系统的数据表。
+
+**示例**
+
+``` js
 var ret map
 ret = DBRow("contracts").Columns(["id","value"]).Where({id: 1})
 Println(ret)
 ```
 
+### DBSelectMetrics {#dbselectmetrics}
 
+返回指标的聚合数据。
 
-### DBSelectMetrics
+每生成100个区块时都会更新指标标准。以1天为周期存储聚合数据。
 
-Returns the aggregated data of a metric.
+**语法**
 
-The metrics are updated each time 100 blocks are generated. And the aggregated data is stored on a 1-day cycle.
-
-#### Syntax
-
-```
+``` text
 DBSelectMetrics(metric string, timeInterval string, aggregateFunc string) array
-
 ```
 
-* **metric**
+* metric
 
-  Metric name
+    指标名称。
 
-  * **ecosystem_pages**
-  
-    Number of ecosystem pages.
+* ecosystem_pages
 
-    Return value: key - ecosystem ID, value - number of ecosystem pages.
-  * **ecosystem_members**
-  
-    Number of ecosystem members.
+    生态系统页面数。
 
-    Return value: key - ecosystem ID, value - number of ecosystem members.
-  * **ecosystem_tx**
+    返回值: *key* - 生态系统ID， *value* - 生态系统页面数。
 
-    Number of ecosystem transactions.
 
-    Return value: key - ecosystem ID, value - number of ecosystem transactions.
+* ecosystem_members
 
-* **timeInterval**
+    生态系统成员数。
 
-    The time interval for aggregating metric data. For example: `1 day`, `30 days`.
+    返回值: *key* - 生态系统ID， *value* - 生态系统成员数。
 
-* **aggregateFunc**
 
-    Aggregate function. For example, `max`, `min`, `avg`.
+* ecosystem_tx
 
-#### Example
+    生态系统交易数。
 
-```
+    返回值: *key* - 生态系统ID， *value* - 生态系统交易数。
+
+* timeInterval
+
+    聚合指标数据的时间间隔。例如：`1 day`， `30 days`。
+
+* aggregateFunc
+
+    聚合函数。例如 `max`, `min`, `avg`。
+
+**示例**
+
+``` js
 var rows array
 rows = DBSelectMetrics("ecosystem_tx", "30 days", "avg")
+
 var i int
-while(i <Len(rows)) {
-  var row map
-  row = rows[i]
-  i = i + 1
+while(i < Len(rows)) {
+   var row map
+   row = rows[i]
+   i = i + 1
 }
 ```
 
+### EcosysParam {#ecosysparam}
 
+返回生态系统参数表 *parameters* 指定参数的值。
 
-### EcosysParam
+**语法**
 
-Returns the value of a specified parameter in the ecosystem parameters table parameters.
-
-#### Syntax
-
-```
+``` text
 EcosysParam(name string) string
-
 ```
 
-* **name**
+* name
 
-  Parameter name.
+    参数名称。
 
-#### Example
+**示例**
 
-```
+``` js
 Println(EcosysParam("founder_account"))
 ```
 
+### GetHistory {#gethistory}
 
+返回指定数据表中条目更改的历史记录。
 
-### GetHistory
+**语法**
 
-Returns the history of changes to entries in a specified table.
-
-#### Syntax
-
-```
+``` text
 GetHistory(table string, id int) array
-
 ```
 
-* **table**
+* table
 
-  Table name.
-* **Id**
+    数据表名称。
 
-  Entry ID.
-> **Return value**
 
-  Returns an array of objects of type map, which specify the history of changes to entries in tables.
+* id
 
-  Each array contains the fields of a record before making the next change.
-  The array is sorted by order of most recent changes.
-  
-  The id field in the array points to the id of the rollback_tx table. block_id represents the block ID, while block_time represents the block generation timestamp.
+    条目ID。
 
-#### Example
 
-```
+**返回值**
+
+返回 *map* 类型的对象数组。这些数组指定数据表中条目更改的历史记录。
+
+每个数组都包含下一次更改之前的记录字段。
+
+数组按从最近更改顺序排序。
+
+数组中 *id* 字段指向 *rollback_tx* 表的 *id*。*block_id*代表区块ID，*block_time* 代表区块生成时间戳。
+
+**示例**
+
+``` js
 var list array
 var item map
 list = GetHistory("blocks", 1)
 if Len(list) > 0 {
-  item = list[0]
+   item = list[0]
 }
 ```
 
+### GetHistoryRow {#gethistoryrow}
 
+从指定数据表中指定条目的更改历史记录返回单个快照。
 
-### GetHistoryRow
+**语法**
 
-Returns a single snapshot from the change history of a specified entry in a specified table.
-
-#### Syntax
-
-```
+``` text
 GetHistoryRow(table string, id int, rollbackId int) map
 ```
 
+* table
+
+    数据表名称。
+
+* id
+
+    条目ID。
+
+* rollbackId
+
+    *rollback_tx* 表的条目ID。
 
 
-* **table**
-
-  Table name.
-
-* **Id**
-
-  Entry ID.
-
-* **rollbackId**
-
-  rollback_tx The entry ID of the table.
-
+``` js
+$result = GetHistoryRow("contracts",205,2358)
 ```
-  $result = GetHistoryRow("contracts",205,2358)
-```
 
-  
+### GetColumnType {#getcolumntype}
 
+返回指定表中指定字段的数据类型。
 
-### GetColumnType
+**语法**
 
-Returns the data type of a specified field in a specified table.
-
-#### Syntax
-
-```
+``` text
 GetColumnType(table, column string) string
-
 ```
 
-* **table**
+* table
 
-  Table name.
-* **column**
+    数据表名称。
 
-  Field Name.
-> **Return value**
+* column
 
-  The following types can be returned: `text, varchar, number, money, double, bytes, json, datetime, double`.
+  字段名称。
 
-#### Example
+**返回值**
 
-```
+返回以下类型: `text, varchar, number, money, double, bytes, json, datetime, double`。
+
+**示例**
+
+``` js
 var coltype string
 coltype = GetColumnType("members", "member_name")
 ```
 
+### GetDataFromXLSX {#getdatafromxlsx}
 
+从 *XLSX* 电子表格返回数据。
 
-### GetDataFromXLSX
+**语法**
 
-Returns data from XLSX spreadsheets.
-
-#### Syntax
-
-```
+``` text
 GetDataFromXLSX(binId int, line int, count int, sheet int) string
-
 ```
 
-* **binId**
+* binId
 
-  ID in XLSX format in the binary table binary.
-* **line**
+    二进制表 *binary* 中XLSX格式的ID。
 
-  The starting line number, starting from 0 by default.
-* **count**
+* line
 
-  The number of rows that need to be returned.
-* **sheet**
+    开始行数，默认从0开始。
 
-  List number, starting from 1 by default.
+* count
 
-#### Example
+    需要返回的行数。
 
-```
+* sheet
+
+    列表编号，默认从1开始。
+
+**示例**
+
+``` js
 var a array
 a = GetDataFromXLSX(3, 12, 10, 1)
 ```
 
+### GetRowsCountXLSX {#getrowscountxlsx}
 
+返回指定XLSX文件行数。
 
-### GetRowsCountXLSX
+**语法**
 
-Returns the number of lines in a specified XLSX file.
-
-#### Syntax
-
-```
+``` text
 GetRowsCountXLSX(binId int, sheet int) int
 ```
 
-* **binId**
+* binId
 
-  ID in XLSX format in the binary table binary.
-* **sheet**
+    二进制表 *binary* 中XLSX格式的ID。
 
-  List number, starting from 1 by default.
+* sheet
 
-#### Example
+    列表编号，默认从1开始。
 
-```
+**示例**
+
+``` js
 var count int
 count = GetRowsCountXLSX(binid, 1)
 ```
 
+### LangRes {#langres}
 
+返回指定多语言资源。其标签 *lang*为双字符语言代码，例如：`en, zh`。如果所选的语言标签没有语言资源，则返回`en` 标签的语言资源。
 
-### LangRes
+**语法**
 
-Returns a multilingual resource with name label for language lang, specified as a two-character code, for example: `en`, `zh`. If there is no language for a selected language, then the language resource of the `en` label is returned.
-
-#### Syntax
-
-```
+``` text
 LangRes(label string, lang string) string
 ```
 
-* **label**
+* label
 
-  Language resource name.
-* **lang**
+    语言资源名称。
 
-  Two-character language code.
+* lang
 
-#### Example
+    双字符语言代码。
 
-```
+**示例**
+
+``` js
 warning LangRes("@1confirm", "en")
 error LangRes("@1problems", "zh")
 ```
 
+### GetBlock {#getblock}
 
+返回指定区块的相关信息。
 
-### GetBlock
+**语法**
 
-Returns relevant information about a specified block.
-
-#### Syntax
-
-```
+``` text
 GetBlock(blockID int64) map
-
 ```
 
-* **blockID**
+* blockID
 
-  Block ID.
-> **Return value**
+    区块ID。
 
-  Return an array of objects:
-  * **id**
-  
-     Block ID.
-  * **time**
-  
-     Block generation timestamp.
-  * **key_id**
-  
-     The account address of the verification node generated the block.
+**返回值**
 
-#### Example
+返回一个对象数组：
 
-```
+-   *id*
+
+    > 区块ID。
+
+-   *time*
+
+    > 区块生成时间戳。
+
+-   *key_id*
+
+    > 生成该区块的验证节点账户地址。
+
+**示例**
+
+``` js
 var b map
 b = GetBlock(1)
 Println(b)
 ```
 
+### DBInsert {#dbinsert}
 
+添加条目到指定数据表并返回条目的ID。
 
-### DBInsert
+**语法**
 
-Adds an entry to a specified table and return the entry ID.
-
-#### Syntax
-
-```
+``` text
 DBInsert(table string, params map) int
-
 ```
 
-* **tblname**
+* tblname
 
-  Table name.
-* **params**
+    数据表名称。
 
-  An array of objects where keys are field names and values are inserted values.
+* params
 
-#### Example
+    对象数组，其中键是字段名称，值是插入的值。
 
-```
+**示例**
+
+``` js
 DBInsert("mytable", {name: "John Smith", amount: 100})
 ```
 
+### DBUpdate {#dbupdate}
 
+更改指定数据表中指定条目ID的列值，如果该表中不存在该条目ID，则返回错误。
 
-### DBUpdate
+**语法**
 
-Changes the column value of a specified entry ID in a specified table. If the entry ID does not exist in the table, an error is returned.
-
-#### Syntax
-
-```
+``` text
 DBUpdate(tblname string, id int, params map)
-
 ```
 
-* **tblname**
+* tblname
 
-  Table name.
-* **Id**
+    数据表名称。
 
-  Entry ID.
-* **params**
+* id
 
-  An array of objects where keys are field names and values are new values after changes.
+    条目ID。
 
-#### Example
+* params
 
-```
+    对象数组，其中键是字段名称，值是更改的新值。
+
+**示例**
+
+``` js
 DBUpdate("mytable", myid, {name: "John Smith", amount: 100})
 ```
 
+### DBUpdateExt {#dbupdateext}
 
+更改指定数据表中与查询条件的匹配的列值。
 
-### DBUpdateExt
+**语法**
 
-Changes the value of a column in a specified table that matches the query condition.
-
-#### Syntax
-
-```
+``` text
 DBUpdateExt(tblname string, where map, params map)
-
 ```
 
-* **tblname**
+* tblname
 
-  Table name.
-* **where**
+    数据表名称。
 
-  Query conditions.
+* where
 
-  For more details, see [DBFind](#dbfind).
-* **params**
+    查询条件。
 
-  An array of objects where keys are field names and values are new values after changes.
+更多详细信息，请参考 [DBFind](../topics/templates2.md#dbfind) 。
 
-#### Example
 
-```
+* params
+
+    对象数组，其中键是字段名称，值是更改的新值。
+
+**示例**
+
+``` js
 DBUpdateExt("mytable", {id: $key_id, ecosystem: $ecosystem_id}, {name: "John Smith", amount: 100})
 ```
 
+### DelColumn {#delcolumn}
 
+删除指定表中的字段。该表必须没有记录。
 
-### DelColumn
+**语法**
 
-Deletes a field in a specified table that has no records.
-
-#### Syntax
-
-```
+``` text
 DelColumn(tblname string, column string)
-
 ```
 
-* **tblname**
+* tblname
 
-  Table name.
+    数据表名称。
 
-* **column**
+* column
 
-  The field to be deleted.
+    需要删除的字段。
 
-```
+``` js
 DelColumn("mytable", "mycolumn")
 ```
 
-  
+### DelTable {#deltable}
 
+删除指定的数据表。该表必须没有记录。
 
-### DelTable
+**语法**
 
-Deletes a specified table that has e no records.
-
-#### Syntax
-
-```
+``` text
 DelTable(tblname string)
-
 ```
 
-* **tblname**
+* tblname
 
-  Table name.
+    数据表名称。
 
-#### Example
+**示例**
 
-```
+``` js
 DelTable("mytable")
 ```
 
+### Append {#append}
 
+将任何类型的 *val* 插入到 *src* 数组中。
 
-### Append
+**语法**
 
-Inserts any type of val into the src array.
-
-#### Syntax
-
+``` text
 Append(src array, val anyType) array
-
-* **src**
-
-  The original array.
-* **val**
-
-  The value to be inserted.
-
-#### Example
-
 ```
+
+* src
+
+    原始数组。
+
+* val
+
+    需要插入的值。
+
+**示例**
+
+``` js
 var list array
 list = Append(list, "new_val")
 ```
 
+### Join {#join}
 
+将 *in* 数组的元素合并到具有指定 *sep* 分隔符的字符串中。
 
-### Join
+**语法**
 
-Combines elements of the in array into a string with a specified sep separator.
-
-#### Syntax
-
-```
+``` text
 Join(in array, sep string) string
-
 ```
 
-* **In**
+* in
 
-  Array name.
-* **sep**
+    数组名称。
 
-  Separator.
+* sep
 
-#### Example
+    分隔符。
 
+**示例**
+
+``` js
+var val string, myarr array
+myarr[0] = "first"
+myarr[1] = 10
+val = Join(myarr, ",")
 ```
- var val string, myarr array
- myarr[0] = "first"
- myarr[1] = 10
- val = Join(myarr, ",")
-```
 
+### Split {#split}
 
+使用 *sep* 分隔符将 *in* 字符串拆分为元素，并将它们放入数组中。
 
-### Split
+**语法**
 
-Uses the sep separator to split the in string into elements and put them into an array.
-
-#### Syntax
-
-```
+``` text
 Split(in string, sep string) array
 ```
 
-* **In**
+* in
 
-   String.
-*  **sep**
+    字符串。
 
-   Separator.
+* sep
 
-#### Example
+    分隔符。
 
-```
+**示例**
+
+``` js
 var myarr array
 myarr = Split("first,second,third", ",")
 ```
 
+### Len {#len}
 
+返回指定数组元素个数。
 
-### Len
+**语法**
 
-Returns the number of elements in a specified array.
-
-#### Syntax
-
- 
-
-```
+``` text
 Len(val array) int
 ```
 
-* **val**
+* val
 
-   Array.
+    数组。
 
-#### Example
+**示例**
 
-```
+``` js
 if Len(mylist) == 0 {
   ...
 }
 ```
 
+### Row {#row}
 
+The *list* parameter must not be specified in this case.
+返回数组列表的第一个对象数组。如果列表为空，则返回结果为空。该函数主要与[DBFind](templates2.md#dbfind)函数一起使用，使用时该函数不能指定参数。
 
-### Row
+**语法**
 
- The list parameter must not be specified in this case. Return the first object array in the array list. If the list is empty, an empty result is returned. This function is mostly used in conjunction with the [DBFind](#dbfind) function. When using this function, you cannot specify parameters.
-
-#### Syntax
-
-```
- Row(list array) map
-```
-
-* **list**
-
-   The array of objects returned by the DBFind function.
-
-#### Example
-
-```
- var ret map
- ret = DBFind("contracts").Columns("id,value").WhereId(10).Row()
- Println(ret)
+``` text
+Row(list array) map
 ```
 
+* list
 
+    由 **DBFind** 函数返回的对象数组。
 
-### One
+**示例**
 
- Returns the field value of the first object array in the array list. If the list array is empty, nil is returned. It is mostly used in conjunction with the [DBFind](#dbfind) function. When using this function, you cannot specify parameters.
-
-#### Syntax
-
+``` js
+var ret map
+ret = DBFind("contracts").Columns("id,value").WhereId(10).Row()
+Println(ret)
 ```
+
+### One {#one}
+
+返回数组列表中第一个对象数组的字段值。如果列表数组为空，则返回nil。该函数主要与[DBFind](templates2.md#dbfind)函数一起使用，使用时该函数不能指定参数。
+
+**语法**
+
+``` text
 One(list array, column string) string
 ```
 
-*  **list**
+* list
 
-  The array of objects returned by the DBFind function.
+  - 由 **DBFind** 函数返回的对象数组。
 
-* **column**
+* column
 
-  Field Name.
+  - 字段名称。
 
-#### Example
+**示例**
 
-```
+``` js
 var ret string
 ret = DBFind("contracts").Columns("id,value").WhereId(10).One("value")
 if ret != nil {
-  Println(ret)
+   Println(ret)
 }
 ```
 
+### GetMapKeys {#getmapkeys}
 
+返回对象数组中的键数组。
 
-### GetMapKeys
+**语法**
 
-Returns the key array in the object array.
-
-#### Syntax
-
- 
-
-```
+``` text
 GetMapKeys(val map) array
 ```
 
-* **val**
+* val
 
-    Object array.
+  对象数组。
 
-#### Example
+**示例**
 
-```
+``` js
 var val map
 var arr array
 val["k1"] = "v1"
@@ -1493,26 +1490,23 @@ val["k2"] = "v2"
 arr = GetMapKeys(val)
 ```
 
+### SortedKeys {#sortedkeys}
 
+返回对象数组中的键数组，该数组已排序。
 
-### SortedKeys
+**语法**
 
-Returns a sorted key array in the object array.
-
-#### Syntax
-
-```
+``` text
 SortedKeys(val map) array
-
 ```
 
-* **val**
+* val
 
-    Object array.
+  对象数组。
 
-#### Example
+**示例**
 
-```
+``` js
 var val map
 var arr array
 val["k2"] = "v2"
@@ -1520,1818 +1514,1676 @@ val["k1"] = "v1"
 arr = SortedKeys(val)
 ```
 
+### CallContract {#callcontract}
 
+调用指定名称的合约。合约数据部分的所有参数必须列入一个对象数组中。该函数返回指定合约分配给**\$result** 变量的值。
 
-### CallContract
+**语法**
 
-Calls the contract with a specified name. All parameters of the data section in the contract must be included in an object array. This function returns the value assigned to the **$result** variable by a specified contract.
-
-#### Syntax
-
-```
+``` text
 CallContract(name string, params map)
-
 ```
 
-* **name**
+* name
 
-    The name of the contract being called.
-* **params**
+  被调用合同的名称。
 
-    An associative array of the contract input data.
+* params
 
-#### Example
+  合约输入数据的关联数组。
 
-```
+**示例**
+
+``` js
 var par map
 par["Name"] = "My Name"
 CallContract("MyContract", par)
 ```
 
+### ContractAccess {#contractaccess}
 
+检查执行合约的名称是否与参数中列出的名称之一匹配。通常用于控制合约对数据表访问。编辑数据表字段或在表权限部分的插入和新列字段时，在权限字段中指定该函数。
 
-### ContractAccess
+**语法**
 
-Checks if the name of contract being executed matches one of the names listed in the parameters. Usually it is used to control contract access to tables. When editing table fields or inserting and adding new column fields in the permissions section of the table, please specify this function in the permissions fields.
-
-#### Syntax
-
-  
-
-```
+``` text
 ContractAccess(name string, [name string]) bool
 ```
 
-* **name**
+* name
 
-    Contract name.
+  合约名称。
 
-#### Example
+**示例**
 
-```
+``` js
 ContractAccess("MyContract")
 ContractAccess("MyContract","SimpleContract")
 ```
 
+### ContractConditions {#contractconditions}
 
+从指定名称的合约中调用 **conditions** 条件部分。
 
-### ContractConditions
+对于该类的合约，数据部分必须为空。如果条件部分执行没有错误，则返回*true*。如果在执行期间生成错误，则父合约也将以此错误结束。
+该函数通常用于控制合约对表的访问，并且可以在编辑系统表时在权限字段中调用。
 
-Calls the conditions section in the contract with a specified name.
+**语法**
 
-For this type of contracts, the data section must be empty. If the conditions section is executed without error, it returns true. If there is an error during execution, the parent contract will also be terminated due to the error. This function is usually used to control the contract's access to tables and can be called in the permission fields when editing system tables.
-
-#### Syntax
-
-```
+``` text
 ContractConditions(name string, [name string]) bool
-
 ```
 
-* **name**
+* name
 
-    Contract name.
+  合约名称。
 
-#### Example
+**示例**
 
-```
+``` js
 ContractConditions("MainCondition")
 ```
 
+### EvalCondition {#evalcondition}
 
+从 *tablename* 表中获取带有 *\'name\'* 字段记录中的 *condfield*字段的值，并检查 *condfield* 字段值的条件。
 
-### EvalCondition
+**语法**
 
-Gets the value of the condfield field in the record with a 'name' field from the tablename table, and checks the conditions of the condfield field value.
-
-#### Syntax
-
-```
+``` text
 EvalCondition(tablename string, name string, condfield string)
-
 ```
 
-* **tablename**
+* tablename
 
-    Table name.
-*  **name**
+  数据表名称。
 
-    Queries the value with the 'name' field.
-*  **condfield**
+* name
 
-    The name of the field whose conditions needs to be checked.
+  根据 'name' 字段查询值。
 
-#### Example
+* condfield
 
-```
+  需要检查条件的字段名称。
+
+**示例**
+
+``` js
 EvalCondition(`menu`, $Name, `conditions`)
 ```
 
+### GetContractById {#getcontractbyid}
 
+该函数通过合约ID返回其合约名称。如果找不到合约，则返回空字符串。
 
-### GetContractById
+**语法**
 
-Returns its contract name by contract ID. If not found the contract, an empty string is returned.
-
-#### Syntax
-
-```
+``` text
 GetContractById(id int) string
-
 ```
 
-* **Id**
+* id
 
-  The contract ID in the contract table contracts.
+  在合约表 *contracts* 的合约ID。
 
-#### Example
+**示例**
 
-```
+``` js
 var name string
 name = GetContractById($IdContract)
 ```
 
+### GetContractByName {#getcontractbyname}
 
+该函数通过合约名称返回其合约ID。如果找不到合约，则返回零。
 
-### GetContractByName
+**语法**
 
-This function returns its contract ID by contract name. If not found the contract, zero is returned.
-
-#### Syntax
-
-```
+``` text
 GetContractByName(name string) int
 ```
 
-* **name**
+* name
 
-    The contract name in the contract table contracts.
+  在合约表 *contracts* 的合约名称。
 
-#### Example
+**示例**
 
-```
+``` js
 var id int
 id = GetContractByName(`NewBlock`)
 ```
 
+### RoleAccess {#roleaccess}
 
+检查合约调用者的角色ID是否与参数中指定的ID之一匹配。
 
-### RoleAccess
+使用该函数可以控制对数据表和其他数据的合约访问。
 
-Checks whether the role ID of the contract caller matches one of the IDs specified in the parameter.
+**语法**
 
-You can use this function to control contract access to tables and other data.
-
-#### Syntax
-
- 
-
-```
+``` text
 RoleAccess(id int, [id int]) bool
 ```
 
-* **Id**
+* id
 
-    Role ID.
+  角色ID。 
 
-#### Example
+**示例**
 
-```
+``` js
 RoleAccess(1)
 RoleAccess(1, 3)
 ```
 
+### TransactionInfo {#transactioninfo}
 
+按指定的哈希值查询交易并返回已执行的合约及其参数的信息。
 
-### TransactionInfo
+**语法**
 
-Queries transactions by specified hash value and returns information about the contract executed and its parameters.
-
-#### Syntax
-
-```
+``` text
 TransactionInfo(hash: string)
 ```
 
-  * **hash**
+* hash
 
-    Transaction hash in hexadecimal string format.
-  
-> **Return value**
+  十六进制字符串格式的交易哈希。
 
-  This function returns a string in JSON format:
+**返回值**
 
-```
-{"contract":"ContractName", "params":{"key": "val"}, "block": "N"}
-```
+该函数返回json格式的字符串：
 
-  
+> ``` json
+> {"contract":"ContractName", "params":{"key": "val"}, "block": "N"}
+> ```
+* contract
 
-  *   **contract**
+  合约名称。
+* params
 
-      Contract name.
-  
-  *   **params**
+  传递给合约参数的数据。
 
-      Data passed to contract parameters.
-  *   **block**
+* block
 
-      ID of the block that processed the transaction.
+  处理该交易的区块ID。
 
-#### Example
+**示例**
 
-```
+``` js
 var out map
 out = JSONDecode(TransactionInfo(hash))
 ```
 
+### Throw {#throw}
 
+生成 *exception* 异常类型的错误。
 
-### Throw
+**语法**
 
-  Generates an error of type exception.
-
-#### Syntax
-
-  
-
-```
+``` text
 Throw(ErrorId string, ErrDescription string)
 ```
 
-* **ErrorId**
+* ErrorId
 
-    Error identifier.
+  错误标识符。
 
-* **ErrDescription**
+* ErrDescription
 
-    Error description.
+  错误描述。
 
->  **Return value**
+**返回值**
 
-  The format of this type of transaction results:
+该类交易结果的格式：
 
-```
+``` json
 {"type":"exception","error":"Error description","id":"Error ID"}
 ```
 
-#### Example
+**示例**
 
-```
+``` js
 Throw("Problem", "There is a problem")
 ```
 
+### ValidateCondition {#validatecondition}
 
+尝试编译 *condition*参数指定的条件。如果在编译过程中发生错误，则生成错误并终止调用合约。该函数旨在检查条件格式的正确性。
 
-### ValidateCondition
+**语法**
 
-  Tries to compile the conditions specified by the condition parameter. If there is an error during the compilation process, an error is generated and the contract called is terminated. This function is designed to check the correctness of the conditional format.
-
-#### Syntax
-
-```
+``` text
 ValidateCondition(condition string, state int)
 ```
 
-* **condition**
+* condition
 
-    The conditional format that needs to be verified.
-* **state**
+  需要验证的条件格式。
 
-    Ecosystem ID. If you check the global condition, please specify it as 0.
+* state
 
-#### Example
+  生态系统ID。如果检查全局条件，请指定为0。
 
-```
+**示例**
+
+``` js
 ValidateCondition(`ContractAccess("@1MyContract")`, 1)
 ```
 
+### AddressToId {#addresstoid}
 
+根据钱包地址返回对应的账户地址。如果指定了无效的地址，则返回 \'0\'。
 
-### AddressToId
+**语法**
 
-Returns the corresponding account address by wallet address. If an invalid address is specified, '0' is returned.
-
-#### Syntax
-
-```
+``` text
 AddressToId(address string) int
-
 ```
 
-*  Address
+* address
 
-    Wallet address in `XXXX-...-XXXX` format or number format.
+  钱包地址 `XXXX-...-XXXX` 格式或数字形式。
 
-#### Example
+**示例**
 
-```
+``` js
 wallet = AddressToId($Recipient)
 ```
 
+### IdToAddress {#idtoaddress}
 
+根据账户地址返回对应的钱包地址。如果指定了无效的地址，则返回无效地址\'invalid\'。
 
-### IdToAddress
+**语法**
 
-Returns the corresponding wallet address by account address. If an invalid address is specified, the invalid address 'invalid' is returned.
-
-#### Syntax
-
-```
+``` text
 IdToAddress(id int) string
-
 ```
 
-*  **Id**
+* id
 
-    Account address.
+  账户地址。
 
-#### Example
+**示例**
 
-```
+``` js
 $address = IdToAddress($id)
 ```
 
+### PubToID {#pubtoid}
 
+通过十六进制编码格式的公钥返回帐户地址。
 
-### PubToID
+**语法**
 
-The account address is returned by public key in hexadecimal format.
-
-#### Syntax
-
-```
+``` text
 PubToID(hexkey string) int
-
 ```
 
-*  **hexkey**
+* hexkey
 
-    The public key in hexadecimal format.
+  十六进制编码格式的公钥。
 
-#### Example
+**示例**
 
-  
-
-```
+``` js
 var wallet int
 wallet = PubToID("04fa5e78.....34abd6")
 ```
 
+### DecodeBase64 {#decodebase64}
 
+通过指定base64编码格式返回字符串。
 
-### DecodeBase64
+**语法**
 
-Returns a string by specifying the base64 format
-
-#### Syntax
-
-```
+``` text
 DecodeBase64(input string) string
-
 ```
 
-*  **Input**
+* input
 
-    String in base64 format.
+  base64编码格式字符串。
 
-#### Example
+**示例**
 
-```
+``` js
 val = DecodeBase64(mybase64)
 ```
 
+### EncodeBase64 {#encodebase64}
 
+通过指定字符串返回base64编码格式的字符串。
 
-### EncodeBase64
+**语法**
 
-Returns a string in base64 format by specifying a string.
-
-#### Syntax
-
-```
+``` text
 EncodeBase64(input string) string
-
 ```
 
-*  **Input**
+* input
 
-    The string to be encoded.
+  需要编码的字符串。
 
-#### Example
+**示例**
 
- 
-
-```
+``` js
 var base64str string
 base64str = EncodeBase64("my text")
 ```
 
+### Float {#float}
 
+将整数或字符串转换为浮点数。
 
-### Float
+**语法**
 
-Converts an integer or string to a float number.
-
-#### Syntax
-
-```
+``` text
 Float(val int|string) float
-
 ```
 
-* **val**
+* val
 
-    An integer or string.
+  整数或字符串。
 
-#### Example
+**示例**
 
-```
+``` js
 val = Float("567.989") + Float(232)
 ```
 
+### HexToBytes {#hextobytes}
 
+将十六进制编码格式的字符串转换为字节类型 *bytes*。
 
-### HexToBytes
+**语法**
 
-Converts a string in hexadecimal format to byte type bytes.
-
-#### Syntax
-
-```
-  HexToBytes(hexdata string) bytes
-
+``` text
+HexToBytes(hexdata string) bytes
 ```
 
-*  **hexdata**
+* hexdata
 
-    A string in hexadecimal format.
+  十六进制编码格式的字符串。
 
-#### Example
+**示例**
 
-```
+``` js
 var val bytes
 val = HexToBytes("34fe4501a4d80094")
 ```
 
+### FormatMoney {#formatmoney}
 
+返回 *exp / 10 \^ digit* 的字符串值。
 
-### FormatMoney
+**语法**
 
-Returns the string value of exp / 10 ^ digit.
-
-#### Syntax
-
-  
-
-```
+``` text
 FormatMoney(exp string, digit int) string
 ```
 
-* **Exp**
+* exp
 
-    A number in string format.
-* **digit**
+  数字的字符串格式。
 
-    The exponent (positive or negative) of 10 in the expression `Exp/10^digit`. Positive values determine decimal places.
+* digit
 
-#### Example
+  `exp/10^digit`
+表达式中10的指数，该值可以是正数或负数。正值决定了小数点后的位数。
 
-```
-  s = FormatMoney("78236475917384", 0)
-```
+**示例**
 
-
-
-### Random
-```
-Returns a random number between min and max (min <= result <max). Both min and max must be positive numbers.
+``` js
+s = FormatMoney("78236475917384", 0)
 ```
 
-#### Syntax
+### Random {#random}
 
- 
+返回min和max之间的随机数（min <= result <max）。min和max都必须是正数。
 
-```
+**语法**
+
+``` text
 Random(min int, max int) int
 ```
 
-* **min**
+* min
 
-    The minimum value among random numbers.
+  随机数的最小值。
 
-* **max**
+* max
 
-    The upper limit of random numbers. The random number generated will be less than this value.
+  随机数的上限。生成的随机数将小于该值。
 
-#### Example
+**示例**
 
-```
+``` js
 i = Random(10,5000)
 ```
 
+### Int {#int}
 
+将字符串值转换为整数。
 
-### Int
+**语法**
 
-Converts a value in string format to an integer.
-
-#### Syntax
-
-```
+``` text
 Int(val string) int
 ```
 
-* **val**
+* val
 
-    A number in string format.
+  数字的字符串格式。
 
-#### Example
+**示例**
 
-```
+``` js
 mystr = "-37763499007332"
 val = Int(mystr)
 ```
 
+### Hash {#hash}
 
+返回指定字节数组或字符串的哈希，由系统加密库crypto生成的哈希。
 
-### Hash
+**语法**
 
-  Returns the hash of a specified byte array or string, which is generated by the system encryption library crypto.
-
-#### Syntax
-
- 
-
-```
+``` text
 Hash(val interface{}) string, error
 ```
 
-* **val**
+* val
 
-    A string or byte array.
+  字符串或字节数组。
 
-#### Example
+**示例**
 
-```
+``` js
 var hash string
 hash = Hash("Test message")
 ```
 
+### Sha256 {#sha256}
 
+返回指定字符串的 **SHA256** 哈希值。
 
-### Sha256
+**语法**
 
-  Returns the SHA256 hash of a specified string.
-
-#### Syntax
-
- 
-
-```
+``` text
 Sha256(val string) string
 ```
 
-* **val**
+* val
 
-    A string requires the Sha256 hash operation.
+  需要 **Sha256** 哈希运算的字符串。
 
-#### Example
+**示例**
 
-```
+``` js
 var sha string
 sha = Sha256("Test message")
 ```
 
+### Str {#str}
 
+将整数 *int* 或浮点数 *float* 转换为字符串。
 
-### Str
+**语法**
 
-Converts an integer int or float float number to a string.
-
-#### Syntax
-
-  
-
-```
+``` text
 Str(val int|float) string
 ```
 
-* **val**
+* val
 
-    An integer or float number.
+  整数或浮点数。
 
-#### Example
+**示例**
 
-```
+``` js
 myfloat = 5.678
 val = Str(myfloat)
 ```
 
+### JSONEncode {#jsonencode}
 
+将数字、字符串或数组转换为JSON格式的字符串。
 
-### JSONEncode
+**语法**
 
-Converts a number, string or array to a string in JSON format.
-
-#### Syntax
-
-```
+``` text
 JSONEncode(src int|float|string|map|array) string
-
 ```
 
-* **src**
+* src
 
-    Data to convert.
+  需转换的数据。
 
-#### Example
+**示例**
 
-  
-
-```
+``` js
 var mydata map
 mydata["key"] = 1
 var json string
 json = JSONEncode(mydata)
 ```
 
+### JSONEncodeIndent {#jsonencodeindent}
 
+使用指定的缩进将数字、字符串或数组转换为JSON格式的字符串。
 
-### JSONEncodeIndent
+**语法**
 
-Uses the specified indentation to convert a number, string, or array to a string in JSON format.
-
-#### Syntax
-
-```
+``` text
 JSONEncodeIndent(src int|float|string|map|array, indent string) string
-
 ```
 
-* **src**
+* src
 
-    Data to convert.
+  需要转换的数据。
 
-* **Indent**
+* indent
 
-    The string will be used as indentation.
+  用作缩进的字符串。
 
-#### Example
+**示例**
 
-  
-
-```
+``` js
 var mydata map
 mydata["key"] = 1
 var json string
 json = JSONEncodeIndent(mydata, "\t")
 ```
 
+### JSONDecode {#jsondecode}
 
+将JSON格式的字符串转换为数字，字符串或数组。
 
-### JSONDecode
+**语法**
 
-Converts a string in JSON format to a number, string or array.
-
-#### Syntax
-
-```
+``` text
 JSONDecode(src string) int|float|string|map|array
-
 ```
 
-*  **src**
+* src
 
-    A string containing data in JSON format.
+  包含JSON格式数据的字符串。
 
-#### Example
+**示例**
 
-```
+``` js
 var mydata map
 mydata = JSONDecode(`{"name": "John Smith", "company": "Smith's company"}`)
 ```
 
+### HasPrefix {#hasprefix}
 
+检查字符串是否以指定的字符串开头。
 
-### HasPrefix
+**语法**
 
-Checks whether the string starts with a specified string.
-
-#### Syntax
-
-  
-
-```
+``` text
 HasPrefix(s string, prefix string) bool
 ```
 
-* **s**
+* s
 
-    A string.
+  字符串。
 
-* **prefix**
+* prefix
 
-    The prefix to check.
+  需要检查的前缀。
 
-> **Return value**
+**返回值**
 
-  If the string starts with a specified string, `true` is returned.
+如果字符串以指定的字符串开头，则返回 `true`。
 
-#### Example
+**示例**
 
-```
+``` js
 if HasPrefix($Name, `my`) {
-  ...
+...
 }
 ```
 
+### Contains {#contains}
 
+检查字符串是否包含指定的子字符串。
 
-### Contains
+**语法**
 
-Checks whether the string contains a specified substring.
-
-#### Syntax
-
- 
-
-```
+``` text
 Contains(s string, substr string) bool
 ```
 
-* **s**
+* s
 
-    A string.
+  字符串。
 
-* **substr**
+* substr
 
-    A substring.
+  子字符串。
 
-> **Return value**
+**返回值**
 
-  If the string contains the substring, it returns `true`.
+如果字符串包含子字符串，则返回 `true`。
 
-#### Example
+**示例**
 
-```
+``` js
 if Contains($Name, `my`) {
-  ...
+...
 }
 ```
 
+### Replace {#replace}
 
+把字符串中的 old（旧字符串） 替换成 new(新字符串)。
 
-### Replace
+**语法**
 
-Replaces old (the old string) with new (the new string) in the string.
-
-#### Syntax
-
-```
+``` text
 Replace(s string, old string, new string) string
-
 ```
 
-* **s**
+* s
 
-    The original string.
+  原始字符串。
 
-* **Old**
+* old
 
-    The substring to replace.
+  将被替换的子字符串。
 
-* **new**
+* new
 
-    The new string.
+  新字符串。
 
-#### Example
+**示例**
 
-```
+``` js
 s = Replace($Name, `me`, `you`)
 ```
 
+### Size {#size}
 
+返回指定字符串的字节数。
 
-### Size
+**语法**
 
-Returns the number of bytes in a specified string.
-
-#### Syntax
-
-```
+``` text
 Size(val string) int
-
 ```
 
-* **val**
+* val
 
-    A string.
+  字符串。
 
-#### Example
+**示例**
 
-```
+``` js
 var len int
 len = Size($Name)
 ```
 
+### Sprintf {#sprintf}
 
+该函数根据指定的模板和参数创建一个字符串。
 
-### Sprintf
+可用的通配符：
 
-This function creates a string using the specified template and parameters.
+> -   `%d` (整数)
+> -   `%s` (字符串)
+> -   `%f` (浮点型)
+> -   `%v` (任何类型)
 
-Available wildcards:
-* `%d` (integer)
-* `%s` (string)
-* `%f` (float)
-* `%v` (any type)
-#### Syntax
+**语法**
 
-```
+``` text
 Sprintf(pattern string, val ...) string
-
 ```
 
-* **pattern**
+* pattern
 
-    A string template.
+  字符串的模板。
 
-#### Example
+**示例**
 
-```
+``` js
 out = Sprintf("%s=%d", mypar, 6448)
 ```
 
+### Substr {#substr}
 
+返回从偏移量 *offset*(默认从0开始计算)开始的指定字符串中获取的子字符串，其最大长度限制为*length*。
 
-### Substr
+如果偏移量或长度限制小于零、偏移量大于长度限制的值，则返回一个空字符串。
 
-Returns the substring obtained from a specified string starting from the offset offset (calculated from 0 by default), and the maximum length is limited to length.
+如果偏移量和长度限制的总和大于字符串字节数，则子字符串将从偏移量开始返回到指定字符串的末尾。
 
-If the offset or length is less than zero, or the offset is greater than the length, an empty string is returned.
+**语法**
 
-If the sum of the offset and length is greater than the string size, then, the substring will be returned starting from the offset to the end of the string.
-
-#### Syntax
-
-```
+``` text
 Substr(s string, offset int, length int) string
-
 ```
 
-* **val**
+* val
 
-    A string.
+  字符串。
 
-* **Offset**
+* offset
 
-    Offset.
+  偏移量。
 
-* **length**
+* length
 
-    Length of the substring.
+  子字符串的长度限制。
 
-#### Example
+**示例**
 
-```
+``` js
 var s string
 s = Substr($Name, 1, 10)
 ```
 
+### ToLower {#tolower}
 
+以小写形式返回指定的字符串。
 
-### ToLower
+**语法**
 
-Returns a specified string in lowercase.
-
-#### Syntax
-
-```
+``` text
 ToLower(val string) string
-
 ```
 
-* **val**
+* val
 
-    A string.
+  字符串。
 
-#### Example
+**示例**
 
-```
+``` js
 val = ToLower(val)
 ```
 
+### ToUpper {#toupper}
 
+以大写形式返回指定的字符串。
 
-### ToUpper
+**语法**
 
-Returns a specified string in uppercase.
-
-#### Syntax
-
-```
+``` text
 ToUpper(val string) string
-
 ```
 
-* **val**
+* val
 
-    A string.
+  字符串。
 
-#### Example
+**示例**
 
-```
+``` js
 val = ToUpper(val)
 ```
 
+### TrimSpace {#trimspace}
 
+删除指定字符串的前后空格、制表符和换行符号。
 
-### TrimSpace
+**语法**
 
-Deletes the leading and trailing spaces, tabs and newlines of a specified string.
-
-#### Syntax
-
-```
+``` text
 TrimSpace(val string) string
-
 ```
 
-* **val**
+* val
 
-    A string.
+  字符串。
 
-#### Example
+**示例**
 
- 
-
-```
+``` js
 var val string
-val = TrimSpace(" mystr ")
+val = TrimSpace("  mystr  ")
 ```
 
+### Floor {#floor}
 
+返回小于或等于指定数字、浮点数和字符串的最大整数值。
 
-### Floor
+**语法**
 
-Returns the largest integer value less than or equal to a specified number, float number, and string.
-
-#### Syntax
-
-```
+``` text
 Floor(x float|int|string) int
 ```
 
-* **x**
+* x
 
-    A number, float number, and string.
+  数字、浮点数和字符串。
 
-#### Example
+**示例**
 
-```
+``` js
 val = Floor(5.6) // returns 5
 ```
 
+### Log {#log}
 
+返回指定数字、浮点数和字符串的自然对数。
 
-### Log
+**语法**
 
-Returns the natural logarithm of a specified number, float number, and string.
-
-#### Syntax
-
-```
+``` text
 Log(x float|int|string) float
-
 ```
 
-*  **x**
+* x
 
-    A number, float number, and string.
+  数字、浮点数和字符串。
 
-#### Example
+**示例**
 
-```
+``` js
 val = Log(10)
 ```
 
+### Log10 {#log10}
 
+返回指定数字、浮点数和字符串的以10为底的对数。
 
-### Log10
+**语法**
 
-Returns the base-10 logarithm of a specified number, float number, and string.
-
-#### Syntax
-
-```
+``` text
 Log10(x float|int|string) float
-
 ```
 
-* **x**
+* x
 
-    A number, float number, and string.
+  数字、浮点数和字符串。
 
-#### Example
+**示例**
 
- 
-
-```
+``` js
 val = Log10(100)
 ```
 
+### Pow {#pow}
 
+返回(x^y^)，y是以x为基数的指数。
 
-### Pow
+**语法**
 
-Returns the specified base to the specified power (xy).
-
-#### Syntax
-
-```
+``` text
 Pow(x float|int|string, y float|int|string) float
-
 ```
 
-* **x**
+* x
 
-    Base number.
+  基数。
 
-* **y**
+* y
 
-    Exponent.
+  指数。
 
-#### Example
+**示例**
 
-```
+``` js
 val = Pow(2, 3)
-
 ```
 
-### Round
+### Round {#round}
 
-Returns the value of a specified number rounded to the nearest integer.
+返回指定数字四舍五入到最近整数的值。
 
-#### Syntax
+**语法**
 
-```
+``` text
 Round(x float|int|string) int
-
 ```
 
-* **x**
+* x
 
-    A number.
+  数字。
 
-#### Example
+**示例**
 
-```
+``` js
 val = Round(5.6)
 ```
 
-### Sqrt
+### Sqrt {#sqrt}
 
-Returns the square root of a specified number.
+返回指定数字的平方根。
 
-```
+``` text
 Sqrt(x float|int|string) float
-
 ```
 
-* **x**
+* x
 
-    A number.
+  数字。
 
-#### Example
+**示例**
 
-```
+``` js
 val = Sqrt(225)
 ```
 
+### StringToBytes {#stringtobytes}
 
+将字符串转换为字节。
 
-### StringToBytes
+**语法**
 
-Converts a string to bytes.
-
-#### Syntax
-
-```
+``` text
 StringToBytes(src string) bytes
-
 ```
 
-* **src**
+* src
 
-    A string.
+  字符串。
 
-#### Example
+**示例**
 
- 
-
-```
+``` js
 var b bytes
 b = StringToBytes("my string")
 ```
 
+### BytesToString {#bytestostring}
 
+将字节转换为字符串。
 
-### BytesToString
+**语法**
 
-Converts bytes to string.
-
-#### Syntax
-
-```
+``` text
 BytesToString(src bytes) string
-
 ```
 
-* **src**
+* src
 
-    Byte.
+  字节。
 
-#### Example
+**示例**
 
-```
+``` js
 var s string
 s = BytesToString($Bytes)
 ```
 
+### SysParamString {#sysparamstring}
 
+返回指定平台参数的值。
 
-### SysParamString
+**语法**
 
-Returns the value of a specified platform parameter.
-
-#### Syntax
-
-```
+``` text
 SysParamString(name string) string
-
 ```
 
-* **name**
+* name
 
-    Parameter name.
+  参数名称。
 
-#### Example
+**示例**
 
-```
+``` js
 url = SysParamString(`blockchain_url`)
 ```
 
+### SysParamInt {#sysparamint}
 
+以数字的形式返回指定平台参数的值。
 
-### SysParamInt
+**语法**
 
-Returns the value of a specified platform parameter in the form of a number.
-
-#### Syntax
-
-```
+``` text
 SysParamInt(name string) int
-
 ```
 
-* **name**
+* name
 
-    Parameter name.
+  参数名称。
 
-#### Example
+**示例**
 
-```
+``` js
 maxcol = SysParam(`max_columns`)
 ```
 
+### DBUpdateSysParam {#dbupdatesysparam}
 
+更新平台参数的值和条件。如果您不需要更改值或条件，请在相应参数中指定空字符串。
 
-### DBUpdateSysParam
+**语法**
 
-Updates the value and conditions of a platform parameter. If you do not need to change the value or conditions, please specify an empty string in the corresponding parameter.
-
-#### Syntax
-
-```
+``` text
 DBUpdateSysParam(name, value, conditions string)
-
 ```
 
-* **name**
+* name
 
-    Parameter name.
+  平台参数名称。
 
-* **value**
+* value
 
-    New value of a parameter.
+  参数的新值。
 
-* **conditions**
+* conditions
 
-    New conditions for updating a parameter.
+  更改参数的新条件。
 
-#### Example
+**示例**
 
-```
+``` js
 DBUpdateSysParam(`fuel_rate`, `400000000000`, ``)
-
 ```
 
-### UpdateNotifications
+### UpdateNotifications {#updatenotifications}
 
-Obtains the notification list of a specified key from the database, and sends the notification obtained to Centrifugo.
+从数据库中获取指定键的通知列表，并将获取的通知发送到Centrifugo。
 
-#### Syntax
+**语法**
 
+``` text
+UpdateNotifications(ecosystemID int, keys int ...)
 ```
-UpdateNotifications(ecosystemID int, keys int...)
 
-```
+* ecosystemID
 
-* **EcosystemID**
+  生态系统ID。
 
-    Ecosystem ID.
+* key
 
-* **key**
+  账户地址列表，以逗号分隔。或您可以使用一个数组指定账户地址列表。
 
-    A list of account addresses, separated by commas. Or you can use an array to specify a list of account addresses.
+**示例**
 
-#### Example
-
-```
+``` js
 UpdateNotifications($ecosystem_id, $key_id, 23345355454, 35545454554)
-UpdateNotifications(1, [$key_id, 23345355454, 35545454554])
+UpdateNotifications(1, [$key_id, 23345355454, 35545454554] )
 ```
 
+### UpdateRolesNotifications {#updaterolesnotifications}
 
+获取数据库中指定角色ID的所有账户地址的通知列表，并将获取的通知发送到Centrifugo。
 
-### UpdateRolesNotifications
+**语法**
 
-Obtains the notification list of all account addresses of a specified role ID in the database, and sends the notification obtained to Centrifugo.
-
-#### Syntax
-
-```
+``` text
 UpdateRolesNotifications(ecosystemID int, roles int ...)
-
 ```
 
-*  **EcosystemID**
+* ecosystemID
 
-    Ecosystem ID.
+  生态系统ID。
 
-*  **roles**
+* roles
 
-    A list of role IDs, separated by commas. Or you can use an array to specify a list of role IDs.
+  角色ID列表，以逗号分隔。或您可以使用一个数组指定角色ID列表。
 
-#### Example
+**示例**
 
-```
+``` js
 UpdateRolesNotifications(1, 1, 2)
-
 ```
 
-### HTTPRequest
+### HTTPRequest {#httprequest}
 
-Sends HTTP requests to the specified address.
-> Note
+将HTTP请求发送到指定的地址。
 
-> This function can only be used in CLB contracts.
+``` text
+该函数仅可用于 CLB 合约。
+````
 
-#### Syntax
+**语法**
 
-```
+``` text
 HTTPRequest(url string, method string, heads map, pars map) string
-
 ```
 
-* **Url**
+* url
 
-    Address, to which the request will be sent.
+  发送的请求地址。
 
-* **method**
+* method
 
-    Request type (GET or POST).
+  请求类型（GET或POST）。
 
-* **heads**
+* heads
 
-    An array of request headers, objects.
+  请求头，对象数组。
 
-* **pars**
+* pars
 
-    Request parameters.
+  请求参数。
 
-#### Example
+**示例**
 
-```
+``` js
 var ret string
-var ret string
+var ret string 
 var ret string
 var pars, heads, json map
-heads["Authorization"] = "Bearer "+ $auth_token
+heads["Authorization"] = "Bearer " + $auth_token
 pars["obs"] = "true"
-ret = HTTPRequest("http://localhost:7079/api/v2/content/page/default_page","POST", heads, pars)
+ret = HTTPRequest("http://localhost:7079/api/v2/content/page/default_page", "POST", heads, pars)
 json = JSONToMap(ret)
 ```
 
+### HTTPPostJSON {#httppostjson}
 
+该函数类似于 *HTTPRequest* 函数，但它发送POST请求，请求参数为字符串。
 
-### HTTPPostJSON
-
-This function is similar to the HTTPRequest function, but it sends a POST request and the request parameters are strings.
-
->  Note
-
->  This function can only be used in CLB contracts
-
-#### Syntax
-
+``` text
+该函数仅可用于 CLB 合约。
 ```
+
+**语法**
+
+``` text
 HTTPPostJSON(url string, heads map, pars string) string
-
 ```
 
-* **Url**
+* url
 
-    Address, to which the request will be sent.
+  发送的请求地址。
 
-* **heads**
+* heads
 
-    An array of request headers, objects.
-* **pars**
+  请求头，对象数组。
 
-    Request parameters as a JSON string. 
+* pars
 
-####   Example
+  请求参数，JSON字符串。
 
-```
+**示例**
+
+``` js
 var ret string
-var ret string
+var ret string 
 var ret string
 var heads, json map
-heads["Authorization"] = "Bearer "+ $auth_token
+heads["Authorization"] = "Bearer " + $auth_token
 ret = HTTPPostJSON("http://localhost:7079/api/v2/content/page/default_page", heads, `{"obs":"true"}`)
 json = JSONToMap(ret)
 ```
 
+### BlockTime {#blocktime}
 
+以SQL格式返回区块的生成时间。
 
-### BlockTime
+**语法**
 
-Returns the generation time of the block in SQL format.
-
-####   Syntax
-
-```
+``` text
 BlockTime()
 ```
 
+**示例**
 
-
-#### Example
-
-```
+``` js
 var mytime string
 mytime = BlockTime()
 DBInsert("mytable", myid, {time: mytime})
 ```
 
+### DateTime {#datetime}
 
+将时间戳unixtime转换为 [YYYY-MM-DD HH：MI：SS]{.title-ref} 格式的字符串。
 
-### DateTime
+**语法**
 
-Converts the timestamp unixtime to a string in YYYY-MM-DD HH:MI:SS format.
-
-#### Syntax
-
-```
+``` text
 DateTime(unixtime int) string
 ```
 
+**示例**
 
-
-#### Example
-
-```
+``` js
 DateTime(1532325250)
-
 ```
 
-### UnixDateTime
+### UnixDateTime {#unixdatetime}
 
-Converts a string in YYYY-MM-DD HH:MI:SS format to a timestamp unixtime
+将 [YYYY-MM-DD HH：MI：SS]{.title-ref} 格式的字符串转换为时间戳unixtime。
 
-#### Syntax
+**语法**
 
-```
+``` text
 UnixDateTime(datetime string) int
 ```
 
+**示例**
 
-
-#### Example
-
-```
+``` js
 UnixDateTime("2018-07-20 14:23:10")
 ```
 
+### CreateOBS {#createobs}
 
+创建子 CLB 。
 
-### CreateOBS
+该函数只能在主 CLB 模式下使用。
 
-Creates a child CLB.
+**语法**
 
-This function can only be used in the master CLB mode.
-
-#### Syntax
-
-```
+``` text
 CreateOBS(OBSName string, DBUser string, DBPassword string, OBSAPIPort int)
-
 ```
 
-* **OBSName**
+* OBSName
 
-    CLB name.
+  CLB 的名称。
 
-* **DBUser**
+* DBUser
 
-    The role name of the database.
+  数据库的角色名称。
 
-*  **DBPassword**
+* DBPassword
 
-    The password of the role.
+  该角色的密码。
 
-* **OBSAPIPort**
+* OBSAPIPort
 
-    The port of the API request.
+  API请求的端口。
 
-#### Example
+**示例**
 
-```
+``` js
 CreateOBS("obsname", "obsuser", "obspwd", 8095)
-
 ```
 
-### GetOBSList
+### GetOBSList {#getobslist}
 
-Returns the list of child CLBs.
+返回子 CLB 列表。
 
-This function can only be used in the master CLB mode.
+该函数只能在主 CLB 模式下使用。
 
-#### Syntax
+**语法**
 
-```
+``` text
 GetOBSList()
-
 ```
 
-> **Return value**
+**返回值**
 
-An array of objects, where the key is the CLB name and the value is the process state.
+一个对象数组，其中键是 CLB 名称和值是进程状态。
 
-### RunOBS
+### RunOBS {#runobs}
 
-A process running the CLB.
+运行 CLB 的进程。
 
-This function can only be used in the master CLB mode.
+该函数只能在主 CLB 模式下使用。
 
-#### Syntax
+**语法**
 
-```
+``` text
 RunOBS(OBSName string)
-
 ```
 
-* **OBSName**
+* OBSName
 
-  CLB name.
+  CLB 名称。
 
-  It can only contain letters and numbers, and the space symbol cannot be used.
+只能包含字母和数字，不能使用空格符号。
 
-### StopOBS
+### StopOBS {#stopobs}
 
-Stop the process of a specified CLB.
+停止指定 CLB 的进程。
 
-This function can only be used in the master CLB mode.
+该函数只能在主 CLB 模式下使用。
 
-#### Syntax
+**语法**
 
-```
+``` text
 StopOBS(OBSName string)
-
 ```
 
-* **OBSName**
+* OBSName
 
-  CLB name.
+  CLB 名称。
 
-  It can only contain letters and numbers, and the space symbol cannot be used.
+只能包含字母和数字，不能使用空格符号。
 
-### RemoveOBS
+### RemoveOBS {#removeobs}
 
-Deletes the process of a specified CLB.
+删除指定 CLB 的进程。
 
-This function can only be used in the master CLB mode.
+该函数只能在主 CLB 模式下使用。
 
-#### Syntax
+**语法**
 
-```
+``` text
 RemoveOBS(OBSName string)
-
 ```
 
-* **OBSName**
+* OBSName
 
-CLB name.
+  CLB 名称。
 
-It can only contain letters and numbers, and the space symbol cannot be used.
+  只能包含字母和数字，不能使用空格符号。
 
-## System Contracts
+## System Contracts {#system-contracts}
 
-System contracts are created by default when the IBax blockchain platform is launched. All these contracts were created in the first ecosystem. This is why you need to specify their full names when calling them from other ecosystems, for example, `@1NewContract`.
+系统合约是在启动 IBAX区块链平台时默认创建的。所有这些合约都是在第一个生态系统中创建的，这就是为什么你需要指定其全名来从其他生态系统中调用它们， 例如，`@1NewContract`。
 
-### NewEcosystem
+### NewEcosystem {#newecosystem}
 
-This contract creates a new ecosystem. To obtain the ID of the ecosystem created, you must quote the result filed returned in [txstatus](../reference/api2.md#txstatus).
+创建一个新的生态系统，要获取创建的生态系统ID，必须引用在[txstatus](../reference/api2.md#txstatus) 中返回的 *result* 字段
 
-Parameters:
-  * **Name** string - name of the ecosystem. It can be changed later.
+参数：
 
-### EditEcosystemName
+> -   *Name string* - 生态系统的名称，可以更改该名称。
 
-Changes the name of the ecosystem in the 1_ecosystems table that only exists in the first ecosystem.
+### EditEcosystemName {#editecosystemname}
 
-Parameters:
-  * **EcosystemID** int - changes the name of the ecosystem ID;
-  * **NewName** string - new name of the ecosystem.
+更改 *1_ecosystems* 表中生态系统的名称，该表仅存在于第一个生态系统中。
 
-### NewContract
+参数：
 
-Creates a new contract in the current ecosystem.
+> -   *EcosystemID int* - 更改其名称的生态系统ID；
+> -   *NewName string* - 生态系统新名称。
 
-Parameters:
-  * **ApplicationId** int - the application to which a new contract belongs;
-  * **Value** string - contract source code. The upper layer must have only one contract;
-  * **Conditions** string - changes the conditions of the contract;
-  * **TokenEcosystem** int "optional" - ecosystem ID. It determines which token will be used for transactions when the contract is activated.
+### NewContract {#newcontract}
 
-### EditContract
+在当前生态系统中创建一个新合约。
 
-Edits the contract in the current ecosystem.
+参数：
 
-Parameters:
-  * **Id** int - the contract ID changed;
-  * **Value** string "optional" - source code of the contract;
-  * **Conditions** string "optional" - changes the conditions of the contract.
+- *ApplicationId int* - 新合约所属的应用程序；
+- *Value string* - 合约源码，上层必须只有一个合约；
+- *Conditions string* - 更改该合约的条件；
+- *TokenEcosystem int \"optional\"* - 生态系统ID，当合约被激活时，将使用哪种通证进行交易。
 
-### BindWallet
-Binding the contract to the wallet address in the current ecosystem. After binding with the contract, the contract execution fee will be paid under this address. 
+### EditContract {#editcontract}
 
-Parameters:
-  * **Id** int - the contract ID to be bound.
-  * **WalletId** string "optional" - the wallet address bound to the contract.
+编辑当前生态系统中的合约。
 
-### UnbindWallet
+参数：
 
-Unbinding the contract from the wallet address in the current ecosystem. Only addresses bound to the contract can be unbound. After unbinding the contract, users who execute the contract will pay the execution fee.
+> -   *Id int* - 更改的合约ID；
+> -   *Value string \"optional\"* - 合约源码；
+> -   *Conditions string \"optional\"* - 更改该合约的条件。
 
-Parameters:
-  * **Id** int - the ID of the contract being bound.
+### BindWallet {#bindwallet}
 
-### NewParameter
+将合约绑定到当前生态系统中的钱包地址。合同绑定后，该地址将支付执行该合约的费用。
+参数：
 
-A new ecosystem parameter has been added to the current ecosystem.
+> -   *Id int* - 要绑定的合约ID。
+> -   *WalletId string \"optional\"* - 合约绑定的钱包地址。
 
-Parameters:
-  * **Name** string - parameter name;
-  * **Value** string - parameter value;
-  * **Conditions** string - conditions to change the parameter.
+### UnbindWallet {#unbindwallet}
 
-### EditParameter
+从当前生态系统中的钱包地址取消绑定合约，只有已绑定该合约的地址才能取消绑定。合约未绑定后，执行合约的用户将支付执行费用。
 
-Changes existing ecosystem parameters in the current ecosystem.
+参数：
 
-Parameters:
-  * **Name** string - name of the parameter to be changed;
-  * **Value** string - new parameter value;
-  * **Conditions** string - new conditions to change the parameter.
+> -   *Id int* - 绑定的合同ID。
 
-### NewMenu
+### NewParameter {#newparameter}
 
-Adds a new menu in the current ecosystem.
+早当前生态系统添加了一个新生态系统参数。
 
-Parameters:
-  * **Name** string - menu name;
-  * **Value** string - menu source code;
-  * **Title** string "optional" - menu title;
-  * **Conditions** string - conditions to change the menu.
+参数：
 
-### EditMenu
+> -   *Name string* - 参数名称；
+> -   *Value string* - 参数值；
+> -   *Conditions string* - 更改参数的条件。
 
-Changes the existing menu in the current ecosystem.
+### EditParameter {#editparameter}
 
-Parameters:
-  * **Id** int - menu ID to be changed;
-  * **Value** string "optional" - source code of the new menu;
-  * **Title** string "optional" - title of the new menu;
-  * **Conditions** string "optional" - new conditions to change the menu.
+更改当前生态系统中的现有生态系统参数。
 
-### AppendMenu
+参数：
 
-Adds the source code content to existing menus in the current ecosystem
+> -   *Name string* - 要更改的参数名称；
+> -   *Value string* - 新参数值；
+> -   *Conditions string* - 更改参数的新条件。
 
-Parameters:
-  * **Id** int - menu ID;
-  * **Value** string - source code to be added.
+### NewMenu {#newmenu}
 
-### NewPage
+在当前生态系统中添加一个新菜单。
 
-Adds a new page in the current ecosystem.
+参数：
 
-Parameters:
-  * **Name** string - name of the page;
-  * **Value** string - source code of the page;
-  * **Menu** string - name of the menu associated with the page;
-  * **Conditions** string - conditions to change the page;
-  * **ValidateCount** int "optional" - number of nodes required for page validation. If this parameter is not specified, the min_page_validate_count ecosystem parameter value is used. The value of this parameter cannot be less than min_page_validate_count and greater than max_page_validate_count;
+> -   *Name string* - 菜单名称；
+> -   *Value string* - 菜单源码；
+> -   *Title string \"optional\"* - 菜单标题；
+> -   *Conditions string* - 更改菜单的条件。
 
-  * **ValidateMode** int "optional" - mode of page validity check. The page will be checked when it is loaded if the value of this parameter is 0; or checked when it is loaded or exit the page if the value of this parameter is 1. 
+### EditMenu {#editmenu}
 
-### EditPage
+更改当前生态系统中的现有菜单。
 
-Changes existing pages in the current ecosystem.
+参数：
 
-Parameters:
-  * **Id** int - ID of the page to be changed;
-  * **Value** string "optional" - source code of the new page;
-  * **Menu** string "optional" - name of the new menu associated with the page;
-  * **Conditions** string "optional" - new conditions to change the page;
-  * **ValidateCount** int "optional" - number of nodes required for page validation. If this parameter is not specified, the min_page_validate_count ecosystem parameter value is used. The value of this parameter cannot be less than min_page_validate_count and greater than max_page_validate_count;
-  * **ValidateMode** int "optional" - mode of page validity check. The page will be checked when it is loaded if the value of this parameter is 0; or checked when it is loaded or exit the page if the value of this parameter is 1. 
+> -   *Id int* - 要更改的菜单ID；
+> -   *Value string \"optional\"* - 新菜单源码；
+> -   *Title string \"optional\"* - 新菜单标题；
+> -   *Conditions string \"optional\"* - 更改菜单的新条件。
 
-### AppendPage
+### AppendMenu {#appendmenu}
 
-Adds the source content to existing pages in the current ecosystem.
+将源码内容添加到当前生态系统中的现有菜单。
 
-Parameters:
-* **Id** int - ID of the page to be changed;
-* **Value** string - the source code to be added.
+参数：
 
-### NewBlock
+> -   *Id int* - 菜单ID；
+> -   *Value string* - 要添加的源码。
 
-Adds a page module to the current ecosystem.
+### NewPage {#newpage}
 
-Parameters:
-  * **Name** string - name of the module;
-  * **Value** string - source code of the module;
-  * **Conditions** string - conditions to change the module.
+在当前生态系统中添加新页面。
 
-### EditBlock
+参数：
 
-Changes existing page modules in the current ecosystem.
+> -   *Name string* - 页面名称；
+> -   *Value string* - 页面源码；
+> -   *Menu string* - 关联该页面的菜单名称；
+> -   *Conditions string* - 更改页面的条件；
+> -   *ValidateCount int \"optional\"* - 页面验证所需的节点数。如果未指定此参数，则使用 *min_page_validate_count* 生态系统参数值。
+      该值不能小于 *min_page_validate_count* 且大于 *max_page_validate_count*；
+> -   *ValidateMode int \"optional\"* - 页面有效性检查模式。值为0表示在加载页面时检查页面。值为1表示在加载和离开页面时检查页面。
 
-Parameters:
-  * Id int - module ID to be changed;
-  * Value string - source code of the new module;
-  * Conditions string - new conditions to change the module.
+### EditPage {#editpage}
 
-### NewTable
+更改当前生态系统中的现有页面。
 
-Adds a new table to the current ecosystem.
+参数：
 
-Parameters:
-  * **ApplicationId** int - application ID of the associated table;
-  * **Name** string - name of the new table;
-  * **Columns** string - field array in JSON format `[{"name":"...", "type":"...","index": "0", "conditions":".. ."},...]`, where
-    * **name** - field name, only Latin characters;
-    * **type** - data type `varchar,bytea,number,datetime,money,text,double,character`;
-    * **index** - non-primary key field `0`, primary key `1`;
-    * **conditions** - conditions to change the field data, and the access permissions must be specified in JSON format "`{"update":"ContractConditions(MainCondition)", "read":"ContractConditions(MainCondition)"}`;
-  * **Permissions** string - access permissions in JSON format `{"insert": "...", "new_column": "...", "update": "...", "read": ".. ."}`.
-    * **insert** - permission to insert entries;
-    * **new_column** - permission to add a new column;
-    * **update** - permission to change entry data;
-    * **read** - permission to read entry data.
+> -   *Id int* - 要更改的页面ID；
+> -   *Value string \"optional\"* - 新页面源码；
+> -   *Menu string \"optional\"* - 关联该页面的新菜单名称；
+> -   *Conditions string \"optional\"* - 更改页面的新条件；
+> -   *ValidateCount int \"optional\"* - 页面验证所需的节点数。如果未指定此参数，则使用 *min_page_validate_count* 生态系统参数值。
+      该值不能小于 *min_page_validate_count* 且大于 *max_page_validate_count*；
+> -   *ValidateMode int \"optional\"* - 页面有效性检查模式。值为0表示在加载页面时检查页面。值为1表示在加载和离开页面时检查页面。
 
-### EditTable
+### AppendPage {#appendpage}
 
-Changes the access permissions of a table in the current ecosystem.
+将源码内容添加到当前生态系统中的现有页面。
 
-Parameters:
-  * **Name** string - name of the table;
-  * **InsertPerm** string - permission to insert entries into the table;
-  * **UpdatePerm** string - permission to update entries in the table;
-  * **ReadPerm** string - permission to read entries in the table;
-  * **NewColumnPerm** string - permission to create a new column;
+参数：
 
-### NewColumn
+> -   *Id int* - 要更改的页面ID；
+> -   *Value string* - 要添加的源码。
 
-Adds a new field to the table of the current ecosystem.
+### NewBlock {#newblock}
 
-Parameters:
-  * **TableName** string - table name;
-  * **Name** string - field name in Latin characters;
-  * **Type** string - data type `varchar,bytea,number,money,datetime,text,double,character`;
-  * **UpdatePerm** string - permission to change the value in the column;
-  * **ReadPerm** string - permission to read the value in the column.
+在当前生态系统添加一个页面模块。
 
-### EditColumn
+参数：
 
-Changes the permission of a specified table field in the current ecosystem.
+> -   *Name string* - 模块名称；
+> -   *Value string* - 模块源码；
+> -   *Conditions string* - 更改模块的条件。
 
-Parameters:
-  * **TableName** string - table name;
-  * **Name** string - field name in Latin characters to be changed;
-  * **UpdatePerm** string - new permission to change the value in the column;
-  * **ReadPerm** string - new permission to read the value in the column.
+### EditBlock {#editblock}
 
-### NewLang
+更改当前生态系统中的现有页面模块。
 
-Adds language resources to the current ecosystem, and the permission to do so is set in the changing_language parameter of the ecosystem parameters.
+Parameters
 
-Parameters:
+> -   *Id int* - 要更改的模块ID；
+> -   *Value string* - 新模块源码；
+> -   *Conditions string* - 更改模块的新条件。
 
-  * **Name** string - name of the language resources in Latin characters;
-  * **Trans** string - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "zh": "Chinese text"}`.
+### NewTable {#newtable}
 
-### EditLang
+在当前生态系统中添加一个新数据表。
 
-Changes the language resources in the current ecosystem, and the permission to do so is set in the changing_language parameter of the ecosystem parameter.
+参数：
 
-Parameters:
+- *ApplicationId int* - 关联数据表的应用程序ID；
 
-  * **Id** int - language resources ID.
-  * **Trans** - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "zh": "Chinese text"}`.
+- *Name string* - 新数据表名称；
 
-### Import
+- *Columns string* - JSON格式的字段数组`[{"name":"...", "type":"...","index": "0", "conditions":"..."},...]`，其中：
 
-Imports an application into the current ecosystem and imports the data loaded from the [ImportUpload](#importupload) contract.
+    > -   *name* - 字段名称，仅限拉丁字符；
+    > -   *type* - 数据类型 `varchar,bytea,number,datetime,money,text,double,character`；
+    > -   *index* - 非主键字段 `0`，主键 `1`；
+    > -   *conditions* - 更改字段中数据的条件，必须以JSON格式指定访问权限 ```{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"} ```；
 
-Parameters:
+- *Permissions string* - JSON格式访问权限`{"insert": "...", "new_column": "...", "update": "...", "read": "..."}`。
 
-  * **Data** string - data imported in text format, which comes from a file exported by the ecosystem.
+    > -   *insert* - 插入条目的权限；
+    > -   *new_column* - 添加新列的权限；
+    > -   *update* - 更改条目数据的权限；
+    > -   *read* - 读取条目数据的权限。
 
-### ImportUpload
+### EditTable {#edittable}
 
-Loads an external application file into the buffer_data table of the current ecosystem for subsequent import.
+更改当前生态系统中数据表的访问权限。
 
-Parameters:
-  * **InputFile** file - a file written to the buffer_data table of the current ecosystem.
+参数：
 
-### NewAppParam
+> -   *Name string* - 数据表名称。
+> -   *InsertPerm string* - 将条目插入数据表中的权限；
+> -   *UpdatePerm string* - 更新表中条目的权限；
+> -   *ReadPerm string* - 读取表中条目的权限；
+> -   *NewColumnPerm string* -创建新列的权限；
 
-Adds new application parameters to the current ecosystem.
+### NewColumn {#newcolumn}
 
-Parameters:
-  * **ApplicationId** int - application ID;
-  * **Name** string - parameter name;
-  * **Value** string - parameter value;
-  * **Conditions** string - permission to change the parameter.
+在当前生态系统的数据表中添加一个新字段。
 
-### EditAppParam
+参数：
 
-Changes existing application parameters in the current ecosystem.
+> -   *TableName string* - 数据表名称；
+> -   *Name string* - 拉丁字符字段名称；
+> -   *Type string* - 数据类型;
+>     `varchar,bytea,number,money,datetime,text,double,character`；
+> -   *UpdatePerm string* - 更改列中值的权限；
+> -   *ReadPerm string* - 读取列中值的权限。
 
-Parameters:
-  * **Id** int - application parameter ID;
-  * **Value** string "optional" - new parameter value;
-  * **Conditions** string "optional" - new permissions to change the parameter.
+### EditColumn {#editcolumn}
 
-### NewDelayedContract
+更改当前生态系统中的指定数据表字段的权限。
 
-Adds a new task to the delayed contracts scheduler daemon.
+参数：
 
-The delayered contracts scheduler runs contracts required by the currently generated block.
+> -   *TableName string* - 数据表名称；
+> -   *Name string* - 要更改的拉丁字符字段名称；
+> -   *UpdatePerm string* - 更改列中值的新权限；
+> -   *ReadPerm string* - 读取列中值的新权限。
 
-Parameters:
-  * **Contract** string - contract name;
-  * **EveryBlock** int - the contract will be executed every such amount of blocks;
-  * Conditions string - permission to change the task;
-  * **BlockID** int "optional" - the block ID where the contract must be executed. If not specified, it will be calculated automatically by adding the "current block ID" + EveryBlock;
-  * **Limit** int "optional" - the maximum number of task execution. If not specified, the task will be executed for an unlimited times.
+### NewLang {#newlang}
 
-### EditDelayedContract
+在当前生态系统中新增多语言资源，添加权限在生态系统参数的 *changing_language* 参数中设置。
 
-Changes a task in the delayed contracts scheduler daemon. 
+参数：
 
-Parameters:
-  * **Id** int - task ID;
-  * **Contract** string - contract name;
-  * **EveryBlock** int - the contract will be executed every such amount of blocks;
-  * **Conditions** string - permission to change the task;
-  * **BlockID** int "optional" - the block ID where the contract must be executed. If not specified, it will be calculated automatically by adding the "current block ID" + EveryBlock;
-  * **Limit** int "optional" - the maximum number of task execution. If not specified, the task will be executed for an unlimited times.
-  * **Deleted** int "optional" - task switching. A value of `1` will disable the task. A value of `0` will enable the task.
+> -   *Name string* - 拉丁字符多语言资源的名称；
+> -   *Trans string* - JSON格式的字符串，双字符语言代码作为键，翻译字符串作为值。例如:`{"en": "English text", "zh": "Chinese text"}`。
 
-### UploadBinary
+### EditLang {#editlang}
 
-Adds or overwrites a static file in the X_binaries table. When calling a contract via HTTP API, the request must be in `multipart/form-data` format; the DataMimeType parameter will be used in conjunction with the form data.
+更改当前生态系统中的语言资源。更改权限在生态系统参数的 *changing_language* 参数中设置。
 
-Parameters:
-  * **Name** string - name of the static file;
-  * **Data** bytes - content of the static file;
-  * **DataMimeType** string "optional" - a static file in mime-type format;
-  * **ApplicationId** int - the application ID associated with the X_binaries table.
+参数：
 
-  If the DataMimeType parameter is not passed, the `application/octet-stream` format is used by default.
+> -   *Id int* - 多语言资源ID。
+> -   *Trans* - JSON格式的字符串，双字符语言代码作为键，翻译字符串作为值。例如，`{"en": "English text", "zh": "Chinese text"}`。
+
+### Import {#import}
+
+将应用程序导入当前生态系统。导入来自[ImportUpload](#importupload) 合约加载的数据。
+
+参数：
+
+> -   *Data string* - 以文本内容格式导入的数据，该数据来自生态系统导出的文件。
+
+### ImportUpload {#importupload}
+
+将外部应用程序文件加载到当前生态系统的 *buffer_data* 表中，以便后续导入。
+
+参数：
+
+> -   *InputFile file* - 写入当前生态系统的 *buffer_data* 表的文件。
+
+### NewAppParam {#newappparam}
+
+当前生态系统添加新的应用程序参数。
+
+参数：
+
+> -   *ApplicationId int* - 应用程序ID；
+> -   *Name string* - 参数名称；
+> -   *Value string* - 参数值；
+> -   *Conditions string* - 更改参数的权限。
+
+### EditAppParam {#editappparam}
+
+更改当前生态系统中的现有应用程序参数。
+
+参数：
+
+> -   *Id int* - 应用程序参数ID；
+> -   *Value string \"optional\"* - 新参数值；
+> -   *Conditions string \"optional\"* - 更改参数的新权限。
+
+### NewDelayedContract {#newdelayedcontract}
+
+向延迟调度合约守护进程添加新任务。
+
+延迟调度合约守护进程运行当前生成的区块所需的合约。
+
+参数：
+
+> -   *Contract string* - 合约名称；
+> -   *EveryBlock int* - 合约将在指定每隔区块数量后执行；
+> -   *Conditions string* - 更改任务的权限；
+> -   *BlockID int \"optional\"* - 开始启动合约的区块ID，如果未指定，则自动计算"当前区块ID"+*EveryBlock*；
+> -   *Limit int \"optional\"* - 任务的启动次数，如果未指定，则启动合约的任务将无限次执行。
+
+### EditDelayedContract {#editdelayedcontract}
+
+更改延迟调度合约守护进程中的任务。
+
+参数：
+
+> -   *Id int* - 任务ID。
+> -   *Contract string* - 合约名称。
+> -   *EveryBlock int* - 合约将在指定每隔区块数量后执行；
+> -   *Conditions string* - 更改任务的权限；
+> -   *BlockID int \"optional\"* - 开始启动合约的区块ID，如果未指定，则自动计算"当前区块ID"+ *EveryBlock*；
+> -   *Limit int \"optional\"* - 任务的启动次数，如果未指定，则启动合约的任务将无限次执行。
+> -   *Deleted int \"optional\"* - 任务切换。值为 `1` 将禁用该任务。值为 `0` 将启用该任务。
+
+### UploadBinary {#uploadbinary}
+
+在 *X_binaries* 表中添加或覆盖静态文件。通过HTTP API调用合约时，请求格式必须使用`multipart/form-data`；
+该DataMimeType参数将与表单数据一起使用。
+
+参数：
+
+> -   *Name string* - 静态文件名称；
+> -   *Data bytes* - 静态文件的内容；
+> -   *DataMimeType string \"optional\"* - *mime-type* 文件格式的静态文件；
+> -   *ApplicationId int* - 关联 *X_binaries* 表的应用程序ID。
+
+如果未传递 *DataMimeType* 参数，则默认使用 `application/octet-stream` 格式。

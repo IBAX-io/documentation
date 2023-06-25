@@ -1,4 +1,5 @@
-# The IBAX Network
+# The IBAX Network {#the-ibax-network}
+
 
 In this section, we will brief you how to use IBAX.
 
@@ -8,17 +9,13 @@ In this section, we will brief you how to use IBAX.
   - [ECOLIB applications and platform applications](#ecolib-applications-and-platform-applications)
   - [Underlying model](#underlying-model)
   - [Implementation](#implementation)
-
-
-
-
-
+  
 
 If you are interested in the development, use or management of applications in IBAX, then you may not need to understand it at all.
 
 In IBAX, the blockchain and the blockchain network are hidden from ECOLIB members, administrators, and application developers. IBAX offers [RESTful API](../reference/api2.md) for all user groups, which provide a tamper-proof and distributed access to the **global state** of the blockchain.
 
-## Application developers
+## Application developers {#application-developers}
 
 In technical terms, the **global state** is a set of data, which is implemented via IBAX's database. From the perspective of application developers, an application interacts with the database by querying, inserting and updating tables.
 
@@ -26,7 +23,7 @@ In IBAX, transactions are written into the blockchain by implementing various co
 
 For application developers, a contract is a function that data will be written to the database when it is implemented. Pages are like scripts and the page code is a set of page [template](../topics/templates2.md) functions, some of these functions display page elements, while other data comes from the database. Application developers do not need to understand what are transactions, block generation and consensus algorithms, just use it.
 
-## ECOLIB members
+## ECOLIB members {#ecolib-members}
 
 Applications written by developers run in an environment called [ECOLIB](thesaurus.md#ecolib). An application usually serves a specific purpose and complete various tasks together with several other applications.
 
@@ -34,7 +31,7 @@ A user must become a member of an ECOLIB if wants to access applications in it, 
 
 ECOLIB members can view and modify the database from application pages, just like filling out forms, clicking buttons and navigating pages in a common web application.
 
-## ECOLIB applications and platform applications
+## ECOLIB applications and platform applications {#ecolib-applications-and-platform-applications}
 
 Applications may fall into **ECOLIB applications** and **platform applications**.
 
@@ -45,7 +42,7 @@ Platform applications
 
 A platform application is applicable to all ECOLIBs. Any application could be developed as a platform application. IBAX developers would provide platform applications that support the core functions for ECOLIB governance, such as voting, notification, and ECOLIB member role management.
 
-## Underlying model
+## Underlying model {#underlying-model}
 
 Definition of layers
 
@@ -89,7 +86,7 @@ Therefore, the flow of transactions is as follows:
 
   * Any database change will be reflected in the application.
 
-## Implementation
+## Implementation {#implementation}
 
 IBAX has two major components, i.e. server [go-ibax](https://github.com/IBAX-io/go-ibax) and Weaver [Source code](https://github.com/IBAX-io/weaver).
 
