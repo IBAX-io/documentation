@@ -16,42 +16,35 @@ features:
 - title: 可定制的共识机制
 - title: 前后端分离，满足各种加密需求
 
-footer: © Copyright 2019 - 2021, IBAX Updated Date 03/11/2021 | Built with VuePress
+footer: © Copyright 2019 - 2023, IBAX Updated Date 06/21/2023 | Built with VuePress
 ---
-
 
 # IBAX 文档
 
-
 ## 概念
-
-* [IBAX Overview](concepts/about-the-platform.md)
-* [The IBAX Network](concepts/blockchain-layers.md)
-* [Proof-of-Authority Consensus](concepts/consensus.md)
-* [Terms and Definitions](concepts/thesaurus.md)
-* [FAQ](concepts/faq.md)
+* [IBAX区块链平台 概述](concepts/about-the-platform.md)
+* [IBAX区块链平台](concepts/blockchain-layers.md)
+* [权威证明共识](concepts/consensus.md)
+* [术语和定义](concepts/thesaurus.md)
+* [常见问题](concepts/faq.md)
 
 ## 教程
-
-* [Tutorial for application development](tutorials/app_tutorial.md)
-* [Development Tutorial](tutorials/tutorial.md)
+* [应用程序开发教程](tutorials/app_tutorial.md)
+* [开发教程](tutorials/tutorial.md)
 
 ## 指南
+* [智能合约](topics/script.md)
+* [模版语言](topics/templates2.md)
+* [编译器和虚拟机](topics/vm.md)
+* [守护进程](topics/daemons.md)
 
-* [Smart Contracts](topics/script.md)
-* [Template Language](topics/templates2.md)
-* [Compiler and Virtual Machine](topics/vm.md)
-* [Daemon](topics/daemons.md)
 
 ## 参考
-
 * [RESTful API](reference/api2.md)
-* [Platform Parameters](reference/platform-parameters.md)
-* [Server Configuration File](reference/backend-config.md)
-* [Synchronized Monitoring Tool](reference/desync_monitor.md)
-* [JSON-RPC Application Programming Interface](reference/json-rpc.md)
+* [平台参数](reference/platform-parameters.md)
+* [服务端配置文件](reference/backend-config.md)
+* [同步监控工具](reference/desync_monitor.md)
+* [JSON-RPC 应用程序编程接口](reference/json-rpc.md)
 
 ## 部署
-
-* [Deployment of A IBAX Network](howtos/deployment.md)
-
+* [IBAX区块链平台 区块链网络部署](howtos/deployment.md)

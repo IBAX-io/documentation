@@ -1,53 +1,54 @@
-# Server Configuration File
+# サーバー設定ファイル {#server-configuration-file}
 
-In this section, we will introduce parameters in the server configuration file. 
-## Introduction to the server configuration file
+このセクションでは、サーバー設定ファイルのパラメータについて説明します。
+## サーバー設定ファイルの概要 {#introduction-to-the-server-configuration-file}
 
-The server configuration file defines the node configuration of IBAX.
-## Location
+サーバー設定ファイルは、IBAXのノード設定を定義します。
+## 位置 {#location}
 
-This file is located in the working directory of the server and is named `config.toml`.
-## Sections
+このファイルは、サーバーの作業ディレクトリにあり、`config.toml`という名前で保存されています。
+## セクション {#sections}
 
-The configuration file consists the following sections:
+設定ファイルには、次のセクションが含まれています：
 
-> general section
+> generalセクション
 
-It defines the working directory DataDir, the first block directory FirstBlockPath and other parameters.
+作業ディレクトリDataDir、最初のブロックディレクトリFirstBlockPathなどのパラメータを定義します。
 
 > [TCPServer]
 
-It defines the TCP service parameters.
+TCPサービスのパラメータを定義します。
 
-TCPServer is used for the network interaction between nodes.
+TCPServerは、ノード間のネットワークのやり取りに使用されます。
 
 > [HTTP]
 
-It defines the HTTP service parameters.
+HTTPサービスのパラメータを定義します。
 
-HTTPServer provides RESTful APIs.
+HTTPServerは、RESTful APIを提供します。
 
 > [DB]
 
-It defines parameters of the PostgreSQL node database.
+PostgreSQLノードデータベースのパラメータを定義します。
 
 > [StatsD]
 
-It defines parameters of the node operation indicator collector StatsD.
+ノードの操作指標収集ツールStatsDのパラメータを定義します。
 
 > [Centrifugo]
 
-It defines parameters of the notification service Centrifugo.
+通知サービスCentrifugoのパラメータを定義します。
 
 > [Log]
 
-It defines parameters of the log service Log.
+ログサービスLogのパラメータを定義します。
 
 > [TokenMovement]
 
-It defines parameters of the token circulation service TokenMovement.
+トークンの流通サービスTokenMovementのパラメータを定義します。
 
-## An example configuration file
+## サンプル設定ファイル {#an-example-configuration-file}
+
 ```
 PidFilePath = "/IBAX-data/go-ibax.pid"
 LockFilePath = "/IBAX-data/go-ibax.lock"

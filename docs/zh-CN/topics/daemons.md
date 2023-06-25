@@ -1,287 +1,294 @@
+# 守护进程 {#daemon}
 
-# Daemon
+该章节介绍 IBAX区块链平台 节点如何从技术角度相互交互。
 
-In this section, we will describe how IBax nodes interact with each other from a technical perspective.
+## 关于服务端守护进程 {#about-the-server-daemon}
 
-## About the server daemon
-The server daemon needs to run on every network node, which executes various server functions and supports IBax's blockchain protocol. In the blockchain network, the daemon distributes blocks and transactions, generates new blocks, and verifies blocks and transactions received, and it can avoid the fork issue.
-### Honor node daemon
-A honor node runs the following server daemons:
-* [BlockGenerator daemon](#blockgenerator-daemon)
+它需在每个网络节点上运行。服务端守护进程执行服务端各个功能并支持IBAX区块链平台的区块链协议。
+守护进程在区块链网络中分发区块和交易、生成新区块、验证接收到的区块和交易。守护进程可以防止区块链分叉问题。
 
-    Generating new blocks.
+### 荣誉节点 守护进程 {#honor-node-daemon}
 
-* [BlockCollection daemon](#blockcollection-daemon)
+荣誉节点 运行以下服务端守护进程：
 
-    Downloading new blocks from other nodes.
+> -   [BlockGenerator守护进程](#blockgenerator-daemon)
+>
+>     > 生成新区块。
+>
+> -   [BlockCollection守护进程](#blockcollection-daemon)
+>
+>     > 从其他节点下载新区块。
+>
+> -   [Confirmations守护进程](#confirmations-daemon)
+>
+>     > 确认节点上存在的区块也存在于大多数其他节点上。
+>
+> -   [Disseminator守护进程](#disseminator-daemon)
+>
+>     > 将交易和区块分发给其他主节点。
+>
+> -   QueueParserBlocks 守护进程
+>
+>     > 处理区块队列中的区块，区块队列包含来自其他节点的区块。
+>     >
+>     > 区块处理逻辑和 [BlockCollection守护进程](#blockcollection-daemon) 相同。
+>
+> -   QueueParserTx 守护进程
+>
+>     > 验证交易队列中的交易。
+>
+> -   Scheduler 守护进程
+>
+>     > 按任务计划运行合约。
 
-* [Confirmations daemon](#confirmations-daemon)
+### 守护节点 守护进程 {#guardian-node-daemon}
 
-    Confirming that blocks on the node also exist on most other nodes.
+守护节点 运行以下服务端守护进程：
 
-* [Disseminator daemon](#disseminator-daemon)
+> -   [BlockCollection守护进程](#blockcollection-daemon)
+> -   [Confirmations守护进程](#confirmations-daemon)
+> -   [Disseminator守护进程](#disseminator-daemon)
+> -   QueueParserTx
+> -   Scheduler
 
-    Distributing transactions and blocks to other honor nodes.
+## BlockCollection守护进程 {#blockcollection-daemon}
 
-* QueueParserBlocks daemon
+BlocksCollection守护进程下载区块并将区块链与其他网络节点同步。
 
-    Blocks in the queue, which contains blocks from other nodes.
+### 区块链同步 {#blockchain-synchronization}
 
-    Block processing logic is the same as [BlockCollection daemon](#blockcollection-daemon).
+BlocksCollection守护进程通过确定区块链网络中的最大区块高度，请求新区块以及解决区块链中的分叉来同步区块链。
 
-* QueueParserTx daemon
+#### 区块链更新检查 {#check-for-blockchain-updates}
 
-    Verifying the transactions in queue.
+BlocksCollection守护进程将当前区块ID的请求发送到所有 荣誉节点。
 
-* Scheduler daemon
+如果该守护进程的节点的当前区块ID小于任何 荣誉节点的当前区块ID，则该区块链网络节点被认为是过时的。
 
-    Running contracts as scheduled.
+#### 下载新区块 {#download-new-blocks}
 
-### Guardian node daemon
+返回最大当前区块高度的节点被视为最新节点。
 
-A guardian node runs the following server daemons:
+该守护进程下载所有尚未知道的区块。
 
-* [BlockCollection daemon](#blockcollection-daemon)
-* [Confirmations daemon](#confirmations-daemon)
-* [Disseminator daemon](#disseminator-daemon)
-* QueueParserTx
-* Scheduler
+#### 解决分叉 {#solving-the-fork-issue}
 
-## BlockCollection daemon
+如果在区块链中检测到分叉，则该守护进程通过将所有区块下载到共同的父区块来向后移动分叉。
 
-This daemon downloads blocks and synchronizes the blockchain with other network nodes.
+找到共同的父区块后，将在该守护进程的节点区块链上执行回滚，并将正确的区块添加到区块链中，直到最新的区块。
 
-### Blockchain synchronization
+### 数据表 {#tables-1}
 
-This daemon synchronizes the blockchain by determining the maximum block height in the blockchain network, requesting new blocks, and solving the fork issue in the blockchain.
 
-#### Check for blockchain updates
+BlocksCollection守护进程使用以下数据表：
 
-This daemon sends requests from the current block ID to all honor nodes.
+> -   block_chain
+> -   transactions
+> -   transactions_status
+> -   info_block
 
-If the current block ID of the node running the daemon is less than the current block ID of any honor node, the blockchain network node is considered out of date.
+### 请求 {#request-1}
 
-#### Download new blocks
+BlockCollection守护程序向其他守护程序发出以下请求：
 
-The node that returns the largest current block height is considered the latest node.
-The daemon downloads all unknown blocks.
+> -   [Type 10](#type-10)指向所有 **荣誉节点** 中最大的区块ID。
+> -   [Type 7](#type-7)指向最大区块ID的数据。
 
-#### Solving the fork issue
+## BlockGenerator守护进程 {#blockgenerator-daemon}
 
-If a fork is detected in the blockchain, the daemon moves the fork backward by downloading all blocks to a common parent block.
-When found the common parent block, a blockchain rollback is performed on the node running the daemon, and the correct block is added to the blockchain until the latest one is included.
+BlockGenerator守护进程生成新区块。
 
-### Tables
+### 预验证 {#pre-verification}
 
-The BlocksCollection daemon uses the following tables:
+BlockGenerator守护进程通过分析区块链中的最新区块来计划新的区块生成。
 
-* block_chain
-* transactions
-* transactions_status
-* info_block
+如果满足以下条件，则可以生成新区块：
 
-### Request
+> -   生成最新区块的节点位于 荣誉节点 列表中守护进程节点。
+> -   自最新未验证区块生成以来经过的最短时间。
 
-The BlockCollection daemon sends the following requests to other daemons:
+### 区块生成 {#block-generation}
 
-* [Type 10](#type-10) points to the largest block ID among all honor nodes.
-* [Type 7](#type-7) points to the data with the largest block ID.
+该守护进程生成新区块后，新区块包含所有新交易。这些交易可以从其他节点的[Disseminator守护进程](#disseminator-daemon)接收，
+也可以由该守护进程的节点生成。生成的区块保存在该节点数据库中。
 
-## BlockGenerator daemon
+### 数据表 {#tables-2}
 
-The BlockGenerator daemon generates new blocks.
+BlockGenerator守护程序使用以下表：
 
-### Pre-verification
+> -   block_chain (saves new blocks)
+> -   transactions
+> -   transactions_status
+> -   info_block
 
-The BlockGenerator daemon analyzes the latest blocks in the blockchain to make new block generation plans. 
+### 请求 {#request-2}
 
-If the following conditions are met, a new block can be generated:
+BlockGenerator守护进程不向其他守护进程发出任何请求。
 
-* The node that generated the latest block is in a node within the honor node list and runs the daemon.
-* The shortest time since the latest unverified block was generated.
+## Disseminator守护进程 {#disseminator-daemon}
 
-### Block generation
+Disseminator守护进程将交易和区块发送到所有 荣誉节点。
 
-A new block generated by the daemon contains all new transactions, which can be received from the [Disseminator daemon](#disseminator-daemon) of other nodes or generated by the node running the daemon. The block generated is stored in the node database.
+### 守护节点 {#guardian-node}
 
-### Tables
+在 守护节点 上工作时，守护进程将其节点生成的交易发送到所有 荣誉节点。
 
-The BlockGenerator daemon uses the following tables:
+### 荣誉节点 {#honor-node}
 
-* block_chain (saves new blocks)
-* transactions
-* transactions_status
-* info_block
+在 荣誉节点 上工作时，守护进程会将生成的区块和交易的哈希值发送到所有荣誉节点。
 
-### Request
+然后，荣誉节点响应其节点未知的交易请求。守护进程发送完整的交易数据作为响应。
 
-The BlockGenerator daemon does not make any request to other daemons.
+### 数据表 {#tables-3}
 
-## Disseminator daemon
+Disseminator守护进程使用以下表：
 
-The Disseminator daemon sends transactions and blocks to all honor nodes.
+> -   transactions
 
-### Guardian node
+### 请求 {#request-3}
 
-When working on a guardian node, the daemon sends transactions generated by its node to all honor nodes.
+Disseminator守护进程向其他守护进程发出以下请求：
 
-### Honor node
+> -   [Type 1](#type-1) 向 荣誉节点发送交易和区块哈希。
+> -   [Type 2](#type-2) 从 荣誉节点接收交易数据。
 
-When working on a honor node, the daemon sends blocks generated and transaction hashes to all honor nodes.
+## Confirmations守护进程 {#confirmations-daemon}
 
-Then, the honor node responds to transaction requests unknown to it. The daemon sends the complete transaction data as a response.
+Confirmations守护进程检查其节点中的所有区块是否存在于大多数其他节点上。
 
-### Tables
+### 区块确认 {#block-confirmation}
 
-The Disseminator daemon uses the following tables:
+当网络中的多个节点已确认区块时，将认为该区块已被确认。
 
-* transactions
+该守护进程从数据库中当前未确认的第一个区块开始逐个确认所有区块。
 
-### Request
+每个区块都以这种方式确认：
 
-The Disseminator daemon sends the following requests to other daemons:
+> -   向所有 荣誉节点 发送请求，该请求包含了正在确认的区块ID。
+> -   所有 荣誉节点 对该区块的哈希进行响应。
+> -   如果响应的哈希值与守护进程节点上的区块的哈希值匹配，则会增加确认计数器。如果哈希不匹配，取消确认计数器将增加。
 
-* [Type 1](#type-1) Send transactions and block hashes to the honor node.
-* [Type 2](#type-2) Receive transaction data from the honor node.
+### 数据表 {#tables-4}
 
-## Confirmations daemon
+Confirmations守护进程使用以下数据表：
 
-The Confirmations daemon checks whether all the blocks in its node exist on most other nodes.
+> -   confirmation
+> -   info_block
 
-### Block confirmation
+### 请求 {#request-4}
 
-A block confirmed by multiple node in the network is considered as a confirmed block.
+Confirmations守护进程向其他守护进程发出以下请求：
 
-The daemon confirms all blocks one by one starting from the first that is currently not confirmed in the database.
+> -   [Type 4](#type-4) 向 荣誉节点 请求区块哈希。
 
-Each block is confirmed in the way as follows:
+## TCP服务协议 {#tcp-service-protocol}
 
-* Sending a request containing the ID of the block being confirmed to all honor nodes.
-* All honor nodes respond to the block hash.
-* If the hash responded matches the hash of the block on the daemon node, the confirmation counter value is increased. If not, the cancellation counter value is increased.
+TCP服务协议在 荣誉节点和全节点上工作，TCP服务协议使用TCP上的二进制协议来处理来自BlocksCollection、Disseminator和Confirmation守护进程的请求。
 
-### Tables
+## 请求类型 {#request-type}
 
-The Confirmations daemon uses the following tables:
+每个请求都有一个由请求的前两个字节定义的类型。
 
-* confirmation
-* info_block
+### Type 1 {#type-1}
 
-### Request
+#### 请求发送者 {#request-sender-1}
 
-The Confirmations daemon sends the following requests to other daemons:
+[Disseminator守护进程](#disseminator-daemon) 发送该请求。
 
-* [Type 4](#type-4) Request block hashes from the honor node.
+#### 请求数据 {#request-data-1}
 
-## TCP service protocol
+交易和区块哈希。
 
-The TCP service protocol works on honor nodes and guardian nodes, which uses the binary protocol on TCP to requests from the BlocksCollection, Disseminator, and Confirmation daemons.
+#### 请求处理 {#request-processing-1}
 
-## Request type
+区块哈希被添加到区块队列中。
 
-Each request has a type defined by the first two bytes of the request.
+对交易哈希进行解析验证，并选择节点上尚未出现的交易。
 
-## Type 1
+#### 响应 {#response-1}
 
-#### Request sender
+无。处理该请求后会发出 [Type 2](#type-2) 请求。
 
-This request is sent by the [Disseminator daemon](#disseminator-daemon).
+### Type 2 {#type-2}
 
-#### Request data
+#### 请求发送者 {#request-sender-2}
 
-Hashes of the transaction and block.
+[Disseminator守护进程](#disseminator-daemon) 发送该请求。
 
-#### Request processing
+#### 请求数据 {#request-data-2}
 
-The block hash is added to the block queue.
+交易数据，包括数据大小：
 
-Analyzes and verifies the transaction hashes, and select transactions that have not yet appeared on the node.
+> -   *data_size* (4个字节)
+>
+>     > 交易数据的大小，以字节为单位。
+>
+> -   *data* (data_size个字节)
+>
+>     > 交易数据。
 
-#### Response
+#### 请求处理 {#request-processing-2}
 
-No. After processing the request, a [Type 2](#type-2) request is issued.
+验证交易并将其添加到交易队列中。
 
-## Type 2
+#### 响应 {#response-2}
 
-#### Request sender
+无。
 
-This request is sent by the [Disseminator daemon](#disseminator-daemon).
+### Type 4 {#type-4}
 
-#### Request data
+#### 请求发送者 {#request-sender-3}
 
-The transaction data, including the data size:
+[Confirmations守护进程](#confirmations-daemon) 发送该请求。
 
-* data_size (4 bytes)
+#### 请求数据 {#request-data-3}
 
-* Size of the transaction data, in bytes.
+区块ID。
 
-* data (data_size bytes)
+#### 响应 {#response-3}
 
-The transaction data.
+区块哈希。
 
-#### Request processing
+如果不存在该ID的区块，则返回 `0`。
 
-Verifies the transaction and add it to the transaction queue.
+### Type 7 {#type-7}
 
-#### Response
+#### 请求发送者 {#request-sender-4}
 
-No.
+[BlockCollection守护进程](#blockcollection-daemon) 发送该请求。
 
-## Type 4
+#### 请求数据 {#request-data-4}
 
-#### Request sender
+区块ID。
 
-This request is sent by the [Confirmations daemon](#confirmations-daemon).
+> -   *block_id* (4个字节)
 
-#### Request data
+#### 响应 {#response-4}
 
-Block ID.
+区块数据，包括数据大小。
 
-#### Response
+> -   *data_size* (4个字节)
+>
+>     > 区块数据的大小，以字节为单位。
+>
+> -   *data* (data_size个字节)
+>
+>     > 区块数据。
 
-Block hash.
+如果不存在该ID的区块，则关闭连接。
 
-Returns `0` if not having a block with this ID.
+### Type 10 {#type-10}
 
-## Type 7
+#### 请求发送者 {#request-sender-5}
 
-#### Request sender
+[BlockCollection守护进程](#blockcollection-daemon) 发送该请求。
 
-This request is sent by the [BlockCollection daemon](#blockcollection-daemon).
+#### 请求数据 {#request-data-5}
 
-#### Request data
+无
 
-Block ID.
+#### 响应 {#response-5}
 
-* block_id (4 bytes)
+区块ID。
 
-#### Response
-
-The block data, including data size.
-
-* data_size (4 bytes)
-
-* Size of the block data, in bytes.
-
-* data (data_size bytes)
-
-The block data.
-
-The connection is closed if not having a block with this ID.
-
-## Type 10
-
-#### Request sender
-
-This request is sent by the [BlockCollection daemon](#blockcollection-daemon).
-
-#### Request data
-
-No.
-
-#### Response
-
-Block ID.
-
-* block_id (4 bytes)
-
+> -   *block_id* (4个字节)

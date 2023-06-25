@@ -1,13 +1,13 @@
-# The IBAX Network
+# The IBAX Network {#the-ibax-network}
 
 Bu bölümde size IBAX'ın nasıl kullanılacağını anlatacağız.
 
-- [The IBAX Network](#The-IBAX-Network)
-  - [Uygulama geliştiricileri](#Uygulama-geliştiricileri)
-  - [ECOLIB üyeleri](#ECOLIB-üyeleri)
-  - [ECOLIB uygulamalar ve platform uygulamaları](#ECOLIB-uygulamaları-ve-platform-uygulamaları)
-  - [Temel model](#Temel-model)
-  - [Uygulama](#uygulama)
+- [The IBAX Network](#the-ibax-network)
+  - [Uygulama geliştiricileri](#application-developers)
+  - [ECOLIB üyeleri](#ecolib-members)
+  - [ECOLIB uygulamalar ve platform uygulamaları](#ecolib-applications-and-platform-applications)
+  - [Temel model](#underlying-model)
+  - [Uygulama](#implementation)
 
 
 
@@ -18,7 +18,7 @@ IBAX'teki uygulamaların geliştirilmesi, kullanımı veya yönetimi ile ilgilen
 
 IBAX'te blok zinciri ve blok zinciri ağı, ECOLIB üyelerinden, yöneticilerinden ve uygulama geliştiricilerinden gizlenmiştir. IBAX, tüm kullanıcı grupları için blok zincirinin **küresel durumuna** kurcalanmaya karşı korumalı ve dağıtılmış erişim sağlayan [RESTful API](../reference/api2.md) sunar.
 
-## Uygulama geliştiricileri
+## Uygulama geliştiricileri {#application-developers}
 
 Teknik terimlerle, **küresel durum**, IBAX'ın veri tabanı aracılığıyla uygulanan bir dizi veridir. Uygulama geliştiricilerin bakış açısından, bir uygulama tabloları sorgulayarak, ekleyerek ve güncelleyerek veritabanı ile etkileşime girer.
 
@@ -26,7 +26,7 @@ IBAX'te işlemler, çeşitli sözleşmeler uygulanarak blok zincirine yazılır.
 
 Uygulama geliştiricileri için sözleşme, uygulandığında verilerin veritabanına yazılacağı bir işlevdir. Sayfalar komut dosyaları gibidir ve sayfa kodu bir dizi sayfa [şablon](../topics/templates2.md) işlevidir, bu işlevlerden bazıları sayfa öğelerini görüntülerken, diğer veriler veritabanından gelir. Uygulama geliştiricilerin işlemlerin, blok oluşturma ve konsensüs algoritmalarının ne olduğunu anlamalarına gerek yok, sadece kullanın.
 
-## ECOLIB üyeleri
+## ECOLIB üyeleri {#ecolib-members}
 
 Geliştiriciler tarafından yazılan uygulamalar, [ECOLIB](thesaurus.md#ecolib) adlı bir ortamda çalışır. Bir uygulama genellikle belirli bir amaca hizmet eder ve diğer birkaç uygulamayla birlikte çeşitli görevleri tamamlar.
 
@@ -34,7 +34,7 @@ Bir kullanıcı, içindeki uygulamalara erişmek istiyorsa bir ECOLIB'ye üye ol
 
 ECOLIB üyeleri, ortak bir web uygulamasındaki formları doldurmak, düğmelere tıklamak ve sayfalarda gezinmek gibi, uygulama sayfalarından veri tabanını görüntüleyebilir ve değiştirebilir.
 
-## ECOLIB uygulamaları ve platform uygulamaları
+## ECOLIB uygulamaları ve platform uygulamaları {#ecolib-applications-and-platform-applications}
 
 Başvurular **ECOLIB uygulamaları** ve **platform uygulamaları** olarak ayrılabilir.
 
@@ -45,7 +45,7 @@ Platform uygulamaları
 
 Tüm ECOLIB'ler için bir platform uygulaması geçerlidir. Herhangi bir uygulama bir platform uygulaması olarak geliştirilebilir. IBAX geliştiricileri, oylama, bildirim ve ECOLIB üye rol yönetimi gibi ECOLIB yönetişimi için temel işlevleri destekleyen platform uygulamaları sağlayacaktır.
 
-## Temel model
+## Temel model {#underlying-model}
 
 katmanların tanımı
 
@@ -89,7 +89,7 @@ Bu nedenle, işlem akışı aşağıdaki gibidir:
 
   * Herhangi bir veritabanı değişikliği uygulamaya yansıtılacaktır.
 
-## Uygulama
+## Uygulama {#implementation}
 
 IBAX'in iki ana bileşeni vardır, yani sunucu [go-ibax](https://github.com/IBAX-io/go-ibax) ve Weaver [Kaynak kodu](https://github.com/IBAX-io/weaver ).
 

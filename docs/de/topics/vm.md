@@ -1,39 +1,39 @@
-# Compiler und virtuelle Maschine
+# Compiler und virtuelle Maschine {#compiler-and-virtual-machine}
 
   - [Speicherung und Kompilierung des Quellcodes](#source-code-storage-and-compilation)
   - [Strukturen virtueller Maschinen](#virtual-machine-structures)
-    - [VM-Struktur](#vm-Struktur)
-    - [Blockstruktur](#Blockstruktur)
-    - [ObjInfo-Struktur](#objinfo-Struktur)
-      - [ContractInfo-Struktur](#contractinfo-Struktur)
-      - [FieldInfo-Struktur](#fieldinfo-Struktur)
-      - [FuncInfo-Struktur](#funcinfo-Struktur)
-      - [Funktionsname-Struktur](#Funktionsname-Struktur)
-      - [ExtFuncInfo-Struktur](#extfuncinfo-Struktur)
-      - [VarInfo-Struktur](#varinfo-Struktur)
-      - [ObjExtend-Wert](#objextend-Wert)
+    - [VM-Struktur](#vm-structure)
+    - [Blockstruktur](#block-structure)
+    - [ObjInfo-Struktur](#objinfo-structure)
+      - [ContractInfo-Struktur](#contractinfo-structure)
+      - [FieldInfo-Struktur](#fieldinfo-structure)
+      - [FuncInfo-Struktur](#funcinfo-structure)
+      - [Funktionsname-Struktur](#funcname-structure)
+      - [ExtFuncInfo-Struktur](#extfuncinfo-structure)
+      - [VarInfo-Struktur](#varinfo-structure)
+      - [ObjExtend-Wert](#objextend-value)
   - [Befehle für virtuelle Maschinen](#virtual-machine-commands)
-    - [ByteCode-Struktur](#Bytecode-Struktur)
-    - [Befehlskennungen](#Befehlskennungen)
+    - [ByteCode-Struktur](#bytecode-structure)
+    - [Befehlskennungen](#command-identifiers)
     - [Befehle für Stapeloperationen](#stack-operation-commands)
     - [Laufzeitstruktur](#runtime-structure)
-      - [blockStack-Struktur](#blockstack-Struktur)
-    - [RunCode-Funktion] (#runcode-Funktion)
+      - [blockStack-Struktur](#blockstack-structure)
+    - [RunCode-Funktion] (#runcode-function)
     - [Andere Funktionen für Operationen mit VM](#other-functions-for-operations-with-vm)
-  - [Compiler](#Compiler)
+  - [Compiler](#compiler)
   - [Lexikalanalyse](#lexical-analyzer)
     - [lextable/lextable.go](#lextable-lextable-go)
     - [lex.go](#lex-go)
-  - [Nadelsprache](#Nadelsprache)
-    - [Lexeme](#lexeme)
-    - [Typen](#Typen)
-    - [Ausdrücke](#Ausdrücke)
-    - [Bereich](#Bereich)
-    - [Vertragsausführung](#Vertragsausführung)
-    - [Backus-Naur-Form (BNF)](#backus-naur-Form-bnf)
+  - [Nadelsprache](#needle-language)
+    - [Lexeme](#lexemes)
+    - [Typen](#types)
+    - [Ausdrücke](#expressions)
+    - [Bereich](#scope)
+    - [Vertragsausführung](#contract-execution)
+    - [Backus-Naur-Form (BNF)](#backus-naur-form-bnf)
 
 Dieser Abschnitt umfasst Programmkompilierung und Needle-Language-Operationen in der virtuellen Maschine (VM).
-## Speicherung und Kompilierung des Quellcodes
+## Speicherung und Kompilierung des Quellcodes {#source-code-storage-and-compilation}
 
 Verträge und Funktionen werden mit Golang geschrieben und in den Vertragstabellen von Ökosystemen gespeichert.
 
@@ -48,9 +48,9 @@ Der gesamte in der Vertragstabelle jedes Ökosystems beschriebene Quellcode wird
 Beim Vertragsaufruf ändert die virtuelle Maschine ihren Status in keiner Weise. Die Ausführung eines Vertrages oder das Aufrufen einer Funktion erfolgt auf einem separaten laufenden Stack, der während jedes externen Aufrufs erstellt wird.
 
 Jedes Ökosystem kann ein sogenanntes virtuelles Ökosystem haben, das innerhalb eines Knotens in Verbindung mit Tabellen außerhalb der Blockchain verwendet werden kann, ohne direkten Einfluss auf die Blockchain oder andere virtuelle Ökosysteme. In diesem Fall erstellt der Knoten, der ein solches virtuelles Ökosystem hostet, seinen Vertrag und erstellt seine eigene virtuelle Maschine.
-## Strukturen virtueller Maschinen
+## Strukturen virtueller Maschinen {#virtual-machine-structures}
 
-### VM-Struktur
+### VM-Struktur {#vm-structure}
 
 Eine virtuelle Maschine ist im Arbeitsspeicher als Struktur wie unten organisiert.
 
@@ -71,7 +71,7 @@ Eine VM-Struktur hat die folgenden Elemente:
 * Extern – ein Boolesches Flag, das angibt, ob ein Vertrag ein externer Vertrag ist. Es wird auf „true“ gesetzt, wenn eine VM erstellt wird. Aufgerufene Verträge werden beim Kompilieren des Codes nicht angezeigt. Mit anderen Worten, es ermöglicht, den in Zukunft festgelegten Vertragscode aufzurufen;
 * Schichtvertrag – ID des ersten Vertrags in der VM;
 * logger - Ausgabe des VM-Fehlerprotokolls.
-### Blockstruktur
+### Blockstruktur {#block-structure}
 
 Eine virtuelle Maschine ist ein Baum, der aus **Blocktyp**-Objekten besteht.
 
@@ -112,7 +112,7 @@ Eine Blockstruktur besteht aus folgenden Elementen:
 * **Vars** - ein Array, das die Typen der aktuellen Blockvariablen enthält;
 * **Code** - der Bytecode des Blocks selbst, der ausgeführt wird, wenn die Kontrollrechte an den Block übergeben werden, zum Beispiel Funktionsaufrufe oder Schleifenkörper;
 * **Children** - ein Array mit Unterblöcken, wie z. B. Funktionsverschachtelung, Schleifen, bedingte Operatoren.
-### ObjInfo-Struktur
+### ObjInfo-Struktur {#objinfo-structure}
 
 Die ObjInfo-Struktur enthält Informationen über interne Objekte.
 
@@ -132,7 +132,7 @@ Die ObjInfo-Struktur hat die folgenden Elemente:
     * **ObjExtend** - $name-Variable.
 * **Wert** – enthält die Struktur jedes Typs.
 
-#### ContractInfo-Struktur
+#### ContractInfo-Struktur {#contractinfo-structure}
 
 Zeigt auf den Typ **ObjContract**, und das Feld **Value** enthält eine **ContractInfo**-Struktur.
 
@@ -153,7 +153,7 @@ Die ContractInfo-Struktur hat die folgenden Elemente:
 * **Verwendet** - Karte der aufgerufenen Vertragsnamen;
 * **Tx** – ein Datenarray, das im [Datenabschnitt](script.md#data-section) des Vertrags beschrieben wird.
 
-#### FieldInfo-Struktur
+#### FieldInfo-Struktur {#fieldinfo-structure}
 
 Die FieldInfo-Struktur wird in der **ContractInfo**-Struktur verwendet und beschreibt Elemente im [Datenabschnitt](script.md#data-section) eines Vertrags.
 
@@ -172,7 +172,7 @@ Die FieldInfo-Struktur hat die folgenden Elemente:
 * **Original** - optionales Feld;
 * **Tags** - zusätzliche Beschriftungen für dieses Feld.
 
-#### FuncInfo-Struktur
+#### FuncInfo-Struktur {#funcinfo-structure}
 
 Zeigt auf den ObjFunc-Typ, und das Value-Feld enthält eine FuncInfo-Struktur.
 ```
@@ -192,7 +192,7 @@ Die FuncInfo-Struktur hat die folgenden Elemente:
 * **Variadic** - wahr, wenn die Funktion eine variable Anzahl von Parametern haben kann;
 * **ID** - Funktions-ID.
 
-#### FuncName-Struktur
+#### FuncName-Struktur {#funcname-structure}
 
 Die Struktur FuncName wird für FuncInfo verwendet und beschreibt die Daten einer Tail-Funktion.
 ```
@@ -208,7 +208,7 @@ Die FuncName-Struktur hat die folgenden Elemente:
 * **Offset** - das Array von Offsets für diese Variablen. Tatsächlich können die Werte aller Parameter in einer Funktion mit dem Punkt . initialisiert werden;
 * **Variadic** - true, wenn die Tail-Funktion eine variable Anzahl von Parametern haben kann.
 
-#### ExtFuncInfo-Struktur
+#### ExtFuncInfo-Struktur {#extfuncinfo-structure}
 
 Zeigt auf den ObjExtFunc-Typ, und das Value-Feld enthält eine ExtFuncInfo-Struktur. Es wird verwendet, um Golang-Funktionen zu beschreiben.
 ```
@@ -227,7 +227,7 @@ Die ExtFuncInfo-Struktur hat die folgenden Elemente:
 * **Auto** - ein Array von Variablen. Wird gegebenenfalls als zusätzlicher Parameter an die Funktion übergeben. Beispielsweise eine Variable vom Typ SmartContract sc;
 * **Func** - Golang-Funktionen.
 
-#### VarInfo-Struktur
+#### VarInfo-Struktur {#varinfo-structure}
 
 Zeigt auf den Typ **ObjVar**, und das Feld **Value** enthält eine **VarInfo**-Struktur.
 ```
@@ -241,12 +241,12 @@ Die VarInfo-Struktur hat die folgenden Elemente:
 * **Obj** - Informationen über Typ und Wert der Variablen;
 * **Eigentümer** - Zeiger auf den Eigentümerblock.
 
-#### ObjExtend-Wert
+#### ObjExtend-Wert {#objextend-value}
 
 Zeigt auf den Typ **ObjExtend**, und das Feld **Value** enthält eine Zeichenfolge, die den Namen der Variablen oder Funktion enthält.
 
-## Befehle für virtuelle Maschinen
-### ByteCode-Struktur
+## Befehle für virtuelle Maschinen {#virtual-machine-commands}
+### ByteCode-Struktur {#bytecode-structure}
 
 Ein Bytecode ist eine Folge von Strukturen vom Typ **ByteCode**.
 ```
@@ -263,7 +263,7 @@ Diese Struktur hat die folgenden Felder:
 
 Im Allgemeinen führen Befehle eine Operation auf dem obersten Element des Stapels aus und schreiben bei Bedarf den Ergebniswert hinein.
 
-### Befehlskennungen
+### Befehlskennungen {#command-identifiers}
 Bezeichner der Befehle der virtuellen Maschine sind in der Datei vm/cmds_list.go beschrieben.
 
 * **cmdPush** – legt einen Wert aus dem Value-Feld auf den Stack. Legen Sie zum Beispiel Zahlen und Linien auf den Stapel;
@@ -290,7 +290,7 @@ Bezeichner der Befehle der virtuellen Maschine sind in der Datei vm/cmds_list.go
 * **cmdArrayInit** – initialisiert den Wert des Arrays;
 * **cmdError** - Dieser Befehl wird erstellt, wenn ein Vertrag oder eine Funktion mit einem angegebenen `error, warning, info` beendet wird.
 
-### Stack-Operationsbefehle
+### Stack-Operationsbefehle {#stack-operation-commands}
 > Hinweis
 
 > In der aktuellen Version ist die automatische Typkonvertierung für diese Befehle nicht vollständig anwendbar. Zum Beispiel,
@@ -298,6 +298,7 @@ Bezeichner der Befehle der virtuellen Maschine sind in der Datei vm/cmds_list.go
 > `string + float | int | decimal => float | int | decimal, float + int | str => float, but int + string => runtime error`.
 
 Das Folgende sind Befehle für die direkte Stack-Verarbeitung. Das Feld Wert wird in diesen Befehlen nicht verwendet.
+
 * **cmdNot** - logische Negation. `(val) => (!ValueToBool(val))`;
 * **cmdSign** - Vorzeichenwechsel. `(val) => (-val)`;
 * **cmdAdd** - Ergänzung. `(val1)(val2) => (val1 + val2)`;
@@ -312,7 +313,9 @@ Das Folgende sind Befehle für die direkte Stack-Verarbeitung. Das Feld Wert wir
 * **cmdNotLess** - Größer-gleich-Vergleich, bool wird zurückgegeben. `(val1)(val2) => (val1 >= val2)`;
 * **cmdGreat** - Größer-als-Vergleich, bool wird zurückgegeben. `(val1)(val2) => (val1> val2)`;
 * **cmdNotGreat** - Kleiner-gleich-Vergleich, bool wird zurückgegeben. `(val1)(val2) => (val1 <= val2)`.
-### Laufzeitstruktur
+
+### Laufzeitstruktur {#runtime-structure}
+
 
 Die Ausführung von Bytecodes wirkt sich nicht auf die virtuelle Maschine aus. Beispielsweise können verschiedene Funktionen und Verträge gleichzeitig in einer einzigen virtuellen Maschine ausgeführt werden. Die Runtime-Struktur wird verwendet, um Funktionen und Verträge sowie beliebige Ausdrücke und Bytecode auszuführen.
 
@@ -335,7 +338,7 @@ type RunTime struct {
 * **cost** - Kraftstoffeinheit der resultierenden Ausführungskosten;
 * **err** - Fehler während der Ausführung aufgetreten.
 
-#### blockStack-Struktur
+#### blockStack-Struktur {#blockstack-structure}
 
 Die blockStack-Struktur wird in der Runtime-Struktur verwendet.
 ```
@@ -347,7 +350,7 @@ type blockStack struct {
 * **Block** – ein Zeiger auf den ausgeführten Block;
 * **Offset** – der Offset des letzten ausgeführten Befehls im Bytecode des angegebenen Blocks.
 
-### RunCode-Funktion
+### RunCode-Funktion {#runcode-function}
 
 Bytecodes werden in der Funktion **RunCode** ausgeführt. Es enthält eine Schleife, die die entsprechende Operation für jeden Bytecode-Befehl durchführt. Vor der Verarbeitung eines Bytecodes müssen die erforderlichen Daten initialisiert werden.
 
@@ -442,7 +445,8 @@ rt.blocks = rt.blocks[:len(rt.blocks)-1]
 if status == statusReturn {
 ```
 
-Wenn eine bereits ausgeführte Funktion erfolgreich beendet wird, fügen wir den Rückgabewert am Ende des vorherigen Stacks hinzu.```
+Wenn eine bereits ausgeführte Funktion erfolgreich beendet wird, fügen wir den Rückgabewert am Ende des vorherigen Stacks hinzu.
+```
    if last.Block.Type == ObjFunc {
       for count := len(last.Block.Info.(*FuncInfo).Results); count > 0; count-- {
          rt.stack[start] = rt.stack[len(rt.stack)-count]
@@ -461,7 +465,7 @@ Wie Sie sehen können, stellen wir den Stack-Status nicht wieder her und beenden
 rt.stack = rt.stack[:start]
 ```
 
-### Weitere Funktionen für Operationen mit VM
+### Weitere Funktionen für Operationen mit VM {#other-functions-for-operations-with-vm}
 
 Mit der Funktion **NewVM** können Sie eine virtuelle Maschine erstellen. Jeder virtuellen Maschine werden über die Funktion **Extend** vier Funktionen hinzugefügt, z. B. **ExecContract**, **MemoryUsage**, **CallContract** und **Settings**.
 
@@ -512,7 +516,7 @@ Fügt eine Funktion zu den **Objekten** des Stammverzeichnisses hinzu, damit der
 }
 ```
 
-## Compiler
+## Compiler {#compiler}
 
 Funktionen in der Datei compile.go sind für das Kompilieren des Token-Arrays verantwortlich, das vom lexikalischen Analysator erhalten wird. Die Zusammenstellung kann bedingt in zwei Ebenen unterteilt werden. Auf der obersten Ebene beschäftigen wir uns mit Funktionen, Verträgen, Codeblöcken, Bedingungs- und Schleifenanweisungen, Variablendefinitionen und so weiter. Auf der unteren Ebene kompilieren wir Ausdrücke in Codeblöcke oder Bedingungen in Schleifen und bedingte Anweisungen.
 
@@ -666,7 +670,7 @@ Für die Funktion **CompileBlock** durchläuft sie einfach alle Tokens und wechs
 
 Neben der Funktion **CompileBlock** ist auch die Funktion **FlushBlock** zu nennen. Das Problem besteht jedoch darin, dass der Blockbaum unabhängig von vorhandenen virtuellen Maschinen erstellt wird. Genauer gesagt erhalten wir Informationen über Funktionen und Verträge, die in einer virtuellen Maschine vorhanden sind, aber wir sammeln die kompilierten Blöcke in einem separaten Baum. Andernfalls, wenn während der Kompilierung ein Fehler auftritt, müssen wir die virtuelle Maschine auf den vorherigen Zustand zurücksetzen. Daher gehen wir separat zum Kompilierungsbaum, aber nachdem die Kompilierung erfolgreich ist, muss die Funktion **FlushContract** aufgerufen werden. Diese Funktion fügt den fertigen Blockbaum zur aktuellen virtuellen Maschine hinzu. Die Kompilierungsphase ist nun abgeschlossen.
 
-## Lexikalischer Analysator
+## Lexikalischer Analysator {#lexical-analyzer}
 Der lexikalische Analysator verarbeitet eingehende Zeichenfolgen und bildet eine Folge von Token der folgenden Typen:
 * **lexSys** - Systemtoken, zum Beispiel: `{}, [], (), ,, .` usw.;
 * **lexOper** - Vorgangstoken, zum Beispiel: `+, -, /, \, *`;
@@ -681,7 +685,7 @@ Der lexikalische Analysator verarbeitet eingehende Zeichenfolgen und bildet eine
 
 In der aktuellen Version wird zunächst mit Hilfe der Datei [script/lextable/lextable.go](#lextablelextablego) eine Konvertierungstabelle (finite state machine) zum Parsen der Tokens aufgebaut, die in die Datei lex_table.go geschrieben wird. Im Allgemeinen können Sie die ursprünglich von der Datei generierte Konvertierungstabelle loswerden und direkt beim Start eine Konvertierungstabelle im Speicher erstellen (`init()`). Die lexikalische Analyse selbst findet in der lexParser-Funktion in der Datei [lex.go](#lex-go) statt.
 
-### <span id = "lextable-lextable-go">lextable/lextable.go</span>
+### lextable/lextable.go {#lextable-lextable-go}
 
 Hier definieren wir das zu betreibende Alphabet und beschreiben, wie die endliche Zustandsmaschine basierend auf dem nächsten empfangenen Symbol von einem Zustand in einen anderen wechselt.
 
@@ -724,7 +728,7 @@ Wir befinden uns im *Hauptzustand* in der Nullzeile der *Tabelle*. Nehmen Sie da
 All dies wird ausführlicher in der Funktion **lexParser** in *lex.go* beschrieben.
 Wenn Sie einige neue Zeichen hinzufügen möchten, müssen Sie sie dem Array *alphabet* hinzufügen und die Menge der Konstante *AlphaSize* erhöhen. Wenn Sie eine neue Symbolkombination hinzufügen möchten, sollte diese ähnlich wie bei den bestehenden Optionen im Status beschrieben werden. Führen Sie nach dem obigen Vorgang die Datei *lextable.go* aus, um die Datei *lex_table.go* zu aktualisieren.
 
-### <span id = "lex-go">lex.go</span>
+### lex.go {#lex-go}
 Die **lexParser**-Funktion generiert direkt eine lexikalische Analyse und gibt basierend auf eingehenden Zeichenfolgen ein Array empfangener Tags zurück. Lassen Sie uns die Struktur von Token analysieren.
 
 ```
@@ -735,8 +739,8 @@ type Lexem struct {
    Column uint32 // Position inside the line
 }
 ```
-* **Typ** - Token-Typ. Es hat einen der folgenden Werte: `lexSys, lexOper, lexNumber, lexIdent, lexString, lexComment, lexKeyword, lexType, lexExtend`;
-* **value** – Wert des Tokens. Die Art des Werts hängt vom Token-Typ ab. Lassen Sie uns das genauer analysieren:
+* **Type** - Token-Typ. Es hat einen der folgenden Werte: `lexSys, lexOper, lexNumber, lexIdent, lexString, lexComment, lexKeyword, lexType, lexExtend`;
+* **Value** – Wert des Tokens. Die Art des Werts hängt vom Token-Typ ab. Lassen Sie uns das genauer analysieren:
    * **lexSys** - enthält Klammern, Kommas usw. In diesem Fall `Type = ch << 8 | lexSys“, beziehen Sie sich bitte auf die Konstante „isLPar ... isRBrack“, und ihr Wert ist uint32 Bits;
    * **lexOper** - der Wert stellt eine äquivalente Zeichenfolge in Form von uint32 dar. Siehe die `isNot ... isOr`-Konstanten;
    * **lexNumber** - Zahlen werden als int64 oder float64 gespeichert. Wenn die Zahl einen Dezimalpunkt hat, ist sie Float64;
@@ -757,8 +761,8 @@ Es bleibt nur noch, die beim Parsing verwendeten lexikalischen Status-Token zu �
 * **lexfPop** - Der Empfang des Tokens ist abgeschlossen. Normalerweise haben wir mit diesem Flag den Bezeichnertyp des geparsten Tokens;
 * **lexfSkip** - Dieses Token wird verwendet, um Zeichen vom Parsen auszuschließen. Beispielsweise sind die Kontrollschrägstriche in der Zeichenfolge \n \r \". Sie werden während der lexikalischen Analysephase automatisch ersetzt.
 
-## Needle Sprache
-### Lexemes
+## Needle Sprache {#needle-language}
+### Lexemes {#lexemes}
 Der Quellcode eines Programms muss in UTF-8-Kodierung vorliegen.
 
 Die folgenden lexikalischen Typen werden verarbeitet:
@@ -769,24 +773,24 @@ Die folgenden lexikalischen Typen werden verarbeitet:
 * **Kommentar** - Es gibt zwei Arten von Kommentaren. Einzeilige Kommentare verwenden zwei Schrägstriche (//). Beispiel: // Dies ist ein einzeiliger Kommentar. Mehrzeilige Kommentare verwenden Schrägstriche und Sternchen und können sich über mehrere Zeilen erstrecken. Beispiel: ```/* Dies ist ein mehrzeiliger Kommentar */```.
 * **Bezeichner** - die Namen von Variablen und Funktionen, die aus Buchstaben a-z und A-Z, UTF-8-Symbolen, Zahlen und Unterstrichen bestehen. Der Name kann mit einem Buchstaben, Unterstrich, ```@``` oder ```$``` beginnen. Der Name, der mit ```$``` beginnt, ist der Name der Variablen, die im **Datenabschnitt** definiert ist. Der mit ```$``` beginnende Name kann auch verwendet werden, um globale Variablen im Bereich von **Bedingungen** und **Aktionsabschnitten** zu definieren. Ökosystemverträge können über das Symbol ```@``` aufgerufen werden. Zum Beispiel: ```@1NewTable(...)```.
 
-### Typen
+### Typen {#types}
 
 Neben den Nadeltypen sind entsprechende Golang-Typen angegeben.
 * **bool** - bool, standardmäßig **false**;
 * **bytes** - []byte{}, standardmäßig ein leeres Byte-Array;
 * **int** - standardmäßig int64, **0**;
-* **Address** - uint64, standardmäßig **0**;
-* **Array** - []interface{}, standardmäßig ein leeres Array;
+* **address** - uint64, standardmäßig **0**;
+* **array** - []interface{}, standardmäßig ein leeres Array;
 * **map** - map[string]interface{}, standardmäßig ein leeres Objekt-Array;
 * **money** - Dezimalzahl. Dezimal, standardmäßig **0**;
 * **float** - float64, standardmäßig **0**;
-* **String** - String, standardmäßig ein leerer String;
+* **string** - String, standardmäßig ein leerer String;
 * **file** - map[string]interface{}, standardmäßig ein leeres Objekt-Array.
 Diese Variablentypen werden mit dem Schlüsselwort ```var``` definiert. Beispiel: ```var var1, var2 int```. Bei dieser Definition wird einer Variablen ein Standardwert nach Typ zugewiesen.
 
 Alle Variablenwerte sind vom Typ interface{} und werden dann den erforderlichen Golang-Typen zugewiesen. Daher sind beispielsweise Array- und Map-Typen Golang-Typen []interface{} und map[string]interface{}. Beide Arten von Arrays können Elemente beliebigen Typs enthalten.
 
-### Ausdrücke
+### Ausdrücke {#expressions}
 
 Ein Ausdruck kann arithmetische Operationen, logische Operationen und Funktionsaufrufe enthalten. Alle Ausdrücke werden von links nach rechts nach Priorität der Operatoren ausgewertet. Bei gleicher Priorität werden Operatoren von links nach rechts ausgewertet.
 
@@ -820,7 +824,7 @@ if mymap && val {
 ...
 }
 ```
-### Zielfernrohr
+### Zielfernrohr {#scope}
 
 Klammern geben einen Block an, der lokale Bereichsvariablen enthalten kann. Standardmäßig erstreckt sich der Geltungsbereich einer Variablen auf ihre eigenen Blöcke und alle verschachtelten Blöcke. In einem Block können Sie eine neue Variable mit dem Namen einer vorhandenen Variablen definieren. In diesem Fall sind jedoch externe Variablen mit demselben Namen nicht mehr verfügbar.
 ```
@@ -833,7 +837,7 @@ a = 3
 }
 Println(a) // 3
 ```
-### Vertragsabwicklung
+### Vertragsabwicklung {#contract-execution}
 
 Beim Aufruf eines Contracts müssen ihm in **data** definierte Parameter übergeben werden. Vor Ausführung eines Auftrags erhält die virtuelle Maschine diese Parameter und weist sie den entsprechenden Variablen ($Param) zu. Dann werden die vordefinierten Funktionen **conditions** und **action** aufgerufen.
 
@@ -841,7 +845,7 @@ Fehler, die während der Vertragsausführung auftreten, können in zwei Arten un
 
 Die Needle-Sprache behandelt keine Ausnahmen. Jeder Fehler wird die Ausführung von Verträgen beenden. Da ein separater Stack und eine separate Struktur zum Speichern von Variablenwerten erstellt werden, wenn ein Vertrag ausgeführt wird, löscht der Golang-Garbage-Collection-Mechanismus diese Daten automatisch, wenn ein Vertrag ausgeführt wird.
 
-### <span id = "backus-naur-form-bnf">Backus–Naur Form (BNF)</span>
+### Backus–Naur Form (BNF) {#backus-naur-form-bnf}
 In der Informatik ist BNF eine Notationstechnik für kontextfreie Syntax und wird normalerweise verwendet, um die Syntax der beim Rechnen verwendeten Sprache zu beschreiben.
 
 * &lt;decimal digit&gt;

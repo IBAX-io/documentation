@@ -1,4 +1,4 @@
-# Synchronized Monitoring Tool
+# Synchronized Monitoring Tool {#synchronized-monitoring-tool}
 
 Desync_monitor is a special tool that can be used to verify whether the database on the specified node has been synchronized.
 
@@ -10,10 +10,10 @@ The operating principle of the tool is based on the following:
 2.Then request a block with this ID from all nodes and compare the above hashes;
 3.If the hashes are different, a synchronization error message will be sent to the email address specified in the command.
 
-## Location
+## Location {#location}
 The tool is located in the `tools/desync_monitor/` directory.
 
-## Command prompt flags
+## Command prompt flags {#command-prompt-flags}
 The following flags can be used from the command prompt:
 * confPath - Path of the configuration file. The default file name is `config.toml`;
 * nodesList - Node list of the requested block, separated by commas. The default is `127.0.0.1:7079`;
@@ -27,7 +27,7 @@ The following flags can be used from the command prompt:
     * smtpUsername - SMTP server username, `""` by default;
     * smtpPassword - SMTP server password, `""` by default.
 
-## Configuration
+## Configuration {#configuration}
 The tool uses a configuration file in toml format.
 
 By default, it will look for the config.toml file in the folder where to start up the binary file.
@@ -53,21 +53,21 @@ username = ""
 password = ""
 ```
 
-### nodes_list
+### nodes_list {#nodes-list}
 * nodes_list - List of nodes (hosts) requesting information.
 
-### [daemon]
+### [daemon] {#daemon}
 Configuration of the daemon mode.
 * daemon_mode – A tool works as a daemon and performs synchronization checks.
 * querying_period - Time interval between synchronization checks.
 
-### [alert_message]
+### [alert_message] {#alert-message}
 Warning message parameters.
 * to - recipient's e-mail of synchronization error warning messages;
 * subject - message subject;
 * from - sender's e-mail.
 
-### [smtp]
+### [smtp] {#smtp}
 Simple Mail Transfer Protocol (SMTP) server parameters, used to send synchronization error messages.
 * host – SMTP server hose;
 * port –SMTP server port; 

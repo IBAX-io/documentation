@@ -1,4 +1,4 @@
-# Synchronisiertes Überwachungstool
+# Synchronisiertes Überwachungstool {#synchronized-monitoring-tool}
 
 Desync_monitor ist ein spezielles Tool, mit dem überprüft werden kann, ob die Datenbank auf dem angegebenen Knoten synchronisiert wurde.
 
@@ -10,11 +10,11 @@ Das Funktionsprinzip des Tools basiert auf Folgendem:
 2. Fordern Sie dann einen Block mit dieser ID von allen Knoten an und vergleichen Sie die obigen Hashes;
 3.Wenn die Hashes unterschiedlich sind, wird eine Synchronisierungsfehlermeldung an die im Befehl angegebene E-Mail-Adresse gesendet.
 
-## Standort
+## Standort {#location}
 
 Das Tool befindet sich im Verzeichnis `tools/desync_monitor/`.
  
-# Befehlszeilen-Flags
+# Befehlszeilen-Flags {#command-prompt-flags}
 Die folgenden Flags können von der Eingabeaufforderung aus verwendet werden:
 * confPath - Pfad der Konfigurationsdatei. Der Standarddateiname ist `config.toml`;
 * nodesList - Knotenliste des angeforderten Blocks, getrennt durch Kommas. Der Standardwert ist `127.0.0.1:7079`;
@@ -28,7 +28,7 @@ Die folgenden Flags können von der Eingabeaufforderung aus verwendet werden:
     * smtpUsername - Benutzername des SMTP-Servers, standardmäßig `""`;
     * smtpPassword - SMTP-Serverpasswort, standardmäßig `""`.    
 
-## Aufbau
+## Aufbau {#configuration}
 Das Tool verwendet eine Konfigurationsdatei im toml-Format.
 
 Standardmäßig sucht es nach der Datei config.toml in dem Ordner, in dem die Binärdatei gestartet werden soll.
@@ -53,21 +53,21 @@ port = 25
 username = ""
 password = ""
 ```
-### nodes_list
+### nodes_list {#nodes-list}
 * nodes_list - Liste der Knoten (Hosts), die Informationen anfordern.
 
-### [Dämon]
+### [daemon] {#daemon}
 Konfiguration des Daemon-Modus.
 * daemon_mode – Ein Tool arbeitet als Daemon und führt Synchronisationsprüfungen durch.
 * querying_period - Zeitintervall zwischen Synchronisationsprüfungen.
 
-### [Warnmeldung]
+### [alert_message] {#alert-message}
 Warnmeldungsparameter.
 * an - E-Mail-Adresse des Empfängers von Synchronisierungsfehler-Warnmeldungen;
 * Betreff - Betreff der Nachricht;
 * von - E-Mail des Absenders.
 
-### [smtp]
+### [smtp] {#smtp}
 SMTP-Serverparameter (Simple Mail Transfer Protocol), die zum Senden von Synchronisierungsfehlermeldungen verwendet werden.
 * Host – SMTP-Serverschlauch;
 * port – SMTP-Server-Port;

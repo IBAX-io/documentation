@@ -1,97 +1,94 @@
-# RESTful API v2
+# RESTful API v2 {#restful-api-v2}
 
-Weaver
-All functions provided, including authentication, ecosystem data reception, error handling, database table manipulation, page and contract execution are available through
-IBAX Blockchain Platform's REST API is available.
+Weaver提供的所有功能，包括身份验证，生态系统数据接收，错误处理，数据库表操作，
+页面和合约执行都可通过IBAX区块链平台 的REST API获得。
 
-By using the REST API, developers can access any of the platform's features without using Weaver.
+通过使用REST API，开发者可以在不使用 Weaver 的情况下访问平台的任何功能。
 
-API command calls are executed by addressing `/api/v2/command/[param]`, where `command`
-is the command name and `param` is the additional parameter. The request parameters must be specified using the
-`Content-Type: x-www-form-urlencoded`
-The format is sent. The server response result is in JSON format.
+API命令调用通过寻址执行 `/api/v2/command/[param]`，其中 `command`是命令名称，
+`param` 是附加参数。请求参数必须使用`Content-Type: x-www-form-urlencoded`格式发送。
+服务器响应结果为JSON格式。
 
 <!-- TOC -->
 
-- [Error response handling](#error-response-handling)
-    - [Error list](#error-list)
-- [Request Type](#request-type)
-- [Authentication Interface](#authentication-interface)
-    - [getuid](#getuid)
-    - [login](#login)
-- [Server Side command interface](#server-side-command-interface)
-    - [version](#version)
-- [Data Request Function Interface](#data-request-function-interface)
-    - [balance](#balance)
-    - [blocks](#blocks)
-    - [detailed_blocks](#detailed-blocks)
-    - [/data/{id}/data/{hash}](#data-id-data-hash)
-    - [/data/{table}/id/{column}/{hash}](#data-table-id-column-hash)
-    - [keyinfo](#keyinfo)
-    - [walletHistory](#wallethistory)
-    - [listWhere/{name}](#listWhere-name)
-    - [nodelistWhere/{name}](#nodelistWhere-name)
-- [Get Metrics Interface](#get-metrics-interface)
-    - [metrics/keys](#metrics-keys)
-    - [metrics/blocks](#metrics-blocks)
-    - [metrics/transactions](#metrics-transactions)
-    - [metrics/ecosystems](#metrics-ecosystems)
-    - [metrics/honornodes](#metrics-honornodes)
-- [Ecosystem Interface](#ecosystem-interface)
-    - [ecosystemname](#ecosystemname)
-    - [appparams/{appID}](#appparams-appid)
-    - [appparam/{appid}/{name}](#appparam-appid-name)
-    - [ecosystemparams](#ecosystemparams)
-    - [ecosystemparam/{name}](#ecosystemparam-name)
-    - [tables/\[?limit=\... &offset=\... \]](#tables-limit-offset)
-    - [table/{name}](#table-name)
-    - [list/{name}\[?limit=\... &offset=\... &columns=\... \]](#list-name-limit-offset-columns)
-    - [sections\[?limit=\... &offset=\... &lang=\]](#sections-limit-offset-lang)
-    - [row/{name}/{id}\[?columns=\]](#row-name-id-columns)
-    - [row/{name}/{column}/{id}](#row-name-column-id)
-    - [systemparams](#systemparams)
-    - [history/{name}/{id}](#history-name-id)
-    - [interface/{page|menu|snippet}/{name}](#interface-page-menu-snippet-name)
-- [Contract Function Interface](#contract-function-interface)
-    - [contracts\[?limit=\... &offset=\... \]](#contracts-limit-offset)
-    - [contract/{name}](#contract-name)
-    - [sendTX](#sendtx)
-    - [txstatus](#txstatus)
-    - [txinfo/{hash}](#txinfo-hash)
-    - [txinfoMultiple](#txinfomultiple)
-    - [/page/validators_count/{name}](#page-validators-count-name)
-    - [content/menu\|page/{name}](#content-menu-page-name)
-    - [content/source/{name}](#content-source-name)
-    - [content/hash/{name}](#content-hash-name)
-    - [content](#content)
-    - [maxblockid](#maxblockid)
-    - [block/{id}](#block-id)
-    - [avatar/{ecosystem}/{member}](#avatar-ecosystem-member)
-    - [config/centrifugo](#config-centrifugo)
-    - [updnotificator](#updnotificator)
+- [RESTful API v2](#restful-api-v2)
+    - [错误响应处理](#error-response-handling)
+        - [错误列表](#error-list)
+    - [请求类型](#request-type)
+    - [认证接口](#authentication-interface)
+        - [getuid](#getuid)
+        - [login](#login)
+    - [服务端命令接口](#server-side-command-interface)
+        - [version](#version)
+    - [数据请求功能接口](#data-request-function-interface)
+        - [balance](#balance)
+        - [blocks](#blocks)
+        - [detailed_blocks](#detailed-blocks)
+        - [/data/{id}/data/{hash}](#data-id-data-hash)
+        - [/data/{table}/id/{column}/{hash}](#data-table-id-column-hash)
+        - [keyinfo](#keyinfo)
+        - [walletHistory](#wallethistory)
+        - [listWhere/{name}](#listwhere-name)
+        - [nodelistWhere/{name}](#nodelistwhere-name)
+    - [获取指标接口](#get-metrics-interface)
+        - [metrics/keys](#metrics-keys)
+        - [metrics/blocks](#metrics-blocks)
+        - [metrics/transactions](#metrics-transactions)
+        - [metrics/ecosystems](#metrics-ecosystems)
+        - [metrics/honornodes](#metrics-honornodes)
+    - [生态系统接口](#ecosystem-interface)
+        - [ecosystemname](#ecosystemname)
+        - [appparams/{appID}](#appparams-appid)
+        - [appparam/{appid}/{name}](#appparam-appid-name)
+        - [ecosystemparams](#ecosystemparams)
+        - [ecosystemparam/{name}](#ecosystemparam-name)
+        - [tables/\[?limit=\... &offset=\... \]](#tables-limit-offset)
+        - [table/{name}](#table-name)
+        - [list/{name}\[?limit=\... &offset=\... &columns=\... \]](#list-name-limit-offset-columns)
+        - [sections\[?limit=\... &offset=\... &lang=\]](#sections-limit-offset-lang)
+        - [row/{name}/{id}\[?columns=\]](#row-name-id-columns)
+        - [row/{name}/{column}/{id}](#row-name-column-id)
+        - [systemparams](#systemparams)
+        - [history/{name}/{id}](#history-name-id)
+        - [interface/{page|menu|snippet}/{name}](#interface-page-menu-snippet-name)
+    - [合约功能接口](#contract-function-interface)
+        - [contracts\[?limit=\... &offset=\... \]](#contracts-limit-offset)
+        - [contract/{name}](#contract-name)
+        - [sendTX](#sendtx)
+        - [txstatus](#txstatus)
+        - [txinfo/{hash}](#txinfo-hash)
+        - [txinfoMultiple](#txinfomultiple)
+        - [/page/validators_count/{name}](#page-validators-count-name)
+    	- [content/menu\|page/{name}](#content-menu-page-name)
+    	- [content/source/{name}](#content-source-name)
+    	- [content/hash/{name}](#content-hash-name)
+        - [content](#content)
+        - [maxblockid](#maxblockid)
+        - [block/{id}](#block-id)
+        - [avatar/{ecosystem}/{member}](#avatar-ecosystem-member)
+        - [config/centrifugo](#config-centrifugo)
+        - [updnotificator](#updnotificator)
 
 <!-- /TOC -->
 
-## Error response handling
+## 错误响应处理 {#error-response-handling}
 
-Return status in case of successful request execution
-`200`. If an error occurs, in addition to the error status, a JSON object with the following fields will be returned.
+在请求执行成功的情况下返回状态`200`。如果出现错误，除了错误状态之外，将返回带有以下字段的JSON对象：
 
-- **error**
+-   **error**
 
-    > Error identifier.
+    > 错误标识符。
 
-- **msg**
+-   **msg**
 
-    > Error text message.
+    > 错误文本信息。
 
-- **params**
+-   **params**
 
-    > An array of additional parameters that can be placed in the error message.
+    > 错误的附加参数数组，可以将其放入错误信息中。
 
-#### Response Example
 ``` text
-400 (Bad request)
+400 (Bad 请求)
 Content-Type: application/json
 {
     "err": "E_INVALIDWALLET",
@@ -100,624 +97,566 @@ Content-Type: application/json
 }
 ```
 
-### Error list
+### 错误列表 {#error-list}
 
-> E_CONTRACT
- 
-  No `%s` contract exists
+> `E_CONTRACT`
 
-> E_DBNIL
+    不存在 `%s` 合约
 
-    Database is empty
+> `E_DBNIL`
 
-> E_DELETEDKEY
+    数据库为空
 
-    Account address is frozen
+> `E_DELETEDKEY`
 
-> E_ECOSYSTEM
+    账户地址已冻结
 
-    Ecosystem `%d` does not exist
+> `E_ECOSYSTEM`
 
-> E_EMPTYPUBLIC
+    生态系统 `%d` 不存在
 
-    Invalid account public key
+> `E_EMPTYPUBLIC`
 
-> E_KEYNOTFOUND
+    账户公钥无效
 
-    Account address not found
+> `E_KEYNOTFOUND`
 
-> E_HASHWRONG
+    账户地址未找到
 
-    Incorrect hash
+> `E_HASHWRONG`
 
-> E_HASHNOTFOUND
+    哈希不正确
 
-    Hash not found
+> `E_HASHNOTFOUND`
 
-> E_HEAVYPAGE
+    哈希未找到
 
-    Too much page loading
+> `E_HEAVYPAGE`
 
-> E_INVALIDWALLET
+    页面加载过多
 
-    Wallet address `%s` Invalid
+> `E_INVALIDWALLET`
 
-> E_LIMITTXSIZE
+    钱包地址 `%s` 无效
 
-    The transaction size has exceeded the limit
+> `E_LIMITTXSIZE`
 
-> E_NOTFOUND
+    该交易大小已超出限制
 
-    Page or menu content not found
+> `E_NOTFOUND`
 
-> E_PARAMNOTFOUND
+    页面或菜单内容未找到
 
-    Parameters not found
+> `E_PARAMNOTFOUND`
 
-> E_PERMISSION
+    参数未找到
 
-    No permission
+> `E_PERMISSION`
 
-> E_QUERY
+    没有权限
 
-    Database query error
+> `E_QUERY`
 
-> E_RECOVERED
+    数据库查询错误
 
-    API panic error occurs.
+> `E_RECOVERED`
 
-    If a panic error occurs, an error is returned.
+    API发生恐慌性错误。
 
-    This error means that you have encountered a bug that needs to be found and fixed.
+    如果出现恐慌性错误，则返回错误。
 
-> E_SERVER
+    这个错误意味着您遇到了一个需要查找和修复的bug。
 
-    Server error.
+> `E_SERVER`
 
-    Return if there is an error in the golang library function. The \*msg\* field contains the error text message.
+    服务器错误。
 
-    **E_SERVER** may appear in response to any command Error. 
-    If it occurs due to an incorrect input parameter, it can be changed to a related error. In another case, this error reports an invalid operation or incorrect system configuration, which requires a more detailed investigation report.
+    如果在golang库函数中有错误，则返回。\*msg\* 字段包含错误文本信息。
 
-> E_SIGNATURE
+    在响应任何命令时都可能出现 **E_SERVER**错误。如果由于输入参数不正确而出现，则可以将其更改为相关错误。
+    在另一种情况下，这个错误报告无效的操作或不正确的系统配置，这需要更详细的调查报告。
 
-    Incorrect signature
+> `E_SIGNATURE`
 
-> E_STATELOGIN
+    签名不正确
 
-    `%s` is not a member of the ecosystem `%s`
+> `E_STATELOGIN`
 
-> E_TABLENOTFOUND
+    `%s` 不是生态系统 `%s` 内的成员
 
-    Data sheet `%s` not found
+> `E_TABLENOTFOUND`
 
-> E_TOKENEXPIRED
+    数据表 `%s` 未找到
 
-    The session has expired `%s`
+> `E_TOKENEXPIRED`
 
-> E_UNAUTHORIZED
+    会话已失效 `%s`
 
-    Unauthorized.
+> `E_UNAUTHORIZED`
 
-    In case no login is performed or the session expires, 
-    except for `getuid, login` Any command other than **E_UNAUTHORIZED** returns an error.
+    未经授权。
 
-> E_UNKNOWNUID
+    在没有执行登录或会话过期的情况下，除 `getuid、login`之外，任何命令都返回 **E_UNAUTHORIZED** 错误。
 
-    Unknown UID
+> `E_UNKNOWNUID`
 
-> E_UPDATING
+    未知UID
 
-    Nodes are updating the blockchain
+> `E_UPDATING`
 
-> E_STOPPING
+    节点正在更新区块链
 
-    Node is stopped
+> `E_STOPPING`
 
-> E_NOTIMPLEMENTED
+    节点已停止
 
-    Not yet achieved
+> `E_NOTIMPLEMENTED`
 
-> E_BANNED
+    尚未实现
 
-    This account address is prohibited in `%s`
+> `E_BANNED`
 
-> E_CHECKROLE
+    该账户地址在 `%s` 禁止使用
 
-    Access denied
+> `E_CHECKROLE`
 
-    CLB Unavailable Interface
+    拒绝访问
+
+    CLB 不可用接口
 
 ------------------------------------------------------------------------
 
-> Interface requests for which the CLB node is not available.
+> CLB 节点不可用的接口请求：
 
-- metrics
-- txinfo
-- txinfoMultiple
-- appparam
-- appparams
-- appcontent
-- history
-- balance
-- block
-- maxblockid
-- blocks
-- detailed_blocks
-- ecosystemparams
-- systemparams
-- ecosystems
-- ecosystemparam
-- ecosystemname
-- walletHistory
-- tx_record
+-   metrics
+-   txinfo
+-   txinfoMultiple
+-   appparam
+-   appparams
+-   appcontent
+-   history
+-   balance
+-   block
+-   maxblockid
+-   blocks
+-   detailed_blocks
+-   ecosystemparams
+-   systemparams
+-   ecosystems
+-   ecosystemparam
+-   ecosystemname
+-   walletHistory
+-   tx_record
 
-## Request Type
-**Uniform use** 
+## 请求类型 {#request-type}
+**统一使用** 
 - application/x-www-form-urlencoded
 
-## Authentication Interface
+
+## 认证接口 {#authentication-interface}
 
 [JWT token](https://jwt.io)
-Used for authentication. The JWT token must be placed in each request header after it is received: `Authorization: Bearer TOKEN_HERE`.
+用于认证。收到JWT令牌后必须将其放在每个请求头中：`Authorization: Bearer TOKEN_HERE`。
 
-### getuid
+### getuid {#getuid}
 
-**GET**/ returns a unique value, signs it with the private key, and then uses
-The [login](#login) command sends it back to the server.
+**GET**/ 返回一个唯一值， 使用私钥对其签名，然后使用[login](#login) 命令将其发送回服务器。
 
-Generate a temporary JWT token that needs to be passed to **Authorization** when calling **login**.
+生成临时JWT令牌，在调用 **login** 时需要将令牌传递给 **Authorization**。
 
-#### Request
+**请求**
 
-``` text
+```text
 GET
 /api/v2/getuid
 ```
 
-#### Response
+**响应**
 
-- *uid*
+- `uid`
 
-    > Signature number.
+    > 签名数字。
 
-- *token*
+- `token`
 
-    > The temporary token passed during login.
+    > 登录时传递的临时令牌。
     >
-    > The life cycle of a temporary token is 5 seconds.
+    > 临时令牌的生命周期为5秒。
 
-- *network_id*
+- `network_id`
 
-    > Server identifier.
+    > 服务器标识符。
 
-- *cryptoer*
+- `cryptoer`
 
-    > Elliptic curve algorithm.
+    > 椭圆曲线算法。
 
-- *hasher*
+- `hasher`
 
-    > hash algorithm.
+    > hash算法。
 
-#### Response Example 1
+**响应示例1**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
     "uid": "4999317241855959593",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....... .I7LY6XX4IP12En6nr8UPklE9U4qicqg3K9KEzGq_8zE"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9........I7LY6XX4IP12En6nr8UPklE9U4qicqg3K9KEzGq_8zE"
     "network_id": "4717243765193692211"
 }
 ```
 
-In the case that no authorization is required (the request contains **Authorization**), the following message will be returned:
+在不需要授权的情况下(请求包含**Authorization**)，将返回以下信息:
 
-- *expire*
+- `expire`
 
-    > Expiration time.
+    > 过期时间。
 
-- *ecosystem*
+- `ecosystem`
 
-    > Ecosystem ID.
+    > 生态系统ID。
 
-- *key_id*
+- `key_id`
 
-    > Account address.
+    > 账户地址。
 
-- *address*
+- `address`
 
-    > Wallet address `XXXX-XXXX-..... -XXXX`.
+    > 钱包地址 `XXXX-XXXX-.....-XXXX`。
 
-- *network_id*
+- `network_id`
 
-    > Server identifier.
+    > 服务器标识符。
 
-#### Response Example 2
+**响应示例2**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
     "expire": "2159h59m49.4310543s",
     "ecosystem_id": "1",
     "key_id": "-654321",
-    "address": "1196-...... -3496",
+    "address": "1196-......-3496",
     "network_id": "1"
 }
 ```
 
-#### Error Response
+**错误响应**
 
 *E_SERVER*
 
-### login
+### login {#login}
 
-**POST**/ User authentication.
+**POST**/ 用户身份验证。
 
-> **getuid** should be called first
-> command in order to receive the unique value and sign it. getuid's temporary JWT token needs to be passed in the request header.
+> 应首先调用 **getuid**
+> 命令，以便接收唯一值并对其进行签名。getuid的临时JWT令牌需要放在请求头中传递。
 >
-> If the request is successful, the token received in the response is contained in **Authorization**.
+> 如果请求成功，则响应中收到的令牌包含在 **Authorization** 中。
 
-#### Request
 
-``` text
+**请求**
+
+```text
 POST
 /api/v2/login
 ```
 
-- *\[ecosystem\]*
+- `ecosystem`
 
-    > Ecosystem ID.
+    > 生态系统ID。
     >
-    > If not specified, defaults to the first ecosystem ID.
+    > 如果未指定，默认为第一个生态系统ID。
 
-- *\[expire\]*
+- `expire`
 
-    > Lifecycle of the JWT token, in seconds, default is 28800.
+    > JWT令牌的生命周期，以秒为单位，默认为28800。
 
-- *\[pubkey\]*
+- `pubkey`
 
-    > Hexadecimal account public key.
+    > 十六进制账户公钥。
 
-- *\[key_id\]*
+- `key_id`
 
-    > Account address `XXXX-... -XXXX`.
+    > 账户地址 `XXXX-...-XXXX`。
     >
-    > Use this parameter if the public key is already stored in the blockchain. It cannot be used with *pubkey*
-    > parameters are used together.
+    > 在公钥已经存储在区块链中的情况下使用此参数。不能与 *pubkey*
+    > 参数一起使用。
 
-- *signature*
+- `signature`
 
-    > The uid signature received via getuid.
+    > 使用私钥对getuid收到的uid签名。
+    > 签名数据内容:
+    ``` text
+        LOGIN+{$network_id}+uid
+    ```
 
-#### Response
+**响应**
 
-- *token*
+- `token`
 
-    > JWT token.
+    > JWT令牌。
 
-- *ecosystem_id*
+- `ecosystem_id`
 
-    > Ecosystem ID.
+    > 生态系统ID。
 
-- *key_id*
+- `key_id`
 
-    > Account Address ID
+    > 账户地址ID
 
-- *account*
+- `account`
 
-    > Wallet address `XXXX-XXXX-..... -XXXX`.
+    > 钱包地址 `XXXX-XXXX-.....-XXXX`。
 
-- *notify_key*
+- `notify_key`
 
-    > Notification ID.
+    > 通知ID。
 
-- *isnode*
+- `isnode`
 
-    > Whether the account address is the owner of the node. Values: `true,false`.
+    > 该账户地址是否是该节点的所有者。值： `true,false`。
 
-- *isowner*
+- `isowner`
 
-    > Whether the account address is the creator of the ecosystem. Values: `true,false`.
+    > 该账户地址是否是该生态系统的创建者。值： `true,false`。
 
-- *clb*
+- `clb`
 
-    > Whether the logged-in ecosystem is CLB. Values: `true,false`.
+    > 登录的生态系统是否为 CLB 。值： `true,false`。
 
-- *roles* [Omitempty](#omitempty)
+- `roles` [Omitempty](#omitempty)
 
-    > Role list: `[{Role ID,Role Name}]`.
+    > 角色列表： `[{角色ID,角色名称}]`。
 
-#### Response Example
 
-``` text
+**响应示例**
+
+```text
 200 (OK)
 Content-Type: application/json
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.....30l665h3v7lH85rs5jgk0",
-    "ecosystem_id": "1",
-    "key_id": "-54321",
-    "account": "1285-... -7743-4282",
-    "notify_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..... _JTFfheD0K4CfMbvVNpOJVMNDPx25zIDGir9g3ZZM0w",
-    "timestamp": "1451309883",
-    "roles": [
-        {
-            "role_id": 1,
-            "role_name": "Developer"
-        }
-    ]
-} 
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...30l665h3v7lH85rs5jgk0",
+	"ecosystem_id": "1",
+	"key_id": "-54321",
+	"account": "1285-...-7743-4282",
+	"notify_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....._JTFfheD0K4CfMbvVNpOJVMNDPx25zIDGir9g3ZZM0w",
+	"timestamp": "1451309883",
+	"roles": [
+		{
+			"role_id": 1,
+			"role_name": "Developer"
+		}
+	]
+}      
 ```
 
-#### Error Response
+**错误响应**
 
 *E_SERVER, E_UNKNOWNUID, E_SIGNATURE, E_STATELOGIN, E_EMPTYPUBLIC*
 
-## Server Side command interface
+## 服务端命令接口 {#server-side-command-interface}
 
-### version
+### version {#version}
 
-**GET**/ Returns the current server version.
+**GET**/ 返回当前服务器版本。
 
-This request does not require login authorization.
+该请求不需要登录授权。
 
-#### Request
+**请求**
 
-``` text
+```text
 GET
 /api/v2/version
 ```
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 "1.3.0 branch.main commit.790..757 time.2021-08-23-08:20:19(UTC)"
 ```
 
-## Data Request Function Interface
+## 数据请求功能接口 {#data-request-function-interface}
 
-### balance
+### balance {#balance}
 
-**GET**/ Requests the balance of the account address in the current ecosystem.
+**GET**/ 请求当前生态系统中帐户地址的余额。
 
-This request does not require login authorization.
+该请求不需要登录授权。
 
-#### Request
 
-``` text
+**请求**
+
+```text
 GET
 /api/v2/balance/{wallet}
 ```
 
-- *wallet
+- `wallet`
 
-    > Address identifier, can be specified in any format `int64, uint64, XXXX-... -XXXX`. Look up the address in the ecosystem where the user is currently logged in.
+    > 地址标识符，可以任何格式指定 `int64, uint64, XXXX-...-XXXX`。 在用户当前登录的生态系统中查询该地址。
 
-- *\[ecosystem\]* [Omitempty](#omitempty) Default eco1
+- `ecosystem` [Omitempty](#omitempty) Default ecosystem 1
 
-    > Ecosystem id.
+    > 生态系统id，默认生态1。
 
-#### Response
+**响应**
 
-- *amount*
+- `amount`
 
-    > The minimum unit of contract account balance.
+    > 最小单位的合约帐户余额。
 
-- *money*
+- `money`
 
-    > Account balance.
+    > 帐户余额。
 
-- *total*
+- `total`
 
-    > Account balance.
+    > 帐户余额。
 
-- *utxo*
+- `utxo`
 
-    > UTXO account balance.
+    > UTXO帐户余额。
+ 
+-   *digits*
 
-#### Response Example
+    > 精度。
 
-``` text
+**响应示例**
+
+```text
 200 (OK)
 Content-Type: application/json
 {
     "amount": "877450000000000",
     "money": "877.45",
     "total": "877450000000000",
+    "digits": 6,
     "utxo": "0"
-} 
+}      
 ```
 
-#### Error Response
+**错误响应**
 
 *E_SERVER, E_INVALIDWALLET*
 
-### blocks
+### blocks {#blocks}
 
-**GET**/ Returns a list containing additional information related to the transactions in each block.
+**GET**/ 返回其中包含每个区块中交易的相关附加信息列表。
 
-This request does not require login authorization.
+该请求不需要登录授权。
 
-#### Request
+**请求**
 
-``` text
+```text
 GET 
 /api/v2/blocks
 ```
 
-- *block_id* [Omitempty](#omitempty) Default is 0
+- `block_id` [Omitempty](#omitempty) 默认为0
 
-    > The height of the starting block to query.
+    > 要查询的起始区块高度。
 
-- *count* [Omitempty](#omitempty) (default is 25, max request 1000)
+- `count` [Omitempty](#omitempty) (默认为25，最大请求1000)
 
-    > Number of blocks.
+    > 区块数量。
 
-#### Response
+**响应**
 
-- Block height
+-   区块高度
 
-    > List of transactions in the block and additional information for each transaction.
+    > 区块中的交易列表以及每个交易的附加信息：
     >
-    > > - *hash*
+    > > -   `hash`
     > >
-    > > > Trading Hash.
+    > >     > 交易哈希。
     > >
-    > > - *contract_name*
+    > > -   `contract_name`
     > >
-    > > > Contract name.
+    > >     > 合约名称。
     > >
-    > > - *params*
+    > > -   `params`
     > >
-    > > > Array of contract parameters.
+    > >     > 合约参数数组。
     > >
-    > > - *key_id*
+    > > -   `key_id`
     > >
-    > > > For the first block, it is the account address of the first block that signed the transaction.
-    > >
-    > > > For all other blocks, is the address of the account that signed the transaction.
+    > >     > 对于第一个区块，是签署该交易的第一个区块的账户地址。
+    > >     >
+    > >     > 对于所有其他区块，是签署该交易的账户地址。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
-{ "1":
-    [{"hash": "O1LhrjKznrYa0z5n5cej6p5Y1j5E9v/oV27VPRJmfgo=",
+{"1":
+    [{"hash":"O1LhrjKznrYa0z5n5cej6p5Y1j5E9v/oV27VPRJmfgo=",
     "contract_name":"",
     "params":null,
     "key_id":-118432674655542910}]
 }
 ```
 
-#### Error Response
+**错误响应**
 
 *E_SERVER, E_NOTFOUND*
 
-### <span id = "detailed-blocks">detailed_blocks</span>
+### detailed_blocks {#detailed-blocks}
 
-**GET**/ Returns a list containing detailed additional information about the transactions in each block.
+**GET**/ 返回其中包含每个区块中交易的详细附加信息列表。
 
-This request does not require login authorization.
+该请求不需要登录授权。
 
-#### Request
+**请求**
 
-``` text
+```text
 GET
 /api/v2/detailed_blocks
 ```
 
-- *block_id* [Omitempty](#omitempty) Default is 0
+- `block_id` [Omitempty](#omitempty) 默认为0
 
-  > The height of the starting block to query.
+  > 要查询的起始区块高度。
 
-- *count* [Omitempty](#omitempty) (default is 25, max request 1000)
+- `count` [Omitempty](#omitempty) (默认为25，最大请求1000)
 
-  > Number of blocks.
+  > 区块数量。
 
-#### Response
+**响应**
 
-- Block height
+- `Block height` 区块高度
+ - `blockhead` 区块头包含以下字段：
+   - `block_id` 区块高度。
+   - `time` 区块生成时间戳。
+   - `key_id` 签署该区块的账户地址。
+   - `node_position` 在 荣誉节点 列表中生成区块的节点的位置。
+   - `version` 区块结构版本。
+ - `hash` 区块哈希。
+ - `node_position` 在 荣誉节点 列表中生成区块的节点的位置。
+ - `key_id` 签署该区块的账户地址。
+ - `time` 区块生成时间戳。
+ - `tx_count` 该区块内的交易数。
+ - `size` 该区块大小。
+ - `rollback_hash` 区块回滚哈希值。
+ - `merkle_root` 该区块交易的默克尔树。
+ - `bin_data` 区块头、区块内所有交易、上一个区块哈希和生成该区块的节点私钥的序列化。
+ - `transactions` 区块中的交易列表以及每个交易的附加信息：
+   - `hash` 交易哈希。
+   - `contract_name` 合约名称。
+   - `params` 合约参数。
+   - `key_id` 签署该交易的账户地址。
+   - `time` 交易生成时间戳。
+   - `type` 交易类型。    
+   - `size` 交易大小。
 
-    > - *blockhead*
-    >
-    > > The block header contains the following fields.
-    > >
-    > > > - *block_id*
-    > >
-    > > > > Block height.
-    > >
-    > > > - *time*
-    > >
-    > > > > Block generation timestamp.
-    > >
-    > > > - *key_id*
-    > >
-    > > > > Sign the account address for the block.
-    > >
-    > > > - *node_position*
-    > >
-    > > > > The location of the node that generated the block in the honor node list.
-    > >
-    > > > - *version*
-    > >
-    > > > > Block structure version.
-    >
-    > - *hash*
-    >
-    > > Block Hashing.
-    >
-    > - *node_position*
-    >
-    > the location of the node that generated the block in the honor node list.
-    >
-    > - *key_id*
-    >
-    > > The address of the account that signed the block.
-    >
-    > - *time*
-    >
-    > > Block generation timestamp.
-    >
-    > - *tx_count*
-    >
-    > > Number of transactions within the block.
-    >
-    > - *size*
-    >
-    > > The block size.
-    >
-    > - *rollback_hash*
-    >
-    > > Block rollback hash.
-    >
-    > - *merkle_root*
-    >
-    > > The block deals with the Merkle tree.
-    >
-    > - *bin_data*
-    >
-    > > Serialization of the block header, all transactions within the block, the previous block hash, and the private key of the node that generated the block.
-    >
-    > - *trading*
-    >
-    > > List of transactions in the block and additional information about each transaction.
-    > >
-    > > > - *hash*
-    > >
-    > > > > Trading hash.
-    > >
-    > > > - *contract_name*
-    > >
-    > > > > Contract name.
-    > >
-    > > > - *params*
-    > >
-    > > > > Contract parameters.
-    > >
-    > > > - *key_id*
-    > >
-    > > > > Sign the account address for this transaction.
-    > >
-    > > > - *time*
-    > >
-    > > > > Transaction generation timestamp.
-    > >
-    > > > - *type*
-    > >
-    > > > > Transaction type.
-    > >
-    > > > - *size*
-    > >
-    > > > > Trade Size.
+**响应示例**
 
-#### Response Example
-
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {"1":
@@ -755,87 +694,38 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**错误响应**
 
 *E_SERVER, E_NOTFOUND*
+### /data/{id}/data/{hash} {#data-id-data-hash}
 
-### keyinfo
+**GET**/
+如果指定哈希与二进制表、字段和记录中的数据匹配，则此请求将返回数据。否则返回错误。
 
-**GET**/ Returns a list of ecosystems with roles registered to the specified address.
+该请求不需要登录授权。
 
-This request does not require login authorization.
-
-#### Request
-
-``` text
-GET
-/api/v2/keyinfo/{key_id}
-```
-
-- *key_id*
-
-    > Address identifier, can be specified in any format `int64, uint64, XXXX-... -XXXX`.
-    >
-    > The request is queried in all ecosystems.
-
-#### Response
-
-- *ecosystem*
-
-    > Ecosystem ID.
-
-- *name*
-
-    > Ecosystem name.
-
-- *roles*
-
-    > A list of roles with *id* and *name* fields.
-
-#### Response Example
-
-``` text
-200 (OK)
-Content-Type: application/json
-[{
-    "ecosystem":"1",
-    "name":"platform ecosystem",
-    "roles":[{"id":"1","name":"Governancer"},{"id":"2","name":"Developer"}]
-}]
-```
-
-#### Error Response
-
-*E_SERVER, E_INVALIDWALLET*
-
-### <span id = "data-id-data-hash">/data/{id}/data/{hash}</span>
-
-**GET**/ If the specified hash matching the data in the binary watch, field, and records, this request will return the data. Otherwise, return error.
-
-The request does not require login authorization.
-
-#### Request
+**请求**
 
 ```text
 GET
 /data/{id}/data/{hash}
 ```
 
-- *id*
+- `id`
 
-    > Record ID.
+    > 记录ID。
 
-- *hash*
+- `hash`
 
-    > Hash request data.
+    > 请求数据的哈希。
 
-#### Response
+**响应**
 
-> Binary data
+> 二进制数据
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: *
 {
@@ -851,49 +741,50 @@ Content-Type: *
 }
 ```
 
-#### Error Response
+**错误响应**
 
 *E_SERVER, E_NOTFOUND, E_HASHWRONG*
 
 
-### <span id = "data-table-id-column-hash">/data/{table}/id/{column}/{hash}</span>
+### /data/{table}/id/{column}/{hash} {#data-table-id-column-hash}
 
-**GET**/ If the specified hash matches the data in the specified table, field, and records, the request will return the data. Otherwise, return error.
+**GET**/
+如果指定哈希与指定表、字段和记录中的数据匹配，则此请求将返回数据。否则返回错误。
 
-The request does not require login authorization.
+该请求不需要登录授权。
 
-#### Request
+**请求**
 
 ```text
 GET
 /data/{table}/id/{column}/{hash}
 ```
 
-- *table*
+- `table`
 
-    > Data table name.
+    > 数据表名。
 
-- *id*
+- `id`
 
-    > Record ID.
+    > 记录ID。
 
-- *column*
+- `column`
 
-    > Data table name, only one
+    > 数据表列名,只能是一个
 
-- *hash*
+- `hash`
 
-    > Hash request data.
+    > 请求数据的哈希。
 
-#### Response
+**响应**
 
-> Binary data
+> 二进制数据
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
-Content-Type: *
+Content-Type: application/octet-stream
 Content-Disposition: attachment
 
 SetVar(this_page, @1voting_list).(this_table, @1votings)
@@ -906,47 +797,47 @@ AddToolButton(Title: $@1create$, Page: @1voting_create, Icon: icon-plus).Popup(6
 
 ```
 
-#### Error Response
+**错误响应**
 
 *E_SERVER, E_NOTFOUND, E_HASHWRONG*
 
 
-### keyinfo
+### keyinfo {#keyinfo}
 
-**GET**/ Return to a list of ecosystems, which contains the role of registered the specified address.
+**GET**/ 返回一个生态系统列表，其中包含注册了指定地址的角色。
 
-The request does not require login authorization.
+该请求不需要登录授权。
 
-#### Request
+**请求**
 
 ```text
 GET
 /api/v2/keyinfo/{address}
 ```
 
-- *address*
+- `address`
 
-    > Address identifier, you can specify `int64, uint64, xxxx -...-xxxx`.
+    > 地址标识符，可以任何格式指定 `int64, uint64, XXXX-...-XXXX`。
     >
-    > This request is query in all ecosystems.
+    > 该请求在所有生态系统中查询。
 
-#### Response
+**响应**
 
-- *ecosystem*
+- `ecosystem`
 
-    > Ecosystem ID.
+    > 生态系统ID。
 
-- *name*
+- `name`
 
-    > Ecological system name.
+    > 生态系统名称。
 
-- *roles*
+- `roles`
 
-    > Activities with *id* and *name* fields.
+    > 具有 *id* 和 *name* 字段的角色列表。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 [{
@@ -956,74 +847,62 @@ Content-Type: application/json
 }]
 ```
 
-#### Error Response
+**错误响应**
 
 *E_SERVER, E_INVALIDWALLET*
 
-### walletHistory
-**GET**/ Return to the current account transaction history record, find it according to the ID of the ID
+### walletHistory {#wallethistory}
+**GET**/ 返回当前账户交易历史记录,根据id倒序查找
 
 [Authorization](#authorization)
 
-#### Request
+**请求**
 
-- *searchType*
+- `searchType`
 
-  > Find Type (Income: Turn into Outcom: Turn out all: All, default).
+  > 查找类型(income:转入 outcome:转出 all:全部,默认)。
 
-- *\[page\]* [Omitempty](#omitempty)
-  > Find the number of pages, the first page default, min: 1
+- `page` [Omitempty](#omitempty)
+  > 查找页数,默认第一页,min:1
 
-- *\[limit\]* [Omitempty](#omitempty)
+- `limit` [Omitempty](#omitempty)
 
-  > Credit number, default 20 articles. min: 1, MAX: 500
+  > 条目条数，默认20条。min:1，max:500
 
-``` text
+```text
 GET
 /api/v2/walletHistory?searchType=all&page=1&limit=10
 ```
 
-#### Response
+**响应**
 
-- *total*
+- `total`
 
-  > Total number of entries.
-- *page*
+  > 条目总数。
+- `page`
 
-  > Number of current page.
+  > 当前页数。
 
-- *limit*
+- `limit`
 
-  > Currently find the number of bars.
+  > 当前查找条数。
 
-- *list*
-  > Each element in the array contains the following parameters:
-    - *id*
-      > Stripe ID.
-    - *sender_id*
-      > Send key_id
-    - *sender_add*
-      > Send the account address
-    - *recipient_id*
-      > Accept key_id
-    - *recipient_add*
-      > Accept the account address
-    - *amount*
-      > Transaction amount
-    - *comment*
-      > Trading remarks
-    - *block_id*
-      > Block height
-    - *tx_hash*
-      > Trading hash
-    - *created_at*
-      > Transaction creation time, millisecond time stamp
-    - *money*
-      > Transaction amount
+- `list` 数组中的每个元素包含以下参数：
+    - `id` 条目ID。
+    - `sender_id` 发送key_id
+    - `sender_add` 发送账户地址
+    - `recipient_id` 接受key_id
+    - `recipient_add` 接受账户地址
+    - `amount` 交易额
+    - `comment` 交易备注
+    - `block_id` 区块高度
+    - `tx_hash` 交易hash
+    - `created_at` 交易创建时间，毫秒时间戳
+    - `money` 交易额
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1049,69 +928,69 @@ Content-Type: application/json
 }  
 ```
 
-#### Error Response
+**错误响应**
 
 *E_SERVER*
 
 
 
-### <span id = "listWhere-name">listWhere/{name}</span>
-**GET**/ Return to the entry of the data table specified in the current ecosystem. You can specify columns to be returned.
+### listWhere/{name} {#listwhere-name}
+**POST**/ 返回当前生态系统中指定数据表的条目。可以指定要返回的列。
 
 [Authorization](#authorization)
 
-#### Request
+**请求**
 
-- *name*
+- `name`
 
-  > Data table name.
+  > 数据表名称。
 
--   *\[limit\]* [Omitempty](#omitempty)
+-   `limit` [Omitempty](#omitempty)
 
-    > Credit number, default 25.
+    > 条目条数，默认25条。
 
--   *\[offset\]* [Omitempty](#omitempty)
+-   `offset` [Omitempty](#omitempty)
 
-    > Disposal, default to 0.
+    > 偏移量，默认为0。
 
--   *\[order\]* [Omitempty](#omitempty)
+-   `order` [Omitempty](#omitempty)
 
-    > Sorting method, default `id ASC`.
+    > 排序方式，默认id ASC。
 
--   *\[columns\]* [Omitempty](#omitempty)
+-   `columns` [Omitempty](#omitempty)
 
-    > The list of request columns is separated by commas. If it is not specified, all columns will be returned. In all cases, the `id` column will be returned.
+    > 请求列的列表，以逗号分隔，如果未指定，将返回所有列。在所有情况下都会返回id列。   
 
--   *\[where\]* [Omitempty](#omitempty)
+-   `where` [Omitempty](#omitempty)
 
-    > Query condition
-    >
-    > Example: If you want to query id> 2 and name = john
-    >
-    > You can use: where: {"id": {"$ gt": 2}, "name": {"$eq": "john"}}
-    >
-    > For details, please refer to [DBFind](../ topics/script.md#dbfind) where syntax
+    > 查询条件
+    > 
+    > Example:如果要查询 id>2 和 name = john
+    > 
+    > 你可以使用：where:{"id":{"$gt":2},"name":{"$eq":"john"}}
+    > 
+    > 详情请参考[DBFind](../topics/script.md#dbfind) where 语法
 
-``` text
-GET
+```text
+POST
 /api/v2/listWhere/mytable
 ```
 
-#### Response
+**响应**
 
-- *count*
+- `count`
 
-  > Total number of entries.
-- *list*
-  > Each element in the array contains the following parameters:
-  - *id*
-    > Stripe ID.
-  - *...*
-    > Data tables other columns
+  > 条目总数。
+- `list`
+  > 数组中的每个元素包含以下参数：
+  - `id`
+    > 条目ID。
+  - `...`
+    > 数据表其他列
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1128,68 +1007,68 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**错误响应**
 
 *E_SERVER*,*E_TABLENOTFOUND*
 
 
-###  <span id = "nodelistWhere-name">nodelistWhere/{name}</span>
-**GET**/ Return to the specified data table. You can specify columns to be returned. The type in the data table is **BYTEA** Do hexadecimal encoding processing
+### nodelistWhere/{name} {#nodelistwhere-name}
+**POST**/ 返回指定数据表的条目。可以指定要返回的列。对数据表中类型为*BYTEA*做16进制编码处理
 
 [Authorization](#authorization)
 
-#### Request
+**请求**
 
-- *name*
+- `name`
 
-  > Data table name.
+  > 数据表名称。
 
--   *\[limit\]* [Omitempty](#omitempty)
+-   `limit` [Omitempty](#omitempty)
 
-    > Credit number, default 25.
+    > 条目条数，默认25条。
 
--   *\[offset\]* [Omitempty](#omitempty)
+-   `offset` [Omitempty](#omitempty)
 
-    > Disposal, default to 0.
+    > 偏移量，默认为0。
 
--   *\[order\]* [Omitempty](#omitempty)
+-   `order` [Omitempty](#omitempty)
 
-    > Sorting method, default `id ASC`.
+    > 排序方式，默认id ASC。
 
--   *\[columns\]* [Omitempty](#omitempty)
+-   `columns` [Omitempty](#omitempty)
 
-    > The list of request columns is separated by commas. If it is not specified, all columns will be returned. In all cases, the `id` column will be returned.
+    > 请求列的列表，以逗号分隔，如果未指定，将返回所有列。在所有情况下都会返回id列。
 
--   *\[where\]* [Omitempty](#omitempty)
+-   `where` [Omitempty](#omitempty)
 
-    > Query condition
+    > 查询条件
     >
-    > Example: If you want to query id> 2 and name = john
+    > Example:如果要查询 id>2 和 name = john
     >
-    > You can use: where: {"id": {"$ gt": 2}, "name": {"$eq": "john"}}
+    > 你可以使用：where:{"id":{"$gt":2},"name":{"$eq":"john"}}
     >
-    > For details, please refer to [DBFind](../ topics/script.md#dbfind) where syntax
+    > 详情请参考[DBFind](../topics/script.md#dbfind) where 语法
 
-``` text
-GET
+```text
+POST
 /api/v2/nodelistWhere/mytable
 ```
 
-#### Response
+**响应**
 
-- *count*
+- `count`
 
-  > Total number of entries.
-- *list*
-  > Each element in the array contains the following parameters:
-    - *id*
-      > Stripe ID.
-    - *...*
-      > Data tables other columns
+  > 条目总数。
+- `list`
+  > 数组中的每个元素包含以下参数：
+    - `id`
+      > 条目ID。
+    - `...`
+      > 数据表其他列
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1206,28 +1085,27 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**错误响应**
 
 *E_SERVER*,*E_TABLENOTFOUND*
 
 
+## 获取指标接口 {#get-metrics-interface}
 
-## Get Metrics Interface
+### metrics/keys {#metrics-keys}
 
-### <span id = "metrics-keys">metrics/keys</span>
+**GET**/ 返回生态1账户地址数量。
 
-**GET**/ Returns the number of ecosystem 1 account addresses.
+**请求**
 
-#### Request
-
-``` text
+```text
 GET
 /api/v2/metrics/keys
 ```
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1235,20 +1113,20 @@ Content-Type: application/json
 }
 ```
 
-### <span id = "metrics-blocks">metrics/blocks</span>
+### metrics/blocks {#metrics-blocks}
 
-**GET**/ Returns the number of blocks.
+**GET**/ 返回区块数量。
 
-#### Request
+**请求**
 
-``` text
+```text
 GET
 /api/v2/metrics/blocks
 ```
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1256,20 +1134,20 @@ Content-Type: application/json
 }
 ```
 
-### <span id = "metrics-transactions">metrics/transactions</span>
+### metrics/transactions {#metrics-transactions}
 
-**GET**/ Returns the total number of transactions.
+**GET**/ 返回交易总数量。
 
-#### Request
+**请求**
 
-``` text
+```text
 GET
 /api/v2/metrics/transactions
 ```
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1277,20 +1155,20 @@ Content-Type: application/json
 }
 ```
 
-### <span id = "metrics-ecosystems">metrics/ecosystems</span>
+### metrics/ecosystems {#metrics-ecosystems}
 
-**GET**/ Returns the number of ecosystems.
+**GET**/ 返回生态系统的数量。
 
-#### Request
+**请求**
 
-``` text
+```text
 GET
 /api/v2/metrics/ecosystems
 ```
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1298,20 +1176,20 @@ Content-Type: application/json
 }
 ```
 
-### metrics/honornodes
+### metrics/honornodes {#metrics-honornodes}
 
-**GET**/ Returns the number of honor nodes.
+**GET**/ 返回 荣誉节点 的数量。
 
-This request does not require login authorization.
+该请求不需要登录授权。
 
 ``` 
 GET
 /api/v2/metrics/honornodes
 ```
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1319,26 +1197,26 @@ Content-Type: application/json
 }
 ```
 
-## Ecosystem Interface
+## 生态系统接口 {#ecosystem-interface}
 
-### ecosystemname
+### ecosystemname {#ecosystemname}
 
-**GET**/ Returns the name of the ecosystem by its identifier.
+**GET**/ 通过其标识符返回生态系统的名称。
 
-This request does not require login authorization.
+该请求不需要登录授权。
 
-``` text
+```text
 GET
 /api/v2/ecosystemname?id=1
 ```
 
-- *id*
+-   *id*
 
-    > Ecosystem ID.
+    > 生态系统ID。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1346,50 +1224,51 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**错误响应**
 
 *E_PARAMNOTFOUND*
 
-### <span id = "appparams-appid">appparams/{appid}</span>
+### appparams/{appid} {#appparams-appid}
 
 [Authorization](#authorization)
 
-**GET**/ Returns a list of application parameters in the current or specified ecosystem.
+**GET**/ 返回当前或指定生态系统中的应用程序参数列表。
 
-#### Request
 
-``` text
+**请求**
+
+```text
 GET
 /api/v2/appparams/{appid}
 ```
 
-- *\[appid\]*
+- `appid`
 
-    > Application ID.
+    > 应用程序ID。
 
-- *\[ecosystem\]*
+- `ecosystem`
 
-    > Ecosystem ID; if not specified, the current ecosystem parameter will be returned.
+    > 生态系统ID；如果未指定，将返回当前生态系统的参数。
 
-- *\[names\]*
+- `names`
 
-    > The list of received parameters.
+    > 接收的参数列表。
     >
-    > You can specify a comma-separated list of parameter names, for example:`/api/v2/appparams/1?names=name,mypar`.
+    > 可以指定由逗号分隔的参数名称列表，例如:`/api/v2/appparams/1?names=name,mypar`。
 
-#### Response
+**响应**
 
-- *list*
+- `list`
 
-    > Each element of the array contains the following parameters.
+    > 数组中的每个元素包含以下参数：
     >
-    > - *name*, the name of the parameter.
-    > - *value*, the value of the parameter.
-    > - *conditions*, change the permissions of the parameters.
+    > -   `name`，参数名称；
+    > -   `value`，参数值；
+    > -   `conditions`，更改参数的权限。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1404,62 +1283,63 @@ Content-Type: application/json
         "conditions": "true",
     }, 
     ]
-} 
+}      
 ```
 
-#### Error Response
+**错误响应**
 
 *E_ECOSYSTEM*
 
-### <span id = "appparam-appid-name">appparam/{appid}/{name}</span>
+### appparam/{appid}/{name} {#appparam-appid-name}
 
 [Authorization](#authorization)
 
-**GET**/ Returns the parameter **{appid}** of the application **{name}** in the current or specified ecosystem
-The information related to the
+**GET**/ 返回当前或指定生态系统中应用程序 **{appid}** 的参数 **{name}**
+的相关信息。
 
-#### Request
 
-``` text
+**请求**
+
+```text
 GET
 /api/v2/appparam/{appid}/{name}[?ecosystem=1]
 ```
 
-- *appid*
+- `appid`
 
-    > Application ID.
+    > 应用程序ID。
 
-- *name*
+- `name`
 
-    > The name of the requested parameter.
+    > 请求的参数的名称。
 
-- *\[ecosystem\]* [Omitempty](#omitempty)
+- `ecosystem` [Omitempty](#omitempty)
 
-    > Ecosystem ID (optional parameter).
+    > 生态系统ID（可选参数）。
     >
-    > Returns the current ecosystem by default.
+    > 默认返回当前的生态系统。
 
-#### Response
+**响应**
 
-- *id*
+- `id`
 
-    > Parameter ID.
+    > 参数ID。
 
-- *name*
+- `name`
 
-    > Parameter name.
+    > 参数名称。
 
-- *value*
+- `value`
 
-    > The parameter value.
+    > 参数值。
 
-- *conditions*
+- `conditions`
 
-    > Permission to change parameters.
+    > 更改参数的权限。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1467,57 +1347,57 @@ Content-Type: application/json
     "name": "par",
     "value": "My value",
     "conditions": "true"
-} 
+}      
 ```
 
-#### Error Response
+**错误响应**
 
 *E_ECOSYSTEM, E_PARAMNOTFOUND*
 
-### ecosystemparams 
+### ecosystemparams {#ecosystemparams}
 
 [Authorization](#authorization)
 
-**GET**/ Returns a list of ecosystem parameters.
+**GET**/ 返回生态系统参数列表。
 
-#### Request
+**请求**
 
-``` text
+```text
 GET
-/api/v2/ecosystemparams/[?ecosystem=... &names=...]
+/api/v2/ecosystemparams/[?ecosystem=...&names=...]
 ```
 
-- *\[ecosystem\]* [Omitempty](#omitempty)
+- `ecosystem` [Omitempty](#omitempty)
 
-    > Ecosystem ID. if not specified, the current ecosystem ID will be returned.
+    > 生态系统ID。如果未指定，将返回当前生态系统ID。
 
-- *\[names\]* [Omitempty](#omitempty)
+- `names` [Omitempty](#omitempty)
 
-    > List of request parameters, separated by commas.
+    > 请求参数列表，以逗号分隔。
     >
-    > For example: `/api/v2/ecosystemparams/?names=name,currency,logo`.
+    > 例如: `/api/v2/ecosystemparams/?names=name,currency,logo`.
 
-#### Response
+**响应**
 
-- *list*
+- `list`
 
-    > Each element of the array contains the following parameters.
+    > 数组中的每个元素包含以下参数：
     >
-    > - *name*
+    > - `name`
     >
-    > > Parameter name.
+    >     > 参数名称。
     >
-    > - *value*
+    > - `value`
     >
-    > > Parameter value.
+    >     > 参数值。
     >
-    > - *conditions*
+    > - `conditions`
     >
-    > > Change permissions for parameters.
+    >     > 更改参数的权限。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1532,106 +1412,106 @@ Content-Type: application/json
         "conditions": "true",
     }, 
     ]
-} 
+}      
 ```
 
-#### Error Response
+**错误响应**
 
 *E_ECOSYSTEM*
 
-### <span id = "ecosystemparam-name">ecosystemparam/{name}</span>
+### ecosystemparam/{name} {#ecosystemparam-name}
 
 [Authorization](#authorization)
 
-**GET**/ Returns information about the parameter **{name}** in the current or specified ecosystem.
+**GET**/ 返回当前或指定生态系统中参数 **{name}** 的相关信息。
 
-#### Request
+**请求**
 
-``` text
+```text
 GET
 /api/v2/ecosystemparam/{name}[?ecosystem=1]
 ```
 
-- *name*
+- `name`
 
-    > The name of the requested parameter.
+    > 请求的参数名称。
 
-- *\[ecosystem\]* [Omitempty](#omitempty)
+- `ecosystem` [Omitempty](#omitempty)
 
-    > The default is to return the current ecosystem ID.
+    > 可以指定生态系统ID。默认返回当前的生态系统ID。
 
-#### Response
+**响应**
 
-- *name*
+- `name`
 
-    > Parameter name.
+    > 参数名称。
 
-- *value*
+- `value`
 
-    > The parameter value.
+    > 参数值。
 
-- *conditions*
+- `conditions`
 
-    > Permission to change parameters.
+    > 更改参数的权限。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
     "name": "currency",
     "value": "MYCUR",
     "conditions": "true"
-} 
+}      
 ```
 
-#### Error Response
+**错误响应**
 
 *E_ECOSYSTEM*
 
-### <span id = "tables-limit-offset">tables/\[?limit=\... &offset=\... \]</span>
+### tables/\[?limit=\... &offset=\... \] {#tables-limit-offset}
 
 [Authorization](#authorization)
 
-**GET**/ Returns a list of data tables for the current ecosystem. You can set the offset and the number of entries.
+**GET**/ 返回当前生态系统的数据表列表。可以设置偏移量和条目条数。
 
-#### Request
+**请求**
 
-- *\[limit\]* [Omitempty](#omitempty)
+- `limit` [Omitempty](#omitempty)
 
-    > Number of entries, default 100, maximum 1000.
+    > 条目条数，默认100条,最多1000条。
 
-- *\[offset\]* [Omitempty](#omitempty)
+- `offset` [Omitempty](#omitempty)
 
-    > Offset, default is 0.
+    > 偏移量，默认为0。
 
-``` text
+```text
 GET
-/api/v2/tables?limit=... &offset=...
+/api/v2/tables?limit=...&offset=...
 ```
 
-#### Response
+**响应**
 
-- *count*
+- `count`
 
-    > The total number of entries in the data table.
+    > 数据表中的条目总数。
 
-- *list*
+- `list`
 
-    > Each element of the array contains the following parameters.
+    > 数组中的每个元素包含以下参数：
     >
-    > > - *name*
+    > > - `name`
     > >
-    > > > Data table name without prefix.
+    > >     > 无前缀的数据表名称。
     > >
-    > > - *count*
+    > > - `count`
     > >
-    > > > The number of entries in the data table.
+    > >     > 数据表中的条目数。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1645,109 +1525,110 @@ Content-Type: application/json
         "count": "5",
    }, 
     ]
-} 
+}    
 ```
 
-### <span id = "table-name">table/{name}</span>
+### table/{name} {#table-name}
 
 [Authorization](#authorization)
 
-**GET**/ Returns information about the current ecosystem request data table.
+**GET**/ 返回当前生态系统请求数据表的相关信息。
 
-#### Request
+**请求**
 
-- *\[name\]*
+- `name`
 
-    > Data table name.
+    > 数据表名称。
 
-``` text
+```text
 GET
 /api/v2/table/{table_name}
 ```
 
-Returns the following field information.
+返回以下字段信息：
 
-- *name*
+- `name`
 
-    > Data table name.
+    > 数据表名称。
 
-- *insert*
+- `insert`
 
-    > Permission to add new entries.
+    > 新增条目的权限。
 
-- *new_column*
+- `new_column`
 
-    > Add field permissions.
+    > 新增字段权限。
 
-- *update*
+- `update`
 
-    > Change entry permissions.
+    > 更改条目权限。
 
-- *columns*
+- `columns`
 
-    > Array of field-related information.
+    > 字段相关信息数组：
     >
-    > > - *name*
+    > > - `name`
     > >
-    > > > Field name.
+    > >     > 字段名称。
     > >
-    > > - *type*
+    > > - `type`
     > >
-    > > > Field data type.
+    > >     > 字段数据类型。
     > >
-    > > - *perm*
+    > > - `perm`
     > >
-    > > > Change the permissions for the field value.
+    > >     > 更改该字段值的权限。
 
-### <span id = "list-name-limit-offset-columns">list/{name}\[?limit=\... &offset=\... &columns=\... \]</span>
+
+### list/{name}\[?limit=\... &offset=\... &columns=\... \] {#list-name-limit-offset-columns}
 
 [Authorization](#authorization)
 
 **GET**/
-Returns a list of the specified data table entries in the current ecosystem. You can set the offset and the number of entries.
+返回当前生态系统中指定数据表条目的列表。可以设置偏移量和条目条数。
 
-#### Request
+**请求**
 
-- *name*
+- `name`
 
-    > Data table name.
+    > 数据表名称。
 
-- *\[limit\]* [Omitempty](#omitempty)
+- `limit` [Omitempty](#omitempty)
 
-    > Number of entries, default 25 entries.
+    > 条目条数，默认25条。
 
-- *\[offset\]* [Omitempty](#omitempty)
+- `offset` [Omitempty](#omitempty)
 
-    > Offset, default is 0.
+    > 偏移量，默认为0。
 
-- *\[columns\]* [Omitempty](#omitempty)
+- `columns` [Omitempty](#omitempty)
 
-    > A comma-separated list of requested columns, if not specified, all columns will be returned. The id column will be returned in all cases.
+    > 请求列的列表，以逗号分隔，如果未指定，将返回所有列。在所有情况下都会返回id列。
 
-``` text
+```text
 GET
 /api/v2/list/mytable?columns=name
 ```
 
-#### Response
+**响应**
 
-- *count*
+- `count`
 
-    > Total number of entries.
+    > 条目总数。
 
-- *list*
+- `list`
 
-    > Each element of the array contains the following parameters.
+    > 数组中的每个元素包含以下参数：
     >
-    > > - *id*
+    > > - `id`
     > >
-    > > > Entry ID.
+    > >     > 条目ID。
     > >
-    > > - The sequence of request columns.
+    > > -   请求列的序列。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1761,53 +1642,50 @@ Content-Type: application/json
         "name": "Mark",
    }, 
     ]
-} 
+}   
 ```
 
-### <span id = "sections-limit-offset-lang">sections\[?limit=\... &offset=\... &lang=\]</span>
+### sections\[?limit=\... &offset=\... &lang=\] {#sections-limit-offset-lang}
 
 [Authorization](#authorization)
 
-**GET**/ Returns the *sections* of the current ecosystem
-List of table entries, you can set the offset and the number of entries.
+**GET**/ 返回当前生态系统的 *sections*表条目的列表，可以设置偏移量和条目条数。
 
-If *role_access*
-field contains a list of roles and does not include the current role, no record will be returned. *title*
-The data in the field will be replaced by the *Accept-Language* language resource in the request header.
+如果 *role_access*字段包含角色列表，并且不包括当前角色，则不会返回记录。
+*title* 字段内数据将被请求头的 *Accept-Language* 语言资源替换。
 
-#### Request
+**请求**
 
-- *\[limit\]* [Omitempty](#omitempty)
+- `limit` [Omitempty](#omitempty)
 
-    > Number of entries, default 25 entries.
+    > 条目条数，默认25条。
 
-- *\[offset\]* [Omitempty](#omitempty)
+- `offset` [Omitempty](#omitempty)
 
-    > Offset, default is 0.
+    > 偏移量，默认为0。
 
-- *\[lang\]* [Omitempty](#omitempty)
+- `lang` [Omitempty](#omitempty)
 
-    > This field specifies the multilingual resource code or localization, e.g., *en, zh*. If the specified multilingual resource is not found, e.g., *en-US*, then the multilingual resource group in
-     Search in *en*.
+    > 该字段指定多语言资源代码或本地化，例如：*en，zh*。如果未找到指定的多语言资源，例如：*en-US*，则在多语言资源组 *en* 中搜索。
 
-``` text
+```text
 GET
 /api/v2/sections
 ```
 
-#### Response
+**响应**
 
-- *count*
+- `count`
 
-    > *sections* Total number of table entries.
+    > *sections* 表条目总数。
 
-- *list*
+- `list`
 
-    > Each element of the array contains information about all columns in the actions table.
+    > 数组中每个元素都包含sections表中所有列的信息。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1822,50 +1700,50 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**错误响应**
 
 *E_TABLENOTFOUND*
 
-### <span id = "row-name-id-columns">row/{name}/{id}\[?columns=\]< /span>
+### row/{name}/{id}\[?columns=\] {#row-name-id-columns}
 
 [Authorization](#authorization)
 
-**GET**/ Returns the entry for the specified data table in the current ecosystem. You can specify the columns to be returned.
+**GET**/ 返回当前生态系统中指定数据表的条目。可以指定要返回的列。
 
-#### Request
+**请求**
 
-- *name*
+- `name`
 
-    > Data table name.
+    > 数据表名称。
 
-- *id*
+- `id`
 
-    > Entry ID.
+    > 条目ID。
 
-- *\[columns\]* [Omitempty](#omitempty)
+- `columns` [Omitempty](#omitempty)
 
-    > A comma-separated list of requested columns, if not specified, all columns will be returned. The id column will be returned in all cases.
+    > 请求列的列表，以逗号分隔，如果未指定，将返回所有列。在所有情况下都会返回id列。
 
-``` text
+```text
 GET
 /api/v2/row/mytable/10?columns=name
 ```
 
-#### Response
+**响应**
 
-- *value*
+- `value`
 
-    > Array of received column values
+    > 接收列值的数组
     >
-    > > - *id*
+    > > - `id`
     > >
-    > > > Entry ID.
+    > >     > 条目ID。
     > >
-    > > - The sequence of request columns.
+    > > -   请求列的序列。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1873,112 +1751,110 @@ Content-Type: application/json
     "id": "10",
     "name": "John",
     }
-} 
+}   
 ```
 
-#### Error Response
+**错误响应**
 
 *E_NOTFOUND*
 
-### <span id = "row-name-colorn-id">row/{name}/{column}/{id} </span>
+### row/{name}/{column}/{id} {#row-name-colorn-id}
 
-[Authorization] (#Authorization)
+[Authorization] (#authorization)
 
-**GET**/ Return to the entry of the data table specified in the current ecosystem. You can specify columns to be returned.
+**GET**/ 返回当前生态系统中指定数据表的条目。可以指定要返回的列。
 
-#### Request
+**请求**
 
-- *Name *
+- `Name`
 
-     > Data table name.
+    > 数据表名称。
 
-- *colorn *
+- `colorn`
 
-     > Data list name.
+    > 数据表列名。
 
-- *ID *
+- `ID`
 
-     > Stripe ID.
+    > 条目ID。
 
-- * \ [columns \] * [omitempty] (#omitempty)
+- `columns` [omitempty](#omitempty)
 
-     > The list of request lists is separated by commas. If it is not specified, all columns will be returned. In all cases, the ID column will be returned.
+    > 请求列的列表，以逗号分隔，如果未指定，将返回所有列。在所有情况下都会返回id列。
 
-`` `default
+```text
 GET
-/API/V2/ROW/MyTable/name/John? Columns = name
-`` `
+/api/v2/row/mytable/name/John?columns=name
+```
 
-#### Response
+**响应**
 
-- *Value *
+- `value`
 
-     > Array of receiving column values
-     Forecast
-     > - *ID *
-     >>
-     >>> Strip ID.
-     >>
-     > - -The sequence of the request column.
+    > 接收列值的数组
+    >
+    > > -   *id*
+    > >
+    > >     > 条目ID。
+    > >
+    > > -   请求列的序列。
 
-#### Response Example
+**响应示例**
 
-`` `default
+```text
 200 (OK)
-Content-type: Application/JSON
-{{
-     "Values": {
-     "ID": "10",
-     "name": "John",
-     }
-}
-`` `
+Content-Type: application/json
+{
+    "values": {
+    "id": "10",
+    "name": "John",
+    }
+}   
+```
 
-#### Error Response
+**错误响应**
 
 *E_NOTFOUND*
 
-### systemparams 
+### systemparams {#systemparams}
 
 [Authorization](#authorization)
 
-**GET**/ Returns a list of platform parameters.
+**GET**/ 返回平台参数列表。
 
-#### Request
+**请求**
 
-``` text
+```text
 GET
 /api/v2/systemparams/[?names=...]
 ```
 
-- 
+- `names` [Omitempty](#omitempty)
 
-    *\[names\]* [Omitempty](#omitempty)
+请求参数列表，用逗号分隔。例如
+    `/api/v2/systemparams/?names=max_columns,max_indexes`。
 
-    A list of request parameters, separated by commas. For example
-        `/api/v2/systemparams/?names=max_columns,max_indexes`.
+**响应**
 
-#### Response
+- `list`
 
-- *list*
-
-    > Each element of the array contains the following parameters.
+    > 数组中每个元素包含以下参数：
     >
-    > > - *name*
+    > > - `name`
     > >
-    > > > Parameter name.
+    > >     > 参数名称。
     > >
-    > > - *value*
+    > > - `value`
     > >
-    > > > Parameter values.
+    > >     > 参数值。
     > >
-    > > - *conditions*
+    > > - `conditions`
     > >
-    > > > Change the permission of the parameter.
+    > >     > 更改参数的权限。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1993,43 +1869,43 @@ Content-Type: application/json
         "conditions": "ContractAccess("@1UpdateSysParam")",
     }, 
     ]
-} 
+}      
 ```
 
-#### Error Response
+**错误响应**
 
 *E_PARAMNOTFOUND*
 
-### <span id = "history-name-id">history/{name}/{id}</span>
+### history/{name}/{id} {#history-name-id}
 
 [Authorization](#authorization)
 
-**GET**/ Returns the change record for the entry in the specified data table in the current ecosystem.
+**GET**/ 返回当前生态系统中指定数据表中条目的更改记录。
 
-#### Request
+**请求**
 
-``` text
+```text
 GET
 /api/v2/history?name=contracts&id=5
 ```
 
-> - *name*
+> - `name`
 >
-> Data Table Name.
+>     > 数据表名称。
 >
-> - *id*
+> - `id`
 >
-> > Entry ID.
+>     > 条目ID。
 
-#### Response
+**响应**
 
-> - *list*
+> - `list`
 >
-> Each element of the array contains a change record for the requested entry.
+>     > 数组中每个元素包含所请求条目的更改记录。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -2045,43 +1921,42 @@ Content-Type: application/json
 }
 ```
 
-### <span id = "interface-page-menu-snippet-name">interface/{page|menu|snippet}/{name}</span>
+### interface/{page|menu|snippet}/{name} {#interface-page-menu-snippet-name}
 
 [Authorization](#authorization)
 
-**GET**/ Returns the current ecosystem in the specified data table (pages, menu or snippet) *name*
-The entry for the field.
+**GET**/ 返回当前生态系统指定数据表（pages，menu或snippet）中 *name* 字段的条目。
 
-``` text
+```text
 GET
 /api/v2/interface/page/default_page
 /api/v2/interface/menu/default_menu
 /api/v2/interface/snippet/welcome
 ```
 
-#### Request
+**请求**
 
-- *name*
+- `name`
 
-    > Specifies the name of the entry in the table.
+    > 指定表中条目的名称。
 
-#### Response
+**响应**
 
-- *id*
+- `id`
 
-    > Entry ID.
+    > 条目ID。
 
-- *name*
+- `name`
 
-    > Entry name.
+    > 条目名称。
 
-- *other*
+- `other`
 
-    > Other columns of the table.
+    > 该表的其他列。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -2090,85 +1965,85 @@ Content-Type: application/json
     "value": "P(Page content)",
     "default_menu": "default_menu",
     "validate_count": 1
-} 
+}   
 ```
 
-#### Error Response
+**错误响应**
 
 *E_QUERY*, *E_NOTFOUND*
 
-## Contract Function Interface
+## Contract Function Interface {#contract-function-interface}
 
-### <span id = "contracts-limit-offset">contracts\[?limit=\... &offset=\... \]</span>
+### contracts\[?limit=\... &offset=\... \] {#contracts-limit-offset}
 
 [Authorization](#authorization)
 
-**GET**/ Returns a list of contracts in the current ecosystem, with the ability to set offsets and the number of entries.
+**GET**/ 返回当前生态系统中的合约列表，可以设置偏移量和条目条数。
 
-#### Request
+**请求**
 
-- *\[limit\]* [Omitempty](#omitempty)
+- `limit` [Omitempty](#omitempty)
 
-    > Number of entries, default 25 entries.
+    > 条目条数，默认25条。
 
-- *\[offset\]* [Omitempty](#omitempty)
+- `offset` [Omitempty](#omitempty)
 
-    > Offset, default is 0.
+    > 偏移量，默认为0。
 
-``` text
+```text
 GET
 /api/v2/contracts
 ```
 
-#### Response
+**响应**
 
-- *count*
+- `count`
 
-    > Total number of entries.
+    > 条目总数。
 
-- *list*
+- `list`
 
-    > Each element of the array contains the following parameters.
+    > 数组中每个元素包含以下参数：
     >
-    > > - *id*
+    > > - `id`
     > >
-    > > > Contract ID.
+    > >     > 合约ID。
     > >
-    > > - *name*
+    > > - `name`
     > >
-    > > > Contract name.
+    > >     > 合约名称。
     > >
-    > > - *value*
+    > > - `value`
     > >
-    > > > Contract contents.
+    > >     > 合约内容。
     > >
-    > > - *wallet_id*
+    > > - `wallet_id`
     > >
-    > > > The account address to which the contract is tied.
+    > >     > 合约绑定的账户地址。
     > >
-    > > - *address*
+    > > - `address`
     > >
-    > > > Contract-bound wallet address `XXXX-... -XXXX`.
+    > >     > 合约绑定的钱包地址 `XXXX-...-XXXX`。
     > >
-    > > - *ecosystem_id*
+    > > - `ecosystem_id`
     > >
-    > > > The ecosystem ID to which the contract belongs.
+    > >     > 合约所属的生态系统ID。
     > >
-    > > - *app_id*
+    > > - `app_id`
     > >
-    > > > The application ID to which the contract belongs.
+    > >     > 合约所属的应用程序ID。
     > >
-    > > - *conditions*
+    > > - `conditions`
     > >
-    > > > Change the permission of the contract.
+    > >     > 更改合约的权限。
     > >
-    > > - *token_id*
+    > > - `token_id`
     > >
-    > > > The ID of the ecosystem where the pass is used to pay the contract fee.
+    > >     > 作为支付合约费用的通证所在的生态系统ID。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -2179,121 +2054,118 @@ Content-Type: application/json
         "token_id": "1", 
         "wallet_id": "0", 
         "value": "contract MainCondition {
-conditions {
-  if(EcosysParam(`founder_account`)! =$key_id)
-  {
-      warning `Sorry, you dont have access to this action.`
-    }
-  }
-}",
-"address": "0000-0000-0000-0000-0000-0000",
-"conditions": "ContractConditions(`MainCondition`)"        
- }, 
-...
-  ]
-} 
-```
+                conditions {
+                if(EcosysParam(`founder_account`)!=$key_id)
+                {
+                    warning `Sorry, you dont have access to this action.`
+                }
+                }
+            }",
+            "address":"0000-0000-0000-0000-0000",
+            "conditions":"ContractConditions(`MainCondition`)"
+        },
+    ...
+    ]
+ }
+ ```
 
-### <span id = "contract-name">contract/{name}</span>
+### contract/{name} {#contract-name}
 
 [Authorization](#authorization)
 
-**GET**/ Returns information about the specified contract. The default is to query the contract in the current ecosystem.
+**GET**/ 返回指定合约的相关信息。默认在当前生态系统中查询合约。
 
-#### Request
+**请求**
 
-- *name*
+- `name`
 
-    > Contract name.
+    > 合约名称。
 
-``` text
+```text
 GET
 /api/v2/contract/mycontract
 ```
 
-#### Response
+**响应**
 
-- *id*
+- `id`
 
-    > Contract ID in VM.
+    > VM中合约ID。
 
-- *name*
+- `name`
 
-    > Contract name with ecosystem ID `@1MainCondition`.
+    > 带生态系统ID的合约名称 `@1MainCondition`。
 
-- *state*
+- `state`
 
-    > The ecosystem ID of the contract.
+    > 合约所属的生态系统ID。
 
-- *walletid
+- `walletid`
 
-    > The address of the account to which the contract is tied.
+    > 合约绑定的账户地址。
 
-- *tokenid*
+- `tokenid`
 
-    > The ecosystem ID of the pass that is used to pay for the contract.
+    > 作为支付合约费用的通证所在的生态系统ID。
 
-- *address*
+- `address`
 
-    > Contract-bound wallet address `XXXX-... -XXXX`.
+    > 合约绑定的钱包地址 `XXXX-...-XXXX`。
 
-- *tableid*
+- `tableid`
 
-    ID of the entry in the > *contracts* table where the contract is located.
+    > *contracts* 表中合约所在的条目ID。
 
-- *fields*
-- 
+- `fields`
 
-    > The array contains structural information for each parameter of the contract **data** section.
+    > 数组中包含合约 **data** 部分每个参数的结构信息：
     >
-    > > - *name*
+    > > - `name`
     > >
-    > > > Parameter name.
+    > >     > 参数名称。
     > >
-    > > - 
+    > > - `type`
     > >
-    > > *type*
+    > >      参数类型。
     > >
-    > > Parameter type.
+    > > - `optional`
     > >
-    > > - *optional*
-    > >
-    > > > Parameter options, \`true\` means optional parameters, \`false\` means mandatory parameters.
+    > >     > 参数选项，\`true\` 表示可选参数，\`false\` 表示必选参数。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
     "fields" : [
-        {"name": "amount", "type": "int", "optional": false},
-        {"name": "name", "type": "string", "optional": true}
+        {"name":"amount", "type":"int", "optional": false},
+        {"name":"name", "type":"string", "optional": true}
     ],
     "id": 150,
-    "name":"@1mycontract",
+    "name": "@1mycontract",
     "tableid" : 10,
-} 
+}      
 ```
 
-#### Error Response
+**错误响应**
 
 *E_CONTRACT*
 
-### sendTX 
+### sendTX {#sendtx}
 
 [Authorization](#authorization)
 
 **POST**/
-Receives the transactions in the parameters and adds them to the transaction queue, returning a transaction hash if the request is executed successfully. This hash yields the corresponding transaction within the block and is included in the error text message in case of an Error Response.
+接收参数中的交易并将其添加到交易队列，如果请求执行成功，则返回交易哈希。该哈希可获得区块内对应的交易，在发生错误响应时，该哈希包含在错误文本信息中。
 
-#### Request
+**请求**
 
-- *tx_key*
+- `tx_key`
 
-    > Transaction content, this parameter can specify any name and supports receiving multiple transactions.
+    > 交易内容，该参数可指定任何名称，支持接收多个交易。
 
-``` text
+```text
 POST
 /api/v2/sendTx
 
@@ -2301,91 +2173,90 @@ Headers:
 Content-Type: multipart/form-data
 
 Parameters:
-tx1 - Transaction 1
-txN - Trading N
+tx1 - 交易1
+txN - 交易N
 ```
 
-#### Response
+**响应**
 
-- *hashes*
+- `hashes`
 
-    > Transaction hash arrays.
+    > 交易哈希数组：
     >
-    > > - *tx1*
+    > > - `tx1`
     > >
-    > > > Trading 1 hash.
+    > >     > 交易1的哈希。
     > >
-    > > - *txN*
+    > > - `txN`
     > >
-    > > > Trading N's hash.
+    > >     > 交易N的哈希。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
     "hashes": {
-        "tx1": "67afbc435634..... ",
-        "txN": "89ce4498eaf7..... ",
+        "tx1": "67afbc435634.....",
+        "txN": "89ce4498eaf7.....",
 }
 ```
 
-#### Error Response
+**错误响应**
 
 *E_LIMITTXSIZE*,*E_BANNED*
 
-### txstatus 
+### txstatus {#txstatus}
 
 [Authorization](#authorization)
 
 **POST**/
-Returns the block ID and error message for the specified transaction hash. If the return values for the block ID and error text message are null, then the transaction is not yet contained in the block.
+返回指定交易哈希的区块ID和错误信息，如果区块ID和错误文本信息的返回值为空，则该交易尚未包含在区块中。
 
-#### Request
+**请求**
 
-- *data*
+- `data`
 
-    > JSON list of transaction hashes.
+    > 交易哈希的JSON列表。
 
-``` text
+```text
 {"hashes":["contract1hash", "contract2hash", "contract3hash"]}
 ```
 
-``` text
+```text
 POST
 /api/v2/txstatus/
 ```
 
-#### Response
+**响应**
 
-- *results*
+- `results`
 
-    > The transaction hash is used as the key and the transaction detail is used as the value in the data dictionary.
+    > 数据字典中交易哈希作为键，交易详细作为值。
     >
-    > *hash*
+    > `hash`
     >
-    > > Trading Hash.
+    > > 交易哈希。
     > >
-    > > - *blockid*
+    > > - `blockid`
     > >
-    > > If the transaction execution succeeds, the block ID is returned; if the transaction execution fails, the
-    > > > *blockid* for [0]{.title-ref}.
+    > >     > 如果交易执行成功，则返回区块ID； 如果交易执行失败，则 *blockid* 为 [0]{.title-ref}。
     > >
-    > > - *result*
+    > > - `result`
     > >
-    > > > Returns the result of the transaction via the **\$result** variable.
+    > >     > 通过 **\$result** 变量返回交易结果。
     > >
-    > > - *errmsg*
+    > > - `errmsg`
     > >
-    > > Returns an error text message if the execution of the transaction fails.
+    > >     > 如果执行交易失败，则返回错误文本信息。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
-{ "results":
+{"results":
   {
     "hash1": {
          "blockid": "3123",
@@ -2399,50 +2270,50 @@ Content-Type: application/json
  }
 ```
 
-#### Error Response
+**错误响应**
 
 *E_HASHWRONG, E_HASHNOTFOUND*
 
-### <span id = "txinfo-hash">txinfo/{hash}</span>
+### txinfo/{hash} {#txinfo-hash}
 
-This request does not require login authorization.
+该请求不需要登录授权。
 
 **GET**/
 
-Returns information about the transaction for the specified hash, including the block ID and the number of confirmations. Also returns the contract name and its associated parameters, if optional parameters are specified.
+返回指定哈希的交易相关信息，包括区块ID和确认数。如果指定可选参数，还可返回合约名称及其相关参数。
 
-#### Request
+**请求**
 
-- *hash*
+- `hash`
 
-    > Transaction hash.
+    > 交易哈希。
 
-- *\[contractinfo\]* [Omitempty](#omitempty)
+- `contractinfo` [Omitempty](#omitempty)
 
-    > Contract detail parameter identifier, to get the contract details related to this transaction, specify `contractinfo=1`.
+    > 合约详细参数标识，要获取该交易相关的合约详情，需指定 `contractinfo=1`。
 
-``` text
+```text
 GET
 /api/v2/txinfo/c7ef367b494c7ce855f09aa3f1f2af7402535ea627fa615ebd63d437db5d0c8a?contractinfo=1
 ```
 
-#### Response
+**响应**
 
-- *blockid*
+- `blockid`
 
-    > If the value is `0`, then no transaction was found for that hash.
+    > 包含该交易的区块ID。如果该值为 `0`，则找不到该哈希的交易。
 
-- *confirm*
+- `confirm`
 
-    > The number of acknowledgements for this block *blockid*.
+    > 该区块 *blockid* 的确认数。
 
-- *data* [Omitempty](#omitempty)
+- `data` [Omitempty](#omitempty)
 
-    > If `contentinfo=1` is specified, the contract details are returned to this parameter.
+    > 如果指定了 `contentinfo=1`，则合约详情返回给该参数。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -2454,71 +2325,71 @@ Content-Type: application/json
         "params": {
             "ApplicationId": 1,
             "Conditions": "true",
-            "Value": "contract crashci4b {\n\t\t\tdata {}\n\t\t\t}"
+            "Value": "contract crashci4b {\n\t\t\tdata {}\n\t\t}"
         }
     }
 }
 ```
 
-#### Error Response
+**错误响应**
 
 *E_HASHWRONG*
 
-### txinfoMultiple
+### txinfoMultiple {#txinfomultiple}
 
-This request does not require login authorization.
+该请求不需要登录授权。
 
 **GET**/ 
 
-Returns the transaction-related information for the specified hash.
+返回指定哈希的交易相关信息。
 
-#### Request
+**请求**
 
-- *data*
-    - *hashes*
-    > A list of transaction hashes.
+- `data`
+    - `hashes`
+    > 交易哈希列表。
 
-- *\[contractinfo\]* [Omitempty](#omitempty)
+- `contractinfo` [Omitempty](#omitempty)
 
-    > Contract detail parameter identifier, to get the contract details related to this transaction, specify `contractinfo=1`.
+    > 合约详细参数标识，要获取该交易相关的合约详情，需指定`contractinfo=1`。
 
-``` text
+```text
 data: {"hashes":["contract1hash", "contract2hash", "contract3hash"]}
 ```
 
-``` text
+```text
 GET
 /api/v2/txinfoMultiple
 ```
 
-#### Response
+**响应**
 
-- *results*
+- `results`
 
-    > The transaction hash is used as the key and the transaction detail is used as the value in the data dictionary.
+    > 数据字典中交易哈希作为键，交易详细作为值。
     >
-    > > *hash*
+    > > `hash`
     > >
-    > > > Trading Hash.
-    > >
-    > > > *blockid*
-    > >
-    > If the value is `0`, then no transaction was found for that hash.
-    > >
-    > > > *confirm*
-    > >
-    > > > Number of acknowledgements for this block *blockid*.
-    > >
-    > > > *data*
-    > >
-    > > > If `contentinfo=1` is specified, the contract details are returned to this parameter.
+    > > > 交易哈希。
+    > > >
+    > > > `blockid`
+    > > >
+    > > > > 包含该交易的区块ID。如果该值为 `0`，则找不到该哈希的交易。
+    > > >
+    > > > `confirm`
+    > > >
+    > > > > 该区块 *blockid* 的确认数。
+    > > >
+    > > > `data`
+    > > >
+    > > > > 如果指定了 `contentinfo=1`，则合约详情返回给该参数。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
-{ "results":
+{"results":
   { 
     "hash1": {
          "blockid": "3123",
@@ -2532,282 +2403,273 @@ Content-Type: application/json
  }
 ```
 
-#### Error Response
+**错误响应**
 
 *E_HASHWRONG*
 
-### <span id = "page-validators-count-name">/page/validators_count/{name}</span>
-This request does not require login authorization.
+### /page/validators_count/{name} {#page-validators-count-name}
+该请求不需要登录授权。
 
 **GET**
 
-Returns the number of nodes to be validated for the specified page.
+返回指定页面所需验证的节点数。
 
-#### Request
+**请求**
 
-- *name*
+- `name`
 
-    > Page name with ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
-    > `@1main_page`.
-    > If you don't have an ecosystem ID, then search in the first ecosystem page by default
+    > 带生态系统ID的页面名称，格式为 `@ecosystem_id%%page_name%`，例如 `@1main_page`。
+    > 如果不带生态系统ID，则默认查找第一生态的页面。
 
-``` text
+```text
 GET
 /api/v2/page/validators_count/@2page_name
 ```
 
-#### Response
+**响应**
 
-- *validate_count*
+- `validate_count`
 
-    > Specifies the number of nodes to be validated for the page.
+    > 指定页面所需验证的节点数。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {"validate_count":1}
 ```
 
-#### Error Response
+**错误响应**
 
 *E_NOTFOUND, E_SERVER*
 
-### <span id = "content-menu-page-name">content/menu\|page/{name}</span>
+### content/menu\|page/{name} {#content-menu-page-name}
 
 [Authorization](#authorization)
 
 **POST**
 
-Returns a tree of code JSON objects for the specified page or menu name, which is the result of processing by the template engine.
+返回指定页面或菜单名称的代码JSON对象树，这是模版引擎处理的结果。
 
-#### Request
+**请求**
 
-- *name*
+- `name`
+    > 带生态系统ID的页面名称或菜单名称，格式为 `@ecosystem_id%%page_name%`，例如 `@1main_page`。
+    > 如果不带生态系统ID，则默认查找当前生态的页面或菜单。
 
-    > Page name or menu name with ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
-    > `@1main_page`.
-    > If no ecosystem ID is included, then search for the current ecosystem page or menu by default
-
-``` text
+```text
 POST
 /api/v2/content/page/default
 ```
 
-#### Response
+**响应**
 
-- *menu* || *title*
+- `menu` || `title`
 
-    > request *content/page/\...* The name of the menu to which the page belongs when requesting it.
+    > 请求 *content/page/\...* 时，页面所属的菜单名称。
 
-- *menutree*
+- `menutree`
 
-    > request *content/page/\...* The page's menu JSON object tree when requested.
+    > 请求 *content/page/\...* 时，页面的菜单JSON对象树。
 
-- *title*--head for the menu *content/menu/\...*
+- `title` --head for the menu *content/menu/\...*
 
-    > request *content/menu/\...* Menu title when requested.
+    > 请求 *content/menu/\...* 时，菜单标题。
 
-- *tree*
+- `tree`
 
-    > Page or menu JSON object tree.
+    > 页面或菜单JSON对象树。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
-    "tree": {"type":"......" , 
+    "tree": {"type":"......", 
           "children": [
-               {...} ,
+               {...},
                {...}
           ]
     },
-} 
+}      
 ```
 
-#### Error Response
+**错误响应**
 
-*E_NOTFOUND*
+`E_NOTFOUND`
 
-### <span id = "content-source-name">content/source/{name}</span>
+### content/source/{name} {#content-source-name}
 
 [Authorization](#authorization)
 
 **POST**
 
-Returns a tree of coded JSON objects for the specified page name. Does not execute any functions or receive any data. The returned JSON object tree corresponds to the page template and can be used in the visual page designer. If the page is not found, a 404 error is returned.
-Request """""""
+返回指定页面名称的代码JSON对象树。不执行任何函数或接收任何数据。返回的JSON对象树对应于页面模版，可以在可视化页面设计器中使用。
+如果找不到页面，则返回404错误。
+**请求**
 
-- *name*
+- `name`
 
-    > Page name with ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
-    > `@1main_page`.
-    > If no ecosystem ID is included, then search for the current eco-page by default.
+    > 带生态系统ID的页面名称，格式为 `@ecosystem_id%%page_name%`，例如 `@1main_page`。
+    > 如果不带生态系统ID，则默认查找当前生态的页面。
 
-#### Response
+**响应**
 
-``` text
+```text
 POST
 /api/v2/content/source/default
 ```
 
-- *tree*
+- `tree`
 
-    > JSON object tree of the page.
+    > 页面的JSON对象树。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
-    "tree": {"type":"......" , 
+    "tree": {"type":"......", 
           "children": [
-               {...} ,
+               {...},
                {...}
           ]
     },
-} 
+}      
 ```
 
-#### Error Response
+**错误响应**
 
 *E_NOTFOUND, E_SERVER*
 
-### <span id = "content-hash-name">content/hash/{name}</span>
+
+### content/hash/{name} {#content-hash-name}
 
 **POST** 
 
-Returns a SHA256 hash of the specified page name, or a 404 error if the page cannot be found.
+返回指定页面名称的SHA256哈希，如果找不到页面，则返回404错误。
 
-This request does not require login authorization. To receive the correct hash when making requests to other nodes, you must also pass
-*ecosystem,keyID,roleID,isMobile*
-parameter. To receive pages from other ecosystems, the ecosystem ID must be prefixed to the page name. For example: `@2mypage`.
+该请求不需要登录授权。要向其他节点发出请求时接收正确的哈希，还必须传递 *ecosystem,keyID,roleID* 参数。
+要从其他生态系统接收页面，生态系统ID必须在页面名称中添加前缀。例如：`@2mypage`。
 
-#### Request
+**请求**
 
 
-``` text
+```text
 POST
 /api/v2/content/hash/default
 ```
-- *name*
+- `name`
 
-    > The name of the page with the ecosystem ID.
+    > 带生态系统ID的页面名称。
 
-- *ecosystem*
+- `ecosystem`
 
-    > Ecosystem ID.
+    > 生态系统ID。
 
-- *keyID*
+- `keyID`
 
-    > Account address.
+    > 账户地址。
 
-- *roleID*
+- `roleID`
 
-    > Role ID.
-
-- *isMobile*
-
-    > The parameter identification of the mobile platform.
+    > 角色ID。
 
 
+**响应**
 
-#### Response
+- `hash`
 
-- *hash*
+    > 十六进制哈希值。
 
-    > Hexadecimal hash.
+**响应示例**
 
-#### Response Example
-
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
     "hash": "b631b8c28761b5bf03c2cfbc2b49e4b6ade5a1c7e2f5b72a6323e50eae2a33c6"
-} 
+}      
 ```
 
-#### Error Response
+**错误响应**
 
 *E_NOTFOUND, E_SERVER, E_HEAVYPAGE*
 
-### content
+### content {#content}
 
 **POST**
 
-Returns the number of JSON objects for the page code from the **template** parameter, if the optional parameter
-**source** is specified as
-`true or 1`, then this JSON object tree does not perform any functions and receive data. This JSON object tree can be used in the visual page designer.
+从 **template** 参数返回页面代码的JSON对象数，如果将可选参数 **source** 指定为`true或1`，则该JSON对象树不执行任何函数和接收数据。
+该JSON对象树可以在可视化页面设计器中使用。
 
-This request does not require login authorization.
+该请求不需要登录授权。
 
-#### Request
+**请求**
 
-- *template*
+- `template`
 
-    > Page code.
+    > 页面代码。
 
-- *\[source\]*
+- `source`
 
-    > If `true or 1` is specified, the JSON object tree does not perform any functions and receives data.
+    > 如果指定为 `true或1`，则JSON对象树不执行任何函数和接收数据。
 
-``` text
+```text
 POST
 /api/v2/content
 ```
 
-#### Response
+**响应**
 
-- *tree*
+- `tree`
 
-    > JSON object tree.
+    > JSON对象树。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
-    "tree": {"type":"......" , 
+    "tree": {"type":"......", 
           "children": [
-               {...} ,
+               {...},
                {...}
           ]
     },
-} 
+}      
 ```
 
-#### Error Response
+**错误响应**
 
 *E_NOTFOUND, E_SERVER*
 
-### maxblockid
+### maxblockid {#maxblockid}
 
-**GET**/ Returns the highest block ID on the current node.
+**GET**/ 返回当前节点上的最高区块ID。
 
-This request does not require login authorization.
+该请求不需要登录授权。
 
-#### Request
+**请求**
 
-``` text
+```text
 GET
 /api/v2/maxblockid
 ```
 
-#### Response
+**响应**
 
-- *max_block_id*
+- `max_block_id`
 
-    > The highest block ID on the current node.
+    > 当前节点上的最高区块ID。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -2815,56 +2677,56 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**错误响应**
 
 *E_NOTFOUND*
 
-### <span id = "block-id">block/{id}</span>
+### block/{id} {#block-id}
 
-**GET**/ Returns information about the specified block ID.
+**GET**/ 返回指定区块ID的相关信息。
 
-This request does not require login authorization.
+该请求不需要登录授权。
 
-#### Request
+**请求**
 
-- *id*
+- `id`
 
-    > Block ID.
+    > 区块ID。
 
-``` text
+```text
 POST
 /api/v2/block/32
 ```
 
-#### Response
+**响应**
 
-- *hash*
+- `hash`
 
-    > Block hash.
+    > 区块哈希值。
 
-- *key_id*
+- `key_id`
 
-    > The address of the account that signed the block.
+    > 签署该区块的账户地址。
 
-- *time*
+- `time`
 
-    > Block generation timestamp.
+    > 区块生成时间戳。
 
-- *tx_count*
+- `tx_count`
 
-    > Total number of transactions in the block.
+    > 该区块内的交易总数。
 
-- *rollbacks_hash*
+- `rollbacks_hash`
 
-    > Block rollback hash.
+    > 区块回滚哈希值。
 
-- *node_position*
+- `node_position`
 
-    > The position of the block in the honor node list.
+    > 该区块在 荣誉节点 列表的位置。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -2874,114 +2736,115 @@ Content-Type: application/json
     "tx_count": 3,
     "rollbacks_hash": "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
     "node_position": 0,
-} 
+}      
 ```
 
-#### Error Response
+**错误响应**
 
 *E_NOTFOUND*
 
-### <span id = "avatar-ecosystem-member">avatar/{ecosystem}/{member}</span>
+### avatar/{ecosystem}/{member} {#avatar-ecosystem-member}
 
-**GET**/ Returns the avatar of the user in the *member* table (available without login).
+**GET**/ 返回 *member* 表中用户的头像（无需登录即可使用）。
 
-#### Request
+**请求**
 
-- *ecosystem*
+- `ecosystem`
 
-    > Ecosystem ID.
+    > 生态系统ID。
 
-- *member*
+- `member`
 
-    > The user's account address. (xxxx-... -xxxx)
+    > 用户的账户地址。(xxxx-...-xxxx)
 
-``` text
+```text
 GET
-/api/v2/avatar/1/1234-2134-... -4321
+/api/v2/avatar/1/1234-2134-...-4321
 ```
 
-#### Response
+**响应**
 
-The request header *Content-Type* is the image type and the image data is returned in the response body.
+请求头 *Content-Type* 为图像类型，图像数据在响应体中返回。
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: image/png  
 ```
 
-#### Error Response
+**错误响应**
 
 *E_NOTFOUND* *E_SERVER*
 
-### <span id = "config-centrifugo">config/centrifugo</span>
+### config/centrifugo {#config-centrifugo}
 
-**GET**/ Returns the host address and port of centrifugo.
+**GET**/ 返回centrifugo的主机地址和端口。
 
-This request does not require login authorization.
+该请求不需要登录授权。
 
-#### Request
+**请求**
 
-``` text
+```text
 GET
 /api/v2/config/centrifugo
 ```
 
-#### Response
+**响应**
 
-Response result format `http://address:port`, e.g.: `http://127.0.0.1:8100`.
+响应结果格式 `http://address:port`，例如: `http://127.0.0.1:8100`。
 
-#### Error Response
+**错误响应**
 
 *E_SERVER*
 
-### updnotificator
+### updnotificator {#updnotificator}
 
 **POST**/
 
-(Discarded)
+(已弃用)
 
-Sends all messages that have not yet been sent to the centrifugo notification service. Sends only messages for the specified ecosystem and members.
+发送尚未发送到centrifugo通知服务的所有消息。仅发送指定生态系统和成员的消息。
 
-This request does not require login authorization.
+该请求不需要登录授权。
 
-#### Request
+**请求**
 
-- *id*
+- `id`
 
-    > Member's account address.
+    > 成员的账户地址。
 
-- *ecosystem*
+- `ecosystem`
 
-    > Ecosystem ID.
+    > 生态系统ID。
 
-``` text
+```text
 POST
 /api/v2/updnotificator
 ```
 
-#### Response Example
+**响应示例**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
     "result": true
-} 
+}      
 ```
 
-### Special instructions
 
-#### Omitempty
-If the field has an omitempty attribute, it means that the field is an optional parameter
+### 特殊说明 {#special-instructions}
 
-#### Authorization
-If the interface with Authorization tag, that this interface requires login authorization, add Authorization to the request header, example.
+#### Omitempty {#omitempty}
+如字段带有omitempty属性，表示此字段为可选参数
+
+#### Authorization {#authorization}
+如接口带有Authorization标签，表示此接口需要login授权，请求头添加Authorization，示例：
 
 key = Authorization
-value = "Bearer + [login token](#login)"
+value = "Bearer +[login token](#login)"
 
-``` text
-Authorization Bearer eyJhbGciOiJI..... kBZgGIlPhfXNZJ73RiZtM
+```text
+    Authorization   Bearer eyJhbGciOiJI.....kBZgGIlPhfXNZJ73RiZtM
 ```

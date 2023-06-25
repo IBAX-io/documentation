@@ -1,26 +1,26 @@
-# Template Language
+# 模版语言 {#template-language}
 
-  - [Page construction](#page-construction)
-    - [Template engine](#template-engine)
-    - [Create pages](#create-pages)
-      - [Visual page designer](#visual-page-designer)
-      - [Applicable styles](#applicable-styles)
-      - [Page module](#page-module)
-      - [Language resource editor](#language-resource-editor)
-  - [Logicor template language](#logicor-template-language)
-    - [Logicor overview](#logicor-overview)
-      - [Use PageParams to pass parameters to pages](#use-pageparams-to-pass-parameters-to-pages)
-      - [Calling contracts](#calling-contracts)
-  - [Logicor function classification](#logicor-function-classification)
-    - [Operations on variables:](#operations-on-variables)
-    - [Navigational operations:](#navigational-operations)
-    - [Data manipulation:](#data-manipulation)
-    - [Data presentation:](#data-presentation)
-    - [Accepting of data:](#accepting-of-data)
-    - [Data formatting elements:](#data-formatting-elements)
-    - [Form elements:](#form-elements)
-    - [Operations on code blocks:](#operations-on-code-blocks)
-  - [Logicor function references](#logicor-function-references)
+<!-- TOC -->
+
+- [页面构建](#page-construction)
+    - [模版引擎](#template-engine)
+    - [创建页面](#create-pages)
+        - [可视化页面设计器](#visual-page-designer)
+        - [样式使用](#applicable-styles)
+        - [页面模块](#page-module)
+        - [多语言资源编辑器](#language-resource-editor)
+- [Logicor 模版语言](#logicor-template-language)
+    - [Logicor 概述](#Logicor-overview)
+- [Logicor 函数功能分类](#logicor-function-classification)
+    - [变量操作](#operations-on-variables)
+    - [导航操作](#navigational-operations)
+    - [数据操作](#data-manipulation)
+    - [显示数据](#data-presentation)
+    - [接收数据](#accepting-of-data)
+    - [数据格式化元素](#data-formatting-elements)
+    - [表单元素](#form-elements)
+    - [代码片段操作](#operations-on-code-blocks)
+- [Logicor 函数参考](#logicor-function-references)
     - [Address](#address)
     - [AddressToId](#addresstoid)
     - [AddToolButton](#addtoolbutton)
@@ -76,137 +76,214 @@
     - [Table](#table)
     - [TransactionInfo](#transactioninfo)
     - [VarAsIs](#varasis)
-  - [App styles for mobile devices](#app-styles-for-mobile-devices)
-    - [Layout](#layout)
-      - [Title](#title)
-      - [Strong-class names](#strong-class-names)
-      - [Color](#color)
-      - [Grid](#grid)
-      - [Panel](#panel)
-      - [Form](#form-app)
-      - [Button](#button-app)
-      - [Icon](#icon)
+- [适配移动设备的应用程序样式](#app-styles-for-mobile-devices)
+    - [排版](#layout)
+        - [标题](#title)
+        - [强调类类名](#strong-class-names)
+        - [颜色](#color)
+    - [网格](#grid)
+    - [面板](#panel)
+    - [表单](#form-app)
+    - [按钮](#button-app)
+    - [图标](#icon)
 
-## Page construction
+<!-- /TOC -->
 
-Weaver's Integrated Development Environment (IDE) is created using React, a JavaScript library. It has a page editor and a visual page designer. Pages are basic parts of an application, which are used to retrieve and display data from tables, create forms for receiving user input data, pass data to contracts, and navigate between application pages. Like contracts, pages are stored in the blockchain, which can ensure they are tamper-proof when loaded in the software client.
+## 页面构建 {#page-construction}
 
-### Template engine
+Weaver 的集成开发环境使用 *JavaScript React库*创建，包括页面编辑器和可视化页面设计器。
+页面是应用程序的基本组成部分，它提供从数据库表中检索和显示数据，创建用于接收用户输入数据的表单，将数据传递给合约以及在应用程序页面之间导航。
+页面和合约一样，都存储在区块链中，这可以确保在软件客户端中加载它们时防止篡改。
 
-Page elements (pages and menus) are formed by developers in the template engine of a verification node using the template language in Weaver's page editor. All pages are constructed using the Logicor language developed by IBAX's development team. Use content/... API commands to request pages from nodes on the network. What the template engine sent as a response to this type of request is not an HTML page, but a JSON code composed of HTML tags that form a tree in accordance with the template structure. If you want to test the template engine, you can refer to the [content](../reference/api2.md#content) API command.
+### 模版引擎 {#template-engine}
 
-### Create pages
+页面元素（页面和菜单）是由开发者在 Weaver 的页面编辑器中使用模版语言在验证节点的 *模版引擎*中形成的。
+所有页面均使用由 IBAX区块链平台 开发团队开发的 Logicor 语言构建。使用 *content/\...* API命令从网络上的节点请求页面。
+模版引擎作为对此类请求的回复发送的内容不是HTML页面，而是由HTML标记组成的JSON代码，这些标记根据模版结构形成树模版引擎对此类请求的响应发送的不是HTML页面，
+而是由HTML标记组成的JSON代码，这些标记根据模版结构形成树。如果想要测试模版引擎可参考[content](../reference/api2.md#content) API接口。
 
-You can use the page editor to create and edit pages, which can be found in the Pages section of Weaver's management tool. The editor can be used to:
+### 创建页面 {#create-pages}
 
-* Write the page code, highlight the keywords of the Logicor template language;
-* Select and display menus on pages;
-* Edit the menu page;
-* Configure the permission to change pages, by specifying the contract name with permission in the ContractConditions function, or by directly specifying the access permission in Change conditions;
-* Start the visual page designer;
-* Preview pages.
+可以使用页面编辑器创建和编辑页面，该编辑器可在 Weaver 的管理工具的**页面Pages** 部分中找到。该编辑器提供：
 
-#### Visual page designer
+-   编写页面代码，突出显示 Logicor 模版语言的关键字；
+-   选择菜单，这些菜单将显示在页面上；
+-   编辑菜单页面；
+-   配置更改页面的权限，通过在 *ContractConditions* 函数中指定具有权限的合约名称，或通过在 *更改条件Change conditions* 中直接指定访问权限；
+-   启动可视化页面设计器；
+-   页面预览。
 
-The visual page designer can be used to create page layouts without using interface codes in the Logicor language. With it, you can set the position of form elements and text on pages by dragging and dropping such elements, and configure the size of page blocks. It provides a set of ready-to-use blocks for presenting standard data models: with titles, forms and information panels. After creating a page in the visual page designer, you can write program logic for receiving data and conditional structure in the page editor. In the future, we plan to create a visual page designer with additional functions.
+#### 可视化页面设计器 {#visual-page-designer}
 
-#### Applicable styles
+可视化页面设计器可以创建页面设计而无需借助 Logicor语言中的界面代码。
+视图化Designer可以使用拖放操作在页面上设置表单元素和文本的位置，以及配置页面块大小。
+视图化提供了一组用于显示标准数据模型的即用型块：带有标题，表单和信息面板。在视图化中创建页面后，可在页面编辑器中编写接收数据和条件结构的程序逻辑。
+未来我们计划创建一个更加完整的可视化页面设计器。
 
-By default, pages are presented with Angular's Bootstrap Angle style. Users can create their own styles according to needs. The style is stored in the style parameter stylesheet in the ecosystem parameter table.
+#### 样式使用 {#applicable-styles}
 
-#### Page module
+默认使用Angular的Bootstrap Angle类样式风格显示页面。如果需要，用户可以创建自己的样式。样式存储在生态系统参数表的样式参数 *stylesheet* 中。
 
-To use a code block in multiple pages, you can create a page module to hold and embed it into the page code. Page modules can be created and edited in Weaver's Module Blocks. Like pages, editing permissions can be defined.
+#### 页面模块 {#page-module}
 
-#### Language resource editor
+要在多个页面中使用代码片段，可以创建页面模块并将其嵌入到页面代码。在 Weaver 的 **模块Blocks**中可创建和编辑这些页面模块。 和页面一样，可定义编辑权限。
 
-Weaver includes a mechanism for page localization using a function **LangRes** of the Logicor template language. It could replace language resource tags on the page with text lines corresponding to the language selected by the user in the software client or browser. You can use the short syntax **$lable$** instead of the **LangRes** function. The translation of messages in popups initiated by the contract is performed by Needle's **LangRes** function.
+#### 多语言资源编辑器 {#language-resource-editor}
 
-You can create and edit language resources in the Language resources section of Weaver. A language resource consists of label names and corresponding translation of such name in different languages, as well as the corresponding two-letter language identifier (EN, ZH, JP, etc.).
+Weaver 包括一个使用 Logicor 模版语言的函数 **LangRes**进行页面本地化的机制。
+它将页面上的语言资源标签替换为用户在软件客户端或浏览器中选择的语言对应的文本行。
+可以使用简短的语法 **\$lable\$** 代替 **LangRes**函数。由合约发起的弹出窗口中的消息翻译是由 needle 语言的 **LangRes**函数执行的。
 
-The permissions for adding and changing language resources can be defined in the same way as other tables.
+可以在 Weaver 的 **多语言资源Language resources**部分中创建和编辑语言资源。
+语言资源由一个标签名称和该名称在不同语言中的翻译组成，并标记相应的双字符语言标识符(EN、ZH、JP等)。
 
-## Logicor template language
+可以使用与其他数据表相同的方式定义添加和更改语言资源的权限。
 
-Logicor functions provide the following operations:
+## Logicor 模版语言 {#logicor-template-language}
 
-* Retrieving values from the database: ```DBFind```, showing data retrieved from the database as tables and charts;
-* Data operations for assigning and displaying variable values: ```SetVar, GetVar, Data```;
-* Displaying and comparing date/time values: ```DateTime, Now, CmpTime```;
-* Use various user data input fields to build forms: ```Form, ImageInput, Input, RadioGroup, Select```;
-* Verify the data in the form field by displaying error messages: ```Validate, InputErr```;
-* Displaying the navigation elements: ```AddToolButton, LinkPage, Button```;
-* Calling contracts: ```Button```;
-* Creating HTML page layout elements, including various tags, and choosing specific css classes: ```Div, P, Span, etc```;
-* Embedding and unloading images onto pages: ```Image, ImageInput```;
-* Displaying conditions of page layout fragment: ```If, ElseIf, Else```;
-* Creating multi-level menus;
-* Page localization.
+Logicor 函数提供以下操作：
 
-### Logicor overview
+-   从数据库中检索值：`DBFind`，将从数据库检索的数据表示为表格和图表；
+-   分配和显示变量值的数据操作：`SetVar, GetVar, Data`；
+-   显示和比较日期/时间值：`DateTime, Now, CmpTime`；
+-   使用各种用户数据输入字段构建表单：`Form, ImageInput, Input, RadioGroup, Select`；
+-   通过显示错误消息验证表单字段中的数据：`Validate, InputErr`；
+-   导航元素的显示：`AddToolButton, LinkPage, Button`；
+-   调用合约：`Button`；
+-   创建HTML页面布局元素，包括各种标签，可选择指定css类：
+    `Div, P, Span, 等`；
+-   将图像嵌入页面并上传图像：`Image, ImageInput`；
+-   页面布局片段的条件显示： `If, ElseIf, Else`；
+-   创建多级菜单；
+-   页面本地化。
 
-The Logicor page template language is a functional language that allows a function calling another function ```FuncName(parameters)``` and nesting functions into each other. You can specify parameters without quotes, and delete unnecessary parameters.
+### Logicor 概述 {#logicor-overview}
 
-If the parameter contains a comma, it should be enclosed in quotes (backquotes or double quotes). If a function can only have one parameter, you can use a comma without quotes. In addition, if the parameter has an unpaired closing parenthesis, quotes should be used.
+Logicor 页面模版语言是一种函数式语言，允许使用函数调用函数`FuncName(parameters)`，并将函数嵌套到彼此中。 可以指定参数而不带引号,可以删除不必要的参数。
 
-If you put a parameter in quotes, but the parameter itself contains quotes, you can use different types of quotes or multiple quotes in the text.
+```text
+Text FuncName(parameter number 1, parameter number 2) another text.
+FuncName(parameter 1,,,parameter 4)
+```
 
-In the function definition, each parameter has a specific name. You can call the function and specify the parameters in the order of declaration, or any parameter set in any order of name: ```Parameter_name: Parameter_value```. Using this method, you can safely add new function parameters without breaking compatibility with the current template:
+如果参数包含逗号，应将其括在引号（后引号或双引号）中。如果一个函数只能有一个参数，可以在其中使用逗号而不带引号。此外，如果参数具有不成对的右括号，应使用引号。
 
-Functions can return texts, generate HTML elements (e.g. ```Input```), or create HTML elements with nested HTML elements (```Div, P, Span```). In the latter case, a parameter with the predefined name Body is used to define the nested element. For example, nesting two divs in another div looks like this:
+```text
+FuncName("parameter number 1, the second part of first paremeter")
+FuncName(`parameter number 1, the second part of first paremeter`)
+```
 
-To define the nested elements described in the Body parameter, the following notation can be used: ```FuncName(...){...}```. Nested elements should be specified with braces:
+如果将参数放在引号中，但参数本身包含引号，可以在文本中使用不同类型的引号或多个引号。
 
-If you need to specify the same function multiple times in succession, you can use the dot `.` instead of writing its name every time. For example, the following are the same:
+```text
+FuncName("parameter number 1, ""the second part of first"" paremeter")
+FuncName(`parameter number 1, "the second part of first" paremeter`)
+```
 
-With this language, you can assign a variable with the SetVar function and refer its value with `#name#`.
+在函数定义中，每个参数都有一个特定的名称。您可以按声明的顺序调用函数和指定参数，或者按名称的任意顺序指定任何参数集：`Parameter_name: Parameter_value`。该方法允许安全地添加新的函数参数，而不会破坏与当前模版的兼容性：
 
-To refer to the language resources of the ecosystem, you can use `$langres$`, where langres is the language name.
+```text
+FuncName(myclass, This is value, Div(divclass, This is paragraph.))
+FuncName(Body: Div(divclass, This is paragraph.))
+FuncName(myclass, Body: Div(divclass, This is paragraph.))
+FuncName(Value: This is value, Body: 
+     Div(divclass, This is paragraph.)
+)
+FuncName(myclass, Value without Body)
+```
 
-The following variables are predefined:
+函数可以返回文本，生成HTML元素（例如，`Input`），或者创建具有嵌套HTML元素的HTML元素（`Div，P，Span`）。在后一种情况下，使用具有预定义名称 **Body** 的参数来定义嵌套元素。例如，在另一个div中嵌套两个div如下所示：
 
-* `#key_id#` - Account address of the current user;
-* `#ecosystem_id#` - Current ecosystem ID;
-* `#guest_key#` - Address of the guest account;
-* `#isMobile#` - 1, if Weaver runs on a mobile device.
+```text
+Div(Body:
+   Div(class1, This is the first div.)
+   Div(class2, This is the second div.)
+)
+```
 
-#### Use PageParams to pass parameters to pages
+要定义 **Body** 参数中描述的嵌套元素，可以使用以下表示：`FuncName(...){...}`。嵌套元素用花括号指定:
 
-Many functions support the PageParams parameter, which is used to pass parameters when redirecting to a new page. For example: PageParams: `"param1=value1,param2=value2"`. The parameter value can be a simple string or a variable with a reference value. When passing parameters to pages, a variable with the parameter name is created, e.g. `#param1#` and `#param2#`.
+```text
+Div(){
+   Div(class1){
+      P(This is the first div.)
+      Div(class2){
+          Span(This is the second div.)
+      }
+   }
+}
+```
 
-* `PageParams: "hello=world"` - The new page receives the hello parameter with world as the value;
-* `PageParams: "hello=#world#"` - The new page receives the hello parameter with the value of the world variable.
+如果需要连续多次指定相同的函数，则可以使用点号 `.`,而不是每次都写入函数名。例如，以下是相同的：
 
-In addition, the Val function can get data from forms, which is specified in the redirection.
+```text
+Span(Item 1)Span(Item 2)Span(Item 3)
+Span(Item 1).(Item 2).(Item 3)
+```
 
-* `PageParams: "hello=Val(world)"` - The new page receives the hello parameter with the value of the world form element.
+该语言可以使用 **SetVar** 函数分配变量，引用变量值使用 `#name#`。
 
-#### Calling contracts
+```text
+SetVar(name, My Name)
+Span(Your name: #name#)
+```
 
-Logicor implements contract calls by clicking the Button function in a form. Once an event is triggered, the data entered by the user in a form field on the page will be passed to the contract. If the form field name corresponds to the variable name in the data section of the contract called, the data will be automatically transferred. The Button function allows to open a modal window for the user to verify the contract execution, and initiate the redirection to the specified page when the contract is successfully executed, and pass certain parameters to the page.
+要引用生态系统的语言资源，可以使用 `$langres$`，其中 *langres* 是语言源的名称。
 
-## Logicor function classification
+```text
+Span($yourname$: #name#)
+```
 
-### Operations on variables: 
+预定义了以下变量：
+
+-   `#key_id#` - 当前用户的帐户地址；
+-   `#ecosystem_id#` - 当前生态系统ID；
+-   `#guest_key#` - 访客账户地址；
+-   `#isMobile#` - 如果 Weaver 在移动设备上运行，则为1。
+
+#### PageParams {#use-pageparams-to-pass-parameters-to-pages}
+使用PageParams将参数传递给页面。
+有很多函数都支持 **PageParams**参数，该参数用于在重定向到新页面时传递参数。例如：`PageParams: "param1=value1,param2=value2"`。
+参数值既可以是简单的字符串，也可以是具有引用值的变量。将参数传递给页面时，会创建带参数名称的变量。例如，`#param1#`和 `#param2#`。
+
+-   `PageParams: "hello=world"` - 新页面以world为值接收hello参数；
+-   `PageParams: "hello=#world#"` - 新页面接收带有world变量值的hello参数。
+
+#### Val (#val)
+    此外，**Val** 函数允许从表单中获取数据，这些数据是在重定向中指定的。
+
+-   `PageParams: "hello=Val(world)"` - 新页面接收带有world表单元素值的hello参数。
+
+#### 调用合约 {#calling-contracts}
+
+Logicor 通过单击表单中的按钮 **Button**函数来实现合约调用。一旦启动该事件，用户在页面表单字段中输入的数据将传递给合约，
+如果表单字段的名称对应于被调用合约的数据部分中的变量名称，则会自动传输数据。
+**Button**函数允许打开一个模式窗口，用于用户验证合约执行，并在成功执行合约后启动重定向到指定页面的操作，并将某些参数传递到该页面。
+
+## Logicor 函数功能分类 {#logicor-function-classification}
+
+### 变量操作 {#operations-on-variables}
 
 |        |        |         |
 | ------ | ------ | ------- |
 | [GetVar](#getvar) | [SetVar](#setvar) | [VarAsIs](#varasis) |
 
-### Navigational operations: 
+
+### 导航操作 {#navigational-operations} 
 
 |               |        |          |
 | ------------- | ------ | -------- |
 | [AddToolButton](#addtoolbutton) | [Button](#button) | [LinkPage](#linkpage) |
 
-### Data manipulation: 
+
+### 数据操作 {#data-manipulation}
 
 |           |          |       |
 | --------- | -------- | ----- |
 | [Calculate](#calculate) | [DateTime](#datetime) | [Money](#money) |
 | [CmpTime](#cmptime)   |          |       |
 
-### Data presentation: 
+### 显示数据 {#data-presentation}
 
 |          |           |          |
 | -------- | --------- | -------- |
@@ -215,7 +292,8 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [Chart](#chart)    | [MenuGroup](#menugroup) | [Table](#table)    |
 | [ForList](#forlist)  |           |          |
 
-### Accepting of data: 
+
+### 接收数据 {#accepting-of-data}
 
 |             |               |                 |
 | ----------- | ------------- | --------------- |
@@ -225,7 +303,8 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [Data](#data)        | [JsonToSource](#jsontosource)  | [Binary](#binary)          |
 | [DBFind](#dbfind)      | [ArrayToSource](#arraytosource) | [TransactionInfo](#transactioninfo) |
 
-### Data formatting elements: 
+
+### 数据格式化元素 {#data-formatting-elements}
 
 |      |          |        |
 | ---- | -------- | ------ |
@@ -233,7 +312,7 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [Em](#em)   | [Label](#label)    | [Strong](#strong) |
 | [P](#p)    |          |        |
 
-### Form elements: 
+### 表单元素 {#form-elements}
 
 |            |            |          |
 | ---------- | ---------- | -------- |
@@ -241,371 +320,423 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [ImageInput](#imageinput) | [RadioGroup](#radiogroup) | [Map](#map)      |
 | [Input](#input)      | [Select](#select)     |          |
 
-### Operations on code blocks: 
-
+### 代码片段操作 {#operations-on-code-blocks}
 |      |      |         |
 | ---- | ---- | ------- |
 | [If](#if)   | [Or](#or)   | [Include](#include) |
 | [And](#and)  |      |         |
 
+## Logicor 函数参考 {#logicor-function-references}
 
+### Address {#address}
 
-## Logicor function references
+该函数返回指定账户地址的钱包地址`xxxx-xxxx-...-xxxx`；如果没有指定地址，以当前用户的账户地址作为参数。
 
-### Address
+**语法**
 
-This function returns the wallet address `xxxx-xxxx-...-xxxx` of a specific account address; if no address is specified, the account address of the current user will be used as the parameter.
-
-#### Syntax
-
-```
+``` text
 Address(account)
-
 ```
-> Address
-  * `account`
-  
-    Account address.
 
-#### Example
+* Address
 
-```
+  * account
+
+    账户地址。
+
+**示例**
+
+```text
 Span(Your wallet: Address(#account#))
 ```
 
-### AddressToId
+### AddressToId {#addresstoid}
 
-It returns the account address of a specific wallet address xxxx-xxxx-...-xxxx.
+该函数返回指定钱包地址 `xxxx-xxxx-...-xxxx` 的账户地址。
 
-#### Syntax
+**语法**
 
-```
+``` text
 AddressToId(Wallet)
 ```
 
-> AddressToId
-  * `Wallet`
-  
-    The wallet address in XXXX-...-XXXX format.
+* AddressToId
 
-#### Example
+  * Wallet
 
-```
+    钱包地址 `XXXX-...-XXXX` 格式。
+
+**示例**
+
+```text
 AddressToId(#wallet#)
 ```
 
-### AddToolButton
+### AddToolButton {#addtoolbutton}
 
-Create a button panel with an addtoolbutton element.
+创建一个 **addtoolbutton** 元素的按钮面板。
 
-#### Syntax
+**语法**
 
+``` text
+AddToolButton(Title, Icon, Page, PageParams) 
+    [.Popup(Width, Header)]
 ```
-AddToolButton(Title, Icon, Page, PageParams)
- [.Popup(Width, Header)]
-```
 
+* AddToolButton
 
+  * Title
 
-> AddToolButton
+    按钮标题。
 
-  * `Title`
-  
-    Button title.
+  * Icon
 
-  * `Icon`
-  
-    Button icon style.
+    按钮图标样式。
 
-  * `Page`
-  
-    Name of the page redirects to.
+  * Page
 
-  * `PageParams`
-  
-    The parameters passed to the page.
+    跳转的页面名称。
 
-    
+  * PageParams
 
-> Popup
+    传递给页面的参数。
 
-  The modal window pops up.
-  * `Header`
+  * Popup
 
-    Title of the window.
-  * `Width`
+    弹出模态窗口。
 
-      Percentage of window width.
-      Its range is 1 to 100.
+  * Header
 
-#### Example
+    窗口标题。
 
-```
+  * Width
+
+    窗口宽度百分比。
+
+    该参数的值范围是1到100。
+
+**示例**
+
+```text
 AddToolButton(Title: $@1broadcast$, Page: @1notifications_broadcast, Icon: icon-plus).Popup(Header: $@1notifications_broadcast$, Width: "50")
 ```
 
-### And
+### And {#and}
 
-It returns the result of an and logical operation. All parameters listed in parentheses are separated by commas. If one of the parameters is an empty string, zero or `false`, the parameter value is `false`, otherwise the parameter value is `true`. If the parameter value is `true`, the function returns `1`, otherwise it returns `0`.
+该函数返回执行 **and** 逻辑运算的结果，括号中列出的所有参数以逗号分隔。
+如果有一个参数为空字符串、零或`false`，参数值为 `false`，其他情况参数值为 `true`。如果参数值为`true`，则该函数返回 `1`，其他情况返回 `0`。
 
-#### Syntax
+**语法**
 
-```
+``` text
 And(parameters)
 ```
 
-#### Example
+**示例**
 
-```
+```text
 If(And(#myval1#,#myval2#), Span(OK))
 ```
 
-### AppParam
+### AppParam {#appparam}
 
-Output the application parameter value, which is taken from the app_params table of the current ecosystem. If there is a language resource with the specified name, its value will be automatically replaced.
+输出应用程序参数值，该值取自当前生态系统的 *app_params*表。如果存在具有指定定名称的语言资源，其值将自动替换。
 
-#### Syntax
+**语法**
+
+``` text
+AppParam(App, Name, Index, Source) 
 ```
-AppParam(App, Name, Index, Source)
 
-```
+* AppParam
 
-> AppParam
-  * `App`
-  
-    Application ID.
-  * `Name`
+  * App
 
-    Parameter name.
-  * `Index`
+    应用程序ID。
 
-    It can be used when the parameter value is a comma-separated list.
-    The parameter elements index, starting from 1. For example, if `type = full,light`, then `AppParam(1, type, 2)` returns `light`.
-    It cannot be used in conjunction with the Source parameter.
-  * `Source`
+  * Name
 
-    It can be used when the parameter value is a comma-separated list.
-    Create a data object whose elements are the values of specific parameters. This object can be used as a data source for the [Table](#table) and [Select](#select) functions.
-    It cannot be used in conjunction with the Index parameter.
+    参数名称。
 
-#### Example
+  * Index
 
-```
+    当参数值是以逗号分隔的列表时，可以使用该参数。
+
+    参数元素的索引，从1开始。例如，如果 `type = full,light`，那么 `AppParam(1, type, 2)` 返回 `light`。
+
+    该参数不能与 *Source* 参数一起使用。
+
+  * Source
+
+    当参数值是以逗号分隔的列表时，可以使用该参数。
+
+    创建 *data* 对象，该对象的元素是指定参数的值。该对象可用作[Table](#table) 和 [Select](#select) 函数的数据源。
+
+    该参数不能与 *Index* 参数一起使用。
+
+**示例**
+
+```text
 AppParam(1, type, Source: mytype)
 ```
 
-### ArrayToSource
+### ArrayToSource {#arraytosource}
 
-Create an arraytosource element and fill it with the key-value pairs of a JSON array. The data obtained is put into the Source element, which can be used later in the source input function (e.g. Table).
+创建一个 **arraytosource**元素，并用JSON数组的键值对填充它。得到的数据被放入 *Source*元素，该元素稍后可以在源输入的函数中使用(例如[Table](#Table))。
 
-#### Syntax
-```
+**语法**
+
+``` text
 ArrayToSource(Source, Data)
-
 ```
 
-> ArrayToSource
-  * `Source`
-  
-    Data source name.
-  * `Data`
+* ArrayToSource
 
-    A JSON array or a variable name containing a JSON array (`#name#`).
+  * Source
 
-#### Example
+    数据源名称。
 
-```
+* Data
+
+    JSON数组或包含JSON数组的变量名称（`#name#`）。
+
+**示例**
+
+```text
 ArrayToSource(src, #myjsonarr#)
 ArrayToSource(dat, [1, 2, 3])
 ```
 
-### Binary
+### Binary {#binary}
 
-Returns links to static files stored in the binary table binaries.
+返回存储在二进制表 *binaries* 中的静态文件的链接。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Binary(Name, AppID, MemberID)[.ById(ID)][.Ecosystem(ecosystem)]
 ```
 
-> Binary
-  * `Name`
-  
-    File name.
-  * `AppID`
-  
-    Application ID.
-  * `MemberID`
+* Binary
 
-    Account address, 0 by default.
-  * `ID`
+  * Name
 
-    Static file ID.
-  * `Ecosystem`
+    文件名称。
 
-    Ecosystem ID. If it is not specified, the binary file is requested from the current ecosystem.
+  * AppID
 
-#### Example
+    应用程序ID。
 
-```
+  * MemberID
+
+    账户地址，默认0。
+
+  * ID
+
+    静态文件ID。
+
+  * ecosystem
+
+    生态系统ID。如果未指定该参数，从当前生态系统请求二进制文件。
+
+**示例**
+
+```text
 Image(Src: Binary("my_image", 1))
 Image(Src: Binary().ById(2))
 Image(Src: Binary().ById(#id#).Ecosystem(#eco#))
 ```
 
-### Button
+### Button {#button}
 
-Create a button HTML element which will create a button to call a contract or open a page.
+创建一个 **button** HTML元素。该元素创建一个按钮，用于调用合约或打开页面。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Button(Body, Page, Class, Contract, Params, PageParams)
- [.CompositeContract(Contract, Data)]
- [.Alert(Text, ConfirmButton, CancelButton, Icon)]
- [.Popup(Width, Header)]
- [.Style(Style)]
- [.ErrorRedirect((ErrorID,PageName,PageParams)]
+    [.CompositeContract(Contract, Data)]
+    [.Alert(Text, ConfirmButton, CancelButton, Icon)]
+    [.Popup(Width, Header)]
+    [.Style(Style)]
+    [.ErrorRedirect((ErrorID,PageName,PageParams)]
 ```
 
-> Button
-  * `Body`
-  
-    Child text or element.
-  * `Page`
+* Button
 
-    Name of the page redirects to.
-  * `Class`
+  * Body
 
-    Button class.
-  * `Contract`
+    子文本或元素。
 
-    Name of the contract called.
-  * `Params`
+  * Page
 
-    The list of values passed to the contract. Normally, the value of the contract parameter (the data section) is obtained from an HTML element (such as an input field) of id with a similar name. If the element id is different from the name of the contract parameter, then the value should be assigned in the format of contractField1=idname1, contractField2=idname2. This parameter is returned to attr as the object {contractField1: idname1, contractField2: idname2}.
-  * `PageParams`
+    重定向的页面名称。
 
-    The format of parameters passed to the redirect page is pageField1=idname1, pageField2=idname2. Variables with target page parameter names #pageField1 and #pageField2 are created on the target page and assigned the specified values. See more specifications for parameter passing Use PageParams to pass parameters to pages).
-  
-> CompositeContract
+  * Class
 
-  Used to add additional contracts to the button. CompositeContract can be used multiple times.
-  * `Name`
+    按钮类。
 
-    Name of the contract.
-  * `Data`
+  * Contract
 
-    The contract parameters are JSON arrays.
-> Alert
+    调用的合约名称。
 
-  Display the message.
-  * `Text`
+  * Params
 
-    Text of the message.
-  * `ConfirmButton`
-  
-    Title of the Confirm button.
-  * `CancelButton`
+    传递给合约的值列表。通常情况下，合约参数的值（`data`部分）是从具有相似名称的 `id` 的HTML元素(例如输入字段)中获得。
+    如果元素`id` 与合约参数的名称不同，那么应该使用`contractField1=idname1, contractField2=idname2`格式赋值。
+    该参数作为对象`{contractField1: idname1, contractField2: idname2}` 返回给 *attr*。
 
-    Title of the Cancel button.
-  * `Icon`
+  * PageParams
 
-    Button icon.
-> Popup
+    传递给重定向页面的参数的格式`pageField1=idname1, pageField2=idname2`。
+    目标页面参数名称为`#pageField1` 和 `#pageField2`的变量在目标页面上创建，并分配指定的值。更多参数传递规范[使用PageParams将参数传递给页面](#pageparams)。
 
-  Output modal window.
-  * `Header`
+* CompositeContract
 
-    Window title.
-  * `Width`
+    用于为按钮添加额外合约。CompositeContract可以多次使用。
 
-    Percentage of window width.
-    Its range is 1 to 100.
-> Style
+  * Name
 
-  The CSS style specified.
-  * `Style`
+    合约名称。
 
-    CSS style.
-> ErrorRedirect
+  * Data
 
- Specify and redirect to a page when the :ref:contractfundef-Throw function generates an error during contract execution. There can be several ErrorRedirect calls. Therefore, when returning the *errredirect* attribute, the attribute key is ErrorID and the value is the parameters list.
+    合约参数为JSON数组。
 
-  * `ErrorID`
+* Alert
 
-    Error ID.
+  显示消息。
 
-  * `PageName`
+  * Text
 
-    Name of the redirect page.
+    消息文本。
 
-  * `PageParams`
+  * ConfirmButton
 
-    Parameters passed to the page.
+    确认按钮标题。
 
-#### Example
+  * CancelButton
 
-```
+    取消按钮标题。
+
+  * Icon
+
+    按钮图标。
+
+* Popup
+
+    输出模态窗口。
+
+  * Header
+
+    窗口标题。
+
+  * Width
+
+    窗口宽度百分比。
+
+    该参数的值范围是1到100。
+
+* Style
+
+    指定CSS样式。
+
+  * Style
+
+    CSS样式。
+
+* ErrorRedirect
+
+    指定一个重定向页面，当`contractfundef-Throw`{.interpreted-text role="ref"} 函数在合约执行期间生成错误时，将使用该重定向页面。
+    可以有几个*ErrorRedirect* 调用。因此返回\*errredirect\*属性时，其属性的键为*ErrorID* ，值为参数列表。
+
+  * ErrorID
+
+    错误ID。
+
+  * PageName
+
+    重定向页面的名称。
+
+  * PageParams
+
+    传递给该页面的参数。
+
+**示例**
+
+```text
 Button(Submit, default_page, mybtn_class).Alert(Alert message)
 Button(Contract: MyContract, Body:My Contract, Class: myclass, Params:"Name=myid,Id=i10,Value")
 ```
 
-### Calculate
-It returns the result of the arithmetic expression passed in the Exp parameter. The following operations are applicable: +, -, *, / and brackets ().
+### Calculate {#calculate}
 
-#### Syntax
-```
+该函数返回 **Exp** 参数中传递的算术表达式的结果。可以使用以下操作：`+, -, *, /` 和括号`()`。
+
+**语法**
+
+``` text
 Calculate(Exp, Type, Prec)
 ```
 
-> Calculate
-  * `Exp`
+* Calculate
 
-    An arithmetic expression, containing numbers and the #name# variable.
-  * `Type`
+  * Exp
 
-    Result data type: int, float, money. If not specified, it is float if there is a number with a decimal point, otherwise it is int.
-  * `Prec`
+    算术表达式。可以包含数字和 *# name*＃ 变量。
 
-    float and money data, with two significant digits after the decimal point.
+  * Type
 
-#### Example
+    结果数据类型：int, float,money。
+    如果未指定，如果有带小数点的数字，则结果类型为float，其他情况则为int。
 
-```
+  * Prec
+
+    **float** 和 **money** 类型指定小数点后的有效位数。
+
+**示例**
+
+```text
 Calculate( Exp: (342278783438+5000)\*(#val#-932780000), Type: money, Prec:18 )
 Calculate(10000-(34+5)\*#val#)
-Calculate("((10+#val#-45)\*3.0-10)/4.5 + #val#", Prec: 4)
+Calculate("((10+#val#-45)\*3.0-10)/4.5 + #val#", Prec: 4)      
 ```
 
-### Chart
+### Chart {#chart}
 
-Create HTML charts.
+创建HTML图表。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Chart(Type, Source, FieldLabel, FieldValue, Colors)
 ```
 
-> Chart
-  * `Type`
+* Chart
 
-    Chart type.
-  * `Source`
+  * Type
 
-    Name of the data source, e.g., obtained from the [DBFind](#dbfind) function.
-  * `FieldLabel`
+    图表类型。
 
-    Name of the header field.
-  * `FieldValue`
+  * Source
 
-    Name of the value field.
-  * `Colors`
+    数据源的名称，例如，从[DBFind](#DBFind) 函数获取。
 
-    List of colors.
+  * FieldLabel
 
-#### Example
+    标头的字段的名称。
 
-```
+  * FieldValue
+
+    值的字段的名称。
+
+  * Colors
+
+    颜色列表。
+
+**示例**
+
+```text
 Data(mysrc,"name,count"){
     John Silver,10
     "Mark, Smith",20
@@ -614,121 +745,129 @@ Data(mysrc,"name,count"){
 Chart(Type: "bar", Source: mysrc, FieldLabel: "name", FieldValue: "count", Colors: "red, green")
 ```
 
-### CmpTime
+### CmpTime {#cmptime}
 
-It compares two time values in the same format.
-It supports unixtime, `YYYY-MM-DD HH:MM:SS` and any time format, such as `YYYYMMDD`.
+该函数比较相同格式的两个时间值。
 
-#### Syntax
+格式支持 unixtime，`YYYY-MM-DD HH:MM:SS` 和任意时间格式，例如从年到秒 `YYYYMMDD`。
 
-```
+**语法**
+
+``` text
 CmpTime(Time1, Time2)
 ```
 
+**返回值**
 
-Return value
+-   `-1` - Time1 \< Time2；
+-   `0` - Time1 = Time2；
+-   `1` - Time1 \> Time2。
 
-* `-1` - Time1 <Time2;
-* `0` - Time1 = Time2;
-* `1` - Time1> Time2.
+**示例**
 
-#### Example
-
-```
+```text
 If(CmpTime(#time1#, #time2#)<0){...}
 ```
 
-### Code
+### Code {#code}
 
-Create a code element to display the specified code.
+创建用于显示指定代码的 **code** 元素。
 
-It substitute a variable with the value of the variable (for example, `#name#`).
-#### Syntax
-```
+该函数用变量的值替换变量(例如 `#name#`)。
+
+**语法**
+
+``` text
 Code(Text)
 ```
 
-> Code
-  * `Text`
+* Code
 
-    Source code.
+  * Text
 
-#### Example
+    源代码。
 
-```
+**示例**
+
+```text
 Code( P(This is the first line.
     Span(This is the second line.))
-)
+)  
 ```
 
-### CodeAsIs
+### CodeAsIs {#codeasis}
 
-Create a code element to display the specified code.
-It does not replace a variable with its value. For example, `#name#` will be displayed as is.
+创建用于显示指定代码的 **code** 元素。
 
-#### Syntax
-```
+此函数不会将变量替换为其值。例如，`#name#` 将按原样显示。
+
+**语法**
+
+``` text
 CodeAsIs(Text)
 ```
 
-> CodeAsIs
-  * `Text`
+* CodeAsIs
 
-    Source code.
+  * Text
 
-#### Example
+    源代码。
 
-```
+**示例**
+
+```text
 CodeAsIs( P(This is the #test1#.
     Span(This is the #test2#.))
 )
 ```
 
-### Data
+### Data {#data}
 
-Create a data element, fill it with the specified data and put it in Source. Then, you can receive Source as a data input in [Table](#table) and other functions. The sequence of column names corresponds to the sequence of data entry values.
+创建一个 **data** 元素并用指定的数据填充它并放入 *Source* 中，然后可以在[Table](#Table) 和其他函数中接收*Source* 作为数据输入。列名序列对应于 *data* 条目值的序列。
 
-#### Syntax
+**语法**
+
+``` text
+Data(Source,Columns,Data) 
+    [.Custom(Column){Body}]
 ```
-Data(Source,Columns,Data)
- [.Custom(Column){Body}]
-```
 
-> Data
-  * `Source`
+* Data
 
-    Name of the data source. You can specify any name that will be passed to other functions later as a data source.
+  * Source
 
-  * `Columns`
+    数据源名称。您可以指定任何名称，稍后可以将其作为数据源传递到其他函数中。
 
-    A list of column names, separated by commas.
+  * Columns
 
-  * `Data`
+    列名的列表，以逗号分隔。
 
-    Data set.
+  * Data
 
-    One record per line. Column values must be separated by commas. Data and Columns should be set in the same order.
+    数据集。
 
-    Values with commas should be enclosed in double quotes (`"example1, example2", 1, 2`). Quoted values should be put in two double quotes (`"""example", "example2""", 1, 2`).
+    每行一条记录。列值必须用逗号分隔。*Data* 和 *Columns*应设置相同的顺序。
 
-    
+    对于带有逗号的值，将该值放在双引号中 (`"example1, example2", 1, 2`)。
+    对于带引号的值，将该值放在两个双引号中(`"""example", "example2""", 1, 2`)。
 
-### Custom
+* Custom
 
-    You can assign calculated columns to Data. For example, you can specify field templates for buttons and other page layout elements. These field templates are usually assigned to [Table](#table) and other functions to receive data.
-    Use multiple Custom functions if you want to assign multiple calculated columns.
+    可以为 *Data*分配计算列。例如，您可以为按钮和其他页面布局元素指定字段模版。这些字段模版通常分配给[Table](#Table)和其他函数来接收数据。
 
-  * `Column`
+    如果想要分配多个计算列，请使用多个 *Custom* 函数。
 
-    Column name, which is unique and compulsory.
+  * Column
 
-  * `Body`
+    列名。必须指定唯一名称。
 
-    Code block. You can use `#columnname#` to get values from other columns in the entry, and then use those values in code blocks.
+  * Body
 
-#### Example
+    代码片段。您可以使用 `#columnname#`从该条目中的其他列获取值，然后在代码片段中使用这些值。
 
-```
+**示例**
+
+```text
 Data(mysrc,"id,name"){
     "1",John Silver
     2,"Mark, Smith"
@@ -736,37 +875,42 @@ Data(mysrc,"id,name"){
  }.Custom(link){Button(Body: View, Class: btn btn-link, Page: user, PageParams: "id=#id#"}
 ```
 
-### DateTime
+### DateTime {#datetime}
 
-Display the time and date in the specified format.
+以指定格式显示时间和日期。
 
-#### Syntax
-```
+**语法**
+
+``` text
 DateTime(DateTime, Format)
 ```
 
-> DateTime
-  * `DateTime`
+* DateTime
 
-    Time and date expressed in unixtime or standard format `2006-01-02T15:04:05`.
-  * `Format`
+  * DateTime
 
-    Format template: year in 2-digit format `YY`, 4-digit format `YYYY`, month in `MM`, day in `DD`, hour in `HH`, minute in `MM`, second in `SS`, e.g.: `YY/MM/DD HH:MM`.
-    If it is not specified or missing, `YYYY-MM-DD HH:MI:SS` will be used.
+    以unixtime或标准格式表示时间和日期 `2006-01-02T15:04:05`。
 
-#### Example
+  * Format
 
-```
+    格式模版: 2位数年份格式 `YY`，4位数年份格式 `YYYY`，月份 `MM`，天数`DD`，小时 `HH`，分钟 `MM`，秒数 `SS`，例如：`YY/MM/DD HH:MM`。
+
+    如果没有指定或缺少该参数，将使用 `YYYY-MM-DD HH:MI:SS` 格式。
+
+**示例**
+
+``` text
 DateTime(2017-11-07T17:51:08)
 DateTime(#mytime#,HH:MI DD.MM.YYYY)
 ```
 
-### DBFind
+### DBFind {#dbfind}
 
-Create a dbfind element, fill it with the data of the table table and put it in the Source structure, which can later be used for the input data of [Table](#table) and other functions Source.
+创建 **dbfind** 元素，用 *table* 表的数据填充它并将其放到 *Source*结构中。该 *Source* 结构可以在随后用于[Table](#Table) 和其他函数 *Source*的输入数据。
 
-#### Syntax
-```
+**语法**
+
+``` text
 DBFind(table, Source)
     [.Columns(columns)]
     [.Where(conditions)]
@@ -781,93 +925,115 @@ DBFind(table, Source)
     [.Vars(Prefix)]
 ```
 
-> DBFind
-  * `table`
+* DBFind
 
-    Table name.
-  * `Source`
+  * table
 
-    Data source name.
+    数据表名称。
 
-> Columns
-  * `columns`
+  * Source
 
-    If not specified, a list of all fields will be returned. If there is a JSON type field, you can use the following syntax to process the record field: `columnname->fieldname`. In this case, the field name generated is `columnname.fieldname`.
+    数据源名称。
 
-> Where
-  * `conditions`
+* Columns
 
-   Data query conditions. See DBFind.
-   If there is a JSON type field, you can use the following syntax to process the record field:      `columnname->fieldname`.
+  * columns
 
-> WhereId
-  Query by ID, e.g. `.WhereId(1)`.
-  * `Id`
+    返回的字段列表，如果未指定，将返回所有字段。如果存在JSON类型的字段，可以使用以下语法来处理记录字段：`columnname->fieldname`。在这种情况下，生成的字段名称为`columnname.fieldname`。
 
-   Entry ID.
+* Where
 
-> Order
-  Sort by field.
-  For more information about the sorting syntax, see [DBFind](#dbfind).
-  * `name`
+  * conditions
 
-   Field Name
+    数据查询条件。请参阅 `contractfundef-DBFind`{.interpreted-text role="ref"}。
 
-> Limit
-  * `limit`
-  
-    The number of entries returned, 25 by default. The maximum number is 10,000.
+    如果存在JSON类型的字段，可以使用以下语法来处理记录字段：`columnname->fieldname`。
 
-> Offset
-  * `Offset`
+* WhereId
 
-    Offset.
+    根据ID查询，例如，`.WhereId(1)`。
 
-> Count
+  * id
 
-  Specify the total number of rows of the Where condition.
-  In addition to storing it in a variable, the total count is returned in the count parameter of the dbfind element.
+    条目ID。
 
-  If Where and WhereID are not specified, the total count of rows in the table will be returned.
+  * Order
 
-  * `countvar`
+    按字段排序。
 
-    Name of the variable that holds the row count.
+    有关排序语法的详细信息，请参阅[DBFind](#DBFind)。
 
-> Ecosystem
-  * `Id`
+  * name
 
-   Ecosystem ID. By default, the data comes from the specified table in the current ecosystem.
+    字段名称
 
-> Cutoff
+* Limit
 
-  Used to cut and display large amounts of text data.
-  * `columns`
+  * limit
 
-   A comma-separated list of fields that must be processed by the Cutoff function.
-   The field value will be replaced by a JSON object that has two fields: link link and title title. If the field value contains more than 32 characters, link pointing to the first 32 characters of the full text is returned. If the field value contains 32 characters or less, link is set to void and title contains the complete field value.
+    返回的条目数。默认为25条，最大数为10000条。
 
-> Custom
+* Offset
 
-  You can assign calculated columns to Data. For example, you can specify field templates for buttons and other page layout elements. These field templates are usually assigned to [Table](#table) and other functions to receive data.
-  If you want to assign multiple calculated columns, use multiple Custom functions.
-  * `Column`
+  * offset
 
-   Column name, which is unique and compulsory.
-  * `Body`
+    偏移量。
 
-   Code block. You can use `#columnname#` to get values from other columns in the entry, and then use those values in code blocks.
+* Count
 
-> Vars
+    指定 *Where* 条件的总行数。
 
-  The first row obtained by the query will generate a set of variables with values. When it is specified, the Limit parameter automatically becomes 1, and only one (1) record is returned.
-  * `Prefix`
+    除了存储在变量中之外，还会在 *dbfind* 元素的 *count* 参数中返回总计数。
 
-   The prefix added to the variable name. Its format is `#prefix_columnname#`, where the column name immediately follows the underscore symbol. If there is a column containing a JSON field, the variable generated will be in the following format: `#prefix_columnname_field#`.
+    如果未指定 *Where* 和 *WhereID*，将返回数据表的总行数。
 
-#### Example
+  * countvar
 
-```
+    保存行计数的变量名称。
+
+* Ecosystem
+
+  * id
+
+    生态系统ID。默认情况下，数据来自当前生态系统中的指定表。
+
+* Cutoff
+
+    用于剪切和显示大量文本数据。
+
+  * columns
+
+    由逗号分隔的字段列表，这些字段必须由 *Cutoff* 函数处理。
+
+    字段值被一个JSON对象替换，该对象有两个字段: 链接 *link* 和标题 *title*。
+    如果字段值大于32个字符，则返回指向全文前32个字符的*link*。如果值为32个字符且更短，则 *link* 为空，\*title\* 包含完整的字段值。
+
+* Custom
+
+    可以为 *Data*分配计算列。例如，您可以为按钮和其他页面布局元素指定字段模版。
+    这些字段模版通常分配给`templatefundef-Table`{.interpreted-text role="ref"} 和其他函数来接收数据。
+
+    如果想要分配多个计算列，请使用多个 *Custom* 函数。
+
+  * Column
+
+    列名。必须指定唯一名称。
+
+  * Body
+
+    代码片段。您可以使用 `#columnname#`从该条目中的其他列获取值，然后在代码片段中使用这些值。
+
+* Vars
+
+    通过查询获得的第一行生成一组具有值的变量。当指定这个函数时，*Limit*参数自动变为1，并且只返回一条记录。
+
+  * Prefix
+
+    添加到变量名称的前缀。格式为`#prefix_columnname#`，其中列名紧跟下划线符号。如果有包含JSON字段的列，那么生成的变量将采用以下格式：`#prefix_columnname_field#`。
+
+**示例**
+
+```text
 DBFind(parameters,myparam)
 DBFind(parameters,myparam).Columns(name,value).Where({name:"money"})
 DBFind(parameters,myparam).Custom(myid){Strong(#id#)}.Custom(myname){
@@ -875,47 +1041,57 @@ DBFind(parameters,myparam).Custom(myid){Strong(#id#)}.Custom(myname){
 }
 ```
 
-### Div
+### Div {#div}
 
-Create a div HTML element.
+创建 **div** HTML元素。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Div(Class, Body)
- [.Style(Style)]
- [.Show(Condition)]
- [.Hide(Condition)]
+    [.Style(Style)]
+    [.Show(Condition)]
+    [.Hide(Condition)]
 ```
 
-> Div
-  * `Class`
+* Div
 
-    Class name of the div.
-  * `Body`
+  * Class
 
-    Child element.
-> Style
+    该 *div* 的类名。
 
-  The CSS style specified.
-  * `Style`
+  * Body
 
-   CSS style.
-> Show
+    子元素。
 
- Define the conditions for displaying Div.
-   * `Condition`
+* Style
 
-   See Hide below.
-> Hide
+    指定CSS样式。
 
- Define the conditions for hiding Div.
-   * `Condition`
+  * Style
 
-   The expression format is `InputName=Value`, when all expressions are true, *Condition* is true, and when the value of `InputName` is equal to `Value`, *Condition* is true. If multiple *Show* or *Hide* are called, there must be at least one *Condition* parameter is true.
+    CSS样式。
 
-#### Example
+* Show
 
-```
+    定义显示Div的条件。
+
+  * Condition
+
+    见下面 *Hide*。
+
+* Hide
+
+    定义隐藏Div的条件。
+
+  * Condition
+
+    表达式格式 `InputName=Value`，当所有表达式都为真时，*Condition* 为真，当 `InputName` 的值等于 `Value`，*Condition*为真。
+    如果调用了多个 *Show* 或 *Hide*，则至少有一个 *Condition* 参数必须为真。
+
+**示例**
+
+```text
 Form(){
     Div(text-left){
         Input(Name: "broadcast", Type: "checkbox", Value: "false")
@@ -929,30 +1105,38 @@ Form(){
 }
 ```
 
-### EcosysParam
+### EcosysParam {#ecosysparam}
 
-This function obtains parameter values from the ecosystem parameter table of the current ecosystem. If the returned result name contains the language resources, it will be translated accordingly.
+该函数从当前生态系统的生态系统参数表中获取参数值。如果返回结果名称有语言资源，则会相应地进行翻译。
 
-#### Syntax
-```
+**语法**
+
+``` text
 EcosysParam(Name, Index, Source)
 ```
 
-> EcosysParam
-  * `Name`
+* EcosysParam
 
-    Parameter name.
-  * `Index`
+  * Name
 
-    If the requested parameter is a list of comma-separated elements, you can specify an index starting from 1. For example, if `gender = male,female`, then `gender = male,female` returns `female`.
-    It cannot be used in conjunction with the Source parameter.
-  * `Source`
+    参数名称。
 
-    It can be used when the parameter value is a comma-separated list.
-    Create a data object whose elements are the values of the specified parameters. This object can be used as a data source for the [Table](#table) and [Select](#select) functions.
-    It cannot be used in conjunction with the Index parameter.
+  * Index
 
-```
+    如果请求的参数是以逗号分隔的元素列表，可以指定从1开始的索引。
+    例如，如果`gender = male,female`，那么 `gender = male,female` 返回 `female`。
+
+    该参数不能与 *Source* 参数一起使用。
+
+  * Source
+
+    当参数值是以逗号分隔的列表时，可以使用该参数。
+
+    创建 *data* 对象，该对象的元素是指定参数的值。该对象可用作[Table](#Table) 和 [Select](#Select) 函数的数据源。
+
+    该参数不能与 *Index* 参数一起使用。
+
+```text
 Address(EcosysParam(founder_account))
 EcosysParam(gender, Source: mygender)
 
@@ -960,206 +1144,244 @@ EcosysParam(Name: gender_list, Source: src_gender)
 Select(Name: gender, Source: src_gender, NameColumn: name, ValueColumn: id)
 ```
 
-### Em
+### Em {#em}
 
-Create an em HTML element.
+创建 **em** HTML元素。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Em(Body, Class)
 ```
 
-> Em
-  * `Body`
+* Em
 
-    Child text or element.
-  * `Class`
+  * Body
 
-    The em class name.
+    子文本或元素。
 
-#### Example
+  * Class
 
-```
+    该 *em* 的类名。
+
+**示例**
+
+```text
 This is an Em(important news).
 ```
 
-### ForList
+### ForList {#forlist}
 
-Display the list of elements in the Source data source in the template format set in Body and create a **forlist** element.
+以 *Body* 中设置的模版格式显示 *Source* 数据源中的元素列表，并创建 **forlist** 元素。
 
-#### Syntax
-```
+**语法**
+
+``` text
 ForList(Source, Index){Body}
 ```
 
-> ForList
-  * `Source`
+* ForList
 
-    Data source obtained from the [DBFind](#dbfind) or [Data](#data) function.
-  * `Index`
+  * Source
 
-    The variable of the iteration counter, starting from 1.
-    An optional parameter. If not specified, the iteration count value will be written to the [Source] _index variable.
-  * `Body`
+    从 [DBFind](#dbfind) 或 [Data](#data) 函数获取的数据源。
 
-    Template for inserting elements.
+  * Index
 
-```
+    迭代计数器的变量。计数从1开始。
+
+    可选参数。如果未指定，则将迭代计数值写入 *\[Source\] \_index* 变量。
+
+  * Body
+
+    用于插入元素的模版。
+
+```text
 ForList(mysrc){Span(#mysrc_index#. #name#)}
 ```
 
-### Form
-   Create a form HTML element.
+### Form {#form}
 
-#### Syntax
-```
+创建 **form** HTML元素。
+
+**语法**
+
+``` text
 Form(Class, Body) [.Style(Style)]
 ```
-> Form
-  * `Body`
 
-    Child text or element.
-  * `Class`
+* Form
 
-    Class name of the form.
-> Style
-  The CSS style specified.
-  * `Style`
+  * Body
 
-   CSS style.
+    子文本或元素。
 
-#### Example
+  * Class
 
-```
+    该 *form* 的类名。
+
+* Style
+
+    指定CSS样式。
+
+  * Style
+
+    CSS样式。
+
+**示例**
+
+```text
 Form(class1 class2, Input(myid))
 ```
 
-### GetColumnType
+### GetColumnType {#getcolumntype}
 
-Returns the field data type of a specific table.
+返回指定数据表的字段数据类型。
 
-Types returned include: `text, varchar, number, money, double, bytes, json, datetime, double`.
-#### Syntax
+返回以下类型：`text, varchar, number, money, double, bytes, json, datetime, double`。
 
-```
+**语法**
+
+``` text
 GetColumnType(Table, Column)
 ```
 
-> GetColumnType
-  * `Table`
+* GetColumnType
 
-    Table name.
-  * `Column`
+  * Table
 
-    Field name.
+    数据表名称。
 
-#### Example
+  * Column
 
-```
+    字段名称。
+
+**示例**
+
+```text
 SetVar(coltype,GetColumnType(members, member_name))Div(){#coltype#}
 ```
 
-### GetHistory
+### GetHistory {#gethistory}
 
-Create a gethistory element and fill it with the history change records of the entries in the specified table. The data generated will be placed in the Source element, which can be used later in the source input function (for example, [Table](#table)).
-The array is sorted in order from the last modified.
-The id field in the array points to the id of the rollback_tx table. block_id represents the block ID, block_time represents the block generation timestamp.
+创建 **gethistory** 元素，使用指定数据表的条目的历史更改记录来填充它。生成的数据将放入 *Source* 元素中。
+该元素稍后可以在源输入的函数中使用，例如 [Table](#Table) 。
 
-#### Syntax
+数组按从最近更改顺序排序。
+
+数组中 *id* 字段指向 *rollback_tx* 表的 *id*。*block_id* 代表区块ID，*block_time* 代表区块生成时间戳。
+
+**语法**
+
+``` text
+GetHistory(Source, Name, Id, RollbackId)  
 ```
-GetHistory(Source, Name, Id, RollbackId)
-```
 
-> GetHistory
-  * `Source`
+* GetHistory
 
-    Data source name.
-  * `Name`
+  * Source
 
-    Table name.
-  * `Id`
+    数据源名称。
 
-    Entry ID.
-  * `RollbackId`
+  * Name
 
-    An optional parameter. If specified, only one record with the specified ID will be returned from the rollback_tx table.
+    数据表名称。
 
-#### Example
+  * Id
 
-```
+    条目ID。
+
+  * RollbackId
+
+    可选参数。如果指定，只从 *rollback_tx* 表返回一个具有指定ID的记录。
+
+**示例**
+
+```text
 GetHistory(blocks, BlockHistory, 1)
 ```
 
-### GetVar
+### GetVar {#getvar}
 
-It returns the value of the specified variable that already exists, or an empty string if it does not exist.
-The getvar element is only created when an editable tree is requested. The difference between `GetVar(varname)` and `#varname` is that if varname does not exist, GetVar will return an empty string, while #varname# will be interpreted as a string value.
+该函数返回已存在的指定变量值，如果不存在则返回空字符串。
 
-#### Syntax
-```
+只有在请求编辑树时，才会创建 **getvar** 元素。`GetVar(varname)` 和 `#varname` 间的区别是，如果 *varname* 不存在，*GetVar*将返回一个空字符串，而 *#varname#* 将被解释为一个字符串值。
+
+**语法**
+
+``` text
 GetVar(Name)
 ```
 
-> GetVar
-  * `Name`
+* GetVar
 
-    Variable name.
+  * Name
 
-#### Example
+    变量名称。
 
-```
+**示例**
+
+```text
 If(GetVar(name)){#name#}.Else{Name is unknown}
 ```
 
-### Hint
+### Hint {#hint}
 
-Create a hint element for hints.
+创建 **hint** 元素，用于提示。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Hint(Icon,Title,Text)
 ```
 
-> Hint
-  * `Icon`
+* Hint
 
-    Icon name.
-  * `Title`
+  * Icon
 
-    Hint title.
-  * `Text`
+    图标名称。
 
-    Hint text.
+  * Title
 
-#### Example
+    提示标题。
 
-```
+  * Text
+
+    提示文本。
+
+**示例**
+
+```text
 Hint(Icon: "icon-wrench",Title:$@1pa_settings$,Text: This is a hint text)
 ```
 
-### If
+### If {#if}
 
-Condition statement.
-Returns the first If or ElseIf child element that satisfies Condition. Otherwise, return the Else child element.
+条件声明。
 
-#### Syntax
+返回满足 *Condition* 的第一个 *If* 或 *ElseIf* 的子元素。否则返回 *Else* 的子元素。
+
+**语法**
+
+``` text
+If(Condition){ Body } 
+    [.ElseIf(Condition){ Body }]
+    [.Else{ Body }]
 ```
-If(Condition){ Body}
- [.ElseIf(Condition){ Body }]
- [.Else{ Body }]
-```
 
-> If
-  * `Condition`
+* If
 
-    If the condition is equal to an empty string, 0 or false, it is considered that the condition is not met. In all other cases, this condition is considered to be satisfied.
-  * `Body`
+  * Condition
 
-    Child element.
+    如果条件等于 *空字符串*，*0* 或 *false*，则认为该条件未满足。在所有其他情况下，该条件被认为是满足的。
 
-#### Example
+  * Body
 
-```
+    子元素。
+
+**示例**
+
+```text
 If(#value#){
    Span(Value)
 }.ElseIf(#value2#){Span(Value 2)
@@ -1168,926 +1390,1014 @@ If(#value#){
 }
 ```
 
-### Image
-Create a image HTML element.
+### Image {#image}
 
-#### Syntax
-```
+创建 **image** HTML元素。
+
+**语法**
+
+``` text
 Image(Src, Alt, Class)
- [.Style(Style)]
+    [.Style(Style)]
 ```
 
-> Image
-  * `Src`
+* Image
 
-    Image source, file or `data:...`
-  * `Alt`
+  * Src
 
-    Alternative text when the image cannot be displayed.
-  * `Сlass`
+    图像源，文件或 `data:...`。
 
-    Image class name.
+  * Alt
 
-#### Example
+    无法显示图像时的替代文本。
 
-```
+  * Сlass
+
+    图像类名。
+
+**示例**
+
+```text
 Image(Src: Binary().ById(#id#), Class: preview).Style(height: 40px; widht 40px;)
 ```
 
-### ImageInput
+### ImageInput {#imageinput}
 
-Create an imageinput element to upload an image.
+为图像上传创建 **imageinput** 元素。
 
-#### Syntax
+**语法**
+
+``` text
+ImageInput(Name, Width, Ratio, Format) 
 ```
-ImageInput(Name, Width, Ratio, Format)
-```
 
-> ImageInput
-  * `Name`
+* ImageInput
 
-    Element name.
-  * `Width`
+  * Name
 
-    Width of the cropped image.
-  * `Ratio`
+    元素名称。
 
-    Aspect ratio or image height.
-  * `Format`
+  * Width
 
-    The format of the uploaded image.
+    裁剪图像的宽度。
 
-#### Example
+  * Ratio
 
-```
+    宽高比或图像高度。
+
+  * Format
+
+    上传图像的格式。
+
+**示例**
+
+```text
 ImageInput(avatar, 100, 2/1)
 ```
 
-### Include
+### Include {#include}
 
-Insert the template with a specified name into the page code.
+将具有指定名称的模版插入到页面代码中。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Include(Name)
 ```
 
-> Include
-  * `Name`
+* Include
 
-    Template name.
+  * Name
 
-#### Example
+    模版名称。
 
-```
+**示例**
+
+```text
 Div(myclass, Include(mywidget))
 ```
 
-### Input
+### Input {#input}
 
-Create an input HTML element.
+创建 **input** HTML元素。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Input(Name, Class, Placeholder, Type, Value, Disabled)
- [.Validate(validation parameters)]
- [.Style(Style)]
+    [.Validate(validation parameters)]
+    [.Style(Style)]
 ```
 
-> Input
-  * `Name`
+* Input
 
-    Element name.
-  * `Class`
+  * Name
 
-    Class name.
-  * `Placeholder`
+    元素名称。
 
-    Prompt for the expected value of the input field.
-  * `Type`
+  * Class
 
-    input type.
-  * `Value`
+    类名。
 
-    Element value.
-  * `Disabled`
+  * Placeholder
 
-    Disable the input element.
-> Validate
+    输入字段预期值的提示信息。
 
-  Validate the parameter.
-> Style
+  * Type
 
-  The CSS style specified.
-  * `Style`
+    *input* 类型。
 
-    CSS style.
+  * Value
 
-#### Example
+    元素值。
 
-```
+  * Disabled
+
+    禁用 *input* 元素。
+
+* Validate
+
+    验证参数。
+
+* Style
+
+    指定CSS样式。
+
+  * Style
+
+    CSS样式。
+
+**示例**
+
+```text
 Input(Name: name, Type: text, Placeholder: Enter your name)
 Input(Name: num, Type: text).Validate(minLength: 6, maxLength: 20)
 ```
 
-### InputErr
+### InputErr {#inputerr}
 
-Create an inputerr element to validate the error text.
+创建 **inputerr** 元素，用于验证错误文本。
 
-#### Syntax
-```
+**语法**
+
+``` text
 InputErr(Name,validation errors)]
 ```
 
-> InputErr
-  * `Name`
+* InputErr
 
-    Corresponds to the name of the [Input](#input) element.
-  * `validation errors`
+  * Name
 
-    Validation error message for one or more parameters.
+    对应于[Input](#Input) 元素的名称。
 
-#### Example
+  * validation errors
 
+    一个或多个参数的验证错误消息。
+
+**示例**
+
+```text
+InputErr(Name: name, 
+    minLength: Value is too short, 
+    maxLength: The length of the value must be less than 20 characters)
 ```
-InputErr(Name: name,
-minLength: Value is too short,
-maxLength: The length of the value must be less than 20 characters)
-```
 
-### InputMap
+### InputMap {#inputmap}
 
-Create an text input field for address, able to select coordinates on the map.
+创建地址文本输入字段。提供在地图上选择坐标的功能。
 
-#### Syntax
-```
+**语法**
+
+``` text
 InputMap(Name, Type, MapType, Value)
 ```
 
-> InputMap
-  * `Name`
+* InputMap
 
-    Element name.
-  * `Value`
+  * Name
 
-    Default value.
-    The value is an object in string format. For example, `{"coords":[{"lat":number,"lng":number},]}` or `{"zoom":int, "center":{"lat":number,"lng": number}}`. When the InputMap is created with the predefined Value, the address field can be used to save the address value, so the it is not void.
-  * `Type`
+    元素名称。
 
-    Type of map spot mapping:
-    * `polygon` - indicates the area of a multi-spot closed loop;
-    * `Line` - means a polyline with multiple points without closed loop;
-    * `Point` - indicates a single point coordinate.
-  * `MapType`
+  * Value
 
-    Map type.
-    It has the following values: `hybrid, roadmap, satellite, terrain`.
+    默认值。
 
-#### Example
+    该值是字符串格式的对象。例如，`{"coords":[{"lat":number,"lng":number},]}`或 `{"zoom":int, "center":{"lat":number,"lng":number}}`。
+    当使用预定义的 *Value* 创建InputMap时，地址字段可用于保存地址值，因此地址字段不为空。
 
-```
+  * Type
+
+    地图标点测绘类型：
+
+    - *polygon* - 表示多点闭环的面积；
+    - *Line* - 表示多点无闭环的折线；
+    - *Point* - 表示单点坐标。
+
+  * MapType
+
+    地图类型。
+
+    该参数有以下值: `hybrid`, `roadmap`, `satellite`, `terrain`。
+
+**示例**
+
+```text
 InputMap(Name: Coords,Type: polygon, MapType: hybrid, Value: `{"zoom":8, "center":{"lat":55.749942860682545,"lng":37.6207172870636}}`)
 ```
 
-### JsonToSource
+### JsonToSource {#jsontosource}
 
-Create a jsontosource element and fill it with the key-value pairs of a JSON array. The data obtained is put into the Source element, which can be used later in the source input function (e.g. [Table](#table)).
-The records in the result data are sorted alphabetically by JSON key.
+创建一个 **jsontosource**元素，并用JSON数组的键值对填充它。得到的数据被放入 *Source* 元素，
+该元素稍后可以在源输入的函数中使用例如：[Table](#Table)。
 
-#### Syntax
-```
+结果数据中的记录按JSON键的字母顺序排序。
+
+**语法**
+
+``` text
 JsonToSource(Source, Data)
 ```
 
-> JsonToSource
-  * `Source`
+* JsonToSource
 
-    Data source name.
-  * `Data`
+  * Source
 
-    A JSON object or a variable name containing a JSON object (`#name#`).
+    数据源名称。
 
-#### Example
+  * Data
 
-```
+    JSON对象或包含JSON对象的变量名称（`#name#`）。
+
+**示例**
+
+```text
 JsonToSource(src, #myjson#)
 JsonToSource(dat, {"param":"value", "param2": "value 2"})
 ```
 
-### Label
+### Label {#label}
 
-Create a label HTML element.
+创建 **label** HTML元素。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Label(Body, Class, For)
- [.Style(Style)]
+    [.Style(Style)]
 ```
 
-> Label
-  * `Body`
+* Label
 
-    Child text or element.
-  * `Class`
+  * Body
 
-    Class name.
-  * `For`
+    子文本或元素。
 
-    Bind to a form element.
-> `StyleThe`:CSS style specified.
-  * `Style`
+  * Class
 
-    CSS style.
+    类名。
 
-#### Example
+  * For
 
-```
+    绑定到某个表单元素。
+
+* Style
+
+    指定CSS样式。
+
+  * Style
+
+    CSS样式。
+
+**示例**
+
+```text
 Label(The first item).
 ```
 
-### LangRes
+### LangRes {#langres}
 
-Returns a specific language resource. If requested to edit the tree, the langres element is returned, and you may use the short format symbol $langres$.
-#### Syntax
+返回指定的语言资源。如果请求对树进行编辑，则返回 **langres** 元素，可以使用简短格式符号 **\$langres\$**。
 
-```
+**语法**
+
+``` text
 LangRes(Name)
 ```
 
-> LangRes
-  * `Name`
+* LangRes
 
-    Name of the language resource.
+  * Name
 
-#### Example
+    语言资源的名称。
 
-```
+**示例**
+
+```text
 LangRes(name)
 LangRes(myres)
 ```
 
-### LinkPage
+### LinkPage {#linkpage}
 
-Create a linkpage element, linking to the page.
-#### Syntax
+创建 **linkpage** 元素，指向页面的链接。
 
-```
+**语法**
+
+``` text
 LinkPage(Body, Page, Class, PageParams)
- [.Style(Style)]
+    [.Style(Style)]
 ```
 
-> LinkPage
-  * `Body`
+* LinkPage
 
-    Child text or element.
-  * `Page`
+  * Body
 
-    Name of the redirect page.
-  * `Class`
+    子文本或元素。
 
-    Button class name.
-  * `PageParams`
+  * Page
 
-    Redirect page parameters.
-> Style
+    重定向的页面名称。
 
-  The CSS style specified.
-  * `Style`
+  * Class
 
-  CSS styles
-  
-#### Example
+    按钮类名。
 
-```
+  * PageParams
+
+    重定向的页面参数。
+
+* Style
+
+    指定CSS样式。
+
+  * Style
+
+    CSS styles
+
+**示例**
+
+```text
 LinkPage(Class: #style_link# h5 text-bold, Page: @1roles_view, PageParams: "v_role_id=#recipient.role_id#")
 ```
 
-### Map
+### Map {#map}
 
-Create a visual map and display coordinates in any format.
+创建可视化地图，并以任意格式显示坐标。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Map(Hmap, MapType, Value)
 ```
 
-> Map
-  * `Hmap`
+* Map
 
-    Height of an HTML element on the page.
-    The default value is 100.
-  * `Value`
+  * Hmap
 
-    Map value, an object in string format.
-    For example, `{"coords":[{"lat":number,"lng":number},]}` or `{"zoom":int, "center":{"lat":number,"lng": number}}`. If `center` is not specified, the map window will automatically adjust according to the specified coordinates.
-  * `MapType`
+    页面上的HTML元素高度。
 
-    Map type.
-    It has the following values: `hybrid, roadmap, satellite, terrain`.
+    默认值为100。
 
-#### Example
+  * Value
 
-```
+    地图值，字符串格式的对象。
+
+    例如， `{"coords":[{"lat":number,"lng":number},]}` 或者`{"zoom":int, "center":{"lat":number,"lng":number}}`。
+    如果没有指定`center` ，则地图窗口将根据指定的坐标自动调整。
+
+  * MapType
+
+    地图类型。
+
+    该参数有以下值: `hybrid`, `roadmap`, `satellite`, `terrain`。
+
+**示例**
+
+```text
 Map(MapType:hybrid, Hmap:400, Value:{"coords":[{"lat":55.58774531752405,"lng":36.97260184619233},{"lat":55.58396161622043,"lng":36.973803475831005},{"lat":55.585222890513975,"lng":36.979811624024364},{"lat":55.58803635636347,"lng":36.978781655762646}],"area":146846.65783403456,"address":"Unnamed Road, Moscow, Russia, 143041"})
 ```
 
-### MenuGroup
+### MenuGroup {#menugroup}
 
-Create a nested submenu in the menu and return the menugroup element. Before replacing it with the language resource, the name parameter will return the value of Title.
+在菜单中创建一个嵌套的子菜单，并返回 **menugroup**元素，在使用语言资源替换之前，**name** 参数返回 **Title** 的值。
 
-#### Syntax
-```
+**语法**
+
+``` text
 MenuGroup(Title, Body, Icon)
 ```
-> MenuGroup
 
-  * `Title`
+* MenuGroup
 
-    Name of the menu item.
+  * Title
 
-  * `Body`
+    菜单项名称。
 
-    Child elements in a submenu.
+  * Body
 
-  * `Icon`
+    子菜单中的子元素。
 
-    Icon.
+  * Icon
 
-#### Example
+    图标。
 
-```
+**示例**
+
+``` text
 MenuGroup(My Menu){
     MenuItem(Interface, sys-interface)
     MenuItem(Dahsboard, dashboard_default)
 }
 ```
 
-### MenuItem
+### MenuItem {#menuitem}
 
-Create a menu item and return the menuitem element.
+创建一个菜单项并返回 **menuitem** 元素。
 
-#### Syntax
-```
+**语法**
+
+``` text
 MenuItem(Title, Page, Params, Icon)
 ```
 
-> MenuItem
+* MenuItem
 
-  * `Title`
+  * Title
 
-    Name of the menu item.
+    菜单项名称。
 
-  * `Page`
+  * Page
 
-    Name of the redirect page.
+    重定向的页面名称。
 
-  * `Params`
+  * Params
 
-    Redirect page parameters.
+    重定向的页面参数。
 
-  * `Icon`
+  * Icon
 
-    Icon.
+    图标。
 
-#### Example
+**示例**
 
-```
+```text
 MenuItem(Title:$@1roles$, Page:@1roles_list, Icon:"icon-pie-chart")
 ```
 
-### Money
+### Money {#money}
 
-Returns the string value of exp / 10 ^ digit.
+返回 *exp / 10 \^ digit* 的字符串值。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Money(Exp, Digit)
 ```
 
-> Money
+* Money
 
-  * `Exp`
+  * Exp
 
-    A number in string format.
+    数字的字符串格式。
 
-  * `Digit`
+  * Digit
 
-    The exponent of 10 in the expression `Exp/10^digit`. The value can be positive or negative, and a positive value determines the number of digits after the decimal point.
+    `exp/10^digit`表达式中10的指数，该值可以是正数或负数。正值决定了小数点后的位数。
 
-#### Example
+**示例**
 
-```
+```text
 Money(Exp, Digit)
 ```
 
-### Or
+### Or {#or}
 
-It returns the result of an if logical operation. All parameters listed in parentheses are separated by commas. If having one parameter that is value is not an empty string, zero or `false`, the parameter value is `true`, otherwise the parameter value is `false`. If the parameter value is `true`, the function returns `1`, otherwise it returns `0`.
+该函数返回执行 **if** 逻辑运算的结果，括号中列出的所有参数以逗号分隔。如果有一个参数不为空字符串、零或 `false`，参数值为 `true`，其他情况参数值为 `false`。
+如果参数值为`true`，则该函数返回 `1`，其他情况返回 `0`。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Or(parameters)
 ```
 
+**示例**
 
-#### Example
-
-```
+```text
 If(Or(#myval1#,#myval2#), Span(OK))
 ```
 
-### P
+### P {#p}
 
-Create a p HTML element.
+创建 **p** HTML元素。
 
-#### Syntax
+**语法**
+
+``` text
+P(Body, Class) 
+    [.Style(Style)]
 ```
-P(Body, Class)
- [.Style(Style)]
-```
 
-> P
+* P
 
-  * `Body`
+  * Body
 
-    Child text or element.
+    子文本或元素。
 
-  * `Class`
+  * Class
 
-    Class name.
+    类名。
 
-> Style
+* Style
 
-The CSS style specified.
+    指定CSS样式。
 
-  * `Style`
+  * Style
 
-    CSS style.
+    CSS样式。
 
-#### Example
+**示例**
 
-```
+```text
 P(This is the first line.
   This is the second line.)
 ```
 
-### QRcode
+### QRcode {#qrcode}
 
-Returns the QR code with the specified text and create a qrcode element.
+返回带有指定文本的二维码，并创建 **qrcode** 元素。
 
-#### Syntax
-```
+**语法**
+
+``` text
 QRcode(Text)
 ```
 
-> QRcode
-  * `Text`
+* QRcode
 
-    QR code text.
+  * Text
 
-#### Example
+    二维码文字。
 
-```
+**示例**
+
+```text
 QRcode(#name#)
 ```
 
-### RadioGroup
+### RadioGroup {#radiogroup}
 
-Create a radiogroup element.
+创建 **radiogroup** 元素。
 
-#### Syntax
+**语法**
+
+``` text
+RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class) 
+    [.Validate(validation parameters)] 
+    [.Style(Style)]
 ```
-RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class)
- [.Validate(validation parameters)]
- [.Style(Style)]
-```
 
-> RadioGroup
+* RadioGroup
 
-  * `Name`
+  * Name
 
-    Element name.
+    元素名称。
 
-  * `Source`
+  * Source
 
-    Data source obtained from the DBFind or Data function.
+    从 [DBFind](#DBFind) 或 [Data](#Data) 函数获取的数据源。
 
-  * `NameColumn`
+  * NameColumn
 
-    Field name of the data source.
+    数据源的字段名称。
 
-  * `ValueColumn`
+  * ValueColumn
 
-    Value name of the data source.
-    Fields created with Custom cannot be used in this parameter.
+    数据源的值名称。
 
-  * `Value`
+    使用 [Custom](#data) 创建的字段不得在该参数中使用。
 
-    Default value.
+  * Value
 
-  * `Class`
+    默认值。
 
-    Class name.
+  * Class
 
-> Validate
+    类名。
 
-  Validate the parameter.
+* Validate
 
-> Style
+    验证参数。
 
-  The CCS style specified.
+* Style
 
-  * `Style`
+    指定CSS样式。
 
-    CSS style.
+  * Style
 
-#### Example
+    CSS样式。
 
-```
+**示例**
+
+```text
 RadioGroup(Name: type_decision, Source: numbers_type_decisions, NameColumn: name, ValueColumn: value)
 ```
 
-### Range
+### Range {#range}
 
-Create a range element, use step size Step from From to To (not including To) to fill integer elements. The data generated will be put into Source and can be used later in the function of the source input (e.g. [Table](#table)). If an invalid parameter is specified, an empty Source is returned.
+创建 **range** 元素，使用步长 *Step* 从 *From* 到 *To* （不包括 *To*）填充整数元素。生成的数据将放入 *Source*中，
+稍后可以在源输入的函数中使用(例如 [Table](#Table))。如果指定无效参数，则返回空的 *Source*。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Range(Source,From,To,Step)
 ```
 
-> Range
+* Range
 
-  * `Source`
+  * Source
 
-    Data source name.
+    数据源名称。
 
-  * `From`
+  * From
 
-    Starting value (i = From).
+    起始值(i = From)。
 
-  * `To`
+  * To
 
-    End value (i <To).
+    结束值(i < To)。
 
-  * `Step`
+  * Step
 
-    Step of value change. If it is not specified, the default value is 1.
+    数值变化步长，如果未指定该参数，默认为1。
 
-#### Example
+**示例**
 
-```
+```text
 Range(my,0,5)
 SetVar(from, 5).(to, -4).(step,-2)
 Range(Source: neg, From: #from#, To: #to#, Step: #step#)
 ```
 
-### Select
+### Select {#select}
 
-Create a select HTML element.
+创建 **select** HTML元素。
 
-#### Syntax
+**语法**
+
+``` text
+Select(Name, Source, NameColumn, ValueColumn, Value, Class) 
+    [.Validate(validation parameters)]
+    [.Style(Style)]
 ```
-Select(Name, Source, NameColumn, ValueColumn, Value, Class)
- [.Validate(validation parameters)]
- [.Style(Style)]
-```
 
-> Select
+* Select
 
-  * `Name`
+  * Name
 
-    Element name.
+    元素的名称。
 
-  * `Source`
+  * Source
 
-    Data source obtained from the [DBFind](#dbfind) or [Data](#data) function.
+    从 [DBFind](#dbfind) 或[Data](#data) 函数获取的数据源。
 
-  * `NameColumn`
+  * NameColumn
 
-    Field name of the data source.
+    数据源的字段名称。
 
-  * `ValueColumn`
+  * ValueColumn
 
-    Value name of the data source.
-    Fields created with [Custom](#custom) cannot be used in this parameter.
+    数据源的值名称。
 
-  * `Value`
+    使用 [Custom](#Custom) 创建的字段不得在该参数中使用。
 
-    Default value.
+  * Value
 
-  * `Class`
+    默认值。
 
-    Class name.
+  * Class
 
-> Validate
+    类名。
 
-  Validate the parameter.
+* Validate
 
-> Style
+    验证参数。
 
-  The CCS style specified.
+  * Style
 
-  * `Style`
+    指定CSS样式。
 
-    CSS style.
+  * Style
 
-#### Example
+    CSS样式。
 
-```
+**示例**
+
+```text
 DBFind(mytable, mysrc)
-Select(mysrc, name)
+Select(mysrc, name) 
 ```
 
-### SetTitle
+### SetTitle {#settitle}
 
-To set the page title and create a settitle element.
+设置页面标题，创建 **settitle** 元素。
 
-#### Syntax
-```
+**语法**
+
+``` text
 SetTitle(Title)
 ```
 
-> SetTitle
-  * `Title`
+* SetTitle
 
-    Page title.
+  * Title
 
-#### Example
+    页面标题。
 
-```
+**示例**
+
+```text
 SetTitle(My page)
 ```
 
-### SetVar
+### SetVar {#setvar}
 
-Assign the value Value to the specified variable Name.
+分配值 *Value* 给指定变量 *Name*。
 
-#### Syntax
-```
+**语法**
+
+``` text
 SetVar(Name, Value)
 ```
 
-> SetVar
+* SetVar
 
-  * `Name`
+  * Name
 
-    Variable name.
+    变量名称。
 
-  * `Value`
+  * Value
 
-    Variable value, may contain a reference to another variable.
+    变量值，可以包含对另一个变量的引用。
 
-#### Example
+**示例**
 
-```
+```text
 SetVar(name, John Smith).(out, I am #name#)
-Span(#out#)
+Span(#out#)      
 ```
 
-### Span
+### Span {#span}
 
-Create a span HTML element.
+创建 **span** HTML元素。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Span(Body, Class)
- [.Style(Style)]
+    [.Style(Style)]
 ```
 
-> Span
+* Span
 
-  * `Body`
+  * Body
 
-    Child text or element.
+    子文本或元素。
 
-  * `Class`
+  * Class
 
-    Class name.
+    类名。
 
-> Style
+* Style
 
-  The CCS style specified.
+    指定CSS样式。
 
-  * `Style`
+  * Style
 
-    CSS style.
+    CSS样式。
 
-#### Example
+**示例**
 
-```
+```text
 This is Span(the first item, myclass1).
 ```
 
-### Strong
+### Strong {#strong}
 
-Create a strong HTML element.
+创建 **strong** HTML元素。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Strong(Body, Class)
 ```
 
-> Strong
+* Strong
 
-  * `Body`
+  * Body
 
-    Child text or element.
+    子文本或元素。
 
-  * `Class`
+  * Class
 
-    Class name.
+    类名。
 
-#### Example
+**示例**
 
-```
+```text
 This is Strong(the first item, myclass1).
 ```
 
-### SysParam
+### SysParam {#sysparam}
 
-Get the value of a specific parameter in the platform parameter table system_parameters.
+获取平台参数表 *platform ecosystem* 中指定参数的值。
 
-#### Syntax
+**语法**
+
+``` text
+SysParam(Name) 
 ```
-SysParam(Name)
-```
 
-> SysParam
-  * `Name`
+* SysParam
 
-    Name of the platform parameter.
+  * Name
 
-#### Example
+    平台参数名称。
 
-```
+**示例**
+
+```text
 SysParam(max_columns)
 ```
 
-### Table
+### Table {#table}
 
-Create a table HTML element.
+创建 **table** HTML元素。
 
-#### Syntax
-```
+**语法**
+
+``` text
 Table(Source, Columns)
- [.Style(Style)]
+    [.Style(Style)]
 ```
 
-> Table
+* Table
 
-  * `Source`
+  * Source
 
-    Name of a specific data source.
+    指定的数据源名称。
 
-  * `Columns`
+  * Columns
 
-    Title and corresponding column name, e.g.: Title1=column1,Title2=column2.
+    标题和相应的列名，例如： `Title1=column1,Title2=column2`。
 
-> Style
+* Style
 
-  The CSS style specified.
+    指定CSS样式。
 
-  * `Style`
+  * Style
 
-    CSS style.
+    CSS样式。
 
-#### Example
+**示例**
 
-```
+```text
 DBFind(mytable, mysrc)
 Table(mysrc,"ID=id,Name=name")
 ```
 
-### TransactionInfo
+### TransactionInfo {#transactioninfo}
 
-It queries transactions by specified hash and returns information about the executed contracts and their parameters.
+该函数按指定哈希值查询交易并返回有关已执行的合约及其参数的信息。
 
-#### Syntax
-```
+**语法**
+
+``` text
 TransactionInfo(Hash)
 ```
 
-> TransactionInfo
-  * `Hash`
+* TransactionInfo
 
-    Transaction hashes in hexadecimal string format.
-> Return value
+  * Hash
 
-  It returns a string in JSON format:
+    十六进制字符串格式的交易哈希。
 
-```
-{"contract":"ContractName", "params":{"key": "val"}, "block": "N"}
-```
+**返回值**
 
-Where:
+该函数返回json格式的字符串：
 
-* `contract` - Contract name;
-* `params` - Data passed to the contract parameters;
-* `block` - ID of the block that processed the transaction.
+`{"contract":"ContractName", "params":{"key": "val"}, "block": "N"}`
 
-#### Example
+其中：
+  - *contract* - 合约名称；
+  - *params* - 传递给合约参数的数据；
+  - *block* - 处理该交易的区块ID。
 
-```
+**示例**
+
+```text
 P(TransactionInfo(#hash#))
 ```
 
-### VarAsIs
+### VarAsIs {#varasis}
 
-Assigns the value Value to a specific variable Name, which is the name of a specific variable instead of its value.
+分配值 *Value* 给指定变量 *Name*。指定的变量值为指定的变量名而不是它们的值。
 
-For versions with variable substitution, see [SetVar](#setvar).
-#### Syntax
-```
+对于具有变量替换的版本，请参阅 [SetVar](#setvar).
+
+**语法**
+
+``` text
 VarAsIs(Name, Value)
 ```
 
-> VarAsIs
+* VarAsIs
 
-  * `Name`
+  * Name
 
-    Variable name.
+    变量名称。
 
-  * `Value`
+  * Value
 
-    A variable value. Variable name in the value will not be substituted. For example, if Value is example #varname#, then the variable value is also example #varname#.
+    变量值，值中的变量名称不会被替换。 例如，如果 *Value* 是`example #varname#`，那么变量的值也是 `example #varname#`。
 
-#### Example
+**示例**
 
-```
+```text
 SetVar(Name,"John")
 VarAsIs(name, I am #Name#)
 Span(#name#) // I am #Name#
 ```
 
-## App styles for mobile devices
+## 适配移动设备的应用程序样式 {#app-styles-for-mobile-devices}
 
-### Layout
+### 排版 {#layout}
 
-#### Title
+#### 标题 {#title}
 
-* `h1`… `h6`
+-   `h1` \... `h6`
 
-#### Strong-class names
+#### 强调类类名 {#strong-class-names}
 
-* `.text-muted`
-* `.text-primary`
-* `.text-success`
-* `.text-info`
-* `.text-warning`
-* `.text-danger`
+-   `.text-muted`
+-   `.text-primary`
+-   `.text-success`
+-   `.text-info`
+-   `.text-warning`
+-   `.text-danger`
 
-#### Color
+#### 颜色 {#color}
 
-* `.bg-danger-dark`
-* `.bg-danger`
-* `.bg-danger-light`
-* `.bg-info-dark`
-* `.bg-info`
-* `.bg-info-light`
-* `.bg-primary-dark`
-* `.bg-primary`
-* `.bg-primary-light`
-* `.bg-success-dark`
-* `.bg-success`
-* `.bg-success-light`
-* `.bg-warning-dark`
-* `.bg-warning`
-* `.bg-warning-light`
-* `.bg-gray-darker`
-* `.bg-gray-dark`
-* `.bg-gray`
-* `.bg-gray-light`
-* `.bg-gray-lighter`
+-   `.bg-danger-dark`
+-   `.bg-danger`
+-   `.bg-danger-light`
+-   `.bg-info-dark`
+-   `.bg-info`
+-   `.bg-info-light`
+-   `.bg-primary-dark`
+-   `.bg-primary`
+-   `.bg-primary-light`
+-   `.bg-success-dark`
+-   `.bg-success`
+-   `.bg-success-light`
+-   `.bg-warning-dark`
+-   `.bg-warning`
+-   `.bg-warning-light`
+-   `.bg-gray-darker`
+-   `.bg-gray-dark`
+-   `.bg-gray`
+-   `.bg-gray-light`
+-   `.bg-gray-lighter`
 
-#### Grid
+#### 网格 {#grid}
 
-* `.row`
-* `.row.row-table`
-* `.col-xs-1`… `.col-xs-12`, only used in `.row.row-table`.
+-   `.row`
+-   `.row.row-table`
+-   `.col-xs-1` \... `.col-xs-12` 仅限于使用在 `.row.row-table` 中。
 
-#### Panel
+#### 面板 {#panel}
 
-* `.panel`
-* `.panel.panel-heading`
-* `.panel.panel-body`
-* `.panel.panel-footer`
+-   `.panel`
+-   `.panel.panel-heading`
+-   `.panel.panel-body`
+-   `.panel.panel-footer`
 
-#### <span id ="form-app">Form</span>
+#### 表单 {#form-app}
 
-* `.form-control`
+-   `.form-control`
 
-#### <span id = "button-app">Button</span>
+#### 按钮 {#button-app}
 
-* `.btn.btn-default`
-* `.btn.btn-link`
-* `.btn.btn-primary`
-* `.btn.btn-success`
-* `.btn.btn-info`
-* `.btn.btn-warning`
-* `.btn.btn-danger`
+-   `.btn.btn-default`
+-   `.btn.btn-link`
+-   `.btn.btn-primary`
+-   `.btn.btn-success`
+-   `.btn.btn-info`
+-   `.btn.btn-warning`
+-   `.btn.btn-danger`
 
-#### Icon
+#### 图标 {#icon}
 
-* All fa-class icons are from FontAwesome: `fa fa-<icon-name></icon-name>`.
-* All icon-class icons are from SimpleLineIcons: `icon-<icon-name>`.
+-   所有fa类图标来自FontAwesome: `fa fa-<icon-name></icon-name>`。
+-   所有icon类图标来自SimpleLineIcons: `icon-<icon-name>`。

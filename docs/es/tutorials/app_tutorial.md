@@ -1,5 +1,4 @@
-
-# Tutorial for application development
+# Tutorial for application development {#tutorial-for-application-development}
 
 In this section, we will show you how to  develop a simple application on the IBAX Network.
 
@@ -42,13 +41,13 @@ In this section, we will show you how to  develop a simple application on the IB
   - [Conclusions](#conclusions)
 
 
-## The Goal 
+## The Goal {#the-goal}
 
 The application begins with simple functions but grows in complexity as the tutorial progresses. 
 
 In the final version of the application, some simple messages (strings) are stored in a database table, which contains the timestamps and account identifiers of senders. Users can view the messages list and add a new message from the application page which can be accessed from the menu of the ecosystem. 
 
-## Part 1: The Environment
+## Part 1: The Environment {#part-1-the-environment}
 
 **Weaver** 
 
@@ -57,7 +56,7 @@ As the only client of IBAX, Weaver provides functions for all users and ecosyste
 In this tutorial, you are going to code contracts, page templates and perform all other actions in Weaver. Weaver also provides a way to restore, save and execute contract codes, manage data structures (database tables), assign access permissions and create applications.
 
 Each node has its own Weaver instance.
-## Part 2: Contract 
+## Part 2: Contract {#part-2-contract}
 
 Your first simple application is "Hello, World!".
 
@@ -65,13 +64,13 @@ Your first simple application is "Hello, World!".
 
 > In this application, strings will be stored in a database table, and there is not a user page. 
 
-### Creator account 
+### Creator account {#creator-account}
 
 Accounts with the Developer role will be assigned the "root" privileges of the ecosystem. By default, this role can access all actions. In a new ecosystem, the creator account will be assigned the Admin role, which you must use it to introduce major changes to the ecosystem, such as creating new applications and database tables.
 
 Log in to the ecosystem using the creator account.
 
-### New application 
+### New application {#new-application}
 
 Once you logged in as the ecosystem creator, you can create a new application. 
 
@@ -97,7 +96,7 @@ Create a new application:
 
 >  You can access relevant resources by clicking an application in the Developer tab, no impact on the ecosystem. No matter which one you choose, all ecosystem applications are still available.
 
-### New database table 
+### New database table {#new-database-table}
 
 To store the data, create a database table for the application in Weaver.
 
@@ -125,13 +124,13 @@ Create a data table:
 
  As an option, you may reserve the read and write permissions to the creator account. In this case, set this field to `ContractConditions("MainCondition")`.
 
-### New contract 
+### New contract {#new-contract}
 
-#### Contract code 
+#### Contract code {#contract-code}
 
 Each contract has three parts. For more details, please see: [Contract structure](../topics/script.md#contract-structure)。
 
-#### Create a contract 
+#### Create a contract {#create-a-contract}
 
 1. In the Developer tab, select Application - Name > Contract; 
 
@@ -157,7 +156,7 @@ contract ... {
 }
 ```
 
-####  Contract name 
+#### Contract name {#contract-name}
 
 First, please specify the contract name. 
 
@@ -167,7 +166,7 @@ First, please specify the contract name.
     }
 ```
 
-#### Data 
+#### Data {#data}
 
 Fill in the `data` section.
 
@@ -179,7 +178,7 @@ In the following example, `Message` refers to the variable name, while `string` 
     }
 ```
 
-#### Conditions 
+#### Conditions {#conditions}
 
 Fill in the `conditions` section. A simple verification condition is to avoid empty strings. If the length of `Message` is `0`, a predefined warning message will be triggered when implementing the contract. 
 
@@ -192,7 +191,7 @@ conditions {
 }
 ```
 
-#### Action 
+#### Action {#action}
 
 Fill in the `action` section. A simple action is to write `Message` into the data table. 
 
@@ -202,7 +201,7 @@ Fill in the `action` section. A simple action is to write `Message` into the dat
     }
 ```
 
-#### Full contract code 
+#### Full contract code {#full-contract-code}
 
 The full contract code is shown below. 
 
@@ -224,7 +223,7 @@ contract AppContract {
     }
 }
 ```
-#### Save and run 
+#### Save and run {#save-and-run}
 
 Now, we are preparing to test the contract: 
 
@@ -253,7 +252,7 @@ If successfully added some strings, then, the result will contain the block ID a
 }
 ```
 
-## Part 3: Page 
+## Part 3: Page {#part-3-page}
 
 When the contract becomes effective, it is time to extend it to something useful. In this part, you are going to implement the UI and other functions. 
 
@@ -263,7 +262,7 @@ In this application, strings will be stored in a database table, like entries in
 
 Users can view the list of strings stored at the application page, which is shown as a simple form then. 
 
-### New field 
+### New field {#new-field}
 
 As with the previous, edit the database table at the Developer tab > Application - Name > Database table page; 
 
@@ -275,7 +274,7 @@ Add the following fields into `apptable`:
 
 *  `timestamp` , field type `Date/Time`, set Change to `true`.
 
-### Update the contract 
+### Update the contract {#update-the-contract}
 
 We will update the contract code to handle the author ID and timestamp. 
 
@@ -291,7 +290,7 @@ action {
 }
 ```
 
-### Page 
+### Page {#page}
 
 For the application page, it is a simple page where displays the messages stored in the database table. 
 
@@ -302,7 +301,7 @@ Like all other resources, you can create the UI page in Weaver:
 2.Click New; 
  The visual designer will be opened in a new tab. 
 
-#### Designer views 
+#### Designer views {#designer-views}
 
 The default page is empty. You can use the predefine structure to quickly fill in the page. 
 
@@ -314,7 +313,7 @@ Create a basic table:
 2. In the menu at the left, select Table With Header and drag it on to the page. 
     A table with multiple elements will be displayed on the page. 
 
-#### Developer view 
+#### Developer view {#developer-view}
 
 As the user page of IBAX is coded with a [Template Language](../topics/templates2.md), please switch to the Developer view when writing the page code. 
 
@@ -324,7 +323,7 @@ Switch to the Developer view.
 
  The view will be switched to the editor with a tab holding the page code. 
 
-#### Fetch data from the database table 
+#### Fetch data from the database table {#fetch-data-from-the-database-table}
 So far, nothing done with the page template. In the next, we will update the code to allow the page to display data from `apptable`.
 
 1. To request data from the database table with the [DBFind](../topics/script.md#dbfind) function; 
@@ -343,7 +342,7 @@ So far, nothing done with the page template. In the next, we will update the cod
 
 3. In the view selector at the right, click Preview to check whether the data is displayed correctly. 
 
-#### Full page code 
+#### Full page code {#full-page-code-1}
 
 The following is the full page code for this part. This basic page will be expanded later.
 
@@ -360,7 +359,7 @@ Div(Class: panel panel-primary) {
 
 ```
 
-#### Save the page 
+#### Save the page {#save-the-page}
 
 Click Save to save the page: 
 
@@ -372,13 +371,13 @@ Click Save to save the page:
 
 4. Click OK. 
 
-## Part 4: Application 
+## Part 4: Application {#part-4-application}
 
 In the previous sections, you created a contract, a table to store data, and a basic UI page to display that data.
 
 In this part, you are going to finalize the application to make its appearance and actions are similar to an actual one.
 
-### Menu 
+### Menu {#menu}
 
 The page needs to be linked to a menu, for example, `default_page` displayed on the Home tab is linked to the default ecosystem menu `default_menu`.
 
@@ -388,7 +387,7 @@ As this application tutorial is very simple (only having one page), there is no 
 
 > You can define the page menu by editing the page properties at the Developer tab > Application - Name > Page. For example, if your app has multiple pages, you may need to create a menu to navigate between these pages and assign it to all pages of the app.
 
-#### Add a menu item 
+#### Add a menu item {#add-a-menu-item}
 
 Like all other resources, menus can be created and edited in Weaver:
 
@@ -405,7 +404,7 @@ Like all other resources, menus can be created and edited in Weaver:
 ```
 
 4. Click Save. 
-#### Test the new menu item 
+#### Test the new menu item {#test-the-new-menu-item}
 
 Check whether the new menu item is valid:
 
@@ -418,7 +417,7 @@ Check whether the new menu item is valid:
 3. Click Messages.
 
     The application page will be opened. 
-### Send a message 
+### Send a message {#send-a-message}
 
 The buttons in Logicor can be used to implement contracts and open pages, depending on the parameters.
 
@@ -432,7 +431,7 @@ The [Button](../topics/templates2.md#button) function has two contract parameter
 
     Input parameters of the contract. 
 
-#### Form 
+#### Form {#form}
 
 To send data to the contract, add a form on the application page, which must have an input field for a message and a button to activate the contract AppContract.
 
@@ -449,11 +448,11 @@ Div(Class: panel panel-primary) {
 
 You may notice that when testing this new feature by sending a message, the form does not refresh. This will be introduced in [page refresh](#page-refreshing).
 
-### Form navigation 
+### Form navigation {#form-navigation}
 
 Under the default view, the form on the page can only display 25 entries on the first page. Hence, you can add some simple buttons to navigate users to all form entries.
 
-#### Navigation buttons 
+#### Navigation buttons {#navigation-buttons}
 
 There will be two navigation buttons, and each of them could reload the application page and pass the parameters to it.
 
@@ -461,7 +460,7 @@ There will be two navigation buttons, and each of them could reload the applicat
 
 *  The Next button will display the next 25 entries. If there are no other entries, the button will not be displayed.
 
-#### Variables 
+#### Variables {#variables}
 
 The navigation buttons require two variables to store the table view states:
 
@@ -477,7 +476,7 @@ The navigation buttons will pass it as a parameter when the page is reloaded.
 
  The value will be calculated.
 
-#### Entry count 
+#### Entry count {#entry-count}
 
 To count `#record_count#`, please modify the existing [DBFind](../topics/script.md#dbfind) function call. The variable specified in the `.count()` call will store the entry count.
 
@@ -485,7 +484,7 @@ To count `#record_count#`, please modify the existing [DBFind](../topics/script.
 DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count)
 ```
 
-#### Table offset 
+#### Table offset {#table-offset}
 
 The table view offset must be passed to the page when the page is opened. If `#table_view_offset#` does not get a value, set it to 0.
 
@@ -505,7 +504,7 @@ Modify the [DBFind](../topics/script.md#dbfind) function call again. This time i
 DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count).Offset(#table_view_offset#)
 ```
 
-#### Button code 
+#### Button code {#button-code}
 
 Find the [Div](../topics/templates2.md#div) function call that defines the footer: `Div(Class:panel-footer text-right)`. Add the button code into it.
 
@@ -534,7 +533,7 @@ If(#record_count# >= Calculate(#table_view_offset# + 25)) {
 
 After adding these buttons, save the page and test it from the Home > Messages menu item.
 
-#### Page refreshing 
+#### Page refreshing {#page-refreshing}
 
 The last function to be implemented is to automatically update the table on the page. When users send a new message, it must be displayed in the table.
 
@@ -547,7 +546,7 @@ Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Messa
 ```
 
 
-### Full page code 
+### Full page code {#full-page-code-2}
 
 This part describes many changes to the application page. The following is the full code of the application page.
 
@@ -579,6 +578,6 @@ DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,mes
 }
 ```
 
-## Conclusions 
+## Conclusions {#conclusions}
 
 Instead of expounding other important topics for application developers, such as layout styles, access permissions management and interaction between applications and resources, this tutorial introduces how to create a basic application for an ecosystem. For more information on these advanced topics, see other relevant documents.

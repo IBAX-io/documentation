@@ -1,40 +1,40 @@
-# Compiler and Virtual Machine
+# Compiler and Virtual Machine {#compiler-and-virtual-machine}
 
-  - [Kaynak kodu depolama ve derleme](#Kaynak-kodu-depolama-ve-derleme)
-  - [Sanal makine yapıları](#Sanal-makine-yapıları)
-    - [VM Yapıları](#VM-Yapıları)
-    - [Blok Yapıları](#Blok-Yapıları)
-    - [ObjInfo Yapısı](#ObjInfo-Yapısı)
-      - [ContractInfo Yapısı](#ContractInfo-Yapısı)
-      - [FieldInfo Yapısı](#FieldInfo-Yapısı)
-      - [FuncInfo Yapısı](#FuncInfo-Yapısı)
-      - [FuncName Yapısı](#FuncName-Yapısı)
-      - [ExtFuncInfo Yapısı](#ExtFuncInfo-Yapısı)
-      - [VarInfo Yapısı](#VarInfo-Yapısı)
-      - [ObjExtend Değer](#ObjExtend-Değer)
-  - [Sanal makine komutları](#Sanal-makine-komutları)
-    - [ByteCode Yapısı](#ByteCode-Yapısı)
+  - [Kaynak kodu depolama ve derleme](#source-code-storage-and-compilation)
+  - [Sanal makine yapıları](#virtual-machine-structures)
+    - [VM Yapıları](#vm-structure)
+    - [Blok Yapıları](#block-structure)
+    - [ObjInfo Yapısı](#objinfo-structure)
+      - [ContractInfo Yapısı](#contractinfo-structure)
+      - [FieldInfo Yapısı](#fieldinfo-structure)
+      - [FuncInfo Yapısı](#funcinfo-structure)
+      - [FuncName Yapısı](#funcname-structure)
+      - [ExtFuncInfo Yapısı](#extfuncinfo-structure)
+      - [VarInfo Yapısı](#varinfo-structure)
+      - [ObjExtend Değer](#objextend-value)
+  - [Sanal makine komutları](#virtual-machine-commands)
+    - [ByteCode Yapısı](#bytecode-structure)
     - [Command identifiers](#command-identifiers)
-    - [Yığın işlem komutları](#Yığın-işlem-komutları)
-    - [Runtime Yapısı](#Runtime-Yapısı)
-      - [blockStack Yapısı](#blockStack-Yapısı)
-    - [RunCode Fonksiyonu](#RunCode-Fonksiyonu)
-    - [VM ile işlemler için diğer işlevler](#VM-ile-işlemler-için-diğer-işlevler)
+    - [Yığın işlem komutları](#stack-operation-commands)
+    - [Runtime Yapısı](#runtime-structure)
+      - [blockStack Yapısı](#blockstack-structure)
+    - [RunCode Fonksiyonu](#runcode-function)
+    - [VM ile işlemler için diğer işlevler](#other-functions-for-operations-with-vm)
   - [Compiler](#compiler)
-  - [Lexical analizör](#Lexical-analizör)
+  - [Lexical analizör](#lexical-analyzer)
     - [lextable/lextable.go](#lextable-lextable-go)
     - [lex.go](#lex-go)
-  - [Needle dili](#needle-dili)
+  - [Needle dili](#needle-language)
     - [Lexemes](#lexemes)
-    - [Türler](#Types)
+    - [Türler](#types)
     - [Expressions](#expressions)
     - [Scope](#scope)
-    - [Kontrat yürütme](#Kontrat-Yürütme)
-    - [Backus–Naur Formu (BNF)](#Backus–Naur-Formu-(BNF))
+    - [Kontrat yürütme](#contract-execution)
+    - [Backus–Naur Formu (BNF)](#backus-naur-form-bnf)
 
 Bu bölüm, Sanal Makinede (VM) program derleme ve Needle dili işlemlerini içerir.
 
-## Kaynak kodu depolama ve derleme
+## Kaynak kodu depolama ve derleme {#source-code-storage-and-compilation}
 
 Sözleşmeler ve fonksiyonlar Golang ile yazılır ve ekosistemlerin sözleşme tablolarında saklanır.
 
@@ -50,9 +50,9 @@ Sözleşme çağrıldığında, sanal makine durumunu hiçbir şekilde değişti
 
 Her ekosistem, blok zinciri veya diğer sanal ekosistemler üzerinde doğrudan etki olmaksızın blok zinciri dışındaki tablolarla birlikte bir düğüm içinde kullanılabilen sanal bir ekosisteme sahip olabilir. Bu durumda böyle bir sanal ekosistemi barındıran düğüm, sözleşmesini derleyecek ve kendi sanal makinesini oluşturacaktır.
 
-## Sanal makine yapıları
+## Sanal makine yapıları {#virtual-machine-structures}
 
-### VM Yapıları
+### VM Yapıları {#vm-structure}
 
 Bir sanal makine, aşağıdaki gibi bir yapı olarak bellekte düzenlenmiştir.
 ```
@@ -74,7 +74,7 @@ Bir VM yapısı aşağıdaki öğelere sahiptir:
 * ShiftContract - VM'deki ilk sözleşmenin kimliği;
 * logger - VM hata günlüğü çıktısı.
 
-### Blok Yapıları
+### Blok Yapıları {#block-structure}
 
 Sanal makine, **Blok tipi** nesnelerden oluşan bir ağaçtır.
 
@@ -117,7 +117,7 @@ Bir blok yapısı aşağıdaki unsurlardan oluşur:
 * **Code** - örneğin fonksiyon çağrıları veya döngü gövdeleri gibi kontrol hakları bloğa aktarıldığında yürütülecek bloğun kendisinin bayt kodu;
 * **Children** - fonksiyon iç içe yerleştirme, döngüler, koşullu operatörler gibi alt blokları içeren bir dizi.
 
-### ObjInfo Yapısı
+### ObjInfo Yapısı {#objinfo-structure}
 
 ObjInfo yapısı, internal nesneler hakkında bilgi içerir.
 ```
@@ -137,7 +137,7 @@ ObjInfo yapısı aşağıdaki öğelere sahiptir:
    * **ObjExtend** - $name variable.
 * **Value** – it contains the structure of each type.
 
-#### ContractInfo Yapısı
+#### ContractInfo Yapısı {#contractinfo-structure}
 
 **ObjContract** türüne işaret edilir ve **Value** alanı bir **ContractInfo** yapısı içerir.
 
@@ -159,7 +159,7 @@ ContractInfo yapısı aşağıdaki değişkenlere sahiptir:
 * **Used** - çağrılan sözleşme adlarının haritası;
 * **Tx** - kontratın [data section](script.md#data-section) açıklanan bir veri dizisi.
 
-#### FieldInfo Yapısı
+#### FieldInfo Yapısı {#fieldinfo-structure}
 
 FieldInfo yapısı **ContractInfo** yapısında kullanılır ve bir sözleşmenin [datasection](script.md#data-section) içindeki öğeleri açıklar.
 
@@ -179,7 +179,7 @@ FieldInfo yapısı aşağıdaki öğelere sahiptir:
 * **Original** - opsiyonel field;
 * **Tags** - bu alan için ek etiketler.
 
-#### FuncInfo Yapısı
+#### FuncInfo Yapısı {#funcinfo-structure}
 
 ObjFunc tipine işaret eden ve Değer alanı bir FuncInfo yapısı içerir.
 ```
@@ -200,7 +200,7 @@ FuncInfo yapısı aşağıdaki değişkenlere sahiptir:
 * **Variadic** - işlev değişken sayıda parametreye sahip olabilirse true;
 * **ID** - function ID.
 
-#### FuncName Yapısı
+#### FuncName Yapısı {#funcname-structure}
 
 FuncName yapısı, FuncInfo için kullanılır ve bir kuyruk fonksiyonunun verilerini tanımlar.
 ```
@@ -217,7 +217,7 @@ FuncName yapısı aşağıdaki öğelere sahiptir:
 * **Offset** - bu değişkenler için ofset dizisi. Aslında, bir fonksiyondaki tüm parametrelerin değerleri dot. ile başlatılabilir;
 * **Variadic** - tail işlevi değişken sayıda parametreye sahip olabilirse true.
 
-#### ExtFuncInfo Yapısı
+#### ExtFuncInfo Yapısı {#extfuncinfo-structure}
 
 ObjExtFunc türüne işaret eden ve Değer alanı bir ExtFuncInfo yapısı içerir. Golang fonksiyonlarını tanımlamak için kullanılır.
 ```
@@ -237,7 +237,7 @@ ExtFuncInfo yapısı aşağıdaki öğelere sahiptir:
 * **Auto** - bir dizi değişken. Varsa ek parametre olarak fonksiyona geçer. Örneğin, SmartContract sc türünde bir değişken;
 * **Func** - golang fonksiyonu.
 
-#### VarInfo Yapısı
+#### VarInfo Yapısı {#varinfo-structure}
 
 **ObjVar** türüne işaret edilir ve **Value** alanı bir **VarInfo** yapısı içerir.
 ```
@@ -252,12 +252,12 @@ VarInfo yapısı aşağıdaki unsurlara sahiptir:
 * **Obj** - değişkenin türü ve değeri hakkında bilgi;
 * **Owner** - Owner bloğunun pointerı.
 
-#### ObjExtend Değer
+#### ObjExtend Değer {#objextend-value}
 
 **ObjExtend** türüne işaret edilir ve **Value** alanı, değişken veya işlevin adını içeren bir dize içerir.
 
-## Sanal makine komutları
-### ByteCode Yapısı
+## Sanal makine komutları {#virtual-machine-commands}
+### ByteCode Yapısı {#bytecode-structure}
 
 Bir bayt kodu, **ByteCode** tipi yapıların bir dizisidir.
 ```
@@ -274,7 +274,7 @@ Bu yapı aşağıdaki alanlara sahiptir:
 
 Genel olarak komutlar, yığının en üst öğesinde bir işlem gerçekleştirir ve gerekirse sonuç değerini buna yazar.
 
-### Command identifiers
+### Command identifiers {#command-identifiers}
 
 Sanal makine komutlarının identifiersları, vm/cmds_list.go dosyasında açıklanmıştır.
 
@@ -302,7 +302,7 @@ Sanal makine komutlarının identifiersları, vm/cmds_list.go dosyasında açık
 * **cmdArrayInit** - dizinin değerini başlatır;
 * **cmdError** - bu komut, bir sözleşme veya işlev belirtilen bir ile sona erdiğinde oluşturulur.`error, warning, info`.
 
-### Yığın işlem komutları
+### Yığın işlem komutları {#stack-operation-commands}
 > Not
 
 > Mevcut sürümde, bu komutlar için otomatik tip dönüştürme tam olarak uygulanamaz. Örneğin,
@@ -326,7 +326,7 @@ Aşağıdakiler, doğrudan yığın işleme için komutlardır. Bu komutlarda De
 * **cmdGreat** - greater-than comparison, bool is returned. `(val1)(val2) => (val1> val2)`;
 * **cmdNotGreat** - less-than-or-equal comparison, bool is returned. `(val1)(val2) => (val1 <= val2)`.
 
-### Runtime Yapısı
+### Runtime Yapısı {#runtime-structure}
 
 Bayt kodlarının yürütülmesi sanal makineyi etkilemez. Örneğin, çeşitli işlevlerin ve sözleşmelerin tek bir sanal makinede aynı anda çalışmasına izin verir. Runtime yapısı, herhangi bir ifade ve bayt kodunun yanı sıra işlevleri ve sözleşmeleri çalıştırmak için kullanılır.
 ```
@@ -349,7 +349,7 @@ type RunTime struct {
 * **cost** - ortaya çıkan yürütme maliyetinin yakıt birimi;
 * **err** - yürütme sırasında hata oluştu.
 
-#### blockStack Yapısı
+#### blockStack Yapısı {#blockstack-structure}
 
 Runtime yapısında blockStack yapısı kullanılır.
 ```
@@ -362,7 +362,7 @@ type blockStack struct {
 * **Block** - yürütülmekte olan bloğa bir işaretçi;
 * **Offset** – belirtilen bloğun bayt kodunda yürütülen son komutun ofseti.
 
-### RunCode Fonksiyonu
+### RunCode Fonksiyonu {#runcode-function}
 
 Bayt kodları **RunCode** işlevinde yürütülür. Her bayt kodu komutu için karşılık gelen işlemi gerçekleştiren bir döngü içerir. Bir bayt kodunu işlemeden önce, gerekli veriler başlatılmalıdır.
 
@@ -474,7 +474,7 @@ Gördüğünüz gibi, fonksiyonu çalıştırmazsak, yığın durumunu geri yük
 rt.stack = rt.stack[:start]
 ```
 
-### VM ile işlemler için diğer işlevler
+### VM ile işlemler için diğer işlevler {#other-functions-for-operations-with-vm}
 
 **NewVM** işleviyle sanal bir makine oluşturabilirsiniz. Her sanal makine, **Extend** işlevi aracılığıyla **ExecContract**, **MemoryUsage**, **CallContract** ve **Settings** gibi dört işlevle eklenecektir.
 
@@ -524,7 +524,7 @@ Derleyicinin daha sonra sözleşmeyi kullanırken bulabilmesi için **Objects** 
 }
 ```
 
-## Compiler
+## Compiler {#compiler}
 
 compile.go dosyasındaki işlevler, sözcük çözümleyicisinden elde edilen belirteç dizisini derlemekten sorumludur. Derleme şartlı olarak iki seviyeye ayrılabilir. En üst düzeyde, işlevler, sözleşmeler, kod blokları, koşullu ve döngü ifadeleri, değişken tanımları vb. ile ilgileniyoruz. Alt düzeyde, ifadeleri kod bloklarında veya koşulları döngülerde ve koşullu ifadelerde derleriz.
 
@@ -685,7 +685,7 @@ func fNameBlock(buf *[]*Block, state int, lexem *Lexem) error {
 
 **CompileBlock** işlevine ek olarak, **FlushBlock** işlevinden de bahsedilmelidir. Ancak sorun, blok ağacının mevcut sanal makinelerden bağımsız olarak oluşturulmasıdır. Daha doğrusu sanal bir makinede var olan işlevler ve sözleşmeler hakkında bilgi alıyoruz ancak derlenen blokları ayrı bir ağaçta topluyoruz. Aksi halde derleme sırasında bir hata oluşursa sanal makineyi bir önceki duruma döndürmemiz gerekir. Bu nedenle derleme ağacına ayrı ayrı gidiyoruz fakat derleme başarılı olduktan sonra **FlushContract** fonksiyonu çağrılmalıdır. Bu işlev, tamamlanmış blok ağacını mevcut sanal makineye ekler. Derleme aşaması artık tamamlanmıştır.
 
-## Lexical analizör
+## Lexical analizör {#lexical-analyzer}
 
 Sözcüksel çözümleyici, gelen dizeleri işler ve aşağıdaki türlerde bir dizi belirteç oluşturur:
 
@@ -702,7 +702,7 @@ Sözcüksel çözümleyici, gelen dizeleri işler ve aşağıdaki türlerde bir 
 
 Mevcut sürümde, lex_table.go dosyasına yazılan belirteçleri ayrıştırmak için başlangıçta [script/lextable/lextable.go](#lextablelextablego) dosyası yardımıyla bir dönüşüm tablosu (sonlu durum makinesi) oluşturulur. Genel olarak, dosya tarafından başlangıçta oluşturulan dönüştürme tablosundan kurtulabilir ve başlangıçta hemen bellekte (`init()`) bir dönüştürme tablosu oluşturabilirsiniz. Sözcük analizinin kendisi [lex.go](#lex-go) dosyasındaki lexParser işlevinde gerçekleşir.
 
-### <span id = "lextable-lextable-go">lextable/lextable.go</span>
+### lextable/lextable.go {#lextable-lextable-go}
 
 Burada çalışacak alfabeyi tanımlıyoruz ve sonlu durum makinesinin bir sonraki alınan sembole göre bir durumdan diğerine nasıl değiştiğini açıklıyoruz.
 
@@ -748,7 +748,7 @@ Tüm durumları ve bir durumdaki her bir kümeyi ve bir kümedeki her bir sembol
 Bunların tümü *lex.go* içindeki **lexParser** işlevinde daha ayrıntılı olarak açıklanmıştır.
 Bazı yeni karakterler eklemek istiyorsanız, bunları *alphabet* dizisine eklemeniz ve *AlphaSize* sabitinin miktarını artırmanız gerekir. Yeni bir sembol kombinasyonu eklemek isterseniz, mevcut seçeneklere benzer şekilde durum içinde açıklanmalıdır. Yukarıdaki işlemden sonra *lex_table.go* dosyasını güncellemek için *lextable.go* dosyasını çalıştırın.
 
-### <span id = "lex-go">lex.go</span>
+### lex-go {#lex-go}
 **lexParser** işlevi doğrudan sözcüksel analiz oluşturur ve gelen dizelere dayalı olarak bir dizi alınan etiket döndürür. Tokenların yapısını analiz edelim.
 ```
 type Lexem struct {
@@ -783,8 +783,8 @@ Geriye kalan tek şey, ayrıştırmada kullanılan sözcüksel durum belirteçle
 * **lexfPop** - tokenın alınması tamamlandı. Genellikle, bu bayrakla, ayrıştırılmış belirtecin tanımlayıcı türüne sahibiz;
 * **lexfSkip** - bu token, karakterleri ayrıştırmanın dışında tutmak için kullanılır. Örneğin, dizgedeki kontrol eğik çizgileri \n \r \" şeklindedir. Sözcüksel analiz aşamasında bunlar otomatik olarak değiştirilecektir..
 
-## Needle dili
-### Lexemes
+## Needle dili {#needle-language}
+### Lexemes {#lexemes}
 
 Bir programın kaynak kodu UTF-8 kodlamasında olmalıdır.
 
@@ -796,7 +796,7 @@ Aşağıdaki sözcük türleri işlenir:
 * **Comment** - iki tür yorum vardır. Tek satırlı yorumlar iki eğik çizgi (//) kullanır. Örneğin, // Bu tek satırlık bir yorumdur. Çok satırlı yorumlar eğik çizgi ve yıldız sembollerini kullanır ve birden çok satıra yayılabilir. Örneğin, ```/* Bu çok satırlı bir yorumdur */```.
 * **Identifier** - a-z ve A-Z harfleri, UTF-8 sembolleri, sayılar ve alt çizgilerden oluşan değişkenlerin ve fonksiyonların adları. Ad bir harf, alt çizgi, ```@``` veya ```$``` ile başlayabilir. ```$``` ile başlayan ad, **data** tanımlanan değişkenin adıdır. ```$``` ile başlayan ad, **conditons** ve **actions** kapsamındaki global değişkenleri tanımlamak için de kullanılabilir. Ekosistem sözleşmeleri ```@``` sembolü kullanılarak çağrılabilir. Örneğin: ```@1NewTable(...)```.
 
-### Türler
+### Türler {#types}
 
 Karşılık gelen golang türleri, Needle türlerinin yanında belirtilir.
 
@@ -815,7 +815,7 @@ Bu tür değişkenler ```var``` anahtar kelimesi ile tanımlanır. Örneğin, ``
 
 Tüm değişken değerleri interface{} türündedir ve ardından gerekli golang türlerine atanır. Bu nedenle, örneğin dizi ve harita türleri, []interface{} ve map[array]interface{} golang türleridir. Her iki dizi türü de herhangi bir türden öğe içerebilir.
 
-### Expressions
+### Expressions {#expressions}
 
 Bir ifade aritmetik işlemleri, mantıksal işlemleri ve işlev çağrılarını içerebilir. Tüm ifadeler, operatörlerin önceliğine göre soldan sağa doğru değerlendirilir. Eşit önceliğe sahipse, operatörler soldan sağa doğru değerlendirilir.
 
@@ -851,7 +851,7 @@ if mymap && val {
 ...
 }
 ```
-### Scope
+### Scope {#scope}
 
 Parantezler, yerel kapsam değişkenlerini içerebilen bir blok belirtir. Varsayılan olarak, bir değişkenin kapsamı kendi bloklarına ve tüm iç içe bloklara uzanır. Bir blokta, mevcut bir değişkenin adını kullanarak yeni bir değişken tanımlayabilirsiniz. Ancak bu durumda aynı ada sahip harici değişkenler kullanılamaz hale gelir.
 ```
@@ -865,7 +865,7 @@ a = 3
 Println(a) // 3
 ```
 
-### Kontrat Yürütme
+### Kontrat Yürütme {#contract-execution}
 
 Bir kontratı çağırırken, **data** içinde tanımlanan parametreler ona iletilmelidir. Bir kontratı yürütmeden önce sanal makine bu parametreleri alır ve bunları karşılık gelen değişkenlere ($Param) atar. Ardından, önceden tanımlanmış **conditons** işlevi ve **action** işlevi çağrılır.
 
@@ -873,7 +873,7 @@ Kontratın yürütülmesi sırasında meydana gelen hatalar iki türe ayrılabil
 
 Needle dili istisnaları işlemez. Herhangi bir hata, sözleşmelerin yürütülmesini sonlandıracaktır. Bir sözleşme yürütüldüğünde değişken değerleri kaydetmek için ayrı bir yığın ve yapı oluşturulduğundan, bir sözleşme yürütüldüğünde golang garbage collection tarafından bu verileri otomatik olarak siler.
 
-### <span id = "backus-naur-form-bnf">Backus–Naur Formu (BNF)</span>
+### Backus–Naur Form (BNF) {#backus-naur-form-bnf}
 
 Bilgisayar biliminde BNF, bağlamdan bağımsız sözdizimi için bir gösterim tekniğidir ve genellikle hesaplamada kullanılan dilin sözdizimini tanımlamak için kullanılır.
 

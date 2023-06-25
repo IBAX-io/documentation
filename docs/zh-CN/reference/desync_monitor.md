@@ -1,40 +1,46 @@
-# Synchronized Monitoring Tool
+# 同步监控工具 {#synchronized-monitoring-tool}
 
-Desync_monitor is a special tool that can be used to verify whether the database on the specified node has been synchronized.
+Desync_monitor是一种特殊工具，可用于验证指定节点上的数据库是否已同步。
 
-The tool can be used as a daemon or can be started to perform a one-time check.
+该工具可以作为守护进程使用，也可以启动以执行一次性检查。
 
-The operating principle of the tool is based on the following:
+该工具的操作原理基于以下内容：
 
-1.Each block contains the hash of all changes of all transactions, request the specified node to provide its last block ID;
-2.Then request a block with this ID from all nodes and compare the above hashes;
-3.If the hashes are different, a synchronization error message will be sent to the email address specified in the command.
+> 1.  每个区块包含所有交易的所有更改的哈希，请求指定的节点提供其最后一个区块ID；
+> 2.  然后从所有节点请求具有该ID的区块，并比较上述哈希；
+> 3.  如果哈希不同，会将同步错误消息发送到命令中指定的电子邮件地址。
 
-## Location
-The tool is located in the `tools/desync_monitor/` directory.
+## 位置 {#location}
 
-## Command prompt flags
-The following flags can be used from the command prompt:
-* confPath - Path of the configuration file. The default file name is `config.toml`;
-* nodesList - Node list of the requested block, separated by commas. The default is `127.0.0.1:7079`;
-* daemonMode - Started as a daemon and should be used when authentication is required every N seconds. This flag is set to `false` by default;
-* queryingPeriod - If the tool is started as a daemon, this parameter sets the time interval (in seconds) between checks, `1` second by default.
-* alertMessageTo – The email address to which synchronization warning errors will be sent.
-    * alertMessageSubj - Message subject in the warning message, the `node synchronization` problem by default;
-    * alertMessageFrom - Address where the message was sent.
-    * smtpHost - SMTP server host, used to send emails, the `""` by default;
-    * smtpPort - SMTP server port, used to send email messages, `25` by default;
-    * smtpUsername - SMTP server username, `""` by default;
-    * smtpPassword - SMTP server password, `""` by default.
+该工具位于 `tools/desync_monitor/`。
 
-## Configuration
-The tool uses a configuration file in toml format.
+## 命令提示标志 {#command-prompt-flags}
 
-By default, it will look for the config.toml file in the folder where to start up the binary file.
+可以从命令提示符使用以下标志：
 
-The file path can be changed with the configPath flag.
+> -   **confPath** -- 配置文件的路径。默认文件名为 `config.toml`；
+> -   **nodesList** -- 请求区块的节点列表，以逗号分隔。默认为`127.0.0.1:7079`；
+> -   **daemonMode** -- 作为守护进程启动，应该在每N秒需要验证的情况下使用。该标志默认设置为 `false`；
+> -   **queryingPeriod** -- 如果工具作为守护进程启动，该参数设置检查之间的时间间隔(以秒为单位)。默认为 `1` 秒。
 
-```
+-   **alertMessageTo** -- 将向其发送同步警告错误的电子邮件地址。
+
+    > -   **alertMessageSubj** -- 在警告消息中的消息主题，默认为节点同步问题；
+    > -   **alertMessageFrom** -- 发送消息的地址。
+    > -   **smtpHost** -- SMTP服务器主机，用于发送电子邮件，默认为`""`；
+    > -   **smtpPort** -- SMTP服务器端口，用于发送电子邮件消息，默认为`25`；
+    > -   **smtpUsername** -- SMTP服务器用户名，默认为 `""`；
+    > -   **smtpPassword** -- SMTP服务器密码，默认为 `""`。
+
+## 配置 {#configuration}
+
+该工具使用toml格式的配置文件。
+
+默认情况下，它会在启动二进制文件的文件夹中查找 *config.toml* 文件。
+
+可以使用 **configPath** 标志更改文件路径。
+
+```text
 nodes_list = ["http://127.0.0.1:7079", "http://127.0.0.1:7002"]
 
 [daemon]
@@ -53,23 +59,31 @@ username = ""
 password = ""
 ```
 
-### nodes_list
-* nodes_list - List of nodes (hosts) requesting information.
+### nodes_list {#nodes-list}
 
-### [daemon]
-Configuration of the daemon mode.
-* daemon_mode – A tool works as a daemon and performs synchronization checks.
-* querying_period - Time interval between synchronization checks.
+> -   **nodes_list** -- 请求信息的节点（主机）列表。
 
-### [alert_message]
-Warning message parameters.
-* to - recipient's e-mail of synchronization error warning messages;
-* subject - message subject;
-* from - sender's e-mail.
+### [daemon] {#daemon}
 
-### [smtp]
-Simple Mail Transfer Protocol (SMTP) server parameters, used to send synchronization error messages.
-* host – SMTP server hose;
-* port –SMTP server port; 
-* username – SMTP server user name; 
-* password –SMTP server password; 
+守护进程模式配置。
+
+> -   **daemon_mode** -- 工具作为守护进程工作并执行同步检查。
+> -   **querying_period** -- 同步检查之间的时间间隔。
+
+### [alert_message] {#alert-message}
+
+警告消息参数。
+
+> -   **to** -- 同步错误警告消息的收件地址；
+> -   **subject** -- 消息主题；
+> -   **from** -- 发件地址。
+
+### [smtp] {#smtp}
+
+简单邮件传输协议 (Simple Mail Transfer Protocol, SMTP)
+服务器的参数，用于发送同步错误消息。
+
+> -   **host** -- SMTP服务器主机；
+> -   **port** --SMTP服务器端口；
+> -   **username** -- SMTP服务器用户名；
+> -   **password** --SMTP服务器密码；

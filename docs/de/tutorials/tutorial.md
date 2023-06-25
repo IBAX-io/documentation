@@ -1,23 +1,23 @@
-# IBAX Development Tutorial
+# IBAX Development Tutorial {#ibax-development-tutorial}
 
-## Getting Started Guide
+## Getting Started Guide {#getting-started-guide}
 - [Deploy first smart contract via command line tool](#deploy-first-smart-contract-via-command-line-tool)
 - [Command Line Tool Eco Development](#command-line-tool-eco-development)
 
-## Deployment
+## Deployment {#deployment}
 - [Deploy application using command line tools](#deploy-application-using-command-line-tools)
 - [Ecological configuration using command line tool](#ecological-configuration-using-command-line-tool)
 
-## Advanced Guide
+## Advanced Guide {#advanced-guide}
 - [Deploy applications using application packaging tool](#deploy-applications-using-application-packaging-tool)
 
 
-## Deploy first smart contract via command line tool
+## Deploy first smart contract via command line tool {#deploy-first-smart-contract-via-command-line-tool}
 We will deploy [smart contracts](../concepts/thesaurus.md#smart-contract) on the IBAX blockchain via the [command line tool](https://github.com/IBAX-io/ibax-cli), and learn how to invoke smart contracts.
 As our first smart contract, we deployed it to [local test network](../concepts/blockchain-layers.md) How to deploy a local network you can refer to [Network Deployment](../howtos/deployment.md) , 
 so you can deploy and run it as you like without any overhead.
 
-### Create application
+### Create application {#create-application}
 Call the contract @1NewApplication to create the application, which has an application name parameter and a modify [permission parameter](../concepts/about-the-platform.md#access-rights-control-mechanism)
 ```text
 1  $ ibax-cli console
@@ -80,7 +80,7 @@ The `fields` field is the parameters of the contract, including the name of the 
 `Name` and `Conditions` are required, `VotingId` is optional, refer to [contract/name](../reference/api2.md#contract-name) API method
 
 
-### Writing contracts
+### Writing contracts {#writing-contracts}
 We use [Needle](../topics/script.md#needle-contract-language) to write a smart contract that
 We implement a simple addition operation, the source code of the contract is as follows, we save the contract as `SumMath.sim`
 ```text
@@ -107,7 +107,7 @@ The following is explained by line:
 -	Line 9, [Operations Section](../topics/script.md#action-section) We define a variable sum to receive the result of A+B.
 Assign the value of sum to $result, as the result of the contract. Of course it is possible to assign the value of A+B to $result directly, but it can be shown as an example.
 
-### Create Contract
+### Create Contract {#create-contract}
 There are two ways to create a contract, the first of which is:
 In the first step we write a contract parameter file in json format:
 ```json
@@ -172,7 +172,7 @@ The call is completed and the result is as expected, as explained below by line:
 -	Line 6, if the transaction execution fails, an error text message is returned, and if the block id is returned, the err field is the result of the contract, which is the value of `$result`
 
 
-## Command Line Tool Eco Development
+## Command Line Tool Eco Development {#command-line-tool-eco-development}
 In this tutorial, you will learn how to:
 
 - 1.[Create Ecosystem](#step-1-create-ecosystem)
@@ -194,7 +194,7 @@ Each application has [contract](../concepts/thesaurus.md#smart-contract).
 [Tables](../concepts/about-the-platform.md#tables).
 Ecology has ecological parameters, application has application parameters
 
-### Step 1 Create Ecosystem
+### Step 1 Create Ecosystem {#step-1-create-ecosystem}
 We start by creating an ecology using the [command line tool](https://github.com/IBAX-io/ibax-cli), calling the contract @1NewEcosystem.
 If you want to change the ecological name, you can call the `@1EditEcosystemName` contract.
 
@@ -235,7 +235,7 @@ To exit, press ctrl-d or type exit
 >
 ```
 
-### Step 2 Create Application
+### Step 2 Create Application {#step-2-create-application}
 Call the contract `@1NewApplication` to create the application, which has an application name parameter and a modify [Permission Parameter](../concepts/about-the-platform.md#access-rights-control-mechanism)
 ```text
 1  >callContract @1NewApplication {"Name": "GradesRecorder", "Conditions": "ContractConditions(\"@1DeveloperCondition\")"}
@@ -261,7 +261,7 @@ Let's write a simple example of an application that keeps track of students' gra
 The data table fields include student information, grade `grade`, class
 `class`, subject grades `mathematics,physics,literature`, and Composite score `overall_score`, rating `score`, creation timestamp (ms) `created_at`
 
-### Step 3 Create Table
+### Step 3 Create Table {#step-3-create-table}
  In the first step we write a contract parameter file in json format:
 ```json
 {
@@ -306,7 +306,7 @@ We name it createTable.json, and then call the contract to create the data table
 >callContract @1NewTableJoint -f ./createTestTable.json
 ```
 
-### Modify data table field permissions
+#### Modify data table field permissions {#modify-data-table-field-permissions}
 We can modify the data table field permissions, data table field permissions include read permissions and update permissions, where read permissions, 
 in the contract using `DBFind.Columns` filter fields or interfaces such as [list](../reference/api2.md#list-name-limit-offset-columns) query, 
 if there is no permission, it will report a permission error.
@@ -320,7 +320,7 @@ Call the `@1EditColumn` contract to modify the data table field permissions
 
 We can create several application parameters`grade_best_type`,`grade_type_a+`,`grade_type_a`,`grade_type_b+`,`grade_type_b`,`grade_type_c`, grade rating type
 
-### Step 4 Create Application Parameters
+### Step 4 Create Application Parameters {#step-4-create-application-parameters}
 Call the contract `@1NewAppParam` to create the application parameters, if you want to modify the application parameters you can call the contract `@1EditAppParam`.
 ```text
 >callContract @1NewAppParam {"ApplicationId": 47, "Name": "grade_best_type", "Value": "A+", "Conditions": "ContractConditions(\"MainCondition\")"}
@@ -334,7 +334,7 @@ where `grade_best_type` is the best rating type.
 `grade_type_a+` is the condition triggered by the rating `A+`, when the score is greater than or equal to 90 and less than 101, the rating is`A+`, other parameters are similar
 
 
-### Step 5 Create Contract Deploy Contract
+### Step 5 Create Contract Deploy Contract {#step-5-create-contract-deploy-contract}
 
 We create a contract to record the student's grade information and final rating for each subject, and enter the student's grade class and grade for each subject when entering the information.
 Based on the input scores of each subject, the average calculation is done to get the overall score `overallScore` and the final rating`score`.
@@ -525,7 +525,7 @@ The above example is only for study and research purposes, you need to change th
  
 For example, if we want to specify that only one person can call this new record contract and no one else can call it, we can set an ecological parameter `new_record_account`
 
-### Step 6 Create Ecological Parameters
+### Step 6 Create Ecological Parameters {#step-6-create-ecological-parameters}
 Calling the contract `@1NewParameter` will create the eco-parameter
 `new_record_account` in the `@1parameters` table, if you need to modify the eco-parameter you can call `@1EditParameter`.
 ```text
@@ -541,13 +541,13 @@ Calling the contract `@1NewParameter` will create the eco-parameter
 We create an ecological parameter `new_record_account`, set the value to keyId `6667782293976713160`, modify the permission to`ContractConditions("MainCondition")` which means the current ecological creator can modify
 When the transaction is executed successfully, the ecological parameter id of the "err" field is `273`.
 
-### Step 7 add localization
+### Step 7 add localization {#step-7-add-localization}
 You can call the `@1NewLangJoint` contract to create the localization parameter`account_not_access`, which will create the parameter in the`@1languages` table, and you can modify the localization parameter via`@1EditLangJoint`.
 ```shell
 callContract @1NewLangJoint {"Name": "account_not_access", "LocaleArr": ["en", "ja"], "ValueArr": ["Sorry, you do not have access to this action", "申し訳ありませんが、このアクションにアクセスする権限がありません"]}
 ```
 
-### Step 8 Modify the contract
+### Step 8 Modify the contract {#step-8-modify-the-contract}
 Next, we need to modify the `conditions` section of the contract source code by adding the following code to `conditions`
 ```text
 conditions {
@@ -562,7 +562,7 @@ Call to modify the contract @1EditContract, where `Id` is the contract id, `Valu
 ```
 
 
-#### Step 9 Modify data table permissions
+#### Step 9 Modify data table permissions {#step-9-modify-data-table-permissions}
 Here we need to change the insert permission of the data table, the original permission `ContractConditions("MainCondition")` for the ecreator, and the contract setting `new_record_account` is not the ecreator.
 So just change `ContractConditions("MainCondition")` to specify that the contract can operate on `ContractAccess("@18NewRecord")`.
 Call the contract `@1EditTable` to modify the data table permissions
@@ -601,7 +601,7 @@ The call completes, querying the data table via `getList @18grade_info`, and the
 We hope this article has helped you learn more about how the IBAX network works and how to write clear and secure `Needle` code.
 
 
-## Deploy application using command line tools
+## Deploy application using command line tools {#deploy-application-using-command-line-tools}
 In this tutorial, you will learn how to:
 -	1. [Export Application](#export-application)
 -	2. [Import Application](#import-application)
@@ -610,7 +610,7 @@ Before starting this tutorial, you need to have an application of your own and k
 We will import the application on the IBAX blockchain via the [command line tool](https://github.com/IBAX-io/ibax-cli). Exporting an application
 
 
-### Export Application
+### Export Application {#export-application}
  Call `account info` to query the current account information, here the login ecid is `9`, call `getList` command to query the current ecid which applications
 ```shell
 $ ibax-cli console
@@ -694,7 +694,7 @@ Call the `binaryVerify` command to export the binary file
 }
 ```
  
-### Import Application
+### Import Application {#import-application}
 Use the `import` command to import an application, with the `-f` parameter to specify the application file to be imported
 ```shell
 $ ibax-cli console
@@ -751,7 +751,7 @@ Call the contract `@1Import` to import the application data
 ```
 
 
-## Ecological configuration using command line tool
+## Ecological configuration using command line tool {#ecological-configuration-using-command-line-tool}
 In this tutorial, you will learn how to:
 -	1. [Apply to join the ecology](#apply-to-join-the-ecology)
 -	2. [Add ecological members](#add-ecological-members)
@@ -763,7 +763,7 @@ In this tutorial, you will learn how to:
 Before starting this tutorial, you need to have an application of your own and know the concept of ecology and application, you can refer to [Getting Started Guide](#getting-started-guide)
 We will do the ecological configuration on the IBAX blockchain via [command line tool](https://github.com/IBAX-io/ibax-cli)
 
-### Apply to join the ecology
+### Apply to join the ecology {#apply-to-join-the-ecology}
 We can call the `@1MembershipRequest` contract to request to join the ecology
 The following example:
 ```shell
@@ -773,7 +773,7 @@ request to join the ecology with ecological id `19`, the `@1MembershipRequest` c
 When the application is successful, the target ecology manager will receive an application, and only when the application is approved by the ecology manager will it be considered as joining the target ecology.
 Of course, if the target ecology is public, you can join the target ecology directly
 
-### Add ecological members
+### Add ecological members {#add-ecological-members}
 When the ecology is just created, the ecology member is only the ecology creator, when you need to invite other members to join, you need to know the public key of the invited person, and then call the contract `@1MembershipAdd` to add members
 ```shell
 >callContract @1MembershipAdd {"Keys": "04f2c1780ca0aa0f343d0e541c77811...3b0d5bf3a9903253aad6e78c966b5f91ffb32703884020"}
@@ -792,20 +792,20 @@ Call `@1MembershipDecide` contract approval application, contract parameters `No
 >callContract @1MembershipDecide {"NotificId": 6, "Accept": 1}
 ```
 
-### Freezing of accounts
+#### Freezing of accounts {#freezing-of-accounts}
 Call `@1DeleteMember` contract to freeze the account, note that this operation cannot be restored
 ```shell
 >callContract @1DeleteMember {"MemberAccount": "1539-2715-xxxx-1679-5385"}
 ```
 
-### Role management
+### Role management {#role-management}
 -	[New role creation](#new-role-creation)
 -	[Add Role Member](#adding-role-members)
 -	[delete role member](#delete-role-members)
 -	[Modify role manager](#modify-role-manager)
 -	[delete role](#delete-role)
 
-#### New role creation
+#### New role creation {#new-role-creation}
 Call `@1RolesCreate` contract to create a new role, role name `student`, type `2` (1 - Assignable 2 - Elected by vote type 3 - System)
 ```shell
 >callContract @1RolesCreate {"Name": "student", "Type": 2}
@@ -818,7 +818,7 @@ Call `@1RolesCreate` contract to create a new role, role name `student`, type `2
 ```
 The return result contains the role id `21`
 
-#### Adding Role Members 
+#### Adding Role Members {#adding-role-members}
 There are two methods, the first method, the ecological member to initiate the application, call the contract `@1RolesRequest` request to add as a member of the role, where `Rid` is the role id
 ```shell
 >callContract @1RolesRequest {"Rid": 21}
@@ -829,7 +829,7 @@ In the second method, the role manager assigns role members, and the role manage
 >callContract @1RolesAssign {"MemberAccount": "0666-7782-xxxx-7671- 3160", "Rid": 21}
 ```
 
-#### Delete role members
+#### Delete role members {#delete-role-members}
 First we see what members a role has, which we can query via getList, as follows:
 ```shell
 >getList @1roles_participants -w={"ecosystem": 18, "role->id": "21", "deleted": 0}
@@ -858,7 +858,7 @@ where the `where` condition `ecosystem` specifies ecology, `role->id` specifies 
 >callContract @1RolesUnassign {"RowId": 21}
 ```
 
-#### Modify Role Manager
+#### Modify Role Manager {#modify-role-manager}
 Let's look at the current ecological roles
 ```shell
 >getList @1roles -w={"ecosystem": 18}
@@ -897,7 +897,7 @@ We add an administrative role to the role `teacher` by calling the `@1RolesAcces
 }
 ```
 
-#### Delete Role
+#### Delete Role {#delete-role}
 We can call the `@1RolesDelete` contract to delete roles, where the contract parameters `Rid` is the ID of the role to be managed and `Ops` is the operator (`D` is delete `R` is restore)
 ```shell
 >callContract @1RolesDelete {"Rid": 24, "Ops": "D"}
@@ -911,12 +911,12 @@ We can call the `@1RolesDelete` contract to delete roles, where the contract par
 ```
 
 
-### Issuance of Token
+### Issuance of Token {#issuance-of-token}
 -	[Create Ecology](#create-ecology)
 -	[Installing Basic Applications](#installing-basic-applications)
 -	[Token Issuance](#token-issuance)
 
-#### Create Ecology
+#### Create Ecology {#create-ecology}
 Create an ecology, call `@1NewEcosystem` contract
 ```shell
 >callContract @1NewEcosystem {"Name": "Test Ecosystem"}
@@ -929,7 +929,7 @@ Create an ecology, call `@1NewEcosystem` contract
 ```
 Then we modify the command line tool configuration to log into this newly created ecosystem: "21"
 
-#### Installing Basic Applications
+#### Installing Basic Applications {#installing-basic-applications}
 
 Call the contract to install the base application, as follows:
 ```shell
@@ -961,7 +961,7 @@ Line 3-4, install the eco-configuration and token issuance application, where th
 }
 ```
  
-#### Token Issuance
+#### Token Issuance {#token-issuance}
 Because it is a new ecology, you need to set up the token issuance, call `@1TeSettings` contract to specify the roles that can issue tokens
 ```shell
 >callContract @1TeSettings {"RoleDeveloper": 30}
@@ -997,7 +997,7 @@ Default token increment and token destruction is allowed, you can set it off by 
 >callContract @1TeChange {"TypeChange": "withdraw", "Value": 2}
 ```
 
-### Eco Deduction
+### Eco Deduction {#eco-deduction}
 Before setting up eco-deductions, you need to understand the IBAX fee model, which can be found in the [white paper](https://github.com/IBAX-io/whitepaper).
  
 We first set the eco-wallet address, call the `@1EditParameter` contract and modify the eco-parameters
@@ -1029,7 +1029,7 @@ If you use the above settings, all transaction fees incurred by users invoking c
 All users only need to pay for the gas costs incurred within the ecology. Of course you can adjust the cost parameters according to your actual needs
 
 
-### DAO Governance Ecology
+### DAO Governance Ecology {#dao-governance-ecology}
 Before modifying to DAO governance ecology, you need to ensure that the current ecology has issued tokens, and after modifying to DAO governance ecology, all proposals of the ecology will be voted on by the members of the governance committee.
 The DAO Governance Board is no longer managed by the eco-developers alone, and the top 50 representatives of the eco-holdings are elected.
 
@@ -1058,7 +1058,7 @@ The scope of DAO governance includes:
 10.	Modify the voting template
  
 
-## Deploy applications using application packaging tool
+## Deploy applications using application packaging tool {#deploy-applications-using-application-packaging-tool}
 Before starting this tutorial, you need to download [IBAX Application Packaging Tool](https://github.com/IBAX-io/app-tool) , we need to use this tool to package IBAX application.
 
 We need to store the application files according to the following directory structure

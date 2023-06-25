@@ -1,100 +1,100 @@
-# Vorlagensprache
+# Vorlagensprache {#template-language}
 
-   - [Seitenaufbau](#seitenaufbau)
-     - [Vorlagen-Engine](#vorlagen-engine)
-     - [Seiten erstellen](#seiten-erstellen)
-       - [Visueller Seitendesigner](#visueller-seitendesigner)
-       - [Anwendbare Stile](#anwendbare-stile)
-       - [Seitenmodul](#seitenmodul)
-       - [Sprachressourcen-Editor](#Sprachressourcen-Editor)
-  - [Logicor-Vorlagensprache](#logicor-vorlagensprache)
-     - [Logicor-Übersicht](#logicor-übersicht)
-       - [PageParams verwenden, um Parameter an Seiten zu übergeben](#pageparams-verwenden-um-parameter-an-seiten-zu-übergeben)
-       - [Anrufverträge](#Anrufverträge)
-  - [Logicor-Funktionsklassifizierung](#logicor-funktionsklassifizierung)
-     - [Operationen auf Variablen:](#operationen-auf-Variablen)
-     - [Navigationsoperationen:](#navigationsoperationen)
-     - [Datenmanipulation:](#Datenmanipulation)
-     - [Datenpräsentation:](#datenpräsentation)
-     - [Übernahme von Daten:](#übernahme-von-daten)
-     - [Datenformatierungselemente:](#datenformatierungselemente)
-     - [Formularelemente:](#formularelemente)
-     - [Operationen auf Codeblöcken:](#Operationen-auf-Codeblöcken)
+   - [Seitenaufbau](#page-construction)
+     - [Vorlagen-Engine](#template-engine)
+     - [Seiten erstellen](#create-pages)
+       - [Visueller Seitendesigner](#visual-page-designer)
+       - [Anwendbare Stile](#applicable-styles)
+       - [Seitenmodul](#page-module)
+       - [Sprachressourcen-Editor](#language-resource-editor)
+  - [Logicor-Vorlagensprache](#logicor-template-language)
+     - [Logicor-Übersicht](#logicor-overview)
+       - [PageParams verwenden, um Parameter an Seiten zu übergeben](#use-pageparams-to-pass-parameters-to-pages)
+       - [Anrufverträge](#calling-contracts)
+  - [Logicor-Funktionsklassifizierung](#logicor-function-classification)
+     - [Operationen auf Variablen:](#operations-on-variables)
+     - [Navigationsoperationen:](#navigational-operations)
+     - [Datenmanipulation:](#data-manipulation)
+     - [Datenpräsentation:](#data-presentation)
+     - [Übernahme von Daten:](#accepting-of-data)
+     - [Datenformatierungselemente:](#data-formatting-elements)
+     - [Formularelemente:](#form-elements)
+     - [Operationen auf Codeblöcken:](#operations-on-code-blocks)
   - [Logicor-Funktionsreferenzen](#logicor-function-references)
-     - [Adresse](#Adresse)
+     - [Adresse](#address)
      - [AddressToId] (#addresstoid)
      - [AddToolButton](#addtoolbutton)
-     - [Und](#und)
+     - [Und](#and)
      - [AppParam](#appparam)
      - [ArrayToSource](#arraytosource)
-     - [Binär](#binär)
-     - [Schaltfläche](#Schaltfläche)
-     - [Berechnen](#berechnen)
-     - [Diagramm](#Diagramm)
+     - [Binär](#binary)
+     - [Schaltfläche](#button)
+     - [Berechnen](#calculate)
+     - [Diagramm](#chart)
      - [CmpTime](#cmptime)
      - [Code](#code)
      - [CodeAsIs](#Codeasis)
-     - [Daten](#Daten)
-     - [Benutzerdefiniert](#benutzerdefiniert)
-     - [DatumUhrzeit](#DatumUhrzeit)
+     - [Daten](#data)
+     - [Benutzerdefiniert](#custom)
+     - [DatumUhrzeit](#datetime)
      - [DBFind](#dbfind)
      - [Div](#div)
-     - [EcosysParam](#ecosysParam)
+     - [EcosysParam](#ecosysparam)
      - [Em](#em)
-     - [FürListe](#fürListe)
-     - [Formular](#Formular)
-     -  [Spaltentyp holen](#spaltentyp-holen)
+     - [FürListe](#forlist)
+     - [Formular](#form)
+     -  [Spaltentyp holen](#getcolumntype)
      - [GetHistory](#gethistory)
      - [GetVar](#getvar)
-     - [Hinweis](#Hinweis)
-     - [Wenn](#wenn)
-     - [Bild](#Bild)
-     - [Bildeingabe](#Bildeingabe)
-     - [Einschließen](#einschließen)
-     - [Eingabe](#Eingabe)
-     - [EingabeFehler](#Eingabefehler)
-     - [InputMap](#Eingabemap)
+     - [Hinweis](#hint)
+     - [Wenn](#if)
+     - [Bild](#image)
+     - [Bildeingabe](#imageinput)
+     - [Einschließen](#include)
+     - [Eingabe](#input)
+     - [EingabeFehler](#inputerr)
+     - [InputMap](#inputmap)
      - [JsonToSource](#jsontosource)
-     - [Etikett](#Etikett)
+     - [Etikett](#label)
      - [LangRes](#langres)
-     - [Linkseite](#linkseite)
-     - [Karte](#Karte)
-    - [Menügruppe](#Menügruppe)
+     - [Linkseite](#linkpage)
+     - [Karte](#map)
+    - [Menügruppe](#menugroup)
      - [MenuItem](#menuitem)
-     - [Geld](#Geld)
-     - [Oder](#oder)
+     - [Geld](#money)
+     - [Oder](#or)
      - [P](#p)
      - [QRcode](#qrcode)
-     - [Funkgruppe](#Funkgruppe)
-     - [Bereich](#Bereich)
-     - [Auswählen](#auswählen)
+     - [Funkgruppe](#radiogroup)
+     - [Bereich](#range)
+     - [Auswählen](#select)
      - [SetTitle](#settitle)
      - [SetVar](#setvar)
-     - [Spanne](#Spanne)
-     - [Stark](#stark)
+     - [Spanne](#span)
+     - [Stark](#strong)
      - [SysParam](#sysparam)
-     - [Tabelle](#Tabelle)
-     - [Transaktionsinfo](#transaktionsinfo)
+     - [Tabelle](#table)
+     - [Transaktionsinfo](#transactioninfo)
      - [VarAsIs](#varasis)
   - [App-Stile für Mobilgeräte](#app-styles-for-mobile-devices)
-     - [Layout](#Layout)
-       - [Titel](#Titel)
-       - [Starke Klassennamen](#starke-Klassennamen)
-       - [Farbe](#Farbe)
-       - [Gitter](#Gitter)
-       - [Leiste](#Leiste)
+     - [Layout](#layout)
+       - [Titel](#title)
+       - [Starke Klassennamen](#strong-class-names)
+       - [Farbe](#color)
+       - [Gitter](#grid)
+       - [Leiste](#panel)
        - [Formular](#form-app)
-       - [Schaltfläche](#Schaltfläche-App)
-       - [Symbol](#Symbol)
+       - [Schaltfläche](#button-app)
+       - [Symbol](#icon)
 
-## Seitenaufbau
+## Seitenaufbau {#page-construction}
 
 Die integrierte Entwicklungsumgebung (IDE) von Weaver wird mit React, einer JavaScript-Bibliothek, erstellt. Es hat einen Seiteneditor und einen visuellen Seitendesigner. Seiten sind grundlegende Teile einer Anwendung, die zum Abrufen und Anzeigen von Daten aus Tabellen, zum Erstellen von Formularen zum Empfangen von Benutzereingabedaten, zum Übergeben von Daten an Verträge und zum Navigieren zwischen Anwendungsseiten verwendet werden. Seiten werden wie Verträge in der Blockchain gespeichert, wodurch sie beim Laden in den Software-Client manipulationssicher sein können.
-### Template-Engine
+### Template-Engine {#template-engine}
 
 Seitenelemente (Seiten und Menüs) werden von Entwicklern in der Template-Engine eines Verifizierungsknotens unter Verwendung der Template-Sprache im Seiteneditor von Weaver gebildet. Alle Seiten werden mit der vom IBAX-Entwicklungsteam entwickelten Logicor-Sprache erstellt. Verwenden Sie content/... API-Befehle, um Seiten von Knoten im Netzwerk anzufordern. Was die Template-Engine als Antwort auf diese Art von Anfrage sendet, ist keine HTML-Seite, sondern ein JSON-Code, der sich aus HTML-Tags zusammensetzt, die gemäß der Template-Struktur einen Baum bilden. Wenn Sie die Vorlagen-Engine testen möchten, können Sie auf den API-Befehl [content](../reference/api2.md#content) verweisen.
 
-### Seiten erstellen
+### Seiten erstellen {#create-pages}
 
 Sie können den Seiteneditor verwenden, um Seiten zu erstellen und zu bearbeiten, die Sie im Abschnitt „Seiten“ des Verwaltungstools von Weaver finden. Der Editor kann verwendet werden, um:
 
@@ -105,19 +105,19 @@ Sie können den Seiteneditor verwenden, um Seiten zu erstellen und zu bearbeiten
 * Starten Sie den visuellen Seitendesigner;
 * Vorschauseiten.
 
-#### Visueller Seitendesigner
+#### Visueller Seitendesigner {#visual-page-designer}
 
 Der visuelle Seitendesigner kann verwendet werden, um Seitenlayouts zu erstellen, ohne Schnittstellencodes in der Sprache Logicor zu verwenden. Damit können Sie die Position von Formularelementen und Text auf Seiten durch Ziehen und Ablegen solcher Elemente festlegen und die Größe von Seitenblöcken konfigurieren. Es bietet eine Reihe von gebrauchsfertigen Blöcken zur Präsentation von Standarddatenmodellen: mit Titeln, Formularen und Informationstafeln. Nachdem Sie eine Seite im visuellen Seitendesigner erstellt haben, können Sie Programmlogik zum Empfangen von Daten und einer bedingten Struktur im Seiteneditor schreiben. Für die Zukunft planen wir die Erstellung eines visuellen Seitendesigners mit zusätzlichen Funktionen.
 
-#### Anwendbare Stile
+#### Anwendbare Stile {#applicable-styles}
 
 Standardmäßig werden Seiten im Bootstrap Angle-Stil von Angular dargestellt. Benutzer können je nach Bedarf ihre eigenen Stile erstellen. Der Stil wird im Stilparameter-Stylesheet in der Ecosystem-Parametertabelle gespeichert.
 
-#### Seitenmodul
+#### Seitenmodul {#page-module}
 
 Um einen Codeblock auf mehreren Seiten zu verwenden, können Sie ein Seitenmodul erstellen, um es zu speichern und in den Seitencode einzubetten. Seitenmodule können in Weavers Modulblöcken erstellt und bearbeitet werden. Wie Seiten können Bearbeitungsrechte definiert werden.
 
-#### Editor für Sprachressourcen
+#### Editor für Sprachressourcen {#language-resource-editor}
 
 Weaver enthält einen Mechanismus zur Seitenlokalisierung unter Verwendung einer Funktion **LangRes** der Logicor-Template-Sprache. Es könnte Sprachressourcen-Tags auf der Seite durch Textzeilen ersetzen, die der vom Benutzer im Software-Client oder Browser ausgewählten Sprache entsprechen. Anstelle der **LangRes**-Funktion kann auch die Kurzsyntax **$lable$** verwendet werden. Die Übersetzung von Nachrichten in Popups, die vom Vertrag initiiert werden, wird von Needles **LangRes**-Funktion durchgeführt.
 
@@ -125,7 +125,7 @@ Sie können Sprachressourcen im Bereich Sprachressourcen von Weaver erstellen un
 
 Die Berechtigungen zum Hinzufügen und Ändern von Sprachressourcen können wie bei anderen Tabellen definiert werden.
 
-## Logicor-Vorlagensprache
+## Logicor-Vorlagensprache {#logicor-template-language}
 
 Logicor-Funktionen bieten die folgenden Operationen:
 
@@ -142,7 +142,7 @@ Logicor-Funktionen bieten die folgenden Operationen:
 * Erstellen von mehrstufigen Menüs;
 * Seitenlokalisierung.
 
-### Logicor-Übersicht
+### Logicor-Übersicht {#logicor-overview}
 
 Die Logicor-Seitenvorlagensprache ist eine funktionale Sprache, die es einer Funktion ermöglicht, eine andere Funktion ```FuncName(parameters)``` aufzurufen und Funktionen ineinander zu verschachteln. Sie können Parameter ohne Anführungszeichen angeben und unnötige Parameter löschen.
 
@@ -169,7 +169,7 @@ Folgende Variablen sind vordefiniert:
 * `#guest_key#` - Adresse des Gastkontos;
 * `#isMobile#` - 1, wenn Weaver auf einem Mobilgerät läuft.
 
-#### Verwenden Sie PageParams, um Parameter an Seiten zu übergeben
+#### Verwenden Sie PageParams, um Parameter an Seiten zu übergeben {#use-pageparams-to-pass-parameters-to-pages}
 
 Viele Funktionen unterstützen den PageParams-Parameter, der zum Übergeben von Parametern beim Umleiten auf eine neue Seite verwendet wird. Zum Beispiel: PageParams: `"param1=value1,param2=value2"`. Der Parameterwert kann ein einfacher String oder eine Variable mit Referenzwert sein. Beim Übergeben von Parametern an Seiten wird eine Variable mit dem Parameternamen erstellt, z. `#param1#` und `#param2#`.
 
@@ -180,32 +180,32 @@ Darüber hinaus kann die Val-Funktion Daten aus Formularen abrufen, die in der U
 
 * `PageParams: "hello=Val(world)"` - Die neue Seite erhält den hallo-Parameter mit dem Wert des World-Formular-Elements.
 
-#### Verträge anrufen
+#### Verträge anrufen {#calling-contracts}
 
 Logicor implementiert Vertragsaufrufe durch Anklicken der Button-Funktion in einem Formular. Sobald ein Ereignis ausgelöst wird, werden die vom Benutzer in einem Formularfeld auf der Seite eingegebenen Daten an den Vertrag übergeben. Entspricht der Formularfeldname dem Variablennamen im Datenteil des aufgerufenen Vertrages, werden die Daten automatisch übertragen. Die Schaltflächenfunktion ermöglicht es, ein modales Fenster für den Benutzer zu öffnen, um die Vertragsausführung zu überprüfen, und bei erfolgreicher Vertragsausführung die Umleitung auf die angegebene Seite zu initiieren und bestimmte Parameter an die Seite zu übergeben.
 
-## Logicor-Funktionsklassifizierung
+## Logicor-Funktionsklassifizierung {#logicor-function-classification}
 
-### Operationen auf Variablen:
+### Operationen auf Variablen: {#operations-on-variables}
 
 |        |        |         |
 | ------ | ------ | ------- |
 | [GetVar](#getvar) | [SetVar](#setvar) | [VarAsIs](#varasis) |
 
-### Navigationsoperationen:
+### Navigationsoperationen: {#navigational-operations} 
 
 |               |        |          |
 | ------------- | ------ | -------- |
 | [AddToolButton](#addtoolbutton) | [Button](#button) | [LinkPage](#linkpage) |
 
-### Datenmanipulation:
+### Datenmanipulation: {#data-manipulation}
 
 |           |          |       |
 | --------- | -------- | ----- |
 | [Calculate](#calculate) | [DateTime](#datetime) | [Money](#money) |
 | [CmpTime](#cmptime)   |          |       |
 
-### Datenpräsentation:
+### Datenpräsentation: {#data-presentation}
 
 |          |           |          |
 | -------- | --------- | -------- |
@@ -214,7 +214,7 @@ Logicor implementiert Vertragsaufrufe durch Anklicken der Button-Funktion in ein
 | [Chart](#chart)    | [MenuGroup](#menugroup) | [Table](#table)    |
 | [ForList](#forlist)  |           |          |
 
-### Übernahme der Daten:
+### Übernahme der Daten: {#accepting-of-data}
 
 |             |               |                 |
 | ----------- | ------------- | --------------- |
@@ -224,7 +224,7 @@ Logicor implementiert Vertragsaufrufe durch Anklicken der Button-Funktion in ein
 | [Data](#data)        | [JsonToSource](#jsontosource)  | [Binary](#binary)          |
 | [DBFind](#dbfind)      | [ArrayToSource](#arraytosource) | [TransactionInfo](#transactioninfo) |
 
-### Datenformatierungselemente:
+### Datenformatierungselemente: {#data-formatting-elements}
 
 |      |          |        |
 | ---- | -------- | ------ |
@@ -232,7 +232,7 @@ Logicor implementiert Vertragsaufrufe durch Anklicken der Button-Funktion in ein
 | [Em](#em)   | [Label](#label)    | [Strong](#strong) |
 | [P](#p)    |          |        |
 
-### Formularelemente:
+### Formularelemente: {#form-elements}
 
 |            |            |          |
 | ---------- | ---------- | -------- |
@@ -240,7 +240,7 @@ Logicor implementiert Vertragsaufrufe durch Anklicken der Button-Funktion in ein
 | [ImageInput](#imageinput) | [RadioGroup](#radiogroup) | [Map](#map)      |
 | [Input](#input)      | [Select](#select)     |          |
 
-### Operationen auf Codeblöcken:
+### Operationen auf Codeblöcken: {#operations-on-code-blocks}
 
 |      |      |         |
 | ---- | ---- | ------- |
@@ -248,13 +248,13 @@ Logicor implementiert Vertragsaufrufe durch Anklicken der Button-Funktion in ein
 | [And](#and)  |      |         |
 
 
-## Logicor-Funktionsreferenzen
+## Logicor-Funktionsreferenzen {#logicor-function-references}
 
-### Die Anschrift
+### Die Anschrift {#address}
 
 Diese Funktion gibt die Wallet-Adresse `xxxx-xxxx-...-xxxx` einer bestimmten Kontoadresse zurück; wenn keine Adresse angegeben ist, wird die Kontoadresse des aktuellen Benutzers als Parameter verwendet.
 
-#### Syntax
+**Syntax**
 
 ```
 Address(account)
@@ -265,17 +265,17 @@ Address(account)
   
     Account address.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Span(Your wallet: Address(#account#))
 ```
 
-### AddressToId
+### AddressToId {#addresstoid}
 
 Es gibt die Kontoadresse einer bestimmten Wallet-Adresse xxxx-xxxx-...-xxxx zurück.
 
-#### Syntax
+**Syntax**
 
 
 ```
@@ -287,16 +287,16 @@ AddressToId(Wallet)
   
     The wallet address in XXXX-...-XXXX format.
 
-#### Beispiel
+**Beispiel**
 
 ```
 AddressToId(#wallet#)
 ```
-### Werkzeugschaltfläche hinzufügen
+### Werkzeugschaltfläche hinzufügen {#addtoolbutton}
 
 Erstellen Sie ein Schaltflächenpanel mit einem addtoolbutton-Element.
 
-#### Syntax
+**Syntax**
 
 
 ```
@@ -335,32 +335,32 @@ AddToolButton(Title, Icon, Page, PageParams)
        Der Bereich liegt zwischen 1 und 100.
 
 
-#### Beispiel
+**Beispiel**
 
 ```
 AddToolButton(Title: $@1broadcast$, Page: @1notifications_broadcast, Icon: icon-plus).Popup(Header: $@1notifications_broadcast$, Width: "50")
 ```
-### Und
+### Und {#and}
 
 Es gibt das Ergebnis einer logischen Operation und zurück. Alle in Klammern aufgeführten Parameter sind durch Kommas getrennt. Wenn einer der Parameter eine leere Zeichenkette, Null oder `false` ist, ist der Parameterwert `false`, andernfalls ist der Parameterwert `true`. Wenn der Parameterwert "true" ist, gibt die Funktion `1` zurück, andernfalls gibt sie `0` zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 And(parameters)
 ```
 
-#### Beispiel
+**Beispiel**
 
 ```
 If(And(#myval1#,#myval2#), Span(OK))
 ```
 
-### AppParam
+### AppParam {#appparam}
 
 Geben Sie den Anwendungsparameterwert aus, der aus der app_params-Tabelle des aktuellen Ökosystems entnommen wird. Wenn es eine Sprachressource mit dem angegebenen Namen gibt, wird ihr Wert automatisch ersetzt.
 
-#### Syntax
+**Syntax**
 ```
 AppParam(App, Name, Index, Source)
 
@@ -384,16 +384,16 @@ AppParam(App, Name, Index, Source)
     Create a data object whose elements are the values of specific parameters. This object can be used as a data source for the [Table](#table) and [Select](#select) functions.
     It cannot be used in conjunction with the Index parameter.
 
-#### Beispiel
+**Beispiel**
 
 ```
 AppParam(1, type, Source: mytype)
 ```
-### ArrayToSource
+### ArrayToSource {#arraytosource}
 
 Erstellen Sie ein arraytosource-Element und füllen Sie es mit den Schlüssel-Wert-Paaren eines JSON-Arrays. Die erhaltenen Daten werden in das Source-Element eingefügt, das später in der Quelleneingabefunktion (z. B. Tabelle) verwendet werden kann.
 
-#### Syntax
+**Syntax**
 ```
 ArrayToSource(Source, Data)
 
@@ -406,18 +406,18 @@ ArrayToSource(Source, Data)
 
      Ein JSON-Array oder ein Variablenname, der ein JSON-Array enthält (`#name#`).
 
-#### Beispiel
+**Beispiel**
 
 ```
 ArrayToSource(src, #myjsonarr#)
 ArrayToSource(dat, [1, 2, 3])
 ```
 
-### Binär
+### Binär {#binary}
 
 Gibt Links zu statischen Dateien zurück, die in den Binärdateien der Binärtabelle gespeichert sind.
 
-#### Syntax
+**Syntax**
 
 ```
 Binary(Name, AppID, MemberID)[.ById(ID)][.Ecosystem(ecosystem)]
@@ -440,7 +440,7 @@ Binary(Name, AppID, MemberID)[.ById(ID)][.Ecosystem(ecosystem)]
 
      Ökosystem-ID. Wenn es nicht angegeben ist, wird die Binärdatei vom aktuellen Ökosystem angefordert.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Image(Src: Binary("my_image", 1))
@@ -448,11 +448,11 @@ Image(Src: Binary().ById(2))
 Image(Src: Binary().ById(#id#).Ecosystem(#eco#))
 ```
 
-### Taste
+### Taste {#button}
 
 Erstellen Sie ein Schaltflächen-HTML-Element, das eine Schaltfläche zum Aufrufen eines Vertrags oder zum Öffnen einer Seite erstellt.
 
-#### Syntax
+**Syntax**
 
 ```
 Button(Body, Page, Class, Contract, Params, PageParams)
@@ -460,7 +460,7 @@ Button(Body, Page, Class, Contract, Params, PageParams)
  [.Alert(Text, ConfirmButton, CancelButton, Icon)]
  [.Popup(Width, Header)]
  [.Style(Style)]
- [.ErrorRedirect((ErrorID,PageName,PageParams)]
+ [.ErrorRedirect(ErrorID,PageName,PageParams)]
 ```
 
 > Taste
@@ -540,17 +540,17 @@ Angeben und Weiterleiten auf eine Seite, wenn die Funktion :ref:contractfundef-T
 
     An die Seite übergebene Parameter.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Button(Submit, default_page, mybtn_class).Alert(Alert message)
 Button(Contract: MyContract, Body:My Contract, Class: myclass, Params:"Name=myid,Id=i10,Value")
 ```
 
-### Berechnung
+### Berechnung {#calculate}
 Es gibt das Ergebnis des arithmetischen Ausdrucks zurück, der im Parameter Exp übergeben wurde. Die folgenden Operationen sind anwendbar: +, -, *, / und Klammern ().
 
-#### Syntax
+**Syntax**
 ```
 Calculate(Exp, Type, Prec)
 ```
@@ -566,7 +566,7 @@ Calculate(Exp, Type, Prec)
 
     Float- und Gelddaten, mit zwei signifikanten Stellen nach dem Dezimalkomma.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Calculate( Exp: (342278783438+5000)\*(#val#-932780000), Type: money, Prec:18 )
@@ -574,11 +574,11 @@ Calculate(10000-(34+5)\*#val#)
 Calculate("((10+#val#-45)\*3.0-10)/4.5 + #val#", Prec: 4)
 ```
 
-### Diagramm
+### Diagramm {#chart}
 
 Erstellen Sie HTML-Diagramme.
 
-#### Syntax
+**Syntax**
 ```
 Chart(Type, Source, FieldLabel, FieldValue, Colors)
 ```
@@ -600,7 +600,7 @@ Chart(Type, Source, FieldLabel, FieldValue, Colors)
 
     Liste der Farben.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Data(mysrc,"name,count"){
@@ -611,12 +611,12 @@ Data(mysrc,"name,count"){
 Chart(Type: "bar", Source: mysrc, FieldLabel: "name", FieldValue: "count", Colors: "red, green")
 ```
 
-### CmpTime
+### CmpTime {#cmptime}
 
 Es vergleicht zwei Zeitwerte im gleichen Format.
 Es unterstützt Unixtime, `YYYY-MM-DD HH:MM:SS` und jedes Zeitformat wie `YYYYMMDD`.
 
-#### Syntax
+**Syntax**
 
 ```
 CmpTime(Time1, Time2)
@@ -630,18 +630,18 @@ Rückgabewert:
 * `0` - Time1 = Time2;
 * `1` - Time1> Time2.
 
-#### Beispiel
+**Beispiel**
 
 ```
 If(CmpTime(#time1#, #time2#)<0){...}
 ```
 
-### Code
+### Code {#code}
 Erstellen Sie ein Codeelement, um den angegebenen Code anzuzeigen.
 
 Es ersetzt eine Variable durch den Wert der Variablen (z. B. `#name#`).
 
-#### Syntax
+**Syntax**
 ```
 Code(Text)
 ```
@@ -651,7 +651,7 @@ Code(Text)
 
     Quellcode.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Code( P(This is the first line.
@@ -659,12 +659,12 @@ Code( P(This is the first line.
 )
 ```
 
-### CodeAsIs
+### CodeAsIs {#codeasis}
 
 Erstellen Sie ein Codeelement, um den angegebenen Code anzuzeigen.
 Es ersetzt keine Variable durch ihren Wert. Beispielsweise wird `#name#` unverändert angezeigt.
 
-#### Syntax
+**Syntax**
 ```
 CodeAsIs(Text)
 ```
@@ -674,7 +674,7 @@ CodeAsIs(Text)
 
     Source code.
 
-#### Beispiel
+**Beispiel**
 
 ```
 CodeAsIs( P(This is the #test1#.
@@ -682,11 +682,11 @@ CodeAsIs( P(This is the #test1#.
 )
 ```
 
-### Daten
+### Daten {#data}
 
 Erstellen Sie ein Datenelement, füllen Sie es mit den angegebenen Daten und legen Sie es in Quelle ab. Dann können Sie Source als Dateneingabe in [Table](#table) und anderen Funktionen erhalten. Die Reihenfolge der Spaltennamen entspricht der Reihenfolge der Dateneingabewerte.
 
-#### Syntax
+**Syntax**
 ```
 Data(Source,Columns,Data)
  [.Custom(Column){Body}]
@@ -709,7 +709,7 @@ Data(Source,Columns,Data)
     Werte mit Kommas sollten in doppelte Anführungszeichen gesetzt werden (`"example1, example2", 1, 2`). Werte in Anführungszeichen sollten in zwei doppelte Anführungszeichen gesetzt werden (`"""example", "example2""", 1, 2`).
 
     
-### Benutzerdefiniert
+### Benutzerdefiniert {#custom}
 
      Sie können Daten berechnete Spalten zuweisen. Beispielsweise können Sie Feldvorlagen für Schaltflächen und andere Seitenlayoutelemente angeben. Diese Feldvorlagen werden normalerweise [Table](#table) und anderen Funktionen zum Empfangen von Daten zugewiesen.
      Verwenden Sie mehrere benutzerdefinierte Funktionen, wenn Sie mehrere berechnete Spalten zuweisen möchten.
@@ -723,7 +723,7 @@ Data(Source,Columns,Data)
 
     Codeblock. Sie können `#columnname#` verwenden, um Werte aus anderen Spalten im Eintrag zu erhalten, und diese Werte dann in Codeblöcken verwenden.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Data(mysrc,"id,name"){
@@ -733,11 +733,11 @@ Data(mysrc,"id,name"){
  }.Custom(link){Button(Body: View, Class: btn btn-link, Page: user, PageParams: "id=#id#"}
 ```
 
-### Terminzeit
+### Terminzeit {#datetime}
 
 Zeigt Uhrzeit und Datum im angegebenen Format an.
 
-#### Syntax
+**Syntax**
 
 ```
 DateTime(DateTime, Format)
@@ -752,18 +752,18 @@ DateTime(DateTime, Format)
     Formatvorlage: Jahr im 2-stelligen Format `YY`, 4-stelliges Format `YYYY`, Monat in `MM`, Tag in `DD`, Stunde in `HH`, Minute in `MM`, Sekunde in `SS` , z. B.: `JJ/MM/TT HH:MM`.
      Wenn es nicht angegeben ist oder fehlt, wird `YYYY-MM-DD HH:MI:SS` verwendet.
 
-#### Beispiel
+**Beispiel**
 
 ```
 DateTime(2017-11-07T17:51:08)
 DateTime(#mytime#,HH:MI DD.MM.YYYY)
 ```
 
-### DBFind
+### DBFind {#dbfind}
 
 Erstellen Sie ein dbfind-Element, füllen Sie es mit den Daten der Tabelle table und fügen Sie es in die Source-Struktur ein, die später für die Eingabedaten von [Table](#table) und anderen Funktionen Source verwendet werden kann.
 
-#### Syntax
+**Syntax**
 ```
 DBFind(table, Source)
     [.Columns(columns)]
@@ -868,7 +868,7 @@ Wird zum Ausschneiden und Anzeigen großer Textdatenmengen verwendet.
    Das dem Variablennamen hinzugefügte Präfix. Sein Format ist `#prefix_columnname#`, wobei der Spaltenname direkt auf den Unterstrich folgt. Wenn eine Spalte ein JSON-Feld enthält, hat die generierte Variable das folgende Format: `#prefix_columnname_field#`.
 
 
-#### Beispiel
+**Beispiel**
 
 ```
 DBFind(parameters,myparam)
@@ -878,11 +878,11 @@ DBFind(parameters,myparam).Custom(myid){Strong(#id#)}.Custom(myname){
 }
 ```
 
-### Div
+### Div {#div}
 
 Erstellen Sie ein div-HTML-Element.
 
-#### Syntax
+**Syntax**
 ```
 Div(Class, Body)
  [.Style(Style)]
@@ -916,7 +916,7 @@ Definieren Sie die Bedingungen für die Anzeige von Div.
 
    Das Ausdrucksformat ist `InputName=Value`, wenn alle Ausdrücke wahr sind, ist *Condition* wahr, und wenn der Wert von `InputName` gleich `Value` ist, ist *Condition* wahr. Wenn mehrere *Show* oder *Hide* aufgerufen werden, muss mindestens ein *Condition*-Parameter wahr sein.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Form(){
@@ -932,11 +932,11 @@ Form(){
 }
 ```
 
-### EcosysParam
+### EcosysParam {#ecosysparam}
 
 Diese Funktion erhält Parameterwerte aus der Ökosystemparametertabelle des aktuellen Ökosystems. Wenn der zurückgegebene Ergebnisname die Sprachressourcen enthält, wird er entsprechend übersetzt.
 
-#### Syntax
+**Syntax**
 ```
 EcosysParam(Name, Index, Source)
 ```
@@ -965,11 +965,11 @@ EcosysParam(Name: gender_list, Source: src_gender)
 Select(Name: gender, Source: src_gender, NameColumn: name, ValueColumn: id)
 ```
 
-### Em
+### Em {#em}
 
 Erstellen Sie ein em-HTML-Element. 
 
-#### Syntax
+**Syntax**
 ```
 Em(Body, Class)
 ```
@@ -982,17 +982,17 @@ Em(Body, Class)
 
     Der em-Klassenname.
 
-#### Beispiel
+**Beispiel**
 
 ```
 This is an Em(important news).
 ```
 
-### ForList
+### ForList {#forlist}
 
 Zeigen Sie die Liste der Elemente in der Quelldatenquelle im Vorlagenformat an, das in Body festgelegt ist, und erstellen Sie ein **forlist**-Element.
 
-#### Syntax
+**Syntax**
 ```
 ForList(Source, Index){Body}
 ```
@@ -1014,10 +1014,10 @@ ForList(Source, Index){Body}
 ForList(mysrc){Span(#mysrc_index#. #name#)}
 ```
 
-### Form
+### Form {#form}
    Erstellen Sie ein Formular-HTML-Element.
 
-#### Syntax
+**Syntax**
 ```
 Form(Class, Body) [.Style(Style)]
 ```
@@ -1036,19 +1036,19 @@ Form(Class, Body) [.Style(Style)]
 
    CSS stil.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Form(class1 class2, Input(myid))
 ```
 
-### GetColumnType
+### GetColumnType {#getcolumntype}
 
 Gibt den Felddatentyp einer bestimmten Tabelle zurück.
 
 Zu den zurückgegebenen Typen gehören: `text, varchar, number, money, double, bytes, json, datetime, double`.
 
-#### Syntax
+**Syntax**
 
 ```
 GetColumnType(Table, Column)
@@ -1062,19 +1062,19 @@ GetColumnType(Table, Column)
 
     Feldname.
 
-#### Beispiel
+**Beispiel**
 
 ```
 SetVar(coltype,GetColumnType(members, member_name))Div(){#coltype#}
 ```
-### Verlauf abrufen
+### Verlauf abrufen {#gethistory}
 
 Erstellen Sie ein gethistory-Element und füllen Sie es mit den Änderungshistoriendatensätzen der Einträge in der angegebenen Tabelle. Die generierten Daten werden im Quellelement platziert, das später in der Quelleingabefunktion verwendet werden kann (z. B. [Table](#table)).
 Das Array wird in der Reihenfolge der letzten Änderung sortiert.
 Das ID-Feld im Array zeigt auf die ID der rollback_tx-Tabelle. block_id stellt die Block-ID dar, block_time stellt den Zeitstempel der Blockgenerierung dar.
 
 
-#### Syntax
+**Syntax**
 ```
 GetHistory(Source, Name, Id, RollbackId)
 ```
@@ -1093,18 +1093,18 @@ GetHistory(Source, Name, Id, RollbackId)
 
     Ein optionaler Parameter. Wenn angegeben, wird nur ein Datensatz mit der angegebenen ID aus der Tabelle rollback_tx zurückgegeben.
 
-#### Beispiel
+**Beispiel**
 
 ```
 GetHistory(blocks, BlockHistory, 1)
 ```
 
-### GetVar
+### GetVar {#getvar}
 
 Es gibt den Wert der angegebenen Variablen zurück, die bereits vorhanden ist, oder eine leere Zeichenfolge, wenn sie nicht vorhanden ist.
 Das getvar-Element wird nur erstellt, wenn ein bearbeitbarer Baum angefordert wird. Der Unterschied zwischen `GetVar(varname)` und `#varname` besteht darin, dass GetVar einen leeren String zurückgibt, wenn varname nicht existiert, während #varname# als Stringwert interpretiert wird.
 
-#### Syntax
+**Syntax**
 ```
 GetVar(Name)
 ```
@@ -1114,17 +1114,17 @@ GetVar(Name)
 
     Variable name.
 
-#### Beispiel
+**Beispiel**
 
 ```
 If(GetVar(name)){#name#}.Else{Name is unknown}
 ```
 
-### Hinweis
+### Hinweis {#hint}
 
 Erstellen Sie ein Hinweiselement für Hinweise.
 
-#### Syntax
+**Syntax**
 ```
 Hint(Icon,Title,Text)
 ```
@@ -1140,18 +1140,18 @@ Hint(Icon,Title,Text)
 
     Hinweistext.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Hint(Icon: "icon-wrench",Title:$@1pa_settings$,Text: This is a hint text)
 ```
 
-### If
+### If {#if}
 
 Bedingungsaussage.
 Gibt das erste untergeordnete If- oder ElseIf-Element zurück, das Bedingung erfüllt. Geben Sie andernfalls das untergeordnete Else-Element zurück.
 
-#### Syntax
+**Syntax**
 ```
 If(Condition){ Body}
  [.ElseIf(Condition){ Body }]
@@ -1166,7 +1166,7 @@ If(Condition){ Body}
 
     Untergeordnetes Element.
 
-#### Beispiel
+**Beispiel**
 
 ```
 If(#value#){
@@ -1177,10 +1177,10 @@ If(#value#){
 }
 ```
 
-### Bild
+### Bild {#image}
 Erstellen Sie ein Bild-HTML-Element.
 
-#### Syntax
+**Syntax**
 ```
 Image(Src, Alt, Class)
  [.Style(Style)]
@@ -1197,17 +1197,17 @@ Image(Src, Alt, Class)
 
     Bildklassenname.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Image(Src: Binary().ById(#id#), Class: preview).Style(height: 40px; widht 40px;)
 ```
 
-### Bildeingabe
+### Bildeingabe {#imageinput}
 
 Erstellen Sie ein imageinput-Element, um ein Bild hochzuladen.
 
-#### Syntax
+**Syntax**
 ```
 ImageInput(Name, Width, Ratio, Format)
 ```
@@ -1226,17 +1226,17 @@ ImageInput(Name, Width, Ratio, Format)
 
     Das Format des hochgeladenen Bildes.
 
-#### Beispiel
+**Beispiel**
 
 ```
 ImageInput(avatar, 100, 2/1)
 ```
 
-### Enthalten
+### Enthalten {#include}
 
 Fügen Sie die Vorlage mit einem bestimmten Namen in den Seitencode ein.
 
-#### Syntax
+**Syntax**
 ```
 Include(Name)
 ```
@@ -1246,17 +1246,17 @@ Include(Name)
 
     Vorlagenname.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Div(myclass, Include(mywidget))
 ```
 
-### Eingabe
+### Eingabe {#input}
 
 Erstellen Sie ein Eingabe-HTML-Element.
 
-#### Syntax
+**Syntax**
 ```
 Input(Name, Class, Placeholder, Type, Value, Disabled)
  [.Validate(validation parameters)]
@@ -1292,18 +1292,18 @@ Input(Name, Class, Placeholder, Type, Value, Disabled)
 
     CSS style.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Input(Name: name, Type: text, Placeholder: Enter your name)
 Input(Name: num, Type: text).Validate(minLength: 6, maxLength: 20)
 ```
 
-### InputErr
+### InputErr {#inputerr}
 
 Erstellen Sie ein inputerr-Element, um den Fehlertext zu validieren.
 
-#### Syntax
+**Syntax**
 ```
 InputErr(Name,validation errors)]
 ```
@@ -1316,7 +1316,7 @@ InputErr(Name,validation errors)]
 
   Validierungsfehlermeldung für einen oder mehrere Parameter.
 
-#### Beispiel
+**Beispiel**
 
 ```
 InputErr(Name: name,
@@ -1324,11 +1324,11 @@ minLength: Value is too short,
 maxLength: The length of the value must be less than 20 characters)
 ```
 
-### InputMap
+### InputMap {#inputmap}
 
 Erstellen Sie ein Texteingabefeld für die Adresse, um Koordinaten auf der Karte auszuwählen.
 
-#### Syntax
+**Syntax**
 
 ```
 InputMap(Name, Typ, Kartentyp, Wert)
@@ -1353,18 +1353,18 @@ InputMap(Name, Typ, Kartentyp, Wert)
     Kartentyp.
      Es hat folgende Werte: `hybrid, roadmap, satellite, terrain`.
 
-#### Beispiel
+**Beispiel**
 
 ```
 InputMap(Name: Coords,Type: polygon, MapType: hybrid, Value: `{"zoom":8, "center":{"lat":55.749942860682545,"lng":37.6207172870636}}`)
 ```
 
-### JsonToSource
+### JsonToSource {#jsontosource}
 
 Erstellen Sie ein jsontosource-Element und füllen Sie es mit den Schlüssel-Wert-Paaren eines JSON-Arrays. Die erhaltenen Daten werden in das Source-Element gestellt, das später in der Source-Eingabefunktion verwendet werden kann (z. B. [Table](#table)).
 Die Datensätze in den Ergebnisdaten sind alphabetisch nach JSON-Schlüssel sortiert.
 
-#### Syntax
+**Syntax**
 ```
 JsonToSource(Source, Data)
 ```
@@ -1377,18 +1377,18 @@ JsonToSource(Source, Data)
 
      Ein JSON-Objekt oder ein Variablenname, der ein JSON-Objekt enthält (`#name#`).
 
-#### Beispiel
+**Beispiel**
 
 ```
 JsonToSource(src, #myjson#)
 JsonToSource(dat, {"param":"value", "param2": "value 2"})
 ```
 
-### Label
+### Label {#label}
 
 Erstellen Sie ein Label-HTML-Element.
 
-#### Syntax
+**Syntax**
 ```
 Label(Body, Class, For)
  [.Style(Style)]
@@ -1409,17 +1409,17 @@ Label(Body, Class, For)
 
     CSS stil.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Label(The first item).
 ```
 
-### LangRes
+### LangRes {#langres}
 
 Gibt eine bestimmte Sprachressource zurück. Wenn Sie aufgefordert werden, den Baum zu bearbeiten, wird das langres-Element zurückgegeben, und Sie können das Kurzformatsymbol $langres$ verwenden.
 
-#### Syntax
+**Syntax**
 
 ```
 LangRes(Name)
@@ -1430,18 +1430,18 @@ LangRes(Name)
 
     Name der Sprachressource.
 
-#### Beispiel
+**Beispiel**
 
 ```
 LangRes(name)
 LangRes(myres)
 ```
 
-### LinkPage
+### LinkPage {#linkpage}
 
 Erstellen Sie ein linkpage-Element, das auf die Seite verlinkt.
 
-#### Syntax
+**Syntax**
 
 ```
 LinkPage(Body, Page, Class, PageParams)
@@ -1468,17 +1468,17 @@ LinkPage(Body, Page, Class, PageParams)
 
   CSS stil
   
-#### Beispiel
+**Beispiel**
 
 ```
 LinkPage(Class: #style_link# h5 text-bold, Page: @1roles_view, PageParams: "v_role_id=#recipient.role_id#")
 ```
 
-### Map
+### Map {#map}
 
 Erstellen Sie eine visuelle Karte und zeigen Sie Koordinaten in einem beliebigen Format an.
 
-#### Syntax
+**Syntax**
 ```
 Map(Hmap, MapType, Value)
 ```
@@ -1499,17 +1499,17 @@ Map(Hmap, MapType, Value)
     Kartentyp.
     Es hat folgende Werte: `hybrid, roadmap, satellite, terrain`.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Map(MapType:hybrid, Hmap:400, Value:{"coords":[{"lat":55.58774531752405,"lng":36.97260184619233},{"lat":55.58396161622043,"lng":36.973803475831005},{"lat":55.585222890513975,"lng":36.979811624024364},{"lat":55.58803635636347,"lng":36.978781655762646}],"area":146846.65783403456,"address":"Unnamed Road, Moscow, Russia, 143041"})
 ```
 
-### MenuGroup
+### MenuGroup {#menugroup}
 
 Erstellen Sie ein verschachteltes Untermenü im Menü und geben Sie das menugroup-Element zurück. Bevor er durch die Sprachressource ersetzt wird, gibt der name-Parameter den Wert von Title zurück.
 
-#### Syntax
+**Syntax**
 ```
 MenuGroup(Title, Body, Icon)
 ```
@@ -1527,7 +1527,7 @@ MenuGroup(Title, Body, Icon)
 
     Icon.
 
-#### Beispiel
+**Beispiel**
 
 ```
 MenuGroup(My Menu){
@@ -1536,11 +1536,11 @@ MenuGroup(My Menu){
 }
 ```
 
-### MenuItem
+### MenuItem {#menuitem}
 
 Erstellen Sie ein Menüelement und geben Sie das Element menuitem zurück.
 
-#### Syntax
+**Syntax**
 ```
 MenuItem(Title, Page, Params, Icon)
 ```
@@ -1563,17 +1563,17 @@ MenuItem(Title, Page, Params, Icon)
 
     Icon.
 
-#### Beispiel
+**Beispiel**
 
 ```
 MenuItem(Title:$@1roles$, Page:@1roles_list, Icon:"icon-pie-chart")
 ```
 
-### Geld
+### Geld {#money}
 
 Gibt den Zeichenfolgenwert von exp / 10 ^ Ziffer zurück.
 
-#### Syntax
+**Syntax**
 
 ```
 Money(Exp, Digit)
@@ -1589,32 +1589,32 @@ Money(Exp, Digit)
 
     Der Exponent von 10 im Ausdruck `Exp/10^digit`. Der Wert kann positiv oder negativ sein, und ein positiver Wert bestimmt die Anzahl der Nachkommastellen.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Money(Exp, Digit)
 ```
 
-### Or
+### Or {#or}
 Es gibt das Ergebnis einer if-Logikoperation zurück. Alle in Klammern aufgeführten Parameter sind durch Kommas getrennt. Wenn ein Parameter, der Wert ist, keine leere Zeichenfolge, Null oder `false` ist, ist der Parameterwert `true`, andernfalls ist der Parameterwert `false`. Wenn der Parameterwert "true" ist, gibt die Funktion `1` zurück, andernfalls gibt sie `0` zurück.
 
-#### Syntax
+**Syntax**
 ```
 Or(parameters)
 ```
 
 
-#### Beispiel
+**Beispiel**
 
 ```
 If(Or(#myval1#,#myval2#), Span(OK))
 ```
 
-### P
+### P {#p}
 
 Erstellen Sie ein p-HTML-Element.
 
-#### Syntax
+**Syntax**
 ```
 P(Body, Class)
  [.Style(Style)]
@@ -1638,18 +1638,18 @@ Der angegebene CSS-Stil.
 
     CSS stil.
 
-#### Beispiel
+**Beispiel**
 
 ```
 P(This is the first line.
   This is the second line.)
 ```
 
-### QRcode
+### QRcode {#qrcode}
 
 Gibt den QR-Code mit dem angegebenen Text zurück und erstellt ein qrcode-Element.
 
-#### Syntax
+**Syntax**
 ```
 QRcode(Text)
 ```
@@ -1659,17 +1659,17 @@ QRcode(Text)
 
     QR code text.
 
-#### Beispiel
+**Beispiel**
 
 ```
 QRcode(#name#)
 ```
 
-### RadioGroup
+### RadioGroup {#radiogroup}
 
 Erstellen Sie ein Radiogroup-Element.
 
-#### Syntax
+**Syntax**
 ```
 RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class)
  [.Validate(validation parameters)]
@@ -1715,17 +1715,17 @@ RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class)
 
     CSS stil.
 
-#### Beispiel
+**Beispiel**
 
 ```
 RadioGroup(Name: type_decision, Source: numbers_type_decisions, NameColumn: name, ValueColumn: value)
 ```
 
-### Bereich
+### Bereich {#range}
 
 Erstellen Sie ein Bereichselement, verwenden Sie die Schrittgröße Step from From to To (ohne To), um Integer-Elemente zu füllen. Die generierten Daten werden in Source abgelegt und können später in der Funktion der Source-Eingabe verwendet werden (z. B. [Table](#table)). Wenn ein ungültiger Parameter angegeben wird, wird eine leere Quelle zurückgegeben.
 
-#### Syntax
+**Syntax**
 ```
 Range(Source,From,To,Step)
 ```
@@ -1748,7 +1748,7 @@ Range(Source,From,To,Step)
 
     Schritt der Wertänderung. Wenn es nicht angegeben ist, ist der Standardwert 1.
 
-#### Beispiel
+**Beispiel**
 
 ```
 Range(my,0,5)
@@ -1756,11 +1756,11 @@ SetVar(from, 5).(to, -4).(step,-2)
 Range(Source: neg, From: #from#, To: #to#, Step: #step#)
 ```
 
-### Auswählen
+### Auswählen {#select}
 
 Erstellen Sie ein ausgewähltes HTML-Element.
 
-#### Syntax
+**Syntax**
 ```
 Select(Name, Source, NameColumn, ValueColumn, Value, Class)
  [.Validate(validation parameters)]
@@ -1806,18 +1806,18 @@ Select(Name, Source, NameColumn, ValueColumn, Value, Class)
 
     CSS stil.
 
-#### Beispiel
+**Beispiel**
 
 ```
 DBFind(mytable, mysrc)
 Select(mysrc, name)
 ```
 
-### SetTitle
+### SetTitle {#settitle}
 
 Zum Festlegen des Seitentitels und zum Erstellen eines settitle-Elements.
 
-#### Syntax
+**Syntax**
 ```
 SetTitle(Title)
 ```
@@ -1827,17 +1827,17 @@ SetTitle(Title)
 
     Seitentitel.
 
-#### Beispiel
+**Beispiel**
 
 ```
 SetTitle(My page)
 ```
 
-### SetVar
+### SetVar {#setvar}
 
 Weisen Sie der angegebenen Variablen Name den Wert Value zu.
 
-#### Syntax
+**Syntax**
 ```
 SetVar(Name, Value)
 ```
@@ -1852,18 +1852,18 @@ SetVar(Name, Value)
 
     Variablenwert, kann einen Verweis auf eine andere Variable enthalten.
 
-#### Beispiel
+**Beispiel**
 
 ```
 SetVar(name, John Smith).(out, I am #name#)
 Span(#out#)
 ```
 
-### Span
+### Span {#span}
 
 Erstellen Sie ein span-HTML-Element.
 
-#### Syntax
+**Syntax**
 ```
 Span(Body, Class)
  [.Style(Style)]
@@ -1887,17 +1887,17 @@ Span(Body, Class)
 
     CSS stil.
 
-####  Beispiel
+**Beispiel**
 
 ```
 This is Span(the first item, myclass1).
 ```
 
-### Stark
+### Stark {#strong}
 
 Erstellen Sie ein starkes HTML-Element.
 
-#### Syntax
+**Syntax**
 ```
 Strong(Body, Class)
 ```
@@ -1912,17 +1912,17 @@ Strong(Body, Class)
 
     Klassenname.
 
-#### Beispiel
+**Beispiel**
 
 ```
 This is Strong(the first item, myclass1).
 ```
 
-### SysParam
+### SysParam {#sysparam}
 
 Rufen Sie den Wert eines bestimmten Parameters in der Plattformparametertabelle system_parameters ab.
 
-#### Syntax
+**Syntax**
 ```
 SysParam(Name)
 ```
@@ -1932,17 +1932,17 @@ SysParam(Name)
 
     Name des Plattformparameters.
 
-#### Beispiel
+**Beispiel**
 
 ```
 SysParam(max_columns)
 ```
 
-### Tisch
+### Tisch {#table}
 
 Erstellen Sie ein Tabellen-HTML-Element.
 
-#### Syntax
+**Syntax**
 ```
 Table(Source, Columns)
  [.Style(Style)]
@@ -1966,18 +1966,18 @@ Table(Source, Columns)
 
     CSS stil.
 
-#### Beispiel
+**Beispiel**
 
 ```
 DBFind(mytable, mysrc)
 Table(mysrc,"ID=id,Name=name")
 ```
 
-### Transaktionsinfo
+### Transaktionsinfo {#transactioninfo}
 
 Es fragt Transaktionen nach einem bestimmten Hash ab und gibt Informationen über die ausgeführten Verträge und ihre Parameter zurück.
 
-#### Syntax
+**Syntax**
 ```
 TransactionInfo(Hash)
 ```
@@ -2000,19 +2000,19 @@ Woher:
 * `params` - An die Vertragsparameter übergebene Daten;
 * `block` - ID des Blocks, der die Transaktion verarbeitet hat.
 
-#### Beispiel
+**Beispiel**
 
 ```
 P(TransactionInfo(#hash#))
 ```
 
-### VarAsIs
+### VarAsIs {#varasis}
 
 Weist einem bestimmten Variablennamen den Wert Wert zu, der der Name einer bestimmten Variablen anstelle ihres Wertes ist.
 
 Für Versionen mit Variablensubstitution siehe [SetVar](#setvar).
 
-#### Syntax
+**Syntax**
 ```
 VarAsIs(Name, Value)
 ```
@@ -2027,7 +2027,7 @@ VarAsIs(Name, Value)
 
     Ein variabler Wert. Der Variablenname im Wert wird nicht ersetzt. Wenn der Wert beispielsweise Beispiel #varname# ist, dann ist der Variablenwert auch Beispiel #varname#.
 
-#### Beispiel
+**Beispiel**
 
 ```
 SetVar(Name,"John")
@@ -2035,15 +2035,15 @@ VarAsIs(name, I am #Name#)
 Span(#name#) // I am #Name#
 ```
 
-## App-Stile für Mobilgeräte
+## App-Stile für Mobilgeräte {#app-styles-for-mobile-devices}
 
-### Layout
+### Layout {#layout}
 
-#### Titel
+#### Titel {#title}
 
 * `h1`… `h6`
 
-#### Starke Klassennamen
+#### Starke Klassennamen {#strong-class-names}
 
 * `.text-muted`
 * `.text-primary`
@@ -2052,7 +2052,7 @@ Span(#name#) // I am #Name#
 * `.text-warning`
 * `.text-danger`
 
-#### Farbe
+#### Farbe {#color}
 
 * `.bg-danger-dark`
 * `.bg-danger`
@@ -2075,24 +2075,24 @@ Span(#name#) // I am #Name#
 * `.bg-gray-light`
 * `.bg-gray-lighter`
 
-#### Netz
+#### Netz {#grid}
 
 * `.row`
 * `.row.row-table`
 * `.col-xs-1`… `.col-xs-12`, only used in `.row.row-table`.
 
-#### Panel
+#### Panel {#panel}
 
 * `.panel`
 * `.panel.panel-heading`
 * `.panel.panel-body`
 * `.panel.panel-footer`
 
-#### <span id ="form-app">Form</span>
+#### Form {#form-app}
 
 * `.form-control`
 
-#### <span id = "button-app">Button</span>
+#### Button {#button-app}
 
 * `.btn.btn-default`
 * `.btn.btn-link`
@@ -2102,7 +2102,7 @@ Span(#name#) // I am #Name#
 * `.btn.btn-warning`
 * `.btn.btn-danger`
 
-#### Symbol
+#### Symbol {#icon}
 
 * All fa-class icons are from FontAwesome: `fa fa-<icon-name></icon-name>`.
 * All icon-class icons are from SimpleLineIcons: `icon-<icon-name>`.

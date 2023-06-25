@@ -1,45 +1,48 @@
 
-# Daemon
+# デーモン {#daemon}
 
-In this section, we will describe how IBax nodes interact with each other from a technical perspective.
+このセクションでは、技術的な観点からIBaxノード同士がどのように相互作用するかについて説明します。
 
-## About the server daemon
-The server daemon needs to run on every network node, which executes various server functions and supports IBax's blockchain protocol. In the blockchain network, the daemon distributes blocks and transactions, generates new blocks, and verifies blocks and transactions received, and it can avoid the fork issue.
-### Honor node daemon
-A honor node runs the following server daemons:
+## サーバーデーモンについて {#about-the-server-daemon}
+サーバーデーモンは、ネットワークノード上で実行される必要があります。これはさまざまなサーバー機能を実行し、IBaxのブロックチェーンプロトコルをサポートします。ブロックチェーンネットワークでは、デーモンはブロックやトランザクションの配布、新しいブロックの生成、受信したブロックやトランザクションの検証を行い、フォークの問題を回避することができます。
+
+### 名誉ノードデーモン {#honor-node-daemon}
+名誉ノードは次のサーバー デーモンを実行します。
+
 * [BlockGenerator daemon](#blockgenerator-daemon)
 
-    Generating new blocks.
+    新しいブロックを生成します。
 
 * [BlockCollection daemon](#blockcollection-daemon)
 
-    Downloading new blocks from other nodes.
+    他のノードから新しいブロックをダウンロードします。
 
 * [Confirmations daemon](#confirmations-daemon)
 
-    Confirming that blocks on the node also exist on most other nodes.
+    ノード上のブロックが他のほとんどのノードにも存在することを確認します。
 
 * [Disseminator daemon](#disseminator-daemon)
 
-    Distributing transactions and blocks to other honor nodes.
+    トランザクションとブロックを他の信頼ノードに配布します。
 
 * QueueParserBlocks daemon
 
-    Blocks in the queue, which contains blocks from other nodes.
+    キュー内のブロックで、他のノードからのブロックを含みます。
 
-    Block processing logic is the same as [BlockCollection daemon](#blockcollection-daemon).
+    ブロック処理ロジックは[BlockCollection daemon](#blockcollection-daemon)と同じです。
 
 * QueueParserTx daemon
 
-    Verifying the transactions in queue.
+    キュー内のトランザクションを検証します。
 
 * Scheduler daemon
 
-    Running contracts as scheduled.
+    スケジュールされた契約を実行します。
 
-### Guardian node daemon
+### ガーディアンノードデーモン {#guardian-node-daemon}
 
-A guardian node runs the following server daemons:
+ガーディアンノードは以下のサーバーデーモンを実行します：
+
 
 * [BlockCollection daemon](#blockcollection-daemon)
 * [Confirmations daemon](#confirmations-daemon)
@@ -47,241 +50,245 @@ A guardian node runs the following server daemons:
 * QueueParserTx
 * Scheduler
 
-## BlockCollection daemon
+## BlockCollection daemon {#blockcollection-daemon}
 
-This daemon downloads blocks and synchronizes the blockchain with other network nodes.
+このデーモンはブロックをダウンロードし、他のネットワークノードとブロックチェーンを同期します。
 
-### Blockchain synchronization
+### ブロックチェーンの同期 {#blockchain-synchronization}
 
-This daemon synchronizes the blockchain by determining the maximum block height in the blockchain network, requesting new blocks, and solving the fork issue in the blockchain.
+このデーモンは、ブロックチェーンネットワーク内の最大ブロック高さを決定し、新しいブロックを要求し、ブロックチェーンのフォーク問題を解決することで、ブロックチェーンを同期します。
 
-#### Check for blockchain updates
+#### ブロックチェーンの更新を確認する {#check-for-blockchain-updates}
 
-This daemon sends requests from the current block ID to all honor nodes.
+このデーモンは、現在のブロックIDからすべての信頼ノードにリクエストを送信します。
 
-If the current block ID of the node running the daemon is less than the current block ID of any honor node, the blockchain network node is considered out of date.
+デーモンを実行しているノードの現在のブロックIDが、どの信頼ノードの現在のブロックIDよりも小さい場合、ブロックチェーンネットワークノードは時代遅れと見なされます。
 
-#### Download new blocks
+#### 新しいブロックをダウンロードする {#download-new-blocks}
 
-The node that returns the largest current block height is considered the latest node.
-The daemon downloads all unknown blocks.
+最大の現在のブロック高さを返すノードが最新のノードと見なされます。
+デーモンは、すべての未知のブロックをダウンロードします。
 
-#### Solving the fork issue
+#### フォーク問題の解決 {#solving-the-fork-issue}
 
-If a fork is detected in the blockchain, the daemon moves the fork backward by downloading all blocks to a common parent block.
-When found the common parent block, a blockchain rollback is performed on the node running the daemon, and the correct block is added to the blockchain until the latest one is included.
+ブロックチェーンでフォークが検出された場合、デーモンは共通の親ブロックまでブロックをダウンロードしてフォークを後退させます。
+共通の親ブロックが見つかったら、デーモンを実行しているノードでブロックチェーンのロールバックが行われ、最新のブロックが含まれるまで正しいブロックがブロックチェーンに追加されます。
 
-### Tables
+### テーブル {#tables-1}
 
-The BlocksCollection daemon uses the following tables:
+BlocksCollectionデーモンは次のテーブルを使用します：
 
 * block_chain
 * transactions
 * transactions_status
 * info_block
 
-### Request
 
-The BlockCollection daemon sends the following requests to other daemons:
+### リクエスト {#request-1}
 
-* [Type 10](#type-10) points to the largest block ID among all honor nodes.
-* [Type 7](#type-7) points to the data with the largest block ID.
+BlockCollectionデーモンは、他のデーモンに対して次のリクエストを送信します：
 
-## BlockGenerator daemon
+* [Type 10](#type-10)は、すべての信頼ノードの中で最大のブロックIDを指します。
+* [Type 7](#type-7)は、最大のブロックIDを持つデータを指します。
 
-The BlockGenerator daemon generates new blocks.
+## BlockGenerator daemon {#blockgenerator-daemon}
 
-### Pre-verification
+BlockGeneratorデーモンは新しいブロックを生成します。
 
-The BlockGenerator daemon analyzes the latest blocks in the blockchain to make new block generation plans. 
+### 事前検証 {#pre-verification}
 
-If the following conditions are met, a new block can be generated:
+BlockGeneratorデーモンは、ブロックチェーンの最新ブロックを分析して新しいブロック生成計画を立てます。
 
-* The node that generated the latest block is in a node within the honor node list and runs the daemon.
-* The shortest time since the latest unverified block was generated.
+以下の条件が満たされている場合、新しいブロックを生成できます：
 
-### Block generation
+* 最新のブロックを生成したノードが、信頼ノードリスト内のノードであり、デーモンを実行していること。
+* 最新の未検証ブロックが生成されてからの経過時間が最も短いこと。
 
-A new block generated by the daemon contains all new transactions, which can be received from the [Disseminator daemon](#disseminator-daemon) of other nodes or generated by the node running the daemon. The block generated is stored in the node database.
+### ブロック生成 {#block-generation}
 
-### Tables
+デーモンによって生成される新しいブロックには、他のノードの[Disseminatorデーモン](#disseminator-daemon)から受け取ることができるすべての新しいトランザクションが含まれます。また、デーモンを実行しているノードで生成されることもあります。生成されたブロックは、ノードのデータベースに保存されます。
 
-The BlockGenerator daemon uses the following tables:
 
-* block_chain (saves new blocks)
+### テーブル {#tables-2}
+
+BlockGeneratorデーモンは以下のテーブルを使用します：
+
+* block_chain（新しいブロックを保存する）
 * transactions
 * transactions_status
 * info_block
 
-### Request
+### リクエスト {#request-2}
 
-The BlockGenerator daemon does not make any request to other daemons.
+BlockGeneratorデーモンは他のデーモンに対してリクエストを行いません。
 
-## Disseminator daemon
+## Disseminatorデーモン {#disseminator-daemon}
 
-The Disseminator daemon sends transactions and blocks to all honor nodes.
+Disseminatorデーモンは、トランザクションとブロックをすべての信頼ノードに送信します。
 
-### Guardian node
+### ガーディアンノード {#guardian-node}
 
-When working on a guardian node, the daemon sends transactions generated by its node to all honor nodes.
+ガーディアンノードで作業している場合、デーモンはノードで生成されたトランザクションをすべての信頼ノードに送信します。
 
-### Honor node
+### 信頼ノード {#honor-node}
 
-When working on a honor node, the daemon sends blocks generated and transaction hashes to all honor nodes.
+信頼ノードで作業している場合、デーモンは生成されたブロックとトランザクションのハッシュをすべての信頼ノードに送信します。
 
-Then, the honor node responds to transaction requests unknown to it. The daemon sends the complete transaction data as a response.
+その後、信頼ノードは自身が知らないトランザクションのリクエストに応答します。デーモンは完全なトランザクションデータを応答として送信します。
 
-### Tables
+### テーブル {#tables-3}
 
-The Disseminator daemon uses the following tables:
+Disseminatorデーモンは以下のテーブルを使用します：
 
 * transactions
 
-### Request
+### リクエスト {#request-3}
 
-The Disseminator daemon sends the following requests to other daemons:
+Disseminatorデーモンは他のデーモンに対して次のリクエストを送信します：
 
-* [Type 1](#type-1) Send transactions and block hashes to the honor node.
-* [Type 2](#type-2) Receive transaction data from the honor node.
+* [Type 1](#type-1)：トランザクションとブロックのハッシュを信頼ノードに送信します。
+* [Type 2](#type-2)：信頼ノードからトランザクションデータを受信します。
 
-## Confirmations daemon
+## Confirmationsデーモン {#confirmations-daemon}
 
-The Confirmations daemon checks whether all the blocks in its node exist on most other nodes.
+Confirmationsデーモンは、自身のノードに存在するすべてのブロックがほとんどの他のノードに存在するかどうかをチェックします。
 
-### Block confirmation
+### ブロックの確認 {#block-confirmation}
 
-A block confirmed by multiple node in the network is considered as a confirmed block.
+ネットワーク内の複数のノードによって確認されたブロックは、確認済みのブロックと見なされます。
 
-The daemon confirms all blocks one by one starting from the first that is currently not confirmed in the database.
+デーモンは、データベース内で現在確認されていない最初のブロックから順番にすべてのブロックを確認します。
 
-Each block is confirmed in the way as follows:
+各ブロックは以下の方法で確認されます：
 
-* Sending a request containing the ID of the block being confirmed to all honor nodes.
-* All honor nodes respond to the block hash.
-* If the hash responded matches the hash of the block on the daemon node, the confirmation counter value is increased. If not, the cancellation counter value is increased.
+* 確認中のブロックのIDを含むリクエストをすべての信頼ノードに送信します。
+* すべての信頼ノードがブロックのハッシュに応答します。
+* 応答されたハッシュがデーモンノード上のブロックのハッシュと一致する場合、確認カウンタの値が増加します。一致しない場合は、キャンセルカウンタの値が増加します。
 
-### Tables
+### テーブル {#tables-4}
 
-The Confirmations daemon uses the following tables:
+Confirmationsデーモンは以下のテーブルを使用します：
 
 * confirmation
 * info_block
 
-### Request
+### リクエスト {#request-4}
 
-The Confirmations daemon sends the following requests to other daemons:
+Confirmationsデーモンは他のデーモンに対して次のリクエストを送信します：
 
-* [Type 4](#type-4) Request block hashes from the honor node.
+* [Type 4](#type-4)：信頼ノードからブロックのハッシュをリクエストします。
 
-## TCP service protocol
+## TCPサービスプロトコル {#tcp-service-protocol}
 
-The TCP service protocol works on honor nodes and guardian nodes, which uses the binary protocol on TCP to requests from the BlocksCollection, Disseminator, and Confirmation daemons.
+TCPサービスプロトコルは、BlocksCollection、Disseminator、Confirmationデーモンへのリクエストにおいて、バイナリプロトコルを使用し、信頼ノードとガーディアンノード上で動作します。
 
-## Request type
+## リクエストタイプ {#request-type}
 
-Each request has a type defined by the first two bytes of the request.
+各リクエストには、リクエストの最初の2バイトで定義されるタイプがあります。
 
-## Type 1
 
-#### Request sender
+## Type 1 {#type-1}
 
-This request is sent by the [Disseminator daemon](#disseminator-daemon).
+#### リクエスト送信元 {#request-sender-1}
 
-#### Request data
+このリクエストは[Disseminatorデーモン](#disseminator-daemon)によって送信されます。
 
-Hashes of the transaction and block.
+#### リクエストデータ {#request-data-1}
 
-#### Request processing
+トランザクションとブロックのハッシュ。
 
-The block hash is added to the block queue.
+#### リクエスト処理 {#request-processing-1}
 
-Analyzes and verifies the transaction hashes, and select transactions that have not yet appeared on the node.
+ブロックのハッシュがブロックキューに追加されます。
 
-#### Response
+トランザクションのハッシュを分析および検証し、ノード上にまだ表示されていないトランザクションを選択します。
 
-No. After processing the request, a [Type 2](#type-2) request is issued.
+#### レスポンス {#response-1}
 
-## Type 2
+なし。リクエストの処理後、[Type 2](#type-2)のリクエストが発行されます。
 
-#### Request sender
+## Type 2 {#type-2}
 
-This request is sent by the [Disseminator daemon](#disseminator-daemon).
+#### リクエスト送信元 {#request-sender-2}
 
-#### Request data
+このリクエストは[Disseminatorデーモン](#disseminator-daemon)によって送信されます。
 
-The transaction data, including the data size:
+#### リクエストデータ {#request-data-2}
 
-* data_size (4 bytes)
+データサイズを含むトランザクションデータ：
 
-* Size of the transaction data, in bytes.
+* data_size (4バイト)
 
-* data (data_size bytes)
+  トランザクションデータのバイト数。
 
-The transaction data.
+* data (data_sizeバイト)
 
-#### Request processing
+  トランザクションデータ。
 
-Verifies the transaction and add it to the transaction queue.
+#### リクエスト処理 {#request-processing-2}
 
-#### Response
+トランザクションを検証し、トランザクションキューに追加します。
 
-No.
+#### レスポンス {#response-2}
 
-## Type 4
+なし。
 
-#### Request sender
+## Type 4 {#type-4}
 
-This request is sent by the [Confirmations daemon](#confirmations-daemon).
+#### リクエスト送信元 {#request-sender-3}
 
-#### Request data
+このリクエストは[Confirmationsデーモン](#confirmations-daemon)によって送信されます。
 
-Block ID.
+#### リクエストデータ {#request-data-3}
 
-#### Response
+ブロックID。
 
-Block hash.
+#### レスポンス {#response-3}
 
-Returns `0` if not having a block with this ID.
+ブロックハッシュ。
 
-## Type 7
+このIDのブロックが存在しない場合は`0`を返します。
 
-#### Request sender
+## Type 7 {#type-7}
 
-This request is sent by the [BlockCollection daemon](#blockcollection-daemon).
+#### リクエスト送信元 {#request-sender-4}
 
-#### Request data
+このリクエストは[BlockCollectionデーモン](#blockcollection-daemon)によって送信されます。
 
-Block ID.
+#### Request data {#request-data-4}
+
+ブロックID。
+
+* block_id (4 bytes)
+
+#### レスポンス {#response-4}
+
+ブロックデータを含む、データサイズを含むレスポンス。
+
+* data_size (4バイト)
+
+  ブロックデータのバイト数。
+
+* data (data_sizeバイト)
+
+  ブロックデータ。
+
+このIDのブロックが存在しない場合、接続は閉じられます。
+
+## Type 10 {#type-10}
+
+#### リクエスト送信元 {#request-sender-5}
+
+このリクエストは[BlockCollection daemon](#blockcollection-daemon)によって送信されます。
+
+#### リクエストデータ {#request-data-5}
+
+なし。
+
+#### レスポンス {#response-5}
+
+ブロックID。
 
 * block_id (4 bytes)
 
-#### Response
-
-The block data, including data size.
-
-* data_size (4 bytes)
-
-* Size of the block data, in bytes.
-
-* data (data_size bytes)
-
-The block data.
-
-The connection is closed if not having a block with this ID.
-
-## Type 10
-
-#### Request sender
-
-This request is sent by the [BlockCollection daemon](#blockcollection-daemon).
-
-#### Request data
-
-No.
-
-#### Response
-
-Block ID.
-
-* block_id (4 bytes)
 

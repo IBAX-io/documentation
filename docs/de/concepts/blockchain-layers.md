@@ -1,13 +1,13 @@
-# The IBAX Netzwerk
+# The IBAX Netzwerk {#the-ibax-network}
 
 In diesem Abschnitt werden wir Sie in die Verwendung von IBAX einweisen.
 
-- [The IBAX Netzwerk](#the-ibax-netzwerk)
-  - [Anwendungsentwickler](#anwendungsentwickler)
-  - [ECOLIB Mitglieder](#ecolib-mitglieder)
-  - [ECOLIB Anwendungen und Plattformanwendungen](#ecolib-anwendungen-und-plattformanwendungen])
-  - [Zugrunde liegendes Modell](#zugrunde-liegendes-modell)
-  - [Implementierung](#implementierung)
+- [The IBAX Netzwerk](#the-ibax-network)
+  - [Anwendungsentwickler](#application-developers)
+  - [ECOLIB Mitglieder](#ecolib-members)
+  - [ECOLIB Anwendungen und Plattformanwendungen](#ecolib-applications-and-platform-applications)
+  - [Zugrunde liegendes Modell](#underlying-model)
+  - [Implementierung](#implementation)
 
 
 
@@ -17,7 +17,7 @@ Wenn Sie an der Entwicklung, Verwendung oder Verwaltung von Anwendungen in IBAX 
 
 In IBAX sind die Blockchain und das Blockchain-Netzwerk vor ECOLIB-Mitgliedern, Administratoren und Anwendungsentwicklern verborgen. IBAX bietet für alle Benutzergruppen [RESTful API](../reference/api2.md) an, die einen manipulationssicheren und verteilten Zugriff auf den **globalen Zustand** der Blockchain ermöglichen.
 
-## Anwendungsentwickler
+## Anwendungsentwickler {#application-developers}
 
 Technisch gesehen ist der **global state** ein Datensatz, der über die Datenbank von IBAX implementiert wird. Aus der Perspektive von Anwendungsentwicklern interagiert eine Anwendung mit der Datenbank, indem sie Tabellen abfragt, einfügt und aktualisiert.
 
@@ -25,7 +25,7 @@ In IBAX werden Transaktionen in die Blockchain geschrieben, indem verschiedene V
 
 Für Anwendungsentwickler ist ein Vertrag eine Funktion, dass Daten bei der Implementierung in die Datenbank geschrieben werden. Seiten sind wie Skripte und der Seitencode ist ein Satz von Seitenfunktionen [template](../topics/templates2.md), einige dieser Funktionen zeigen Seitenelemente an, während andere Daten aus der Datenbank stammen. Anwendungsentwickler müssen nicht verstehen, was Transaktionen, Blockgenerierung und Konsensalgorithmen sind, verwenden Sie sie einfach.
 
-## ECOLIB mitglieder
+## ECOLIB mitglieder {#ecolib-members}
 
 Von Entwicklern geschriebene Anwendungen werden in einer Umgebung namens [ECOLIB](thesaurus.md#ecolib) ausgeführt. Eine Anwendung dient in der Regel einem bestimmten Zweck und erledigt zusammen mit mehreren anderen Anwendungen verschiedene Aufgaben.
 
@@ -33,7 +33,7 @@ Ein Benutzer muss Mitglied einer ECOLIB werden, wenn er auf Anwendungen darin zu
 
 ECOLIB-Mitglieder können die Datenbank von den Anwendungsseiten aus anzeigen und ändern, genau wie das Ausfüllen von Formularen, das Klicken auf Schaltflächen und das Navigieren durch Seiten in einer gemeinsamen Webanwendung.
 
-## ECOLIB Anwendungen und Plattformanwendungen
+## ECOLIB Anwendungen und Plattformanwendungen {#ecolib-applications-and-platform-applications}
 
 Anwendungen können in **ECOLIB-Anwendungen** und **Plattformanwendungen** fallen.
 
@@ -44,7 +44,7 @@ Plattformanwendungen
 
 Eine Plattformanwendung gilt für alle ECOLIBs. Jede Anwendung könnte als Plattformanwendung entwickelt werden. IBAX-Entwickler würden Plattformanwendungen bereitstellen, die die Kernfunktionen für ECOLIB-Governance unterstützen, wie z. B. Abstimmung, Benachrichtigung und ECOLIB-Mitgliederrollenverwaltung.
 
-## Liegendes Modell]
+## Liegendes Modell {#underlying-model}
 
 Definition von Schichten
 
@@ -86,7 +86,7 @@ Daher ist der Transaktionsfluss wie folgt:
    * Die Änderung der Operation bewirkt, dass sich der globale Zustand der Blockchain ändert, und diese Operation wird auf die Datenbank angewendet.
 
    * Jede Datenbankänderung wird in der Anwendung widergespiegelt.
-## Implementierung
+## Implementierung {#implementation}
 
 IBAX besteht aus zwei Hauptkomponenten, nämlich Server [go-ibax](https://github.com/IBAX-io/go-ibax) und Weaver [Quellcode](https://github.com/IBAX-io/weaver ).
 

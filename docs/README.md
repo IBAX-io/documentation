@@ -16,7 +16,7 @@ features:
 - title: A customizable consensus mechanism 
 - title: Separation of front end and back end to meet various encryption needs
 
-footer: © Copyright 2019 - 2021, IBAX Updated Date 03/11/2021 | Built with VuePress
+footer: © Copyright 2019 - 2023, IBAX Updated Date 06/19/2023 | Built with VuePress
 ---
 
 

@@ -1,55 +1,53 @@
-# Uygulama geliştirme eğitimi
+# Uygulama geliştirme eğitimi {#tutorial-for-application-development}
 
 Bu bölümde size IBAX Ağı üzerinde basit bir uygulamanın nasıl geliştirileceğini göstereceğiz.
 
-- [Hedef](#Amaç)
-  - [Bölüm 1: Çevre](#Bölüm-1:-Environment)
-  - [Bölüm 2: Sözleşme](#2.-Bölüm:-Sözleşme)
-    - [Oluşturucu hesabı](#Oluşturucu-hesabı)
-    - [Yeni uygulama](#Yeni-uygulama)
-    - [Yeni veritabanı tablosu](#Yeni-veritabanı-tablosu)
-    - [Yeni Kontrat](#Yeni-Kontrat)
-      - [Kontrat kodu](#Kontrat-kodu)
-      - [Bir kontrat oluşturun](#Bir-kontrat-oluşturun)
-      - [Kontrat adı](#Kontrat-adı)
-      - [Data](#Data)
-      - [Conditions](#Conditions)
-      - [Action](#Action)
-      - [Tam kontrat kodu](#Tam-kontrat-kodu)
-      - [Kaydet ve çalıştır](#kaydet-ve-çalıştır)
-  - [Bölüm 3: Sayfa](#Bölüm-3:-Sayfa)
-    - [New-field](#New-field)
-    - [Sözleşmeyi güncelleyin](#Kontratı-güncelleyin)
-    - [Sayfa](#sayfa)
-      - [Tasarımcı görünümleri](#tasarımcı-görünümleri)
-      - [Geliştirici görünümü](#geliştirici-görünümü)
-      - [Veritabanı tablosundan veri getir](#Veritabanı-tablosundan-veri-alın)
-      - [Tam sayfa kodu](#Tam-sayfa-kodu)
-      - [Sayfayı Kaydet](#Sayfayı-kaydedin)
-  - [Bölüm 4: Uygulama](#Bölüm-4:-Uygulama)
-    - [Menü](#menü)
-      - [Bir menü öğesi ekleyin](#Bir-menü-öğesi-ekleyin)
-      - [Yeni menü öğesini test edin](#Yeni-menü-öğesini-test-edin)
-    - [Mesaj gönder](#Bir-mesaj-göndermek)
+- [Hedef](#the-goal)
+  - [Bölüm 1: Çevre](#part-1-the-environment)
+  - [Bölüm 2: Sözleşme](#part-2-contract)
+    - [Oluşturucu hesabı](#creator-account)
+    - [Yeni uygulama](#new-application)
+    - [Yeni veritabanı tablosu](#new-database-table)
+    - [Yeni Kontrat](#new-contract)
+      - [Kontrat kodu](#contract-code)
+      - [Bir kontrat oluşturun](#create-a-contract)
+      - [Kontrat adı](#contract-name)
+      - [Data](#data)
+      - [Conditions](#conditions)
+      - [Action](#action)
+      - [Tam kontrat kodu](#full-contract-code)
+      - [Kaydet ve çalıştır](#save-and-run)
+  - [Bölüm 3: Sayfa](#part-3-page)
+    - [New-field](#new-field)
+    - [Sözleşmeyi güncelleyin](#update-the-contract)
+    - [Sayfa](#page)
+      - [Tasarımcı görünümleri](#designer-views)
+      - [Geliştirici görünümü](#developer-view)
+      - [Veritabanı tablosundan veri getir](#fetch-data-from-the-database-table)
+      - [Sayfayı Kaydet](#save-the-page)
+  - [Bölüm 4: Uygulama](#part-4-application)
+    - [Menü](#menu)
+      - [Bir menü öğesi ekleyin](#add-a-menu-item)
+      - [Yeni menü öğesini test edin](#test-the-new-menu-item)
+    - [Mesaj gönder](#send-a-message)
       - [Form](#form)
-    - [Formda gezinme](#formda-gezinme)
-      - [Gezinme butonları](Yön-butonları)
-      - [Değişkenler](#değişkenler)
-      - [Giriş sayısı](#giriş-sayısı)
-      - [Tablo ofseti](#tablo-ofseti)
-      - [Buton kodu](#buton-kodu)
-      - [Sayfa yenileme](#sayfa-yenileme)
-      - [Sayfa kodu](#Tam-sayfa-kodu)
-  - [Sonuçlar](#sonuçlar)
+    - [Formda gezinme](#form-navigation)
+      - [Gezinme butonları](#navigation-buttons)
+      - [Değişkenler](#variables)
+      - [Giriş sayısı](#entry-count)
+      - [Tablo ofseti](#table-offset)
+      - [Buton kodu](#button-code)
+      - [Sayfa kodu](#page-refreshing)
+  - [Sonuçlar](#conclusions)
 
 
-## Amaç
+## Amaç {#the-goal}
 
 Uygulama basit işlevlerle başlar, ancak öğretici ilerledikçe karmaşıklığı artar.
 
 Uygulamanın son sürümünde, bazı basit mesajlar (dizeler), gönderenlerin zaman damgalarını ve hesap tanımlayıcılarını içeren bir veritabanı tablosunda saklanır. Kullanıcılar, ekosistem menüsünden erişilebilen uygulama sayfasından mesaj listesini görüntüleyebilir ve yeni bir mesaj ekleyebilir.
 
-## Bölüm 1: Environment
+## Bölüm 1: Environment {#part-1-the-environment}
 
 **Weaver**
 
@@ -59,7 +57,7 @@ Bu eğitimde, Weaver'da sözleşmeleri, sayfa şablonlarını kodlayacak ve diğ
 
 Her düğümün kendi Weaver örneği vardır.
 
-## 2. Bölüm: Sözleşme
+## 2. Bölüm: Sözleşme {#part-2-contract}
 
 İlk basit uygulamanız "Merhaba Dünya!"
 
@@ -67,13 +65,13 @@ Her düğümün kendi Weaver örneği vardır.
 
 > Bu uygulamada dizeler bir veritabanı tablosunda tutulacak ve bir kullanıcı sayfası yok.
 
-### Oluşturucu hesabı
+### Oluşturucu hesabı {#creator-account}
 
 Geliştirici rolüne sahip hesaplara ekosistemin "kök" ayrıcalıkları atanacaktır. Varsayılan olarak, bu rol tüm eylemlere erişebilir. Yeni bir ekosistemde, oluşturucu hesaba, ekosistemde yeni uygulamalar ve veritabanı tabloları oluşturmak gibi büyük değişiklikler yapmak için kullanmanız gereken Yönetici rolü atanacaktır.
 
 İçerik oluşturucu hesabını kullanarak ekosisteme giriş yapın.
 
-### Yeni uygulama
+### Yeni uygulama {#new-application}
 
 Ekosistem yaratıcısı olarak oturum açtıktan sonra yeni bir uygulama oluşturabilirsiniz.
 
@@ -99,7 +97,7 @@ Yeni bir Uygulama Yarat:
 
 > Geliştirici sekmesinde bir uygulamaya tıklayarak ilgili kaynaklara erişebilirsiniz, ekosistem üzerinde hiçbir etkisi yoktur. Hangisini seçerseniz seçin, tüm ekosistem uygulamaları hala mevcuttur.
 
-### Yeni veritabanı tablosu
+### Yeni veritabanı tablosu {#new-database-table}
 
 Verileri depolamak için Weaver'da uygulama için bir veritabanı tablosu oluşturun.
 
@@ -127,13 +125,13 @@ Bir veri tablosu oluşturun:
 
  Bir seçenek olarak, yaratıcı hesabına okuma ve yazma izinlerini ayırabilirsiniz. Bu durumda, bu alanı `ContractConditions("MainCondition")` olarak ayarlayın.
 
-### Yeni Kontrat
+### Yeni Kontrat {#new-contract}
 
-#### Kontrat kodu
+#### Kontrat kodu {#contract-code}
 
 Her sözleşmenin üç bölümü vardır. Daha fazla ayrıntı için lütfen bakınız: [Sözleşme yapısı](../topics/script.md#contract-structure)。
 
-#### Bir kontrat oluşturun
+#### Bir kontrat oluşturun {#create-a-contract}
 
 1. Geliştirici sekmesinde, Uygulama - Ad > Kontratı seçin;
 
@@ -159,7 +157,7 @@ contract ... {
 }
 ```
 
-####  Kontrat adı
+#### Kontrat adı {#contract-name}
 
 İlk olarak, lütfen sözleşme adını belirtin.
 
@@ -169,7 +167,7 @@ contract ... {
     }
 ```
 
-#### Data
+#### Data {#data}
 
 'data' bölümünü doldurun.
 
@@ -181,7 +179,7 @@ Aşağıdaki örnekte, "Mesaj" değişken adını belirtirken, "string" değişk
     }
 ```
 
-#### Conditions 
+#### Conditions {#conditions}
 
 "Koşullar" bölümünü doldurun. Basit bir doğrulama koşulu, boş dizelerden kaçınmaktır. `Message`ın uzunluğu `0` ise, sözleşme uygulanırken önceden tanımlanmış bir uyarı mesajı tetiklenecektir.
 
@@ -194,7 +192,7 @@ conditions {
 }
 ```
 
-#### Action 
+#### Action {#action}
 
 'action' bölümünü doldurun. Basit bir işlem, veri tablosuna "message" yazmaktır.
 
@@ -204,7 +202,7 @@ conditions {
     }
 ```
 
-#### Tam kontrat kodu
+#### Tam kontrat kodu {#full-contract-code}
 
 Tam kontrat kodu aşağıda gösterilmiştir.
 
@@ -226,7 +224,7 @@ contract AppContract {
     }
 }
 ```
-#### Kaydet ve çalıştır
+#### Kaydet ve çalıştır {#save-and-run}
 
 Şimdi, sözleşmeyi test etmeye hazırlanıyoruz:
 
@@ -255,7 +253,7 @@ Bazı diziler başarıyla eklendiyse, sonuç, işlemlerin değişikliğini tanı
 }
 ```
 
-## Bölüm 3: Sayfa
+## Bölüm 3: Sayfa {#part-3-page}
 
 Sözleşme yürürlüğe girdiğinde, onu yararlı bir şeye genişletmenin zamanı geldi. Bu bölümde, UI ve diğer işlevleri uygulayacaksınız.
 
@@ -265,7 +263,7 @@ Bu uygulamada, dizeler, bir günlükteki girişler gibi bir veritabanı tablosun
 
 Kullanıcılar, daha sonra basit bir form olarak gösterilen uygulama sayfasında saklanan dizelerin listesini görüntüleyebilir.
 
-### New field 
+### New field {#new-field}
 
 Öncekinde olduğu gibi, Geliştirici sekmesi > Uygulama - Ad > Veritabanı tablosu sayfasında veritabanı tablosunu düzenleyin;
 
@@ -277,7 +275,7 @@ Bu alan, author hesabının tanımlayıcısını saklayacaktır.
 
 * `timestamp` , `Date/Time` alan türü, Change'i 'true' olarak ayarlayın.
 
-### Kontratı güncelleyin
+### Kontratı güncelleyin {#update-the-contract}
 
 AuthorID ve timestamp işlemek için kontrat kodunu güncelleyeceğiz.
 
@@ -293,7 +291,7 @@ action {
 }
 ```
 
-### Sayfa
+### Sayfa {#page}
 
 Uygulama sayfası için, veritabanı tablosunda saklanan mesajların görüntülendiği basit bir sayfadır.
 
@@ -304,7 +302,7 @@ Diğer tüm kaynaklar gibi, UI sayfasını Weaver'da oluşturabilirsiniz:
 2. Yeni'yi tıklayın;
  Görsel tasarımcı yeni bir sekmede açılacaktır.
 
-#### Tasarımcı görünümleri
+#### Tasarımcı görünümleri {#designer-views}
 
 Varsayılan sayfa boş. Sayfayı hızlı bir şekilde doldurmak için önceden tanımlanmış yapıyı kullanabilirsiniz.
 
@@ -316,7 +314,7 @@ Temel bir tablo oluşturun:
 2. Soldaki menüde Başlıklı Tablo'yu seçin ve sayfaya sürükleyin.
     Sayfada birden çok öğeye sahip bir tablo görüntülenecektir.
 
-#### Geliştirici görünümü
+#### Geliştirici görünümü {#developer-view}
 
 IBAX'in kullanıcı sayfası bir [Şablon Dili](../topics/templates2.md) ile kodlandığından, sayfa kodunu yazarken lütfen Geliştirici görünümüne geçin.
 
@@ -326,7 +324,7 @@ Geliştirici görünümüne geçin.
 
  Görünüm, sayfa kodunu tutan bir sekme ile düzenleyiciye geçecektir.
  
-#### Veritabanı tablosundan veri alın
+#### Veritabanı tablosundan veri alın {#fetch-data-from-the-database-table}
 Şimdiye kadar, sayfa şablonuyla hiçbir şey yapılmadı. Bir sonraki adımda, sayfanın `apptable`dan veri görüntülemesine izin vermek için kodu güncelleyeceğiz.
 
 1. [DBFind](../topics/script.md#dbfind) işleviyle veritabanı tablosundan veri istemek için;
@@ -345,7 +343,7 @@ Geliştirici görünümüne geçin.
 
 3. Sağdaki görüntü seçmede, verileri doğru görüntüleyip kontrol etme için önizleme'ye tıklayın.
 
-#### Tam sayfa kodu
+#### Tam sayfa kodu {#full-page-code-1}
 
 Bu bölümün tam sayfa kodu aşağıdadır. Bu temel sayfa daha sonra genişletilecektir.
 
@@ -362,7 +360,7 @@ Div(Class: panel panel-primary) {
 
 ```
 
-#### Sayfayı kaydedin
+#### Sayfayı kaydedin {#save-the-page}
 
 Sayfayı kaydetmek için Kaydet'e tıklayın:
 
@@ -374,13 +372,13 @@ Sayfayı kaydetmek için Kaydet'e tıklayın:
 
 4. Tamam'a tıklayın.
 
-## Bölüm 4: Uygulama
+## Bölüm 4: Uygulama {#part-4-application}
 
 Önceki bölümlerde bir sözleşme, verileri depolamak için bir tablo ve bu verileri görüntülemek için temel bir kullanıcı arayüzü sayfası oluşturdunuz.
 
 Bu bölümde, görünüşünü ve eylemlerinin gerçek olana benzer olmasını sağlamak için uygulamayı sonlandıracaksınız.
 
-### Menü
+### Menü {#menu}
 
 Sayfanın bir menüye bağlanması gerekir; örneğin, Ana Sayfa sekmesinde görüntülenen `default_page`, varsayılan ekosistem menüsü `default_menu` ile bağlantılıdır.
 
@@ -390,7 +388,7 @@ Bu uygulama öğreticisi çok basit olduğundan (yalnızca bir sayfaya sahip old
 
 > Geliştirici sekmesi > Uygulama - Ad > Sayfa'da sayfa özelliklerini düzenleyerek sayfa menüsünü tanımlayabilirsiniz. Örneğin, uygulamanızın birden fazla sayfası varsa, bu sayfalar arasında gezinmek için bir menü oluşturmanız ve bunu uygulamanın tüm sayfalarına atamanız gerekebilir.
 
-#### Bir menü öğesi ekleyin
+#### Bir menü öğesi ekleyin {#add-a-menu-item}
 
 Diğer tüm kaynaklar gibi, menüler de Weaver'da oluşturulabilir ve düzenlenebilir:
 
@@ -407,7 +405,7 @@ Diğer tüm kaynaklar gibi, menüler de Weaver'da oluşturulabilir ve düzenlene
 ```
 
 4. Kaydet'e tıklayın.
-#### Yeni menü öğesini test edin
+#### Yeni menü öğesini test edin {#test-the-new-menu-item}
 
 Yeni menü öğesinin geçerli olup olmadığını kontrol edin:
 
@@ -420,7 +418,7 @@ Yeni menü öğesinin geçerli olup olmadığını kontrol edin:
 3. Mesajlar'a tıklayın.
 
     Başvuru sayfası açılacaktır.
-### Bir mesaj göndermek
+### Bir mesaj göndermek {#send-a-message}
 
 Logicor'daki düğmeler, parametrelere bağlı olarak sözleşmeleri uygulamak ve sayfaları açmak için kullanılabilir.
 
@@ -434,7 +432,7 @@ Logicor'daki düğmeler, parametrelere bağlı olarak sözleşmeleri uygulamak v
 
     Sözleşmenin giriş parametreleri.
 
-#### Form
+#### Form {#form}
 
 Sözleşmeye veri göndermek için, başvuru sayfasına bir mesaj için bir giriş alanına ve sözleşmeyi AppContract'ı etkinleştirmek için bir düğmeye sahip olması gereken bir form ekleyin.
 
@@ -451,11 +449,11 @@ Div(Class: panel panel-primary) {
 
 Bu yeni özelliği mesaj göndererek test ederken formun yenilenmediğini fark edebilirsiniz. Bu, [sayfa yenilemede](#page-refreshing) tanıtılacaktır.
 
-### Formda gezinme
+### Formda gezinme {#form-navigation}
 
 Varsayılan görünümde, sayfadaki form ilk sayfada yalnızca 25 girdi görüntüleyebilir. Bu nedenle, kullanıcıları tüm form girişlerine yönlendirmek için bazı basit düğmeler ekleyebilirsiniz.
 
-#### Yön butonları
+#### Yön butonları {#navigation-buttons}
 
 İki gezinme butonu olacak ve her biri uygulama sayfasını yeniden yükleyebilir ve parametreleri ona iletebilir.
 
@@ -463,7 +461,7 @@ Varsayılan görünümde, sayfadaki form ilk sayfada yalnızca 25 girdi görünt
 
 * Sonraki butonunda sonraki 25 girişi görüntüleyecektir. Başka giriş yoksa, buton görüntülenmez.
 
-#### Değişkenler
+#### Değişkenler {#variables}
 
 Gezinme düğmeleri, tablo görünümü durumlarını depolamak için iki değişken gerektirir:
 
@@ -479,7 +477,7 @@ Sayfa yeniden yüklendiğinde gezinme düğmeleri bunu bir parametre olarak ilet
 
  Değer hesaplanacaktır.
 
-#### Giriş sayısı
+#### Giriş sayısı {#entry-count}
 
 `#record_count#` saymak için lütfen mevcut [DBFind](../topics/script.md#dbfind) işlev çağrısını değiştirin. `.count()` çağrısında belirtilen değişken, giriş sayısını saklayacaktır.
 
@@ -487,7 +485,7 @@ Sayfa yeniden yüklendiğinde gezinme düğmeleri bunu bir parametre olarak ilet
 DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count)
 ```
 
-#### Tablo ofseti
+#### Tablo ofseti {#table-offset}
 
 Sayfa açıldığında tablo görünümü ofseti sayfaya geçirilmelidir. `#table_view_offset#` bir değer almazsa 0 olarak ayarlayın.
 
@@ -507,7 +505,7 @@ If(GetVar(table_view_offset)){
 DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count).Offset(#table_view_offset#)
 ```
 
-#### Buton kodu
+#### Buton kodu {#button-code}
 
 Find the [Div](../topics/templates2.md#div) function call that defines the footer: `Div(Class:panel-footer text-right)`. Add the button code into it.
 
@@ -536,7 +534,7 @@ If(#record_count# >= Calculate(#table_view_offset# + 25)) {
 
 Bu düğmeleri ekledikten sonra sayfayı kaydedin ve Ana Sayfa > Mesajlar menü öğesinden test edin.
 
-#### Sayfa yenileme
+#### Sayfa yenileme {#page-refreshing}
 
 Uygulanacak son işlev, sayfadaki tabloyu otomatik olarak güncellemektir. Kullanıcılar yeni bir mesaj gönderdiğinde, tabloda görüntülenmelidir.
 
@@ -549,7 +547,7 @@ Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Messa
 ```
 
 
-### Tam sayfa kodu
+### Tam sayfa kodu {#full-page-code-2}
 
 Bu bölüm, uygulama sayfasındaki birçok değişikliği açıklar. Uygulama sayfasının tam kodu aşağıdadır.
 
@@ -581,6 +579,6 @@ DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,mes
 }
 ```
 
-## Sonuçlar
+## Sonuçlar {#conclusions}
 
 Uygulama geliştiriciler için yerleşim stilleri, erişim izinleri yönetimi ve uygulamalar ve kaynaklar arasındaki etkileşim gibi diğer önemli konuları açıklamak yerine, bu öğretici bir ekosistem için temel bir uygulamanın nasıl oluşturulacağını anlatır. Bu ileri düzey konular hakkında daha fazla bilgi için diğer ilgili belgelere bakın.

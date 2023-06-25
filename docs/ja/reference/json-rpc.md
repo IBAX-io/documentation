@@ -1,4 +1,4 @@
-# JSON-RPC アプリケーション プログラミング インターフェイス
+# JSON-RPC アプリケーション プログラミング インターフェイス {#json-rpc-application-programming-interface}
 
 ソフトウェア アプリケーションが IBAX ブロックチェーンと対話するには (ブロック データを取得したり、トランザクションをネットワークに送信したり)、ソフトウェア アプリケーションは IBAX ネットワーク ノードに接続されている必要があります。
 
@@ -17,12 +17,12 @@ JSON-RPC は、ほとんどの REST API インターフェイスと互換性が�
 
 REST API インターフェイスを通じて利用できます。
 
-## Client-sideの実装
+## Client-sideの実装 {#client-side-implementation}
 SON-RPC 仕様を実装する場合、各クライアントは異なるプログラミング言語を使用できます。
 [GO-SDK](https://github.com/IBAX-io/go-ibax-sdk)
 
 
-## Curlの例
+## Curlの例 {#curl-example}
 以下に、IBAX ノードに対してcurlリクエストを行うことによるJSON RPC APIの使用例を示します。 各例には、特定のエンドポイント、そのパラメーター、戻り値の型、およびその使用方法の実例の説明が含まれています。
 
 Curl リクエストは、コンテンツ タイプに関連するエラー メッセージを返す場合があります。 これは、 --data オプションによってコンテンツ タイプが application/x-www-form-urlencoded に設定されるためです。 リクエストにこの問題がある場合は、呼び出しの先頭に -H "Content-Type: application/json" を配置して、ヘッダーを手動で設定します。 これらの例には、curl の最後のパラメータである必要がある URL/インターネット プロトコルとポートの組み合わせも含まれていません (例: 127.0.0.1:7079)。この追加データを含む完全なcurl リクエストは次の形式になります。
@@ -31,19 +31,19 @@ Curl リクエストは、コンテンツ タイプに関連するエラー メ�
 curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","params":[],"id":1}' http://127.0.0.1:7079	
 ```
 
-## 契約
+## 契約 {#covenant}
 
-### Hex
+### Hex {#hex}
 **16進数コード**
 
 バイト配列、ハッシュ、およびバイトコード配列をエンコードする場合: エンコードは 16 進数で、1 バイトあたり 2 桁の 16 進数になります。
 
-### リクエストの種類
+### リクエストの種類 {#request-type}
 **Uniformの使用**
 - Content-Type: application/json
 
-### 特殊マーカー
-#### Omitempty
+### 特殊マーカー {#special-markers}
+#### Omitempty {#omitempty}
 
 このフィールドはオプションのパラメータです。
 
@@ -61,7 +61,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 `"params":[0,"", "title,page"]` - *String* 空の値は
 
 
-#### Authorization
+#### Authorization {#authorization}
 認証ヘッダー、リクエストヘッダーにAuthorizationを追加します。例：
 
 **name** : Authorization
@@ -74,7 +74,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 
 ````
 
-#### AccountOrKeyId
+#### AccountOrKeyId {#accountorkeyid}
 アカウントアドレスのパラメータでは、2つの形式のアドレスを使用できます。例えば
 1. - *String* - アカウントアドレス `"XXXX-XXXX-XXXX-XXXX-XXXX"` またはアカウントID `"64842...538120"`
 
@@ -84,7 +84,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 
    **アカウントIDが存在する場合、アカウントアドレスとアカウントIDの両方がある場合はアカウントIDが優先されます**。
 
-#### BlockOrHash
+#### BlockOrHash {#blockorhash}
 ブロックの高さまたはブロックのハッシュ、例:
 
 1.  - *String*  -   ブロックの高さ `"100"` または ブロックのハッシュ   `"4663aa47...a60753c18d9ba9cb4"`
@@ -95,7 +95,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 
     **ブロックの高さとブロックのハッシュはどちらか一方を選択できます**。
 
-### バッチリクエスト
+### バッチリクエスト {#batch-requests}
 この機能は、特に大量の大部分が独立したデータオブジェクトを取得する場合にネットワークのレイテンシを低減するために使用できます。
 
 以下は、最高ブロックとトランザクションの総数を取得する例です：
@@ -120,7 +120,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 ```
 
 
-### エラーレスポンスの処理
+### エラーレスポンスの処理 {#error-response-handling}
 
 リクエストが正常に実行された場合、ステータスコード `200` が返されます。
 
@@ -149,26 +149,26 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 ```
 
 
-## JSON-RPC ネームスペース
+## JSON-RPC ネームスペース {#json-rpc-namespaces}
 
-### ibax ネームスペース
+### ibax ネームスペース {#ibax-namespace}
 
-#### 認証インターフェース
+#### 認証インターフェース {#authentication-interface}
 - [ibax.getuid](#ibax-getuid)
 - [ibax.login](#ibax-login)
 - [ibax.getAuthStatus](#ibax-getauthstatus)
 
-#### server-sideのコマンドインターフェイス
+#### server-sideのコマンドインターフェイス {server-side-command-interface}
 - [ibax.getVersion](#ibax-getversion)
 
-#### データリクエスト機能インターフェース
+#### データリクエスト機能インターフェース {#data-request-function-interface}
 - [ibax.getBalance](#ibax-getbalance)
 - [ibax.getBlocksTxInfo](#ibax-getblockstxinfo)
 - [ibax.detailedBlocks](#ibax-detailedblocks)
 - [ibax.getKeyInfo](#ibax-getkeyinfo)
 - [ibax.detailedBlock](#ibax-detailedblock)
 
-#### メトリクスの取得インターフェイス
+#### メトリクスの取得インターフェイス {#get-metrics-interface}
 - [ibax.maxBlockId](#ibax-maxblockid)
 - [ibax.getKeysCount](#ibax-getkeyscount)
 - [ibax.getTxCount](#ibax-gettxcount)
@@ -177,7 +177,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 - [ibax.honorNodesCount](#ibax-honornodescount)
 - [ibax.getEcosystemCount](#ibax-getecosystemcount)
 
-#### エコシステムインターフェース
+#### エコシステムインターフェース {#ecosystem-interface}
 - [ibax.ecosystemInfo](#ibax-ecosysteminfo)
 - [ibax.appParams](#ibax-appparams)
 - [ibax.getEcosystemParams](#ibax-getecosystemparams)
@@ -194,7 +194,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 - [ibax.getAppContent](#ibax-getappcontent)
 - [ibax.getMember](#ibax-getmember)
 
-#### スマートコントラクト機能インターフェース
+#### スマートコントラクト機能インターフェース {#contract-function-interface}
 - [ibax.getContracts](#ibax-getcontracts)
 - [ibax.getContractInfo](#ibax-getcontractinfo)
 - [ibax.sendTx](#ibax-sendtx)
@@ -210,36 +210,36 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 - [ibax.getBlockInfo](#ibax-getblockinfo)
 - [ibax.getConfig](#ibax-getconfig)
 
-### ネット名前空間
+### ネット名前空間 {#net-namespace}
 - [net.getNetwork](#net-getnetwork)
 - [net.status](#net-status)
 
-### rpc名前空間
+### rpc名前空間 {#rpc-namespace}
 - [rpc.modules](#rpc-modules)
 
-### admin名前空間
+### admin名前空間 {#admin-namespace}
 - [admin.startJsonRpc](#admin-startjsonrpc)
 - [admin.stopJsonRpc](#admin-stopjsonrpc)
 
 
-### debug名前空間
+### debug名前空間 {#debug-namespace}
 - [debug.getNodeBanStat](#debug-getnodebanstat)
 - [debug.getMemStat](#debug-getmemstat)
  
 
 
-## JSON-RPC インターフェースメソッド
+## JSON-RPC インターフェースメソッド {#json-rpc-interface-methods}
 
-### **ibax.getUid**
+### **ibax.getUid** {#ibax-getuid}
 
 [Authorization](#authorization) [Omitempty](#omitempty)
 
 [**login**](#ibax-login)を呼び出す際に、[**Authorization**](#authorization)に渡す必要がある一時的なJWTトークンを生成します。
 
-#### パラメーター
-なし
+**パラメーター**
+- なし
 
-#### 戻り値
+**戻り値**
 - **uid** - *String* - 署名の数値。
 
 - **token** - *String* - ログイン時に渡される一時トークン（一時トークンの寿命は5秒）。
@@ -263,7 +263,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 
 - **network_id** - *String* - ネットワークの識別子。
 
-#### 例
+**例**
 ```text
     //Request1
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getUid","params":[],"id":1}' http://127.0.0.1:7079
@@ -301,12 +301,12 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 ```
 
 
-### **ibax.login**
+### **ibax.login** {#ibax-login}
 ユーザー認証。[Authorization](#authorization)
 
 最初に[**ibax.getUid**](#ibax-getuid)コマンドを呼び出して、一意の値を受信し、署名する必要があります。getuidの一時的なJWTトークンは、リクエストヘッダーに渡す必要があります。リクエストが成功した場合、レスポンスで受信したトークンは[**Authorization**](#authorization)に含まれます。
 
-#### パラメーター
+**パラメーター**
 
 *Object* - 認証呼び出しオブジェクト
 - **ecosystem_id** - *Number* - エコシステムID。指定されていない場合、最初のエコシステムIDにデフォルト設定されます。
@@ -329,7 +329,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 
 
 
-#### 戻り値
+**戻り値**
 *Object* - 認証オブジェクト
 - **token** - *String* - JWTトークン。
 
@@ -353,7 +353,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
     - **role_id** - *Number* - ロールID
     - **role_name** - *String* - ロール名
 
-#### 例
+**例**
 
 ```text
     //Request
@@ -378,20 +378,20 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
     }
 ```
 
-### **ibax.getAuthStatus** 
+### **ibax.getAuthStatus** {#ibax-getauthstatus}
 ユーザー認証ステータス
 [Authorization](#authorization)
 
-#### パラメーター
-なし
+**パラメーター**
+- なし
 
-#### 戻り値
+**戻り値**
 *Object* - 認証ステータスオブジェクト
 - **active** - *Bool* - 現在のユーザー認証ステータス。値：`true,false`
 
 - **exp** - *Number* - [Omitempty](#omitempty) トークン有効期限の切り捨てタイムスタンプ
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getAuthStatus","id":1}' http://127.0.0.1:7079
@@ -407,16 +407,16 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
     }
 ```
 
-### **ibax.getVersion**
+### **ibax.getVersion** {#ibax-getversion}
 現在のサーバーバージョンを返します。
 
-#### パラメーター
-なし
+**パラメーター**
+- なし
 
-#### 戻り値
+**戻り値**
 - **vesion** - *String* - バージョン番号（`big Version` + `branch name` + `git commit` + `time` + `node status`）
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getVersion","id":1}' http://127.0.0.1:7079
@@ -429,17 +429,17 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
     }
 ```
 
-### ibax.getBalance
+### **ibax.getBalance** {#ibax-getbalance}
 アカウントアドレスの残高を取得します。
 
-#### パラメーター
+**パラメーター**
 
 - key_idまたはaccount - [*AccountOrKeyId*](#accountorkeyid) - アカウントアドレス \`XXXX- XXXX-XXXX-XXXX-XXXX\` またはアカウントID
 
 - ecosystem_id - *Number* - エコシステムID [Omitempty](#*omitempty*) デフォルト1 
 
 
-#### 戻り値
+**戻り値**
 *Object* - 残高オブジェクトを取得する
 - **amount** - **String** - 契約アカウント残高の最小単位。
 
@@ -452,7 +452,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 - **token_symbol** - **String** - トークンシンボル
 
 
-#### 例
+**例**
 ```text
     //Request1
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBalance","id":1,"params":["648...8120"]}' http://127.0.0.1:7079
@@ -478,16 +478,16 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 ```
 
 
-### **ibax.getBlocksTxInfo**
+### **ibax.getBlocksTxInfo** {#ibax-getblockstxinfo}
 ブロック内のトランザクションに関する追加情報が含まれたリストを返します。
 
-#### パラメーター
+**パラメーター**
 
 - **block_id** - *Number* - クエリする開始ブロック高
 
 - **count** - *Number* - ブロック数、デフォルトは25、最大リクエスト数は100
 
-#### 戻り値
+**戻り値**
 *Object* - ブロック情報オブジェクトを取得する
 - **block_id** - *String* - ブロック高
 - 各トランザクションの追加情報を含むブロック内のトランザクションのリスト：
@@ -503,7 +503,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 
         他のすべてのブロックの場合、トランザクションに署名したアカウントのアドレスです。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBlocksTxInfo","id":1,"params":[1,2]}' http://127.0.0.1:7079
@@ -537,15 +537,15 @@ curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"
 ```
 
 
-### **ibax.detailedBlocks**
+### **ibax.detailedBlocks** {#ibax-detailedblocks}
 R各ブロック内のトランザクションに関する詳細情報を含むリストを返します。
 
-#### パラメーター
+**パラメーター**
 - **block_id** - *Number* - クエリの開始ブロック高
 
 - **count** - *Number* - ブロック数。デフォルトは 25 ですが、最大要求数は 100 です。
 
-#### 戻り値
+**戻り値**
 *Object* - ブロックの詳細情報オブジェクト
 - **block_id** - *String* - ブロック高
     - **header** - *Object* - ブロックヘッダー。ブロックヘッダーには、次のフィールドが含まれます。
@@ -572,7 +572,7 @@ R各ブロック内のトランザクションに関する詳細情報を含む�
         - **type** - *Number* - トランザクションのタイプ。
         - **size** - *String* - トランザクションのサイズ。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.detailedBlocks","id":1,"params":[1,2]}' http://127.0.0.1:7079
@@ -650,13 +650,13 @@ R各ブロック内のトランザクションに関する詳細情報を含む�
 ```
 
 
-### **ibax.getKeyInfo**
+### **ibax.getKeyInfo** {#ibax-getkeyinfo}
 指定されたアドレスに登録されている役割を持つエコシステムのリストを返します。
 
-#### パラメーター
+**パラメーター**
 - **account** - *String* - アカウントアドレス
 
-#### 戻り値
+**戻り値**
 *Object* - アドレスエコリストオブジェクトを指定します。
 - **account** - *String* - アカウントアドレス
 - **ecosystems** - *Array* - エコリスト
@@ -668,7 +668,7 @@ R各ブロック内のトランザクションに関する詳細情報を含む�
         - **name** - *String* - キャラ
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getKeyInfo","id":1,"params":["0666-XXXX-XXXX-XXXX-5186"]}' http://127.0.0.1:7079
@@ -700,13 +700,13 @@ R各ブロック内のトランザクションに関する詳細情報を含む�
     }
 ```
  
-### **ibax.detailedBlock**
+### **ibax.detailedBlock** {#ibax-detailedblock}
 ブロック内のトランザクションに関する詳細な情報のリストを返します。
 
-#### パラメーター
+**パラメーター**
 - **Block or Hash** - *[BlockOrHash](#blockorhash)* - ブロックの高さまたはブロックハッシュ
 
-#### 戻り値
+**戻り値**
 *Object* - ブロックの詳細オブジェクトを取得します。
 - **header** - *Object* - ブロックヘッダー。以下のフィールドが含まれます。
     - **block_id** - *Number* - ブロックの高さ
@@ -733,7 +733,7 @@ R各ブロック内のトランザクションに関する詳細情報を含む�
     - **type** - *Number* - トランザクションのタイプ
     - **size** - *String* - トランザクションのサイズ
 
-#### 例
+**例**
 ```text
     //Request1
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.detailedBlock","id":1,"params":["1"]}' http://127.0.0.1:7079
@@ -782,16 +782,16 @@ R各ブロック内のトランザクションに関する詳細情報を含む�
     }
 ```
 
-### **ibax.maxBlockId**
+### **ibax.maxBlockId** {#ibax-maxblockid}
 Get the highest block ID on the current node
 
-#### パラメーター 
-なし
+**パラメーター** 
+- なし
 
-#### 戻り値 
+**戻り値** 
 - **Block Id** - *Number* - 現在のノード上の最高ブロック
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","id":1,"params":[]}' http://127.0.0.1:7079
@@ -805,15 +805,16 @@ Get the highest block ID on the current node
 ```
 
 
-### **ibax.getKeysCount**
+### **ibax.getKeysCount** {#ibax-getkeyscount}
 現在のノード上のアドレスの総数を取得する
 
-#### パラメーター 
-なし
-#### 戻り値
+**パラメーター** 
+- なし
+
+**戻り値**
 - **Count** - *Number* - Total number of addresses 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getKeysCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -827,16 +828,16 @@ Get the highest block ID on the current node
 ```
 
 
-### **ibax.getTxCount**
+### **ibax.getTxCount** {#ibax-gettxcount}
 現在のノード上のトランザクションの総数を取得します。
 
-#### パラメーター 
-なし
+**パラメーター** 
+- なし
 
-#### 戻り値
+**戻り値**
 - **Count** - *Number* - Total number of transactions
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getTxCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -850,16 +851,16 @@ Get the highest block ID on the current node
 ```
 
 
-### **ibax.getTransactionCount** 
+### **ibax.getTransactionCount** {#ibax-gettransactioncount}
 ブロックトランザクションの数を取得する
 
-#### パラメーター 
+**パラメーター** 
 - **block or hash** - *[BlockOrHash](#blockorhash)* - ブロック高さまたはブロックハッシュ
  
-#### 戻り値
+**戻り値**
 - **Count** - *Number* - ブロックの総数
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getTransactionCount","id":1,"params":["efc386f7573269610a34af9cc722f775cca8183ccaa0ed7a96db61ef0bde6d1c"]}' http://127.0.0.1:7079
@@ -873,19 +874,19 @@ Get the highest block ID on the current node
 ```
 
 
-### **ibax.getBlocksCountByNode**
+### **ibax.getBlocksCountByNode** {#ibax-getblockscountbynode}
 Gノードロケーションパッキングブロックの数を取得する
 
-#### パラメーター
+**パラメーター**
 - **nodePosition** - *Number* - ノードサブスクリプト
 - **consensusMode** - *Number* - コンセンサスモード。パラメーター (1: Creator Managementモード、2: DAO Governanceモード)
 
-#### 戻り値
+**戻り値**
 *Object* - ノードサブスクリプトのパッキング数オブジェクトを取得します。
 - **total_count** - *Number* - ブロックの総数
 - **partial_count** - *Number* - ノードサブスクリプトのパッキングブロック数
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBlocksCountByNode","id":1,"params":[0,1]}' http://127.0.0.1:7079
@@ -902,15 +903,15 @@ Gノードロケーションパッキングブロックの数を取得する
 ```
 
 
-### **ibax.honorNodesCount** 
+### **ibax.honorNodesCount** {#ibax-honornodescount}
 名誉ノード数を取得する
 
-#### パラメーター
-なし
+**パラメーター**
+- なし
 
-#### 戻り値
+**戻り値**
 - **Count** - *Number* - ノードの数
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.honorNodesCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -924,16 +925,16 @@ Gノードロケーションパッキングブロックの数を取得する
 ```
 
 
-### **ibax.getEcosystemCount** 
+### **ibax.getEcosystemCount** {#ibax-getecosystemcount}
 エコシステムの獲得数を取得する
 
-#### パラメーター
-なし
+**パラメーター**
+- なし
 
-#### 戻り値
+**戻り値**
 - **Count** - *Number* - エコロジー番号
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getEcosystemCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -949,13 +950,13 @@ Gノードロケーションパッキングブロックの数を取得する
 
 
 
-### **ibax.ecosystemInfo** 
+### **ibax.ecosystemInfo** {#ibax-ecosysteminfo}
 エコロジー情報にアクセスする
 
-#### パラメーター
+**パラメーター**
 - **ecosystem id** - *Number* - エコロジーID
 
-#### 戻り値
+**戻り値**
 - **id** - *Number* - エコID
 - **name** - *String* - エコロジー名
 - **digits** - *Number* - 精度
@@ -970,7 +971,7 @@ Gノードロケーションパッキングブロックの数を取得する
 - **logo** - *Number* - エコロゴのID（バイナリテーブルIDに対応）、RESTFUL APIで利用可能
 - **creator** - *String* - エコ作成者
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.ecosystemInfo","id":1,"params":[1]}' http://127.0.0.1:7079
@@ -998,12 +999,12 @@ Gノードロケーションパッキングブロックの数を取得する
 ```
 
 
-### **ibax.appParams**
+### **ibax.appParams** {#ibax-appparams}
 現在のエコシステムまたは指定されたエコシステムのアプリケーションパラメータのリストを返します
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 - **appid** - *Number* - アプリケーションID。
 - **ecosystem** - *Number* - [Omitempty](#omitempty) - エコシステムID;
 
@@ -1017,7 +1018,7 @@ Gノードロケーションパッキングブロックの数を取得する
 
 - **limit** - *Number* - [Omitempty](#omitempty) エントリ数、デフォルトは100、最大100。
 
-#### 戻り値
+**戻り値**
 *Array* - アプリケーションパラメータのリスト
 - **app_id** - *Number* - アプリケーションID
 - **list** - *Number* - 配列の各要素には、次のパラメータが含まれます。
@@ -1026,7 +1027,7 @@ Gノードロケーションパッキングブロックの数を取得する
     - **value** - *String* - パラメータ値。
     - **conditions** - *String* - パラメータを変更するための権限。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.appParams","id":1,"params":[1,1,"role_developer,role_governancer"]}' http://127.0.0.1:7079
@@ -1056,12 +1057,12 @@ Gノードロケーションパッキングブロックの数を取得する
 ```
  
 
-### **ibax.getEcosystemParams** 
+### **ibax.getEcosystemParams** {#ibax-getecosystemparams}
 エコシステムパラメータのリストを取得する
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 - **ecosystem** - *Number* - [Omitempty](#omitempty) - エコシステムID
 
     もし0またはそのようなパラメータがない場合、デフォルト: 現在のecid。
@@ -1076,14 +1077,14 @@ Gノードロケーションパッキングブロックの数を取得する
 
 - **limit** - *Number* - [Omitempty](#omitempty) エントリ数、デフォルトは100、最大100。
 
-#### 戻り値
+**戻り値**
 - **list** - *Array* - 配列の各要素には、次のパラメータが含まれます。
     - **id** - *String* - パラメータのID、ユニーク。
     - **name** - *String* - パラメータの名前。
     - **value** - *String* - パラメータの値。
     - **conditions** - *String* - パラメータを変更するための権限。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getEcosystemParams","id":1,"params":[0,"changing_app_params,changing_language"]}' http://127.0.0.1:7079
@@ -1112,26 +1113,26 @@ Gノードロケーションパッキングブロックの数を取得する
 ```
 
 
-### **ibax.getTableCount**
+### **ibax.getTableCount** {#ibax-gettablecount}
 現在のエコシステムに関するデータテーブルのリストを返します。
 
 Offset and number of entries can be set 
 
 [Authorization](#authorization)
-#### パラメーター
+**パラメーター**
 
 - **offset** - *Number* - [Omitempty] オフセット。デフォルトは0です。
 
 - **limit** - *Number* - [Omitempty] エントリの数。デフォルトは100で、最大は100です。
 
-#### 戻り値
+**戻り値**
 - **count** - *Number* - 現在のエコロジカルデータテーブルの総シート数。
 
 - **list** - *Array* - 配列の各要素には次のパラメーターが含まれています：
     - **name** - *String* - プレフィックスなしのデータテーブルの名前。
     - **count** - *String* - データテーブル内のエントリ数。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getTableCount","id":1,"params":[0,2]}' http://127.0.0.1:7079
@@ -1157,15 +1158,15 @@ Offset and number of entries can be set
 ```
  
 
-### **ibax.getTable**
+### **ibax.getTable** {#ibax-gettable}
 R現在のエコシステムのリクエストデータテーブルに関する情報を返します。
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 - **tableName** - *String* - データテーブル名
 
-#### 返り値
+**返り値**
 - **name** - *String* - データテーブルの名前。
 
 - **insert** - *String* - エントリを追加する権限。
@@ -1184,7 +1185,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
     - **perm** - *String* - このフィールドの値を変更する権限。
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getTable","id":1,"params":["app_params"]}' http://127.0.0.1:7079
@@ -1237,7 +1238,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.getList**
+### **ibax.getList** {#ibax-getlist}
 指定されたデータテーブルのエントリを返します。
 
 返される列を指定することができます。
@@ -1250,7 +1251,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 *Object* - データテーブルオブジェクトを取得します。
 - **name** - *String* - データテーブルの名前。
 
@@ -1270,14 +1271,14 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 
     詳細については、[DBFind](../topics/script.md#dbfind) のwhere構文を参照してください。
 
-#### 返り値
+**返り値**
 - **count** - *Number* - エントリの総数。
 - **list** - *Array* - 配列の各要素には次のパラメーターが含まれています：
 
     - **id** - *String* - エントリのID。
     - **...** - データテーブルの他の列。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getList","id":1,"params":[{"name":"@1history","where":{"$and": [{"id":{"$gt": 2}}, {"id":{"$lt": 5}}]}}]}' http://127.0.0.1:7079
@@ -1311,7 +1312,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ``` 
 
 
-### **ibax.getSections**
+### **ibax.getSections** {#ibax-getsections}
 現在のエコシステムのタブに戻ります。
 テーブルエントリのリストで、オフセットとエントリ数を設定できます。
 
@@ -1319,7 +1320,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 
 - *Object* - アクションリクエストオブジェクトを取得します。
     - **limit** - *Number* - [Omitempty](#omitempty) - エントリの数。デフォルトは25です。
@@ -1328,13 +1329,13 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 
     - **lang** - *String* - [Omitempty](#omitempty) - このフィールドは、マルチリンガルリソースコードまたはローカライゼーションを指定します。例：*en, zh*。指定されたマルチリンガルリソースが見つからない場合、例えば *en-US* の場合は、マルチリンガルリソースグループで検索します。**デフォルト**: **en**。
 
-#### 返り値
+**返り値**
 
 - **count** - *Number* - タブエントリの総数。
 
 - **list** - *Array* - 配列の各要素には、セクションテーブルのすべての列に関する情報が含まれています。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getSections","id":1,"params":[{"offset":0,"limit":2}]}' http://127.0.0.1:7079
@@ -1370,12 +1371,12 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
  
 
-### **ibax.getRow**
+### **ibax.getRow** {#ibax-getrow}
 現在のエコシステムの指定されたデータテーブルのエントリを返します。返される列を指定することができます。
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 - **tableName** - *String* - データテーブルの名前。
 
 - **id** - *Number* - エントリのID。
@@ -1390,12 +1391,12 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 
 - **whereColumn** - *String* - [Omitempty](#omitempty) - 検索する列名（Number型の列のみ検索可能）
 
-#### 返り値
+**返り値**
 - **value** - *Object* - 列の値を受け取るオブジェクト
     - **id** - *String* - エントリのID。
     - **...** - 要求された列のシーケンス。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getRow","id":1,"params":["@1history",4,"id,sender_id,recipient_id,amount,ecosystem,created_at","id"]}' http://127.0.0.1:7079
@@ -1418,12 +1419,12 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.systemParams**
+### **ibax.systemParams** {#ibax-systemparams}
 プラットフォームパラメータのリストを返します。
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 - **names** - *String* - [Omitempty](#omitempty) - カンマで区切られたリクエストパラメータのリスト。
 
     例：`names="name1,name2"`。
@@ -1432,7 +1433,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 
 - **limit** - *Number* - [Omitempty](#omitempty) - エントリの数。デフォルトは100で、最大は100です。
 
-#### 返り値
+**返り値**
 
 - **list** - *Array* - 配列の各要素には次のパラメーターが含まれています：
     - **id** - *String* - ユニークなID
@@ -1441,7 +1442,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
     - **conditions** - *String* - パラメーターを変更する権限。
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.systemParams","id":1,"params":["gap_between_blocks,honor_nodes"]}' http://127.0.0.1:7079
@@ -1470,20 +1471,20 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.history**
+### **ibax.history** {#ibax-history}
 現在のエコシステムの指定されたデータテーブルのエントリの変更レコードを返します。
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 
 - **name** - *String* - データテーブルの名前。
 - **tableId** - *Number* - エントリのID。
 
-#### 返り値
+**返り値**
 - **list** - *Array* - 配列の各要素には、要求されたエントリの変更レコードが含まれています。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.history","id":1,"params":["contracts",1]}' http://127.0.0.1:7079
@@ -1505,15 +1506,15 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.getPageRow**
+### **ibax.getPageRow** {#ibax-getpagerow}
 エコシステムページデータテーブルのフィールドで、現在のエントリを取得します。
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 - **name** - *String* - テーブル内のエントリの名前を指定します。
 
-#### 返り値
+**返り値**
 - **id** - *Number* - エントリのID。
 - **name** - *String* - エントリの名前。
 - **value** - *String* - コンテンツ。
@@ -1522,7 +1523,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 - **app_id** - *Number* - アプリケーションID。
 - **conditions** - *String* - パラメーターを変更する権限。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getPageRow","id":1,"params":["default_page"]}' http://127.0.0.1:7079
@@ -1545,15 +1546,15 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.getMenuRow**
+### **ibax.getMenuRow** {#ibax-getmenurow}
 エコシステムメニューデータテーブルのフィールドで、現在のエントリを取得します。
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 - **name** - *String* - テーブル内のエントリの名前を指定します。
 
-#### 返り値
+**返り値**
 - **id** - *Number* - エントリのID。
 - **name** - *String* - エントリの名前。
 - **title** - *String* - タイトル。
@@ -1561,7 +1562,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 - **conditions** - *String* - パラメーターを変更する権限。
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getMenuRow","id":1,"params":["default_menu"]}' http://127.0.0.1:7079
@@ -1581,22 +1582,22 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.getSnippetRow**
+### **ibax.getSnippetRow** {#ibax-getsnippetrow}
 エコシステムスニペットデータテーブルのフィールドから、現在のエントリを取得します。
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 - **name** - *String* - テーブル内のエントリの名前を指定します。
 
-#### 返り値
+**返り値**
 - **id** - *Number* - エントリのID。
 - **name** - *String* - エントリの名前。
 - **value** - *String* - コンテンツ。
 - **conditions** - *String* - パラメーターを変更する権限。
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getSnippetRow","id":1,"params":["welcome"]}' http://127.0.0.1:7079
@@ -1615,15 +1616,15 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.getAppContent**
+### **ibax.getAppContent** {#ibax-getappcontent}
 アプリケーションに関連する情報（ページ、スニペット、メニューなど）を取得します。
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 - **id** - *Number* - アプリケーションID
 
-#### 返り値
+**返り値**
 - **snippets** - *Array* - コードスニペット情報の配列
     - **id** - *Number* - ID
     - **name** - *String* - コードスニペット名
@@ -1637,7 +1638,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
     - **name** - *String* - コントラクト名
 
 
-#### 例
+**例**
 ```text
     //Request
     //Response
@@ -1680,14 +1681,14 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.getMember** 
+### **ibax.getMember** {#ibax-getmember}
 メンバー情報を取得します。
 
-#### パラメーター
+**パラメーター**
 - **account** - *String* - メンバー情報
 - **ecosystemId** - *Number* - エコシステムID
 
-#### 返り値
+**返り値**
 - **id** - *Number* - メンバーID
 - **member_name** - *String* - 名前
 - **image_id** - *Number* - アバターのID
@@ -1695,7 +1696,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}}" -d '{"jsonrpc":"2.0","method":"ibax.getMember","id":1,"params":["1497-2036-4953-3607-1121",1]}' http://127.0.0.1:7079
@@ -1713,16 +1714,16 @@ R現在のエコシステムのリクエストデータテーブルに関する�
     }
 ```
 
-### **ibax.getContracts**
+### **ibax.getContracts** {#ibax-getcontracts}
 現在のエコシステムのコントラクトのリストを取得します。オフセットとエントリ数を設定することができます。
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 - **offset** - *Number* - [Omitempty](#omitempty) オフセット。デフォルトは0です。
 - **limit** - *Number* - [Omitempty](#omitempty) エントリ数。デフォルトは25です。
 
-#### 返り値
+**返り値**
 - **count** - *Number* - エントリの総数。
 
 - **list** - *Array* - 配列の各要素には、次のパラメータが含まれます：
@@ -1738,7 +1739,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getContracts","id":1,"params":[0,1]}' http://127.0.0.1:7079
@@ -1767,15 +1768,15 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
  
 
-### **ibax.getContractInfo**
+### **ibax.getContractInfo** {#ibax-getcontractinfo}
 指定されたコントラクトの情報を返します。
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 - **contractName** - *String* - コントラクトの名前。形式は `@ecosystem_id%%contractName%` です。例：@1contractName（指定されたエコシステムID1のcontractNameコントラクト）またはcontractName（現在のエコシステムのcontractNameコントラクト）。
 
-#### 返り値
+**返り値**
 - **id** - *Number* - VM内のコントラクトID。
 - **name** - *String* - エコシステムIDを含むコントラクト名 `@1MainCondition`。
 - **state** - *Number* - コントラクトが所属するエコシステムのID。
@@ -1788,7 +1789,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
     - **type** - *String* - パラメータの型。
     - **optional** - *Bool* - パラメータのオプション。`true` はオプションパラメータを意味し、`false` は必須パラメータを意味します。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getContractInfo","id":1,"params":["@1TokensSend"]}' http://127.0.0.1:7079
@@ -1837,21 +1838,21 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
  
 
-### **ibax.sendTx**
+### **ibax.sendTx** {#ibax-sendtx}
 パラメーターでトランザクションを受け取り、それらをトランザクションキューに追加し、リクエストが正常に実行された場合はトランザクションのハッシュを返します。このハッシュはブロック内の対応するトランザクションを指し示し、エラーレスポンスの場合にはエラーテキストメッセージに含まれます。
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 - *Object* - トランザクションデータオブジェクト
     - **tx_key** - *String* - トランザクションの内容です。このパラメーターは任意の名前を指定でき、複数のトランザクションを受け取ることができます。
 
-#### 返り値
+**返り値**
 - **hashes** - *Array* - トランザクションハッシュの配列：
     - **tx1** - *String* - トランザクション1のハッシュ。
     - **txN** - *String* - トランザクションNのハッシュ。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.sendTx","id":1,"params":[{"tx1":...,"txN":...}]}' http://127.0.0.1:7079
@@ -1870,15 +1871,15 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.txStatus**
+### **ibax.txStatus** {#ibax-txstatus}
 指定されたトランザクションハッシュのブロックIDとエラーメッセージを取得します。ブロックIDとエラーテキストメッセージの返り値がnullの場合、トランザクションはまだブロックに含まれていません。
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 - **hashes** - *String* - トランザクションハッシュ。`,`で区切って指定します。
 
-#### 返り値
+**返り値**
 - **hash** - *Object* - トランザクションハッシュ
     - **blockid** - *String* - トランザクションが正常に実行された場合、ブロックIDが返されます。
     
@@ -1890,7 +1891,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
         - **error** - *String* - エラーメッセージ
     - **penalty** - *Number* - トランザクションの実行が失敗した場合、(0: ペナルティなし、1: ペナルティあり)
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.txStatus","id":1,"params":["cf46ef1ce7ecfcf48ccf209577fb8a2130426b71adc3a3855aff7f68d114fca9,4a458232de2ab2a3f5361da68e409b925c775346d14139263a69c0e8ecf0166b"]}' http://127.0.0.1:7079
@@ -1919,14 +1920,14 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.txInfo**
+### **ibax.txInfo** {#ibax-txinfo}
 指定されたハッシュに関するトランザクションの情報を返します。ブロックIDと確認数を含みます。オプションのパラメータが指定された場合、コントラクト名と関連するパラメータも返すことができます。
 
-#### パラメーター
+**パラメーター**
 - **hash** - *String* - トランザクションのハッシュ。
 - **contractinfo** - *Bool* [Omitempty](#omitempty) - コントラクトの詳細パラメータ識別子。このトランザクションに関連するコントラクトの詳細を取得します。デフォルトは `false` です。
 
-#### 返り値
+**返り値**
 - **blockid** - *Number* - トランザクションが含まれるブロックのID。
     値が `0` の場合、このハッシュに対するトランザクションは見つかりません。
     トランザクションが現在のノードで発生した場合、[ibax.txStatus](#ibax-txstatus) を通じて取得できます。
@@ -1947,7 +1948,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
     - **status** - *String* - ステータス (0: 成功 1: ペナルティ)
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.txInfo","id":1,"params":["020d8c004b3a0c00a6bfffa36e2746509295e5ea6dbb14e7cd6098c3d906bb58",true]}' http://127.0.0.1:7079
@@ -1980,15 +1981,15 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.txInfoMultiple**
+### **ibax.txInfoMultiple** {#ibax-txinfomultiple}
 指定されたハッシュリストに関するトランザクションに関する情報を返します。
 
-#### パラメーター
+**パラメーター**
 - **hashes** - *Array* - トランザクションのハッシュのリスト。
  
 - **contractinfo** - *Bool* [Omitempty](#omitempty) - コントラクトの詳細パラメータ識別子。このトランザクションに関連するコントラクトの詳細を取得します。デフォルトは `false` です。
 
-#### 返り値
+**返り値**
 -   **results** - *Array* - トランザクションのハッシュをキー、トランザクションの詳細を値とするデータ辞書。
     - **hash** - *String* - トランザクションのハッシュ。
         - **blockid** - *Number* - トランザクションが含まれるブロックのID。値が `0` の場合、そのハッシュに対するトランザクションは見つかりません。
@@ -2007,7 +2008,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
             - **status** - *String* - ステータス (0:成功 1:ペナルティ)
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getPageValidatorsCount","id":1,"params":[["1875b4fc02a8bf5ccf0d3fbce83011dd6711d8d325c7d731ac659b8beffc0284","4a458232de2ab2a3f5361da68e409b925c775346d14139263a69c0e8ecf0166b"],true]}' http://127.0.0.1:7079
@@ -2050,16 +2051,16 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.getPageValidatorsCount**
+### **ibax.getPageValidatorsCount** {#ibax-getpagevalidatorscount}
 指定されたページに対して検証する必要があるノードの数を返します。
 
-#### パラメーター
+**パラメーター**
 - **name** - *String* - ページ名。`@ecosystem_id%%%page_name%` の形式で指定します。例: @1params_list (エコロジー1のページ名 params_list) や params_list (現在のエコロジーのページ名 params_list)。
 
-#### 返り値
+**返り値**
 - **validate_count** - *Number* - ページに対して検証する必要があるノードの数を指定します。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getPageValidatorsCount","id":1,"params":["@1params_list"]}' http://127.0.0.1:7079
@@ -2075,22 +2076,22 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.getPage**
+### **ibax.getPage** {#ibax-getpage}
 指定されたページ名のコードJSONオブジェクトのツリーを取得します。このツリーはテンプレートエンジンによる処理の結果です。
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 -   **name** - *String* - ページ名。`@ecosystem_id%%page_name%` の形式で指定します。例: `@1main_page`。
 
     エコシステムIDが指定されていない場合、現在のエコロジーのページを検索します。例: `main_page`
 
-#### 返り値
+**返り値**
 - **menu** - *String* - ページが所属するメニューの名前です。
 - **menutree** - *Array* - ページのメニューのJSONオブジェクトツリーです。
 - **tree** - *Array* - ページのJSONオブジェクトツリーです。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getPage","id":1,"params":["@1params_list"]}' http://127.0.0.1:7079
@@ -2124,24 +2125,24 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.getMenu**
+### **ibax.getMenu** {#ibax-getmenu}
 指定されたメニュー名のコードJSONオブジェクトツリーを取得します。このメニューはテンプレートエンジンによる処理の結果です。
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 -   **name** - *String* -
     > メニュー名は `@ecosystem_id%%%menu_name%` の形式で指定します。例： `@1main_menu`。
     > エコシステムIDを指定しない場合は、デフォルトで現在のエコロジーのメニューが見つかります。例： `main_menu`
 
-#### 返り値
+**返り値**
 
 - **title** - *String* - メニューのタイトル。
 
 - **tree** - *Array* - メニューのJSONオブジェクトツリー。
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getMenu","id":1,"params":["@1default_menu"]}' http://127.0.0.1:7079
@@ -2168,22 +2169,22 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.getSource**
+### **ibax.getSource** {#ibax-getsource}
 
 指定されたページ名のコード化されたJSONオブジェクトツリーを返します。いかなる関数も実行せず、データを受信しません。返されるJSONオブジェクトツリーは、ページのテンプレートに対応し、ビジュアルページデザイナーで使用することができます。ページが見つからない場合は、404エラーが返されます。
 
 [Authorization](#authorization)
 
-#### パラメーター
+**パラメーター**
 -   **name** - *String* -
     ページ名は `@ecosystem_id%%%page_name%` の形式で指定します。例： `@1main_page`。
     エコシステムIDを持たない場合は、デフォルトで現在のエコロジーのページが見つかります。例： `main_page`
 
-#### 返り値
+**返り値**
 -   **tree** - *Array* - ページのJSONオブジェクトツリー。
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getSource","id":1,"params":["@1params_list"]}' http://127.0.0.1:7079
@@ -2267,13 +2268,13 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.getPageHash**
+### **ibax.getPageHash** {#ibax-getpagehash}
 
 指定されたページ名のSHA256ハッシュを返します。ページが見つからない場合は404エラーが返されます。
 
 他のノードにリクエストを行う際に正しいハッシュを受け取るためには、*ecosystem,key_id,role_id* パラメーターも渡す必要があります。他のエコシステムからページを受け取るには、ページ名の前にエコシステムIDを付ける必要があります。例：`@2mypage`。
 
-#### パラメーター
+**パラメーター**
 - **name** - *String* - エコシステムIDを含むページの名前。形式は `@ecosystem_id%%%page_name%` です。例： `@1main_page`。エコシステムIDを指定することもできます。
 
 - **ecosystem** - *Number* - [Omitempty](#omitempty) エコシステムID。
@@ -2282,11 +2283,11 @@ R現在のエコシステムのリクエストデータテーブルに関する�
     - **key_id** - *String* - アカウントアドレス。
     - **role_id** - *String* - ロールID。
 
-#### 返り値
+**返り値**
 - *Object* -
     - **hash** - *String* - 16進数のハッシュ値。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getPageHash","id":1,"params":["@1params_list",0,{"role_id":"1","key_id":"-6484253546138538120"}]}' http://127.0.0.1:7079
@@ -2302,18 +2303,18 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.getContent**
+### **ibax.getContent** {#ibax-getcontent}
 オプションのパラメーター **source** が `true` と指定されている場合、**template** パラメーターのページコードからJSONオブジェクトの数を返します。このJSONオブジェクトツリーは、関数を実行せずにデータを受信しないものです。このJSONオブジェクトツリーは、ビジュアルページデザイナーで使用することができます。
 
-#### パラメーター
+**パラメーター**
 - *Object*
     - **template** - *String* - ページコード。
     - **source** - *Bool* - `true` と指定されている場合、JSONオブジェクトツリーは関数を実行せずにデータを受信しません。
 
-#### 返り値
+**返り値**
 - **tree** - *Object* - JSONオブジェクトツリー。
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getContent","id":1,"params":[{"template","..."source":true}]}' http://127.0.0.1:7079
@@ -2336,13 +2337,13 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.getBlockInfo**
+### **ibax.getBlockInfo** {#ibax-getblockinfo}
 指定されたブロックIDに関する情報を返します。
 
-#### パラメーター
+**パラメーター**
 - **id** - *Number* - ブロックの高さ。
 
-#### 返り値
+**返り値**
 
 - **hash** - *String* - ブロックのハッシュ値。
 - **key_id** - *Number* - ブロックに署名したアカウントのアドレス。
@@ -2353,7 +2354,7 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 - **consensus_mode** - *Number* - コンセンサスモード（1: クリエーターマネージメントモード、2: DAOガバナンスモード）。
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBlockInfo","id":1,"params":[12]}' http://127.0.0.1:7079
@@ -2375,20 +2376,20 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 ```
 
 
-### **ibax.getConfig**
+### **ibax.getConfig** {#ibax-getconfig}
 centrifugoのホストアドレスとポートを取得します。
 
-#### パラメーター
+**パラメーター**
 - **option** - *String* - 設定項目
 
     1. "centrifugo" - メッセージングサービス
 
-#### 返り値
+**返り値**
 
 - **centrifugo** - *String* - [Omitempty](#omitempty) centrifugoのホストアドレスとポート。結果の形式は `http://address:port` となります。例: `http://127.0.0.1:8100`。
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getConfig","id":1,"params":["centrifugo"]}' http://127.0.0.1:7079
@@ -2406,13 +2407,13 @@ centrifugoのホストアドレスとポートを取得します。
 
 
 
-### **net.getNetwork** 
+### **net.getNetwork** {#net-getnetwork}
 ノードの情報を取得します。
 
-#### パラメーター
-なし
+**パラメーター**
+- なし
 
-#### 返り値
+**返り値**
 - **network_id** - *String* - ネットワークの識別子。
 - **centrifugo_url** - *String* - centrifugoメッセージサービスのアドレス。
 - **test** - *Bool* - テストチェーンであるかどうか。
@@ -2424,7 +2425,7 @@ centrifugoのホストアドレスとポートを取得します。
     - **unban_time** - *String* - アンバンの時間。
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"net.getNetwork","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2451,20 +2452,20 @@ centrifugoのホストアドレスとポートを取得します。
 ```
  
 
-### **net.status**
+### **net.status** {#net-status}
 現在のノードのステータスを取得します。
 
-#### パラメーター
-なし
+**パラメーター**
+- なし
 
-#### 返り値
+**返り値**
 - **status** - *String* - ノードのステータス
     - "node server status is running" - ノードが稼働中です
     - "node server is updating" - ノードが更新中です
     - "node server is stopped" - ノードが停止中です
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"net.status","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2480,17 +2481,17 @@ centrifugoのホストアドレスとポートを取得します。
 
 
 
-### **rpc.modules**
+### **rpc.modules** {#rpc-modules}
 現在登録されているJSON-RPCインターフェースを取得します。
 
-#### パラメーター
-なし
+**パラメーター**
+- なし
 
-#### 返り値
+**返り値**
 - *Array* - JSON-RPCインターフェースの配列
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"rpc.modules","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2515,16 +2516,16 @@ centrifugoのホストアドレスとポートを取得します。
 
 
 
-### **admin.startJsonRpc**
+### **admin.startJsonRpc** {#admin-startjsonrpc}
 JSON-RPCの名前空間サービスの切り替えに使用できます。
 
-#### パラメーター
+**パラメーター**
 **methods** - *String* - JSON-RPCモジュール、デフォルト値: "ibax,net"
 
-#### 返り値
+**返り値**
 - *bool* - 実行のステータス
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"admin.startJsonRpc","id":1,"params":["ibax,net,admin"]}' http://127.0.0.1:8385
@@ -2538,17 +2539,17 @@ JSON-RPCの名前空間サービスの切り替えに使用できます。
 ```
 
 
-### **admin.stopJsonRpc** 
+### **admin.stopJsonRpc** {#admin-stopjsonrpc}
 JSON-RPCサービスを閉じることができます。
 
-#### パラメーター
-なし
+**パラメーター**
+- なし
 
-#### 返り値
+**返り値**
 - *bool* - 実行のステータス
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"admin.stopJsonRpc","id":1,"params":[]}' http://127.0.0.1:8385
@@ -2563,18 +2564,18 @@ JSON-RPCサービスを閉じることができます。
 
 
 
-### **debug.getNodeBanStat** 
+### **debug.getNodeBanStat** {#debug-getnodebanstat}
 ノードの無効化状態を取得します。
 
-#### パラメーター
-なし
+**パラメーター**
+- なし
 
-#### 返り値
+**返り値**
 **node_position** - *Number* - ノードの添字
 **status** - *Bool* - 無効化の状態。`true`は無効化されていることを示し、`false`は無効化されていないことを示します。
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"debug.getNodeBanStat","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2593,18 +2594,18 @@ JSON-RPCサービスを閉じることができます。
 ```
  
 
-### **debug.getMemStat**
+### **debug.getMemStat** {#debug-getmemstat}
 現在のノードのメモリ使用状況を取得します。
 
-#### パラメーター
-なし
+**パラメーター**
+- なし
 
-#### 返り値
+**返り値**
 - **alloc** - *Number* - リクエストされたバイト数およびまだ使用中のバイト数
 - **sys** - *Number* - システムから取得されたバイト数
 
 
-#### 例
+**例**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"debug.getMemStat","id":1,"params":[]}' http://127.0.0.1:7079

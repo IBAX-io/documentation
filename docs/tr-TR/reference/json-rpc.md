@@ -1,4 +1,4 @@
-# JSON-RPC Application Programming Interface
+# JSON-RPC Application Programming Interface {#json-rpc-application-programming-interface}
 
 In order for a software application to interact with the IBAX blockchain (fetch block data or send transactions to the network), it must be connected to an IBAX network node.
 
@@ -17,12 +17,12 @@ JSON-RPC is compatible with most of the REST API interfaces, retaining the origi
 
 Available through the REST API interface.
 
-## Client-side implementation
+## Client-side implementation {#client-side-implementation}
 Each client can use a different programming language when  implementing  the JSON-RPC specification, and you can use the
 [GO-SDK](https://github.com/IBAX-io/go-ibax-sdk)
 
 
-## Curl example
+## Curl example {#curl-example}
 The following provides examples of using the JSON RPC API by making curl requests to IBAX nodes. Each example includes a description of the particular endpoint, its parameters, the return type, and a working example of how it should be used.
 
 Curl requests may return an error message related to the content type. This is because the --data option sets the content type to application/x-www-form-urlencoded. If your request has this problem, set the header manually by placing -H "Content-Type: application/json" at the beginning of the call. These examples also do not include the URL/Internet Protocol and port combination that must be the last parameter of the curl (e.g. 127.0.0.1:7079 A full curl request with this additional data takes the form of
@@ -31,19 +31,19 @@ Curl requests may return an error message related to the content type. This is b
 curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","params":[],"id":1}' http://127.0.0.1:7079	
 ```
 
-## Covenant 
+## Covenant {#covenant}
 
-### Hex
+### Hex {#hex}
 **Hexadecimal code**
 
 When encoding byte arrays, hashes, and bytecode arrays: the encoding is hexadecimal, two hexadecimal digits per byte.
 
-### Request type
+### Request type {#request-type}
 **Uniform use**
 - Content-Type: application/json
 
-### Special markers 
-#### Omitempty
+### Special markers {#special-markers}
+#### Omitempty {#omitempty}
 This field is an optional parameter.
 
 If there are multiple `Omitempty` fields in a row,
@@ -60,7 +60,7 @@ If only the column value is passed, then the request parameters are passed as fo
 
 
 
-#### Authorization
+#### Authorization {#authorization}
 Authorization header, add Authorization to the request header, example:
 
 **name** : Authorization **value** : Bearer +[login token](#ibax-login)
@@ -72,7 +72,7 @@ Example:
 
 ````
 
-#### AccountOrKeyId
+#### AccountOrKeyId {#accountorkeyid}
 For the account address parameter, you can use two formats of addresses, for example
 1. - *String* - Account Address `"XXXX-XXXX-XXXX-XXXX-XXXX"` or Account Id `"64842...538120"` .538120"`
 
@@ -82,7 +82,7 @@ For the account address parameter, you can use two formats of addresses, for exa
 
     **Account Id is preferred when both account address and account Id exist**. 
     
-#### BlockOrHash
+#### BlockOrHash {#blockorhash}
 Block height or block HASH, example
 
 1.	- *String*	-	Block	Height	`"100"`	or	Block	HASH`"4663aa47...a60753c18d9ba9cb4"`
@@ -93,7 +93,7 @@ Block height or block HASH, example
 
         **Block Height and Block HASH can only choose one**. 
 
-### Batch requests
+### Batch requests {#batch-requests}
 This feature can be used to reduce network latency, especially when acquiring a large number of largely independent data objects.
 
 The following is an example of obtaining the highest block and total number of transactions:
@@ -117,7 +117,7 @@ The following is an example of obtaining the highest block and total number of t
 ```
 
 
-### Error response handling
+### Error response handling {#error-response-handling}
 
 Returns status `200` in case the request is executed successfully.
 
@@ -151,26 +151,26 @@ If an error occurs, a JSON object with the following fields will be returned:
 ```
 
 
-## JSON-RPC Namespaces
+## JSON-RPC Namespaces {#json-rpc-namespaces}
 
- ### ibax Namespace
+ ### ibax Namespace {#ibax-namespace}
 
-#### Authentication Interface
+#### Authentication Interface {#authentication-interface}
 - [ibax.getuid](#ibax-getuid)
 - [ibax.login](#ibax-login)
 - [ibax.getAuthStatus](#ibax-getauthstatus)
 
-#### server-side command interface
+#### server-side command interface {server-side-command-interface}
 - [ibax.getVersion](#ibax-getversion)
 
-#### Data Request Function Interface
+#### Data Request Function Interface {#data-request-function-interface}
 - [ibax.getBalance](#ibax-getbalance)
 - [ibax.getBlocksTxInfo](#ibax-getblockstxinfo)
 - [ibax.detailedBlocks](#ibax-detailedblocks)
 - [ibax.getKeyInfo](#ibax-getkeyinfo)
 - [ibax.detailedBlock](#ibax-detailedblock)
 
-#### Get Metrics Interface
+#### Get Metrics Interface {#get-metrics-interface}
 - [ibax.maxBlockId](#ibax-maxblockid)
 - [ibax.getKeysCount](#ibax-getkeyscount)
 - [ibax.getTxCount](#ibax-gettxcount)
@@ -179,7 +179,7 @@ If an error occurs, a JSON object with the following fields will be returned:
 - [ibax.honorNodesCount](#ibax-honornodescount)
 - [ibax.getEcosystemCount](#ibax-getecosystemcount)
 
-#### Ecosystem Interface
+#### Ecosystem Interface {#ecosystem-interface}
 - [ibax.ecosystemInfo](#ibax-ecosysteminfo)
 - [ibax.appParams](#ibax-appparams)
 - [ibax.getEcosystemParams](#ibax-getecosystemparams)
@@ -196,7 +196,7 @@ If an error occurs, a JSON object with the following fields will be returned:
 - [ibax.getAppContent](#ibax-getappcontent)
 - [ibax.getMember](#ibax-getmember)
 
-#### Contract Function Interface
+#### Contract Function Interface {#contract-function-interface}
 - [ibax.getContracts](#ibax-getcontracts)
 - [ibax.getContractInfo](#ibax-getcontractinfo)
 - [ibax.sendTx](#ibax-sendtx)
@@ -212,36 +212,36 @@ If an error occurs, a JSON object with the following fields will be returned:
 - [ibax.getBlockInfo](#ibax-getblockinfo)
 - [ibax.getConfig](#ibax-getconfig)
 
-### net Namespace
+### net Namespace {#net-namespace}
 - [net.getNetwork](#net-getnetwork)
 - [net.status](#net-status)
 
-### rpc Namespace
+### rpc Namespace {#rpc-namespace}
 - [rpc.modules](#rpc-modules)
 
-### admin Namespace
+### admin Namespace {#admin-namespace}
 - [admin.startJsonRpc](#admin-startjsonrpc)
 - [admin.stopJsonRpc](#admin-stopjsonrpc)
 
 
-### debug Namespace
+### debug Namespace {#debug-namespace}
 - [debug.getNodeBanStat](#debug-getnodebanstat)
 - [debug.getMemStat](#debug-getmemstat)
  
 
 
-## JSON-RPC Interface Methods 
+## JSON-RPC Interface Methods {#json-rpc-interface-methods}
 
-### **ibax.getUid**
+### **ibax.getUid** {#ibax-getuid}
 
 [Authorization](#authorization) [Omitempty](#omitempty)
 
 Generate a temporary JWT token,	which needs to be passed to [**Authorization**](#authorization) when calling **[login](#ibax-login)**
 
-#### Parameters 
-None
+**Parameters**
+- None
 
-#### Return Value
+**Return Value**
 - **uid** - *String* - The signature number.
 
 - **token** - *String* - temporary token passed during login (temporary token has a 5 second lifespan).
@@ -264,7 +264,7 @@ In the case that no authorization is required(the request contains [Authorizatio
 
 - **network_id** - *String* - The network identifier.
 
-#### Example
+**Example**
 ```text
     //Request1
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getUid","params":[],"id":1}' http://127.0.0.1:7079
@@ -301,14 +301,14 @@ In the case that no authorization is required(the request contains [Authorizatio
     }
 ```
 
-### **ibax.login**
+### **ibax.login** {#ibax-login}
 User authentication. [Authorization](#authorization)
 
 The [**ibax.getUid**](#ibax-getuid) command should be called first in order to receive the unique value and sign it.
 The temporary JWT token for getuid needs to be passed in the request header.
 If the request is successful, the token received in the response is contained in [**Authorization**](#authorization).
 
-#### Parameters
+**Parameters**
 
 *Object* - Authentication call object
 - **ecosystem_id** - *Number* - Ecosystem ID. if not specified, defaults to the first ecosystem ID.
@@ -331,7 +331,7 @@ If the request is successful, the token received in the response is contained in
 - **role_id** - *Number* - Role ID, default role 0
 
 
-#### Return Value
+**Return Value**
 *Object* - Authentication object
 - **token** - *String* - JWT token.
 
@@ -355,7 +355,7 @@ If the request is successful, the token received in the response is contained in
     - **role_id** - *Number* - Role ID
     - **role_name** - *String* - Role name
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.login","params":[{"ecosystem_id":1,"public_key":"04....","signature","46...","role_id":0}],"id":1}' http://127.0.0.1:7079
@@ -379,20 +379,20 @@ If the request is successful, the token received in the response is contained in
     }
 ```
 
-### **ibax.getAuthStatus** 
+### **ibax.getAuthStatus** {#ibax-getauthstatus}
 User authentication status 
 [Authorization](#authorization)
 
-#### Parameters 
-None
+**Parameters**
+- None
 
-#### Return Value
+**Return Value**
 *Object* - Authentication status object
 - **active** - *Bool* - The current user authentication status. Values: `true,false`
 
 - **exp** - *Number* - [Omitempty](#omitempty) Token validity cutoff timestamp
  
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getAuthStatus","id":1}' http://127.0.0.1:7079
@@ -408,16 +408,16 @@ None
     }
 ```
 
-### **ibax.getVersion**
+### **ibax.getVersion** {#ibax-getversion}
 Returns the current server version.
 
-#### Parameters 
-None
+**Parameters** 
+- None
 
-#### Return Value
+**Return Value**
 - **vesion** - *String* - version number (`big Version` + `branch name` + `git commit` + `time` + `node status`)
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getVersion","id":1}' http://127.0.0.1:7079
@@ -430,16 +430,16 @@ None
     }
 ```
 
-### **ibax.getBalance**
+### **ibax.getBalance** {#ibax-getbalance}
 Get the account address balance.
  
-#### Parameters
+**Parameters**
 
 - **key_id or account** - [*AccountOrKeyId*](#accountorkeyid) - account address `XXXX- XXXX-XXXX-XXXX-XXXX` or account ID
 
 - **ecosystem_id** - *Number* - Ecosystem ID [Omitempty](#omitempty) Default 1 
 
-#### Return Value
+**Return Value**
 *Object* - Get the balance object
 - **amount** - *String* - the minimum unit of the contract account balance.
 
@@ -451,7 +451,7 @@ Get the account address balance.
 
 - **token_symbol** - *String* - Token symbols 
 
-#### Example
+**Example**
 ```text
     //Request1
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBalance","id":1,"params":["648...8120"]}' http://127.0.0.1:7079
@@ -477,16 +477,16 @@ Get the account address balance.
 ```
 
 
-### **ibax.getBlocksTxInfo**
+### **ibax.getBlocksTxInfo** {#ibax-getblockstxinfo}
 Returns a list containing additional information about the transactions in each block. 
 
-#### Parameters
+**Parameters**
 
 - **block_id** - *Number* - the starting block height to query
 
-- **count** - *Number* - number of blocks, default is 25, maximum request is 100 
+- **count** - *Number* - number of blocks, default is 25, maximum request is 100
 
-#### Return Value
+**Return Value**
 *Object* - Get the block information object
 - **block_id** - *String* - block height
 -	List of transactions in the block and additional information for each transaction:
@@ -502,7 +502,7 @@ Returns a list containing additional information about the transactions in each 
 
         For all other blocks, it is the address of the account that signed the transaction.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBlocksTxInfo","id":1,"params":[1,2]}' http://127.0.0.1:7079
@@ -536,16 +536,16 @@ Returns a list containing additional information about the transactions in each 
 ```
 
 
-### **ibax.detailedBlocks**
+### **ibax.detailedBlocks** {#ibax-detailedblocks}
 Returns a list containing detailed additional information about the transactions in each block.
 
-#### Parameters
+**Parameters**
 - **block_id** - *Number* - the height of the starting block to query
 
 - **count** - *Number* - number of blocks, default is 25, maximum request is 100
 
 
-#### Return Value
+**Return Value**
 *Object* - Get the block details object
 - **block_id** - *String* - block height
     - **header** - *Object* - block header The block header contains the following fields.
@@ -572,7 +572,7 @@ Returns a list containing detailed additional information about the transactions
         - **type** - *Number* - the type of the transaction.
         - **size** - *String* - The transaction size.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.detailedBlocks","id":1,"params":[1,2]}' http://127.0.0.1:7079
@@ -650,13 +650,13 @@ Returns a list containing detailed additional information about the transactions
 ```
 
 
-### **ibax.getKeyInfo**
+### **ibax.getKeyInfo** {#ibax-getkeyinfo}
 Returns a list of ecosystems with roles that are registered to the specified address.
 
-#### Parameters
+**Parameters**
 - **account** - *String* - Account Address
 
-#### Return Value
+**Return Value**
 *Object* - Specify the address eco-list object
 - **account** - *String* - Account Address
 - **ecosystems** - *Array* - Eco-List
@@ -668,7 +668,7 @@ Returns a list of ecosystems with roles that are registered to the specified add
         - **name** - *String* - Character name
  
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getKeyInfo","id":1,"params":["0666-XXXX-XXXX-XXXX-5186"]}' http://127.0.0.1:7079
@@ -700,13 +700,13 @@ Returns a list of ecosystems with roles that are registered to the specified add
     }
 ```
  
-### **ibax.detailedBlock**
+### **ibax.detailedBlock** {#ibax-detailedblock}
 Returns a detailed list of additional information about the transactions in the block.
 
-#### Parameters
--	**Block or Hash** - *[BlockOrHash](#blockorhash)* - Block Height or Block Hash
+**Parameters**
+- **Block or Hash** - *[BlockOrHash](#blockorhash)* - Block Height or Block Hash
 
-#### Return Value
+**Return Value**
 *Object* - Get the block details object
 - **header** - *Object* - block header The block header contains the following fields.
     - **block_id** - *Number* - the height of the block. 
@@ -733,7 +733,7 @@ Returns a detailed list of additional information about the transactions in the 
     - **type** - *Number* - the type of the transaction.
     - **size** - *String* - The transaction size.
 
-#### Example
+**Example**
 ```text
     //Request1
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.detailedBlock","id":1,"params":["1"]}' http://127.0.0.1:7079
@@ -782,16 +782,16 @@ Returns a detailed list of additional information about the transactions in the 
     }
 ```
 
-### **ibax.maxBlockId**
+### **ibax.maxBlockId** {#ibax-maxblockid}
 Get the highest block ID on the current node
 
-#### Parameters 
-None
+**Parameters** 
+- None
 
-#### Return Value
+**Return Value**
 -	**Block Id** - *Number* - The highest block on the current node
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","id":1,"params":[]}' http://127.0.0.1:7079
@@ -805,15 +805,16 @@ None
 ```
 
 
-### **ibax.getKeysCount**
+### **ibax.getKeysCount** {#ibax-getkeyscount}
 Get the total number of addresses on the current node
 
-#### Parameters 
-None
-#### Return Value
+**Parameters** 
+- None
+
+**Return Value**
 - **Count** - *Number* - Total number of addresses 
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getKeysCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -827,16 +828,16 @@ None
 ```
 
 
-### **ibax.getTxCount**
+### **ibax.getTxCount** {#ibax-gettxcount}
 Get the total number of transactions in the current node
 
-#### Parameters 
-None
+**Parameters** 
+- None
 
-#### Return Value
+**Return Value**
 - **Count** - *Number* - Total number of transactions
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getTxCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -850,16 +851,16 @@ None
 ```
 
 
-### **ibax.getTransactionCount** 
+### **ibax.getTransactionCount** {#ibax-gettransactioncount}
 Get the number of block transactions
 
-#### Parameters
+**Parameters**
 - **block or hash** - *[BlockOrHash](#blockorhash)* - block height or block hash
  
-#### Return Value
+**Return Value**
 - **Count** - *Number* - Total number of blocks
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getTransactionCount","id":1,"params":["efc386f7573269610a34af9cc722f775cca8183ccaa0ed7a96db61ef0bde6d1c"]}' http://127.0.0.1:7079
@@ -873,20 +874,20 @@ Get the number of block transactions
 ```
 
 
-### **ibax.getBlocksCountByNode**
+### **ibax.getBlocksCountByNode** {#ibax-getblockscountbynode}
 Get the number of node location packing blocks 
-#### Parameters
+**Parameters**
 - **nodePosition** - *Number* - node subscript
 
 - **consensusMode** - *Number* - Consensus Mode, parameters (1: Creator Management Mode 2: DAO Governance Mode)
 
-#### Return Value
+**Return Value**
 *Object* - Get the node subscript packing number object
 - **total_count** - *Number* - Total number of blocks
 
 - **partial_count** - *Number* - Number of node subscript packing blocks 
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBlocksCountByNode","id":1,"params":[0,1]}' http://127.0.0.1:7079
@@ -903,16 +904,16 @@ Get the number of node location packing blocks
 ```
 
 
-### **ibax.honorNodesCount** 
+### **ibax.honorNodesCount** {#ibax-honornodescount}
 Get number of honor nodes
 
-#### Parameters 
-None
+**Parameters** 
+- None
 
-#### Return Value
+**Return Value**
 - **Count** - *Number* - number of nodes
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.honorNodesCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -926,16 +927,16 @@ None
 ```
 
 
-### **ibax.getEcosystemCount** 
+### **ibax.getEcosystemCount** {#ibax-getecosystemcount}
 Number of ecosystem acquisitions
 
-#### Parameters 
-None
+**Parameters** 
+- None
 
-#### Return Value
+**Return Value**
 - **Count** - *Number* - Ecological number
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getEcosystemCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -951,13 +952,13 @@ None
 
 
 
-### **ibax.ecosystemInfo** 
+### **ibax.ecosystemInfo** {#ibax-ecosysteminfo}
 Access to ecological information
 
-#### Parameters
+**Parameters**
 - **ecosystem id** - *Number* - ecological ID
 
-#### Return Value
+**Return Value**
 - **id** - *Number* - Eco-ID
 - **name** - *String* - Ecological name
 - **digits** - *Number* - Accuracy
@@ -972,7 +973,7 @@ Access to ecological information
 - **logo** - *Number* - ecoLogo Id (corresponds to Binary table id), available through the RESTFUL API
 - **creator** - *String* - Eco-creator
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.ecosystemInfo","id":1,"params":[1]}' http://127.0.0.1:7079
@@ -1000,12 +1001,12 @@ Access to ecological information
 ```
 
 
-### **ibax.appParams**
+### **ibax.appParams** {#ibax-appparams}
 Returns a list of application parameters in the current or specified ecosystem 
 
 [Authorization](#authorization)
 
-#### Parameters
+**Parameters**
 - **appid** - *Number* - the application ID.
 
 - **ecosystem** - *Number* - [Omitempty](#omitempty) - Ecosystem ID;
@@ -1020,7 +1021,7 @@ Returns a list of application parameters in the current or specified ecosystem
 
 - **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
  
-#### Return Value
+**Return Value**
 
 *Array* - List of application parameters
 - **app_id** - *Number* - Application ID
@@ -1030,7 +1031,7 @@ Returns a list of application parameters in the current or specified ecosystem
     - **value** - *String* - the parameter value;
     - **conditions** - *String* - permissions to change parameters.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.appParams","id":1,"params":[1,1,"role_developer,role_governancer"]}' http://127.0.0.1:7079
@@ -1060,12 +1061,12 @@ Returns a list of application parameters in the current or specified ecosystem
 ```
  
 
-### **ibax.getEcosystemParams** 
+### **ibax.getEcosystemParams** {#ibax-getecosystemparams}
 Get a list of ecosystem parameters
  
 [Authorization](#authorization)
 
-#### Parameters
+**Parameters**
 - **ecosystem** - *Number* - [Omitempty](#omitempty) - Ecosystem ID 
 
     If 0 or no such parameter, default: current ecid.
@@ -1081,14 +1082,14 @@ Get a list of ecosystem parameters
 - **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
 
 
-#### Return Value
+**Return Value**
 - **list** - *Array* - Each element of the array contains the following parameters:
     - **id** - *String* - The id of the parameter, unique.
     - **name** - *String* - The name of the parameter.
     - **value** - *String* - The value of the parameter.
     - **conditions** - *String* - permissions to change parameters.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getEcosystemParams","id":1,"params":[0,"changing_app_params,changing_language"]}' http://127.0.0.1:7079
@@ -1117,26 +1118,27 @@ Get a list of ecosystem parameters
 ```
 
 
-### **ibax.getTableCount**
+### **ibax.getTableCount** {#ibax-gettablecount}
 Returns a list of data tables for the current ecosystem.
 
 Offset and number of entries can be set 
 
 [Authorization](#authorization)
-#### Parameters
+
+**Parameters**
 
 - **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
 
 - **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
 
-#### Return Value
+**Return Value**
 - **count** - *Number* - The total number of sheets of the current ecological data table.
 
 - **list** - *Array* - Each element of the array contains the following parameters:
     - **name** - *String* - The name of the data table without prefix.
     - **count** - *String* - The number of entries in the data table.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getTableCount","id":1,"params":[0,2]}' http://127.0.0.1:7079
@@ -1162,15 +1164,15 @@ Offset and number of entries can be set
 ```
  
 
-### **ibax.getTable**
+### **ibax.getTable** {#ibax-gettable}
 Returns information about the current ecosystem request data table. 
 
 [Authorization](#authorization)
 
-#### Parameters
+**Parameters**
 - **tableName** - *String* - Data table name
 
-#### Return Value
+**Return Value**
 - **name** - *String* - The name of the data table.
 
 - **insert** - *String* - Add permission to add an entry.
@@ -1188,7 +1190,7 @@ Returns information about the current ecosystem request data table.
     - **type** - *String* - The field data type.
     - **perm** - *String* - Permission to change the value of this field.
  
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getTable","id":1,"params":["app_params"]}' http://127.0.0.1:7079
@@ -1241,7 +1243,7 @@ Returns information about the current ecosystem request data table.
 ```
 
 
-### **ibax.getList**
+### **ibax.getList** {#ibax-getlist}
 Returns the entry of the specified data table. 
 
 You can specify the columns to be returned.
@@ -1254,7 +1256,7 @@ Hex encoding of data tables of type *BYTEA* (byte arrays, hashes, byte code arra
 
 [Authorization](#authorization)
 
-#### Parameters
+**Parameters**
 *Object* - Get the data table object
 - **name** - *String* - The name of the data table.
 
@@ -1278,14 +1280,14 @@ Hex encoding of data tables of type *BYTEA* (byte arrays, hashes, byte code arra
 
     For details, please refer to [DBFind](../topics/script.md#dbfind) where syntax 
     
-#### Return Value
+**Return Value**
 - **count** - *Number* - the total number of entries.
 - **list** - *Array* - Each element of the array contains the following parameters:
 
     - **id** - *String* - The ID of the entry.
     - **...** - Other columns of the data table.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getList","id":1,"params":[{"name":"@1history","where":{"$and": [{"id":{"$gt": 2}}, {"id":{"$lt": 5}}]}}]}' http://127.0.0.1:7079
@@ -1319,7 +1321,7 @@ Hex encoding of data tables of type *BYTEA* (byte arrays, hashes, byte code arra
 ``` 
 
 
-### **ibax.getSections**
+### **ibax.getSections** {#ibax-getsections}
 Return to the tab of the current ecosystem
 List of table entries, you can set the offset and the number of entries.
 
@@ -1329,7 +1331,7 @@ The data in the field will be replaced by the *Accept-Language* language resourc
 
 [Authorization](#authorization) 
 
-#### Parameters
+**Parameters**
 
 - *Object* - Get the actions request object
     - **limit** - *Number* - [Omitempty](#omitempty) - The number of entries, default 25 entries.
@@ -1340,13 +1342,13 @@ The data in the field will be replaced by the *Accept-Language* language resourc
 
         This field specifies the multilingual resource code or localization, e.g. *en, zh*. If the specified multilingual resource is not found, e.g. *en-US*, then search in the Multilingual Resources group, **default**: **en**.
 
-#### Return Value
+**Return Value**
 
 - **count** - *Number* - the total number of tab entries.
 
 - **list** - *Array* - Each element of the array contains information about all columns in the sections table.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getSections","id":1,"params":[{"offset":0,"limit":2}]}' http://127.0.0.1:7079
@@ -1382,11 +1384,12 @@ The data in the field will be replaced by the *Accept-Language* language resourc
 ```
  
 
-### **ibax.getRow**
+### **ibax.getRow** {#ibax-getrow}
 Returns the entries of the specified data table in the current ecosystem. You can specify the columns to be returned.
 
-[Authorization](#authorization) 
-#### Parameters
+[Authorization](#authorization)
+
+**Parameters**
 - **tableName** - *String* - The name of the data table.
 
 - **id** - *Number* - the ID of the entry.
@@ -1401,12 +1404,12 @@ Returns the entries of the specified data table in the current ecosystem. You ca
 
 - **whereColumn** - *String* - [Omitempty](#omitempty) - Find column name (only Number type columns can be found)
 
-#### Return Value
+**Return Value**
 - **value**- *Object* - object that receives column values
     - **id** - *String* - The ID of the entry.
     - **...** - The sequence of requested columns.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getRow","id":1,"params":["@1history",4,"id,sender_id,recipient_id,amount,ecosystem,created_at","id"]}' http://127.0.0.1:7079
@@ -1429,11 +1432,12 @@ Returns the entries of the specified data table in the current ecosystem. You ca
 ```
 
 
-### **ibax.systemParams**
+### **ibax.systemParams** {#ibax-systemparams}
 Returns the list of platform parameters. 
 
 [Authorization](#authorization)
-#### Parameters
+
+**Parameters**
 - **names** - *String* [Omitempty](#omitempty) - A list of request parameters, separated by commas.
 
     For example `names="name1,name2"`.
@@ -1442,7 +1446,7 @@ Returns the list of platform parameters.
 
 - **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
 
-#### Return Value
+**Return Value**
 
 -	**list** - *Array* - Each element of the array contains the following parameters:
     - **id** - *String* - Unique id
@@ -1450,7 +1454,7 @@ Returns the list of platform parameters.
     - **value** - *String* - The value of the parameter.
     - **conditions** - *String* - permissions to change parameters.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.systemParams","id":1,"params":["gap_between_blocks,honor_nodes"]}' http://127.0.0.1:7079
@@ -1479,19 +1483,20 @@ Returns the list of platform parameters.
 ```
 
 
-### **ibax.history**
+### **ibax.history** {#ibax-history}
 Returns the changed records of the entries of the specified data table in the current ecosystem
 
 [Authorization](#authorization) 
-#### Parameters
+
+**Parameters**
 
 - **name** - *String* - The name of the data table.
 - **tableId** - *Number* - the ID of the entry.
 
-#### Return Value
+**Return Value**
 - **list** - *Array* - Each element of the array contains change records for the requested entry.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.history","id":1,"params":["contracts",1]}' http://127.0.0.1:7079
@@ -1513,15 +1518,15 @@ Returns the changed records of the entries of the specified data table in the cu
 ```
 
 
-### **ibax.getPageRow**
+### **ibax.getPageRow** {#ibax-getpagerow}
 Gets the current entry in the ecosystempages data table field. 
 
 [Authorization](#authorization)
 
-#### Parameters
+**Parameters**
 - **name** - *String* - Specifies the name of the entry in the table.
 
-#### Return Value
+**Return Value**
 - **id** - *Number* - the ID of the entry.
 - **name** - *String* - The name of the entry.
 - **value** - *String* - The content.
@@ -1530,7 +1535,7 @@ Gets the current entry in the ecosystempages data table field.
 - **app_id** - *Number* - Application Id
 - **conditions** - *String* - permissions to change parameters
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getPageRow","id":1,"params":["default_page"]}' http://127.0.0.1:7079
@@ -1553,22 +1558,22 @@ Gets the current entry in the ecosystempages data table field.
 ```
 
 
-### **ibax.getMenuRow**
+### **ibax.getMenuRow** {#ibax-getmenurow}
 Gets the current entry in the ecosystem menu data table field.
  
 [Authorization](#authorization)
 
-#### Parameters
+**Parameters**
 - **name** - *String* - Specifies the name of the entry in the table.
 
-#### Return Value
+**Return Value**
 - **id** - *Number* - the ID of the entry.
 - **name** - *String* - The name of the entry.
 - **title** - *String* - The title.
 - **value** - *String* - The content.
 - **conditions** - *String* - permissions to change parameters
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getMenuRow","id":1,"params":["default_menu"]}' http://127.0.0.1:7079
@@ -1588,21 +1593,21 @@ Gets the current entry in the ecosystem menu data table field.
 ```
 
 
-### **ibax.getSnippetRow**
+### **ibax.getSnippetRow** {#ibax-getsnippetrow}
 Gets the current entry in the ecosystem snippet data table field. 
 
 [Authorization](#authorization)
 
-#### Parameters
+**Parameters**
 - **name** - *String* - Specifies the name of the entry in the table. 
 
-#### Return Value 
+**Return Value** 
 - **id** - *Number* - the ID of the entry.
 - **name** - *String* - The name of the entry.
 - **value** - *String* - The content.
 - **conditions** - *String* - permissions to change parameters.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getSnippetRow","id":1,"params":["welcome"]}' http://127.0.0.1:7079
@@ -1621,15 +1626,15 @@ Gets the current entry in the ecosystem snippet data table field.
 ```
 
 
-### **ibax.getAppContent**
+### **ibax.getAppContent** {#ibax-getappcontent}
 Get application related information (including page, snippet, menu) 
 
 [Authorization](#authorization)
 
-#### Parameters
+**Parameters**
 - **id** - *Number* - Application id
 
-#### Return Value
+**Return Value**
 - **snippets** - *Array* - Array of code snippet information
 
     - **id** - *Number* - id
@@ -1645,7 +1650,7 @@ Get application related information (including page, snippet, menu)
     - **id** - *Number* - id
     - **name** - *String* - Contract name
 
-#### Example
+**Example**
 ```text
     //Request
     //Response
@@ -1688,23 +1693,23 @@ Get application related information (including page, snippet, menu)
 ```
 
 
-### **ibax.getMember** 
+### **ibax.getMember** {#ibax-getmember}
 Get member information
 
-#### Parameters
-**account** - *String* - Member Information
+**Parameters**
+- **account** - *String* - Member Information
 
-**ecosystemId** - *Number* - ecoid
+- **ecosystemId** - *Number* - ecoid
 
 
-#### Return Value
+**Return Value**
 - **id** - *Number* - member id
 - **member_name** - *String* - Name
 - **image_id** - *Number* - Avatar id
 - **member_info** - *String* - Introduction
 
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}}" -d '{"jsonrpc":"2.0","method":"ibax.getMember","id":1,"params":["1497-2036-4953-3607-1121",1]}' http://127.0.0.1:7079
@@ -1722,16 +1727,16 @@ Get member information
     }
 ```
 
-### **ibax.getContracts**
+### **ibax.getContracts** {#ibax-getcontracts}
 Get the list of contracts in the current ecosystem, you can set the offset and the number of entries.
 
 [Authorization](#authorization) 
 
-#### Parameters
+**Parameters**
 - **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
 - **limit** - *Number* - [Omitempty](#omitempty) The number of entries, default 25.
 
-#### Return Value
+**Return Value**
 - **count** - *Number* - the total number of entries.
 
 - **list** - *Array* - Each element of the array contains the following parameters:
@@ -1746,7 +1751,7 @@ Get the list of contracts in the current ecosystem, you can set the offset and t
     - **token_id** - *String* - The ID of the ecosystem where the pass is used as a payment for the contract.
 
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getContracts","id":1,"params":[0,1]}' http://127.0.0.1:7079
@@ -1775,15 +1780,15 @@ Get the list of contracts in the current ecosystem, you can set the offset and t
 ```
  
 
-### **ibax.getContractInfo**
+### **ibax.getContractInfo** {#ibax-getcontractinfo}
 Returns information about the specified contract. 
 
 [Authorization](#authorization)
 
-#### Parameters
+**Parameters**
 - **contractName**	-	*String*	-	The	name	of	the	contract.	The	format	is `@ecosystem_id%%contractName%`, e.g. @1contractName (the specified eco1contract name contractName) or contractName (the current eco-contract name contractName).
 
-#### Return Value
+**Return Value**
 
 - **id** - *Number* - the contract ID in the VM.
 - **name** - *String* - Contract name with ecosystem ID `@1MainCondition`.
@@ -1797,7 +1802,7 @@ Returns information about the specified contract.
     - **type** - *String* - The type of the parameter.
     - **optional** - *Bool* - parameter options, `true` means optional parameters, `false` means mandatory parameters.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getContractInfo","id":1,"params":["@1TokensSend"]}' http://127.0.0.1:7079
@@ -1846,21 +1851,21 @@ Returns information about the specified contract.
 ```
  
 
-### **ibax.sendTx**
+### **ibax.sendTx** {#ibax-sendtx}
 Receives the transactions in the parameters and adds them to the transaction queue, returning a transaction hash if the request is executed successfully. This hash yields the corresponding transaction within the block and is included in the error text message in case of an error response.
 
 [Authorization](#authorization) 
 
-#### Parameters
+**Parameters**
 - *Object* - Transaction data object
     - **tx_key** - *String* - the content of the transaction, this parameter can specify any name and supports receiving multiple transactions.
 
-#### Return Value
+**Return Value**
 - **hashes** - *Array* - transaction hash arrays:
     - **tx1** - *String* - Hash of transaction 1.
     - **txN** - *String* - Hash of transaction N.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.sendTx","id":1,"params":[{"tx1":...,"txN":...}]}' http://127.0.0.1:7079
@@ -1879,15 +1884,15 @@ Receives the transactions in the parameters and adds them to the transaction que
 ```
 
 
-### **ibax.txStatus**
+### **ibax.txStatus** {#ibax-txstatus}
 Gets the block ID and error message of the specified transaction hash. If the return value of the block ID and error text message is null, then the transaction is not yet contained in the block.
  
 [Authorization](#authorization)
 
-#### Parameters
+**Parameters**
 - **hashes** - *String* - transaction hash, split using `,`.
 
-#### Return Value
+**Return Value**
 - **hash** - *Object* - The transaction hash.
     - **blockid** - *String* - returns the block ID if the transaction was executed successfully;
 
@@ -1899,7 +1904,7 @@ Gets the block ID and error message of the specified transaction hash. If the re
         - **error** - *String* - error message
     - **penalty** - *Number* - if the transaction execution fails, (0: no penalty 1: penalty)
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.txStatus","id":1,"params":["cf46ef1ce7ecfcf48ccf209577fb8a2130426b71adc3a3855aff7f68d114fca9,4a458232de2ab2a3f5361da68e409b925c775346d14139263a69c0e8ecf0166b"]}' http://127.0.0.1:7079
@@ -1928,15 +1933,15 @@ Gets the block ID and error message of the specified transaction hash. If the re
 ```
 
 
-### **ibax.txInfo**
+### **ibax.txInfo** {#ibax-txinfo}
 Returns information about the transaction for the specified hash, including the block ID and the number of confirmations. If optional parameters are specified, the contract name and its associated parameters can also be returned.
 
-#### Parameters
+**Parameters**
 - **hash** - *String* - The transaction hash.
 
 - **contractinfo** - *Bool* [Omitempty](#omitempty) - Contract detail parameter identifier, get contract details related to this transaction, default is `false`
 
-#### Return Value
+**Return Value**
 - **blockid** - *Number* - The block ID containing the transaction.
     If the value is `0`, no transactions are found for this hash.
     If the transaction occurred on the current node, it can be obtained via [ibax.txStatus](#ibax-txstatus)
@@ -1957,7 +1962,7 @@ Returns information about the transaction for the specified hash, including the 
     - **status** - *String* - status (0:success 1:penalty)
  
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.txInfo","id":1,"params":["020d8c004b3a0c00a6bfffa36e2746509295e5ea6dbb14e7cd6098c3d906bb58",true]}' http://127.0.0.1:7079
@@ -1990,15 +1995,15 @@ Returns information about the transaction for the specified hash, including the 
 ```
 
 
-### **ibax.txInfoMultiple**
+### **ibax.txInfoMultiple** {#ibax-txinfomultiple}
 Returns transaction-related information for the specified hash list.
 
-#### Parameters
+**Parameters**
 - **hashes** - *Array* - A list of transaction hashes.
  
 - **contractinfo** - *Bool* [Omitempty](#omitempty) - Contract detail parameter identifier, get contract details related to this transaction, default is `false`
 
-#### Return Value
+**Return Value**
 -	**results** - *Array* - Data dictionary with transaction hash as key and transaction details as value.
     - **hash** - *String* - The transaction hash.
         - **blockid** - *Number* - The block ID containing the transaction. if the value is `0`, then no transaction was found for that hash.
@@ -2016,7 +2021,7 @@ Returns transaction-related information for the specified hash list.
             - **size** - *String* - transaction size unit: B;KiB;MiB;GiB;TiB
             - **status** - *String* - status (0:success 1:penalty)
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getPageValidatorsCount","id":1,"params":[["1875b4fc02a8bf5ccf0d3fbce83011dd6711d8d325c7d731ac659b8beffc0284","4a458232de2ab2a3f5361da68e409b925c775346d14139263a69c0e8ecf0166b"],true]}' http://127.0.0.1:7079
@@ -2059,17 +2064,17 @@ Returns transaction-related information for the specified hash list.
 ```
 
 
-### **ibax.getPageValidatorsCount**
+### **ibax.getPageValidatorsCount** {#ibax-getpagevalidatorscount}
 Returns the number of nodes to be validated for the specified page.
 
-#### Parameters
+**Parameters**
 - **name**  -  *String*  -  page  name  in  the  format  `@ecosystem_id%%%page_name%`,  e.g. @1params_list (specifying ecology 1 page name params_list) or params_list (current ecology page name params_list)
 
 
-#### Return Value
+**Return Value**
 - **validate_count** - *Number* - Specifies the number of nodes to be validated by the page.
  
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getPageValidatorsCount","id":1,"params":["@1params_list"]}' http://127.0.0.1:7079
@@ -2085,25 +2090,25 @@ Returns the number of nodes to be validated for the specified page.
 ```
 
 
-### **ibax.getPage**
+### **ibax.getPage** {#ibax-getpage}
 Gets the tree of code JSON objects for the specified page name, which is the result of processing by the templating engine.
 
 [Authorization](#authorization)
 
-#### Parameters
+**Parameters**
 -	**name** - *String* - the name of the page with the ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
 `@1main_page`.
 
     If you don't have an ecosystem ID, the default is to find the current ecological page, e.g. `main_page`
 
-#### Return Value
+**Return Value**
 - **menu** - *String* - The name of the menu to which the page belongs.
 
 - **menutree** - *Array* - JSON object tree of the page's menus.
 
 - **tree** - *Array* - page JSON object tree. 
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getPage","id":1,"params":["@1params_list"]}' http://127.0.0.1:7079
@@ -2137,25 +2142,25 @@ Gets the tree of code JSON objects for the specified page name, which is the res
 ```
 
 
-### **ibax.getMenu**
+### **ibax.getMenu** {#ibax-getmenu}
 Gets the tree of code JSON objects for the specified menu name, which is the result of processing by the template engine.
 
 [Authorization](#authorization) 
 
-#### Parameters
+**Parameters**
 -	**name** - *String* -
     > Menu name with ecosystem ID in the format `@ecosystem_id%%%menu_name%`, e.g.
     > `@1main_menu`.
     > If you don't bring the ecosystem ID, the menu of the current ecology will be found by default, for example
     > `main_menu`
  
-#### Return Value
+**Return Value**
 
 - **title** - *String* - the menu title.
 
 - **tree** - *Array* - Menu JSON object tree. 
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getMenu","id":1,"params":["@1default_menu"]}' http://127.0.0.1:7079
@@ -2182,21 +2187,21 @@ Gets the tree of code JSON objects for the specified menu name, which is the res
 ```
 
 
-### **ibax.getSource**
+### **ibax.getSource** {#ibax-getsource}
 Returns a tree of coded JSON objects for the specified page name. Does not execute any functions or receive any data. The returned JSON object tree corresponds to the page template and can be used in the visual page designer. If the page is not found, a 404 error is returned.
 
 
 [Authorization](#authorization)
  
-#### Parameters
+**Parameters**
 -	**name** - *String* -
     Page  name  with  ecosystem  ID  in  the  format  `@ecosystem_id%%%page_name%`,  for example `@1main_page`.
     If you don't have an ecosystem ID, the default is to find the current ecological page e.g. `main_page`
 
-#### Return Value
+**Return Value**
 -	**tree** - *Array* - JSON object tree for the page.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getSource","id":1,"params":["@1params_list"]}' http://127.0.0.1:7079
@@ -2280,14 +2285,14 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
 ```
 
 
-### **ibax.getPageHash**
+### **ibax.getPageHash** {#ibax-getpagehash}
 Returns a SHA256 hash of the specified page name, or a 404 error if the page is not found.
 
 To receive the correct hash when making requests to other nodes, you must also pass the
 *ecosystem,key_id,role_id*
 parameter. To receive pages from other ecosystems, the ecosystem ID must be prefixed to the page name. For example: `@2mypage`.
 
-#### Parameters
+**Parameters**
 - **name** - *String* - The name of the page with the ecosystem ID. The format is `@ecosystem_id%%%page_name%`, e.g. `@1main_page`, you can specify the eco ID
 
 - **ecosystem** - *Number* - [Omitempty](#omitempty) Ecosystem ID.
@@ -2296,11 +2301,11 @@ parameter. To receive pages from other ecosystems, the ecosystem ID must be pref
     - **key_id** - *String* - The account address.
     - **role_id** - *String* - The role ID.
 
-#### Return Value
+**Return Value**
 - *Object* -
     - **hash** - *String* - Hexadecimal hash.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getPageHash","id":1,"params":["@1params_list",0,{"role_id":"1","key_id":"-6484253546138538120"}]}' http://127.0.0.1:7079
@@ -2316,20 +2321,20 @@ parameter. To receive pages from other ecosystems, the ecosystem ID must be pref
 ```
 
 
-### **ibax.getContent**
+### **ibax.getContent** {#ibax-getcontent}
 Returns the number of JSON objects for the page code from the **template** parameter, if the optional parameter
 **source** Specified as `true`, this JSON object tree does not perform any functions and receive data. This JSON object tree can be used in the visual page designer.
 
-#### Parameters
+**Parameters**
 - *Object*
     - **template** - *String* - page code.
 
     - **source** - *Bool* - If specified as `true`, the JSON object tree does not perform any functions and receives data.
 
-#### Return Value
+**Return Value**
 - **tree** - *Object* - JSON object tree.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getContent","id":1,"params":[{"template","..."source":true}]}' http://127.0.0.1:7079
@@ -2352,13 +2357,13 @@ Returns the number of JSON objects for the page code from the **template** param
 ```
 
 
-### **ibax.getBlockInfo**
+### **ibax.getBlockInfo** {#ibax-getblockinfo}
 Returns information about the specified block ID.
 
-#### Parameters
+**Parameters**
 -	**id** - *Number* - the height of the block. 
 
-#### Return Value
+**Return Value**
 
 - **hash** - *String* - The block hash value.
 
@@ -2374,7 +2379,7 @@ Returns information about the specified block ID.
 
 - **consensus_mode** *Number* - Consensus mode, parameters (1: creator management mode 2: DAO governance mode)
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBlockInfo","id":1,"params":[12]}' http://127.0.0.1:7079
@@ -2396,20 +2401,20 @@ Returns information about the specified block ID.
 ```
 
 
-### **ibax.getConfig**
+### **ibax.getConfig** {#ibax-getconfig}
 Get the host address and port of centrifugo
 
-#### Parameters
+**Parameters**
 - **option** - *String* - Configuration item
 
     1. "centrifugo" - messaging service
 
 
-#### Return Value
+**Return Value**
 
 - **centrifugo** - *String* - [Omitempty](#omitempty) host address and port of centrifugo Result format `http://address:port`, e.g.: `http://127.0.0.1:8100`.
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getConfig","id":1,"params":["centrifugo"]}' http://127.0.0.1:7079
@@ -2427,13 +2432,13 @@ Get the host address and port of centrifugo
 
 
 
-### **net.getNetwork** 
+### **net.getNetwork** {#net-getnetwork}
 Get node information
  
-#### Parameters 
-None
+**Parameters** 
+- None
 
-#### Return Value
+**Return Value**
 - **network_id** - *String* - The network identifier.
 - **centrifugo_url** - *String* - centrifugo message service address
 - **test** - *Bool* - whether it is a test chain
@@ -2445,7 +2450,7 @@ None
     - **unban_time** - *String* - Unlock time
 
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"net.getNetwork","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2472,19 +2477,19 @@ None
 ```
  
 
-### **net.status**
+### **net.status** {#net-status}
 Get the current node status
 
-#### Parameters 
-None
+**Parameters** 
+- None
 
-#### Return Value
+**Return Value**
 - **status** - *String* - Node Status
     "node server status is running" - the node is running 
     "node server is updating" - node is being updated 
     "node server is stopped" - node suspended
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"net.status","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2500,16 +2505,16 @@ None
 
 
 
-### **rpc.modules**
+### **rpc.modules** {#rpc-modules}
 Get the currently registered JSON-RPC interface
 
-#### Parameters 
-None
+**Parameters**
+- None
 
-#### Return Value
+**Return Value**
 - *Array* - JSON-RPC interface array
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"rpc.modules","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2534,16 +2539,16 @@ None
 
 
 
-### **admin.startJsonRpc**
+### **admin.startJsonRpc** {#admin-startjsonrpc}
 Can be used to switch between JSON-RPC change namespace services
 
-#### Parameters
-**methods** - *String* - JSON-RPC module, default: "ibax,net"
+**Parameters**
+- **methods** - *String* - JSON-RPC module, default: "ibax,net"
 
-#### Return Value
+**Return Value**
 - *bool* - execution status
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"admin.startJsonRpc","id":1,"params":["ibax,net,admin"]}' http://127.0.0.1:8385
@@ -2557,16 +2562,16 @@ Can be used to switch between JSON-RPC change namespace services
 ```
 
 
-### **admin.stopJsonRpc** 
+### **admin.stopJsonRpc** {#admin-stopjsonrpc}
 Close the JSON-RPC service
 
-#### Parameters 
-None
+**Parameters** 
+- None
 
-#### Return Value
+**Return Value**
 - *bool* - execution status
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"admin.stopJsonRpc","id":1,"params":[]}' http://127.0.0.1:8385
@@ -2581,17 +2586,17 @@ None
 
 
 
-### **debug.getNodeBanStat** 
+### **debug.getNodeBanStat** {#debug-getnodebanstat}
 Get node disable status
 
-#### Parameters 
-None
+**Parameters** 
+- None
 
-#### Return Value
+**Return Value**
 **node_position** - *Number* - node subscript
 **status** - *Bool* - Disable status, `true` ban status, `false` not disabled
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"debug.getNodeBanStat","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2610,17 +2615,17 @@ None
 ```
  
 
-### **debug.getMemStat**
+### **debug.getMemStat** {#debug-getmemstat}
 Get the current node memory usage
 
-#### Parameters 
-None
+**Parameters** 
+- None
 
-#### Return Value
+**Return Value**
 - **alloc** - *Number* - Number of bytes requested and still in use
 - **sys** - *Number* - Number of bytes fetched from the system
 
-#### Example
+**Example**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"debug.getMemStat","id":1,"params":[]}' http://127.0.0.1:7079

@@ -1,6 +1,6 @@
-# IBAX ネットワークの展開
+# IBAX ネットワークの展開 {#deployment-of-a-ibax-network}
 このセクションでは、独自のブロックチェーン ネットワークを展開する方法を説明します。
-## 導入例
+## 導入例 {#an-deployment-example}
 
 ブロックチェーン ネットワークは、例として次の 3 つのノードで展開されます。
 
@@ -32,54 +32,54 @@
 |  3   | go-ibax (TCP service) | 192.168.1.3:7078 |
 |  3   | go-ibax (API service) | 192.168.1.3:7079 |
 
-# デプロイフェーズ
+# デプロイフェーズ {#deploy-phase}
 
 独自のブロックチェーンネットワークを展開するには、いくつかのステージで展開する必要があります：
 
-- [IBAXネットワークの展開](#ibaxネットワークの展開)
-  - [展開の例](#展開の例)
-  - [デプロイフェーズ](#デプロイフェーズ)
-  - [サーバーの展開](#サーバーの展開)
-    - [最初のノードの展開](#最初のノードの展開)
-    - [依存関係と環境設定](#依存関係と環境設定)
+- [IBAXネットワークの展開](#deployment-of-a-ibax-network)
+  - [展開の例](#an-deployment-example)
+  - [デプロイフェーズ](#deploy-phase)
+  - [サーバーの展開](#server-deployment)
+    - [最初のノードの展開](#deploy-the-first-node)
+    - [依存関係と環境設定](#dependencies-and-environment-settings)
       - [sudo](#sudo)
-    - [Golang](#gGlang)
-    - [PostgreSQL](#PostgreSQL)
-    - [Centrifugo](#Centrifugo)
-    - [ディレクトリ構造](#ディレクトリ構造)
-    - [データベースの作成](#データベースの作成)
-    - [Centrifugoの設定](#Centrifugoの設定)
-    - [go-ibaxのインストール](#go-ibaxのインストール)
-    - [最初のノードの設定](#最初のノードの設定)
-    - [最初のノードサーバーの初期化](#最初のノードサーバーの初期化)
-  - [他のノードの展開](#他のノードの展開)
-    - [ノード2](#ノード2)
-    - [ノード3](#ノード3)
-  - [フロントエンドの展開](#フロントエンドの展開)
-    - [ソフトウェアの前提条件](#ソフトウェアの前提条件)
-    - [Weaverアプリケーションのビルド](#weaverアプリケーションのビルド)
-    - [ブロックチェーンネットワークの設定ファイルの追加](#ブロックチェーンネットワークの設定ファイルの追加)
-    - [Weaver Webアプリケーションのビルド](#weaver-webアプリケーションのビルド)
-  - [ブロックチェーンネットワークの設定](#ブロックチェーンネットワークの設定)
-    - [作成者アカウントの作成](#作成者アカウントの作成)
-    - [アプリケーション、ロール、テンプレートのインポート](#アプリケーションロールテンプレートのインポート)
-    - [最初のノードをノードリストに追加](#最初のノードをノードリストに追加)
-  - [他のホノーノードの追加](#他のホノーノードの追加)
-    - [コンセンサスロールグループにメンバーを追加](#コンセンサスロールグループにメンバーを追加)
-    - [他のノード用のオーナーアカウントの作成](#他のノード用のオーナーアカウントの作成)
-    - [ノードオーナーにバリデータの役割を割り当てる](#ノードオーナーにバリデータの役割を割り当てる)
+    - [Golang](#golang)
+    - [PostgreSQL](#postgresql)
+    - [Centrifugo](#centrifugo)
+    - [ディレクトリ構造](#directory-structure)
+    - [データベースの作成](#create-a-database)
+    - [Centrifugoの設定](#configure-centrifugo)
+    - [go-ibaxのインストール](#install-go-ibax)
+    - [最初のノードの設定](#configure-the-first-node)
+    - [最初のノードサーバーの初期化](#initiate-the-first-node-server)
+  - [他のノードの展開](#deploy-other-nodes)
+    - [ノード2](#node-2)
+    - [ノード3](#node-3)
+  - [フロントエンドの展開](#front-end-deployment)
+    - [ソフトウェアの前提条件](#software-prerequisites)
+    - [Weaverアプリケーションのビルド](#build-a-weaver-application)
+    - [ブロックチェーンネットワークの設定ファイルの追加](#add-the-configuration-file-for-the-blockchain-network)
+    - [Weaver Webアプリケーションのビルド](#build-weaver-web-application)
+  - [ブロックチェーンネットワークの設定](#configure-the-blockchain-network)
+    - [作成者アカウントの作成](#create-the-creator-account)
+    - [アプリケーション、ロール、テンプレートのインポート](#import-applications-roles-and-templates)
+    - [最初のノードをノードリストに追加](#add-the-first-node-to-the-node-list)
+  - [他のホノーノードの追加](#add-other-honor-nodes)
+    - [コンセンサスロールグループにメンバーを追加](#add-members-into-the-consensus-role-group)
+    - [他のノード用のオーナーアカウントの作成](#create-the-owner-account-for-other-nodes)
+    - [ノードオーナーにバリデータの役割を割り当てる](#assign-the-node-owner-with-the-validators-role)
 
 
 
-## サーバーの展開
+## サーバーの展開 {#server-deployment}
 
-### 最初のノードの展開
+### 最初のノードの展開 {#deploy-the-first-node}
 
 最初のノードは特別な役割を果たし、ブロックチェーンネットワークを起動するために不可欠です。最初のノードがブロックチェーンの最初のブロックを生成し、他のすべてのノードはそれからブロックチェーンをダウンロードします。最初のノードの所有者はプラットフォームの作成者です。
 
-### 依存関係と環境設定
+### 依存関係と環境設定 {#dependencies-and-environment-settings}
 
-#### sudo
+#### sudo {#sudo}
 
 Debian 9のすべてのコマンドは、rootユーザーではないユーザーとして実行する必要があります。ただし、一部のシステムコマンドはスーパーユーザー権限で実行する必要があります。デフォルトでは、Debian 9にはsudoがインストールされていないため、まずsudoをインストールする必要があります。
 
@@ -109,7 +109,7 @@ usermod -a -G sudo user
 
 5. 再起動後、変更が有効になります。
    
-### Golang
+### Golang {#golang}
 
 [公式ドキュメント](https://golang.org/doc/install#tarball)に従って Go をインストールします。
 
@@ -143,7 +143,7 @@ source $HOME/.profile
 rm go1.11.2.linux-amd64.tar.gz
 ```
 
-### PostgreSQL
+### PostgreSQL {#postgresql}
 
 1. PostgreSQL (> v.10) と psql をインストールします。
 
@@ -151,7 +151,7 @@ rm go1.11.2.linux-amd64.tar.gz
 sudo apt install -y postgresql
 ```
 
-### Centrifugo
+### Centrifugo {#centrifugo}
 
 1. Centrifugo V.1.8.0 を [GitHub](https://github.com/centrifugal/centrifugo/releases/) から、またはコマンド ラインからダウンロードします。
 
@@ -169,7 +169,7 @@ rm -R centrifugo-1.8.0-linux-amd64 \
 && rm centrifugo-1.8.0-linux-amd64.zip
 ```
 
-### ディレクトリ構造
+### ディレクトリ構造 {#directory-structure}
 
 Debian 9 システムの場合、ブロックチェーン プラットフォームで使用されるすべてのソフトウェアを別のディレクトリに保存することをお勧めします。
 
@@ -195,7 +195,7 @@ mkdir /opt/backenddir/go-ibax/node1 \
 mkdir /opt/backenddir/centrifugo \
 ```
 
-### データベースの作成
+### データベースの作成 {#create-a-database}
 
 1. ユーザーのパスワード postgres をデフォルトのパスワード *123456* に変更します。 独自のパスワードを設定できますが、ノード構成ファイル *config.toml* で変更する必要があります。
 
@@ -209,7 +209,7 @@ sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '123456'"
 sudo -u postgres psql -c "CREATE DATABASE chaindb"
 ```
 
-### Centrifugoの設定
+### Centrifugoの設定 {#configure-centrifugo}
 
 1. Centrifugo 構成ファイルを作成します。
 
@@ -219,7 +219,7 @@ echo '{"secret":"CENT_SECRET"}' > /opt/backenddir/centrifugo/config.json
 
 独自の *secret* を設定できますが、ノード構成ファイル *config.toml* でも変更する必要があります。
 
-### go-ibaxのインストール
+### go-ibaxのインストール {#install-go-ibax}
 
 1. GitHub から github-backend をダウンロードします。
 2. go-ibax バイナリ ファイルを `/opt/backenddir/go-ibax` ディレクトリにコピーします。 デフォルトの Go ワークスペースを使用している場合、バイナリ ファイルは `$HOME/go/bin` ディレクトリにあります。
@@ -228,7 +228,7 @@ echo '{"secret":"CENT_SECRET"}' > /opt/backenddir/centrifugo/config.json
 cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
 ```
 
-### 最初のノードの設定
+### 最初のノードの設定 {#configure-the-first-node}
 
 3. ノード 1 の構成ファイルを作成します。
 
@@ -268,7 +268,7 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
  --config=/opt/backenddir/node1/config.toml
 ```
 
-### 最初のノードサーバーの初期化
+### 最初のノードサーバーの初期化 {#initiate-the-first-node-server}
 
 最初のノード サーバーを起動するには、次の 2 つのサービスを起動する必要があります。
 * centrifugo
@@ -291,7 +291,7 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
  --config=/opt/backenddir/node1/config.toml
 ```
 
-## 他のノードの展開
+## 他のノードの展開 {#deploy-other-nodes}
 
 他のすべてのノード (ノード 2 およびノード 3) の展開は最初のものと似ていますが、次の 3 つの違いがあります。
 
@@ -299,14 +299,14 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
 * ノードは、`--nodesAddr` オプションを設定してノード 1 からブロックをダウンロードする必要があります。
 * ノードは独自のアドレスとポートを使用する必要があります。
 
-### ノード2
+### ノード2 {#node-2}
 
 以下に示す操作手順に従ってください。
 
-1. [依存関係と環境設定](#依存関係と環境設定)
-2. [データベースの作成](#データベースの作成)
-3. [Centrifugo](#Centrifugo)
-4. [go-ibaxをインストールする](#go-ibaxのインストール)
+1. [依存関係と環境設定](#dependencies-and-environment-settings)
+2. [データベースの作成](#create-a-database)
+3. [Centrifugo](#centrifugo)
+4. [go-ibaxをインストールする](#install-go-ibax)
 5. ノード 2 の構成ファイルを作成します。
 
 ```shell
@@ -357,14 +357,14 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
 
 その結果、ノードは最初のノードからブロックをダウンロードします。 このノードは検証ノードではないため、新しいブロックを生成できません。 ノード 2 は後で検証ノードのリストに追加されます。
 
-### ノード3
+### ノード3 {#node-3}
 
 以下に示す操作手順に従ってください。
 
-1. [依存関係と環境設定](#依存関係と環境設定)
-2. [データベースの作成](#データベースの作成)
+1. [依存関係と環境設定](#dependencies-and-environment-settings)
+2. [データベースの作成](#create-a-database)
 3. [Centrifugo](#Centrifugo)
-4. [go-ibaxをインストールする](#go-ibaxのインストール)
+4. [go-ibaxをインストールする](#install-go-ibax)
 5. ノード 3 の構成ファイルを作成します。
 
 ```shell
@@ -416,11 +416,11 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
 
 その結果、ノードは最初のノードからブロックをダウンロードします。 このノードは検証ノードではないため、新しいブロックを生成できません。 クライアントはノードに接続でき、トランザクションをネットワークに送信できます。
 
-## フロントエンドの展開
+## フロントエンドの展開 {#front-end-deployment}
 
 Debian 9 (Stretch) 64 ビット公式リリースに **GNOME GUI** をインストールした後でのみ、`yarn` パッケージ マネージャーを使用して Govis クライアントを構築できます。
 
-### ソフトウェアの前提条件
+### ソフトウェアの前提条件 {#software-prerequisites}
 
 1. Node.js 公式 Web サイトまたはコマンド ラインから Node.js LTS バージョン 8.11 をダウンロードします。
 
@@ -447,7 +447,7 @@ cd/opt/backenddir \
 sudo dpkg -i yarn_1.7.0_all.deb && rm yarn_1.7.0_all.deb
 ```
 
-### Weaverアプリケーションのビルド
+### Weaverアプリケーションのビルド {#build-a-weaver-application}
 
 1. Git 経由で github-frontend から Weaver の最新バージョンをダウンロードします。
 
@@ -463,7 +463,7 @@ cd/opt/backenddir/ibax-front/ \
 && yarn install
 ```
 
-### [ブロックチェーンネットワークの設定ファイルの追加
+### [ブロックチェーンネットワークの設定ファイルの追加 {#add-the-configuration-file-for-the-blockchain-network}
 
 1. ノード接続に関する情報を含む *settings.json* ファイルを作成します。
 
@@ -507,7 +507,7 @@ yarn release --publish never -l
 
 ビルド後、アプリケーションを使用することはできますが、接続構成を変更することはできません。 これらの設定を変更する必要がある場合は、新しいバージョンのアプリケーションを構築する必要があります。
 
-### Weaver Webアプリケーションのビルド
+### Weaver Webアプリケーションのビルド {#build-weaver-web-application}
 
 1. Web アプリケーションを構築します。
 
@@ -528,9 +528,9 @@ sudo yarn global add serve \
 
 その後、Weaver Web アプリケーションが `http://localhost:5000` の場所で利用できるようになります。
 
-## ブロックチェーンネットワークの設定
+## ブロックチェーンネットワークの設定 {#configure-the-blockchain-network}
 
-### 作成者アカウントの作成
+### 作成者アカウントの作成 {#create-the-creator-account}
 
 最初のノード所有者のアカウントを作成します。 このアカウントは新しいブロックチェーン プラットフォームの作成者であり、管理者アクセス権を持っています。
 
@@ -546,7 +546,7 @@ sudo yarn global add serve \
 
 3. アカウントにログインした後、この時点ではロールが作成されていないため、ロールなし オプションを選択してください。
 
-### アプリケーション、ロール、テンプレートのインポート
+### アプリケーション、ロール、テンプレートのインポート {#import-applications-roles-and-templates}
 
 現時点では、ブロックチェーン プラットフォームは空白の状態です。 基本的なエコシステム機能をサポートするロール、テンプレート、アプリケーション フレームワークを追加することで構成できます。
 
@@ -575,7 +575,7 @@ cd/opt/backenddir \
 
 7. 「ホーム」Home > 「投票」Vote > 「テンプレート リスト」Template List に移動し、「デフォルト テンプレートのインストール」Default Template をクリックします。
 
-### 最初のノードをノードリストに追加
+### 最初のノードをノードリストに追加 {#add-the-first-node-to-the-node-list}
 
 1. 「開発者」Developer >「プラットフォームパラメータ」Platform Parameters に移動し、first_nodesパラメータをクリックします。
 
@@ -587,9 +587,9 @@ cd/opt/backenddir \
 {"api_address":"http://192.168.1.1:7079","public_key":"%node_public_key%","tcp_address":"192.168.1.1:7078"}
 ```
 
-## 他のホノーノードの追加
+## 他のホノーノードの追加 {#add-other-honor-nodes}
 
-### コンセンサスロールグループにメンバーを追加
+### コンセンサスロールグループにメンバーを追加 {#add-members-into-the-consensus-role-group}
 
 デフォルトでは、コンセンサスロール (コンセンサス) グループのメンバーのみが、他のマスターノードを追加するために必要な投票に参加できます。 これは、新しいマスター ノードを追加する前に、エコシステムのメンバーをロールに割り当てる必要があることを意味します。
 このセクションでは、作成者のアカウントがコンセンサス役割グループの唯一のメンバーとして指定されます。 運用環境では、このロールはガバナンスを実行するプラットフォーム メンバーに割り当てる必要があります。
@@ -598,7 +598,7 @@ cd/opt/backenddir \
 
 2.「割り当て」をクリックして、作成者のアカウントをロールに割り当てます。
 
-### 他のノード用のオーナーアカウントの作成
+### 他のノード用のオーナーアカウントの作成 {#create-the-owner-account-for-other-nodes}
 
 1. Weaverを実行します。
 
@@ -611,7 +611,7 @@ cd/opt/backenddir \
 
 5. アカウントの詳細 (個人情報のタイトル、説明など) を追加します。
 
-### ノードオーナーにバリデータの役割を割り当てる
+### ノードオーナーにバリデータの役割を割り当てる {#assign-the-node-owner-with-the-validators-role}
 
 1. 新しいノード所有者による操作:
      1. 「Home」 > 「検証者 Verfier」 に移動します。

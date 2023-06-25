@@ -1,280 +1,287 @@
+# 术语和定义 {#terms-and-definitions}
 
-# Terms and Definitions
-
-  - [Blockchain terms](#blockchain-terms)
-    - [Blockchain](#blockchain)
-    - [Peer-to-peer network](#peer-to-peer-network)
-    - [Hash](#hash)
-    - [Block](#block)
-    - [Block verification](#block-verification)
-    - [Consensus](#consensus)
-    - [Token](#token)
-    - [Identification](#identification)
-    - [Unique identification](#unique-identification)
-    - [Private key](#private-key)
-    - [Public key](#public-key)
-    - [Digital signature](#digital-signature)
-    - [Smart contract](#smart-contract)
-    - [Transaction fee](#transaction-fee)
-    - [Double spend](#double-spend)
-    - [Encryption](#encryption)
-    - [Private blockchain](#private-blockchain)
-    - [Public blockchain](#public-blockchain)
-    - [Proof of Authority](#proof-of-authority)
-  - [IBAX Terms](#ibax-terms)
-    - [Testnet](#testnet)
-    - [Mainnet](#mainnet)
-    - [Gas fee](#gas-fee)
-    - [Account address](#account-address)
-    - [Wallet address](#wallet-address)
+  - [区块链相关术语](#blockchain-terms)
+    - [区块链](#blockchain)
+    - [对等网络](#peer-to-peer-network)
+    - [哈希](#hash)
+    - [区块](#block)
+    - [区块验证](#block-verification)
+    - [共识](#consensus)
+    - [通证](#token)
+    - [标识符](#identification)
+    - [唯一标识符](#unique-identification)
+    - [私钥](#private-key)
+    - [公钥](#public-key)
+    - [数字签名](#digital-signature)
+    - [智能合约](#smart-contract)
+    - [交易费用](#transaction-fee)
+    - [双重支付](#double-spend)
+    - [加密](#encryption)
+    - [私有链](#private-blockchain)
+    - [公有链](#public-blockchain)
+    - [权威证明](#proof-of-authority)
+  - [IBAX区块链平台术语](#ibax-terms)
+    - [测试网](#testnet)
+    - [主网](#mainnet)
+    - [燃料](#gas-fee)
+    - [账户地址](#account-address)
+    - [钱包地址](#wallet-address)
     - [Weaver](#weaver)
-    - [ECOLIB](#ecolib)
-    - [ECOLIB parameters](#ecolib-parameters)
-    - [ECOLIB members](#ecolib-members)
-    - [Virtual private ECOLIB](#virtual-private-ecolib)
-    - [Decentralized Proof-of-Authority](#decentralized-proof-of-authority)
+    - [生态系统](#ecolib)
+    - [生态系统参数](#ecolib-parameters)
+    - [生态系统成员](#ecolib-members)
+    - [虚拟专用生态系统](#virtual-private-ecolib)
+    - [去中心化权威证明](#decentralized-proof-of-authority)
     - [Needle](#needle)
     - [Logicor](#logicor)
-    - [Integrated Development Environment (IDE)](#integrated-development-environment-ide)
-    - [Page editor](#page-editor)
-    - [Visual page designer](#visual-page-designer)
-    - [Contract editor](#contract-editor)
-    - [Multilingual resources](#multilingual-resources)
-    - [Application export](#application-export)
-    - [Application import](#application-import)
-    - [Smart law](#smart-law)
-    - [Legal system](#legal-system)
-    - [Application](#application)
-    - [Page](#page)
-    - [Code segment](#code-segment)
-    - [Access rights](#access-rights)
-    - [Honor node](#honor-node)
-    - [Guardian node](#guardian-node)
-    - [Concurrent transaction processing](#concurrent-transaction-processing)
+    - [集成开发环境](#integrated-development-environment-ide)
+    - [页面编辑器](#page-editor)
+    - [可视化页面设计器](#visual-page-designer)
+    - [合约编辑器](#contract-editor)
+    - [多语言资源](#multilingual-resources)
+    - [导出应用程序](#application-export)
+    - [导入应用程序](#application-import)
+    - [智能法律](#smart-law)
+    - [法律制度](#legal-system)
+    - [应用程序](#application)
+    - [页面](#page)
+    - [代码片段](#code-segment)
+    - [访问权限](#access-rights)
+    - [荣誉节点](#honor-node)
+    - [守护节点](#guardian-node)
+    - [并发事务处理](#concurrent-transaction-processing)
 
 
 
-## Blockchain terms
+## 区块链相关术语 {#blockchain-terms}
 
-### Blockchain
+### 区块链 {#blockchain}
 
-Blockchain is an information system that stores data and transmits and processes data within the system to prevent data from being forged or lost while maintaining data reliability; Data protection is achieved by:
+> 一种存储数据的信息系统，在系统内传输和处理数据，可以防止数据被伪造和丢失，同时保持数据可靠性；
+> 通过以下方式实现数据保护：
+>
+> > 1.  将数据写入一系列加密区块的区块链中；
+> > 2.  在对等网络中分散存储区块链副本；
+> > 3.  使用共识机制对所有节点上的区块链进行同步；
+> > 4.  通过在区块链中存储数据传输和处理合约的算法，确保在使用网络执行数据操作时，保证数据可靠性。
 
-1.writing data into a blockchain of a series of encrypted blocks;
+### 对等网络 {#peer-to-peer-network}
 
-2.distributed storage of blockchain copies in peer-to-peer networks;
+> 由计算机网络的对等节点组成（没有中央服务器）。
 
-3.synchronization of blockchains on all nodes using a consensus mechanism;
+### 哈希 {#hash}
 
-4.ensuring data reliability when performing data operations using the network with algorithms that store data transmissions and process contracts in the blockchain.
+> 又叫做散列，任意文件或数据集长度的二进制值映射为较短的固定长度的二进制值。
 
-### Peer-to-peer network
+### 区块 {#block}
 
-A computer network, consisting of equally privileged nodes (without a central server).
+> 在验证交易的格式和签名之后，由荣誉节点分组到特定数据结构中的交易集合。
+> 一个区块包含一个哈希指针作为到前一个区块的链接，这是确保区块链加密安全性的措施之一。
 
-### Hash
+### 区块验证 {#block-verification}
 
-Also known as hashing, the binary value of any file or data set length that is mapped to a shorter fixed-length binary value.
+> 验证区块结构、生成时间、与前一个区块的兼容性、交易签名以及交易与区块数据的对应关系的正确性。
 
-### Block
+### 共识 {#consensus}
 
-After verifying the format and signature of the transaction, a transaction set is grouped by the honor node into a specific data structure. A block contains a hash pointer as a link to the previous block, which is one of the measures to ensure the security of blockchain encryption.
+> 荣誉节点 在向区块链添加新区块过程中使用的验证协议或该类协议的算法。
 
-### Block verification
+### 交易 {#transaction-1}
 
-A procedure to verify the correctness of the block structure, generation time, compatibility with the previous block, transaction signatures, and the correspondence between the transaction and the block data.
+> 区块链网络上的数据传输操作或区块链中该类事务的记录。
 
-### Consensus
+### 通证 {#token}
 
-The verification protocol or algorithm of this type of protocol used by the honor node in the process of adding new blocks to the blockchain.
+> 区块链上可流通的加密数字权益证明。存储在寄存器中的一组可识别的数字记录，包括在这些记录之间交换权利份额的机制。
 
-### Transaction
+### 标识符 {#identification}
 
-Data transmission operations on the blockchain network or records of such transactions in the blockchain.
+> 用于识别系统中用户的加密程序。
 
-### Token
+### 唯一标识符 {#unique-identification}
 
-Proof of encrypted digital rights and shares that can be circulated on the blockchain. A set of identifiable digital records stored in a register, including a mechanism for exchanging rights and shares between these records.
+> 将账户和用户联系起来的程序，需要法律和组织的努力或其他程序来实现生物识别，以便将用户名与实际用户联系起来。
 
-### Identification
+### 私钥 {#private-key}
 
-An encryption program used to identify users in the system.
+> 由其拥有者密存的一串字符串，用于该拥有者访问在网络上的虚拟帐户并签署交易。
 
-### Unique identification
+### 公钥 {#public-key}
 
-The process of linking accounts with users requires legal and organizational efforts or other procedures to achieve biometric identification in order to link user names with actual users.
+> 用于检查私钥真实性的一串字符，公钥由私钥唯一派生生成。
 
-### Private key
+### 数字签名 {#digital-signature}
 
-A string of characters secretly stored by its owner, used by the owner to access virtual accounts on the internet and sign transactions.
+> 文档或消息经数据加密处理后获得的属性，数字签名用于检查文档的完整性（没有修改）和真实性（验证发件人的身份）。
 
-### Public key
+### 智能合约 {#smart-contract}
 
-A string of characters used to check the authenticity of the private key. The public key is uniquely derived from the private key.
+> 在区块链中的执行数据存储操作的程序，所有合约都存储在区块链中。
 
-### Digital signature
+### 交易费用 {#transaction-fee}
 
-The attributes of a document or message obtained after encrypted data processing. The digital signature is used to check the integrity of the document (no modification) and authenticity (verification of the identity of the sender).
+> 向 荣誉节点 支付执行交易的费用。
 
-### Smart contract
+### 双重支付 {#double-spend}
 
-In the program that performs data storage operations in the blockchain, all contracts are stored in the blockchain.
+> 一种对区块链网络攻击方法，结果是一笔交易花费两次同样的通证。
+>
+> 在区块链分叉时会导致这种攻击发生。只有当攻击者控制了网络验证能力的50%以上时，才能执行该类攻击。
 
-### Transaction fee
+### 加密 {#encryption}
 
-The fee paid to the honor node to execute the transaction.
+> 一种数字数据转换的方式，只有拥有对应解密密钥的一方才能读取它。
 
-### Double spend
+### 私有链 {#private-blockchain}
 
-A method of attacking the blockchain network. The result is that a transaction costs the same token twice. 
+> 所有节点和数据访问权限由单个组织（政府、公司或私人）集中控制的区块链网络。
 
-This kind of attack occurs when the blockchain is forked, which can only be executed when the attacker controls more than 50% of the network's verification capability.
+### 公有链 {#public-blockchain}
 
-### Encryption
+> 不受任何组织控制的区块链网络，所有决策都是通过在网络参与者之间达成共识来决定，每个人都可以获取和访问区块链网络的数据。
 
-A way of digital data conversion, only the party with the corresponding decryption key can read it.
+### 权威证明  {#proof-of-authority}
+> 权威证明（PoA），IBAX 网络创建了一种新的共识机制，将分布式、弱中心化和证书授权相结合。 
+> 我们称之为 PoA（权威证明）。 为了保证整个 IBAX 网络的连续性，共识不仅包括 IBAX 公共网络，
+> 还包括每个用户和用户组创建的 ecoLibs。 
+> 这将创建一个真正自治、去中心化、公平、透明和防欺诈的去中心化自治组织 (DAO)。
 
-### Private blockchain
+## IBAX区块链平台术语 {#ibax-terms}
 
-A blockchain network where all nodes and data access rights are centrally controlled by a single organization (government, company or individual).
+### 测试网 {#testnet}
 
-### Public blockchain
+> 用于测试的区块链网络版本。
 
-In a blockchain network that is not controlled by any organization, all decisions are made by reaching a consensus among network participants. Everyone can obtain and access the data of the blockchain network.
+### 主网 {#mainnet}
 
-### Proof of Authority
+> 区块链网络主版本。
 
-Proof of Authority (PoA), IBAX Network has created a new consensus mechanism that combines distribution, weak centralization, and a certification authority. We call it PoA (Proof of Authority). To ensure continuity for the entire IBAX Network, the consensus covers not only IBAX Public Network, but also ecoLibs created by each user and user group. This creates a truly self-governed, decentralized, fair, transparent, and fraud-proof Decentralized Autonomous Organization (DAO).
+### 交易事务 {#transaction-2}
 
-## IBAX Terms
+> 调用合约并将参数传递给合约的操作命令，荣誉节点执行交易的结果是数据库的更新。
 
-### Testnet
+### 燃料 {#gas-fee}
 
-The version of the blockchain network used for testing.
+> 用于计算在节点网络上执行某些操作的费用的常规单位，燃料汇率由 荣誉节点投票决定。
 
-### Mainnet
+### 账户地址 {#account-address}
 
-The main version of the blockchain network.
+> 存储通证的数据记录，可以通过一对密钥（私钥和公钥）访问。
 
-### Transaction
+### 钱包地址 {#wallet-address}
 
-Call the contract and pass the parameters to the operation command of the contract. The result of the honor node execution is the update of the database.
+> 节点网络上用户的字符编码标识符，作为该用户的虚拟帐户的名称。
 
-### Gas fee
+### Weaver {#weaver}
 
-A conventional unit used to calculate the cost of performing certain operations on a network of nodes. The fuel exchange rate is determined by a vote on the honor node.
+> 用于连接节点网络的软件客户端，有桌面版本和Web浏览器版本。
+>
+> Weaver 集成了平台开发环境，包括创建和编辑数据表、页面和合约。用户可在 Weaver 构建生态系统、创建和使用应用程序。
 
-### Account address
+### 生态系统 {#ecolib}
 
-The data records store the token and can be accessed through a pair of keys (private key and public key).
+> 一个相对封闭或开放的软件编程环境，包括了应用程序和生态系统成员。
+>
+> 生态系统成员可以发行属于生态系统的专属通证、使用智能合约建立成员间的交互规则、设置成员访问应用程序元素的权限。
 
-### Wallet address
+### 生态系统参数 {#ecolib-parameters}
 
-The character encoding identifier of the user on the node network that is used as the name of the user's virtual account.
+> 一组可配置的生态系统参数，有生态系统创建者账户、更改应用程序元素权限等参数，在参数表中可更改。
 
-### Weaver
+### 生态系统成员 {#ecolib-members}
 
-The software client used to connect to the node network, which provides the desktop and web browser versions.
+> 可以访问特定生态系统和应用程序功能的用户。
 
-Weaver integrates the platform development environment, including creating and editing tables, pages, and contracts. Users can build ECOLIBs, create and use applications in Weaver. 
+### 虚拟专用生态系统 {#virtual-private-ecolib}
 
-### ECOLIB
+> 虚拟专用生态系统 Cross Ledgers Base （ CLB ），它具有标准生态系统的全套功能，但在区块链之外工作。
+> 在 CLB中，可以使用和创建合约和模板语言、数据库表，可以使用 Weaver创建应用程序。
+> 可以使用接口方式调用区块链生态系统上的合约。
 
-A relatively closed or open software programming environment, including applications and ECOLIB members.
+### 去中心化权威证明 {#decentralized-proof-of-authority}
 
-ECOLIB members can issue exclusive tokens belonging to the ECOLIB, use smart contracts to establish interaction rules between members, and set access rights to application elements for members.
+> 去中心化权威证明（DPoA）是一种新的共识算法，可提供高性能和容错性。
+> 在 DPoA 中，生成新区块的权利授予已经证明有这样做的节点，并且这些节点必须经过初步验证。
 
-### ECOLIB parameters
+### Needle {#needle}
 
-A set of configurable ECOLIB parameters, such as the account of the creator of the ECOLIB and the permissions of changing application elements, can be changed in the parameter table.
+> 用于创建智能合约的脚本语言，可以处理从用户页面接收的数据功能，以及用于在数据库表中执行的值操作。
+>
+> 可以在 Weaver 的编辑器中创建和编辑合约。
 
-### ECOLIB members
+### Logicor {#logicor}
 
-Users who can access specific ECOLIBs and application features.
+> 用于创建页面的模版语言，可以从数据库表中获取值、构建用户页面、
+> 将用户输入数据传递到合约的**data** 部分。
 
-### Virtual private ECOLIB
+### 集成开发环境 {#integrated-development-environment-ide}
 
-Virtual private ECOLIB - Cross Ledgers Base (CLB), which has the full set of functions of the standard ECOLIB, but works outside the blockchain. In CLB, you can use and create contracts and template languages, database tables, and use Weaver to create applications. You can call contracts on the blockchain ECOLIB via APIs.
+> 集成开发环境Integrated Development Environment（IDE）是一组用于创建应用程序的软件工具。
+>
+> Weaver的集成开发环境包括合约编辑器，页面编辑器，数据库表管理工具，
+> 多语言资源编辑器以及应用程序导出和导入功能。集成开发环境与基于语义工具的可视化页面设计器相辅相成。
 
-### Decentralized Proof-of-Authority
+### 页面编辑器 {#page-editor}
 
-Decentralized Proof-of-Authority (DPoA) is a new consensus algorithm that provides high performance and fault tolerance. In DPoA, the right to generate new blocks is granted to nodes that have proven the right to do so, and such nodes must be subject to preliminary verification.
+> Weaver 中通过直接在屏幕上排列基本应用程序元素HTML容器，表单域，按钮等工具，
+> 可以来创建应用程序页面。
 
-### Needle
+### 可视化页面设计器 {#visual-page-designer}
 
-A scripting language used to create smart contracts that can handle data received from user pages and value operations performed in database tables.
-You can create and edit contracts in Weaver's editor.
+> Weaver 中创建应用程序页面的工具，包括界面设计器和 Logicor语言的页面代码生成器。
 
-### Logicor
+### 合约编辑器 {#contract-editor}
 
-The template language used to create pages. It can get values from database tables, build user pages, and pass user input data to the **data** section of the contract.
+> Weaver 中使用可视化页面创建合约的工具。
 
-### Integrated Development Environment (IDE)
+### 多语言资源 {#multilingual-resources}
 
-Integrated Development Environment (IDE) is a set of software tools used to create applications.
+> Weaver中应用程序页面本地化的模块，它将应用程序页面上的标签与所选语言的文本值相关联。
 
-Weaver's IDE includes a contract editor, page editor, database table management tool, multi-language resources editor, as well as application export and import functions. The IDE complements the visual page designer based on semantic tools.
+### 导出应用程序 {#application-export}
 
-### Page editor
+> 将应用程序的所有数据表、页面和合约等源代码保存为文件。
 
-In Weaver, you can create application pages by directly arranging basic application elements, HTML containers, form fields, buttons and other tools on the screen.
+### 导入应用程序 {#application-import}
 
-### Visual page designer
+> 将应用程序包含在导出文件中的所有数据表，页面和合约加载到生态系统中。
 
-Tools for creating application pages in Weaver, including interface designer and "Logicor" page code generator.
+### 智能法律 {#smart-law}
 
-### Contract editor
+> 是包含监管信息的一组特殊智能合约。用于管理控制合约的操作和寄存器访问权限。
 
-A tool for creating contracts using visual pages in Weaver.
+### 法律制度 {#legal-system}
 
-### Multilingual resources
+> 在智慧法律中制定的一套规则机制，该规则可以规范生态系统用户之间的关系，定义更改协议参数的程序规则，还有定义各种具有挑战性的解决方案。
 
-The module of application page localization in Weaver, which associates the label on the application page with the text value of the selected language.
+### 应用程序 {#application}
 
-### Application export
+> 在 Weaver 的集成开发环境中创建功能完备的软件产品。
+>
+> 应用程序是具有配置访问权限的数据库表、智能合约和用户页面等元素的集合。
 
-Save the source code of all tables, pages, and contracts of the application as files.
+### 页面 {#page}
 
-### Application import
+> 使用 Logicor 模板语言编写的程序代码从而在屏幕上形成一个可交互的界面。
 
-Load all tables, pages, and contracts of an application included in the export file into the ECOLIB.
+### 代码片段 {#code-segment}
 
-### Smart law
+> 使用 Logicor 模板语言编写的程序代码，可以重复包含在应用程序页面中的代码块。
 
-It is a special set of smart contracts that contain regulatory information and used to manage and control the operation and register access rights.
+### 访问权限 {#access-rights}
 
-### Legal system
+> 获取创建和编辑数据表，合约和页面的访问权限的条件。
+>
+> 对数据表的访问权限可以设置添加行和列，以及编辑列中值的权限。
 
-A set of rules and mechanisms established in smart law, which can regulate the relationship between ECOLIB users, define procedural rules for changing protocol parameters, and define various challenging solutions.
+### 荣誉节点 {#honor-node}
 
-### Application
+> 网络节点中有权生成和验证区块的节点。
 
-Create fully functional software products in Weaver's IDE.
+### 守护节点 {#guardian-node}
 
-An application is a collection of elements such as database tables, smart contracts, and user pages with configuration access rights.
+> 网络上的一个节点，用于存储完整区块链的最新版本。
 
-### Page
+### 并发事务处理 {#concurrent-transaction-processing}
 
-The program code written in the Logicor template language that forms an interactive interface on the screen.
-
-### Code segment
-
-The program code written in the Logicor template language that can be reused in application pages.
-
-### Access rights
-
-Conditions to get access rights for creating and editing tables, contracts and pages.
-
-The access rights to tables can be configured with rights to add rows and columns, and edit the values in columns. 
-
-### Honor node
-
-A node in the network node that has the right to generate and verify blocks.
-
-### Guardian node
-
-A node on the network used to store the latest version of the complete blockchain.
-
-### Concurrent transaction processing
-
-A method to increase transaction processing speed by processing data from different ECOLIBs at the same time.
+> 一种通过同时处理来自不同生态系统的数据来提高交易处理速度的方法。

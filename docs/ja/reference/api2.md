@@ -1,15 +1,15 @@
-# RESTful API v2
+# RESTful API v2 {#restful-api-v2}
 
-Weaver
-All functions provided, including authentication, ecosystem data reception, error handling, database table manipulation, page and contract execution are available through
-IBAX Blockchain Platform's REST API is available.
+ウィーバー （Weaver)
+認証、エコシステム データの受信、エラー処理、データベース テーブルの操作、ページおよびコントラクトの実行を含む、提供されるすべての機能は、
+IBAX Blockchain PlatformのREST APIが利用可能です。
 
-By using the REST API, developers can access any of the platform's features without using Weaver.
+REST API を使用すると、開発者は Weaver を使用せずにプラットフォームの機能にアクセスできます。
 
-API command calls are executed by addressing `/api/v2/command/[param]`, where `command`
-is the command name and `param` is the additional parameter. The request parameters must be specified using the
+API コマンド呼び出しは、`/api/v2/command/[param]` をアドレス指定することによって実行されます。ここで、`command`
+はコマンド名で、`param`は追加のパラメータです。 リクエストパラメータは、
 `Content-Type: x-www-form-urlencoded`
-The format is sent. The server response result is in JSON format.
+フォーマットで送信されます。 サーバーの応答結果は JSON 形式です。
 
 <!-- TOC -->
 
@@ -29,8 +29,8 @@ The format is sent. The server response result is in JSON format.
     - [/data/{table}/id/{column}/{hash}](#data-table-id-column-hash)
     - [keyinfo](#keyinfo)
     - [walletHistory](#wallethistory)
-    - [listWhere/{name}](#listWhere-name)
-    - [nodelistWhere/{name}](#nodelistWhere-name)
+    - [listWhere/{name}](#listwhere-name)
+    - [nodelistWhere/{name}](#nodelistwhere-name)
 - [Get Metrics Interface](#get-metrics-interface)
     - [metrics/keys](#metrics-keys)
     - [metrics/blocks](#metrics-blocks)
@@ -72,24 +72,24 @@ The format is sent. The server response result is in JSON format.
 
 <!-- /TOC -->
 
-## Error response handling
+## エラー応答処理 {#error-response-handling}
 
-Return status in case of successful request execution
-`200`. If an error occurs, in addition to the error status, a JSON object with the following fields will be returned.
+リクエストの実行が成功した場合にステータスを返す
+「200」。 エラーが発生した場合は、エラーステータスに加えて、次のフィールドを含む JSON オブジェクトが返されます。
 
-- **error**
+- **エラー**
 
-    > Error identifier.
+     > エラー識別子。
 
-- **msg**
+- **メッセージ**
 
-    > Error text message.
+     > エラー テキスト メッセージ。
 
-- **params**
+- **パラメータ**
 
-    > An array of additional parameters that can be placed in the error message.
+     > エラー メッセージに配置できる追加パラメータの配列。
 
-#### Response Example
+**応答例**
 ``` text
 400 (Bad request)
 Content-Type: application/json
@@ -100,129 +100,129 @@ Content-Type: application/json
 }
 ```
 
-### Error list
+### Error list {#error-list}
 
-> E_CONTRACT
+> `E_CONTRACT`
  
-  No `%s` contract exists
+   `%s` コントラクトが存在しません
 
-> E_DBNIL
+> `E_DBNIL`
 
-    Database is empty
+     データベースが空です
 
-> E_DELETEDKEY
+> `E_DELETEDKEY`
 
-    Account address is frozen
+     アカウントアドレスが凍結されている
 
-> E_ECOSYSTEM
+> `E_ECOSYSTEM`
 
-    Ecosystem `%d` does not exist
+     エコシステム `%d` は存在しません
 
-> E_EMPTYPUBLIC
+> `E_EMPTYPUBLIC`
 
-    Invalid account public key
+     無効なアカウント公開キー
 
-> E_KEYNOTFOUND
+> `E_KEYNOTFOUND`
 
-    Account address not found
+     アカウントアドレスが見つかりません
 
-> E_HASHWRONG
+> `E_HASHWRONG`
 
-    Incorrect hash
+     不正なハッシュ
 
-> E_HASHNOTFOUND
+> `E_HASHNOTFOUND`
 
-    Hash not found
+     ハッシュが見つかりません
 
-> E_HEAVYPAGE
+> `E_HEAVYPAGE`
 
-    Too much page loading
+     ページの読み込みが多すぎる
 
-> E_INVALIDWALLET
+> `E_INVALIDWALLET`
 
-    Wallet address `%s` Invalid
+     ウォレットアドレス「%s」が無効です
 
-> E_LIMITTXSIZE
+> `E_LIMITTXSIZE`
 
-    The transaction size has exceeded the limit
+     トランザクションサイズが制限を超えました
 
-> E_NOTFOUND
+> `E_NOTFOUND`
 
-    Page or menu content not found
+     ページまたはメニューのコンテンツが見つかりません
 
-> E_PARAMNOTFOUND
+> `E_PARAMNOTFOUND`
 
-    Parameters not found
+     パラメータが見つかりません
 
-> E_PERMISSION
+> `E_PERMISSION`
 
-    No permission
+     全く許可しません
 
-> E_QUERY
+> `E_QUERY`
 
-    Database query error
+     データベースクエリエラー
 
-> E_RECOVERED
+> `E_RECOVERED`
 
-    API panic error occurs.
+     APIパニックエラーが発生します。
 
-    If a panic error occurs, an error is returned.
+     パニックエラーが発生した場合はエラーを返します。
 
-    This error means that you have encountered a bug that needs to be found and fixed.
+     このエラーは、見つけて修正する必要があるバグが発生したことを意味します。
 
-> E_SERVER
+> `E_SERVER`
 
-    Server error.
+     サーバーエラー。
 
-    Return if there is an error in the golang library function. The \*msg\* field contains the error text message.
+     golang ライブラリ関数にエラーがある場合に戻ります。 \*msg\* フィールドにはエラー テキスト メッセージが含まれます。
 
-    **E_SERVER** may appear in response to any command Error. 
-    If it occurs due to an incorrect input parameter, it can be changed to a related error. In another case, this error reports an invalid operation or incorrect system configuration, which requires a more detailed investigation report.
+     **E_SERVER** は、コマンド エラーに応答して表示される場合があります。
+     入力パラメータが間違っているためにエラーが発生した場合は、関連するエラーに変更できます。 別のケースでは、このエラーは無効な操作または不正なシステム構成を報告するため、より詳細な調査レポートが必要になります。
 
-> E_SIGNATURE
+> `E_SIGNATURE`
 
     Incorrect signature
 
-> E_STATELOGIN
+> `E_STATELOGIN`
 
     `%s` is not a member of the ecosystem `%s`
 
-> E_TABLENOTFOUND
+> `E_TABLENOTFOUND`
 
     Data sheet `%s` not found
 
-> E_TOKENEXPIRED
+> `E_TOKENEXPIRED`
 
     The session has expired `%s`
 
-> E_UNAUTHORIZED
+> `E_UNAUTHORIZED`
 
     Unauthorized.
 
     In case no login is performed or the session expires, 
     except for `getuid, login` Any command other than **E_UNAUTHORIZED** returns an error.
 
-> E_UNKNOWNUID
+> `E_UNKNOWNUID`
 
     Unknown UID
 
-> E_UPDATING
+> `E_UPDATING`
 
     Nodes are updating the blockchain
 
-> E_STOPPING
+> `E_STOPPING`
 
     Node is stopped
 
-> E_NOTIMPLEMENTED
+> `E_NOTIMPLEMENTED`
 
     Not yet achieved
 
-> E_BANNED
+> `E_BANNED`
 
     This account address is prohibited in `%s`
 
-> E_CHECKROLE
+> `E_CHECKROLE`
 
     Access denied
 
@@ -230,7 +230,7 @@ Content-Type: application/json
 
 ------------------------------------------------------------------------
 
-> Interface requests for which the CLB node is not available.
+> CLB ノードが使用できないインターフェース要求。
 
 - metrics
 - txinfo
@@ -252,54 +252,54 @@ Content-Type: application/json
 - walletHistory
 - tx_record
 
-## Request Type
-**Uniform use** 
+## リクエストの種類 {#request-type}
+**制服の使用**
 - application/x-www-form-urlencoded
 
-## Authentication Interface
+## Authentication Interface {#authentication-interface}
 
 [JWT token](https://jwt.io)
-Used for authentication. The JWT token must be placed in each request header after it is received: `Authorization: Bearer TOKEN_HERE`.
+認証に使用されます。 JWT トークンは、受信後に各リクエスト ヘッダーに配置する必要があります: `Authorization: Bearer TOKEN_HERE`。
 
-### getuid
+### getuid {#getuid}
 
-**GET**/ returns a unique value, signs it with the private key, and then uses
-The [login](#login) command sends it back to the server.
+**GET**/ は一意の値を返し、秘密キーで署名してから、
+[login](#login) コマンドは、それをサーバーに送り返します。
 
-Generate a temporary JWT token that needs to be passed to **Authorization** when calling **login**.
+**login** を呼び出すときに **Authorization** に渡す必要がある一時的な JWT トークンを生成します。
 
-#### Request
+**請求**
 
 ``` text
 GET
 /api/v2/getuid
 ```
 
-#### Response
+**応答**
 
-- *uid*
+- `uid`
 
-    > Signature number.
+    > 署名番号。
 
-- *token*
+- `token`
 
-    > The temporary token passed during login.
+    > ログイン時に渡される一時トークン。
     >
-    > The life cycle of a temporary token is 5 seconds.
+    > 一時トークンのライフサイクルは 5 秒です。
 
-- *network_id*
+- `network_id`
 
-    > Server identifier.
+    > サーバー識別子。
 
-- *cryptoer*
+- `cryptoer`
 
-    > Elliptic curve algorithm.
+    > 楕円曲線アルゴリズム。
 
-- *hasher*
+- `hasher`
 
-    > hash algorithm.
+    > ハッシュアルゴリズム。
 
-#### Response Example 1
+**応答例1** 
 
 ``` text
 200 (OK)
@@ -311,29 +311,29 @@ Content-Type: application/json
 }
 ```
 
-In the case that no authorization is required (the request contains **Authorization**), the following message will be returned:
+認証が不要な場合（リクエストに **Authorization** が含まれている場合）には、以下のメッセージが返されます：
 
-- *expire*
+- `expire`
 
-    > Expiration time.
+    > 有効期限です。
 
-- *ecosystem*
+- `ecosystem`
 
-    > Ecosystem ID.
+    エコシステム* > エコシステムID。
 
-- *key_id*
+- `key_id`
 
-    > Account address.
+    > アカウントアドレス。
 
-- *address*
+- `address`
 
-    > Wallet address `XXXX-XXXX-..... -XXXX`.
+    > ウォレットアドレス `XXXX-XXXX-.... -XXXX`です。
 
-- *network_id*
+- `network_id`
 
-    > Server identifier.
+    > サーバーの識別子です。
 
-#### Response Example 2
+**応答例2** 
 
 ``` text
 200 (OK)
@@ -347,90 +347,90 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_SERVER*
 
-### login
+### login {#login}
 
 **POST**/ User authentication.
 
-> **getuid** should be called first
-> command in order to receive the unique value and sign it. getuid's temporary JWT token needs to be passed in the request header.
+> **getuid**を最初に呼び出す必要があります。
+> getuidの一時的なJWTトークンは、リクエストヘッダで渡す必要があります。
 >
-> If the request is successful, the token received in the response is contained in **Authorization**.
+> リクエストに成功した場合、レスポンスで受け取ったトークンは **Authorization** に含まれます。
 
-#### Request
+**請求**
 
 ``` text
 POST
 /api/v2/login
 ```
 
-- *\[ecosystem\]*
+- `ecosystem`
 
-    > Ecosystem ID.
+    > エコシステムID。
     >
-    > If not specified, defaults to the first ecosystem ID.
+    > 指定しない場合、デフォルトで最初のエコシステム ID が使用されます。
 
-- *\[expire\]*
+- `expire`
 
-    > Lifecycle of the JWT token, in seconds, default is 28800.
+    > JWT トークンのライフサイクル (秒単位)、デフォルトは 28800 です。
 
-- *\[pubkey\]*
+- `pubkey`
 
-    > Hexadecimal account public key.
+    > 16 進数のアカウント公開キー。
 
-- *\[key_id\]*
+- `key_id`
 
-    > Account address `XXXX-... -XXXX`.
+    > アカウントアドレス `XXXX-... -XXXX`。
     >
-    > Use this parameter if the public key is already stored in the blockchain. It cannot be used with *pubkey*
-    > parameters are used together.
+    > 公開キーがすでにブロックチェーンに保存されている場合は、このパラメータを使用します。 *pubkey* と一緒に使用することはできません
+    > パラメータが併用されます。
 
-- *signature*
+- `signature`
 
-    > The uid signature received via getuid.
+    > getuid 経由で受信した uid 署名。
 
-#### Response
+**応答**
 
-- *token*
+- `token`
 
-    > JWT token.
+    > JWT トークン。
 
-- *ecosystem_id*
+- `ecosystem_id`
 
-    > Ecosystem ID.
+    > エコシステムID。
 
-- *key_id*
+- `key_id`
 
-    > Account Address ID
+    > アカウントアドレスID。
 
-- *account*
+- `account`
 
-    > Wallet address `XXXX-XXXX-..... -XXXX`.
+    > ウォレットアドレス `XXXX-XXXX-..... -XXXX`。
 
-- *notify_key*
+- `notify_key`
 
-    > Notification ID.
+    > 通知 ID。
 
-- *isnode*
+- `isnode`
 
-    > Whether the account address is the owner of the node. Values: `true,false`.
+    > アカウントアドレスがノードの所有者であるかどうか。 値:  `true,false`.
 
-- *isowner*
+- `isowner`
 
-    > Whether the account address is the creator of the ecosystem. Values: `true,false`.
+    > アカウントアドレスがエコシステムの作成者であるかどうか。 値: `true,false`.
 
-- *clb*
+- `clb`
 
-    > Whether the logged-in ecosystem is CLB. Values: `true,false`.
+    > ログインしたエコシステムが CLB かどうか。 値: `true,false`.
 
-- *roles* [Omitempty](#omitempty)
+- `roles` [Omitempty](#omitempty)
 
-    > Role list: `[{Role ID,Role Name}]`.
+    >  ロールリスト: `[{Role ID,Role Name}]`.
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -451,26 +451,26 @@ Content-Type: application/json
 } 
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_SERVER, E_UNKNOWNUID, E_SIGNATURE, E_STATELOGIN, E_EMPTYPUBLIC*
 
-## Server Side command interface
+## Server Side command interface {#server-side-command-interface}
 
-### version
+### version {#version}
 
-**GET**/ Returns the current server version.
+**GET**/ 現在のサーバーのバージョンを返します。
 
-This request does not require login authorization.
+このリクエストにはログイン認証は必要ありません。
 
-#### Request
+**請求**
 
 ``` text
 GET
 /api/v2/version
 ```
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -478,48 +478,48 @@ Content-Type: application/json
 "1.3.0 branch.main commit.790..757 time.2021-08-23-08:20:19(UTC)"
 ```
 
-## Data Request Function Interface
+## Data Request Function Interface {#data-request-function-interface}
 
-### balance
+### balance {#balance}
 
-**GET**/ Requests the balance of the account address in the current ecosystem.
+**GET**/ 現在のエコシステムのアカウント アドレスの残高をリクエストします。
 
-This request does not require login authorization.
+このリクエストにはログイン認証は必要ありません。
 
-#### Request
+**請求**
 
 ``` text
 GET
 /api/v2/balance/{wallet}
 ```
 
-- *wallet
+- `wallet`
 
-    > Address identifier, can be specified in any format `int64, uint64, XXXX-... -XXXX`. Look up the address in the ecosystem where the user is currently logged in.
+    > アドレス識別子は、`int64、uint64、XXXX-... -XXXX`の任意の形式で指定できます。 ユーザーが現在ログインしているエコシステム内のアドレスを検索します。
 
-- *\[ecosystem\]* [Omitempty](#omitempty) Default eco1
+- `ecosystem` [Omitempty](#omitempty) デフォルトの ecosystem 1
 
-    > Ecosystem id.
+     > エコシステム ID。
 
-#### Response
+**応答**
 
-- *amount*
+- `amount`
 
     > The minimum unit of contract account balance.
 
-- *money*
+- `money`
 
     > Account balance.
 
-- *total*
+- `total`
 
     > Account balance.
 
-- *utxo*
+- `utxo`
 
     > UTXO account balance.
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -532,56 +532,55 @@ Content-Type: application/json
 } 
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_SERVER, E_INVALIDWALLET*
 
-### blocks
+### blocks {#blocks}
 
-**GET**/ Returns a list containing additional information related to the transactions in each block.
+**GET**/ 各ブロック内のトランザクションに関連する追加情報を含むリストを返します。
 
-This request does not require login authorization.
+このリクエストにはログイン認証は必要ありません。
 
-#### Request
+**請求**
 
 ``` text
 GET 
 /api/v2/blocks
 ```
 
-- *block_id* [Omitempty](#omitempty) Default is 0
+- `block_id` [Omitempty](#omitempty) デフォルトは 0
 
-    > The height of the starting block to query.
+     > クエリする開始ブロックの高さ。
 
-- *count* [Omitempty](#omitempty) (default is 25, max request 1000)
+- `count` [Omitempty](#omitempty) (デフォルトは 25、最大リクエストは 1000)
 
-    > Number of blocks.
+     > ブロックの数。
 
-#### Response
+**応答**
 
-- Block height
+- `Block height`
 
-    > List of transactions in the block and additional information for each transaction.
-    >
-    > > - *hash*
+    > ブロック内のトランザクションのリストと各トランザクションの追加情報。
+    > > - `hash`
     > >
-    > > > Trading Hash.
+    > > > 取引ハッシュ。
     > >
-    > > - *contract_name*
+    > > - `contract_name`
     > >
-    > > > Contract name.
+    > > > 契約名。
     > >
-    > > - *params*
+    > > - `params`
     > >
-    > > > Array of contract parameters.
+    > > > コントラクトパラメータの配列。
     > >
-    > > - *key_id*
+    > > - `key_id`
     > >
-    > > > For the first block, it is the account address of the first block that signed the transaction.
+    > > > 最初のブロックの場合、トランザクションに署名した最初のブロックのアカウント アドレスです。
     > >
-    > > > For all other blocks, is the address of the account that signed the transaction.
+    > > > 他のすべてのブロックの場合、トランザクションに署名したアカウントのアドレスです。
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -594,128 +593,60 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_SERVER, E_NOTFOUND*
 
-### <span id = "detailed-blocks">detailed_blocks</span>
+### detailed_blocks {#detailed-blocks}
 
-**GET**/ Returns a list containing detailed additional information about the transactions in each block.
+**GET**/ 各ブロック内のトランザクションに関する詳細な追加情報を含むリストを返します。
 
-This request does not require login authorization.
+このリクエストにはログイン認証は必要ありません。
 
-#### Request
+**請求**
 
 ``` text
 GET
 /api/v2/detailed_blocks
 ```
 
-- *block_id* [Omitempty](#omitempty) Default is 0
+- `block_id` [Omitempty](#omitempty) デフォルトは 0
 
-  > The height of the starting block to query.
+   > クエリする開始ブロックの高さ。
 
-- *count* [Omitempty](#omitempty) (default is 25, max request 1000)
+- `count` [Omitempty](#omitempty) (デフォルトは 25、最大リクエストは 1000)
 
-  > Number of blocks.
+   > ブロックの数。
 
-#### Response
+**応答**
 
-- Block height
+- `Block height` The block height.
+ - `blockhead` ブロックヘッダには次のフィールドが含まれています。
+  - `block_id` ブロックの高さ。
+  - `time` ブロックの生成タイムスタンプ。
+  - `key_id` ブロックに署名するアカウントのアドレス。
+  - `node_position` ブロックを生成したノードの位置（名誉ノードリスト内）。
+  - `version` ブロックの構造バージョン。
+ - `hash` ブロックのハッシュ。
+ - `node_position` ブロックを生成したノードの位置（名誉ノードリスト内）。
+ - `key_id` ブロックに署名したアカウントのアドレス。
+ - *time* ブロックの生成タイムスタンプ。
+ - *tx_count* ブロック内のトランザクション数。
+ - *size* ブロックのサイズ。
+ - *rollback_hash* ブロックのロールバックハッシュ。
+ - *merkle_root* ブロックのマークルツリー。
+ - *bin_data* ブロックヘッダ、ブロック内のすべてのトランザクション、前のブロックのハッシュ、およびブロックを生成したノードの秘密鍵のシリアル化。
+ - *transactions* ブロック内のトランザクションのリストと各トランザクションに関する追加情報。
+  - *hash* トランザクションのハッシュ。
+  - *contract_name* コントラクトの名前。
+  - *params* コントラクトのパラメータ。
+  - *key_id* このトランザクションに署名するアカウントのアドレス。
+  - *time* トランザクションの生成タイムスタンプ。
+  - *type* トランザクションのタイプ。
+  - *size* トランザクションのサイズ。
 
-    > - *blockhead*
-    >
-    > > The block header contains the following fields.
-    > >
-    > > > - *block_id*
-    > >
-    > > > > Block height.
-    > >
-    > > > - *time*
-    > >
-    > > > > Block generation timestamp.
-    > >
-    > > > - *key_id*
-    > >
-    > > > > Sign the account address for the block.
-    > >
-    > > > - *node_position*
-    > >
-    > > > > The location of the node that generated the block in the honor node list.
-    > >
-    > > > - *version*
-    > >
-    > > > > Block structure version.
-    >
-    > - *hash*
-    >
-    > > Block Hashing.
-    >
-    > - *node_position*
-    >
-    > the location of the node that generated the block in the honor node list.
-    >
-    > - *key_id*
-    >
-    > > The address of the account that signed the block.
-    >
-    > - *time*
-    >
-    > > Block generation timestamp.
-    >
-    > - *tx_count*
-    >
-    > > Number of transactions within the block.
-    >
-    > - *size*
-    >
-    > > The block size.
-    >
-    > - *rollback_hash*
-    >
-    > > Block rollback hash.
-    >
-    > - *merkle_root*
-    >
-    > > The block deals with the Merkle tree.
-    >
-    > - *bin_data*
-    >
-    > > Serialization of the block header, all transactions within the block, the previous block hash, and the private key of the node that generated the block.
-    >
-    > - *trading*
-    >
-    > > List of transactions in the block and additional information about each transaction.
-    > >
-    > > > - *hash*
-    > >
-    > > > > Trading hash.
-    > >
-    > > > - *contract_name*
-    > >
-    > > > > Contract name.
-    > >
-    > > > - *params*
-    > >
-    > > > > Contract parameters.
-    > >
-    > > > - *key_id*
-    > >
-    > > > > Sign the account address for this transaction.
-    > >
-    > > > - *time*
-    > >
-    > > > > Transaction generation timestamp.
-    > >
-    > > > - *type*
-    > >
-    > > > > Transaction type.
-    > >
-    > > > - *size*
-    > >
-    > > > > Trade Size.
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -755,85 +686,36 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_SERVER, E_NOTFOUND*
 
-### keyinfo
+### /data/{id}/data/{hash} {#data-id-data-hash}
 
-**GET**/ Returns a list of ecosystems with roles registered to the specified address.
+**GET**/ 指定されたハッシュがバイナリウォッチ、フィールド、およびレコード内のデータと一致する場合、このリクエストはデータを返します。一致しない場合はエラーを返します。
 
-This request does not require login authorization.
+このリクエストではログインの認証は必要ありません。
 
-#### Request
 
-``` text
-GET
-/api/v2/keyinfo/{key_id}
-```
-
-- *key_id*
-
-    > Address identifier, can be specified in any format `int64, uint64, XXXX-... -XXXX`.
-    >
-    > The request is queried in all ecosystems.
-
-#### Response
-
-- *ecosystem*
-
-    > Ecosystem ID.
-
-- *name*
-
-    > Ecosystem name.
-
-- *roles*
-
-    > A list of roles with *id* and *name* fields.
-
-#### Response Example
-
-``` text
-200 (OK)
-Content-Type: application/json
-[{
-    "ecosystem":"1",
-    "name":"platform ecosystem",
-    "roles":[{"id":"1","name":"Governancer"},{"id":"2","name":"Developer"}]
-}]
-```
-
-#### Error Response
-
-*E_SERVER, E_INVALIDWALLET*
-
-### <span id = "data-id-data-hash">/data/{id}/data/{hash}</span>
-
-**GET**/ If the specified hash matching the data in the binary watch, field, and records, this request will return the data. Otherwise, return error.
-
-The request does not require login authorization.
-
-#### Request
+**請求**
 
 ```text
 GET
 /data/{id}/data/{hash}
 ```
 
-- *id*
+- `id`
+    > レコードのID。
 
-    > Record ID.
+- `hash`
+    > リクエストデータのハッシュ。
 
-- *hash*
 
-    > Hash request data.
+**応答**
 
-#### Response
+> バイナリデータ
 
-> Binary data
-
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -851,45 +733,46 @@ Content-Type: *
 }
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_SERVER, E_NOTFOUND, E_HASHWRONG*
 
 
-### <span id = "data-table-id-column-hash">/data/{table}/id/{column}/{hash}</span>
+### /data/{table}/id/{column}/{hash} {#data-table-id-column-hash}
 
-**GET**/ If the specified hash matches the data in the specified table, field, and records, the request will return the data. Otherwise, return error.
+**GET**/ 指定したハッシュが指定されたテーブル、フィールド、およびレコードのデータと一致する場合、リクエストはデータを返します。一致しない場合はエラーを返します。
 
-The request does not require login authorization.
+このリクエストではログインの認証は必要ありません。
 
-#### Request
+**請求**
 
 ```text
 GET
 /data/{table}/id/{column}/{hash}
 ```
 
-- *table*
+- `table`
 
-    > Data table name.
+    > データテーブルの名前。
 
-- *id*
+- `id`
 
-    > Record ID.
+    > レコードID。
 
-- *column*
+- `column`
 
-    > Data table name, only one
+    > データテーブルの名前（1つのみ）。
 
-- *hash*
+- `hash`
 
-    > Hash request data.
+    > ハッシュリクエストデータ。
 
-#### Response
 
-> Binary data
+**応答**
 
-#### Response Example
+> バイナリデータ
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -906,45 +789,45 @@ AddToolButton(Title: $@1create$, Page: @1voting_create, Icon: icon-plus).Popup(6
 
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_SERVER, E_NOTFOUND, E_HASHWRONG*
 
 
-### keyinfo
+### keyinfo {#keyinfo}
 
-**GET**/ Return to a list of ecosystems, which contains the role of registered the specified address.
+**GET**/ 指定したアドレスに登録された役割を持つエコシステムのリストを返します。
 
-The request does not require login authorization.
+このリクエストではログイン認証は必要ありません。
 
-#### Request
+**請求**
 
 ```text
 GET
 /api/v2/keyinfo/{address}
 ```
 
-- *address*
+- `address`
 
     > Address identifier, you can specify `int64, uint64, xxxx -...-xxxx`.
     >
     > This request is query in all ecosystems.
 
-#### Response
+**応答**
 
-- *ecosystem*
+- `ecosystem`
 
-    > Ecosystem ID.
+    > エコシステムのIDです。
 
-- *name*
+- `name`
 
-    > Ecological system name.
+    > エコシステムの名前です。
 
-- *roles*
+- `roles`
 
-    > Activities with *id* and *name* fields.
+    > *id* と *name* フィールドを持つ役割のリストです。
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -956,72 +839,60 @@ Content-Type: application/json
 }]
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_SERVER, E_INVALIDWALLET*
 
-### walletHistory
-**GET**/ Return to the current account transaction history record, find it according to the ID of the ID
+### walletHistory {#wallethistory}
+**GET**/ 現在のアカウントのトランザクション履歴レコードを返します。IDによって検索されます。
 
 [Authorization](#authorization)
 
-#### Request
+**請求**
 
-- *searchType*
+- `searchType`
 
-  > Find Type (Income: Turn into Outcom: Turn out all: All, default).
+  > 検索タイプ（収入：Income, 支出：Outcom, 全て：All, デフォルト：All）。
 
-- *\[page\]* [Omitempty](#omitempty)
-  > Find the number of pages, the first page default, min: 1
+- `page` [Omitempty](#omitempty)
+  > ページ番号を指定します。デフォルトは最初のページで、最小値は1です。
 
-- *\[limit\]* [Omitempty](#omitempty)
+- `limit` [Omitempty](#omitempty)
 
-  > Credit number, default 20 articles. min: 1, MAX: 500
+  > 取得するトランザクション数を指定します。デフォルトは20件で、最小値は1、最大値は500です。
+
 
 ``` text
 GET
 /api/v2/walletHistory?searchType=all&page=1&limit=10
 ```
 
-#### Response
+**応答**
 
-- *total*
+- `total`
 
-  > Total number of entries.
-- *page*
+  > 全エントリの合計数。
+- `page`
 
-  > Number of current page.
+  > 現在のページ番号。
+- `limit`
 
-- *limit*
+  > 現在の検索数。
+- `list` 配列内の各要素は以下のパラメータを含みます：
+    - `id` ストライプID。
+    - `sender_id` 送信元のkey_id。
+    - `sender_add` 送信元のアカウントアドレス。
+    - `recipient_id` 受信元のkey_id。
+    - `recipient_add` 受信元のアカウントアドレス。
+    - `amount` トランザクションの金額。
+    - `comment` 取引の備考。
+    - `block_id` ブロックの高さ。
+    - `tx_hash` トランザクションのハッシュ。
+    - `created_at` トランザクションの作成時刻（ミリ秒のタイムスタンプ）。
+    - `money` トランザクションの金額。
 
-  > Currently find the number of bars.
 
-- *list*
-  > Each element in the array contains the following parameters:
-    - *id*
-      > Stripe ID.
-    - *sender_id*
-      > Send key_id
-    - *sender_add*
-      > Send the account address
-    - *recipient_id*
-      > Accept key_id
-    - *recipient_add*
-      > Accept the account address
-    - *amount*
-      > Transaction amount
-    - *comment*
-      > Trading remarks
-    - *block_id*
-      > Block height
-    - *tx_hash*
-      > Trading hash
-    - *created_at*
-      > Transaction creation time, millisecond time stamp
-    - *money*
-      > Transaction amount
-
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -1049,67 +920,69 @@ Content-Type: application/json
 }  
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_SERVER*
 
 
 
-### <span id = "listWhere-name">listWhere/{name}</span>
-**GET**/ Return to the entry of the data table specified in the current ecosystem. You can specify columns to be returned.
+### listWhere/{name} {#listwhere-name}
+**GET**/ 現在のエコシステムで指定されているデータ テーブルのエントリに戻ります。 返される列を指定できます。
 
 [Authorization](#authorization)
 
-#### Request
+**請求**
 
-- *name*
+- `name`
 
-  > Data table name.
+  > データテーブルの名前。
 
--   *\[limit\]* [Omitempty](#omitempty)
+-   `limit` [Omitempty](#omitempty)
 
-    > Credit number, default 25.
+  > 取得するレコードの最大数。デフォルトは25。
 
--   *\[offset\]* [Omitempty](#omitempty)
+-   `offset` [Omitempty](#omitempty)
 
-    > Disposal, default to 0.
+  > ページネーションのオフセット。デフォルトは0。
 
--   *\[order\]* [Omitempty](#omitempty)
+-   `order` [Omitempty](#omitempty)
 
-    > Sorting method, default `id ASC`.
+  > ソート方法。デフォルトは `id ASC`。
 
--   *\[columns\]* [Omitempty](#omitempty)
+-   `columns` [Omitempty](#omitempty)
 
-    > The list of request columns is separated by commas. If it is not specified, all columns will be returned. In all cases, the `id` column will be returned.
+  > 取得する列のリストをカンマ区切りで指定します。指定しない場合、すべての列が返されます。ただし、`id`列は常に返されます。
 
--   *\[where\]* [Omitempty](#omitempty)
+-   `where` [Omitempty](#omitempty)
 
-    > Query condition
-    >
-    > Example: If you want to query id> 2 and name = john
-    >
-    > You can use: where: {"id": {"$ gt": 2}, "name": {"$eq": "john"}}
-    >
-    > For details, please refer to [DBFind](../ topics/script.md#dbfind) where syntax
+  > クエリの条件を指定します。
+  >
+  > 例: id > 2 かつ name = "john" をクエリしたい場合
+  >
+  > `where: {"id": {"$gt": 2}, "name": {"$eq": "john"}}` のように使用します。
+  >
+  > 詳細は [DBFind](../ topics/script.md#dbfind) の where 構文を参照してください。
+
 
 ``` text
 GET
 /api/v2/listWhere/mytable
 ```
 
-#### Response
+**応答**
 
-- *count*
+- `count`
 
-  > Total number of entries.
-- *list*
-  > Each element in the array contains the following parameters:
-  - *id*
-    > Stripe ID.
-  - *...*
-    > Data tables other columns
+  > エントリーの総数。
+- `list`
+  > 配列内の各要素には以下のパラメータが含まれます:
+  - `id`
+    > ストライプID.
+  - `...`
+    > データテーブルの他の列
 
-#### Response Example
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -1128,66 +1001,68 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_SERVER*,*E_TABLENOTFOUND*
 
 
-###  <span id = "nodelistWhere-name">nodelistWhere/{name}</span>
-**GET**/ Return to the specified data table. You can specify columns to be returned. The type in the data table is **BYTEA** Do hexadecimal encoding processing
+### nodelistWhere/{name} {#nodelistwhere-name}
+**GET**/ 指定したデータテーブルに戻ります。 返される列を指定できます。 データテーブルの型は **BYTEA** です。 16 進数のエンコード処理を行います。
 
 [Authorization](#authorization)
 
-#### Request
+**請求**
 
-- *name*
+- `name`
 
-  > Data table name.
+  > データテーブル名。
 
--   *\[limit\]* [Omitempty](#omitempty)
+-   `limit` [Omitempty](#omitempty)
 
-    > Credit number, default 25.
+    > 取得するエントリー数。デフォルトは25。
 
--   *\[offset\]* [Omitempty](#omitempty)
+-   `offset` [Omitempty](#omitempty)
 
-    > Disposal, default to 0.
+    > 取得するエントリーのオフセット。デフォルトは0。
 
--   *\[order\]* [Omitempty](#omitempty)
+-   `order` [Omitempty](#omitempty)
 
-    > Sorting method, default `id ASC`.
+    > ソート方法。デフォルトは `id ASC`。
 
--   *\[columns\]* [Omitempty](#omitempty)
+-   `columns` [Omitempty](#omitempty)
 
-    > The list of request columns is separated by commas. If it is not specified, all columns will be returned. In all cases, the `id` column will be returned.
+    > 取得するカラムのリスト。カンマで区切って指定します。指定しない場合、すべてのカラムが返されます。ただし、`id`カラムは常に返されます。
 
--   *\[where\]* [Omitempty](#omitempty)
+-   `where` [Omitempty](#omitempty)
 
-    > Query condition
+    > クエリの条件
     >
-    > Example: If you want to query id> 2 and name = john
+    > 例: id> 2 かつ name = john をクエリしたい場合
     >
-    > You can use: where: {"id": {"$ gt": 2}, "name": {"$eq": "john"}}
+    > 以下のように使用します: where: {"id": {"$ gt": 2}, "name": {"$eq": "john"}}
     >
-    > For details, please refer to [DBFind](../ topics/script.md#dbfind) where syntax
+    > 詳細については、[DBFind](../ topics/script.md#dbfind) の where 構文を参照してください。
+
 
 ``` text
 GET
 /api/v2/nodelistWhere/mytable
 ```
 
-#### Response
+**応答**
 
-- *count*
+- `count`
 
-  > Total number of entries.
-- *list*
-  > Each element in the array contains the following parameters:
-    - *id*
-      > Stripe ID.
-    - *...*
-      > Data tables other columns
+  > エントリーの総数。
+- `list`
+  > 配列内の各要素には以下のパラメータが含まれます:
+    - `id`
+      > ストライプのID。
+    - `...`
+      > データテーブルの他のカラム
 
-#### Response Example
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -1206,7 +1081,7 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_SERVER*,*E_TABLENOTFOUND*
 
@@ -1214,18 +1089,18 @@ Content-Type: application/json
 
 ## Get Metrics Interface
 
-### <span id = "metrics-keys">metrics/keys</span>
+### metrics/keys {#metrics-keys}
 
-**GET**/ Returns the number of ecosystem 1 account addresses.
+**GET**/ エコシステム 1 アカウントのアドレスの数を返します。
 
-#### Request
+**請求**
 
 ``` text
 GET
 /api/v2/metrics/keys
 ```
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -1235,18 +1110,18 @@ Content-Type: application/json
 }
 ```
 
-### <span id = "metrics-blocks">metrics/blocks</span>
+### metrics/blocks {#metrics-blocks}
 
-**GET**/ Returns the number of blocks.
+**GET**/ ブロック数を返します。
 
-#### Request
+**請求**
 
 ``` text
 GET
 /api/v2/metrics/blocks
 ```
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -1256,18 +1131,18 @@ Content-Type: application/json
 }
 ```
 
-### <span id = "metrics-transactions">metrics/transactions</span>
+### metrics/transactions {#metrics-transactions}
 
-**GET**/ Returns the total number of transactions.
+**GET**/ トランザクションの合計数を返します。
 
-#### Request
+**請求**
 
 ``` text
 GET
 /api/v2/metrics/transactions
 ```
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -1277,18 +1152,18 @@ Content-Type: application/json
 }
 ```
 
-### <span id = "metrics-ecosystems">metrics/ecosystems</span>
+### metrics/ecosystems {#metrics-ecosystems}
 
-**GET**/ Returns the number of ecosystems.
+**GET**/ エコシステムの数を返します。
 
-#### Request
+**請求**
 
 ``` text
 GET
 /api/v2/metrics/ecosystems
 ```
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -1298,18 +1173,18 @@ Content-Type: application/json
 }
 ```
 
-### metrics/honornodes
+### metrics/honornodes {#metrics-honornodes}
 
-**GET**/ Returns the number of honor nodes.
+**GET**/ オナーノードの数を返します。
 
-This request does not require login authorization.
+このリクエストにはログイン認証は必要ありません。
 
 ``` 
 GET
 /api/v2/metrics/honornodes
 ```
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -1319,13 +1194,13 @@ Content-Type: application/json
 }
 ```
 
-## Ecosystem Interface
+## Ecosystem Interface {#ecosystem-interface}
 
-### ecosystemname
+### ecosystemname {#ecosystemname}
 
-**GET**/ Returns the name of the ecosystem by its identifier.
+**GET**/ エコシステムの名前をその識別子で返します。
 
-This request does not require login authorization.
+このリクエストにはログイン認証は必要ありません。
 
 ``` text
 GET
@@ -1334,9 +1209,9 @@ GET
 
 - *id*
 
-    > Ecosystem ID.
+    > エコシステムID。
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -1346,48 +1221,48 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_PARAMNOTFOUND*
 
-### <span id = "appparams-appid">appparams/{appid}</span>
+### appparams/{appid} {#appparams-appid}
 
 [Authorization](#authorization)
 
-**GET**/ Returns a list of application parameters in the current or specified ecosystem.
+**GET**/ 現在または指定されたエコシステム内のアプリケーション パラメーターのリストを返します。
 
-#### Request
+**請求**
 
 ``` text
 GET
 /api/v2/appparams/{appid}
 ```
 
-- *\[appid\]*
+- `appid`
 
-    > Application ID.
+    > アプリケーションのID。
 
-- *\[ecosystem\]*
+- `ecosystem`
 
-    > Ecosystem ID; if not specified, the current ecosystem parameter will be returned.
+    > エコシステムのID。指定しない場合、現在のエコシステムのパラメータが返されます。
 
-- *\[names\]*
+- `names`
 
-    > The list of received parameters.
+    > 取得するパラメータのリスト。
     >
-    > You can specify a comma-separated list of parameter names, for example:`/api/v2/appparams/1?names=name,mypar`.
+    > カンマ区切りでパラメータ名を指定できます。例: `/api/v2/appparams/1?names=name,mypar`。
 
-#### Response
+**応答**
 
-- *list*
+- `list`
 
-    > Each element of the array contains the following parameters.
+    > 配列の各要素には、以下のパラメータが含まれます。
     >
-    > - *name*, the name of the parameter.
-    > - *value*, the value of the parameter.
-    > - *conditions*, change the permissions of the parameters.
+    > - *name*：パラメータの名前。
+    > - *value*：パラメータの値。
+    > - *conditions*：パラメータの権限を変更します。
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -1407,57 +1282,59 @@ Content-Type: application/json
 } 
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_ECOSYSTEM*
 
-### <span id = "appparam-appid-name">appparam/{appid}/{name}</span>
+### appparam/{appid}/{name} {#appparam-appid-name}
 
 [Authorization](#authorization)
 
-**GET**/ Returns the parameter **{appid}** of the application **{name}** in the current or specified ecosystem
-The information related to the
+**GET**/ 現在または指定されたエコシステム内のアプリケーション **{name}** のパラメータ **{appid}** を返します
+に関連する情報は、
 
-#### Request
+**請求**
 
 ``` text
 GET
 /api/v2/appparam/{appid}/{name}[?ecosystem=1]
 ```
 
-- *appid*
+- `appid`
 
-    > Application ID.
+    > アプリケーションID。
 
-- *name*
+- `name`
 
-    > The name of the requested parameter.
+    > リクエストされたパラメータの名前。
 
-- *\[ecosystem\]* [Omitempty](#omitempty)
+- `ecosystem` [Omitempty](#omitempty)
 
-    > Ecosystem ID (optional parameter).
+    > エコシステムのID（省略可能なパラメータ）。
     >
-    > Returns the current ecosystem by default.
+    > デフォルトでは現在のエコシステムが返されます。
 
-#### Response
 
-- *id*
+**応答**
 
-    > Parameter ID.
+- `id`
 
-- *name*
+    > パラメータのID。
 
-    > Parameter name.
+- `name`
 
-- *value*
+    > パラメータの名前。
 
-    > The parameter value.
+- `value`
 
-- *conditions*
+    > パラメータの値。
 
-    > Permission to change parameters.
+- `conditions`
 
-#### Response Example
+    > パラメータの変更権限。
+
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -1470,52 +1347,54 @@ Content-Type: application/json
 } 
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_ECOSYSTEM, E_PARAMNOTFOUND*
 
-### ecosystemparams 
+### ecosystemparams {#ecosystemparams}
 
 [Authorization](#authorization)
 
-**GET**/ Returns a list of ecosystem parameters.
+**GET**/ エコシステムパラメータのリストを返します。
 
-#### Request
+**請求**
 
 ``` text
 GET
 /api/v2/ecosystemparams/[?ecosystem=... &names=...]
 ```
 
-- *\[ecosystem\]* [Omitempty](#omitempty)
+- `ecosystem` [Omitempty](#omitempty)
 
-    > Ecosystem ID. if not specified, the current ecosystem ID will be returned.
+    > Ecosystem IDが指定されていない場合、現在のエコシステムIDが返されます。
 
-- *\[names\]* [Omitempty](#omitempty)
+- `names` [Omitempty](#omitempty)
 
-    > List of request parameters, separated by commas.
+    > カンマで区切られた要求パラメータのリストです。
     >
-    > For example: `/api/v2/ecosystemparams/?names=name,currency,logo`.
+    > 例: `/api/v2/ecosystemparams/?names=name,currency,logo`。
 
-#### Response
 
-- *list*
+**応答**
 
-    > Each element of the array contains the following parameters.
-    >
-    > - *name*
-    >
-    > > Parameter name.
-    >
-    > - *value*
-    >
-    > > Parameter value.
-    >
-    > - *conditions*
-    >
-    > > Change permissions for parameters.
+- `list`
 
-#### Response Example
+    > 各要素は、次のパラメータを含んでいます。
+    >
+    > - `name`
+    >
+    > > パラメータの名前。
+    >
+    > - `value`
+    >
+    > > パラメータの値。
+    >
+    > - `conditions`
+    >
+    > > パラメータの変更権限。
+
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -1535,46 +1414,48 @@ Content-Type: application/json
 } 
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_ECOSYSTEM*
 
-### <span id = "ecosystemparam-name">ecosystemparam/{name}</span>
+### ecosystemparam/{name} {#ecosystemparam-name}
 
 [Authorization](#authorization)
 
-**GET**/ Returns information about the parameter **{name}** in the current or specified ecosystem.
+**GET**/ 現在または指定されたエコシステムのパラメータ **{name}** に関する情報を返します。
 
-#### Request
+**請求**
 
 ``` text
 GET
 /api/v2/ecosystemparam/{name}[?ecosystem=1]
 ```
 
-- *name*
+- `name`
 
-    > The name of the requested parameter.
+    > 要求されたパラメータの名前。
 
-- *\[ecosystem\]* [Omitempty](#omitempty)
+- `ecosystem` [Omitempty](#omitempty)
 
-    > The default is to return the current ecosystem ID.
+    > デフォルトでは、現在のエコシステム ID が返されます。
 
-#### Response
+**応答**
 
-- *name*
+> 各要素は、次のパラメータを含んでいます。
+    >
+    > - `name`
+    >
+    > > パラメータの名前。
+    >
+    > - `value`
+    >
+    > > パラメータの値。
+    >
+    > - `conditions`
+    >
+    > > パラメータの変更権限。
 
-    > Parameter name.
-
-- *value*
-
-    > The parameter value.
-
-- *conditions*
-
-    > Permission to change parameters.
-
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -1586,50 +1467,52 @@ Content-Type: application/json
 } 
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_ECOSYSTEM*
 
-### <span id = "tables-limit-offset">tables/\[?limit=\... &offset=\... \]</span>
+### tables/\[?limit=\... &offset=\... \] {#tables-limit-offset}
 
 [Authorization](#authorization)
 
-**GET**/ Returns a list of data tables for the current ecosystem. You can set the offset and the number of entries.
+**GET**/ 現在のエコシステムのデータ テーブルのリストを返します。 オフセットとエントリ数を設定できます。
 
-#### Request
+**請求**
 
-- *\[limit\]* [Omitempty](#omitempty)
+- `limit` [Omitempty](#omitempty)
 
-    > Number of entries, default 100, maximum 1000.
+    > エントリの数、デフォルトは100、最大は1000です。
 
-- *\[offset\]* [Omitempty](#omitempty)
+- `offset` [Omitempty](#omitempty)
 
-    > Offset, default is 0.
+    > オフセット、デフォルトは0です。
+
 
 ``` text
 GET
 /api/v2/tables?limit=... &offset=...
 ```
 
-#### Response
+**応答**
 
-- *count*
+- `count`
 
-    > The total number of entries in the data table.
+    > データテーブル内のエントリの総数。
 
-- *list*
+- `list`
 
-    > Each element of the array contains the following parameters.
+    > 配列の各要素には、次のパラメータが含まれています。
     >
-    > > - *name*
+    > > - `name`
     > >
-    > > > Data table name without prefix.
+    > > > プレフィックスなしのデータテーブル名。
     > >
-    > > - *count*
+    > > - `count`
     > >
-    > > > The number of entries in the data table.
+    > > > データテーブル内のエントリ数。
 
-#### Response Example
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -1648,104 +1531,102 @@ Content-Type: application/json
 } 
 ```
 
-### <span id = "table-name">table/{name}</span>
+### table/{name} {#table-name}
 
 [Authorization](#authorization)
 
-**GET**/ Returns information about the current ecosystem request data table.
+**GET**/ 現在のエコシステム リクエスト データ テーブルに関する情報を返します。
 
-#### Request
+**請求**
 
-- *\[name\]*
+- `name`
 
-    > Data table name.
+    > データテーブル名。
 
 ``` text
 GET
 /api/v2/table/{table_name}
 ```
 
-Returns the following field information.
+- `name`
 
-- *name*
+    > データテーブル名。
 
-    > Data table name.
+- `insert`
 
-- *insert*
+    > 新しいエントリを追加する権限。
 
-    > Permission to add new entries.
+- `new_column`
 
-- *new_column*
+    > フィールド追加の権限。
 
-    > Add field permissions.
+- `update`
 
-- *update*
+    > エントリを変更する権限。
 
-    > Change entry permissions.
+- `columns`
 
-- *columns*
-
-    > Array of field-related information.
+    > フィールドに関連する情報の配列。
     >
-    > > - *name*
+    > > - `name`
     > >
-    > > > Field name.
+    > > > フィールド名。
     > >
-    > > - *type*
+    > > - `type`
     > >
-    > > > Field data type.
+    > > > フィールドのデータ型。
     > >
-    > > - *perm*
+    > > - `perm`
     > >
-    > > > Change the permissions for the field value.
+    > > > フィールド値の変更権限。
 
-### <span id = "list-name-limit-offset-columns">list/{name}\[?limit=\... &offset=\... &columns=\... \]</span>
+### list/{name}\[?limit=\... &offset=\... &columns=\... \] {#list-name-limit-offset-columns}
 
 [Authorization](#authorization)
 
-**GET**/
-Returns a list of the specified data table entries in the current ecosystem. You can set the offset and the number of entries.
+**GET**/ 現在のエコシステム内の指定されたデータ テーブル エントリのリストを返します。 オフセットとエントリ数を設定できます。
 
-#### Request
+**請求**
 
-- *name*
+- `name`
 
-    > Data table name.
+    > データテーブル名。
 
-- *\[limit\]* [Omitempty](#omitempty)
+- `limit` [Omitempty](#omitempty)
 
-    > Number of entries, default 25 entries.
+    > エントリ数、デフォルトは25エントリ。
 
-- *\[offset\]* [Omitempty](#omitempty)
+- `offset` [Omitempty](#omitempty)
 
-    > Offset, default is 0.
+    > オフセット、デフォルトは0。
 
-- *\[columns\]* [Omitempty](#omitempty)
+- `columns` [Omitempty](#omitempty)
 
-    > A comma-separated list of requested columns, if not specified, all columns will be returned. The id column will be returned in all cases.
+    > 要求されたカラムのカンマ区切りリスト。指定されていない場合、すべてのカラムが返されます。idカラムは常に返されます。
 
 ``` text
 GET
 /api/v2/list/mytable?columns=name
 ```
 
-#### Response
+**応答**
 
-- *count*
+- `count`
 
-    > Total number of entries.
+    > エントリの総数。
 
-- *list*
+- `list`
 
-    > Each element of the array contains the following parameters.
+    > 配列の各要素には、次のパラメータが含まれています。
     >
-    > > - *id*
+    > > - `id`
     > >
-    > > > Entry ID.
+    > > > エントリのID。
     > >
-    > > - The sequence of request columns.
+    > > - 要求されたカラムのシーケンス。
 
-#### Response Example
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -1764,48 +1645,49 @@ Content-Type: application/json
 } 
 ```
 
-### <span id = "sections-limit-offset-lang">sections\[?limit=\... &offset=\... &lang=\]</span>
+### sections\[?limit=\... &offset=\... &lang=\] {#sections-limit-offset-lang}
 
 [Authorization](#authorization)
 
-**GET**/ Returns the *sections* of the current ecosystem
-List of table entries, you can set the offset and the number of entries.
+**GET**/ 現在のエコシステムの *セクション* を返します
+テーブルエントリのリストでは、オフセットとエントリ数を設定できます。
 
-If *role_access*
-field contains a list of roles and does not include the current role, no record will be returned. *title*
-The data in the field will be replaced by the *Accept-Language* language resource in the request header.
+*role_access* の場合
+フィールドにロールのリストが含まれており、現在のロールが含まれていない場合、レコードは返されません。 *タイトル*
+フィールドのデータは、リクエスト ヘッダーの *Accept-Language* 言語リソースに置き換えられます。
 
-#### Request
+**請求**
 
-- *\[limit\]* [Omitempty](#omitempty)
+- `limit` [Omitempty](#omitempty)
 
-    > Number of entries, default 25 entries.
+    > エントリの数。デフォルトは25エントリ。
 
-- *\[offset\]* [Omitempty](#omitempty)
+- `offset` [Omitempty](#omitempty)
 
-    > Offset, default is 0.
+    > オフセット。デフォルトは0。
 
-- *\[lang\]* [Omitempty](#omitempty)
+- `lang` [Omitempty](#omitempty)
 
-    > This field specifies the multilingual resource code or localization, e.g., *en, zh*. If the specified multilingual resource is not found, e.g., *en-US*, then the multilingual resource group in
-     Search in *en*.
+    > このフィールドは、マルチ言語リソースコードまたはローカライゼーションを指定します。例えば、*en, zh*です。指定したマルチ言語リソースが見つからない場合、例えば*en-US*の場合は、
+     *en*のマルチ言語リソースグループを検索します。
+
 
 ``` text
 GET
 /api/v2/sections
 ```
 
-#### Response
+**応答**
 
-- *count*
+- `count`
 
-    > *sections* Total number of table entries.
+    > *sections* テーブルのエントリーの総数。
 
-- *list*
+- `list`
 
-    > Each element of the array contains information about all columns in the actions table.
+    > 配列の各要素には、アクションテーブルのすべての列に関する情報が含まれています。
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -1822,48 +1704,49 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_TABLENOTFOUND*
 
-### <span id = "row-name-id-columns">row/{name}/{id}\[?columns=\]< /span>
+### row/{name}/{id}\[?columns=\] {#row-name-id-columns}
 
 [Authorization](#authorization)
 
-**GET**/ Returns the entry for the specified data table in the current ecosystem. You can specify the columns to be returned.
+**GET**/ 現在のエコシステム内の指定されたデータ テーブルのエントリを返します。 返される列を指定できます。
 
-#### Request
+**請求**
 
-- *name*
+- `name`
 
-    > Data table name.
+    > データテーブル名。
 
-- *id*
+- `id`
 
-    > Entry ID.
+    > エントリーのID。
 
-- *\[columns\]* [Omitempty](#omitempty)
+- `columns` [Omitempty](#omitempty)
 
-    > A comma-separated list of requested columns, if not specified, all columns will be returned. The id column will be returned in all cases.
+    > 要求された列のカンマ区切りリスト。指定されていない場合、すべての列が返されます。ID列は常に返されます。
 
 ``` text
 GET
 /api/v2/row/mytable/10?columns=name
 ```
 
-#### Response
+**応答**
 
-- *value*
+- `value`
 
-    > Array of received column values
+    > 受信した列の値の配列です。
     >
-    > > - *id*
+    > > - `id`
     > >
-    > > > Entry ID.
+    > > > エントリーのIDです。
     > >
-    > > - The sequence of request columns.
+    > > - 要求された列のシーケンスです。
 
-#### Response Example
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -1876,54 +1759,55 @@ Content-Type: application/json
 } 
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_NOTFOUND*
 
-### <span id = "row-name-colorn-id">row/{name}/{column}/{id} </span>
+### row/{name}/{column}/{id} {#row-name-colorn-id}
 
-[Authorization] (#Authorization)
+[Authorization] (#authorization)
 
-**GET**/ Return to the entry of the data table specified in the current ecosystem. You can specify columns to be returned.
+**GET**/ 現在のエコシステムで指定されているデータ テーブルのエントリに戻ります。 返される列を指定できます。
 
-#### Request
+**請求**
 
-- *Name *
+- `Name`
 
-     > Data table name.
+    > データテーブルの名前です。
 
-- *colorn *
+- `colorn`
 
-     > Data list name.
+    > データリストの名前です。
 
-- *ID *
+- `ID`
 
-     > Stripe ID.
+    > ストライプIDです。
 
-- * \ [columns \] * [omitempty] (#omitempty)
+- `columns` [omitempty] (#omitempty)
 
-     > The list of request lists is separated by commas. If it is not specified, all columns will be returned. In all cases, the ID column will be returned.
+    > 要求されたリストのリストです。カンマで区切られています。指定されていない場合、すべての列が返されます。ID列はすべての場合に返されます。
 
-`` `default
+```text
 GET
 /API/V2/ROW/MyTable/name/John? Columns = name
-`` `
+```
 
-#### Response
+**応答**
 
-- *Value *
+- `Value`
 
-     > Array of receiving column values
-     Forecast
-     > - *ID *
-     >>
-     >>> Strip ID.
-     >>
-     > - -The sequence of the request column.
+    > 受信カラムの値の配列です。
 
-#### Response Example
+    - `ID`
 
-`` `default
+        > ストライプIDです。
+
+    - その他の要求カラムのシーケンス
+
+
+**応答例**
+
+```text
 200 (OK)
 Content-type: Application/JSON
 {{
@@ -1932,51 +1816,50 @@ Content-type: Application/JSON
      "name": "John",
      }
 }
-`` `
+```
 
-#### Error Response
+**エラー応答**
 
 *E_NOTFOUND*
 
-### systemparams 
+### systemparams {#systemparams}
 
 [Authorization](#authorization)
 
-**GET**/ Returns a list of platform parameters.
+**GET**/ プラットフォーム パラメータのリストを返します。
 
-#### Request
+**請求**
 
 ``` text
 GET
 /api/v2/systemparams/[?names=...]
 ```
 
-- 
+- `names` [Omitempty](#omitempty)
 
-    *\[names\]* [Omitempty](#omitempty)
-
-    A list of request parameters, separated by commas. For example
+    カンマで区切られたリクエストパラメータのリスト。 例えば
         `/api/v2/systemparams/?names=max_columns,max_indexes`.
 
-#### Response
+**応答**
 
-- *list*
+- `list`
 
-    > Each element of the array contains the following parameters.
-    >
-    > > - *name*
-    > >
-    > > > Parameter name.
-    > >
-    > > - *value*
-    > >
-    > > > Parameter values.
-    > >
-    > > - *conditions*
-    > >
-    > > > Change the permission of the parameter.
+    > 配列の各要素は以下のパラメータを含んでいます。
 
-#### Response Example
+    - `name`
+
+        > パラメータ名です。
+
+    - `value`
+
+        > パラメータの値です。
+
+    - `conditions`
+
+        > パラメータの権限を変更します。
+
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -1996,38 +1879,39 @@ Content-Type: application/json
 } 
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_PARAMNOTFOUND*
 
-### <span id = "history-name-id">history/{name}/{id}</span>
+### history/{name}/{id} {#history-name-id}
 
 [Authorization](#authorization)
 
-**GET**/ Returns the change record for the entry in the specified data table in the current ecosystem.
+**GET**/ 現在のエコシステム内の指定されたデータ テーブル内のエントリの変更レコードを返します。
 
-#### Request
+**請求**
 
 ``` text
 GET
 /api/v2/history?name=contracts&id=5
 ```
 
-> - *name*
->
-> Data Table Name.
->
-> - *id*
->
-> > Entry ID.
+- `name`
 
-#### Response
+    > データテーブルの名前です。
 
-> - *list*
+- `id`
+
+    > エントリーのIDです。
+
+
+**応答**
+
+> - `list`
 >
-> Each element of the array contains a change record for the requested entry.
+> 配列の各要素には、要求されたエントリの変更レコードが含まれます。
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -2045,12 +1929,12 @@ Content-Type: application/json
 }
 ```
 
-### <span id = "interface-page-menu-snippet-name">interface/{page|menu|snippet}/{name}</span>
+### interface/{page|menu|snippet}/{name} {#interface-page-menu-snippet-name}
 
 [Authorization](#authorization)
 
-**GET**/ Returns the current ecosystem in the specified data table (pages, menu or snippet) *name*
-The entry for the field.
+**GET**/ 指定されたデータ テーブル (ページ、メニュー、またはスニペット) *name* 内の現在のエコシステムを返します
+フィールドのエントリ。
 
 ``` text
 GET
@@ -2059,27 +1943,27 @@ GET
 /api/v2/interface/snippet/welcome
 ```
 
-#### Request
+**請求**
 
-- *name*
+- `name`
 
-    > Specifies the name of the entry in the table.
+    > テーブル内のエントリの名前を指定します。
 
-#### Response
+**応答**
 
-- *id*
+- `id`
 
-    > Entry ID.
+    > エントリーID。
 
-- *name*
+- `name`
 
-    > Entry name.
+    > エントリー名。
 
-- *other*
+- `other`
 
-    > Other columns of the table.
+    > テーブルの他の列。
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -2093,80 +1977,81 @@ Content-Type: application/json
 } 
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_QUERY*, *E_NOTFOUND*
 
-## Contract Function Interface
+## Contract Function Interface {#contract-function-interface}
 
-### <span id = "contracts-limit-offset">contracts\[?limit=\... &offset=\... \]</span>
+### contracts\[?limit=\... &offset=\... \] {#contracts-limit-offset}
 
 [Authorization](#authorization)
 
-**GET**/ Returns a list of contracts in the current ecosystem, with the ability to set offsets and the number of entries.
+**GET**/ 現在のエコシステム内のコントラクトのリストを返します。オフセットとエントリ数を設定できます。
 
-#### Request
+**請求**
 
-- *\[limit\]* [Omitempty](#omitempty)
+- `limit` [Omitempty](#omitempty)
 
-    > Number of entries, default 25 entries.
+    > オフセット、デフォルトは 0 です。
 
-- *\[offset\]* [Omitempty](#omitempty)
+- `offset` [Omitempty](#omitempty)
 
-    > Offset, default is 0.
+    > オフセット。デフォルトは 0 です。
 
 ``` text
 GET
 /api/v2/contracts
 ```
 
-#### Response
+**応答**
 
-- *count*
+- `count`
 
-    > Total number of entries.
+    > エントリーの総数です。
 
-- *list*
+- `list`
 
-    > Each element of the array contains the following parameters.
+    > 配列の各要素には、以下のパラメータが含まれています。
     >
-    > > - *id*
+    > > - `id`
     > >
-    > > > Contract ID.
+    > > > コントラクトのIDです。
     > >
-    > > - *name*
+    > > - `name`
     > >
-    > > > Contract name.
+    > > > コントラクトの名前です。
     > >
-    > > - *value*
+    > > - `value`
     > >
-    > > > Contract contents.
+    > > > コントラクトの内容です。
     > >
-    > > - *wallet_id*
+    > > - `wallet_id`
     > >
-    > > > The account address to which the contract is tied.
+    > > > コントラクトが紐づいているアカウントのアドレスです。
     > >
-    > > - *address*
+    > > - `address`
     > >
-    > > > Contract-bound wallet address `XXXX-... -XXXX`.
+    > > > コントラクトに紐づいているウォレットアドレス `XXXX-...-XXXX` です。
     > >
-    > > - *ecosystem_id*
+    > > - `ecosystem_id`
     > >
-    > > > The ecosystem ID to which the contract belongs.
+    > > > コントラクトが所属しているエコシステムのIDです。
     > >
-    > > - *app_id*
+    > > - `app_id`
     > >
-    > > > The application ID to which the contract belongs.
+    > > > コントラクトが所属しているアプリケーションのIDです。
     > >
-    > > - *conditions*
+    > > - `conditions`
     > >
-    > > > Change the permission of the contract.
+    > > > コントラクトの権限を変更します。
     > >
-    > > - *token_id*
+    > > - `token_id`
     > >
-    > > > The ID of the ecosystem where the pass is used to pay the contract fee.
+    > > > コントラクト料金支払いに使用されるパスが所属するエコシステムのIDです。
 
-#### Response Example
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -2194,13 +2079,13 @@ conditions {
 } 
 ```
 
-### <span id = "contract-name">contract/{name}</span>
+### contract/{name} {#contract-name}
 
 [Authorization](#authorization)
 
-**GET**/ Returns information about the specified contract. The default is to query the contract in the current ecosystem.
+**GET**/ 指定されたコントラクトに関する情報を返します。 デフォルトでは、現在のエコシステムでコントラクトをクエリします。
 
-#### Request
+**請求**
 
 - *name*
 
@@ -2211,56 +2096,55 @@ GET
 /api/v2/contract/mycontract
 ```
 
-#### Response
+**応答**
 
-- *id*
+- `id`
 
-    > Contract ID in VM.
+    > コントラクトのVM内のIDです。
 
-- *name*
+- `name`
 
-    > Contract name with ecosystem ID `@1MainCondition`.
+    > エコシステムID `@1MainCondition` を持つコントラクト名です。
 
-- *state*
+- `state`
 
-    > The ecosystem ID of the contract.
+    > コントラクトのエコシステムIDです。
 
-- *walletid
+- `walletid`
 
-    > The address of the account to which the contract is tied.
+    > コントラクトが紐づいているアカウントのアドレスです。
 
-- *tokenid*
+- `tokenid`
 
-    > The ecosystem ID of the pass that is used to pay for the contract.
+    > コントラクトの支払いに使用されるパスのエコシステムIDです。
 
-- *address*
+- `address`
 
-    > Contract-bound wallet address `XXXX-... -XXXX`.
+    > コントラクトに紐づいているウォレットアドレス `XXXX-...-XXXX` です。
 
-- *tableid*
+- `tableid`
 
-    ID of the entry in the > *contracts* table where the contract is located.
+    > コントラクトが存在する *contracts* テーブル内のエントリーのIDです。
 
-- *fields*
-- 
+- `fields`
 
-    > The array contains structural information for each parameter of the contract **data** section.
+    > 配列には、コントラクトの **data** セクションの各パラメータの構造情報が含まれています。
     >
-    > > - *name*
+    > > - `name`
     > >
-    > > > Parameter name.
+    > > > パラメータ名です。
     > >
-    > > - 
+
+    > > - `type`
     > >
-    > > *type*
-    > >
-    > > Parameter type.
+    > >  パラメータのタイプです。
     > >
     > > - *optional*
     > >
-    > > > Parameter options, \`true\` means optional parameters, \`false\` means mandatory parameters.
+    > >  パラメータのオプションです。 \`true\` はオプションパラメータを示し、\`false\` は必須パラメータを示します。
 
-#### Response Example
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -2276,22 +2160,22 @@ Content-Type: application/json
 } 
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_CONTRACT*
 
-### sendTX 
+### sendTX {#sendtx}
 
 [Authorization](#authorization)
 
 **POST**/
-Receives the transactions in the parameters and adds them to the transaction queue, returning a transaction hash if the request is executed successfully. This hash yields the corresponding transaction within the block and is included in the error text message in case of an Error Response.
+パラメータでトランザクションを受け取り、それらをトランザクション キューに追加し、リクエストが正常に実行された場合はトランザクション ハッシュを返します。 このハッシュはブロック内の対応するトランザクションを生成し、エラー応答の場合はエラー テキスト メッセージに含まれます。
 
-#### Request
+**請求**
 
-- *tx_key*
+- `tx_key`
 
-    > Transaction content, this parameter can specify any name and supports receiving multiple transactions.
+    > トランザクションの内容。このパラメータは任意の名前を指定でき、複数のトランザクションの受信をサポートします。
 
 ``` text
 POST
@@ -2305,21 +2189,22 @@ tx1 - Transaction 1
 txN - Trading N
 ```
 
-#### Response
+**応答**
 
-- *hashes*
+- `hashes`
 
-    > Transaction hash arrays.
+    > トランザクションのハッシュの配列です。
     >
-    > > - *tx1*
+    > > - `tx1`
     > >
-    > > > Trading 1 hash.
+    > > > トランザクション1のハッシュです。
     > >
-    > > - *txN*
+    > > - `txN`
     > >
-    > > > Trading N's hash.
+    > > > トランザクションNのハッシュです。
 
-#### Response Example
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -2331,22 +2216,22 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_LIMITTXSIZE*,*E_BANNED*
 
-### txstatus 
+### txstatus {#txstatus}
 
 [Authorization](#authorization)
 
 **POST**/
-Returns the block ID and error message for the specified transaction hash. If the return values for the block ID and error text message are null, then the transaction is not yet contained in the block.
+指定されたトランザクション ハッシュのブロック ID とエラー メッセージを返します。 ブロック ID とエラー テキスト メッセージの戻り値が null の場合、トランザクションはまだブロックに含まれていません。
 
-#### Request
+**請求**
 
 - *data*
 
-    > JSON list of transaction hashes.
+    > トランザクション ハッシュの JSON リスト。
 
 ``` text
 {"hashes":["contract1hash", "contract2hash", "contract3hash"]}
@@ -2357,30 +2242,30 @@ POST
 /api/v2/txstatus/
 ```
 
-#### Response
+**応答**
 
-- *results*
+- `results`
 
-    > The transaction hash is used as the key and the transaction detail is used as the value in the data dictionary.
+    > トランザクションのハッシュをキーとし、データ辞書内のトランザクション詳細を値として使用します。
     >
-    > *hash*
+    > `hash`
     >
-    > > Trading Hash.
+    > > トランザクションのハッシュです。
     > >
-    > > - *blockid*
+    > > - `blockid`
     > >
-    > > If the transaction execution succeeds, the block ID is returned; if the transaction execution fails, the
-    > > > *blockid* for [0]{.title-ref}.
+    > > トランザクションの実行が成功した場合、ブロックのIDが返されます。トランザクションの実行が失敗した場合、[0]{.title-ref} のブロックIDが返されます。
     > >
-    > > - *result*
+    > > - `result`
     > >
-    > > > Returns the result of the transaction via the **\$result** variable.
+    > > トランザクションの結果を **\$result** 変数を通じて返します。
     > >
-    > > - *errmsg*
+    > > - `errmsg`
     > >
-    > > Returns an error text message if the execution of the transaction fails.
+    > > トランザクションの実行に失敗した場合、エラーテキストメッセージが返されます。
 
-#### Response Example
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -2399,48 +2284,49 @@ Content-Type: application/json
  }
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_HASHWRONG, E_HASHNOTFOUND*
 
-### <span id = "txinfo-hash">txinfo/{hash}</span>
+### txinfo/{hash} {#txinfo-hash}
 
-This request does not require login authorization.
+このリクエストにはログイン認証は必要ありません。
 
 **GET**/
 
-Returns information about the transaction for the specified hash, including the block ID and the number of confirmations. Also returns the contract name and its associated parameters, if optional parameters are specified.
+ブロック ID や確認の数など、指定されたハッシュのトランザクションに関する情報を返します。 オプションのパラメーターが指定されている場合は、コントラクト名とそれに関連するパラメーターも返します。
 
-#### Request
+**請求**
 
-- *hash*
+- `hash`
 
-    > Transaction hash.
+    > トランザクションのハッシュ。
 
-- *\[contractinfo\]* [Omitempty](#omitempty)
+- `contractinfo` [Omitempty](#omitempty)
 
-    > Contract detail parameter identifier, to get the contract details related to this transaction, specify `contractinfo=1`.
+    > 契約詳細パラメータ識別子。このトランザクションに関連する契約詳細を取得するには、`contractinfo=1` を指定します。
 
 ``` text
 GET
 /api/v2/txinfo/c7ef367b494c7ce855f09aa3f1f2af7402535ea627fa615ebd63d437db5d0c8a?contractinfo=1
 ```
 
-#### Response
+**応答**
 
-- *blockid*
+- `blockid`
 
-    > If the value is `0`, then no transaction was found for that hash.
+    > 値が「0」の場合、そのハッシュに対するトランザクションは見つかりませんでした。
 
-- *confirm*
+- `confirm`
 
-    > The number of acknowledgements for this block *blockid*.
+    > このブロック *blockid* の承認数です。
 
-- *data* [Omitempty](#omitempty)
+- `data` [Omitempty](#omitempty)
 
-    > If `contentinfo=1` is specified, the contract details are returned to this parameter.
+    > `contentinfo=1` が指定されている場合、このパラメータには契約の詳細が返されます。
 
-#### Response Example
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -2460,27 +2346,27 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_HASHWRONG*
 
-### txinfoMultiple
+### txinfoMultiple {#txinfomultiple}
 
-This request does not require login authorization.
+このリクエストにはログイン認証は必要ありません。
 
 **GET**/ 
 
-Returns the transaction-related information for the specified hash.
+指定されたハッシュのトランザクション関連情報を返します。
 
-#### Request
+**請求**
 
-- *data*
-    - *hashes*
-    > A list of transaction hashes.
+- `data`
+    - `hashes`
+        > トランザクションハッシュのリストです。
 
-- *\[contractinfo\]* [Omitempty](#omitempty)
+- `contractinfo` [Omitempty](#omitempty)
 
-    > Contract detail parameter identifier, to get the contract details related to this transaction, specify `contractinfo=1`.
+    > 契約の詳細に関連するこのトランザクションの契約詳細パラメーター識別子を指定するには、`contractinfo=1`を指定します。
 
 ``` text
 data: {"hashes":["contract1hash", "contract2hash", "contract3hash"]}
@@ -2491,29 +2377,29 @@ GET
 /api/v2/txinfoMultiple
 ```
 
-#### Response
+**応答**
 
-- *results*
-
-    > The transaction hash is used as the key and the transaction detail is used as the value in the data dictionary.
+- `results`
+    > トランザクションハッシュがデータ辞書のキーとして使用され、トランザクションの詳細が値として使用されます。
     >
-    > > *hash*
+    > > `hash`
     > >
-    > > > Trading Hash.
+    > > > トランザクションハッシュ。
     > >
-    > > > *blockid*
+    > > > `blockid`
     > >
-    > If the value is `0`, then no transaction was found for that hash.
+    > > > そのハッシュに対してトランザクションが見つからない場合は、値が `0` です。
     > >
-    > > > *confirm*
+    > > > `confirm`
     > >
-    > > > Number of acknowledgements for this block *blockid*.
+    > > > このブロック *blockid* の承認数。
     > >
-    > > > *data*
+    > > > `data`
     > >
-    > > > If `contentinfo=1` is specified, the contract details are returned to this parameter.
+    > > > `contentinfo=1` が指定されている場合、契約の詳細がこのパラメーターに返されます。
 
-#### Response Example
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -2532,37 +2418,37 @@ Content-Type: application/json
  }
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_HASHWRONG*
 
-### <span id = "page-validators-count-name">/page/validators_count/{name}</span>
-This request does not require login authorization.
+### /page/validators_count/{name} {#page-validators-count-name}
+このリクエストにはログイン認証は必要ありません。
 
 **GET**
 
-Returns the number of nodes to be validated for the specified page.
+指定されたページで検証されるノードの数を返します。
 
-#### Request
+**請求**
 
-- *name*
+- `name`
 
-    > Page name with ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
-    > `@1main_page`.
-    > If you don't have an ecosystem ID, then search in the first ecosystem page by default
+    > `@ecosystem_id%%page_name%` 形式のエコシステム ID を含むページ名、たとえば
+     > `@1main_page`。
+     > エコシステム ID をお持ちでない場合は、デフォルトで最初のエコシステム ページを検索します
 
 ``` text
 GET
 /api/v2/page/validators_count/@2page_name
 ```
 
-#### Response
+**応答**
 
-- *validate_count*
+- `validate_count`
 
-    > Specifies the number of nodes to be validated for the page.
+    > ページに対して検証するノードの数を指定します。
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -2570,50 +2456,47 @@ Content-Type: application/json
 {"validate_count":1}
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_NOTFOUND, E_SERVER*
 
-### <span id = "content-menu-page-name">content/menu\|page/{name}</span>
+### content/menu\|page/{name} {#content-menu-page-name}
 
 [Authorization](#authorization)
 
 **POST**
 
-Returns a tree of code JSON objects for the specified page or menu name, which is the result of processing by the template engine.
+テンプレート エンジンによる処理の結果である、指定されたページまたはメニュー名のコード JSON オブジェクトのツリーを返します。
 
-#### Request
+**請求**
 
-- *name*
+- `name`
 
-    > Page name or menu name with ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
-    > `@1main_page`.
-    > If no ecosystem ID is included, then search for the current ecosystem page or menu by default
+    > `@ecosystem_id%%page_name%` 形式のエコシステム ID を含むページ名またはメニュー名 (例:
+     > `@1main_page`。
+     > エコシステム ID が含まれていない場合は、デフォルトで現在のエコシステム ページまたはメニューを検索します。
 
 ``` text
 POST
 /api/v2/content/page/default
 ```
 
-#### Response
+**応答**
 
-- *menu* || *title*
+- `menu` || `title`
+    > リクエスト *content/page/\...* でリクエストされたページが所属するメニューの名前です。
 
-    > request *content/page/\...* The name of the menu to which the page belongs when requesting it.
+- `menutree`
+    > リクエスト *content/page/\...* でリクエストされたページのメニューのJSONオブジェクトツリーです。
 
-- *menutree*
+- `title` --head for the menu *content/menu/\...*
+    > リクエスト *content/menu/\...* でリクエストされたメニューのタイトルです。
 
-    > request *content/page/\...* The page's menu JSON object tree when requested.
+- `tree`
+    > ページまたはメニューのJSONオブジェクトツリーです。
 
-- *title*--head for the menu *content/menu/\...*
 
-    > request *content/menu/\...* Menu title when requested.
-
-- *tree*
-
-    > Page or menu JSON object tree.
-
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -2628,37 +2511,37 @@ Content-Type: application/json
 } 
 ```
 
-#### Error Response
+**エラー応答**
 
-*E_NOTFOUND*
+`E_NOTFOUND`
 
-### <span id = "content-source-name">content/source/{name}</span>
+### content/source/{name} {#content-source-name}
 
 [Authorization](#authorization)
 
 **POST**
 
-Returns a tree of coded JSON objects for the specified page name. Does not execute any functions or receive any data. The returned JSON object tree corresponds to the page template and can be used in the visual page designer. If the page is not found, a 404 error is returned.
+指定されたページ名のコード化された JSON オブジェクトのツリーを返します。 関数の実行やデータの受信は行いません。 返された JSON オブジェクト ツリーはページ テンプレートに対応しており、ビジュアル ページ デザイナーで使用できます。 ページが見つからない場合は、404 エラーが返されます。
 Request """""""
 
-- *name*
+- `name`
 
-    > Page name with ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
-    > `@1main_page`.
-    > If no ecosystem ID is included, then search for the current eco-page by default.
+    > `@ecosystem_id%%page_name%` 形式のエコシステム ID を含むページ名、たとえば
+    > `@1main_page`。
+    > エコシステム ID が含まれていない場合は、デフォルトで現在のエコ ページを検索します。
 
-#### Response
+**応答**
 
 ``` text
 POST
 /api/v2/content/source/default
 ```
 
-- *tree*
+- `tree`
 
     > JSON object tree of the page.
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -2673,56 +2556,52 @@ Content-Type: application/json
 } 
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_NOTFOUND, E_SERVER*
 
-### <span id = "content-hash-name">content/hash/{name}</span>
+### content/hash/{name} {#content-hash-name}
 
 **POST** 
 
-Returns a SHA256 hash of the specified page name, or a 404 error if the page cannot be found.
+指定されたページ名の SHA256 ハッシュを返します。ページが見つからない場合は 404 エラーを返します。
 
-This request does not require login authorization. To receive the correct hash when making requests to other nodes, you must also pass
-*ecosystem,keyID,roleID,isMobile*
-parameter. To receive pages from other ecosystems, the ecosystem ID must be prefixed to the page name. For example: `@2mypage`.
+このリクエストにはログイン認証は必要ありません。 他のノードにリクエストを行うときに正しいハッシュを受け取るには、以下も渡す必要があります。
+*ecosystem,keyID,roleID,isMobile*パラメータ。 他のエコシステムからページを受信するには、エコシステム ID をページ名の前に付ける必要があります。 例: `@2mypage`。
 
-#### Request
+**請求**
 
 
 ``` text
 POST
 /api/v2/content/hash/default
 ```
-- *name*
+- `name`
 
-    > The name of the page with the ecosystem ID.
+    > エコシステム ID を含むページの名前。
 
-- *ecosystem*
+- `ecosystem`
+    > エコシステムIDです。
 
-    > Ecosystem ID.
 
-- *keyID*
+- `keyID`
+    > アカウントアドレスです。
 
-    > Account address.
 
-- *roleID*
-
-    > Role ID.
-
-- *isMobile*
-
-    > The parameter identification of the mobile platform.
+- `roleID`
+    > ロールIDです。    
 
 
 
-#### Response
 
-- *hash*
 
-    > Hexadecimal hash.
+**応答**
 
-#### Response Example
+- `hash`
+
+    > 16 進数のハッシュ。
+
+**応答例**
 
 ``` text
 200 (OK)
@@ -2732,42 +2611,40 @@ Content-Type: application/json
 } 
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_NOTFOUND, E_SERVER, E_HEAVYPAGE*
 
-### content
+### content {#content}
 
 **POST**
 
-Returns the number of JSON objects for the page code from the **template** parameter, if the optional parameter
-**source** is specified as
-`true or 1`, then this JSON object tree does not perform any functions and receive data. This JSON object tree can be used in the visual page designer.
+**template** パラメータからページ コードの JSON オブジェクトの数を返します。オプションのパラメータ **source** が「true または 1」に指定されている場合、この JSON オブジェクト ツリーは関数を実行せず、データを受け取りません。 。 この JSON オブジェクト ツリーは、ビジュアル ページ デザイナーで使用できます。
 
-This request does not require login authorization.
+このリクエストにはログイン認証は必要ありません。
 
-#### Request
+**請求**
 
-- *template*
+- `template`
 
-    > Page code.
+    > ページコード。
 
-- *\[source\]*
+- `source`
 
-    > If `true or 1` is specified, the JSON object tree does not perform any functions and receives data.
+    > `true or 1` が指定された場合、JSON オブジェクト ツリーは何も機能せずにデータを受け取ります。
 
 ``` text
 POST
 /api/v2/content
 ```
 
-#### Response
+**応答**
 
-- *tree*
+- `tree`
 
-    > JSON object tree.
+    > JSON オブジェクト ツリー。
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -2782,30 +2659,31 @@ Content-Type: application/json
 } 
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_NOTFOUND, E_SERVER*
 
-### maxblockid
+### maxblockid {#maxblockid}
 
-**GET**/ Returns the highest block ID on the current node.
+**GET**/ 
+現在のノード上の最大のブロック ID を返します。
 
-This request does not require login authorization.
+このリクエストにはログイン認証は必要ありません。
 
-#### Request
+**請求**
 
 ``` text
 GET
 /api/v2/maxblockid
 ```
 
-#### Response
+**応答**
 
-- *max_block_id*
+- `max_block_id`
 
-    > The highest block ID on the current node.
+    > 現在のノード上の最大のブロック ID。
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -2815,19 +2693,21 @@ Content-Type: application/json
 }
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_NOTFOUND*
 
-### <span id = "block-id">block/{id}</span>
+### block/{id} {#block-id}
 
-**GET**/ Returns information about the specified block ID.
+**GET**/ 
 
-This request does not require login authorization.
+指定されたブロック ID に関する情報を返します。
 
-#### Request
+このリクエストにはログイン認証は必要ありません。
 
-- *id*
+**請求**
+
+- `id`
 
     > Block ID.
 
@@ -2836,33 +2716,28 @@ POST
 /api/v2/block/32
 ```
 
-#### Response
+**応答**
 
-- *hash*
+- `hash`
+    > ブロックのハッシュです。
 
-    > Block hash.
+- `key_id`
+    > ブロックに署名したアカウントのアドレスです。
 
-- *key_id*
+- `time`
+    > ブロックの生成タイムスタンプです。
 
-    > The address of the account that signed the block.
+- `tx_count`
+    > ブロック内のトランザクションの合計数です。
 
-- *time*
+- `rollbacks_hash`
+    > ブロックのロールバックハッシュです。
 
-    > Block generation timestamp.
+- `node_position`
+    > ブロックのノード位置です。
 
-- *tx_count*
 
-    > Total number of transactions in the block.
-
-- *rollbacks_hash*
-
-    > Block rollback hash.
-
-- *node_position*
-
-    > The position of the block in the honor node list.
-
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -2877,91 +2752,93 @@ Content-Type: application/json
 } 
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_NOTFOUND*
 
-### <span id = "avatar-ecosystem-member">avatar/{ecosystem}/{member}</span>
+### avatar/{ecosystem}/{member} {#avatar-ecosystem-member}
 
-**GET**/ Returns the avatar of the user in the *member* table (available without login).
+**GET**/
+*member* テーブル内のユーザーのアバターを返します (ログインなしで利用可能)。
 
-#### Request
+**請求**
 
-- *ecosystem*
+- `ecosystem`
 
-    > Ecosystem ID.
+    > エコシステムID。
 
-- *member*
+- `member`
 
-    > The user's account address. (xxxx-... -xxxx)
+    > ユーザーのアカウントアドレス。 (xxxx-... -xxxx)
 
 ``` text
 GET
 /api/v2/avatar/1/1234-2134-... -4321
 ```
 
-#### Response
+**応答**
 
-The request header *Content-Type* is the image type and the image data is returned in the response body.
+リクエスト ヘッダー *Content-Type* は画像タイプであり、画像データは応答本文で返されます。
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
 Content-Type: image/png  
 ```
 
-#### Error Response
+**エラー応答**
 
 *E_NOTFOUND* *E_SERVER*
 
-### <span id = "config-centrifugo">config/centrifugo</span>
+### config/centrifugo {#config-centrifugo}
 
-**GET**/ Returns the host address and port of centrifugo.
+**GET**/ 
 
-This request does not require login authorization.
+centrifugo のホストアドレスとポートを返します。
 
-#### Request
+このリクエストにはログイン認証は必要ありません。
+
+**請求**
 
 ``` text
 GET
 /api/v2/config/centrifugo
 ```
 
-#### Response
+**応答**
 
-Response result format `http://address:port`, e.g.: `http://127.0.0.1:8100`.
+応答結果の形式は `http://address:port`、例: `http://127.0.0.1:8100`。
 
-#### Error Response
+**エラー応答**
 
 *E_SERVER*
 
-### updnotificator
+### updnotificator {#updnotificator}
 
 **POST**/
+(廃棄)
 
-(Discarded)
+まだ送信されていないすべてのメッセージを centrifugo 通知サービスに送信します。 指定されたエコシステムとメンバーにメッセージのみを送信します。
 
-Sends all messages that have not yet been sent to the centrifugo notification service. Sends only messages for the specified ecosystem and members.
+このリクエストにはログイン認証は必要ありません。
 
-This request does not require login authorization.
+**請求**
 
-#### Request
+- `id`
 
-- *id*
+    > メンバーのアカウントアドレス。
 
-    > Member's account address.
+- `ecosystem`
 
-- *ecosystem*
-
-    > Ecosystem ID.
+    > エコシステムID。
 
 ``` text
 POST
 /api/v2/updnotificator
 ```
 
-#### Response Example
+**応答例**
 
 ``` text
 200 (OK)
@@ -2971,13 +2848,13 @@ Content-Type: application/json
 } 
 ```
 
-### Special instructions
+### Special instructions {#special-instructions}
 
-#### Omitempty
-If the field has an omitempty attribute, it means that the field is an optional parameter
+#### Omitempty {#omitempty}
+フィールドにomitempty属性がある場合、それはフィールドがオプションのパラメータであることを意味します。
 
-#### Authorization
-If the interface with Authorization tag, that this interface requires login authorization, add Authorization to the request header, example.
+#### Authorization {#authorization}
+Authorizationタグのあるインターフェースでログイン認証が必要なインターフェースの場合、リクエストヘッダーにAuthorizationを追加するなどします。
 
 key = Authorization
 value = "Bearer + [login token](#login)"

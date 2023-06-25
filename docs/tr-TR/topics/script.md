@@ -1,25 +1,25 @@
 
-# Akıllı kontratlar
-  - [Kontrat Yapısı](#Kontrat-yapısı)
+# Akıllı kontratlar {#smart-contracts}
+  - [Kontrat Yapısı](#contract-structure)
     - [Data section](#data-section)
     - [Conditions section](#conditions-section)
     - [Action section](#action-section)
-  - [Değişkenler](#Değişkenler)
-  - [İç İçe Sözleşmeler](#İç-İçe-Sözleşmeler)
-  - [Dosya Yükleme](#Dosya-Yükleme)
-  - [Json formatında sorgular](#Json-formatında-sorgular)
-  - [Tarih ve saat işlemleri içeren sorgular](#Tarih-ve-saat-işlemleri-içeren-sorgular)
-  - [Needle sözleşme dili](#Needle-sözleşme-dili)
-    - [Temel elemanlar ve yapı](#Temel-elemanlar-ve-yapı)
-    - [Veri türleri ve değişkenler](#Veri-türleri-ve-değişkenler)
-    - [Dizi](#Dizi)
-    - [If ve While ifadeleri](#If-ve-While-ifadeleri)
-  - [Fonksiyonlar](#Fonksiyonlar)
-    - [Fonksiyon atamaları](#Fonksiyon-atamaları)
-    - [Değişken-uzunluklu parametreler](#Değişken-uzunluklu-parametreler)
-    - [Opsiyonel parametreler](#Opsiyonel-parametreler)
-  - [Needle fonksiyonlarının sınıflandırılması](#Needle-fonksiyonlarının-sınıflandırılması)
-  - [Needle fonksiyonları referansı](#Needle-fonksiyonları-referansı)
+  - [Değişkenler](#variables)
+  - [İç İçe Sözleşmeler](#nested-contracts)
+  - [Dosya Yükleme](#file-upload)
+  - [Json formatında sorgular](#queries-in-json-format)
+  - [Tarih ve saat işlemleri içeren sorgular](#queries-with-date-and-time-operations)
+  - [Needle sözleşme dili](#needle-contract-language)
+    - [Temel elemanlar ve yapı](#basic-elements-and-structure)
+    - [Veri türleri ve değişkenler](#data-types-and-variables)
+    - [Dizi](#array)
+    - [If ve While ifadeleri](#if-and-while-statements)
+  - [Fonksiyonlar](#functions)
+    - [Fonksiyon atamaları](#function-declaration)
+    - [Değişken-uzunluklu parametreler](#variable-length-parameters)
+    - [Opsiyonel parametreler](#optional-parameters)
+  - [Needle fonksiyonlarının sınıflandırılması](#needle-functions-classification)
+  - [Needle fonksiyonları referansı](#needle-functions-reference)
     - [AppParam](#appparam)
     - [DBFind](#dbfind)
     - [DBRow](#dbrow)
@@ -137,7 +137,7 @@
 
 Akıllı Sözleşme (bundan böyle Sözleşme olarak anılacaktır), bir uygulamanın temel unsurlarından biridir. Kullanıcı tarafından bir sayfada bir sözleşmenin uygulanması genellikle tek bir işlemdir ve amacı bir veritabanı girdisini güncellemek veya oluşturmaktır. Bir uygulamanın tüm veri işlemleri bir sözleşme sistemi oluşturur ve bu sözleşmeler, veritabanı veya sözleşme içeriği işlevleri aracılığıyla birbirleriyle etkileşime girer.
 
-## Kontrat yapısı
+## Kontrat yapısı {#contract-structure}
 
 Bir sözleşme bildirmek için `contract` anahtar sözcüğünü, ardından kontrat adını kullanın ve kontrat içeriği parantez içine alınmalıdır. Bir kontrat temel olarak üç bölümden oluşur:
 
@@ -164,7 +164,7 @@ contract MyContract {
 
 
 
-### Data section
+### Data section {#data-section}
 
 `Data` bölümü, sözleşme veri girişlerini ve alınan form parametrelerini açıklar.
 
@@ -189,7 +189,7 @@ contract my {
 
 
 
-### Conditions section
+### Conditions section {#conditions-section}
 
 `conditions` bölümü, alınan verilerin doğrulanmasını açıklar.
 
@@ -207,7 +207,7 @@ if idexist > 0 {
 }
 ```
 
-### Action section
+### Action section {#action-section}
 
 `action` bölümü, diğer verileri alan ve sonuç değerlerini tablolara kaydeden sözleşmenin ana kodunu açıklar. Örneğin:
 
@@ -220,7 +220,7 @@ DBUpdate("keys", $recipient, {"+amount": $amount, "pub": $Pub})
 
 
 
-## Değişkenler
+## Değişkenler {#variables}
 
 Veri bölümünde bildirilen değişkenler, değişken adının ardından `$` sembolü ile diğer sözleşme bölümlerine iletilir. `$` sembolü, bu sözleşmenin ve bu sözleşmenin iç içe olduğu tüm sözleşmelerin global değişkenleri olarak kabul edilen veri bölümünde olmayan diğer değişkenleri bildirmek için de kullanılabilir.
 
@@ -266,11 +266,11 @@ contract my {
 }
 ```
 
-## İç İçe Sözleşmeler
+## İç İçe Sözleşmeler {#nested-contracts}
 
 Sözleşmeleri, sözleşmenin koşullar ve eylem bölümlerine yerleştirebilirsiniz. İç içe sözleşmeler doğrudan çağrılabilir ve sözleşme parametreleri, sözleşme adından sonra parantez içinde belirtilir, örneğin, `@1NameContract(Params)`. [CallContract](#callcontract) işleviyle iç içe sözleşmeleri de çağırabilirsiniz.
 
-## Dosya Yükleme
+## Dosya Yükleme {#file-upload}
 
 
 `multipart/form-data` formatında bir form kullanarak dosya yükleme için, sözleşmenin veri tipi `file` olmalıdır.
@@ -286,7 +286,7 @@ contract Upload {
 
 Dosyaları depolamak için  [UploadBinary](#uploadbinary) sözleşmesi kullanılır.Sayfa düzenleyicideki Logicor dil işlevi [Binary](templates2.md#binary) ile dosya indirme bağlantısını alabilirisiniz.
 
-## Json formatında sorgular
+## Json formatında sorgular {#queries-in-json-format}
 
 Sözleşme dilinde **JSON** alan türü olarak belirtilebilir. Giriş alanını işlemek için **columnname->fieldname** söz dizimini kullanabilirsiniz. Elde edilen değer **columnname.fieldname** içine kaydedilir. Yukarıdaki sözdizimi, [DBFind](#dbfind) işlevinin Columns,One,Where bölümünde kullanılabilir.
 
@@ -303,7 +303,7 @@ val = DBFind("mytable").WhereId($Id).One("doc->check")
 
 
 
-## Tarih ve saat işlemleri içeren sorgular
+## Tarih ve saat işlemleri içeren sorgular {#queries-with-date-and-time-operations}
 
 Sözleşme dili işlevleriyle tarih ve saati doğrudan sorgulayıp güncelleyemezsiniz ancak aşağıdaki örnekte olduğu gibi Where deyiminde PostgreSQL işlevlerini ve özelliklerini kullanabilirsiniz.Örneğin, tarih_sütun alanını geçerli saatle karşılaştırmanız gerekir. tarih_sütun bir zaman damgası türüyse, ifade `date_column <NOW()`; olmalıdır; tarih_sütun bir Unix türüyse, ifade `to_timestamp(date_column)> NOW()` olmalıdır.
 
@@ -318,16 +318,16 @@ Tarih ve saati SQL formatında işlemek için aşağıdaki "needle" işlevi kull
 * [DateTime](#datetime)
 * [UnixDateTime](#unixdatetime)
 
-## Needle sözleşme dili
+## Needle sözleşme dili {#needle-contract-language}
 
 Sözleşme dili, veri algoritması işleme ve veritabanı işlemlerini gerçekleştirebilen bir dizi fonksiyon, operatör ve yapı içerir.
 
 Sözleşme düzenleme izni `false` olarak ayarlanmazsa sözleşme içeriği değiştirilebilir. Sözleşme değişikliklerinin tam geçmişi, Weaver'da bulunan blok zincirinde saklanır.
 
 Blok zincirindeki veri işlemleri, sözleşmenin en son versiyonuna uygun olarak yürütülür.
-### Temel elemanlar ve yapı
+### Temel elemanlar ve yapı {#basic-elements-and-structure}
 
-### Veri türleri ve değişkenler
+### Veri türleri ve değişkenler {#data-types-and-variables}
 
 Her değişken için veri tipi tanımlanmalıdır. Normalde, veri türleri otomatik olarak dönüştürülür. Aşağıdaki veri türleri kullanılabilir:
 
@@ -366,7 +366,7 @@ func myfunc( val int) int {
 
 
 
-### Dizi
+### Dizi {#array}
 
 Sözleşme dili iki dizi türünü destekler:
 * `Array` - 0'dan başlayan dizine sahip bir dizi;
@@ -426,7 +426,7 @@ val = my["param"]
 MyFunc({key: val, sub: {name: "My name", "color": "Red"}})
 ```
 
-### If ve While ifadeleri
+### If ve While ifadeleri {#if-and-while-statements}
 
 Sözleşme dili, sözleşmelerde ve işlevlerde kullanılabilen standart **if** koşullu ifadeleri ve **while** döngülerini destekler. Bu ifadeler iç içe yerleştirilebilir.
 
@@ -468,12 +468,12 @@ Needle, koşullu ifadelere ek olarak standart aritmetik işlemleri de destekler:
 
 Dize ve bayt türlerinin değişkenleri koşullu bir ifade olarak kullanılabilir. Türün uzunluğu sıfırdan büyükse koşul doğrudur, aksi takdirde yanlıştır.
 
-## Fonksiyonlar
+## Fonksiyonlar {#functions}
 
 İşlevler, bir sözleşmenin [data section](#data-section) tarafından alınan veriler üzerinde bazı işlemler gerçekleştirebilir: veritabanından veri okuma ve yazma, değer türünü dönüştürme ve sözleşmeler arasındaki etkileşimi oluşturma.
 
 
-### Fonksiyon atamaları
+### Fonksiyon atamaları {#function-declaration}
 
 Bir işlevi bildirmek için func anahtar sözcüğünü kullanın, ardından ad ve ona iletilen parametrelerin listesi ve türleri. Tüm parametreler parantez içine alınır ve virgülle ayrılır. Parantezlerden sonra fonksiyonun döndürdüğü değerin veri tipi bildirilmelidir. Fonksiyon gövdesi parantez içine alınmalıdır. Fonksiyonun parametresi yoksa, parantezler atlanabilir. Bir fonksiyondan değer döndürmek için `return` anahtar sözcüğünü kullanın.
 
@@ -492,7 +492,7 @@ func ooops {
 
 Tüm hata kontrolleri otomatik olarak yapıldığından, fonksiyon hata döndürmez. Herhangi bir fonksiyonda bir hata varsa, sözleşme çalışmasını sonlandıracak ve hata açıklamasını bir pencerede sunacaktır.
 
-### Değişken-uzunluklu parametreler
+### Değişken-uzunluklu parametreler {#variable-length-parameters}
 
 Fonksiyonlar değişken uzunluklu parametreleri tanımlayabilir, değişken uzunluklu parametreleri belirtmek için fonksiyonun son parametre tipi olarak  `...` sembolünü bir veri tipi `array` ile kullanabilir. Değişken uzunluklu parametreler, parametrenin çağrıda geçirildiği zamandan itibaren tüm değişkenleri içerir. Tüm değişken türleri iletilebilir, ancak veri türlerinin uyumsuzluğundan kaynaklanan çatışmalarla uğraşmanız gerekir.
 
@@ -520,7 +520,7 @@ func main() {
 
 
 
-### Opsiyonel parametreler
+### Opsiyonel parametreler {#optional-parameters}
 
 Bir fonksiyonun birçok parametresi vardır, ancak sadece bazılarına onu çağırırken ihtiyacımız var. Bu durumda, isteğe bağlı parametreleri şu şekilde bildirebilirsiniz: `func myfunc(name string).Param1(param string).Param2(param2 int) {...}`, ardından belirtilen parametreleri herhangi bir sırayla çağırabilirsiniz. : `myfunc("name").Param2(100)`.
 
@@ -538,7 +538,7 @@ func names() string {
 }
 ```
 
-## Needle fonksiyonlarının sınıflandırılması
+## Needle fonksiyonlarının sınıflandırılması {#needle-functions-classification}
 
 Veritabanından değerlerin alınması:
 
@@ -653,14 +653,14 @@ Ana CLB düğümleri için işlevler(CLB nodes):
 
 
 
-## Needle fonksiyonları referansı
+## Needle fonksiyonları referansı {#needle-functions-reference}
 
 
-### AppParam
+### AppParam {#appparam}
 
 Returns the value of a specified application parameter (from the application parameter table app_params).
 
-#### Syntax (Sözdizimi)
+**Sözdizimi**
 
 ```
 AppParam(app int, name string, ecosystemid int) string
@@ -678,7 +678,7 @@ AppParam(app int, name string, ecosystemid int) string
 
     Ekosistem ID.
 
-#### Örnek
+**Örnek**
 
 ```
 AppParam(1, "app_account", 1)
@@ -686,14 +686,14 @@ AppParam(1, "app_account", 1)
 
 
 
-### DBFind - DBBul
+### DBFind {#dbfind}
 
 Belirtilen parametrelerle belirtilen bir tablodan veri sorgular ve bir dizi nesne haritasından oluşan bir dizi dizisi döndürür.
 
 `.Row()` sorgudaki ilk harita öğesini alabilir, `.One(column string)` sorguda belirtilen bir sütunun ilk harita öğesini alabilir.
 
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 DBFind(table string)
@@ -816,7 +816,7 @@ Nesne dizilerinin anahtarlarının üzerine yazmadığınızdan emin olun. Örne
 
      
 
-#### Örnek
+**Örnek**
 
 ```
 var i int
@@ -839,11 +839,11 @@ if ret != nil {
 ​     
 
 
-### DBRow
+### DBRow {#dbrow}
 
 Belirtilen parametrelerle belirtilen bir tablodan veri sorgular. Bir dizi nesne haritasından oluşan bir dizi dizisi döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 DBRow(table string)
@@ -883,7 +883,7 @@ DBRow(table string)
 
   Ekosistem kimliği. Varsayılan olarak, mevcut ekosistemin tablosu sorgulanır.
 
-#### Örnek
+**Örnek**
 
 ```
 var ret map
@@ -893,13 +893,13 @@ Println(ret)
 
 
 
-### DBSelectMetrics
+### DBSelectMetrics {#dbselectmetrics}
 
 Bir metriğin toplu verilerini döndürür.
 
 Metrikler, her 100 blok oluşturulduğunda güncellenir. Ve toplanan veriler 1 günlük bir döngüde saklanır.
 
-#### Syntax
+**Sözdizimi**
 
 ```
 DBSelectMetrics(metric string, timeInterval string, aggregateFunc string) array
@@ -935,7 +935,7 @@ DBSelectMetrics(metric string, timeInterval string, aggregateFunc string) array
 
     Aggregate fonksiyonu. Örneğin, `max`, `min`, `avg`.
 
-#### Örnek
+**Örnek**
 
 ```
 var rows array
@@ -950,11 +950,11 @@ while(i <Len(rows)) {
 
 
 
-### EcosysParam
+### EcosysParam {#ecosysparam}
 
 Returns the value of a specified parameter in the ecosystem parameters table parameters.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 EcosysParam(name string) string
@@ -965,7 +965,7 @@ EcosysParam(name string) string
 
   Parametre adı.
 
-#### Örnek
+**Örnek**
 
 ```
 Println(EcosysParam("founder_account"))
@@ -973,11 +973,11 @@ Println(EcosysParam("founder_account"))
 
 
 
-### GetHistory
+### GetHistory {#gethistory}
 
 Belirtilen bir tablodaki girişlerde yapılan değişikliklerin geçmişini döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 GetHistory(table string, id int) array
@@ -997,7 +997,7 @@ GetHistory(table string, id int) array
   Her dizi, sonraki değişikliği yapmadan önce bir kaydın alanlarını içerir.
   Dizi, en son değişikliklerin sırasına göre sıralanır.
 
-#### Örnek
+**Örnek**
 
 ```
 var list array
@@ -1010,11 +1010,11 @@ if Len(list) > 0 {
 
 
 
-### GetHistoryRow
+### GetHistoryRow {#gethistoryrow}
 
 Belirtilen bir tabloda belirtilen bir girdinin değişiklik geçmişinden tek bir anlık görüntü döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 GetHistoryRow(table string, id int, rollbackId int) map
@@ -1041,11 +1041,11 @@ GetHistoryRow(table string, id int, rollbackId int) map
   
 
 
-### GetColumnType
+### GetColumnType {#getcolumntype}
 
 Belirtilen tablodaki belirtilen alanın veri türünü döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 GetColumnType(table, column string) string
@@ -1062,7 +1062,7 @@ GetColumnType(table, column string) string
 
   Değerler döndürülebilir: `text, varchar, number, money, double, bytes, json, datetime, double`.
 
-#### Örnek
+**Örnek**
 
 ```
 var coltype string
@@ -1071,11 +1071,11 @@ coltype = GetColumnType("members", "member_name")
 
 
 
-### GetDataFromXLSX
+### GetDataFromXLSX {#getdatafromxlsx}
 
 XLSX elektronik tablolarından verileri döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 GetDataFromXLSX(binId int, line int, count int, sheet int) string
@@ -1096,7 +1096,7 @@ GetDataFromXLSX(binId int, line int, count int, sheet int) string
 
   Liste numarası, varsayılan olarak 1'den başlar.
 
-#### Örnek
+**Örnek**
 
 ```
 var a array
@@ -1105,11 +1105,11 @@ a = GetDataFromXLSX(3, 12, 10, 1)
 
 
 
-### GetRowsCountXLSX
+### GetRowsCountXLSX {#getrowscountxlsx}
 
 Belirtilen bir XLSX dosyasındaki satır sayısını döndürür.
 
-#### Syntax
+**Sözdizimi**
 
 ```
 GetRowsCountXLSX(binId int, sheet int) int
@@ -1123,7 +1123,7 @@ GetRowsCountXLSX(binId int, sheet int) int
   Liste numarası, varsayılan olarak 1'den başlar.
 
 
-#### Örnek
+**Örnek**
 
 ```
 var count int
@@ -1132,12 +1132,12 @@ count = GetRowsCountXLSX(binid, 1)
 
 
 
-### LangRes
+### LangRes {#langres}
 
 İki karakterli bir kod olarak belirtilen dil dili için ad etiketine sahip çok dilli bir kaynak döndürür, örneğin: `en`, `zh`. Seçilen bir dil için dil yoksa,  `en` etiketinin dil kaynağı döndürülür.
 
 
-#### Syntax
+**Sözdizimi**
 
 ```
 LangRes(label string, lang string) string
@@ -1151,7 +1151,7 @@ LangRes(label string, lang string) string
   İki karakterli dil kodu.
 
 
-#### Örnek
+**Örnek**
 
 ```
 warning LangRes("@1confirm", "en")
@@ -1160,11 +1160,11 @@ error LangRes("@1problems", "zh")
 
 
 
-### GetBlock
+### GetBlock {#getblock}
 
 Belirtilen bir blok hakkında ilgili bilgileri döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 GetBlock(blockID int64) map
@@ -1188,7 +1188,7 @@ GetBlock(blockID int64) map
      Doğrulama düğümünün hesap adresi bloğu oluşturdu.
 
 
-#### Örnek
+**Örnek**
 
 ```
 var b map
@@ -1198,12 +1198,12 @@ Println(b)
 
 
 
-### DBInsert
+### DBInsert {#dbinsert}
 
 Belirtilen tabloya bir girdi ekler ve girdi kimliğini döndürür.
 
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 DBInsert(table string, params map) int
@@ -1217,7 +1217,7 @@ DBInsert(table string, params map) int
 
   Anahtarların alan adları ve değerlerin eklenen değerler olduğu bir nesne dizisi.
 
-#### Örnek
+**Örnek**
 
 ```
 DBInsert("mytable", {name: "John Smith", amount: 100})
@@ -1225,11 +1225,11 @@ DBInsert("mytable", {name: "John Smith", amount: 100})
 
 
 
-### DBUpdate
+### DBUpdate {#dbupdate}
 
 Belirtilen bir tabloda belirtilen giriş kimliğinin sütun değerini değiştirir. Giriş kimliği tabloda yoksa bir hata döndürülür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 DBUpdate(tblname string, id int, params map)
@@ -1246,7 +1246,7 @@ DBUpdate(tblname string, id int, params map)
 
   Anahtarların alan adları ve değerlerin değişikliklerden sonra yeni değerler olduğu bir nesne dizisi.
 
-#### Örnek
+**Örnek**
 
 ```
 DBUpdate("mytable", myid, {name: "John Smith", amount: 100})
@@ -1254,11 +1254,11 @@ DBUpdate("mytable", myid, {name: "John Smith", amount: 100})
 
 
 
-### DBUpdateExt
+### DBUpdateExt {#dbupdateext}
 
 Belirtilen tablodaki sorgu koşuluyla eşleşen bir sütunun değerini değiştirir.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 DBUpdateExt(tblname string, where map, params map)
@@ -1277,7 +1277,7 @@ DBUpdateExt(tblname string, where map, params map)
 
   Anahtarların alan adları ve değerlerin değişikliklerden sonra yeni değerler olduğu bir nesne dizisi.
 
-#### Örnek
+**Örnek**
 
 ```
 DBUpdateExt("mytable", {id: $key_id, ecosystem: $ecosystem_id}, {name: "John Smith", amount: 100})
@@ -1285,11 +1285,11 @@ DBUpdateExt("mytable", {id: $key_id, ecosystem: $ecosystem_id}, {name: "John Smi
 
 
 
-### DelColumn
+### DelColumn {#delcolumn}
 
   Belirtilen tabloda kaydı olmayan bir alanı silin.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 DelColumn(tblname string, column string)
@@ -1311,11 +1311,11 @@ DelColumn("mytable", "mycolumn")
   
 
 
-### DelTable
+### DelTable {#deltable}
 
 Hiçbir kaydı olmayan belirli bir tabloyu siler.
 
-#### Syntax
+**Sözdizimi**
 
 ```
 DelTable(tblname string)
@@ -1326,7 +1326,7 @@ DelTable(tblname string)
 
   Tablo adı.
 
-#### Örnek
+**Örnek**
 
 ```
 DelTable("mytable")
@@ -1334,12 +1334,12 @@ DelTable("mytable")
 
 
 
-### Ekle
+### Ekle {#append}
 
 Src dizisine herhangi bir türde val ekler.
 
 
-#### Sözdizimi
+**Sözdizimi**
 
 Append(src array, val anyType) array
 
@@ -1350,7 +1350,7 @@ Append(src array, val anyType) array
 
   Eklenecek değer.
 
-#### Örnek
+**Örnek**
 
 ```
 var list array
@@ -1359,11 +1359,11 @@ list = Append(list, "new_val")
 
 
 
-### Katılmak
+### Katılmak {#join}
 
 "in dizisinin" öğelerini belirtilen bir ayırıcıyla bir dizede birleştirir.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 Join(in array, sep string) string
@@ -1377,7 +1377,7 @@ Join(in array, sep string) string
 
   Ayırıcı.
 
-#### Örnek
+**Örnek**
 
 ```
  var val string, myarr array
@@ -1388,11 +1388,11 @@ Join(in array, sep string) string
 
 
 
-### Bölmek
+### Bölmek {#split}
 
 "in dizesini" öğelere bölmek ve bunları bir diziye yerleştirmek için ayırıcıyı kullanır.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 Split(in string, sep string) array
@@ -1405,7 +1405,7 @@ Split(in string, sep string) array
 
    Ayırıcı.
 
-#### Örnek
+**Örnek**
 
 ```
 var myarr array
@@ -1414,11 +1414,11 @@ myarr = Split("first,second,third", ",")
 
 
 
-### Len
+### Len {#len}
 
 Belirtilen dizideki öğelerin sayısını döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
  
 
@@ -1430,7 +1430,7 @@ Len(val array) int
 
    Dizi.
 
-#### Örnek
+**Örnek**
 
 ```
 if Len(mylist) == 0 {
@@ -1440,12 +1440,12 @@ if Len(mylist) == 0 {
 
 
 
-### Sıra
+### Row {#row}
 
  Bu durumda list parametresi belirtilmemelidir. Dizi listesindeki ilk nesne dizisini döndürün. Liste boşsa, boş bir sonuç döndürülür. Bu işlev çoğunlukla [DBFind](#dbfind) işleviyle birlikte kullanılır. Bu işlevi kullanırken, parametreleri belirtemezsiniz.
 
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
  Row(list array) map
@@ -1455,7 +1455,7 @@ if Len(mylist) == 0 {
 
   DBFind işlevi tarafından döndürülen nesne dizisi.
 
-#### Örnek
+**Örnek**
 
 ```
  var ret map
@@ -1465,12 +1465,12 @@ if Len(mylist) == 0 {
 
 
 
-### One
+### One {#one}
 
   Dizi listesindeki ilk nesne dizisinin alan değerini döndürür. Liste dizisi boşsa, nil döndürülür. Çoğunlukla [DBFind](#dbfind) işleviyle birlikte kullanılır. Bu işlevi kullanırken, parametreleri belirtemezsiniz.
 
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 One(list array, column string) string
@@ -1483,7 +1483,7 @@ One(list array, column string) string
 * **column**
 
   Alan adı.
-#### Örnek
+**Örnek**
 
 ```
 var ret string
@@ -1495,11 +1495,11 @@ if ret != nil {
 
 
 
-### GetMapKeys
+### GetMapKeys {#getmapkeys}
 
   Nesne dizisindeki anahtar diziyi döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
  
 
@@ -1511,7 +1511,7 @@ GetMapKeys(val map) array
 
     Nesne dizisi.
 
-#### Örnek
+**Örnek**
 
 ```
 var val map
@@ -1523,11 +1523,11 @@ arr = GetMapKeys(val)
 
 
 
-### SortedKeys
+### SortedKeys {#sortedkeys}
 
 Nesne dizisinde sıralanmış bir anahtar dizi döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 SortedKeys(val map) array
@@ -1538,7 +1538,7 @@ SortedKeys(val map) array
 
     Nesne dizisi.
 
-#### Örnek
+**Örnek**
 
 ```
 var val map
@@ -1550,12 +1550,12 @@ arr = SortedKeys(val)
 
 
 
-### CallContract
+### CallContract {#callcontract}
 
 Belirtilen adla sözleşmeyi çağırır. Sözleşmedeki veri bölümünün tüm parametreleri bir nesne dizisine dahil edilmelidir. Bu işlev, belirtilen bir sözleşme tarafından **$result** değişkenine atanan değeri döndürür.
 
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 CallContract(name string, params map)
@@ -1570,7 +1570,7 @@ CallContract(name string, params map)
     Sözleşme girdi verilerinin ilişkisel dizisi.
 
 
-#### Örnek
+**Örnek**
 
 ```
 var par map
@@ -1580,11 +1580,11 @@ CallContract("MyContract", par)
 
 
 
-### ContractAccess
+### ContractAccess {#contractaccess}
 
 Yürütülmekte olan sözleşmenin adının parametrelerde listelenen adlardan biriyle eşleşip eşleşmediğini kontrol eder. Genellikle tablolara sözleşme erişimini kontrol etmek için kullanılır. Tablo alanlarını düzenlerken veya tablonun izinler bölümünde yeni sütun alanları eklerken, lütfen bu işlevi izin alanlarında belirtin.
 
-#### Sözdizimi
+**Sözdizimi**
 
   
 
@@ -1596,7 +1596,7 @@ ContractAccess(name string, [name string]) bool
 
     Sözleşme adı.
 
-#### Örnek
+**Örnek**
 
 ```
 ContractAccess("MyContract")
@@ -1605,13 +1605,13 @@ ContractAccess("MyContract","SimpleContract")
 
 
 
-### ContractConditions
+### ContractConditions {#contractconditions}
 
 Sözleşmedeki koşullar bölümünü belirtilen adla çağırır.
 
 Bu tür sözleşmeler için veri bölümü boş olmalıdır. Koşullar bölümü hatasız yürütülürse true döner. Yürütme sırasında bir hata varsa, hata nedeniyle ana sözleşme de feshedilecektir. Bu işlev genellikle sözleşmenin tablolara erişimini kontrol etmek için kullanılır ve sistem tablolarını düzenlerken izin alanlarında çağrılabilir.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 ContractConditions(name string, [name string]) bool
@@ -1622,7 +1622,7 @@ ContractConditions(name string, [name string]) bool
 
     Sözleşme adı.
 
-#### Örnek
+**Örnek**
 
 ```
 ContractConditions("MainCondition")
@@ -1630,11 +1630,11 @@ ContractConditions("MainCondition")
 
 
 
-### EvalCondition
+### EvalCondition {#evalcondition}
 
 Sözleşme tablo adı tablosundan bir 'ad' alanı olan kayıttaki koşul alanının değerini alır ve koşul alanı değerinin koşullarını kontrol eder.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 EvalCondition(tablename string, name string, condfield string)
@@ -1651,7 +1651,7 @@ EvalCondition(tablename string, name string, condfield string)
 
     Koşulları kontrol edilmesi gereken alanın adı.
 
-#### Örnek
+**Örnek**
 
 ```
 EvalCondition(`menu`, $Name, `conditions`)
@@ -1659,11 +1659,11 @@ EvalCondition(`menu`, $Name, `conditions`)
 
 
 
-### GetContractById
+### GetContractById {#getcontractbyid}
 
 Sözleşme kimliğine göre sözleşme adını döndürür. Sözleşme bulunamazsa boş bir dize döndürülür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 GetContractById(id int) string
@@ -1674,7 +1674,7 @@ GetContractById(id int) string
 
   Sözleşme tablosu sözleşmelerindeki sözleşme kimliği.
 
-#### Örnek
+**Örnek**
 
 ```
 var name string
@@ -1683,11 +1683,11 @@ name = GetContractById($IdContract)
 
 
 
-### GetContractByName
+### GetContractByName {#getcontractbyname}
 
 Bu işlev, sözleşme kimliğini sözleşme adına göre döndürür. Sözleşme bulunamazsa, sıfır döndürülür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 GetContractByName(name string) int
@@ -1697,7 +1697,7 @@ GetContractByName(name string) int
 
     Sözleşme tablosu sözleşmelerinde sözleşme adı.
 
-#### Örnek
+**Örnek**
 
 ```
 var id int
@@ -1706,12 +1706,12 @@ id = GetContractByName(`NewBlock`)
 
 
 
-### RolErişimi
+### RoleAccess {#roleaccess}
 
 Sözleşme arayanın rol kimliğinin parametrede belirtilen kimliklerden biriyle eşleşip eşleşmediğini kontrol eder.
 
 Tablolara ve diğer verilere sözleşme erişimini kontrol etmek için bu işlevi kullanabilirsiniz.
-#### Sözdizimi
+**Sözdizimi**
 
  
 
@@ -1723,7 +1723,7 @@ RoleAccess(id int, [id int]) bool
 
     Role ID.
 
-#### Örnek
+**Örnek**
 
 ```
 RoleAccess(1)
@@ -1732,11 +1732,11 @@ RoleAccess(1, 3)
 
 
 
-### İşlem Bilgileri
+### İşlem Bilgileri {#transactioninfo}
 
 İşlemleri belirtilen hash değerine göre sorgular ve yürütülen sözleşme ve parametreleri hakkında bilgi verir.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 TransactionInfo(hash: string)
@@ -1768,7 +1768,7 @@ TransactionInfo(hash: string)
       İşlemi işleyen bloğun kimliği.
 
 
-#### Örnek
+**Örnek**
 
 ```
 var out map
@@ -1777,12 +1777,12 @@ out = JSONDecode(TransactionInfo(hash))
 
 
 
-### Throw
+### Throw {#throw}
 
   Özel durum(exception) türünde bir hata oluşturur.
 
 
-#### Sözdizimi
+**Sözdizimi**
 
   
 
@@ -1806,7 +1806,7 @@ Throw(ErrorId string, ErrDescription string)
 {"type":"exception","error":"Error description","id":"Error ID"}
 ```
 
-#### Örnek
+**Örnek**
 
 ```
 Throw("Problem", "There is a problem")
@@ -1814,12 +1814,12 @@ Throw("Problem", "There is a problem")
 
 
 
-### ValidateCondition
+### ValidateCondition {#validatecondition}
 
   Koşul parametresi tarafından belirtilen koşulları derlemeye çalışır. Derleme işlemi sırasında bir hata oluşursa hata oluşur ve çağrılan sözleşme sonlandırılır. Bu işlev, koşullu biçimin doğruluğunu kontrol etmek için tasarlanmıştır.
 
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 ValidateCondition(condition string, state int)
@@ -1832,7 +1832,7 @@ ValidateCondition(condition string, state int)
 
     Ekosistem kimliği. Global koşulu kontrol ederseniz, lütfen 0 olarak belirtin.
 
-#### Örnek
+**Örnek**
 
 ```
 ValidateCondition(`ContractAccess("@1MyContract")`, 1)
@@ -1840,11 +1840,11 @@ ValidateCondition(`ContractAccess("@1MyContract")`, 1)
 
 
 
-### AddressToId
+### AddressToId {#addresstoid}
 
 Cüzdan adresine göre ilgili hesap adresini döndürür. Geçersiz bir adres belirtilirse, '0' döndürülür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 AddressToId(address string) int
@@ -1856,7 +1856,7 @@ AddressToId(address string) int
     `XXXX-...-XXXX` biçiminde veya sayı biçiminde cüzdan adresi.
 
 
-#### Örnek
+**Örnek**
 
 ```
 wallet = AddressToId($Recipient)
@@ -1864,11 +1864,11 @@ wallet = AddressToId($Recipient)
 
 
 
-### IdToAddress
+### IdToAddress {#idtoaddress}
 
 Hesap adresine göre ilgili cüzdan adresini döndürür. Geçersiz bir adres belirtilirse, geçersiz adres 'invalid' döndürülür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 IdToAddress(id int) string
@@ -1879,7 +1879,7 @@ IdToAddress(id int) string
 
     Hesap adresi.
 
-#### Örnek
+**Örnek**
 
 ```
 $address = IdToAddress($id)
@@ -1887,11 +1887,11 @@ $address = IdToAddress($id)
 
 
 
-### PubToID
+### PubToID {#pubtoid}
 
 Hesap adresi, genel anahtar tarafından onaltılık biçimde döndürülür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 PubToID(hexkey string) int
@@ -1902,7 +1902,7 @@ PubToID(hexkey string) int
 
     Onaltılık biçimde genel anahtar.
 
-#### Örnek
+**Örnek**
 
   
 
@@ -1913,11 +1913,11 @@ wallet = PubToID("04fa5e78.....34abd6")
 
 
 
-### DecodeBase64
+### DecodeBase64 {#decodebase64}
 
 Base64 biçimini belirterek bir dize döndürür
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 DecodeBase64(input string) string
@@ -1928,7 +1928,7 @@ DecodeBase64(input string) string
 
     Base64 biçiminde dize.
 
-#### Örnek
+**Örnek**
 
 ```
 val = DecodeBase64(mybase64)
@@ -1936,11 +1936,11 @@ val = DecodeBase64(mybase64)
 
 
 
-### EncodeBase64
+### EncodeBase64 {#encodebase64}
 
 Bir dize belirterek base64 biçiminde bir dize döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 EncodeBase64(input string) string
@@ -1951,7 +1951,7 @@ EncodeBase64(input string) string
 
     Kodlanacak dize.
 
-#### Örnek
+**Örnek**
 
  
 
@@ -1962,11 +1962,11 @@ base64str = EncodeBase64("my text")
 
 
 
-### Ondalık
+### Float {#float}
 
 Bir tamsayıyı veya dizeyi bir kayan sayıya dönüştürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 Float(val int|string) float
@@ -1977,7 +1977,7 @@ Float(val int|string) float
 
     Bir tamsayı veya dize.
 
-#### Örnek
+**Örnek**
 
 ```
 val = Float("567.989") + Float(232)
@@ -1985,11 +1985,11 @@ val = Float("567.989") + Float(232)
 
 
 
-### HexToBytes
+### HexToBytes {#hextobytes}
 
   Onaltılık biçimdeki bir dizeyi bayt türü baytlara dönüştürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
   HexToBytes(hexdata string) bytes
@@ -2001,7 +2001,7 @@ val = Float("567.989") + Float(232)
     Onaltılık biçimde bir dize.
 
 
-#### Örnek
+**Örnek**
 
 ```
 var val bytes
@@ -2010,11 +2010,11 @@ val = HexToBytes("34fe4501a4d80094")
 
 
 
-### FormatMoney
+### FormatMoney {#formatmoney}
 
 exp / 10 ^ basamağının dize değerini döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
   
 
@@ -2029,7 +2029,7 @@ FormatMoney(exp string, digit int) string
 
     `Exp/10^digit` ifadesinde 10'un üssü (pozitif veya negatif). Pozitif değerler ondalık basamakları belirler.
 
-#### Example
+**Example**
 
 ```
   s = FormatMoney("78236475917384", 0)
@@ -2037,13 +2037,12 @@ FormatMoney(exp string, digit int) string
 
 
 
-### Random
+### Random {#random}
 ```
 Returns a random number between min and max (min <= result <max). Both min and max must be positive numbers.(Min ve max arasında rastgele bir sayı döndürür (min <= sonuç <maks). Hem min hem de max pozitif sayılar olmalıdır.
-)
 ```
 
-#### Sözdizimi
+**Sözdizimi**
 
  
 
@@ -2059,7 +2058,7 @@ Random(min int, max int) int
 
       Rastgele sayıların üst sınırı. Üretilen rastgele sayı bu değerden daha az olacaktır.
 
-#### Örnek
+**Örnek**
 
 ```
 i = Random(10,5000)
@@ -2067,11 +2066,11 @@ i = Random(10,5000)
 
 
 
-### Int-Tamsayı
+### Int {#int}
 
 Dize biçimindeki bir değeri tam sayıya dönüştürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 Int(val string) int
@@ -2081,7 +2080,7 @@ Int(val string) int
 
       Dize biçiminde bir sayı.
 
-#### Örnek
+**Örnek**
 
 ```
 mystr = "-37763499007332"
@@ -2090,11 +2089,11 @@ val = Int(mystr)
 
 
 
-### Hash
+### Hash {#hash}
 
     Sistem şifreleme kitaplığı kriptosu tarafından oluşturulan, belirtilen bir bayt dizisinin veya dizesinin karmasını döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
  
 
@@ -2106,7 +2105,7 @@ Hash(val interface{}) string, error
 
       Bir dize veya bayt dizisi.
 
-#### Örnek
+**Örnek**
 
 ```
 var hash string
@@ -2115,11 +2114,11 @@ hash = Hash("Test message")
 
 
 
-### Sha256
+### Sha256 {#sha256}
 
     Belirtilen bir dizenin SHA256 karmasını döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
  
 
@@ -2131,7 +2130,7 @@ Sha256(val string) string
 
       Bir dize, Sha256 karma işlemini gerektirir.
 
-#### Örnek
+**Örnek**
 
 ```
 var sha string
@@ -2140,11 +2139,11 @@ sha = Sha256("Test message")
 
 
 
-### Str
+### Str {#str}
 
 Bir tamsayı int veya kayan noktalı sayıyı bir dizgeye dönüştürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
   
 
@@ -2156,7 +2155,7 @@ Str(val int|float) string
 
       Bir tamsayı veya kayan sayı.
 
-#### Örnek
+**Örnek**
 
 ```
 myfloat = 5.678
@@ -2165,11 +2164,11 @@ val = Str(myfloat)
 
 
 
-### JSONEncode
+### JSONEncode {#jsonencode}
 
 Bir sayıyı, dizeyi veya diziyi JSON biçiminde bir dizeye dönüştürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 JSONEncode(src int|float|string|map|array) string
@@ -2180,7 +2179,7 @@ JSONEncode(src int|float|string|map|array) string
 
       Dönüştürülecek veriler.
 
-#### Örnek
+**Örnek**
 
   
 
@@ -2193,11 +2192,11 @@ json = JSONEncode(mydata)
 
 
 
-### JSONEncodeIndent
+### JSONEncodeIndent {#jsonencodeindent}
 
 Bir sayıyı, dizeyi veya diziyi JSON biçiminde bir dizeye dönüştürmek için belirtilen girintiyi kullanır.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 JSONEncodeIndent(src int|float|string|map|array, indent string) string
@@ -2213,7 +2212,7 @@ JSONEncodeIndent(src int|float|string|map|array, indent string) string
     Dize girinti olarak kullanılacaktır.
 
 
-#### Örnek
+**Örnek**
 
   
 
@@ -2226,11 +2225,11 @@ json = JSONEncodeIndent(mydata, "\t")
 
 
 
-### JSONDecode
+### JSONDecode {#jsondecode}
 
 JSON biçimindeki bir dizeyi sayı, dize veya diziye dönüştürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 JSONDecode(src string) int|float|string|map|array
@@ -2241,7 +2240,7 @@ JSONDecode(src string) int|float|string|map|array
 
       JSON biçiminde veri içeren bir dize.
 
-#### Örnek
+**Örnek**
 
 ```
 var mydata map
@@ -2250,11 +2249,11 @@ mydata = JSONDecode(`{"name": "John Smith", "company": "Smith's company"}`)
 
 
 
-### HasPrefix
+### HasPrefix {#hasprefix}
 
 Dizenin belirtilen bir dizeyle başlayıp başlamadığını kontrol eder.
 
-#### Sözdizimi
+**Sözdizimi**
 
   
 
@@ -2275,7 +2274,7 @@ HasPrefix(s string, prefix string) bool
   Dize belirtilen bir dize ile başlıyorsa, `true` döndürülür.
 
 
-#### Örnek
+**Örnek**
 
 ```
 if HasPrefix($Name, `my`) {
@@ -2285,11 +2284,11 @@ if HasPrefix($Name, `my`) {
 
 
 
-### Contains
+### Contains {#contains}
 
 Dizenin belirtilen bir alt dize içerip içermediğini kontrol eder.
 
-#### Sözdizimi
+**Sözdizimi**
 
  
 
@@ -2309,7 +2308,7 @@ Contains(s string, substr string) bool
 
   Dize alt dizeyi içeriyorsa, `true` değerini döndürür.
 
-#### Örnek
+**Örnek**
 
 ```
 if Contains($Name, `my`) {
@@ -2319,11 +2318,11 @@ if Contains($Name, `my`) {
 
 
 
-### Replace
+### Replace {#replace}
 
 Dizedeki eski (eski dize) yeni (yeni dize) ile değiştirir.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 Replace(s string, old string, new string) string
@@ -2341,7 +2340,7 @@ Replace(s string, old string, new string) string
 
     Yeni dize.
 
-#### Örnek
+**Örnek**
 
 ```
 s = Replace($Name, `me`, `you`)
@@ -2349,11 +2348,11 @@ s = Replace($Name, `me`, `you`)
 
 
 
-### Boyut
+### Size {#size}
 
 Belirtilen dizedeki bayt sayısını döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 Size(val string) int
@@ -2364,7 +2363,7 @@ Size(val string) int
 
     Söz dizisi.
 
-#### Örnek
+**Örnek**
 
 ```
 var len int
@@ -2373,7 +2372,7 @@ len = Size($Name)
 
 
 
-### Sprintf
+### Sprintf {#sprintf}
 
 Bu işlev, belirtilen şablon ve parametreleri kullanarak bir dize oluşturur.
 
@@ -2382,7 +2381,7 @@ Kullanılabilir joker karakterler:
 * `%s` (string)
 * `%f` (float)
 * `%v` (any type)
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 Sprintf(pattern string, val ...) string
@@ -2393,7 +2392,7 @@ Sprintf(pattern string, val ...) string
 
       Bir dize şablonu.
 
-#### Örnek
+**Örnek**
 
 ```
 out = Sprintf("%s=%d", mypar, 6448)
@@ -2401,7 +2400,7 @@ out = Sprintf("%s=%d", mypar, 6448)
 
 
 
-### Substr
+### Substr {#substr}
 
 Ofset uzaklığından başlayarak (varsayılan olarak 0'dan hesaplanır) belirtilen bir dizeden elde edilen alt dizeyi döndürür ve maksimum uzunluk uzunlukla sınırlıdır.
 
@@ -2409,7 +2408,7 @@ Uzaklık veya uzunluk sıfırdan küçükse veya uzaklık uzunluktan büyükse b
 
 Ofset ve uzunluğun toplamı dize boyutundan büyükse, alt dize, ofsetten başlayarak dizenin sonuna kadar döndürülür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 Substr(s string, offset int, length int) string
@@ -2428,7 +2427,7 @@ Substr(s string, offset int, length int) string
 
       Alt dizinin uzunluğu.
 
-#### Örnek
+**Örnek**
 
 ```
 var s string
@@ -2437,11 +2436,11 @@ s = Substr($Name, 1, 10)
 
 
 
-### ToLower
+### ToLower {#tolower}
 
 Belirtilen bir dizeyi küçük harfle döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 ToLower(val string) string
@@ -2452,7 +2451,7 @@ ToLower(val string) string
 
     Söz dizisi.
 
-#### Örnek
+**Örnek**
 
 ```
 val = ToLower(val)
@@ -2460,11 +2459,11 @@ val = ToLower(val)
 
 
 
-### ToUpper
+### ToUpper {#toupper}
 
 Belirtilen bir dizeyi büyük harfle döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 ToUpper(val string) string
@@ -2475,7 +2474,7 @@ ToUpper(val string) string
 
     Söz dizisi.
 
-#### Örnek
+**Örnek**
 
 ```
 val = ToUpper(val)
@@ -2483,11 +2482,11 @@ val = ToUpper(val)
 
 
 
-### TrimSpace
+### TrimSpace {#trimspace}
 
 Belirtilen bir dizenin başındaki ve sonundaki boşlukları, sekmeleri ve yeni satırları siler.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 TrimSpace(val string) string
@@ -2498,7 +2497,7 @@ TrimSpace(val string) string
 
     Söz dizisi.
 
-#### Örnek
+**Örnek**
 
  
 
@@ -2509,11 +2508,11 @@ val = TrimSpace(" mystr ")
 
 
 
-### Floor
+### Floor {#floor}
 
 Belirtilen sayıdan, kayan sayıdan ve dizeden küçük veya ona eşit en büyük tamsayı değerini döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 Floor(x float|int|string) int
@@ -2523,7 +2522,7 @@ Floor(x float|int|string) int
 
     Bir sayı, ondalık bir sayı, ve bir söz dizisi.
 
-#### Örnek
+**Örnek**
 
 ```
 val = Floor(5.6) // returns 5
@@ -2531,11 +2530,11 @@ val = Floor(5.6) // returns 5
 
 
 
-### Log
+### Log {#log}
 
 Belirtilen sayının, kayan sayının ve dizenin doğal logaritmasını döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 Log(x float|int|string) float
@@ -2546,7 +2545,7 @@ Log(x float|int|string) float
 
     Bir sayı, ondalık bir sayı, ve bir söz dizisi.
 
-#### Örnek
+**Örnek**
 
 ```
 val = Log(10)
@@ -2554,11 +2553,11 @@ val = Log(10)
 
 
 
-### Log10
+### Log10 {#log10}
 
 Belirtilen sayının, kayan sayının ve dizenin 10 tabanlı logaritmasını döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 Log10(x float|int|string) float
@@ -2569,7 +2568,7 @@ Log10(x float|int|string) float
 
     Bir sayı, ondalık bir sayı, ve bir söz dizisi.
 
-#### Örnek
+**Örnek**
 
  
 
@@ -2579,11 +2578,11 @@ val = Log10(100)
 
 
 
-### Pow
+### Pow {#pow}
 
 Belirtilen tabanı belirtilen güce (xy) döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 Pow(x float|int|string, y float|int|string) float
@@ -2598,18 +2597,18 @@ Pow(x float|int|string, y float|int|string) float
 
     Üs.
 
-#### Örnek
+**Örnek**
 
 ```
 val = Pow(2, 3)
 
 ```
 
-### Round
+### Round {#round}
 
 En yakın tam sayıya yuvarlanmış belirtilen bir sayının değerini döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 Round(x float|int|string) int
@@ -2620,13 +2619,13 @@ Round(x float|int|string) int
 
     Bir sayı.
 
-#### Örnek
+**Örnek**
 
 ```
 val = Round(5.6)
 ```
 
-### Sqrt
+### Sqrt {#sqrt}
 
 Belirtilen sayının karekökünü döndürür.
 
@@ -2639,7 +2638,7 @@ Sqrt(x float|int|string) float
 
     Bir sayı.
 
-#### Örnek
+**Örnek**
 
 ```
 val = Sqrt(225)
@@ -2647,11 +2646,11 @@ val = Sqrt(225)
 
 
 
-### StringToBytes
+### StringToBytes {#stringtobytes}
 
 Bir dizeyi baytlara dönüştürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 StringToBytes(src string) bytes
@@ -2662,7 +2661,7 @@ StringToBytes(src string) bytes
 
     Bir sözdizisi.
 
-#### Örnek
+**Örnek**
 
  
 
@@ -2673,11 +2672,11 @@ b = StringToBytes("my string")
 
 
 
-### BytesToString
+### BytesToString {#bytestostring}
 
 Baytları dizeye dönüştürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 BytesToString(src bytes) string
@@ -2688,7 +2687,7 @@ BytesToString(src bytes) string
 
     Byte.
 
-#### Example
+**Example**
 
 ```
 var s string
@@ -2697,11 +2696,11 @@ s = BytesToString($Bytes)
 
 
 
-### SysParamString
+### SysParamString {#sysparamstring}
 
 Belirtilen platform parametresinin değerini döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 SysParamString(name string) string
@@ -2712,7 +2711,7 @@ SysParamString(name string) string
 
     Parametre adı.
 
-#### Örnek
+**Örnek**
 
 ```
 url = SysParamString(`blockchain_url`)
@@ -2720,11 +2719,11 @@ url = SysParamString(`blockchain_url`)
 
 
 
-### SysParamInt
+### SysParamInt {#sysparamint}
 
 Belirtilen platform parametresinin değerini sayı biçiminde döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 SysParamInt(name string) int
@@ -2735,7 +2734,7 @@ SysParamInt(name string) int
 
     Parametre ismi.
 
-#### Örnek
+**Örnek**
 
 ```
 maxcol = SysParam(`max_columns`)
@@ -2743,12 +2742,12 @@ maxcol = SysParam(`max_columns`)
 
 
 
-### DBUpdateSysParam
+### DBUpdateSysParam {#dbupdatesysparam}
 
 Bir platform parametresinin değerini ve koşullarını günceller. Değeri veya koşulları değiştirmeniz gerekmiyorsa, lütfen ilgili parametrede boş bir dize belirtin.
 
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 DBUpdateSysParam(name, value, conditions string)
@@ -2766,18 +2765,18 @@ DBUpdateSysParam(name, value, conditions string)
 
       Bir parametreyi güncellemek için yeni koşullar.
 
-#### Örnek
+**Örnek**
 
 ```
 DBUpdateSysParam(`fuel_rate`, `400000000000`, ``)
 
 ```
 
-### UpdateNotifications
+### UpdateNotifications {#updatenotifications}
 
 Veritabanından belirtilen bir anahtarın bildirim listesini alır ve elde edilen bildirimi Centrifugo'ya gönderir.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 UpdateNotifications(ecosystemID int, keys int...)
@@ -2792,7 +2791,7 @@ UpdateNotifications(ecosystemID int, keys int...)
 
     Virgülle ayrılmış hesap adresleri listesi. Veya hesap adreslerinin bir listesini belirtmek için bir dizi kullanabilirsiniz.
 
-#### Örnek
+**Örnek**
 
 ```
 UpdateNotifications($ecosystem_id, $key_id, 23345355454, 35545454554)
@@ -2801,11 +2800,11 @@ UpdateNotifications(1, [$key_id, 23345355454, 35545454554])
 
 
 
-### UpdateRolesNotifications
+### UpdateRolesNotifications {#updaterolesnotifications}
 
 Veritabanında belirtilen bir rol kimliğinin tüm hesap adreslerinin bildirim listesini alır ve elde edilen bildirimi Centrifugo'ya gönderir.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 UpdateRolesNotifications(ecosystemID int, roles int ...)
@@ -2820,21 +2819,21 @@ UpdateRolesNotifications(ecosystemID int, roles int ...)
 
     Virgülle ayrılmış rol kimliklerinin listesi. Veya rol kimliklerinin bir listesini belirtmek için bir dizi kullanabilirsiniz.
 
-#### Örnek
+**Örnek**
 
 ```
 UpdateRolesNotifications(1, 1, 2)
 
 ```
 
-### HTTPRequest
+### HTTPRequest {#httprequest}
 
 Belirtilen adrese HTTP istekleri gönderir.
 > Not
 
 > Bu işlev yalnızca CLB sözleşmelerinde kullanılabilir.
 
-#### Syntax
+**Sözdizimi**
 
 ```
 HTTPRequest(url string, method string, heads map, pars map) string
@@ -2856,7 +2855,7 @@ HTTPRequest(url string, method string, heads map, pars map) string
 * **pars**
 
     İstenen parametreler.
-#### Örnek
+**Örnek**
 
 ```
 var ret string
@@ -2871,7 +2870,7 @@ json = JSONToMap(ret)
 
 
 
-### HTTPPostJSON
+### HTTPPostJSON {#httppostjson}
 
 Bu işlev, HTTPRequest işlevine benzer, ancak bir POST isteği gönderir ve istek parametreleri dizelerdir.
 
@@ -2879,7 +2878,7 @@ Bu işlev, HTTPRequest işlevine benzer, ancak bir POST isteği gönderir ve ist
 
 > Bu işlev yalnızca CLB sözleşmelerinde kullanılabilir.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 HTTPPostJSON(url string, heads map, pars string) string
@@ -2898,7 +2897,7 @@ HTTPPostJSON(url string, heads map, pars string) string
 
     Parametreleri bir JSON dizesi olarak isteyin.
 
-####   Örnek
+**Örnek**
 
 ```
 var ret string
@@ -2912,11 +2911,11 @@ json = JSONToMap(ret)
 
 
 
-### BlockTime
+### BlockTime {#blocktime}
 
 Bloğun oluşturma süresini SQL biçiminde döndürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 BlockTime()
@@ -2924,7 +2923,7 @@ BlockTime()
 
 
 
-#### Örnek
+**Örnek**
 
 ```
 var mytime string
@@ -2934,11 +2933,11 @@ DBInsert("mytable", myid, {time: mytime})
 
 
 
-### DateTime
+### DateTime {#datetime}
 
 Unixtime zaman damgasını YYYY-AA-GG SS:MI:SS biçiminde bir dizeye dönüştürür.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 DateTime(unixtime int) string
@@ -2946,18 +2945,18 @@ DateTime(unixtime int) string
 
 
 
-#### Örnek
+**Örnek**
 
 ```
 DateTime(1532325250)
 
 ```
 
-### UnixDateTime
+### UnixDateTime {#unixdatetime}
 
 YYYY-AA-GG SS:MI:SS biçimindeki bir dizeyi bir zaman damgası unixtime'a dönüştürür
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 UnixDateTime(datetime string) int
@@ -2965,7 +2964,7 @@ UnixDateTime(datetime string) int
 
 
 
-#### Örnek
+**Örnek**
 
 ```
 UnixDateTime("2018-07-20 14:23:10")
@@ -2973,13 +2972,13 @@ UnixDateTime("2018-07-20 14:23:10")
 
 
 
-### CreateOBS
+### CreateOBS {#createobs}
 
 Bir alt CLB oluşturur.
 
 Bu işlev yalnızca ana CLB modunda kullanılabilir.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 CreateOBS(OBSName string, DBUser string, DBPassword string, OBSAPIPort int)
@@ -3002,20 +3001,20 @@ CreateOBS(OBSName string, DBUser string, DBPassword string, OBSAPIPort int)
 
     API isteğinin bağlantı noktası.
 
-#### Örnek
+**Örnek**
 
 ```
 CreateOBS("obsname", "obsuser", "obspwd", 8095)
 
 ```
 
-### GetOBSList
+### GetOBSList {#getobslist}
 
 Alt CLB'lerin listesini döndürür.
 
 Bu işlev yalnızca ana CLB modunda kullanılabilir.
 
-#### Sözdizimi
+**Sözdizimi**
 ```
 GetOBSList()
 
@@ -3025,13 +3024,13 @@ GetOBSList()
 
 Anahtarın CLB adı ve değerin işlem durumu olduğu bir nesne dizisi.
 
-### RunOBS
+### RunOBS {#runobs}
 
 CLB'yi çalıştıran bir süreç.
 
 Bu işlev yalnızca ana CLB modunda kullanılabilir.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 RunOBS(OBSName string)
@@ -3044,13 +3043,13 @@ RunOBS(OBSName string)
 
   Yalnızca harf ve rakamlardan oluşabilir ve boşluk simgesi kullanılamaz.
 
-### StopOBS
+### StopOBS {#stopobs}
 
 Belirtilen bir CLB'nin sürecini durdurun.
 
 Bu işlev yalnızca ana CLB modunda kullanılabilir.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 StopOBS(OBSName string)
@@ -3063,13 +3062,13 @@ StopOBS(OBSName string)
 
     Yalnızca harf ve rakamlardan oluşabilir ve boşluk simgesi kullanılamaz.
 
-### RemoveOBS
+### RemoveOBS {#removeobs}
 
 Belirtilen bir CLB'nin sürecini siler.
 
 Bu işlev yalnızca ana CLB modunda kullanılabilir.
 
-#### Sözdizimi
+**Sözdizimi**
 
 ```
 RemoveOBS(OBSName string)
@@ -3082,12 +3081,12 @@ CLB adı.
 
 Yalnızca harf ve rakamlardan oluşabilir ve boşluk simgesi kullanılamaz.
 
-## System Contracts - Sistem sözleşmeleri
+## System Contracts {#system-contracts}
 
 IBax blok zinciri platformu başlatıldığında sistem sözleşmeleri varsayılan olarak oluşturulur. Tüm bu sözleşmeler ilk ekosistemde oluşturuldu. Bu nedenle, onları diğer ekosistemlerden çağırırken tam adlarını belirtmeniz gerekir, örneğin, `@1NewContract`.
 
 
-### NewEcosystem
+### NewEcosystem {#newecosystem}
 
 Bu sözleşme yeni bir ekosistem yaratır. Oluşturulan ekosistemin kimliğini elde etmek için [txstatus](../reference/api2.md#txstatus) içinde döndürülen dosyalanan sonucu alıntılamalısınız.
 
@@ -3095,7 +3094,7 @@ Bu sözleşme yeni bir ekosistem yaratır. Oluşturulan ekosistemin kimliğini e
 Parameters:
   * **Name** string - ekosistemin adı. Daha sonra değiştirilebilir.
 
-### EditEcosystemName
+### EditEcosystemName {#editecosystemname}
 
 Yalnızca ilk ekosistemde bulunan 1_ecosystems tablosundaki ekosistemin adını değiştirir.
 
@@ -3103,7 +3102,7 @@ Parameters:
   * **EcosystemID** int - ekosistem kimliğinin adını değiştirir;
   * **NewName** string - ekosistemin yeni adı.
 
-### NewContract
+### NewContract {#newcontract}
 
 Mevcut ekosistemde yeni bir sözleşme oluşturur.
 
@@ -3113,7 +3112,7 @@ Parameters:
   * **Conditions** dize - sözleşmenin koşullarını değiştirir;
   * **TokenEcosystem** int "isteğe bağlı" - ekosistem kimliği. Sözleşme etkinleştirildiğinde işlemler için hangi jetonun kullanılacağını belirler.
 
-### EditContract
+### EditContract {#editcontract}
 
 Mevcut ekosistemdeki sözleşmeyi düzenler.
 
@@ -3122,21 +3121,21 @@ Parameters:
   * **Value** "isteğe bağlı" dize - sözleşmenin kaynak kodu;
   * **Conditions** "isteğe bağlı" dize - sözleşmenin koşullarını değiştirir.
 
-### BindWallet
+### BindWallet {#bindwallet}
 Sözleşmeyi mevcut ekosistemdeki cüzdan adresine bağlama. Sözleşmeye bağlandıktan sonra sözleşme yürütme ücreti bu adrese ödenecektir.
 
 Parameters:
   * **Id** int - bağlanacak sözleşme kimliği.
   * **WalletId** "isteğe bağlı" dize - sözleşmeye bağlı cüzdan adresi.
 
-### UnbindWallet
+### UnbindWallet {#unbindwallet}
 
 Mevcut ekosistemdeki cüzdan adresinden sözleşmenin kaldırılması. Yalnızca sözleşmeye bağlı adresler serbest bırakılabilir. Sözleşmeyi feshettikten sonra sözleşmeyi yürüten kullanıcılar yürütme ücretini ödeyecektir.
 
 Parameters:
   * **Id** int - bağlı olan sözleşmenin kimliği.
 
-### NewParameter
+### NewParameter {#newparameter}
 
 Mevcut ekosisteme yeni bir ekosistem parametresi eklendi.
 
@@ -3145,7 +3144,7 @@ Parameters:
   * **Value** string - parameter değer;
   * **Conditions** string - parametreyi değiştirme koşulları.
 
-### EditParameter
+### EditParameter {#editparameter}
 
 Mevcut ekosistemdeki mevcut ekosistem parametrelerini değiştirir.
 
@@ -3154,7 +3153,7 @@ Parameters:
   * **Value** string - yeni parametre değeri;
   * **Conditions** string - parametreyi değiştirmek için yeni koşullar.
 
-### NewMenu
+### NewMenu {#newmenu}
 
 Mevcut ekosisteme yeni bir menü ekler.
 
@@ -3164,7 +3163,7 @@ Parameters:
   * **Title** string "opsiyonel" - menu başlığı;
   * **Conditions** string - Menüyü değiştirmek için koşullar.
 
-### EditMenu
+### EditMenu {#editmenu}
 
 Mevcut ekosistemdeki mevcut menüyü değiştirir.
 
@@ -3174,7 +3173,7 @@ Parameters:
   * **Title** string "optional" - yeni menünün başlığı;
   * **Conditions** string "optional" - menüyü değiştirmek için yeni koşullar.
 
-### AppendMenu
+### AppendMenu {#appendmenu}
 
 Kaynak kodu içeriğini mevcut ekosistemdeki mevcut menülere ekler
 
@@ -3182,7 +3181,7 @@ Parameters:
   * **Id** int - menu ID;
   * **Value** string - kaynak kodu eklenecektir.
 
-### NewPage
+### NewPage {#newpage}
 
 Mevcut ekosisteme yeni bir sayfa ekler.
 
@@ -3195,7 +3194,7 @@ Parameters:
 
   * **ValidateMode** int "optional" - sayfa geçerlilik denetimi modu. Bu parametrenin değeri 0 ise sayfa yüklendiğinde kontrol edilecektir; veya yüklendiğinde kontrol edilir veya bu parametrenin değeri 1 ise sayfadan çıkılır.
 
-### EditPage
+### EditPage {#editpage}
 
 Mevcut ekosistemdeki mevcut sayfaları değiştirir.
 
@@ -3207,7 +3206,7 @@ Parameters:
   * **ValidateCount** int "optional" - sayfa doğrulaması için gereken düğüm sayısı. Bu parametre belirtilmezse min_page_validate_count ekosistem parametre değeri kullanılır. Bu parametrenin değeri min_page_validate_count değerinden küçük ve max_page_validate_count değerinden büyük olamaz;
   * **ValidateMode** int "optional" - sayfa geçerlilik denetimi modu. Bu parametrenin değeri 0 ise sayfa yüklendiğinde kontrol edilecektir; veya yüklendiğinde kontrol edilir veya bu parametrenin değeri 1 ise sayfadan çıkılır.
 
-### AppendPage
+### AppendPage {#appendpage}
 
 Kaynak içeriği mevcut ekosistemdeki mevcut sayfalara ekler.
 
@@ -3215,7 +3214,7 @@ Parameters:
 * **Id** int - Değiştirilecek sayfanın kimliği;
 * **Value** string - eklenecek kaynak kodu.
 
-### NewBlock
+### NewBlock {#newblock}
 
 Mevcut ekosisteme bir sayfa modülü ekler.
 
@@ -3224,7 +3223,7 @@ Parameters:
   * **Value** string - modülün kaynak kodları;
   * **Conditions** string - modülü değiştirme koşulları.
 
-### EditBlock
+### EditBlock {#editblock}
 
 Mevcut ekosistemdeki mevcut sayfa modüllerini değiştirir.
 
@@ -3233,7 +3232,7 @@ Parameters:
   * Value string - yeni modülün kaynak kodu;
   * Conditions string - modülü değiştirmek için yeni koşullar.e.
 
-### NewTable
+### NewTable {#newtable}
 
 Mevcut ekosisteme yeni bir tablo ekler.
 
@@ -3252,7 +3251,7 @@ Parameters:
     * **update** - giriş verilerini değiştirme izni;
     * **read** - giriş verilerini okuma izni.
 
-### EditTable
+### EditTable {#edittable}
 
 Mevcut ekosistemdeki bir tablonun erişim izinlerini değiştirir.
 
@@ -3263,7 +3262,7 @@ Parameters:
   * **ReadPerm** string - tablodaki girdileri okuma izni;
   * **NewColumnPerm** string - yeni bir sütun oluşturma izni;
 
-### NewColumn
+### NewColumn {#newcolumn}
 
 Mevcut ekosistem tablosuna yeni bir alan ekler.
 
@@ -3274,7 +3273,7 @@ Parameters:
   * **UpdatePerm** string -sütundaki değeri değiştirme izni;
   * **ReadPerm** string - sütundaki değeri okuma izni.
 
-### EditColumn
+### EditColumn {#editcolumn}
 
 Geçerli ekosistemde belirtilen bir tablo alanının iznini değiştirir.
 
@@ -3284,7 +3283,7 @@ Parameters:
   * **UpdatePerm** string - sütundaki değeri değiştirmek için yeni izin;
   * **ReadPerm** string - sütundaki değeri okumak için yeni izin.
 
-### NewLang
+### NewLang {#newlang}
 
 Mevcut ekosisteme dil kaynakları ekler ve bunu yapma izni, ekosistem parametrelerinin change_language parametresinde ayarlanır.
 
@@ -3293,7 +3292,7 @@ Parameters:
   * **Name** string - Latin karakterleriyle dil kaynaklarının adı;
   * **Trans** string - anahtar olarak iki karakterlik bir dil kodu ve değer olarak çevrilmiş dize ile JSON biçiminde dize. Örneğin, `{"en": "English text", "zh": "Chinese text"}`.
 
-### EditLang
+### EditLang {#editlang}
 
 Geçerli ekosistemdeki dil kaynaklarını değiştirir ve bunu yapma izni, ekosistem parametresinin change_language parametresinde ayarlanır.
 
@@ -3302,7 +3301,7 @@ Parameters:
   * **Id** int - dil kaynakları ID.
   * **Trans** - anahtar olarak iki karakterlik bir dil kodu ve değer olarak çevrilmiş dize ile JSON biçiminde dize. Örneğin, `{"en": "English text", "zh": "Chinese text"}`.
 
-### Import
+### Import {#import}
 
 Bir uygulamayı mevcut ekosisteme aktarır ve [ImportUpload](#importupload) sözleşmesinden yüklenen verileri içe aktarır.
 
@@ -3310,14 +3309,14 @@ Parameters:
 
   * **Data** string - ekosistem tarafından dışa aktarılan bir dosyadan gelen metin biçiminde içe aktarılan veriler.
 
-### ImportUpload
+### ImportUpload {#importupload}
 
 Sonraki içe aktarma için geçerli ekosistemin buffer_data tablosuna harici bir uygulama dosyası yükler.
 
 Parameters:
   * **InputFile** file - mevcut ekosistemin buffer_data tablosuna yazılmış bir dosya.
 
-### NewAppParam
+### NewAppParam {#newappparam}
 
 Mevcut ekosisteme yeni uygulama parametreleri ekler.
 
@@ -3327,7 +3326,7 @@ Parameters:
   * **Value** string - parametre değeri;
   * **Conditions** string - parametreyi değiştirme izni.
 
-### EditAppParam
+### EditAppParam {#editappparam}
 
 Mevcut ekosistemdeki mevcut uygulama parametrelerini değiştirir.
 
@@ -3336,7 +3335,7 @@ Parameters:
   * **Value** string "optional" - yeni parametre değeri;
   * **Conditions** string "optional" - parametreyi değiştirmek için yeni izinler.
 
-### NewDelayedContract
+### NewDelayedContract {#newdelayedcontract}
 
 Gecikmeli sözleşme zamanlayıcı arka plan programına yeni bir görev ekler.
 
@@ -3349,7 +3348,7 @@ Parameters:
   * **BlockID** int "optional" - sözleşmenin yürütülmesi gereken blok kimliği. Belirtilmezse, "geçerli blok kimliği" + EveryBlock eklenerek otomatik olarak hesaplanacaktır;
   * **Limit** int "optional" - maksimum görev yürütme sayısı. Belirtilmezse, görev sınırsız bir süre için yürütülecektir.
 
-### EditDelayedContract
+### EditDelayedContract {#editdelayedcontract}
 
 Gecikmeli sözleşmeler zamanlayıcı arka plan programında bir görevi değiştirir.
 
@@ -3363,7 +3362,7 @@ Parameters:
   * **Deleted** int "optional" -Görev değiştirme.`1` değeri görevi devre dışı bırakacaktır. `0` değeri, görevi etkinleştirecektir.
 
 
-### UploadBinary
+### UploadBinary {#uploadbinary}
 
 X_binaries tablosunda statik bir dosya ekler veya üzerine yazar. HTTP API aracılığıyla bir sözleşmeyi çağırırken, istek 'multipart/form-data' formatında olmalıdır; DataMimeType parametresi, form verileriyle birlikte kullanılacaktır.
 

@@ -1,13 +1,13 @@
-# Server Configuration File
+# Server Configuration File {#server-configuration-file}
 
 In this section, we will introduce parameters in the server configuration file. 
-## Introduction to the server configuration file
+## Introduction to the server configuration file {#introduction-to-the-server-configuration-file}
 
 The server configuration file defines the node configuration of IBAX.
-## Location
+## Location {#location}
 
 This file is located in the working directory of the server and is named `config.toml`.
-## Sections
+## Sections {#sections}
 
 The configuration file consists the following sections:
 
@@ -47,7 +47,7 @@ It defines parameters of the log service Log.
 
 It defines parameters of the token circulation service TokenMovement.
 
-## An example configuration file
+## An example configuration file {#an-example-configuration-file}
 ```
 PidFilePath = "/IBAX-data/go-ibax.pid"
 LockFilePath = "/IBAX-data/go-ibax.lock"

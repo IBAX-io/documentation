@@ -16,7 +16,7 @@ features:
 - title: カスタマイズ可能なコンセンサスメカニズム
 - title: さまざまな暗号化のニーズを満たすためのフロントエンドとバックエンドの分離
 
-footer: © Copyright 2019 - 2023, IBAX Updated Date 06/11/2023 | Built with VuePress
+footer: © Copyright 2019 - 2023, IBAX Updated Date 06/20/2023 | Built with VuePress
 ---
 
 

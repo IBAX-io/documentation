@@ -1,41 +1,79 @@
+const fixSlugify = function (str) {
+    const separator = '-';
+    const preserve = ['#'];
+    const lowercase = true;
+    const pinyin = false;
+
+    let slug = '';
+    const index = str.lastIndexOf('{#');
+    if (index > -1) {
+        slug = str.slice(index + 2, -1);
+    }
+
+    if (lowercase) {
+        slug = slug.toLowerCase();
+    }
+
+    if (pinyin) {
+        // Do pinyin conversion
+    }
+
+    if (preserve.length) {
+        const regexString = preserve.join('|');
+        const preserveRegex = new RegExp(`(${regexString})`, 'g');
+        slug = slug.replace(preserveRegex, (match) => {
+            return encodeURIComponent(match);
+        });
+    }
+
+    slug = encodeURIComponent(slug);
+    return slug;
+}
+
 module.exports = {
-	head: [
+    head: [
         ["link", {rel: "apple-touch-icon", size: "180x180", href: "/apple-touch-icon.png"}],
         ["link", {rel: "icon", type: "image/png", size: "32x32", href: "/favicon-32x32.png"}],
         ["link", {rel: "icon", type: "image/png", size: "16x16", href: "/favicon-16x16.png"}],
-		["link", {rel: "mask-icon", color: "#5bbad5", href: "/safari-pinned-tab.svg"}],
-		["link", {rel: "manifest", href: "/manifest.webmanifest"}]
+        ["link", {rel: "mask-icon", color: "#5bbad5", href: "/safari-pinned-tab.svg"}],
+        ["link", {rel: "manifest", href: "/manifest.webmanifest"}]
     ],
-	plugins: [
+    markdown: {
+        toc: {slugify: fixSlugify},
+        slugify: fixSlugify,
+    },
+    plugins: [
         '@vuepress/back-to-top',
+        'vuepress-plugin-smooth-scroll',
     ],
+    smoothScroll: true,
     locales: {
         '/': {
             lang: 'en-US',
             title: 'IBAX Documentation',
             description: 'A Decentralized Commercial Cross-Chain infrastructure Network',
         },
-		'/de/': {
+        '/de/': {
             lang: 'de',
             title: 'IBAX Dokumentation',
             description: 'Ein dezentralisiertes kommerzielles kettenübergreifendes Infrastrukturnetzwerk',
         },
-		'/es/': {
+        '/es/': {
             lang: 'es',
             title: 'IBAX Documentación',
             description: 'Una red de infraestructura comercial descentralizada entre cadenas',
         },
-		'/fr/': {
+        '/fr/': {
             lang: 'fr',
             title: 'IBAX Documentation',
             description: 'A Decentralized Commercial Cross-Chain infrastructure Network',
         },
-		'/it/': {
+        '/it/': {
             lang: 'it',
             title: 'IBAX Documentazione',
             description: 'A Decentralized Commercial Cross-Chain infrastructure Network',
         },
-		'/ja/': {
+        '/ja/': {
             lang: 'ja',
             title: 'IBAX ドキュメンテーション',
             description: 'A Decentralized Commercial Cross-Chain infrastructure Network',
@@ -45,7 +83,7 @@ module.exports = {
             title: 'IBAX 文档',
             description: 'A Decentralized Commercial Cross-Chain infrastructure Network',
         },
-		'/tr-TR/': {
+        '/tr-TR/': {
             lang: 'tr-TR',
             title: 'IBAX Belgeleri',
             description: 'A Decentralized Commercial Cross-Chain infrastructure Network',
@@ -66,27 +104,27 @@ module.exports = {
                 editLinkText: 'Edit this page on GitHub',
                 lastUpdated: 'Last Updated',
                 nav: [
-				{text: 'Concept', link: '/concepts/about-the-platform',},
-                    {text: 'Tutorial', link: '/tutorials/app_tutorial',},
+                    {text: 'Concept', link: '/concepts/about-the-platform'},
+                    {text: 'Tutorial', link: '/tutorials/app_tutorial'},
                     {text: 'Guide', link: '/topics/script'},
-                    {text: 'Reference', link: '/reference/api2',},
+                    {text: 'Reference', link: '/reference/api2'},
                     {text: 'Deployment', link: '/howtos/deployment'},
                 ],
                 sidebar: {
-                    '/concepts/': [	
+                    '/concepts/': [
                         {
                             title: 'Concept',
-                            collapsable: false,
-                            children: [							
-								'about-the-platform',
+                            sidebarDepth: 2,
+                            children: [
+                                'about-the-platform',
                                 'blockchain-layers',
-								'consensus',
-								'thesaurus',
+                                'consensus',
+                                'thesaurus',
                             ],
                         },
-						{
+                        {
                             title: 'Common problem',
-                            collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'faq',
                             ],
@@ -96,6 +134,7 @@ module.exports = {
                         {
                             title: 'Tutorial',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'app_tutorial',
                                 'tutorial',
@@ -106,31 +145,34 @@ module.exports = {
                         {
                             title: 'Guide',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
-								'script',
+                                'script',
                                 'templates2',
-								'vm',
-								'daemons',
+                                'vm',
+                                'daemons',
                             ],
                         },
                     ],
-					'/reference/': [
+                    '/reference/': [
                         {
                             title: 'Reference',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'api2',
-								'platform-parameters',
-								'backend-config',
-								'desync_monitor',
-								"json-rpc",
+                                'platform-parameters',
+                                'backend-config',
+                                'desync_monitor',
+                                "json-rpc",
                             ],
                         },
                     ],
-					'/howtos/': [
+                    '/howtos/': [
                         {
                             title: 'Deployment',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'deployment',
                             ]
@@ -140,7 +182,7 @@ module.exports = {
                 },
             },
             '/zh-CN/': {
-				selectText: '选择语言',
+                selectText: '选择语言',
                 label: '简体中文',
                 ariaLabel: '选择语言',
                 editLinkText: '在 GitHub 上编辑此页',
@@ -154,20 +196,20 @@ module.exports = {
                     {text: '部署', link: '/zh-CN/howtos/deployment'},
                 ],
                 sidebar: {
-                    '/zh-CN/concepts/': [	
+                    '/zh-CN/concepts/': [
                         {
                             title: '概念',
-                            collapsable: false,
-                            children: [							
-								'about-the-platform',
+                            sidebarDepth: 2,
+                            children: [
+                                'about-the-platform',
                                 'blockchain-layers',
-								'consensus',
-								'thesaurus',
+                                'consensus',
+                                'thesaurus',
                             ],
                         },
-						{
+                        {
                             title: '常见问题',
-                            collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'faq',
                             ],
@@ -177,6 +219,7 @@ module.exports = {
                         {
                             title: '教程',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'app_tutorial',
                                 'tutorial',
@@ -187,31 +230,34 @@ module.exports = {
                         {
                             title: '指导',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
-								'script',
+                                'script',
                                 'templates2',
-								'vm',
-								'daemons',
+                                'vm',
+                                'daemons',
                             ],
                         },
                     ],
-					'/zh-CN/reference/': [
+                    '/zh-CN/reference/': [
                         {
                             title: '参考',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'api2',
-								'platform-parameters',
-								'backend-config',
-								'desync_monitor',
-								"json-rpc",
+                                'platform-parameters',
+                                'backend-config',
+                                'desync_monitor',
+                                "json-rpc",
                             ],
                         },
                     ],
-					'/zh-CN/howtos/': [
+                    '/zh-CN/howtos/': [
                         {
                             title: '部署',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'deployment',
                             ]
@@ -220,8 +266,8 @@ module.exports = {
                     '/zh-CN/': 'auto',
                 },
             },
-			'/de/': {
-				selectText: 'Sprachen',
+            '/de/': {
+                selectText: 'Sprachen',
                 label: 'Deutsch',
                 ariaLabel: 'Sprache auswählen',
                 editLinkText: 'Bearbeiten Sie diese Seite auf GitHub',
@@ -234,20 +280,20 @@ module.exports = {
                     {text: 'Einsatz', link: '/de/howtos/deployment'},
                 ],
                 sidebar: {
-                    '/de/concepts/': [	
+                    '/de/concepts/': [
                         {
                             title: 'Konzept',
-                            collapsable: false,
-                            children: [							
-								'about-the-platform',
+                            sidebarDepth: 2,
+                            children: [
+                                'about-the-platform',
                                 'blockchain-layers',
-								'consensus',
-								'thesaurus',
+                                'consensus',
+                                'thesaurus',
                             ],
                         },
-						{
+                        {
                             title: 'Häufiges problem',
-                            collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'faq',
                             ],
@@ -257,6 +303,7 @@ module.exports = {
                         {
                             title: 'Lernprogramm',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'app_tutorial',
                                 'tutorial',
@@ -267,31 +314,34 @@ module.exports = {
                         {
                             title: 'Handbuch',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'templates2',
-								'vm',
-								'script',
-								'daemons',
+                                'vm',
+                                'script',
+                                'daemons',
                             ],
                         },
                     ],
-					'/de/reference/': [
+                    '/de/reference/': [
                         {
                             title: 'Referenz',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'api2',
-								'platform-parameters',
-								'backend-config',
-								'desync_monitor',
-								"json-rpc",
+                                'platform-parameters',
+                                'backend-config',
+                                'desync_monitor',
+                                "json-rpc",
                             ],
                         },
                     ],
-					'/de/howtos/': [
+                    '/de/howtos/': [
                         {
                             title: 'Einsatz',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'deployment',
                             ]
@@ -300,8 +350,8 @@ module.exports = {
                     '/de/': 'auto',
                 },
             },
-			'/es/': {
-				selectText: 'Idiomas',
+            '/es/': {
+                selectText: 'Idiomas',
                 label: 'Español',
                 ariaLabel: 'Seleccione el idioma',
                 editLinkText: 'Edita esta página en GitHub',
@@ -314,20 +364,20 @@ module.exports = {
                     {text: 'Despliegue', link: '/es/howtos/deployment'},
                 ],
                 sidebar: {
-                    '/es/concepts/': [	
+                    '/es/concepts/': [
                         {
                             title: 'Concepto',
-                            collapsable: false,
-                            children: [							
-								'about-the-platform',
+                            sidebarDepth: 2,
+                            children: [
+                                'about-the-platform',
                                 'blockchain-layers',
-								'consensus',
-								'thesaurus',
+                                'consensus',
+                                'thesaurus',
                             ],
                         },
-						{
+                        {
                             title: 'Problema comun',
-                            collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'faq',
                             ],
@@ -337,6 +387,7 @@ module.exports = {
                         {
                             title: 'Tutorial',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'app_tutorial',
                                 'tutorial',
@@ -347,31 +398,34 @@ module.exports = {
                         {
                             title: 'Guía',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
-								'script',
+                                'script',
                                 'templates2',
-								'vm',
-								'daemons',
+                                'vm',
+                                'daemons',
                             ],
                         },
                     ],
-					'/es/reference/': [
+                    '/es/reference/': [
                         {
                             title: 'Referencia',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'api2',
-								'platform-parameters',
-								'backend-config',
-								'desync_monitor',
-								"json-rpc",
+                                'platform-parameters',
+                                'backend-config',
+                                'desync_monitor',
+                                "json-rpc",
                             ],
                         },
                     ],
-					'/es/howtos/': [
+                    '/es/howtos/': [
                         {
                             title: 'Despliegue',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'deployment',
                             ]
@@ -380,8 +434,8 @@ module.exports = {
                     '/es/': 'auto',
                 },
             },
-			'/fr/': {
-				selectText: 'Langages',
+            '/fr/': {
+                selectText: 'Langages',
                 label: 'Français',
                 ariaLabel: 'Choisir la langue',
                 editLinkText: 'Modifier cette page sur GitHub',
@@ -394,20 +448,20 @@ module.exports = {
                     {text: 'Déploiement', link: '/fr/howtos/deployment'},
                 ],
                 sidebar: {
-                    '/fr/concepts/': [	
+                    '/fr/concepts/': [
                         {
                             title: 'Concept',
-                            collapsable: false,
-                            children: [							
-								'about-the-platform',
+                            sidebarDepth: 2,
+                            children: [
+                                'about-the-platform',
                                 'blockchain-layers',
-								'consensus',
-								'thesaurus',
+                                'consensus',
+                                'thesaurus',
                             ],
                         },
-						{
+                        {
                             title: 'Problème commun',
-                            collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'faq',
                             ],
@@ -417,6 +471,7 @@ module.exports = {
                         {
                             title: 'Didacticiel',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'app_tutorial',
                                 'tutorial',
@@ -427,31 +482,34 @@ module.exports = {
                         {
                             title: 'Guider',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
-								'script',
+                                'script',
                                 'templates2',
-								'vm',
-								'daemons',
+                                'vm',
+                                'daemons',
                             ],
                         },
                     ],
-					'/fr/reference/': [
+                    '/fr/reference/': [
                         {
                             title: 'Référence',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'api2',
-								'platform-parameters',
-								'backend-config',
-								'desync_monitor',
-								"json-rpc",
+                                'platform-parameters',
+                                'backend-config',
+                                'desync_monitor',
+                                "json-rpc",
                             ],
                         },
                     ],
-					'/fr/howtos/': [
+                    '/fr/howtos/': [
                         {
                             title: 'Déploiement',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'deployment',
                             ]
@@ -460,8 +518,8 @@ module.exports = {
                     '/fr/': 'auto',
                 },
             },
-			'/ja/': {
-				selectText: '言語',
+            '/ja/': {
+                selectText: '言語',
                 label: '日本語',
                 ariaLabel: '言語を選択する',
                 editLinkText: 'GitHubでこのページを編集する',
@@ -474,20 +532,20 @@ module.exports = {
                     {text: '展開', link: '/ja/howtos/deployment'},
                 ],
                 sidebar: {
-                    '/ja/concepts/': [	
+                    '/ja/concepts/': [
                         {
                             title: 'コンセプト',
-                            collapsable: false,
-                            children: [							
-								'about-the-platform',
+                            sidebarDepth: 2,
+                            children: [
+                                'about-the-platform',
                                 'blockchain-layers',
-								'consensus',
-								'thesaurus',
+                                'consensus',
+                                'thesaurus',
                             ],
                         },
-						{
+                        {
                             title: '一般的な問題',
-                            collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'faq',
                             ],
@@ -497,6 +555,7 @@ module.exports = {
                         {
                             title: 'チュートリアル',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'app_tutorial',
                                 'tutorial',
@@ -507,31 +566,34 @@ module.exports = {
                         {
                             title: 'ガイド',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
-								'script',
+                                'script',
                                 'templates2',
-								'vm',
-								'daemons',
+                                'vm',
+                                'daemons',
                             ],
                         },
                     ],
-					'/ja/reference/': [
+                    '/ja/reference/': [
                         {
                             title: 'リファレンス',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'api2',
-								'platform-parameters',
-								'backend-config',
-								'desync_monitor',
-								"json-rpc",
+                                'platform-parameters',
+                                'backend-config',
+                                'desync_monitor',
+                                "json-rpc",
                             ],
                         },
                     ],
-					'/ja/howtos/': [
+                    '/ja/howtos/': [
                         {
                             title: '展開',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'deployment',
                             ]
@@ -540,8 +602,8 @@ module.exports = {
                     '/ja/': 'auto',
                 },
             },
-			'/it/': {
-				selectText: 'Le lingue',
+            '/it/': {
+                selectText: 'Le lingue',
                 label: 'Italiano',
                 ariaLabel: 'Seleziona la lingua',
                 editLinkText: 'Modifica questa pagina su GitHub',
@@ -554,20 +616,20 @@ module.exports = {
                     {text: 'Distribuzione', link: '/it/howtos/deployment'},
                 ],
                 sidebar: {
-                    '/it/concepts/': [	
+                    '/it/concepts/': [
                         {
                             title: 'Concetto',
-                            collapsable: false,
-                            children: [							
-								'about-the-platform',
+                            sidebarDepth: 2,
+                            children: [
+                                'about-the-platform',
                                 'blockchain-layers',
-								'consensus',
-								'thesaurus',
+                                'consensus',
+                                'thesaurus',
                             ],
                         },
-						{
+                        {
                             title: 'Problema comune',
-                            collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'faq',
                             ],
@@ -577,6 +639,7 @@ module.exports = {
                         {
                             title: 'Tutorial',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'app_tutorial',
                                 'tutorial',
@@ -587,31 +650,34 @@ module.exports = {
                         {
                             title: 'Guida',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
-								'script',
+                                'script',
                                 'templates2',
-								'vm',
-								'daemons',
+                                'vm',
+                                'daemons',
                             ],
                         },
                     ],
-					'/it/reference/': [
+                    '/it/reference/': [
                         {
                             title: 'Riferimento',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'api2',
-								'platform-parameters',
-								'backend-config',
-								'desync_monitor',
-								"json-rpc",
+                                'platform-parameters',
+                                'backend-config',
+                                'desync_monitor',
+                                "json-rpc",
                             ],
                         },
                     ],
-					'/it/howtos/': [
+                    '/it/howtos/': [
                         {
                             title: 'Distribuzione',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'deployment',
                             ]
@@ -620,8 +686,8 @@ module.exports = {
                     '/it/': 'auto',
                 },
             },
-			'/tr-TR/': {
-				selectText: 'Bir dil seçin',
+            '/tr-TR/': {
+                selectText: 'Bir dil seçin',
                 label: 'Türkçe',
                 ariaLabel: 'Bir dil seçin',
                 editLinkText: 'Bu sayfayı GitHub da düzenleyin',
@@ -635,20 +701,20 @@ module.exports = {
                     {text: 'dağıtmak', link: '/tr-TR/howtos/deployment'},
                 ],
                 sidebar: {
-                    '/tr-TR/concepts/': [	
+                    '/tr-TR/concepts/': [
                         {
                             title: 'Genel Bakış',
-                            collapsable: false,
-                            children: [							
-								'about-the-platform',
+                            sidebarDepth: 2,
+                            children: [
+                                'about-the-platform',
                                 'blockchain-layers',
-								'consensus',
-								'thesaurus',
+                                'consensus',
+                                'thesaurus',
                             ],
                         },
-						{
+                        {
                             title: 'SSS',
-                            collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'faq',
                             ],
@@ -658,6 +724,7 @@ module.exports = {
                         {
                             title: 'öğretici',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'app_tutorial',
                                 'tutorial',
@@ -668,31 +735,34 @@ module.exports = {
                         {
                             title: 'kılavuz',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
-								'script',
+                                'script',
                                 'templates2',
-								'vm',
-								'daemons',
+                                'vm',
+                                'daemons',
                             ],
                         },
                     ],
-					'/tr-TR/reference/': [
+                    '/tr-TR/reference/': [
                         {
                             title: 'başvurmak',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'api2',
-								'platform-parameters',
-								'backend-config',
-								'desync_monitor',
-								"json-rpc",
+                                'platform-parameters',
+                                'backend-config',
+                                'desync_monitor',
+                                "json-rpc",
                             ],
                         },
                     ],
-					'/tr-TR/howtos/': [
+                    '/tr-TR/howtos/': [
                         {
                             title: 'dağıtmak',
                             collapsable: false,
+                            sidebarDepth: 2,
                             children: [
                                 'deployment',
                             ]

@@ -1,25 +1,25 @@
 
-# スマートコントラクト
-   - [スマートコントラクト構造](#スマートコントラクト構造)
-     - [データセクション](#データセクション)
-     - [条件セクション](#条件セクション)
-     - [アクションセクション](#アクションセクション)
-   - [変数](#変数)
-   - [ネストされたコントラクト](#ネストされたコントラクト)
-   - [ファイルアップロード](#ファイルアップロード)
-   - [JSON形式のクエリ](#JSON形式のクエリ)
-   - [日付と時刻の操作を伴うクエリ](#日付と時刻の操作を伴うクエリ)
-   - [Needleスマートコントラクト言語](#Needleスマートコントラクト言語)
-    - [基本要素と構造](#基本要素と構造)
-    - [データ型と変数](#データ型と変数)
-    - [配列](#配列)
-    - [IfおよびWhileステートメント](#IfおよびWhileステートメント)
-   - [関数](#関数)
-    - [関数宣言](#関数宣言)
-     - [可変長パラメータ](#可変長パラメータ)
-     - [オプションパラメータ](#オプションパラメータ)
-   - [Needle機能分類](#Needle機能分類)
-   - [Needle関数リファレンス](#Needle関数リファレンス)
+# スマートコントラクト {#smart-contracts}
+   - [スマートコントラクト構造](#contract-structure)
+     - [データセクション](#data-section)
+     - [条件セクション](#conditions-section)
+     - [アクションセクション](#action-section)
+   - [変数](#variables)
+   - [ネストされたコントラクト](#nested-contracts)
+   - [ファイルアップロード](#file-upload)
+   - [JSON形式のクエリ](#queries-in-json-format)
+   - [日付と時刻の操作を伴うクエリ](#queries-with-date-and-time-operations)
+   - [Needleスマートコントラクト言語](#needle-contract-language)
+    - [基本要素と構造](#basic-elements-and-structure)
+    - [データ型と変数](#data-types-and-variables)
+    - [配列](#array)
+    - [IfおよびWhileステートメント](#if-and-while-statements)
+   - [関数](#functions)
+    - [関数宣言](#function-declaration)
+     - [可変長パラメータ](#variable-length-parameters)
+     - [オプションパラメータ](#optional-parameters)
+   - [Needle機能分類](#needle-functions-classification)
+   - [Needle関数リファレンス](#needle-functions-reference)
     - [AppParam](#appparam)
     - [DBFind](#dbfind)
     - [DBRow](#dbrow)
@@ -103,7 +103,7 @@
     - [RunOBS](#runobs)
     - [StopOBS](#stopobs)
     - [RemoveOBS](#removeobs)
-  - [システムスマートコントラクト](#システムスマートコントラクト)
+  - [システムスマートコントラクト](#system-contracts)
     - [NewEcosystem](#newecosystem)
     - [EditEcosystemName](#editecosystemname)
     - [NewContract](#newcontract)
@@ -137,7 +137,7 @@
 
 スマート コントラクト (以下、コントラクトと呼びます) は、アプリケーションの基本要素の 1 つです。 ユーザーによるページ上のコントラクトの実装は、通常、データベース エントリの更新または作成を目的とした 1 回の操作です。 アプリケーションのすべてのデータ操作はコントラクト システムを形成し、これらのコントラクトはデータベースまたはコントラクト コンテンツ関数を通じて相互に対話します。
 
-## Cスマートコントラクト構造
+## Cスマートコントラクト構造 {#contract-structure}
 
 キーワード `contract` を使用してコントラクトを宣言し、その後にコントラクト名を続けます。コントラクトの内容は中括弧で囲む必要があります。 コントラクトは主に次の 3 つのセクションで構成されます。
 
@@ -164,7 +164,7 @@ contract MyContract {
 
 
 
-### データセクション
+### データセクション {#data-section}
 
 `data`セクションでは、コントラクトデータ入力と受信したフォーム パラメーターについて説明します。
 
@@ -190,7 +190,7 @@ contract my {
 
 
 
-### 条件セクション
+### 条件セクション {#conditions-section}
 
 `conditions`セクションでは、受け取ったデータの検証が説明されています。
 
@@ -208,7 +208,7 @@ if idexist > 0 {
 }
 ```
 
-### アクションセクション
+### アクションセクション {#action-section}
 
 `action`セクションでは、コントラクトの主なコードが説明されており、他のデータを取得し、結果の値をテーブルに記録します。例えば:
 
@@ -221,7 +221,7 @@ DBUpdate("keys", $recipient, {"+amount": $amount, "pub": $Pub})
 
 
 
-## 変数
+## 変数 {#variables}
 
 データセクションで宣言された変数は、変数名の後に`$`記号を付けて他のコントラクトセクションに渡されます。`$`記号はデータセクション内にない他の変数を宣言するためにも使用できますが、これらはこのコントラクトと、このコントラクトにネストされるすべてのコントラクトのグローバル変数と見なされます。
 
@@ -268,11 +268,11 @@ contract my {
 }
 ```
 
-## ネストされたコントラクト
+## ネストされたコントラクト {#nested-contracts}
 
 コントラクトの`conditions`セクションと`action`セクションでは、コントラクトをネストすることができます。ネストされたコントラクトは直接呼び出すことができ、コントラクトのパラメータはコントラクト名の後にかっこ内で指定されます。例えば、`@1NameContract(Params)`といった形式です。また、[CallContract](#callcontract)関数を使用してネストされたコントラクトを呼び出すこともできます。
 
-## ファイルアップロード
+## ファイルアップロード {#file-upload}
 
 `multipart/form-data` 形式のフォームを使用してファイルをアップロードするには、コントラクトのデータ型が `file` である必要があります。
 
@@ -287,7 +287,7 @@ contract Upload {
 
 [UploadBinary](#uploadbinary) コントラクトは、ファイルのアップロードと保存に使用されます。 ページエディタのLogicor言語関数[バイナリ](templates2.md#binary)を使用すると、ファイルのダウンロードリンクを取得できます。
 
-## JSON形式のクエリ
+## JSON形式のクエリ {#queries-in-json-format}
 
 スマートコントラクト言語では、フィールドタイプとして**JSON**を指定することができます。エントリーフィールドを処理するためには、**columnname->fieldname**の構文を使用します。取得した値は**columnname.fieldname**に記録されます。上記の構文は、[DBFind](#dbfind)関数のColumns、One、Whereで使用することができます。
 
@@ -304,7 +304,7 @@ val = DBFind("mytable").WhereId($Id).One("doc->check")
 
 
 
-## 日付と時刻の操作を伴うクエリ
+## 日付と時刻の操作を伴うクエリ {#queries-with-date-and-time-operations}
 
 スマート コントラクト言語関数を使用して日時を直接クエリしたり更新したりすることはできませんが、以下の例のように Where ステートメントで PostgreSQL の関数と機能を使用することができます。 たとえば、フィールド date_column を現在時刻と比較する必要があります。 date_column がタイムスタンプ型の場合、式は `date_column <NOW()` でなければなりません。 date_column が Unix 型の場合、式は `to_timestamp(date_column)> NOW()` である必要があります。
 
@@ -319,7 +319,7 @@ Where("date_column <NOW() - 30 * interval '1 day'")
 * [DateTime](#datetime)
 * [UnixDateTime](#unixdatetime)
 
-## Needleスマートコントラクト言語
+## Needleスマートコントラクト言語 {#needle-contract-language}
 
 コントラクト言語には、データ アルゴリズム処理とデータベース操作を実現できる一連の関数、演算子、構造が含まれています。
 
@@ -327,9 +327,9 @@ Where("date_column <NOW() - 30 * interval '1 day'")
 
 ブロックチェーン内のデータ操作は、最新バージョンのコントラクトに従って実行されます。
 
-### 基本要素と構造
+### 基本要素と構造 {#basic-elements-and-structure}
 
-### データ型と変数
+### データ型と変数 {#data-types-and-variables}
 
 データ型は変数ごとに定義する必要があります。 通常、データ型は自動的に変換されます。 次のデータ型を使用できます。
 
@@ -367,7 +367,7 @@ func myfunc( val int) int {
 
 
 
-### 配列
+### 配列 {#array}
 
 コントラクト言語は、次の 2 つの配列タイプをサポートします。
 * `Array` - 0 から始まるインデックスを持つ配列。
@@ -423,7 +423,7 @@ val = my["param"]
 MyFunc({key: val, sub: {name: "My name", "color": "Red"}})
 ```
 
-### IfおよびWhileステートメント
+### IfおよびWhileステートメント {#if-and-while-statements}
 
 以下のコントラクト言語の例では、コントラクトや関数内で使用できる標準の**if**条件文と**while**ループがサポートされています。これらの文は相互にネストすることができます。
 
@@ -463,11 +463,11 @@ while true {
 
 文字列型とバイト型の変数は、条件文として使用することができます。型の長さがゼロより大きい場合、条件は真となります。そうでなければ偽です。
 
-## 関数
+## 関数 {#functions}
 
 関数は、コントラクトの [data section](#data-section) で受け取ったデータに対していくつかの操作を実行できます。つまり、データベースからのデータの読み取りと書き込み、値の型の変換、コントラクト間の対話の確立などです。
 
-### 関数宣言
+### 関数宣言 {#function-declaration}
 
 func キーワードを使用して関数を宣言し、その後に名前と、関数に渡されるパラメータのリストとその型を指定します。 すべてのパラメータは括弧で囲まれ、カンマで区切られます。 括弧の後に、関数によって返される値のデータ型を宣言する必要があります。 関数本体は中括弧で囲む必要があります。 関数にパラメーターがない場合は、中括弧を省略できます。 関数から値を戻すには、`return` キーワードを使用します。
 
@@ -485,7 +485,7 @@ func ooops {
 
 すべてのエラー チェックは自動的に実行されるため、関数はエラーを返しません。 いずれかの機能にエラーがある場合、コントラクトはその操作を終了し、ウィンドウにエラーの説明を表示します。
 
-### 可変長パラメータ
+### 可変長パラメータ {#variable-length-parameters}
 
 関数は可変長パラメータを定義できます。可変長パラメータを示すには、関数の最後のパラメータ タイプとして`...`記号を使用し、データ タイプは`array`です。 可変長パラメータには、パラメータが呼び出しで渡された時点からのすべての変数が含まれます。 すべてのタイプの変数を渡すことができますが、データタイプの不一致による競合に対処する必要があります。
 
@@ -512,7 +512,7 @@ func main() {
 
 
 
-### オプションパラメータ
+### オプションパラメータ {#optional-parameters}
 
 関数には多くのパラメータがありますが、呼び出す際にはそのうちの一部だけが必要な場合、次のようにオプションのパラメータを宣言することができます: `func myfunc(name string).Param1(param string).Param2(param2 int) {...}`。その後、指定したパラメータを任意の順序で呼び出すことができます: `myfunc("name").Param2(100)`。
 
@@ -531,7 +531,7 @@ func names() string {
 }
 ```
 
-## Needle機能分類
+## Needle機能分類 {#needle-functions-classification}
 
 データベースから値を取得します:
 
@@ -641,14 +641,14 @@ SQL形式での日付と時刻の操作:
 
 
 
-## Needle関数リファレンス
+## Needle関数リファレンス {#needle-functions-reference}
 
 
-### AppParam
+### AppParam {#appparam}
 
 指定されたアプリケーション パラメータの値を (アプリケーション パラメータ テーブル app_params から) 返します。
 
-#### Syntax
+**Syntax**
 
 ```
 AppParam(app int, name string, ecosystemid int) string
@@ -666,7 +666,7 @@ AppParam(app int, name string, ecosystemid int) string
 
     エコシステムID。
 
-#### 例
+**例**
 
 ```
 AppParam(1, "app_account", 1)
@@ -674,13 +674,13 @@ AppParam(1, "app_account", 1)
 
 
 
-### DBFind
+### DBFind {#dbfind}
 
 指定されたパラメータを使用して指定されたテーブルのデータをクエリし、オブジェクト マップの配列で構成される配列を返します。
 
 `.Row()` はクエリ内の最初のマップ要素を取得でき、`.One(column string)` はクエリ内の指定された列の最初のマップ要素を取得できます。
 
-#### Syntax
+**Syntax**
 
 ```
 DBFind(table string)
@@ -800,7 +800,7 @@ DBFind(table string)
 
      
 
-#### 例
+**例**
 
 ```
 var i int
@@ -822,11 +822,11 @@ if ret != nil {
     
 
 
-### DBRow
+### DBRow {#dbrow}
 
 指定されたパラメータを使用して、指定されたテーブルのデータをクエリします。 オブジェクト マップの配列で構成される配列 array を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 DBRow(table string)
@@ -868,7 +868,7 @@ DBRow(table string)
 
   エコシステムID。 デフォルトでは、現在のエコシステムのテーブルがクエリされます。
 
-#### 例
+**例**
 
 ```
 var ret map
@@ -878,13 +878,13 @@ Println(ret)
 
 
 
-### DBSelectMetrics
+### DBSelectMetrics {#dbselectmetrics}
 
 メトリクスの集計データを返します。
 
 メトリクスは、100 ブロックが生成されるたびに更新されます。 そして、集計されたデータは1日周期で保存されます。
 
-#### Syntax
+**Syntax**
 
 ```
 DBSelectMetrics(metric string, timeInterval string, aggregateFunc string) array
@@ -920,7 +920,7 @@ DBSelectMetrics(metric string, timeInterval string, aggregateFunc string) array
 
     集計関数。 たとえば、`最大`、`最小`、`平均`などです。
 
-#### 例
+**例**
 
 ```
 var rows array
@@ -935,11 +935,11 @@ while(i <Len(rows)) {
 
 
 
-### EcosysParam
+### EcosysParam {#ecosysparam}
 
 エコシステム パラメーター テーブルのパラメーター内の指定されたパラメーターの値を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 EcosysParam(name string) string
@@ -950,7 +950,7 @@ EcosysParam(name string) string
 
   パラメータ名。
 
-#### 例
+**例**
 
 ```
 Println(EcosysParam("founder_account"))
@@ -958,11 +958,11 @@ Println(EcosysParam("founder_account"))
 
 
 
-### GetHistory
+### GetHistory {#gethistory}
 
 指定されたテーブル内のエントリに対する変更履歴を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 GetHistory(table string, id int) array
@@ -984,7 +984,7 @@ GetHistory(table string, id int) array
   
   配列内の id フィールドは、rollback_tx テーブルの ID を指します。 block_id はブロック ID を表し、block_time はブロック生成のタイムスタンプを表します。
 
-#### 例
+**例**
 
 ```
 var list array
@@ -997,11 +997,11 @@ if Len(list) > 0 {
 
 
 
-### GetHistoryRow
+### GetHistoryRow {#gethistoryrow}
 
 指定されたテーブル内の指定されたエントリの変更履歴から 1 つのスナップショットを返します。
 
-#### Syntax
+**Syntax**
 
 ```
 GetHistoryRow(table string, id int, rollbackId int) map
@@ -1028,11 +1028,11 @@ GetHistoryRow(table string, id int, rollbackId int) map
   
 
 
-### GetColumnType
+### GetColumnType {#getcolumntype}
 
 指定されたテーブル内の指定されたフィールドのデータ型を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 GetColumnType(table, column string) string
@@ -1049,7 +1049,7 @@ GetColumnType(table, column string) string
 
   次のタイプを返すことができます: `text, varchar, number, money, double, bytes, json, datetime, double`。
 
-#### 例
+**例**
 
 ```
 var coltype string
@@ -1058,11 +1058,11 @@ coltype = GetColumnType("members", "member_name")
 
 
 
-### GetDataFromXLSX
+### GetDataFromXLSX {#getdatafromxlsx}
 
 XLSX スプレッドシートからデータを返します。
 
-#### Syntax
+**Syntax**
 
 ```
 GetDataFromXLSX(binId int, line int, count int, sheet int) string
@@ -1082,7 +1082,7 @@ GetDataFromXLSX(binId int, line int, count int, sheet int) string
 
   デフォルトでは 1 から始まるリスト番号。
 
-#### 例
+**例**
 
 ```
 var a array
@@ -1091,11 +1091,11 @@ a = GetDataFromXLSX(3, 12, 10, 1)
 
 
 
-### GetRowsCountXLSX
+### GetRowsCountXLSX {#getrowscountxlsx}
 
 指定された XLSX ファイルの行数を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 GetRowsCountXLSX(binId int, sheet int) int
@@ -1109,7 +1109,7 @@ GetRowsCountXLSX(binId int, sheet int) int
 
   デフォルトでは 1 から始まるリスト番号。
 
-#### 例
+**例**
 
 ```
 var count int
@@ -1118,11 +1118,11 @@ count = GetRowsCountXLSX(binid, 1)
 
 
 
-### LangRes
+### LangRes {#langres}
 
 2 文字のコード (例: `en`、`zh`) として指定された、言語 lang の名前ラベルを持つ多言語リソースを返します。 選択した言語に対応する言語がない場合は、`en`ラベルの言語リソースが返されます。
 
-#### Syntax
+**Syntax**
 
 ```
 LangRes(label string, lang string) string
@@ -1135,7 +1135,7 @@ LangRes(label string, lang string) string
 
   2文字の言語コード。
 
-#### 例
+**例**
 
 ```
 warning LangRes("@1confirm", "en")
@@ -1144,11 +1144,11 @@ error LangRes("@1problems", "zh")
 
 
 
-### GetBlock
+### GetBlock {#getblock}
 
 指定されたブロックに関する関連情報を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 GetBlock(blockID int64) map
@@ -1171,7 +1171,7 @@ GetBlock(blockID int64) map
   
      検証ノードのアカウント アドレスがブロックを生成しました。
 
-#### 例
+**例**
 
 ```
 var b map
@@ -1181,11 +1181,11 @@ Println(b)
 
 
 
-### DBInsert
+### DBInsert {#dbinsert}
 
 指定されたテーブルにエントリを追加し、エントリーIDを返します。
 
-#### Syntax
+**Syntax**
 
 ```
 DBInsert(table string, params map) int
@@ -1199,7 +1199,7 @@ DBInsert(table string, params map) int
 
   キーがフィールド名、値が挿入値であるオブジェクトの配列。
 
-#### 例
+**例**
 
 ```
 DBInsert("mytable", {name: "John Smith", amount: 100})
@@ -1207,11 +1207,11 @@ DBInsert("mytable", {name: "John Smith", amount: 100})
 
 
 
-### DBUpdate
+### DBUpdate {#dbupdate}
 
 指定されたテーブル内の指定されたエントリ ID の列の値を変更します。 エントリ ID がテーブルに存在しない場合は、エラーが返されます。
 
-#### Syntax
+**Syntax**
 
 ```
 DBUpdate(tblname string, id int, params map)
@@ -1228,7 +1228,7 @@ DBUpdate(tblname string, id int, params map)
 
   キーがフィールド名、値が変更後の新しい値であるオブジェクトの配列。
 
-#### 例
+**例**
 
 ```
 DBUpdate("mytable", myid, {name: "John Smith", amount: 100})
@@ -1236,11 +1236,11 @@ DBUpdate("mytable", myid, {name: "John Smith", amount: 100})
 
 
 
-### DBUpdateExt
+### DBUpdateExt {#dbupdateext}
 
 クエリ条件に一致する、指定されたテーブル内の列の値を変更します。
 
-#### Syntax
+**Syntax**
 
 ```
 DBUpdateExt(tblname string, where map, params map)
@@ -1259,7 +1259,7 @@ DBUpdateExt(tblname string, where map, params map)
 
   キーがフィールド名、値が変更後の新しい値であるオブジェクトの配列。
 
-#### 例
+**例**
 
 ```
 DBUpdateExt("mytable", {id: $key_id, ecosystem: $ecosystem_id}, {name: "John Smith", amount: 100})
@@ -1267,11 +1267,11 @@ DBUpdateExt("mytable", {id: $key_id, ecosystem: $ecosystem_id}, {name: "John Smi
 
 
 
-### DelColumn
+### DelColumn {#delcolumn}
 
 指定されたテーブル内のレコードのないフィールドを削除します。
 
-#### Syntax
+**Syntax**
 
 ```
 DelColumn(tblname string, column string)
@@ -1293,11 +1293,11 @@ DelColumn("mytable", "mycolumn")
   
 
 
-### DelTable
+### DelTable {#deltable}
 
 レコードのない指定されたテーブルを削除します。
 
-#### Syntax
+**Syntax**
 
 ```
 DelTable(tblname string)
@@ -1308,7 +1308,7 @@ DelTable(tblname string)
 
   テーブル名。
 
-#### 例
+**例**
 
 ```
 DelTable("mytable")
@@ -1316,11 +1316,11 @@ DelTable("mytable")
 
 
 
-### Append
+### Append {#append}
 
 任意のタイプの val を src 配列に挿入します。
 
-#### Syntax
+**Syntax**
 
 Append(src array, val anyType) array
 
@@ -1331,7 +1331,7 @@ Append(src array, val anyType) array
 
   挿入される値。
 
-#### 例
+**例**
 
 ```
 var list array
@@ -1340,11 +1340,11 @@ list = Append(list, "new_val")
 
 
 
-### Join
+### Join {#join}
 
 in 配列の要素を、指定された sep 区切り記号を使用して文字列に結合します。
 
-#### Syntax
+**Syntax**
 
 ```
 Join(in array, sep string) string
@@ -1358,7 +1358,7 @@ Join(in array, sep string) string
 
   セパレーター。
 
-#### 例
+**例**
 
 ```
  var val string, myarr array
@@ -1369,11 +1369,11 @@ Join(in array, sep string) string
 
 
 
-### Split
+### Split {#split}
 
 sep(セパレーター) セパレータを使用して、in 文字列を要素に分割し、配列に入れます。
 
-#### Syntax
+**Syntax**
 
 ```
 Split(in string, sep string) array
@@ -1386,7 +1386,7 @@ Split(in string, sep string) array
 
    Separator.
 
-#### 例
+**例**
 
 ```
 var myarr array
@@ -1395,11 +1395,11 @@ myarr = Split("first,second,third", ",")
 
 
 
-### Len
+### Len {#len}
 
 指定された配列内の要素の数を返します。
 
-#### Syntax
+**Syntax**
 
  
 
@@ -1411,7 +1411,7 @@ Len(val array) int
 
    配列。
 
-#### 例
+**例**
 
 ```
 if Len(mylist) == 0 {
@@ -1421,10 +1421,10 @@ if Len(mylist) == 0 {
 
 
 
-### Row
+### Row {#row}
 
  この場合、list パラメータを指定してはなりません。 配列リストの最初のオブジェクト配列を返します。 リストが空の場合は、空の結果が返されます。 この関数は主に [DBFind](#dbfind) 関数と組み合わせて使用されます。 この機能を使用する場合、パラメータを指定することはできません。
-#### Syntax
+**Syntax**
 
 ```
  Row(list array) map
@@ -1434,7 +1434,7 @@ if Len(mylist) == 0 {
 
    DBFind 関数によって返されるオブジェクトの配列。
 
-#### 例
+**例**
 
 ```
  var ret map
@@ -1444,11 +1444,11 @@ if Len(mylist) == 0 {
 
 
 
-### One
+### One {#one}
 
  配列リスト内の最初のオブジェクト配列のフィールド値を返します。 リスト配列が空の場合は、nil が返されます。 これは主に [DBFind](#dbfind) 関数と組み合わせて使用されます。 この機能を使用する場合、パラメータを指定することはできません。
 
-#### Syntax
+**Syntax**
 
 ```
 One(list array, column string) string
@@ -1462,7 +1462,7 @@ One(list array, column string) string
 
   フィールド名。
 
-#### 例
+**例**
 
 ```
 var ret string
@@ -1474,11 +1474,11 @@ if ret != nil {
 
 
 
-### GetMapKeys
+### GetMapKeys {#getmapkeys}
 
 オブジェクト配列内のキー配列を返します。
 
-#### Syntax
+**Syntax**
 
  
 
@@ -1490,7 +1490,7 @@ GetMapKeys(val map) array
 
     オブジェクト配列。
 
-#### 例
+**例**
 
 ```
 var val map
@@ -1502,11 +1502,11 @@ arr = GetMapKeys(val)
 
 
 
-### SortedKeys
+### SortedKeys {#sortedkeys}
 
 オブジェクト配列内のソートされたキー配列を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 SortedKeys(val map) array
@@ -1517,7 +1517,7 @@ SortedKeys(val map) array
 
     オブジェクト配列。
 
-#### 例
+**例**
 
 ```
 var val map
@@ -1529,11 +1529,11 @@ arr = SortedKeys(val)
 
 
 
-### CallContract
+### CallContract {#callcontract}
 
 指定された名前でコントラクトを呼び出します。 コントラクト内のデータ セクションのすべてのパラメーターはオブジェクト配列に含まれている必要があります。この関数は、指定されたコントラクトによって **$result** 変数に割り当てられた値を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 CallContract(name string, params map)
@@ -1547,7 +1547,7 @@ CallContract(name string, params map)
 
     コントラクト入力データの連想配列。
 
-#### 例
+**例**
 
 ```
 var par map
@@ -1557,11 +1557,11 @@ CallContract("MyContract", par)
 
 
 
-### ContractAccess
+### ContractAccess {#contractaccess}
 
 実行されているコントラクトの名前が、パラメーターにリストされている名前のいずれかと一致するかどうかを確認します。 通常、テーブルへのコントラクト アクセスを制御するために使用されます。 テーブルフィールドを編集する場合、またはテーブルの権限セクションで新しい列フィールドを挿入および追加する場合は、権限フィールドでこの機能を指定してください。
 
-#### Syntax
+**Syntax**
 
   
 
@@ -1573,7 +1573,7 @@ ContractAccess(name string, [name string]) bool
 
     スマートコントラクト名。
 
-#### 例
+**例**
 
 ```
 ContractAccess("MyContract")
@@ -1582,13 +1582,13 @@ ContractAccess("MyContract","SimpleContract")
 
 
 
-### ContractConditions
+### ContractConditions {#contractconditions}
 
 指定された名前でコントラクト内の条件セクションを呼び出します。
 
 このタイプのスマート コントラクトの場合、データ セクションは空である必要があります。 条件セクションがエラーなく実行された場合、true を返します。 実行中にエラーが発生した場合、親スマート コントラクトもエラーにより終了します。 この関数は通常、テーブルへのコントラクトのアクセスを制御するために使用され、システム テーブルを編集するときに権限フィールドで呼び出すことができます。
 
-#### Syntax
+**Syntax**
 
 ```
 ContractConditions(name string, [name string]) bool
@@ -1599,7 +1599,7 @@ ContractConditions(name string, [name string]) bool
 
     コントラクト名。
 
-#### 例
+**例**
 
 ```
 ContractConditions("MainCondition")
@@ -1607,11 +1607,11 @@ ContractConditions("MainCondition")
 
 
 
-### EvalCondition
+### EvalCondition {#evalcondition}
 
 tablename テーブルから 'name' フィールドを持つレコードの condfield フィールドの値を取得し、condfield フィールド値の条件をチェックします。
 
-#### Syntax
+**Syntax**
 
 ```
 EvalCondition(tablename string, name string, condfield string)
@@ -1628,7 +1628,7 @@ EvalCondition(tablename string, name string, condfield string)
 
     条件をチェックする必要があるフィールドの名前。
 
-#### 例
+**例**
 
 ```
 EvalCondition(`menu`, $Name, `conditions`)
@@ -1636,11 +1636,11 @@ EvalCondition(`menu`, $Name, `conditions`)
 
 
 
-### GetContractById
+### GetContractById {#getcontractbyid}
 
 コントラクト ID によってコントラクト名を返します。 コントラクトが見つからない場合は、空の文字列が返されます。
 
-#### Syntax
+**Syntax**
 
 ```
 GetContractById(id int) string
@@ -1651,7 +1651,7 @@ GetContractById(id int) string
 
   コントラクトテーブルのコントラクトIDです。
 
-#### 例
+**例**
 
 ```
 var name string
@@ -1660,11 +1660,11 @@ name = GetContractById($IdContract)
 
 
 
-### GetContractByName
+### GetContractByName {#getcontractbyname}
 
 この関数は、コントラクト名によってそのコントラクトのIDを返します。コントラクトが見つからない場合は、ゼロが返されます。
 
-#### Syntax
+**Syntax**
 
 ```
 GetContractByName(name string) int
@@ -1674,7 +1674,7 @@ GetContractByName(name string) int
 
     コントラクトテーブルのcontractsにおけるコントラクト名です。
 
-#### 例
+**例**
 
 ```
 var id int
@@ -1683,13 +1683,13 @@ id = GetContractByName(`NewBlock`)
 
 
 
-### RoleAccess
+### RoleAccess {#roleaccess}
 
 コントラクト呼び出し元のロール ID がパラメーターで指定された ID のいずれかと一致するかどうかを確認します。
 
 この関数を使用して、テーブルやその他のデータへのコントラクト アクセスを制御できます。
 
-#### Syntax
+**Syntax**
 
  
 
@@ -1701,7 +1701,7 @@ RoleAccess(id int, [id int]) bool
 
     ロールID。
 
-#### 例
+**例**
 
 ```
 RoleAccess(1)
@@ -1710,11 +1710,11 @@ RoleAccess(1, 3)
 
 
 
-### TransactionInfo
+### TransactionInfo {#transactioninfo}
 
 指定されたハッシュ値によってトランザクションをクエリし、実行されたコントラクトとそのパラメータに関する情報を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 TransactionInfo(hash: string)
@@ -1745,7 +1745,7 @@ TransactionInfo(hash: string)
 
       トランザクションを処理したブロックの ID。
 
-#### 例
+**例**
 
 ```
 var out map
@@ -1754,11 +1754,11 @@ out = JSONDecode(TransactionInfo(hash))
 
 
 
-### Throw
+### Throw {#throw}
 
   例外タイプのエラーを生成します。
 
-#### Syntax
+**Syntax**
 
   
 
@@ -1782,7 +1782,7 @@ Throw(ErrorId string, ErrDescription string)
 {"type":"exception","error":"Error description","id":"Error ID"}
 ```
 
-#### 例
+**例**
 
 ```
 Throw("Problem", "There is a problem")
@@ -1790,11 +1790,11 @@ Throw("Problem", "There is a problem")
 
 
 
-### ValidateCondition
+### ValidateCondition {#validatecondition}
 
   条件パラメータで指定された条件をコンパイルしようとします。 コンパイル処理中にエラーが発生した場合、エラーが生成され、呼び出されたコントラクトは終了します。 この関数は、条件付き書式の正確性をチェックするように設計されています。
 
-#### Syntax
+**Syntax**
 
 ```
 ValidateCondition(condition string, state int)
@@ -1807,7 +1807,7 @@ ValidateCondition(condition string, state int)
 
     エコシステムID。 グローバル条件をチェックする場合は0を指定してください。
 
-#### 例
+**例**
 
 ```
 ValidateCondition(`ContractAccess("@1MyContract")`, 1)
@@ -1815,11 +1815,11 @@ ValidateCondition(`ContractAccess("@1MyContract")`, 1)
 
 
 
-### AddressToId
+### AddressToId {#addresstoid}
 
 ウォレットアドレスごとに対応するアカウントアドレスを返します。 無効なアドレスが指定された場合は、`0`が返されます。
 
-#### Syntax
+**Syntax**
 
 ```
 AddressToId(address string) int
@@ -1830,7 +1830,7 @@ AddressToId(address string) int
 
     「XXXX-...-XXXX」形式または数値形式のウォレットアドレス。
 
-#### 例
+**例**
 
 ```
 wallet = AddressToId($Recipient)
@@ -1838,11 +1838,11 @@ wallet = AddressToId($Recipient)
 
 
 
-### IdToAddress
+### IdToAddress {#idtoaddress}
 
 アカウントアドレスごとに対応するウォレットアドレスを返します。 無効なアドレスが指定された場合は、無効なアドレス`invalid`が返されます。
 
-#### Syntax
+**Syntax**
 
 ```
 IdToAddress(id int) string
@@ -1853,7 +1853,7 @@ IdToAddress(id int) string
 
     アカウントアドレス。
 
-#### 例
+**例**
 
 ```
 $address = IdToAddress($id)
@@ -1861,11 +1861,11 @@ $address = IdToAddress($id)
 
 
 
-### PubToID
+### PubToID {#pubtoid}
 
 アカウント アドレスは、16 進形式の公開鍵によって返されます。
 
-#### Syntax
+**Syntax**
 
 ```
 PubToID(hexkey string) int
@@ -1876,7 +1876,7 @@ PubToID(hexkey string) int
 
     16進数形式の公開鍵です。
 
-#### 例
+**例**
 
   
 
@@ -1887,11 +1887,11 @@ wallet = PubToID("04fa5e78.....34abd6")
 
 
 
-### DecodeBase64
+### DecodeBase64 {#decodebase64}
 
 Base64形式を指定して文字列を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 DecodeBase64(input string) string
@@ -1902,7 +1902,7 @@ DecodeBase64(input string) string
 
     Base64形式の文字列。
 
-#### 例
+**例**
 
 ```
 val = DecodeBase64(mybase64)
@@ -1910,11 +1910,11 @@ val = DecodeBase64(mybase64)
 
 
 
-### EncodeBase64
+### EncodeBase64 {#encodebase64}
 
 文字列を指定してbase64形式の文字列を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 EncodeBase64(input string) string
@@ -1925,7 +1925,7 @@ EncodeBase64(input string) string
 
     エンコードされる文字列。
 
-#### 例
+**例**
 
  
 
@@ -1936,11 +1936,11 @@ base64str = EncodeBase64("my text")
 
 
 
-### Float
+### Float {#float}
 
 整数または文字列を浮動小数点数に変換します。
 
-#### Syntax
+**Syntax**
 
 ```
 Float(val int|string) float
@@ -1951,7 +1951,7 @@ Float(val int|string) float
 
     整数または文字列です。
 
-#### 例
+**例**
 
 ```
 val = Float("567.989") + Float(232)
@@ -1959,11 +1959,11 @@ val = Float("567.989") + Float(232)
 
 
 
-### HexToBytes
+### HexToBytes {#hextobytes}
 
 16進形式の文字列をバイト型のバイトに変換します。
 
-#### Syntax
+**Syntax**
 
 ```
   HexToBytes(hexdata string) bytes
@@ -1974,7 +1974,7 @@ val = Float("567.989") + Float(232)
 
     16進形式の文字列です。
 
-#### 例
+**例**
 
 ```
 var val bytes
@@ -1983,11 +1983,11 @@ val = HexToBytes("34fe4501a4d80094")
 
 
 
-### FormatMoney
+### FormatMoney {#formatmoney}
 
 exp / 10 ^ digit の文字列値を返します。
 
-#### Syntax
+**Syntax**
 
   
 
@@ -2003,7 +2003,7 @@ FormatMoney(exp string, digit int) string
 
     式 `Exp/10^digit` の 10 の指数 (正または負)。 正の値は小数点以下の桁を決定します。
 
-#### 例
+**例**
 
 ```
   s = FormatMoney("78236475917384", 0)
@@ -2011,12 +2011,12 @@ FormatMoney(exp string, digit int) string
 
 
 
-### Random
+### Random {#random}
 ```
 Returns a random number between min and max (min <= result <max). Both min and max must be positive numbers.
 ```
 
-#### Syntax
+**Syntax**
 
  
 
@@ -2032,7 +2032,7 @@ Random(min int, max int) int
 
     The upper limit of random numbers. The random number generated will be less than this value.
 
-#### 例
+**例**
 
 ```
 i = Random(10,5000)
@@ -2040,11 +2040,11 @@ i = Random(10,5000)
 
 
 
-### Int
+### Int {#int}
 
 文字列形式の値を整数に変換します。
 
-#### Syntax
+**Syntax**
 
 ```
 Int(val string) int
@@ -2054,7 +2054,7 @@ Int(val string) int
 
     文字列形式の数値。
 
-#### 例
+**例**
 
 ```
 mystr = "-37763499007332"
@@ -2063,11 +2063,11 @@ val = Int(mystr)
 
 
 
-### Hash
+### Hash {#hash}
 
   システム暗号化ライブラリ crypto によって生成される、指定されたバイト配列または文字列のハッシュを返します。
 
-#### Syntax
+**Syntax**
 
  
 
@@ -2079,7 +2079,7 @@ Hash(val interface{}) string, error
 
     文字列またはバイト配列。
 
-#### 例
+**例**
 
 ```
 var hash string
@@ -2088,11 +2088,11 @@ hash = Hash("Test message")
 
 
 
-### Sha256
+### Sha256 {#sha256}
 
   指定された文字列の SHA256 ハッシュを返します。
 
-#### Syntax
+**Syntax**
 
  
 
@@ -2104,7 +2104,7 @@ Sha256(val string) string
 
     文字列には Sha256 ハッシュ操作が必要です。
 
-#### 例
+**例**
 
 ```
 var sha string
@@ -2113,11 +2113,11 @@ sha = Sha256("Test message")
 
 
 
-### Str
+### Str {#str}
 
 整数 int または浮動小数点数 float を文字列に変換します。
 
-#### Syntax
+**Syntax**
 
   
 
@@ -2129,7 +2129,7 @@ Str(val int|float) string
 
     整数または浮動小数点数。
 
-#### 例
+**例**
 
 ```
 myfloat = 5.678
@@ -2138,11 +2138,11 @@ val = Str(myfloat)
 
 
 
-### JSONEncode
+### JSONEncode {#jsonencode}
 
 数値、文字列、または配列を JSON 形式の文字列に変換します。
 
-#### Syntax
+**Syntax**
 
 ```
 JSONEncode(src int|float|string|map|array) string
@@ -2153,7 +2153,7 @@ JSONEncode(src int|float|string|map|array) string
 
     変換するデータ。
 
-#### 例
+**例**
 
   
 
@@ -2166,11 +2166,11 @@ json = JSONEncode(mydata)
 
 
 
-### JSONEncodeIndent
+### JSONEncodeIndent {#jsonencodeindent}
 
 指定されたインデントを使用して、数値、文字列、または配列を JSON 形式の文字列に変換します。
 
-#### Syntax
+**Syntax**
 
 ```
 JSONEncodeIndent(src int|float|string|map|array, indent string) string
@@ -2185,7 +2185,7 @@ JSONEncodeIndent(src int|float|string|map|array, indent string) string
 
     文字列はインデントとして使用されます。
 
-#### 例
+**例**
 
   
 
@@ -2198,11 +2198,11 @@ json = JSONEncodeIndent(mydata, "\t")
 
 
 
-### JSONDecode
+### JSONDecode {#jsondecode}
 
 JSON 形式の文字列を数値、文字列、または配列に変換します。
 
-#### Syntax
+**Syntax**
 
 ```
 JSONDecode(src string) int|float|string|map|array
@@ -2213,7 +2213,7 @@ JSONDecode(src string) int|float|string|map|array
 
     JSON 形式のデータを含む文字列。
 
-#### 例
+**例**
 
 ```
 var mydata map
@@ -2222,11 +2222,11 @@ mydata = JSONDecode(`{"name": "John Smith", "company": "Smith's company"}`)
 
 
 
-### HasPrefix
+### HasPrefix {#hasprefix}
 
 文字列が指定された文字列で始まるかどうかを確認します。
 
-#### Syntax
+**Syntax**
 
   
 
@@ -2246,7 +2246,7 @@ HasPrefix(s string, prefix string) bool
 
   文字列が指定された文字列で始まる場合、`true` が返されます。
 
-#### 例
+**例**
 
 ```
 if HasPrefix($Name, `my`) {
@@ -2256,11 +2256,11 @@ if HasPrefix($Name, `my`) {
 
 
 
-### Contains
+### Contains {#contains}
 
 文字列に指定された部分文字列が含まれているかどうかを確認します。
 
-#### Syntax
+**Syntax**
 
  
 
@@ -2280,7 +2280,7 @@ Contains(s string, substr string) bool
 
   文字列に部分文字列が含まれている場合は、`true`を返します。
 
-#### 例
+**例**
 
 ```
 if Contains($Name, `my`) {
@@ -2290,11 +2290,11 @@ if Contains($Name, `my`) {
 
 
 
-### Replace
+### Replace {#replace}
 
 文字列内の古い (古い文字列) を新しい (新しい文字列) に置き換えます。
 
-#### Syntax
+**Syntax**
 
 ```
 Replace(s string, old string, new string) string
@@ -2313,7 +2313,7 @@ Replace(s string, old string, new string) string
 
     新しい文字列。
 
-#### 例
+**例**
 
 ```
 s = Replace($Name, `me`, `you`)
@@ -2321,11 +2321,11 @@ s = Replace($Name, `me`, `you`)
 
 
 
-### Size
+### Size {#size}
 
 指定された文字列のバイト数を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 Size(val string) int
@@ -2336,7 +2336,7 @@ Size(val string) int
 
     文字列。
 
-#### 例
+**例**
 
 ```
 var len int
@@ -2345,7 +2345,7 @@ len = Size($Name)
 
 
 
-### Sprintf
+### Sprintf {#sprintf}
 
 この関数は、指定されたテンプレートとパラメーターを使用して文字列を作成します。
 
@@ -2354,7 +2354,7 @@ Available wildcards:
 * `%s` (string)
 * `%f` (float)
 * `%v` (any type)
-#### Syntax
+**Syntax**
 
 ```
 Sprintf(pattern string, val ...) string
@@ -2365,7 +2365,7 @@ Sprintf(pattern string, val ...) string
 
     文字列テンプレート。
 
-#### 例
+**例**
 
 ```
 out = Sprintf("%s=%d", mypar, 6448)
@@ -2373,7 +2373,7 @@ out = Sprintf("%s=%d", mypar, 6448)
 
 
 
-### Substr
+### Substr {#substr}
 
 オフセット offset (デフォルトでは 0 から計算) から始まる指定された文字列から取得された部分文字列を返します。最大長は length に制限されます。
 
@@ -2381,7 +2381,7 @@ out = Sprintf("%s=%d", mypar, 6448)
 
 オフセットと長さの合計が文字列サイズより大きい場合は、オフセットから文字列の末尾までの部分文字列が返されます。
 
-#### Syntax
+**Syntax**
 
 ```
 Substr(s string, offset int, length int) string
@@ -2400,7 +2400,7 @@ Substr(s string, offset int, length int) string
 
     部分文字列の長さ。
 
-#### 例
+**例**
 
 ```
 var s string
@@ -2409,11 +2409,11 @@ s = Substr($Name, 1, 10)
 
 
 
-### ToLower
+### ToLower {#tolower}
 
 指定された文字列を小文字で返します。
 
-#### Syntax
+**Syntax**
 
 ```
 ToLower(val string) string
@@ -2424,7 +2424,7 @@ ToLower(val string) string
 
     文字列。
 
-#### 例
+**例**
 
 ```
 val = ToLower(val)
@@ -2432,11 +2432,11 @@ val = ToLower(val)
 
 
 
-### ToUpper
+### ToUpper {#toupper}
 
 指定された文字列を大文字で返します。
 
-#### Syntax
+**Syntax**
 
 ```
 ToUpper(val string) string
@@ -2447,7 +2447,7 @@ ToUpper(val string) string
 
     文字列。
 
-#### 例
+**例**
 
 ```
 val = ToUpper(val)
@@ -2455,11 +2455,11 @@ val = ToUpper(val)
 
 
 
-### TrimSpace
+### TrimSpace {#trimspace}
 
 指定された文字列の先頭と末尾のスペース、タブ、改行を削除します。
 
-#### Syntax
+**Syntax**
 
 ```
 TrimSpace(val string) string
@@ -2470,7 +2470,7 @@ TrimSpace(val string) string
 
     文字列。
 
-#### 例
+**例**
 
  
 
@@ -2481,11 +2481,11 @@ val = TrimSpace(" mystr ")
 
 
 
-### Floor
+### Floor {#floor}
 
 指定された数値、浮動小数点数値、および文字列以下の最大の整数値を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 Floor(x float|int|string) int
@@ -2495,7 +2495,7 @@ Floor(x float|int|string) int
 
 数値、浮動小数点数、文字列。
 
-#### 例
+**例**
 
 ```
 val = Floor(5.6) // returns 5
@@ -2503,11 +2503,11 @@ val = Floor(5.6) // returns 5
 
 
 
-### Log
+### Log {#log}
 
 指定された数値、浮動小数点数値、文字列の自然対数を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 Log(x float|int|string) float
@@ -2518,7 +2518,7 @@ Log(x float|int|string) float
 
     数値、浮動小数点数、文字列。
 
-#### 例
+**例**
 
 ```
 val = Log(10)
@@ -2526,11 +2526,11 @@ val = Log(10)
 
 
 
-### Log10
+### Log10 {#log10}
 
 指定された数値、浮動小数点数値、および文字列の底 10 の対数を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 Log10(x float|int|string) float
@@ -2541,7 +2541,7 @@ Log10(x float|int|string) float
 
     数値、浮動小数点数、文字列。
 
-#### 例
+**例**
 
  
 
@@ -2551,11 +2551,11 @@ val = Log10(100)
 
 
 
-### Pow
+### Pow {#pow}
 
 指定された基数を指定されたべき乗 (xy) で返します。
 
-#### Syntax
+**Syntax**
 
 ```
 Pow(x float|int|string, y float|int|string) float
@@ -2570,18 +2570,18 @@ Pow(x float|int|string, y float|int|string) float
 
     Exponent.
 
-#### 例
+**例**
 
 ```
 val = Pow(2, 3)
 
 ```
 
-### Round
+### Round {#round}
 
 指定された数値を最も近い整数に四捨五入した値を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 Round(x float|int|string) int
@@ -2592,13 +2592,13 @@ Round(x float|int|string) int
 
     数値。
 
-#### 例
+**例**
 
 ```
 val = Round(5.6)
 ```
 
-### Sqrt
+### Sqrt {#sqrt}
 
 指定された数値の平方根を返します。
 
@@ -2611,7 +2611,7 @@ Sqrt(x float|int|string) float
 
     数値。
 
-#### 例
+**例**
 
 ```
 val = Sqrt(225)
@@ -2619,11 +2619,11 @@ val = Sqrt(225)
 
 
 
-### StringToBytes
+### StringToBytes {#stringtobytes}
 
 文字列をバイトに変換します。
 
-#### Syntax
+**Syntax**
 
 ```
 StringToBytes(src string) bytes
@@ -2634,7 +2634,7 @@ StringToBytes(src string) bytes
 
     文字列。
 
-#### 例
+**例**
 
  
 
@@ -2645,11 +2645,11 @@ b = StringToBytes("my string")
 
 
 
-### BytesToString
+### BytesToString {#bytestostring}
 
 バイトを文字列に変換します。
 
-#### Syntax
+**Syntax**
 
 ```
 BytesToString(src bytes) string
@@ -2660,7 +2660,7 @@ BytesToString(src bytes) string
 
     バイト。
 
-#### 例
+**例**
 
 ```
 var s string
@@ -2669,11 +2669,11 @@ s = BytesToString($Bytes)
 
 
 
-### SysParamString
+### SysParamString {#sysparamstring}
 
 指定されたプラットフォーム パラメータの値を返します。
 
-#### Syntax
+**Syntax**
 
 ```
 SysParamString(name string) string
@@ -2684,7 +2684,7 @@ SysParamString(name string) string
 
     パラメータ名。
 
-#### 例
+**例**
 
 ```
 url = SysParamString(`blockchain_url`)
@@ -2692,11 +2692,11 @@ url = SysParamString(`blockchain_url`)
 
 
 
-### SysParamInt
+### SysParamInt {#sysparamint}
 
 指定されたプラットフォーム パラメーターの値を数値の形式で返します。
 
-#### Syntax
+**Syntax**
 
 ```
 SysParamInt(name string) int
@@ -2707,7 +2707,7 @@ SysParamInt(name string) int
 
     パラメータ名。
 
-#### 例
+**例**
 
 ```
 maxcol = SysParam(`max_columns`)
@@ -2715,11 +2715,11 @@ maxcol = SysParam(`max_columns`)
 
 
 
-### DBUpdateSysParam
+### DBUpdateSysParam {#dbupdatesysparam}
 
 プラットフォームパラメータの値と条件を更新します。 値や条件を変更する必要がない場合は、該当パラメータに空文字列を指定してください。
 
-#### Syntax
+**Syntax**
 
 ```
 DBUpdateSysParam(name, value, conditions string)
@@ -2738,18 +2738,18 @@ DBUpdateSysParam(name, value, conditions string)
 
     パラメータを更新するための新しい条件。
 
-#### 例
+**例**
 
 ```
 DBUpdateSysParam(`fuel_rate`, `400000000000`, ``)
 
 ```
 
-### UpdateNotifications
+### UpdateNotifications {#updatenotifications}
 
 指定されたキーの通知リストをデータベースから取得し、取得した通知を Centrifugo に送信します。
 
-#### Syntax
+**Syntax**
 
 ```
 UpdateNotifications(ecosystemID int, keys int...)
@@ -2764,7 +2764,7 @@ UpdateNotifications(ecosystemID int, keys int...)
 
     カンマで区切られたアカウント アドレスのリスト。 または、配列を使用してアカウント アドレスのリストを指定することもできます。
 
-#### 例
+**例**
 
 ```
 UpdateNotifications($ecosystem_id, $key_id, 23345355454, 35545454554)
@@ -2773,11 +2773,11 @@ UpdateNotifications(1, [$key_id, 23345355454, 35545454554])
 
 
 
-### UpdateRolesNotifications
+### UpdateRolesNotifications {#updaterolesnotifications}
 
 データベース内の指定されたロール ID のすべてのアカウント アドレスの通知リストを取得し、取得した通知を Centrifugo に送信します。
 
-#### Syntax
+**Syntax**
 
 ```
 UpdateRolesNotifications(ecosystemID int, roles int ...)
@@ -2792,21 +2792,21 @@ UpdateRolesNotifications(ecosystemID int, roles int ...)
 
     カンマで区切られたロール ID のリスト。 または、配列を使用してロール ID のリストを指定することもできます。
 
-#### 例
+**例**
 
 ```
 UpdateRolesNotifications(1, 1, 2)
 
 ```
 
-### HTTPRequest
+### HTTPRequest {#httprequest}
 
 指定されたアドレスに HTTP リクエストを送信します。
 > 注意
 
 > この機能は CLB 契約でのみ使用できます。
 
-#### Syntax
+**Syntax**
 
 ```
 HTTPRequest(url string, method string, heads map, pars map) string
@@ -2829,7 +2829,7 @@ HTTPRequest(url string, method string, heads map, pars map) string
 
     リクエストパラメータ。
 
-#### 例
+**例**
 
 ```
 var ret string
@@ -2844,7 +2844,7 @@ json = JSONToMap(ret)
 
 
 
-### HTTPPostJSON
+### HTTPPostJSON {#httppostjson}
 
 この関数は HTTPRequest 関数に似ていますが、POST リクエストを送信し、リクエスト パラメータは文字列です。
 
@@ -2852,7 +2852,7 @@ json = JSONToMap(ret)
 
 > この機能は CLB スマートコントラクトでのみ使用できます
 
-#### Syntax
+**Syntax**
 
 ```
 HTTPPostJSON(url string, heads map, pars string) string
@@ -2870,7 +2870,7 @@ HTTPPostJSON(url string, heads map, pars string) string
 
     パラメータを JSON 文字列としてリクエストします。
 
-####   Example
+**Example**
 
 ```
 var ret string
@@ -2884,11 +2884,11 @@ json = JSONToMap(ret)
 
 
 
-### BlockTime
+### BlockTime {#blocktime}
 
 ブロックの生成時刻をSQL形式で返します。
 
-####   Syntax
+**Syntax**
 
 ```
 BlockTime()
@@ -2896,7 +2896,7 @@ BlockTime()
 
 
 
-#### 例
+**例**
 
 ```
 var mytime string
@@ -2906,11 +2906,11 @@ DBInsert("mytable", myid, {time: mytime})
 
 
 
-### DateTime
+### DateTime {#datetime}
 
 タイムスタンプ unixtime を YYYY-MM-DD HH:MI:SS 形式の文字列に変換します。
 
-#### Syntax
+**Syntax**
 
 ```
 DateTime(unixtime int) string
@@ -2918,18 +2918,18 @@ DateTime(unixtime int) string
 
 
 
-#### 例
+**例**
 
 ```
 DateTime(1532325250)
 
 ```
 
-### UnixDateTime
+### UnixDateTime {#unixdatetime}
 
 YYYY-MM-DD HH:MI:SS 形式の文字列をタイムスタンプ unixtime に変換します。
 
-#### Syntax
+**Syntax**
 
 ```
 UnixDateTime(datetime string) int
@@ -2937,7 +2937,7 @@ UnixDateTime(datetime string) int
 
 
 
-#### 例
+**例**
 
 ```
 UnixDateTime("2018-07-20 14:23:10")
@@ -2945,13 +2945,13 @@ UnixDateTime("2018-07-20 14:23:10")
 
 
 
-### CreateOBS
+### CreateOBS {#createobs}
 
 子CLBを作成します。
 
 この機能はマスター CLB モードでのみ使用できます。
 
-#### Syntax
+**Syntax**
 
 ```
 CreateOBS(OBSName string, DBUser string, DBPassword string, OBSAPIPort int)
@@ -2974,20 +2974,20 @@ CreateOBS(OBSName string, DBUser string, DBPassword string, OBSAPIPort int)
 
     API リクエストのポート。
 
-#### 例
+**例**
 
 ```
 CreateOBS("obsname", "obsuser", "obspwd", 8095)
 
 ```
 
-### GetOBSList
+### GetOBSList {#getobslist}
 
 子 CLB のリストを返します。
 
 この機能はマスター CLB モードでのみ使用できます。
 
-#### Syntax
+**Syntax**
 
 ```
 GetOBSList()
@@ -2998,13 +2998,13 @@ GetOBSList()
 
 オブジェクトの配列。キーは CLB 名、値はプロセス状態です。
 
-### RunOBS
+### RunOBS {#runobs}
 
 CLB を実行するプロセス。
 
 この機能はマスター CLB モードでのみ使用できます。
 
-#### Syntax
+**Syntax**
 
 ```
 RunOBS(OBSName string)
@@ -3017,13 +3017,13 @@ RunOBS(OBSName string)
 
   文字と数字のみを含めることができ、スペース記号は使用できません。
 
-### StopOBS
+### StopOBS {#stopobs}
 
 指定した CLB のプロセスを停止します。
 
 この機能はマスター CLB モードでのみ使用できます。
 
-#### Syntax
+**Syntax**
 
 ```
 StopOBS(OBSName string)
@@ -3036,13 +3036,13 @@ StopOBS(OBSName string)
 
   文字と数字のみを含めることができ、スペース記号は使用できません。
 
-### RemoveOBS
+### RemoveOBS {#removeobs}
 
 指定された CLB のプロセスを削除します。
 
 この機能はマスター CLB モードでのみ使用できます。
 
-#### Syntax
+**Syntax**
 
 ```
 RemoveOBS(OBSName string)
@@ -3055,18 +3055,18 @@ CLB名。
 
 文字と数字のみを含めることができ、スペース記号は使用できません。
 
-## System Contracts
+## System Contracts {#system-contracts}
 
 システム コントラクトは、IBax ブロックチェーン プラットフォームの起動時にデフォルトで作成されます。 これらすべての契約は最初のエコシステムで作成されました。 このため、他のエコシステムから呼び出すときは、`@1NewContract` のようにフルネームを指定する必要があります。
 
-### NewEcosystem
+### NewEcosystem {#newecosystem}
 
 このスマート コントラクトは新しいエコシステムを作成します。 作成されたエコシステムの ID を取得するには、[txstatus](../reference/api2.md#txstatus) で返された結果フィールドを引用する必要があります。
 
 パラメーター：
    * **Name** 文字列 - エコシステムの名前。 後で変更することもできます。
 
-### EditEcosystemName
+### EditEcosystemName {#editecosystemname}
 
 最初のエコシステムにのみ存在する 1_ecosystems テーブル内のエコシステムの名前を変更します。
 
@@ -3074,7 +3074,7 @@ CLB名。
    * **EcosystemID** int - エコシステム ID の名前を変更します。
    * **NewName** string - エコシステムの新しい名前。
 
-### NewContract
+### NewContract {#newcontract}
 
 現在のエコシステムに新しいコントラクトを作成します。
 
@@ -3084,7 +3084,7 @@ CLB名。
    * **Conditions** string - 契約の条件を変更します。
    * **TokenEcosystem** int "optional" - エコシステムID。 コントラクトがアクティブ化されるときに、トランザクションにどのトークンが使用されるかを決定します。
 
-### EditContract
+### EditContract {#editcontract}
 
 現在のエコシステムでコントラクトを編集します。
 
@@ -3093,21 +3093,21 @@ CLB名。
    * **値** string "optional" - コントラクトのソース コード。
    * **Conditions** string "optional" - 契約の条件を変更します。
 
-### BindWallet
+### BindWallet {#bindwallet}
 現在のエコシステムのウォレット アドレスにコントラクトをバインドします。 スマート コントラクトを結び付けた後、スマート コントラクトの実行料金はこのアドレスに支払われます。
 
 パラメーター：
    * **Id** int - バインドされるコントラクト ID。
    * **WalletId** string "optional" - コントラクトにバインドされたウォレット アドレス。
 
-### UnbindWallet
+### UnbindWallet {#unbindwallet}
 
 現在のエコシステムのウォレットアドレスからコントラクトのバインドを解除します。 コントラクトにバインドされているアドレスのみをバインド解除できます。 スマートコントラクトの拘束を解除した後、コントラクトを実行するユーザーは実行手数料を支払います。
 
 パラメーター：
    * **Id** int - バインドされているコントラクトの ID。
 
-### NewParameter
+### NewParameter {#newparameter}
 
 A new ecosystem parameter has been added to the current ecosystem.
 
@@ -3116,7 +3116,7 @@ Parameters:
   * **Value** string - パラメータ値。
   * **Conditions** string - パラメータを変更する条件。
 
-### EditParameter
+### EditParameter {#editparameter}
 
 現在のエコシステム内の既存のエコシステムパラメータを変更します。
 
@@ -3125,7 +3125,7 @@ Parameters:
   * **Value** string - 新しいパラメータ値。
   * **Conditions** string - パラメータを変更するための新しい条件。
 
-### NewMenu
+### NewMenu {#newmenu}
 
 現在のエコシステムに新しいメニューを追加します。
 
@@ -3135,8 +3135,7 @@ Parameters:
   * **Title** string "optional" - メニュータイトル
   * **Conditions** string - メニューを変更する条件
 
-
-### EditMenu
+### EditMenu {#editmenu}
 
 現在のエコシステムの既存のメニューを変更します。
 
@@ -3146,7 +3145,7 @@ Parameters:
   * **Title** string "optional" - 新しいメニューのタイトル
   * **Conditions** string "optional" - メニューを変更する新しい条件
 
-### AppendMenu
+### AppendMenu {#appendmenu}
 
 現在のエコシステムの既存のメニューにソースコードのコンテンツを追加します。
 
@@ -3154,7 +3153,7 @@ Parameters:
   * **Id** int - メニューのID
   * **Value** string - 追加するソースコード
 
-### NewPage
+### NewPage {#newpage}
 
 現在のエコシステムに新しいページを追加します。
 
@@ -3167,7 +3166,7 @@ Parameters:
   * **ValidateMode** int "optional" - ページの妥当性チェックのモード。このパラメータの値が0の場合、ページが読み込まれる時点でチェックされます。このパラメータの値が1の場合、ページが読み込まれる時点やページを終了する時点でもチェックされます。
 
 
-### EditPage
+### EditPage {#editpage}
 
 現在のエコシステム内の既存のページを変更します。
 
@@ -3179,7 +3178,7 @@ Parameters:
   * **ValidateCount** int "optional" - ページの検証に必要なノードの数。このパラメータが指定されていない場合、min_page_validate_countエコシステムパラメータの値が使用されます。このパラメータの値は、min_page_validate_count未満またはmax_page_validate_countを超えることはできません。
   * **ValidateMode** int "optional" - ページの妥当性チェックのモード。このパラメータの値が0の場合、ページが読み込まれる時点でチェックされます。このパラメータの値が1の場合、ページが読み込まれる時点やページを終了する時点でもチェックされます。
 
-### AppendPage
+### AppendPage {#appendpage}
 
 現在のエコシステム内の既存のページにソースコードの内容を追加します。
 
@@ -3187,7 +3186,7 @@ Parameters:
   * **Id** int - 変更するページのID
   * **Value** string - 追加するソースコード
 
-### NewBlock
+### NewBlock {#newblock}
 
 現在のエコシステムにページモジュールを追加します。
 
@@ -3196,7 +3195,7 @@ Parameters:
   * **Value** string - モジュールのソースコード
   * **Conditions** string - モジュールを変更するための条件
 
-### EditBlock
+### EditBlock {#editblock}
 
 現在のエコシステム内のページモジュールを変更します。
 
@@ -3205,7 +3204,7 @@ Parameters:
   * Value string - 新しいモジュールのソースコード
   * Conditions string - モジュールを変更するための新しい条件
 
-### NewTable
+### NewTable {#newtable}
 
 Adds a new table to the current ecosystem.
 
@@ -3225,8 +3224,7 @@ Adds a new table to the current ecosystem.
     * **update** - エントリデータの変更権限
     * **read** - エントリデータの読み取り権限
 
-
-### EditTable
+### EditTable {#edittable}
 
 現在のエコシステム内のテーブルのアクセス許可を変更します。
 
@@ -3237,7 +3235,7 @@ Adds a new table to the current ecosystem.
    * **ReadPerm** string - テーブル内のエントリを読み取る権限。
    * **NewColumnPerm** string - 新しい列を作成する権限。
 
-### NewColumn
+### NewColumn {#newcolumn}
 
 現在のエコシステムのテーブルに新しいフィールドを追加します。
 
@@ -3248,7 +3246,7 @@ Adds a new table to the current ecosystem.
    * **UpdatePerm** string - 列の値を変更する権限。
    * **ReadPerm** string - 列の値を読み取る権限。
 
-### EditColumn
+### EditColumn {#editcolumn}
 
 現在のエコシステム内の指定されたテーブルフィールドの権限を変更します。
 
@@ -3258,7 +3256,7 @@ Adds a new table to the current ecosystem.
    * **UpdatePerm** string - 列の値を変更するための新しい権限。
    * **ReadPerm** string - 列の値を読み取るための新しい権限。
 
-### NewLang
+### NewLang {#newlang}
 
 現在のエコシステムに言語リソースを追加します。そのための権限は、エコシステム パラメーターの Changing_Language パラメーターに設定されます。
 
@@ -3267,7 +3265,7 @@ Adds a new table to the current ecosystem.
    * **Name** string  - ラテン文字での言語リソースの名前。
    * **Trans** string - 2 文字の lang コードをキーとし、翻訳された文字列を値とする JSON 形式の文字列。 例: `{"en": "英語テキスト"、"jp": "日本語テキスト"}`。
 
-### EditLang
+### EditLang {#editlang}
 
 現在のエコシステム内の言語リソースを変更します。変更するための権限は、エコシステム パラメーターの Changing_Language パラメーターに設定されます。
 
@@ -3276,7 +3274,7 @@ Adds a new table to the current ecosystem.
    * **Id** int - 言語リソース ID。
    * **Trans** - 2 文字の lang コードをキーとし、翻訳された文字列を値とする JSON 形式の文字列。例: `{"en": "英語テキスト"、"jp": "日本語テキスト"}`。
 
-### Import
+### Import {#import}
 
 アプリケーションを現在のエコシステムにインポートし、[ImportUpload](#importupload) コントラクトからロードされたデータをインポートします。
 
@@ -3284,14 +3282,14 @@ Adds a new table to the current ecosystem.
 
    * **データ** string - エコシステムによってエクスポートされたファイルから取得される、テキスト形式でインポートされたデータ。
 
-### ImportUpload
+### ImportUpload {#importupload}
 
 後続のインポートのために、外部アプリケーション ファイルを現在のエコシステムのbuffer_data テーブルにロードします。
 
 パラメーター：
    * **InputFile** ファイル - 現在のエコシステムのbuffer_data テーブルに書き込まれるファイル。
 
-### NewAppParam
+### NewAppParam {#newappparam}
 
 新しいアプリケーションパラメータを現在のエコシステムに追加します。
 
@@ -3301,7 +3299,7 @@ Adds a new table to the current ecosystem.
    * **alue** string - パラメータ値。
    * **Conditions** string - パラメーターを変更する権限。
 
-### EditAppParam
+### EditAppParam {#editappparam}
 
 現在のエコシステム内の既存のアプリケーションパラメータを変更します。
 
@@ -3310,7 +3308,7 @@ Adds a new table to the current ecosystem.
   * **Value** string "optional" - 新しいパラメーター値。
   * **Conditions** string "optional" - パラメータを変更するための新しい権限。
 
-### NewDelayedContract
+### NewDelayedContract {#newdelayedcontract}
 
 新しいタスクを遅延コントラクトスケジューラー デーモンに追加します。
 
@@ -3323,7 +3321,7 @@ Adds a new table to the current ecosystem.
   * **BlockID** int "optional" - コントラクトを実行する必要があるブロック ID。 指定しない場合は、「現在のブロック ID」+EveryBlock を加算して自動的に計算されます。
   * **Limit** int "optional" - タスク実行の最大数。 指定しない場合、タスクは無制限に実行されます。
 
-### EditDelayedContract
+### EditDelayedContract {#editdelayedcontract}
 
 遅延コントラクトスケジューラ デーモンのタスクを変更します。
 
@@ -3336,7 +3334,7 @@ Adds a new table to the current ecosystem.
   * **Limit** int "optional" - タスク実行の最大数。 指定しない場合、タスクは無制限に実行されます。
   * **Deleted** int "optional" - タスクの切り替え。 値「1」はタスクを無効にします。 値`0`はタスクを有効にします。
 
-### UploadBinary
+### UploadBinary {#uploadbinary}
 
 X_binaries テーブルに静的ファイルを追加または上書きします。 HTTP API 経由でコントラクトを呼び出す場合、リクエストは`multipart/form-data`形式である必要があります。 DataMimeType パラメータはフォーム データと組み合わせて使用されます。
 

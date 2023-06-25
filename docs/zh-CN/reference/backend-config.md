@@ -1,60 +1,64 @@
-# Server Configuration File
+# 服务端配置文件 {#server-configuration-file}
 
-In this section, we will introduce parameters in the server configuration file. 
-## Introduction to the server configuration file
+该章节介绍服务端配置文件参数。
 
-The server configuration file defines the node configuration of IBAX.
-## Location
+## 服务端配置文件简介 {#introduction-to-the-server-configuration-file}
 
-This file is located in the working directory of the server and is named `config.toml`.
-## Sections
+服务端配置文件定义了 IBAX区块链平台 节点的配置。
 
-The configuration file consists the following sections:
+## 位置 {#location}
 
-> general section
+该文件位于服务端工作目录下，名为 `config.toml`。
 
-It defines the working directory DataDir, the first block directory FirstBlockPath and other parameters.
+## 部分 {#sections}
+
+配置文件有以下几个部分：
+
+> 普通部分
+
+    定义工作目录DataDir，第一个区块目录FirstBlockPath等参数。
 
 > [TCPServer]
 
-It defines the TCP service parameters.
+    定义TCP服务参数。
 
-TCPServer is used for the network interaction between nodes.
+    TCPServer用于节点之间的网络交互。
 
 > [HTTP]
 
-It defines the HTTP service parameters.
+    定义HTTP服务参数。
 
-HTTPServer provides RESTful APIs.
+    HTTPServer提供RESTful API。
 
 > [DB]
 
-It defines parameters of the PostgreSQL node database.
+    定义节点数据库PostgreSQL的参数。
 
 > [StatsD]
 
-It defines parameters of the node operation indicator collector StatsD.
+    定义节点操作指标收集器StatsD的参数。
 
 > [Centrifugo]
 
-It defines parameters of the notification service Centrifugo.
+    定义通知服务Centrifugo的参数。
 
 > [Log]
 
-It defines parameters of the log service Log.
+    定义了日志服务Log的参数。
 
 > [TokenMovement]
 
-It defines parameters of the token circulation service TokenMovement.
+    定义了通证流通服务TokenMovement的参数。
 
-## An example configuration file
-```
-PidFilePath = "/IBAX-data/go-ibax.pid"
-LockFilePath = "/IBAX-data/go-ibax.lock"
-DataDir = "/IBAX-data"
-KeysDir = "/IBAX-data"
-TempDir = "/var/folders/_l/9md_m4ms1651mf5pbng1y1xh0000gn/T/IBAX-temp"
-FirstBlockPath = "/IBAX-data/1block"
+## 配置文件示例 {#an-example-configuration-file}
+
+``` js
+PidFilePath = "/ibax-data/go-ibax.pid"
+LockFilePath = "/ibax-data/go-ibax.lock"
+DataDir = "/ibax-data"
+KeysDir = "/ibax-data"
+TempDir = "/var/folders/_l/9md_m4ms1651mf5pbng1y1xh0000gn/T/ibax-temp"
+FirstBlockPath = "/ibax-data/1block"
 TLS = false
 TLSCert = ""
 TLSKey = ""
@@ -72,7 +76,7 @@ NodesAddr = []
   Port = 7079
 
 [DB]
-  Name = "IBAX"
+  Name = "ibax"
   Host = "127.0.0.1"
   Port = 5432
   User = "postgres"
@@ -82,7 +86,7 @@ NodesAddr = []
 [StatsD]
   Host = "127.0.0.1"
   Port = 8125
-  Name = "IBAX"
+  Name = "ibax"
 
 [Centrifugo]
   Secret = "127.0.0.1"
@@ -93,8 +97,8 @@ NodesAddr = []
   LogLevel = "ERROR"
   LogFormat = "text"
   [Log.Syslog]
-  Facility = "kern"
-  Tag = "go-ibax"
+    Facility = "kern"
+    Tag = "go-ibax"
 
 [TokenMovement]
   Host = ""
