@@ -1,70 +1,71 @@
-# JSON-RPC Application Programming Interface {#json-rpc-application-programming-interface}
+# Interfaz de programación de aplicaciones JSON-RPC {#json-rpc-application-programming-interface}
 
-In order for a software application to interact with the IBAX blockchain (fetch block data or send transactions to the network), it must be connected to an IBAX network node.
+Para que las aplicaciones de software interactúen con la cadena de bloques IBAX (obtener datos de bloques o enviar transacciones a la red), deben conectarse a un nodo de red de IBAX.
 
+Debido a la universalidad y escalabilidad de la interfaz de programación de aplicaciones REST API original, se vuelve cada vez más compleja a medida que se agregan más interfaces y se utilizan diferentes clientes. Nos dimos cuenta de la importancia de la unificación de la interfaz para garantizar que todos los clientes puedan utilizar el mismo conjunto de especificaciones, independientemente de cómo se implementen los nodos y los clientes específicos.
 
-Due to the generality and extensibility of the original REST API interface, it will become more and more complex with more and more interfaces and different clients. We realize the importance of interface unification to ensure that all clients can use the same set of specifications, regardless of the specific node and client implementation.
+JSON-RPC es un protocolo de llamada a procedimiento remoto (RPC) sin estado y ligero. Define algunas estructuras de datos y sus reglas de procesamiento. Es independiente del transporte, ya que estos conceptos se pueden utilizar en el mismo proceso, a través de una interfaz, el protocolo de transferencia de hipertexto o muchos entornos de mensajería diferentes. Utiliza JSON (RFC 4627) como formato de datos.
 
+JSON-RPC es compatible con la mayoría de las interfaces de programación de aplicaciones REST API y conserva la interfaz de programación de aplicaciones REST API original. Los clientes que utilizan la interfaz de programación de aplicaciones REST API pueden cambiar fácilmente a la interfaz de programación de aplicaciones JSON-RPC. Algunas interfaces son:
 
-JSON-RPC  is  a  stateless,  lightweight  remote  procedure  call  (RPC)  protocol.  It  defines  a number of data structures and their processing rules. It is transport independent, as these concepts can be used in the same process, via an interface, hypertext transfer protocol, or in many different messaging environments. It uses JSON (RFC 4627) as the data format.
-
-
-
-JSON-RPC is compatible with most of the REST API interfaces, retaining the original REST API interface, the client using the REST API interface can easily transfer to the JSON-RPC interface, part of the interface
 - [/data/{id}/data/{hash}](api2.md#data-id-data-hash)
 - [/data/{table}/id/{column}/{hash}](api2.md#data-table-id-column-hash)
-- [avatar/{ecosystem}/{member}](api2.md#avatar-ecosystem-member) 
+- [avatar/{ecosystem}/{member}](api2.md#avatar-ecosystem-member)
 
-Available through the REST API interface.
+Puede obtenerlo a través de la interfaz de API REST.
 
-## Client-side implementation {#client-side-implementation}
-Each client can use a different programming language when  implementing  the JSON-RPC specification, and you can use the
-[GO-SDK](https://github.com/IBAX-io/go-ibax-sdk)
+## Implementación del cliente {#client-side-implementation}
+
+Cada cliente puede utilizar diferentes lenguajes de programación al ejecutar la especificación JSON-RPC. Puede utilizar [GO-SDK](https://github.com/IBAX-io/go-ibax-sdk).
 
 
-## Curl example {#curl-example}
-The following provides examples of using the JSON RPC API by making curl requests to IBAX nodes. Each example includes a description of the particular endpoint, its parameters, the return type, and a working example of how it should be used.
+## Ejemplo de Curl {#curl-example}
 
-Curl requests may return an error message related to the content type. This is because the --data option sets the content type to application/x-www-form-urlencoded. If your request has this problem, set the header manually by placing -H "Content-Type: application/json" at the beginning of the call. These examples also do not include the URL/Internet Protocol and port combination that must be the last parameter of the curl (e.g. 127.0.0.1:7079 A full curl request with this additional data takes the form of
+A continuación se proporciona un ejemplo de cómo utilizar la interfaz de aplicación JSON_RPC enviando una solicitud curl al nodo IBAX. Cada ejemplo incluye una descripción del punto final específico, sus parámetros, el tipo de retorno y un ejemplo de trabajo de cómo utilizarlo.
+
+Las solicitudes de Curl pueden devolver mensajes de error relacionados con el tipo de contenido. Esto se debe a que la opción --data establece el tipo de contenido en application/x-www-form-urlencoded. Si tiene este problema en su solicitud, establezca manualmente el encabezado colocando -H "Content-Type: application/json" al comienzo de la llamada. Estos ejemplos tampoco incluyen la combinación de dirección web/protocolo e puerto, que debe ser el último parámetro de curl (por ejemplo, 127.0.0.1:7079). Una solicitud completa de curl que incluye estos datos adicionales se presenta en la siguiente forma:
 
 ``` text
 curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","params":[],"id":1}' http://127.0.0.1:7079	
 ```
 
-## Covenant {#covenant}
+## Convenio {#covenant}
 
-### Hex {#hex}
-**Hexadecimal code**
+### Hexadecimal {#hex}
 
-When encoding byte arrays, hashes, and bytecode arrays: the encoding is hexadecimal, two hexadecimal digits per byte.
+**Codificación hexadecimal**
 
-### Request type {#request-type}
-**Uniform use**
+Cuando se codifica una matriz de bytes, un hash o una matriz de bytes de código: se codifica en hexadecimal, con dos dígitos hexadecimales por byte.
+
+### Tipo de solicitud {#request-type}
+
+**Usar siempre**
 - Content-Type: application/json
 
-### Special markers {#special-markers}
+### Special Markers {#special-markers}
 #### Omitempty {#omitempty}
-This field is an optional parameter.
 
-If there are multiple `Omitempty` fields in a row,
-But only want to pass the value of a certain field, then you need to set the unwanted field to null (the field type null value), Example:
+Este campo es opcional.
+
+Si hay varios campos `Omitempty` consecutivos, pero solo desea pasar el valor de un campo, debe dejar los campos no deseados vacíos (con un valor nulo para ese tipo de campo), por ejemplo:
+
 - **id** - *Number* - [Omitempty](#omitempty) id
-- **name** - *String* - [Omitempty](#omitempty) Name
-- **column** - *String* - [Omitempty](#omitempty) Filter column names
+- **name** - *String* - [Omitempty](#omitempty) nombre
+- **column** - *String* - [Omitempty](#omitempty) nombre de la columna de filtrado
 
-If only the name value is passed, then the request parameters are passed as follows
-`"params":[0, "testname"]` - *Number* null value is 0
+Si solo se transmite el valor de "name", los parámetros de solicitud se transmiten de la siguiente manera:
 
-If only the column value is passed, then the request parameters are passed as follows
-`"params":[0,"", "title,page"]` - *String* empty value for ""
+    `"params":[0,"testname"]` - *Número* El valor vacío es 0
 
+Si solo se transmite el valor de "column", los parámetros de solicitud se transmiten de la siguiente manera:
 
+    `"params":[0,"","title,page"]` - *Cadena* El valor vacío es ""
 
-#### Authorization {#authorization}
-Authorization header, add Authorization to the request header, example:
+#### Autorización {#authorization}
+Encabezado de autorización, agregue el encabezado de autorización a la solicitud, ejemplo:
 
 **name** : Authorization **value** : Bearer +[login token](#ibax-login)
- 
+
 Example:
 ```` text
     //request
@@ -73,30 +74,30 @@ Example:
 ````
 
 #### AccountOrKeyId {#accountorkeyid}
-For the account address parameter, you can use two formats of addresses, for example
-1. - *String* - Account Address `"XXXX-XXXX-XXXX-XXXX-XXXX"` or Account Id `"64842...538120"` .538120"`
+Parámetro de dirección de cuenta, se pueden usar dos formatos de dirección, por ejemplo:
+1. - *String* - Dirección de cuenta `"XXXX-XXXX-XXXX-XXXX-XXXX"` o ID de cuenta `"64842...538120"`
 
-2. - *Object* - Address object
-    - **key_id** - *Number* - Account Id, Example: `{"key_id":-64842	38120}`
-    - **account** - *String* - Account address, Example: `{"account": "1196-... -	-... -3496"}`
+2. - *Object* - Objeto de dirección
+    - **key_id** -  *Number* - ID de cuenta, por ejemplo: `{"key_id":-64842...38120}`
+    - **account** - *String* - Dirección de cuenta, por ejemplo: `{"account":"1196-...-...-...-3496"}`
 
-    **Account Id is preferred when both account address and account Id exist**. 
-    
+    **Si tanto la dirección de cuenta como el ID de cuenta están presentes, se utilizará primero el ID de cuenta**.
+
 #### BlockOrHash {#blockorhash}
-Block height or block HASH, example
+Altura del bloque o HASH del bloque, por ejemplo:
 
-1.	- *String*	-	Block	Height	`"100"`	or	Block	HASH`"4663aa47...a60753c18d9ba9cb4"`
+1. - *String* - Altura del bloque `"100"` o HASH del bloque `"4663aa47...a60753c18d9ba9cb4"`
 
-2.	- *Object* - Block information object
-        - **id** - *Number* - block height, example: `{"id":2}`
-        - **hash**	-	*[Hex](#hex)	String*	-	Block	HASH,	Example:	`{"hash": "d36b8996c	c616d3043a0d02a0f59"}`
+2. - *Object* - Objeto de información del bloque
+        - **id** -  *Number* - Altura del bloque, por ejemplo: `{"id":2}`
+        - **hash** - *[Hex](#hex) String* - HASH del bloque, por ejemplo: `{"hash":"d36b8996c...c616d3043a0d02a0f59"}`
+        
+        **Solo se puede elegir una altura de bloque o un HASH de bloque**.
 
-        **Block Height and Block HASH can only choose one**. 
+### Solicitudes en lote {#batch-requests}
+Esta función se puede utilizar para reducir la latencia de la red, especialmente al obtener una gran cantidad de objetos de datos básicamente independientes.
 
-### Batch requests {#batch-requests}
-This feature can be used to reduce network latency, especially when acquiring a large number of largely independent data objects.
-
-The following is an example of obtaining the highest block and total number of transactions:
+A continuación se muestra un ejemplo de cómo obtener el bloque más alto y el número total de transacciones:
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '[{"jsonrpc":"2.0","method":"ibax.getTxCount","id":1,"params":[]},{"jsonrpc":"2.0","method":"ibax.maxBlockId","id":2,"params":[]}]' http://127.0.0.1:7079
@@ -117,27 +118,27 @@ The following is an example of obtaining the highest block and total number of t
 ```
 
 
-### Error response handling {#error-response-handling}
+### Manejo de respuestas de error {#error-response-handling}
 
-Returns status `200` in case the request is executed successfully.
+En caso de que la solicitud se ejecute correctamente, se devolverá el estado `200`.
 
-If an error occurs, a JSON object with the following fields will be returned:
+Si ocurre un error, se devolverá un objeto JSON con los siguientes campos:
 
--	jsonrpc
+-   jsonrpc
 
-    Error identifier.
+    Identificador de error.
 
--	id
+-   id
 
-    Error text message.
+    Información de texto de error.
 
--	error
-    -	code
+-   error
+    - code
 
-        Response Status Code
-    -	message
+        Código de estado de respuesta
+    - message
 
-        Response Status Description
+        Descripción del estado de respuesta
 
 ``` text
 {
@@ -151,26 +152,26 @@ If an error occurs, a JSON object with the following fields will be returned:
 ```
 
 
-## JSON-RPC Namespaces {#json-rpc-namespaces}
+## Espacios de nombres JSON-RPC {#json-rpc-namespaces}
 
- ### ibax Namespace {#ibax-namespace}
+### Espacio de nombres ibax {#ibax-namespace}
 
-#### Authentication Interface {#authentication-interface}
+#### Interfaz de autenticación {#authentication-interface}
 - [ibax.getuid](#ibax-getuid)
 - [ibax.login](#ibax-login)
 - [ibax.getAuthStatus](#ibax-getauthstatus)
 
-#### server-side command interface {server-side-command-interface}
+#### Interfaz de comando del servidor {server-side-command-interface}
 - [ibax.getVersion](#ibax-getversion)
 
-#### Data Request Function Interface {#data-request-function-interface}
+#### Función de interfaz de solicitud de datos. {#data-request-function-interface}
 - [ibax.getBalance](#ibax-getbalance)
 - [ibax.getBlocksTxInfo](#ibax-getblockstxinfo)
 - [ibax.detailedBlocks](#ibax-detailedblocks)
 - [ibax.getKeyInfo](#ibax-getkeyinfo)
 - [ibax.detailedBlock](#ibax-detailedblock)
 
-#### Get Metrics Interface {#get-metrics-interface}
+#### Obtener la interfaz de indicadores. {#get-metrics-interface}
 - [ibax.maxBlockId](#ibax-maxblockid)
 - [ibax.getKeysCount](#ibax-getkeyscount)
 - [ibax.getTxCount](#ibax-gettxcount)
@@ -179,7 +180,7 @@ If an error occurs, a JSON object with the following fields will be returned:
 - [ibax.honorNodesCount](#ibax-honornodescount)
 - [ibax.getEcosystemCount](#ibax-getecosystemcount)
 
-#### Ecosystem Interface {#ecosystem-interface}
+#### Interfaz del ecosistema. {#ecosystem-interface}
 - [ibax.ecosystemInfo](#ibax-ecosysteminfo)
 - [ibax.appParams](#ibax-appparams)
 - [ibax.getEcosystemParams](#ibax-getecosystemparams)
@@ -196,7 +197,7 @@ If an error occurs, a JSON object with the following fields will be returned:
 - [ibax.getAppContent](#ibax-getappcontent)
 - [ibax.getMember](#ibax-getmember)
 
-#### Contract Function Interface {#contract-function-interface}
+#### Interfaz de funciones de contratos inteligentes. {#contract-function-interface}
 - [ibax.getContracts](#ibax-getcontracts)
 - [ibax.getContractInfo](#ibax-getcontractinfo)
 - [ibax.sendTx](#ibax-sendtx)
@@ -212,59 +213,62 @@ If an error occurs, a JSON object with the following fields will be returned:
 - [ibax.getBlockInfo](#ibax-getblockinfo)
 - [ibax.getConfig](#ibax-getconfig)
 
-### net Namespace {#net-namespace}
+### Espacio de nombres net {#net-namespace}
 - [net.getNetwork](#net-getnetwork)
 - [net.status](#net-status)
 
-### rpc Namespace {#rpc-namespace}
+### Espacio de nombres rpc {#rpc-namespace}
 - [rpc.modules](#rpc-modules)
 
-### admin Namespace {#admin-namespace}
+### Espacio de nombres de administrador {#admin-namespace}
 - [admin.startJsonRpc](#admin-startjsonrpc)
 - [admin.stopJsonRpc](#admin-stopjsonrpc)
 
 
-### debug Namespace {#debug-namespace}
+### Espacio de nombres de depuración {#debug-namespace}
 - [debug.getNodeBanStat](#debug-getnodebanstat)
 - [debug.getMemStat](#debug-getmemstat)
  
 
 
-## JSON-RPC Interface Methods {#json-rpc-interface-methods}
+## Métodos de interfaz JSON-RPC {#json-rpc-interface-methods}
 
 ### **ibax.getUid** {#ibax-getuid}
 
-[Authorization](#authorization) [Omitempty](#omitempty)
+[Autorización](#authorization) [Omitempty](#omitempty)
 
-Generate a temporary JWT token,	which needs to be passed to [**Authorization**](#authorization) when calling **[login](#ibax-login)**
+Para generar un token JWT temporal, necesitas pasar el token a **[login](#ibax.login)** cuando lo llames.
 
-**Parameters**
-- None
+[**Authorization**](#authorization)
+
+**Parámetros**
+- ninguno
 
 **Return Value**
-- **uid** - *String* - The signature number.
 
-- **token** - *String* - temporary token passed during login (temporary token has a 5 second lifespan).
+- **uid** - *String* - Número de firma.
 
-- **network_id** - *String* - The network identifier.
+- **token** - *String* - Token temporal pasado durante el inicio de sesión (la vida útil del token temporal es de 5 segundos).
 
-- **cryptoer** - *String* - Elliptic curve algorithm.
+- **network_id** - *String* - Identificador de red.
 
-- **hasher** - *String* - hash algorithm.
+- **cryptoer** - *String* - Algoritmo de curva elíptica.
 
-In the case that no authorization is required(the request contains [Authorization](#authorization), the following message will be returned.
+- **hasher** - *String* - Algoritmo de hash.
 
-- **expire** - *String* - Expiration time.
+Si la solicitud contiene [Autorización](#authorization) y no requiere autorización, se devolverá la siguiente información:
 
-- **ecosystem** - *String* - Ecosystem ID.
+- **expire** - *String* - Tiempo de expiración.
 
-- **key_id** - *String* - The account address.
+- **ecosystem** - *String* - ID de ecosistema.
 
-- **address** - *String* - wallet address `XXXX-XXXXXX-XXXX-XXXX-XXXX`.
+- **key_id** - *String* - Dirección de cuenta.
 
-- **network_id** - *String* - The network identifier.
+- **address** - *String* - Dirección de billetera `XXXX-XXXX-XXXX-XXXX-XXXX`.
 
-**Example**
+- **network_id** - *String* - Identificador de red.
+
+**Ejemplo**
 ```text
     //Request1
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getUid","params":[],"id":1}' http://127.0.0.1:7079
@@ -302,60 +306,59 @@ In the case that no authorization is required(the request contains [Authorizatio
 ```
 
 ### **ibax.login** {#ibax-login}
-User authentication. [Authorization](#authorization)
+Autenticación de usuario. [Autorización](#authorization)
 
-The [**ibax.getUid**](#ibax-getuid) command should be called first in order to receive the unique value and sign it.
-The temporary JWT token for getuid needs to be passed in the request header.
-If the request is successful, the token received in the response is contained in [**Authorization**](#authorization).
+Debe llamar primero al comando [**ibax.getUid**](#ibax-getuid) para recibir un valor único y firmarlo.
+El token JWT temporal de getuid debe transmitirse en el encabezado de la solicitud.
+Si la solicitud es exitosa, el token recibido en la respuesta se incluye en [**Autorización**](#authorization).
 
-**Parameters**
+**Parámetros**
 
-*Object* - Authentication call object
-- **ecosystem_id** - *Number* - Ecosystem ID. if not specified, defaults to the first ecosystem ID.
+*Object* - Objeto de llamada de autenticación de identidad.
+- **ecosystem_id** - *Number* - Ecological system ID. Si no se especifica, se utilizará el ID del primer sistema ecológico por defecto.
 
-- **expire** - *Number* - The lifecycle of the JWT token in seconds, default is 28800,8 hours.
+- **expire** - *Number* - El ciclo de vida del token JWT, en segundos, es de forma predeterminada 28800, es decir, 8 horas.
 
-- **public_key** - *[Hex](#hex) String* - Hexadecimal account public key.
+- **public_key** - *[Hex](#hex) String* - Clave pública de cuenta en hexadecimal.
 
 - **key_id** - *String* -
-    >	Account address `XXXX-... -XXXX`.
+    > Dirección de cuenta `XXXX-...-XXXX`.
     >
-    >	Use this parameter if the public key is already stored in the blockchain. It cannot be used with *pubkey*
-    >	parameters are used together.
+    > Use este parámetro cuando la clave pública ya esté almacenada en la cadena de bloques. No se puede usar junto con el parámetro *pubkey*.
 
 - **signature** - *String* -
-    Use the private key to sign the uid received by getuid. 
+    > Firmar el UID recibido por getuid con la clave privada.
+    > 
+    > Contenido de los datos firmados: LOGIN+{$network_id}+uid.
 
-    Signature data content:LOGIN+{$network_id}+uid
-
-- **role_id** - *Number* - Role ID, default role 0
+- **role_id** - *Number* - Role ID, role default 0.
 
 
-**Return Value**
-*Object* - Authentication object
-- **token** - *String* - JWT token.
+**Return value**
+*Object* - Asunto de verificación de identidad.
+- **token** - *String* - Token JWT.
 
-- **ecosystem_id** - *String* - Ecosystem ID.
+- **ecosystem_id** - *String* - ID del ecosistema.
 
-- **key_id** - *String* - Account Address ID
+- **key_id** - *String* - ID de dirección de cuenta.
 
-- **account** - *String* - wallet address `XXXX-XXXXXX-XXXX-XXXX-XXXX`.
+- **account** - *String* - Dirección de la billetera `XXXX-XXXX-XXXX-XXXX-XXXX`.
 
-- **notify_key** - *String* - The notification ID.
+- **notify_key** - *String* - ID de notificación.
 
-- **isnode** - *Bool* - Whether the account address is the owner of the node. Values: `true,false`.
+- **isnode** - *Bool* - ¿Es esta la dirección de cuenta del propietario de este nodo? Valor: `true`,`false`.
 
-- **isowner** - *Bool* - Whether the account address is the creator of this ecosystem. Values: `true,false`.
+- **isowner** - *Bool* - ¿Es esta dirección de cuenta el creador del sistema ecológico? Valor: `true`,`false`.
 
-- **clb** - *Bool* - Whether the logged-in ecosystem is a CLB. Values: `true,false`.
+- **clb** - *Bool* - El sistema de inicio de sesión es CLB. Valor: `true`,`false`。
 
-- **timestamp** - *String* - current timestamp
- 
-- **roles** - *Array* list of roles, if there are no roles, the field is nil
-    - **role_id** - *Number* - Role ID
-    - **role_name** - *String* - Role name
+- **timestamp** - *String* - El sello de tiempo actual.
 
-**Example**
+- **roles** - *Array* Listado de personajes, si no hay personajes, el campo es `nil`.
+    - **role_id** - *Number* - ID de personaje.
+    - **role_name** - *String* - Nombre del personaje.
+
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.login","params":[{"ecosystem_id":1,"public_key":"04....","signature","46...","role_id":0}],"id":1}' http://127.0.0.1:7079
@@ -380,19 +383,19 @@ If the request is successful, the token received in the response is contained in
 ```
 
 ### **ibax.getAuthStatus** {#ibax-getauthstatus}
-User authentication status 
-[Authorization](#authorization)
+Estado de autenticación de identidad del usuario.
+[Autorización](#authorization)
 
-**Parameters**
-- None
+**Parámetros**
+- ninguno
 
-**Return Value**
-*Object* - Authentication status object
-- **active** - *Bool* - The current user authentication status. Values: `true,false`
+**Valor de retorno**
+*Object* - Estado del objeto de autenticación de identidad.
+- **active** - *Bool* - Estado de autenticación de usuario actual, valor: `true,false`。
 
-- **exp** - *Number* - [Omitempty](#omitempty) Token validity cutoff timestamp
- 
-**Example**
+- **exp** - *Number* - [Omitempty](#omitempty) Fecha de vencimiento del token en formato de marca de tiempo.
+
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getAuthStatus","id":1}' http://127.0.0.1:7079
@@ -409,15 +412,15 @@ User authentication status
 ```
 
 ### **ibax.getVersion** {#ibax-getversion}
-Returns the current server version.
+Devuelve la versión actual del servidor.
 
-**Parameters** 
-- None
+**Parámetros**
+- ninguno
 
-**Return Value**
-- **vesion** - *String* - version number (`big Version` + `branch name` + `git commit` + `time` + `node status`)
+**Valor de retorno**
+- **vesion** - *String* - Versión(`big Version` + `branch name` + `git commit` + `time` + `node status`)。
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getVersion","id":1}' http://127.0.0.1:7079
@@ -431,27 +434,27 @@ Returns the current server version.
 ```
 
 ### **ibax.getBalance** {#ibax-getbalance}
-Get the account address balance.
- 
-**Parameters**
+Obtener el saldo de la dirección de la cuenta.
 
-- **key_id or account** - [*AccountOrKeyId*](#accountorkeyid) - account address `XXXX- XXXX-XXXX-XXXX-XXXX` or account ID
+**Parámetros**
 
-- **ecosystem_id** - *Number* - Ecosystem ID [Omitempty](#omitempty) Default 1 
+- **key_id or account** - *[AccountOrKeyId](#accountorkeyid)* - Dirección de cuenta `XXXX-XXXX-XXXX-XXXX-XXXX` o ID de cuenta.
 
-**Return Value**
-*Object* - Get the balance object
-- **amount** - *String* - the minimum unit of the contract account balance.
+- **ecosystem_id** - *Number* - Identificación del sistema de ecosistema [Omitempty](#omitempty) 默认生态1。
 
-- **total** - *String* - the total balance of the minimum unit account (amount + utxo).
+**Valor de retorno**
+*Object* - Obtener objeto de saldo.
+- **amount** - *String* - El saldo de la cuenta del contrato inteligente de la unidad mínima.
 
-- **utxo** - *String* - Minimum unit UTXO account balance.
+- **total** - *String* - El saldo total de la cuenta de la unidad mínima. (amount + utxo)。
 
-- **digits** - *Number* - Accuracy
+- **utxo** - *String* - El saldo de la cuenta UTXO es la cantidad mínima de unidades.
 
-- **token_symbol** - *String* - Token symbols 
+- **digits** - *Number* - Precisión.
 
-**Example**
+- **token_symbol** - *String* - Símbolo del token.
+
+**Ejemplo**
 ```text
     //Request1
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBalance","id":1,"params":["648...8120"]}' http://127.0.0.1:7079
@@ -478,31 +481,35 @@ Get the account address balance.
 
 
 ### **ibax.getBlocksTxInfo** {#ibax-getblockstxinfo}
-Returns a list containing additional information about the transactions in each block. 
 
-**Parameters**
+Devuelve una lista de información adicional relevante para las transacciones en cada bloque.
 
-- **block_id** - *Number* - the starting block height to query
+(Nota: Esta traducción puede no ser precisa sin más contexto.)
 
-- **count** - *Number* - number of blocks, default is 25, maximum request is 100
+**Parámetros**
 
-**Return Value**
-*Object* - Get the block information object
-- **block_id** - *String* - block height
--	List of transactions in the block and additional information for each transaction:
+- **block_id** - *Number* - Altura del bloque de inicio a consultar.
 
-    - **hash** - *[Hex](#hex) String* - The transaction hash.
+- **count** - *Number* - Número de bloques, por defecto es 25, con un máximo de 100 solicitudes.
 
-    - **contract_name** - *String* - The name of the contract.
+**Valor de retorno**
+*Object* - Obtener el objeto de información del bloque.
 
-    - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo).
+- **block_id** - *String* - Altura del bloque.
+- Lista de transacciones en el bloque y la información adicional de cada transacción:
+    
+    - **hash** - *[Hex](#hex) String* - Hash de transacción.
+
+    - **contract_name** - *String* -  Nombre del contrato inteligente.
+
+    - **params** - *Object* - Parámetros de contrato inteligente, los campos de contrato inteligente se pueden consultar a través de [ibax.getContractInfo](#ibax-getcontractinfo).
 
     - **key_id** - *Number* -
-        For the first block, it is the account address of the first block that signed the transaction.
+        Para el primer bloque, es la dirección de cuenta del primer bloque que firma la transacción.
 
-        For all other blocks, it is the address of the account that signed the transaction.
+Para todos los demás bloques, es la dirección de cuenta que firma la transacción.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBlocksTxInfo","id":1,"params":[1,2]}' http://127.0.0.1:7079
@@ -537,42 +544,42 @@ Returns a list containing additional information about the transactions in each 
 
 
 ### **ibax.detailedBlocks** {#ibax-detailedblocks}
-Returns a list containing detailed additional information about the transactions in each block.
+Devuelve una lista que contiene información adicional detallada sobre las transacciones en cada bloque.
 
-**Parameters**
-- **block_id** - *Number* - the height of the starting block to query
+**Parámetros**
+- **block_id** - *Number* - Altura del bloque de inicio a consultar.
 
-- **count** - *Number* - number of blocks, default is 25, maximum request is 100
+- **count** - *Number* - Número de bloques, por defecto es 25, con un máximo de 100 solicitudes.
 
 
-**Return Value**
-*Object* - Get the block details object
-- **block_id** - *String* - block height
-    - **header** - *Object* - block header The block header contains the following fields.
-        - **block_id** - *Number* - the height of the block.
-        - **time** - *Number* - block generation timestamp.
-        - **key_id** - *Number* - the address of the account that signed the block.
-        - **node_position** - *Number* - The position of the node that generated the block in the honor node list.
-        - **version** - *Number* - the block structure version.
-    - **hash** - *[Hex](#hex) String* - The block hash.
-    - **node_position** - *Number* - The position of the node that generated the block in the honor node list.
-    - **key_id** - *Number* - the address of the account that signed the block.
-    - **time** - *Number* - block generation timestamp.
-    - **tx_count** - *Number* - the number of transactions within the block.
-    - **size** - *String* - the size of the block.
-    - **rollback_hash** - *[Hex](#hex) String* - The block rollback hash.
-    - **merkle_root** - *[Hex](#hex) String* - The merkle tree for this block transaction.
-    - **bin_data** - *[Hex](#hex) String* - Serialization of the block header, all transactions within the block, the previous block hash, and the private key of the node that generated the block.
-    -  **transactions** - *Object* - Transactions List of transactions in the block and additional information about each transaction:
-        - **hash** - *[Hex](#hex) String* - The transaction hash.
-        - **contract_name** - *String* - The name of the contract.
-        - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo).
-        - **key_id** - *Number* - The address of the account that signed the transaction.
-        - **time** - *Number* - transaction generation timestamp (unit: ms).
-        - **type** - *Number* - the type of the transaction.
-        - **size** - *String* - The transaction size.
+**Valor de retorno**
+*Object* - Obtener el objeto de detalles del bloque.
+- **block_id** - *String* - Altura del bloque.
+    - **header** - *Object* - Encabezado de bloque. El encabezado de bloque contiene los siguientes campos:
+        - **block_id** - *Number*- Altura del bloque.
+        - **time** - *Number* - Marca de tiempo de generación de bloque.
+        - **key_id** - *Number* - La dirección de cuenta que firmó el bloque.
+        - **node_position** - *Number* - La posición del nodo que genera el bloque en la lista de nodos de nodo de honor.
+        - **version** - *Number* - Versión de estructura de bloques.
+    - **hash** - *[Hex](#hex) String* - Hash de bloque.
+    - **node_position** - *Number* - En la lista de nodos de nodo de honor, se genera la posición del nodo que crea el bloque.
+    - **key_id** - *Number* - Dirección de la cuenta que firma el bloque.
+    - **time** - *Number* - Marca de tiempo de generación del bloque.
+    - **tx_count** - *Number* - Número de transacciones en el bloque.
+    - **size** - *String* - Tamaño del bloque.
+    - **rollback_hash** - *[Hex](#hex) String* - El valor hash de la reversión de bloque.
+    - **merkle_root** - *[Hex](#hex) String* - El árbol de Merkle de las transacciones del bloque.
+    - **bin_data** - *[Hex](#hex) String* - Encabezado de bloque.todas las transacciones dentro del bloque, el hash del bloque anterior y la serialización de la clave privada del nodo que generó este bloque.
+    -  **transactions** - *Object* - Transacciones. Lista de transacciones en el bloque y la información adicional de cada transacción:
+        - **hash** - *[Hex](#hex) String* - Hash de transacción.
+        - **contract_name** - *String* - Nombre del contrato inteligente.
+        - **params** - *Object* - Parámetros de contrato inteligente, los campos de contrato inteligente se pueden consultar a través de [ibax.getContractInfo](#ibax-getcontractinfo).
+        - **key_id** - *Number* - La dirección de la cuenta que firmó la transacción.
+        - **time** - *Number* - Timestamp de generación de la transacción (unidad: ms).
+        - **type** - *Number* - Tipo de transacción.   
+        - **size** - *String* - Tamaño de la transacción.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.detailedBlocks","id":1,"params":[1,2]}' http://127.0.0.1:7079
@@ -651,24 +658,24 @@ Returns a list containing detailed additional information about the transactions
 
 
 ### **ibax.getKeyInfo** {#ibax-getkeyinfo}
-Returns a list of ecosystems with roles that are registered to the specified address.
+Devuelve una lista de ecosistemas que contiene roles registrados con la dirección especificada.
 
-**Parameters**
-- **account** - *String* - Account Address
+**Parámetros**
+- **account** - *String* - Dirección de cuenta.
 
-**Return Value**
-*Object* - Specify the address eco-list object
-- **account** - *String* - Account Address
-- **ecosystems** - *Array* - Eco-List
-    - **ecosystem** - *String* - Ecosystem id
-    - **name** - *String* - Ecosystem name
-    - **digits** - *Number* - Accuracy
-    - **roles** - *Array* - list of roles.
-        - **id** - *String* - role id
-        - **name** - *String* - Character name
+**Valor de retorno**
+*Object* - Lista de objetos de ecosistema de dirección especificada.
+- **account** - *String* - Dirección de cuenta.
+- **ecosystems** - *Array* - Lista de Ecosistemas.
+    - **ecosystem** - *String* - ID del ecosistema.
+    - **name** - *String* - Nombre del ecosistema.
+    - **digits** - *Number* - Precisión.
+    - **roles** - *Array* - Lista de personajes.
+        - **id** - *String* - ID de personaje.
+        - **name** - *String* - Nombre del personaje.
+
  
-
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getKeyInfo","id":1,"params":["0666-XXXX-XXXX-XXXX-5186"]}' http://127.0.0.1:7079
@@ -699,41 +706,41 @@ Returns a list of ecosystems with roles that are registered to the specified add
         }
     }
 ```
- 
+
 ### **ibax.detailedBlock** {#ibax-detailedblock}
-Returns a detailed list of additional information about the transactions in the block.
+Return a detailed list of additional information for transactions in a block.
 
-**Parameters**
-- **Block or Hash** - *[BlockOrHash](#blockorhash)* - Block Height or Block Hash
+**Parámetros**
+- **Block or Hash** - *[BlockOrHash](#blockorhash)* - Altura del bloque o Hash del bloque.
 
-**Return Value**
-*Object* - Get the block details object
-- **header** - *Object* - block header The block header contains the following fields.
-    - **block_id** - *Number* - the height of the block. 
-    - **time** - *Number* - block generation timestamp.
-    - **key_id** - *Number* - the address of the account that signed the block.
-    - **node_position** - *Number* - The position of the node that generated the block in the honor node list.
-    -	**version** - *Number* - the block structure version.
+**Valor de retorno**
+*Object* - Obtener el objeto de detalles del bloque.
+- **header** - *Object* - Block header. El encabezado de bloque contiene los siguientes campos:
+    - **block_id** - *Number*- Altura del bloque.
+    - **time** - *Number* - Marca de tiempo de generación de bloque.
+    - **key_id** - *Number* - La dirección de cuenta que firmó el bloque.
+    - **node_position** - *Number* - La posición del nodo que genera el bloque en la lista de nodos de nodo de honor.
+    - **version** - *Number* - Versión de estructura de bloques.
 
-- **hash** - *[Hex](#hex) String* - The block hash.
-- **node_position** - *Number* - The position of the node that generated the block in the honor node list.
-- **key_id** - *Number* - the address of the account that signed the block.
-- **time** - *Number* - block generation timestamp.
-- **tx_count** - *Number* - the number of transactions within the block.
-- **size** - *String* - the size of the block.
-- **rollback_hash** - *[Hex](#hex) String* - The block rollback hash.
-- **merkle_root** - *[Hex](#hex) String* - The merkle tree for this block transaction.
-- **bin_data** - *[Hex](#hex) String* - Serialization of the block header, all transactions within the block, the previous block hash, and the private key of the node that generated the block.
--  **transactions** - *Array* - Transactions List of transactions in the block and additional information about each transaction:
-    - **hash** - *[Hex](#hex) String* - The transaction hash.
-    - **contract_name** - *String* - The name of the contract.
-    - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo).
-    - **key_id** - *Number* - The address of the account that signed the transaction.
-    - **time** - *Number* - transaction generation timestamp (unit: ms).
-    - **type** - *Number* - the type of the transaction.
-    - **size** - *String* - The transaction size.
+- **hash** - *[Hex](#hex) String* - Hash de bloque.
+- **node_position** - *Number* - La posición del nodo que genera el bloque en la lista de nodos de nodo de honor.
+- **key_id** - *Number* - Dirección de cuenta que firmó el bloque.
+- **time** - *Number* - Marca de tiempo de generación de bloque.
+- **tx_count** - *Number* - El número de transacciones dentro de este bloque.
+- **size** - *String* - El tamaño del bloque.
+- **rollback_hash** - *[Hex](#hex) String* - Hash de reversión de bloque.
+- **merkle_root** - *[Hex](#hex) String* - Árbol de Merkle de las transacciones de este bloque.
+- **bin_data** - *[Hex](#hex) String* - Block header, todas las transacciones dentro del bloque, el hash del bloque anterior y la serialización de la clave privada del nodo que generó este bloque.
+-  **transactions** - *Array* - Transacciones. Lista de transacciones en el bloque y la información adicional de cada transacción:
+    - **hash** - *[Hex](#hex) String* - Hash de transacción.
+    - **contract_name** - *String* - Nombre del contrato inteligente.
+    - **params** - *Object* - Parámetros de contrato inteligente, los campos de contrato inteligente se pueden consultar a través de [ibax.getContractInfo](#ibax-getcontractinfo).
+    - **key_id** - *Number* - - **address** - *String* - Dirección de la cuenta que firmó la transacción.
+- **time** - *Number* - Marca de tiempo de generación de la transacción (unidad: ms).
+- **type** - *Number* - Tipo de transacción.
+- **size** - *String* - Tamaño de la transacción.
 
-**Example**
+**Ejemplo**
 ```text
     //Request1
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.detailedBlock","id":1,"params":["1"]}' http://127.0.0.1:7079
@@ -783,15 +790,15 @@ Returns a detailed list of additional information about the transactions in the 
 ```
 
 ### **ibax.maxBlockId** {#ibax-maxblockid}
-Get the highest block ID on the current node
+Obtener el ID del bloque más alto en el nodo actual.
 
-**Parameters** 
-- None
+**Parámetros**
+- ninguno
 
-**Return Value**
--	**Block Id** - *Number* - The highest block on the current node
+**Valor de retorno**
+- *Number* - El bloque más alto en el nodo actual.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","id":1,"params":[]}' http://127.0.0.1:7079
@@ -806,15 +813,15 @@ Get the highest block ID on the current node
 
 
 ### **ibax.getKeysCount** {#ibax-getkeyscount}
-Get the total number of addresses on the current node
+Obtener el número total de direcciones en el nodo actual.
 
-**Parameters** 
-- None
+**Parámetros**
+- ninguno
 
-**Return Value**
-- **Count** - *Number* - Total number of addresses 
+**Valor de retorno**
+- **Count** - *Number* - Número total de direcciones.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getKeysCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -829,15 +836,15 @@ Get the total number of addresses on the current node
 
 
 ### **ibax.getTxCount** {#ibax-gettxcount}
-Get the total number of transactions in the current node
+Obtener el número total de transacciones en el nodo actual.
 
-**Parameters** 
-- None
+**Parámetros**
+- ninguno
 
-**Return Value**
-- **Count** - *Number* - Total number of transactions
+**Valor de retorno**
+- **Count** - *Number* - Número total de transacciones.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getTxCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -852,15 +859,15 @@ Get the total number of transactions in the current node
 
 
 ### **ibax.getTransactionCount** {#ibax-gettransactioncount}
-Get the number of block transactions
+Obtener el número de transacciones de un bloque.
 
-**Parameters**
-- **block or hash** - *[BlockOrHash](#blockorhash)* - block height or block hash
- 
-**Return Value**
-- **Count** - *Number* - Total number of blocks
+**Parámetros**
+- **block or hash**  - *[BlockOrHash](#blockorhash)* - Altura del bloque o Hash del bloque.
 
-**Example**
+**Valor de retorno**
+- **Count** - *Number* - Cantidad total de bloques.
+
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getTransactionCount","id":1,"params":["efc386f7573269610a34af9cc722f775cca8183ccaa0ed7a96db61ef0bde6d1c"]}' http://127.0.0.1:7079
@@ -875,19 +882,20 @@ Get the number of block transactions
 
 
 ### **ibax.getBlocksCountByNode** {#ibax-getblockscountbynode}
-Get the number of node location packing blocks 
-**Parameters**
-- **nodePosition** - *Number* - node subscript
+Obtener la posición del nodo y el número de bloques empaquetados.
 
-- **consensusMode** - *Number* - Consensus Mode, parameters (1: Creator Management Mode 2: DAO Governance Mode)
+**Parámetros**
+- **nodePosition** - *Number* - Nodo índice.
 
-**Return Value**
-*Object* - Get the node subscript packing number object
-- **total_count** - *Number* - Total number of blocks
+- **consensusMode** - *Number* - Modo de consenso, parámetros (1: modo de gestión del creador; 2: modo de gobernanza DAO).
 
-- **partial_count** - *Number* - Number of node subscript packing blocks 
+**Valor de retorno**
+*Object* - Obtener el índice del nodo y empaquetar el objeto de cantidad.
+- **total_count** - *Number* - Número total de bloques.
 
-**Example**
+- **partial_count** - *Number* - Número de bloques empaquetados en el índice del nodo.
+
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBlocksCountByNode","id":1,"params":[0,1]}' http://127.0.0.1:7079
@@ -905,15 +913,15 @@ Get the number of node location packing blocks
 
 
 ### **ibax.honorNodesCount** {#ibax-honornodescount}
-Get number of honor nodes
+Obtener la cantidad de nodos de honor.
 
-**Parameters** 
-- None
+**Parámetros**
+- ninguno
 
-**Return Value**
-- **Count** - *Number* - number of nodes
+**Valor de retorno**
+- **Count** - *Number* - Número de nodos.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.honorNodesCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -928,15 +936,15 @@ Get number of honor nodes
 
 
 ### **ibax.getEcosystemCount** {#ibax-getecosystemcount}
-Number of ecosystem acquisitions
+Obtener la cantidad de ecosistemas.
 
-**Parameters** 
-- None
+**Parámetros**
+- ninguno
 
-**Return Value**
-- **Count** - *Number* - Ecological number
+**Valor de retorno**
+- **Count** - *Number* - Número de ecosistemas.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getEcosystemCount","id":1,"params":[]}' http://127.0.0.1:7079
@@ -953,27 +961,27 @@ Number of ecosystem acquisitions
 
 
 ### **ibax.ecosystemInfo** {#ibax-ecosysteminfo}
-Access to ecological information
+Obtener información sobre el ecosistema.
 
-**Parameters**
-- **ecosystem id** - *Number* - ecological ID
+**Parámetros**
+- **ecosystem id** - *Number* - Identificación del ecosistema.
 
-**Return Value**
-- **id** - *Number* - Eco-ID
-- **name** - *String* - Ecological name
-- **digits** - *Number* - Accuracy
-- **token_symbol** - *String* - Token symbols
-- **token_name** - *String* - the name of the token
-- **total_amount** - *String* - the number of issues (first issue, or `"0"` if not issued)
-- **is_withdraw** - *Bool* - destructible `true:destructible false:undestructible`
-- **withdraw** - *String* - amount of destruction (`"0"` if not destructible, or not destroyed)
-- **is_emission** - *Bool* - may be incremented `true:may be incremented false:may not be incremented`
-- **emission** - *String* - increment (`"0"` if no increment is available, or if no increment is available)
-- **introduction** - *String* - Eco Introduction
-- **logo** - *Number* - ecoLogo Id (corresponds to Binary table id), available through the RESTFUL API
-- **creator** - *String* - Eco-creator
+**Valor de retorno**
+- **id** - *Number* - Identificación del ecosistema.
+- **name** - *String* - Nombre del ecosistema.
+- **digits** - *Number* - Precisión.
+- **token_symbol** - *String* - Símbolo del token.
+- **token_name** - *String* - Nombre del token.
+- **total_amount** - *String* - Cantidad de emisión (cantidad de emisión inicial, si no se ha emitido, es `"0"`).
+- **is_withdraw** - *Bool* - puede ser destruido `true `: destruible, `false`: no destruible。
+- **withdraw** - *String* - Cantidad destruida（`"0"` si no se puede destruir o no se destruye）。
+- **is_emission** - *Bool* - Se puede emitir adicionalmente `true`: se puede emitir más acciones; `fales`: no se puede emitir más acciones.。
+- **emission** - *String* - Monto de emisión adicional ("0"` si no hay emisión adicional, o si no hay emisión adicional)。
+- **introduction** - *String* - Introducción al ecosistema.
+- **logo** - *Number* - Identificación del logotipo del ecosistema (correspondiente a la identificación de la tabla binaria), que se puede obtener a través de la API RESTFUL.
+- **creator** - *String* - Creador de ecosistemas.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.ecosystemInfo","id":1,"params":[1]}' http://127.0.0.1:7079
@@ -1002,36 +1010,36 @@ Access to ecological information
 
 
 ### **ibax.appParams** {#ibax-appparams}
-Returns a list of application parameters in the current or specified ecosystem 
+Devolver la lista de parámetros de aplicación en el ecosistema actual o especificado.
 
-[Authorization](#authorization)
+[Autorización](#authorization)
 
-**Parameters**
-- **appid** - *Number* - the application ID.
+**Parámetros**
+- **appid** - *Number* - Identificación de la aplicación.
 
-- **ecosystem** - *Number* - [Omitempty](#omitempty) - Ecosystem ID;
+- **ecosystem** - *Number* - [Omitempty](#omitempty) - ID del ecosistema.
 
-    If unspecified or 0, the parameters of the current ecosystem will be returned.
+    Si no se especifica o se establece en 0, devolverá los parámetros del ecosistema actual.
 
-- **names** - *String* - [Omitempty](#omitempty) - Filter the application parameter names.
+- **names** - *String* - [Omitempty](#omitempty) - Filtrar nombres de parámetros de la aplicación.
+    
+    Lista de nombres separados por comas, por ejemplo: `name1, name2`.
 
-    A comma-separated list of names, e.g.: `name1,name2`.
+- **offset** - *Number* - [Omitempty](#omitempty) Offset, por defecto es 0.
 
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
-
-- **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
+- **limit** - *Number* [Omitempty](#omitempty) Número de entradas, por defecto 10 entradas, máximo 100 entradas.
  
-**Return Value**
+**Valor de retorno**
 
-*Array* - List of application parameters
-- **app_id** - *Number* - Application ID
-- **list** - *Number* - Each element of the array contains the following parameters
-    - **id** - *String* - parameter ID, unique;
-    - **name** - *String* - the name of the parameter;
-    - **value** - *String* - the parameter value;
-    - **conditions** - *String* - permissions to change parameters.
+*Array* - Lista de parámetros de la aplicación.
+- **app_id** - *Number* - Identificación de la aplicación.
+- **list** - *Number* - Cada elemento en el arreglo contiene los siguientes parámetros.
+    - **id** - *String* - Parameter ID, único.
+    - **name** - *String* - Nombre del parámetro.
+    - **value** - *String* - Valor del parámetro.
+    - **conditions** - *String* - Cambiar los permisos de los parámetros.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.appParams","id":1,"params":[1,1,"role_developer,role_governancer"]}' http://127.0.0.1:7079
@@ -1059,37 +1067,37 @@ Returns a list of application parameters in the current or specified ecosystem
         }
     }
 ```
- 
+
 
 ### **ibax.getEcosystemParams** {#ibax-getecosystemparams}
-Get a list of ecosystem parameters
- 
-[Authorization](#authorization)
+Obtener la lista de parámetros del ecosistema.
 
-**Parameters**
-- **ecosystem** - *Number* - [Omitempty](#omitempty) - Ecosystem ID 
+[Autorización](#authorization)
 
-    If 0 or no such parameter, default: current ecid.
+**Parámetros**
+- **ecosystem** - *Number* - [Omitempty](#omitempty) - ID del ecosistema.
+    
+    If it is 0 or there is no such parameter, the default is: the current ecological ID.
 
-- **names** - *String* - [Omitempty](#omitempty) - The name of the filter parameter.
+- **names** - *String* - [Omitempty](#omitempty) - Nombre de parámetros de filtrado.
 
-    Comma-separated list of names, e.g.: `name1,name2`
+Lista de nombres separados por comas, por ejemplo: `name1, name2`.
 
-    The *offset* and *limit* parameters are invalid when there is a filter parameter.
+Cuando hay parámetros de filtrado, los parámetros *offset* y *limit* no son válidos.
 
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
+- **offset** - *Number* - [Omitempty](#omitempty) Offset, por defecto es 0.
 
-- **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
+- **limit** - *Number* [Omitempty](#omitempty) Número de entradas, por defecto 10 entradas, máximo 100 entradas.
 
 
-**Return Value**
-- **list** - *Array* - Each element of the array contains the following parameters:
-    - **id** - *String* - The id of the parameter, unique.
-    - **name** - *String* - The name of the parameter.
-    - **value** - *String* - The value of the parameter.
-    - **conditions** - *String* - permissions to change parameters.
+**Valor de retorno**
+- **list** - *Array* - Cada elemento en el arreglo contiene los siguientes parámetros:
+    - **id** - *String* - Parameter id, único.
+    - **name** - *String* - Nombre del parámetro。
+    - **value** - *String* - Valor del parámetro。
+    - **conditions** - *String* - Cambiar los permisos de los parámetros.。
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getEcosystemParams","id":1,"params":[0,"changing_app_params,changing_language"]}' http://127.0.0.1:7079
@@ -1119,26 +1127,27 @@ Get a list of ecosystem parameters
 
 
 ### **ibax.getTableCount** {#ibax-gettablecount}
-Returns a list of data tables for the current ecosystem.
 
-Offset and number of entries can be set 
+Devolver una lista de tablas de datos para el ecosistema actual. 
 
-[Authorization](#authorization)
+Se pueden establecer el desplazamiento y el número de elementos.
 
-**Parameters**
+[Autorización](#authorization)
 
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
+**Parámetros**
 
-- **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
+- **offset** - *Number* - [Omitempty](#omitempty) Offset, por defecto es 0.
 
-**Return Value**
-- **count** - *Number* - The total number of sheets of the current ecological data table.
+- **limit** - *Number* [Omitempty](#omitempty) Número de entradas, por defecto 25 entradas, máximo 100 entradas.
 
-- **list** - *Array* - Each element of the array contains the following parameters:
-    - **name** - *String* - The name of the data table without prefix.
-    - **count** - *String* - The number of entries in the data table.
+**Valor de retorno**
+- **count** - *Number* - Actualmente, ¿cuántas tablas de datos ecológicos hay en total?
 
-**Example**
+- **list** - *Array* - Cada elemento en el arreglo contiene los siguientes parámetros:
+    - **name** - *String* - Nombre de tabla de datos sin prefijo.
+    - **count** - *String* - Número de entradas en la tabla de datos.
+
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getTableCount","id":1,"params":[0,2]}' http://127.0.0.1:7079
@@ -1162,35 +1171,35 @@ Offset and number of entries can be set
         }
     }
 ```
- 
+
 
 ### **ibax.getTable** {#ibax-gettable}
-Returns information about the current ecosystem request data table. 
+Por favor, proporcione más contexto sobre lo que se refiere con "solicitud de datos de la tabla del ecosistema actual" para poder proporcionar una traducción precisa.
 
-[Authorization](#authorization)
+[Autorización](#authorization)
 
-**Parameters**
-- **tableName** - *String* - Data table name
+**Parámetros**
+- **tableName** - *String* - Nombre de la tabla de datos.
 
-**Return Value**
-- **name** - *String* - The name of the data table.
+**Valor de retorno**
+- **name** - *String* - Nombre de la tabla de datos.
 
-- **insert** - *String* - Add permission to add an entry.
+- **insert** - *String* - Permiso para agregar entradas.
 
-- **new_column** - *String* - Add new field permission.
+- **new_column** - *String* - Agregar permisos de campo.
 
-- **update** - *String* - Change entry permissions.
+- **update** - *String* - Cambiar los permisos de entrada.
 
-- **app_id** - *String* - The application id.
+- **app_id** - *String* - Identificación de la aplicación.
 
-- **conditions** - *String* - Conditions for changing permissions.
+- **conditions** - *String* - Condiciones para cambiar los permisos.
 
-- **columns** - *Array* - Array of information related to data table fields:
-    - **name** - *String* - The name of the field.
-    - **type** - *String* - The field data type.
-    - **perm** - *String* - Permission to change the value of this field.
- 
-**Example**
+- **columns** - *Array* - Array de información relacionada con los campos de la tabla de datos:
+    - **name** - *String* - Nombre del campo.
+    - **type** - *String* - Tipo de datos del campo.
+    - **perm** - *String* - Cambiar los permisos para modificar el valor de este campo.
+
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getTable","id":1,"params":["app_params"]}' http://127.0.0.1:7079
@@ -1244,50 +1253,47 @@ Returns information about the current ecosystem request data table.
 
 
 ### **ibax.getList** {#ibax-getlist}
-Returns the entry of the specified data table. 
 
-You can specify the columns to be returned.
+Recupere entradas de una tabla de datos especificada.
 
-You can set the offset and the number of entries. 
+Puede especificar las columnas a devolver.
 
-You can set the query criteria.
+Puede establecer el desplazamiento y el número de entradas a devolver.
 
-Hex encoding of data tables of type *BYTEA* (byte arrays, hashes, byte code arrays) 
+Puede establecer condiciones de consulta.
 
-[Authorization](#authorization)
+Para las tablas de datos con un tipo de *BYTEA* (matriz de bytes, hash, matriz de bytes de código), realice la codificación hexadecimal.
 
-**Parameters**
-*Object* - Get the data table object
-- **name** - *String* - The name of the data table.
+[Autorización](#authorization)
 
-- **limit** - *Number* - [Omitempty](#omitempty) The number of entries, default 25.
+**Parámetros**
+*Object* - Obtener el objeto de la tabla de datos.
+- **name** - *String* - Nombre de la tabla de datos.
 
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
+- **limit** - *Number* - [Omitempty](#omitempty) Número de entradas predeterminado: 25 entradas.
 
-- **order** - *String* - [Omitempty](#omitempty) Sort by, default id ASC.
+- **offset** - *Number* - [Omitempty](#omitempty) Offset, por defecto es 0.
 
-- **columns** - *String* - [Omitempty](#omitempty) A comma-separated list of requested columns, if not specified, all columns will be returned.
+- **order** - *String* - [Omitempty](#omitempty) Sorting method, default id ASC. (Orden de clasificación, por defecto id ASC.)
 
-    The id column will be returned in all cases.
+- **columns** - *String* - [Omitempty](#omitempty) Solicitud de lista de columnas, separadas por comas. Si no se especifica, se devolverán todas las columnas. En todos los casos, se devolverá la columna de identificación (id).
 
-- **where** - *Object* - [Omitempty](#omitempty) 
+- **where** - *Object* - [Omitempty](#omitempty)
 
-    Query criteria
+    Consulta de condiciones, Ejemplo: Si desea buscar id>2 y name = john,
 
-    Example:If you want to query id>2 and name = john
- 
-    You can use `where:{"id":{"$gt":2}, "name":{"$eq": "john"}}`
-
-    For details, please refer to [DBFind](../topics/script.md#dbfind) where syntax 
+    puede usar `where:{"id":{"$gt":2},"name":{"$eq":"john"}}`,
     
-**Return Value**
-- **count** - *Number* - the total number of entries.
-- **list** - *Array* - Each element of the array contains the following parameters:
+    Para más detalles, consulte la sintaxis de where en [DBFind](../topics/script.md#dbfind).
 
-    - **id** - *String* - The ID of the entry.
-    - **...** - Other columns of the data table.
+**Valor de retorno**
+- **count** - *Number* - Número total de entradas.
+- **list** - *Array* - Cada elemento en el arreglo contiene los siguientes parámetros:
 
-**Example**
+    - **id** - *String* - ID de entrada.
+    - **...** - Otras columnas de la tabla de datos.
+
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getList","id":1,"params":[{"name":"@1history","where":{"$and": [{"id":{"$gt": 2}}, {"id":{"$lt": 5}}]}}]}' http://127.0.0.1:7079
@@ -1318,37 +1324,36 @@ Hex encoding of data tables of type *BYTEA* (byte arrays, hashes, byte code arra
             ]
         }
     }
-``` 
+```
 
 
 ### **ibax.getSections** {#ibax-getsections}
-Return to the tab of the current ecosystem
-List of table entries, you can set the offset and the number of entries.
+Return a list of tabular entries for the current ecosystem, with the ability to set an offset and number of entries. 
 
-If *role_access*
-field contains a list of roles and does not include the current role, no record will be returned. *title*
-The data in the field will be replaced by the *Accept-Language* language resource in the request header.
+If the *role_access* field contains a list of roles and does not include the current role, no records will be returned. 
 
-[Authorization](#authorization) 
+The data in the *title* field will be replaced by the language resource of the *Accept-Language* header.
 
-**Parameters**
+[Autorización](#authorization)
 
-- *Object* - Get the actions request object
-    - **limit** - *Number* - [Omitempty](#omitempty) - The number of entries, default 25 entries.
+**Parámetros**
 
-    - **offset** - *Number* - [Omitempty](#omitempty) - The offset, default is 0.
+- *Object* - Obtener el objeto de solicitud `sections`.
+    - **limit** - *Number* - [Omitempty](#omitempty) - Número de entradas predeterminado: 25 entradas.
 
-    - **lang** - *String* - [Omitempty](#omitempty) -
+    - **offset** - *Number* - [Omitempty](#omitempty) - Offset, por defecto es 0.
 
-        This field specifies the multilingual resource code or localization, e.g. *en, zh*. If the specified multilingual resource is not found, e.g. *en-US*, then search in the Multilingual Resources group, **default**: **en**.
+    - **lang** - *String* - [Omitempty](#omitempty) - 
+        
+        Este campo especifica el código o la localización del recurso multilingüe, por ejemplo: *en, es*. Si el recurso multilingüe especificado, como *en-US*, no se encuentra, se buscará en el grupo de recursos multilingües **predeterminado**: **en**.
 
-**Return Value**
+**Valor de retorno**
 
-- **count** - *Number* - the total number of tab entries.
+- **count** - *Number* - Número total de elementos de la pestaña.
 
-- **list** - *Array* - Each element of the array contains information about all columns in the sections table.
+- **list** - *Array* - Cada elemento en el arreglo contiene información de todas las columnas en la tabla "sections".
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getSections","id":1,"params":[{"offset":0,"limit":2}]}' http://127.0.0.1:7079
@@ -1382,34 +1387,33 @@ The data in the field will be replaced by the *Accept-Language* language resourc
         }
     }
 ```
- 
+
 
 ### **ibax.getRow** {#ibax-getrow}
-Returns the entries of the specified data table in the current ecosystem. You can specify the columns to be returned.
+Retrieve entries from a specified data table in the current ecosystem. It is possible to specify the columns to be returned.
 
-[Authorization](#authorization)
+[Autorización](#authorization)
+**Parámetros**
+- **tableName** - *String* - Nombre de la tabla de datos.
 
-**Parameters**
-- **tableName** - *String* - The name of the data table.
-
-- **id** - *Number* - the ID of the entry.
+- **id** - *Number* - ID de entrada.
 
 - **columns** - *String* - [Omitempty](#omitempty)
- 
-    A comma-separated list of requested columns, if not specified, all columns will be returned.
 
-    If you do not filter, you can place a blank "". 
+    Solicitud de lista de columnas, separadas por comas. Si no se especifica, se devolverán todas las columnas. 
     
-    The id column will be returned in all cases.
+    Si no hay filtro, se puede dejar en blanco `""`. 
+    
+    En todos los casos, se devolverá la columna de identificación (id).
 
-- **whereColumn** - *String* - [Omitempty](#omitempty) - Find column name (only Number type columns can be found)
+- **whereColumn** - *String* - [Omitempty](#omitempty) - Encuentre el nombre de la columna (solo se pueden encontrar columnas de tipo Número)。
 
-**Return Value**
-- **value**- *Object* - object that receives column values
-    - **id** - *String* - The ID of the entry.
-    - **...** - The sequence of requested columns.
+**Valor de retorno**
+- **value**- *Object* - Objeto que recibe los valores de la columna.
+    - **id** - *String* - ID de entrada.
+    - **...** - Solicitar la secuencia de columnas.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getRow","id":1,"params":["@1history",4,"id,sender_id,recipient_id,amount,ecosystem,created_at","id"]}' http://127.0.0.1:7079
@@ -1433,28 +1437,31 @@ Returns the entries of the specified data table in the current ecosystem. You ca
 
 
 ### **ibax.systemParams** {#ibax-systemparams}
-Returns the list of platform parameters. 
+Aquí está la lista de parámetros de la plataforma.
 
-[Authorization](#authorization)
+[Autorización](#authorization)
+**Parámetros**
+- **names** - *String* [Omitempty](#omitempty) - Lista de parámetros de solicitud, separados por comas.
 
-**Parameters**
-- **names** - *String* [Omitempty](#omitempty) - A list of request parameters, separated by commas.
+Por ejemplo, `names="name1,name2"`.
+Cuando hay parámetros de filtrado, los parámetros *offset* y *limit* no son válidos.
 
-    For example `names="name1,name2"`.
+- **offset** - *Number* - [Omitempty](#omitempty) Offset, por defecto es 0.
 
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
+- **limit** - *Number* [Omitempty](#omitempty) Número de entradas, por defecto 10 entradas, máximo 100 entradas.
 
-- **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
+**Valor de retorno**
 
-**Return Value**
+-   **list** - *Array* - Cada elemento en el arreglo contiene los siguientes.
 
--	**list** - *Array* - Each element of the array contains the following parameters:
-    - **id** - *String* - Unique id
-    - **name** - *String* - The name of the parameter.
-    - **value** - *String* - The value of the parameter.
-    - **conditions** - *String* - permissions to change parameters.
+ parámetros:
+    - **id** - *String* - Identificador único.
+    - **name** - *String* - Nombre del parámetro。
+    - **value** - *String* - Valor del parámetro。
+    - **conditions** - *String* - Cambiar los permisos de los parámetros.。
 
-**Example**
+**Ejemplo**
+
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.systemParams","id":1,"params":["gap_between_blocks,honor_nodes"]}' http://127.0.0.1:7079
@@ -1484,19 +1491,19 @@ Returns the list of platform parameters.
 
 
 ### **ibax.history** {#ibax-history}
-Returns the changed records of the entries of the specified data table in the current ecosystem
 
-[Authorization](#authorization) 
+Retrieve the change records of entries in the specified table in the current ecosystem.
 
-**Parameters**
+[Autorización](#authorization)
+**Parámetros**
 
-- **name** - *String* - The name of the data table.
-- **tableId** - *Number* - the ID of the entry.
+- **name** - *String* - Nombre de la tabla de datos.
+- **tableId** - *Number* - ID de entrada.
 
-**Return Value**
-- **list** - *Array* - Each element of the array contains change records for the requested entry.
+**Valor de retorno**
+- **list** - *Array* - Cada elemento de la matriz contiene un registro de cambios en el elemento solicitado.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.history","id":1,"params":["contracts",1]}' http://127.0.0.1:7079
@@ -1519,23 +1526,23 @@ Returns the changed records of the entries of the specified data table in the cu
 
 
 ### **ibax.getPageRow** {#ibax-getpagerow}
-Gets the current entry in the ecosystempages data table field. 
+Obtener las entradas de los campos de la tabla de datos de páginas del ecosistema actual.
 
-[Authorization](#authorization)
+[Autorización](#authorization)
 
-**Parameters**
-- **name** - *String* - Specifies the name of the entry in the table.
+**Parámetros**
+- **name** - *String* - Nombre de la entrada en la tabla especificada.
 
-**Return Value**
-- **id** - *Number* - the ID of the entry.
-- **name** - *String* - The name of the entry.
-- **value** - *String* - The content.
-- **menu** - *String* - Directory.
-- **nodesCount** - *Number* - the number of nodes the page needs to validate
-- **app_id** - *Number* - Application Id
-- **conditions** - *String* - permissions to change parameters
+**Valor de retorno**
+- **id** - *Number* - ID de entrada.
+- **name** - *String* - Nombre del elemento.
+- **value** - *String* - Contenido.
+- **menu** - *String* - Índice.
+- **nodesCount** - *Number* - Número de nodos que requieren validación en la página.
+- **app_id** - *Number* - Identificación de la aplicación.
+- **conditions** - *String* - Cambiar los permisos de los parámetros.。
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getPageRow","id":1,"params":["default_page"]}' http://127.0.0.1:7079
@@ -1559,21 +1566,21 @@ Gets the current entry in the ecosystempages data table field.
 
 
 ### **ibax.getMenuRow** {#ibax-getmenurow}
-Gets the current entry in the ecosystem menu data table field.
- 
-[Authorization](#authorization)
+Obtener las entradas de los campos de la tabla de datos del menú del ecosistema actual.
 
-**Parameters**
-- **name** - *String* - Specifies the name of the entry in the table.
+[Autorización](#authorization)
 
-**Return Value**
-- **id** - *Number* - the ID of the entry.
-- **name** - *String* - The name of the entry.
-- **title** - *String* - The title.
-- **value** - *String* - The content.
-- **conditions** - *String* - permissions to change parameters
+**Parámetros**
+- **name** - *String* - Nombre de la entrada en la tabla especificada.
 
-**Example**
+**Valor de retorno**
+- **id** - *Number* - ID de entrada.
+- **name** - *String* - Nombre del elemento.
+- **title** - *String* - Título.
+- **value** - *String* - Contenido.
+- **conditions** - *String* - Cambiar los permisos de los parámetros.。
+
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getMenuRow","id":1,"params":["default_menu"]}' http://127.0.0.1:7079
@@ -1594,20 +1601,20 @@ Gets the current entry in the ecosystem menu data table field.
 
 
 ### **ibax.getSnippetRow** {#ibax-getsnippetrow}
-Gets the current entry in the ecosystem snippet data table field. 
+Obtener las entradas de los campos de la tabla de datos de `snippet` del ecosistema actual.
 
-[Authorization](#authorization)
+[Autorización](#authorization)
 
-**Parameters**
-- **name** - *String* - Specifies the name of the entry in the table. 
+**Parámetros**
+- **name** - *String* - Nombre de la entrada en la tabla especificada.
 
-**Return Value** 
-- **id** - *Number* - the ID of the entry.
-- **name** - *String* - The name of the entry.
-- **value** - *String* - The content.
-- **conditions** - *String* - permissions to change parameters.
+**Valor de retorno**
+- **id** - *Number* - ID de entrada.
+- **name** - *String* - Nombre del elemento.
+- **value** - *String* - Contenido.
+- **conditions** - *String* - Cambiar los permisos de los parámetros.。
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getSnippetRow","id":1,"params":["welcome"]}' http://127.0.0.1:7079
@@ -1627,32 +1634,34 @@ Gets the current entry in the ecosystem snippet data table field.
 
 
 ### **ibax.getAppContent** {#ibax-getappcontent}
-Get application related information (including page, snippet, menu) 
+Obtener información relevante de la aplicación (incluyendo `page`, `snippet` y `menu`).
 
-[Authorization](#authorization)
+[Autorización](#authorization)
 
-**Parameters**
-- **id** - *Number* - Application id
+**Parámetros**
+- **id** - *Number* - Identificación de la aplicación.
 
-**Return Value**
-- **snippets** - *Array* - Array of code snippet information
+**Valor de retorno**
+- **snippets** - *Array* - Array de información de fragmentos de código.
 
-    - **id** - *Number* - id
-    - **name** - *String* - Code snippet name
+    - **id** - *Number* - id.
+    - **name** - *String* - Nombre del fragmento de código.
 
-- **pages** - *Array* - Array of page information
+- **pages** - *Array* - Array de información de la página.
 
-    - **id** - *Number* - id
-    - **name** - *String* - page name
- 
-- **contracts** - *Array* - an array of contract information
+    - **id** - *Number* - id.
+    - **name** - *String* - Nombre de la página.
 
-    - **id** - *Number* - id
-    - **name** - *String* - Contract name
+- **contracts** - *Array* - Array de información de contratos inteligentes.
 
-**Example**
+    - **id** - *Number* - id.
+    - **name** - *String* - Nombre del contrato inteligente.
+
+**Ejemplo**
 ```text
     //Request
+    curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}}" -d '{"jsonrpc":"2.0","method":"ibax.getAppContent","id":1,"params":[1]}' http://127.0.0.1:7079
+    
     //Response
     {
         "jsonrpc": "2.0",
@@ -1694,22 +1703,22 @@ Get application related information (including page, snippet, menu)
 
 
 ### **ibax.getMember** {#ibax-getmember}
-Get member information
+Obtener información del miembro.
 
-**Parameters**
-- **account** - *String* - Member Information
+**Parámetros**
+**account** - *String* - Información de miembros.
 
-- **ecosystemId** - *Number* - ecoid
-
-
-**Return Value**
-- **id** - *Number* - member id
-- **member_name** - *String* - Name
-- **image_id** - *Number* - Avatar id
-- **member_info** - *String* - Introduction
+**ecosystemId** - *Number* - Identificación del ecosistema.
 
 
-**Example**
+**Valor de retorno**
+- **id** - *Number* - ID de miembro.
+- **member_name** - *String* - Nombre.
+- **image_id** - *Number* - ID de imagen de perfil.
+- **member_info** - *String* - Descripción.
+
+
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}}" -d '{"jsonrpc":"2.0","method":"ibax.getMember","id":1,"params":["1497-2036-4953-3607-1121",1]}' http://127.0.0.1:7079
@@ -1728,30 +1737,30 @@ Get member information
 ```
 
 ### **ibax.getContracts** {#ibax-getcontracts}
-Get the list of contracts in the current ecosystem, you can set the offset and the number of entries.
+Obtener la lista de contratos inteligentes en el ecosistema actual, se puede establecer un desplazamiento y un número de entradas.
 
-[Authorization](#authorization) 
+[Autorización](#authorization)
 
-**Parameters**
-- **offset** - *Number* - [Omitempty](#omitempty) The offset, default is 0.
-- **limit** - *Number* - [Omitempty](#omitempty) The number of entries, default 25.
+**Parámetros**
+- **offset** - *Number* - [Omitempty](#omitempty) Offset, por defecto es 0.
+- **limit** - *Number* - [Omitempty](#omitempty) Número de entradas predeterminado: 25 entradas.
 
-**Return Value**
-- **count** - *Number* - the total number of entries.
+**Valor de retorno**
+- **count** - *Number* - Número total de entradas.
 
-- **list** - *Array* - Each element of the array contains the following parameters:
-    - **id** - *String* - Contract ID.
-    - **name** - *String* - The name of the contract.
-    - **value** - *String* - The content of the contract.
-    - **wallet_id** - *String* - The address of the account to which the contract is bound.
-    - **address** - *String* - the address of the contract-bound wallet `XXXX-... -XXXX`.
-    - **ecosystem_id** - *String* - The ecosystem ID to which the contract belongs.
-    - **app_id** - *String* - The ID of the application to which the contract belongs.
-    - **conditions** - *String* - Change the permissions of the contract.
-    - **token_id** - *String* - The ID of the ecosystem where the pass is used as a payment for the contract.
+- **list** - *Array* - Cada elemento en el arreglo contiene los siguientes parámetros:
+    - **id** - *String* - ID de contrato inteligente.
+    - **name** - *String* - Nombre del contrato inteligente.
+    - **value** - *String* - Contenido de contratos inteligentes.
+    - **wallet_id** - *String* - Dirección de cuenta vinculada al contrato inteligente.
+    - **address** - *String* - Dirección de la billetera vinculada al contrato inteligente `XXXX-...-XXXX`.
+    - **ecosystem_id** - *String* - ID del ecosistema al que pertenece el contrato inteligente.
+    - **app_id** - *String* - ID de la aplicación a la que pertenece el contrato inteligente.
+    - **conditions** - *String* - Cambiar los permisos del contrato inteligente.
+    - **token_id** - *String* - ID del ecosistema donde se encuentra el token utilizado como tarifa para los contratos inteligentes de pago.
 
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getContracts","id":1,"params":[0,1]}' http://127.0.0.1:7079
@@ -1778,31 +1787,31 @@ Get the list of contracts in the current ecosystem, you can set the offset and t
         }
     }
 ```
- 
+
 
 ### **ibax.getContractInfo** {#ibax-getcontractinfo}
-Returns information about the specified contract. 
+"Devuelve información relevante sobre un contrato inteligente específico."
 
-[Authorization](#authorization)
+[Autorización](#authorization)
 
-**Parameters**
-- **contractName**	-	*String*	-	The	name	of	the	contract.	The	format	is `@ecosystem_id%%contractName%`, e.g. @1contractName (the specified eco1contract name contractName) or contractName (the current eco-contract name contractName).
+**Parámetros**
+- **contractName** - *String* - Nombre del contrato inteligente. El formato es `@ecosystem_id%%contractName%`, por ejemplo @1contractName (nombre del contrato inteligente en el ecosistema 1) o contractName (nombre del contrato inteligente actual en el ecosistema).
+    
+**Valor de retorno**
 
-**Return Value**
+- **id** - *Number* - ID de contrato inteligente en una máquina virtual (VM).
+- **name** - *String* - Nombre del contrato inteligente con ID del ecosistema `@1MainCondition`.
+- **state** - *Number* - ID del ecosistema al que pertenece el contrato inteligente.
+- **walletid** - *String* - Dirección de la cuenta a la que está vinculado el contrato inteligente.
+- **tokenid** - *String* - - **ecosistemaID** - *String* - ID del ecosistema donde se encuentra el token utilizado como tarifa para el contrato inteligente de pago.
+- **address** - *String* - Dirección de la billetera vinculada al contrato inteligente en formato `XXXX-...-XXXX`.
+- **tableid** - *String* - ID de la entrada del contrato inteligente en la tabla *contracts*.
+- **fields** - *Array* - La información de estructura de cada parámetro en la sección **data** de un contrato inteligente en una matriz incluye:
+- **name** - *String* - Nombre del parámetro.
+- **type** - *String* - Tipo de parámetro.
+    - **optional** - *Bool* - Parameter options, `true` indicates optional parameter, `false` indicates required parameter.
 
-- **id** - *Number* - the contract ID in the VM.
-- **name** - *String* - Contract name with ecosystem ID `@1MainCondition`.
-- **state** - *Number* - the ecosystem ID to which the contract belongs.
-- **walletid** - *String* - the address of the account to which the contract is bound
-- **tokenid** - *String* - the ecosystem ID of the pass that is used as the payment for the contract.
-- **address** - *String* - the address of the contract-bound wallet `XXXX-... -XXXX`.
-- **tableid** - *String* - ID of the entry in the *contracts* table where the contract is located.
-- **fields** - *Array* - array containing structural information for each parameter of the contract **data** section:
-    - **name** - *String* - The name of the parameter.
-    - **type** - *String* - The type of the parameter.
-    - **optional** - *Bool* - parameter options, `true` means optional parameters, `false` means mandatory parameters.
-
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getContractInfo","id":1,"params":["@1TokensSend"]}' http://127.0.0.1:7079
@@ -1849,23 +1858,23 @@ Returns information about the specified contract.
         }
     }
 ```
- 
+
 
 ### **ibax.sendTx** {#ibax-sendtx}
-Receives the transactions in the parameters and adds them to the transaction queue, returning a transaction hash if the request is executed successfully. This hash yields the corresponding transaction within the block and is included in the error text message in case of an error response.
+Agregar la transacción en la cola de transacciones recibidas como parámetro y, si la solicitud se ejecuta correctamente, devolver el hash de la transacción. Este hash se puede utilizar para obtener la transacción correspondiente en el bloque. En caso de que ocurra un error en la respuesta, el hash se incluirá en el mensaje de error.
 
-[Authorization](#authorization) 
+[Autorización](#authorization)
 
-**Parameters**
-- *Object* - Transaction data object
-    - **tx_key** - *String* - the content of the transaction, this parameter can specify any name and supports receiving multiple transactions.
+**Parámetros**
+- *Object* - Objeto de datos de transacción.
+    - **tx_key** - *String* - Contenido de la transacción, este parámetro puede especificar cualquier nombre y admite la recepción de múltiples transacciones.
 
-**Return Value**
-- **hashes** - *Array* - transaction hash arrays:
-    - **tx1** - *String* - Hash of transaction 1.
-    - **txN** - *String* - Hash of transaction N.
+**Valor de retorno**
+- **hashes** - *Array* - Array de hash de transacciones:
+   - **tx1** - *String* - Hash de la transacción 1.
+   - **txN** - *String* - Hash de la transacción N.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.sendTx","id":1,"params":[{"tx1":...,"txN":...}]}' http://127.0.0.1:7079
@@ -1885,26 +1894,24 @@ Receives the transactions in the parameters and adds them to the transaction que
 
 
 ### **ibax.txStatus** {#ibax-txstatus}
-Gets the block ID and error message of the specified transaction hash. If the return value of the block ID and error text message is null, then the transaction is not yet contained in the block.
- 
-[Authorization](#authorization)
+Obtener el ID del bloque y el mensaje de error de una transacción específica. Si los valores devueltos del ID del bloque y el mensaje de error están vacíos, significa que la transacción aún no ha sido incluida en un bloque.
 
-**Parameters**
-- **hashes** - *String* - transaction hash, split using `,`.
+[Autorización](#authorization)
 
-**Return Value**
-- **hash** - *Object* - The transaction hash.
-    - **blockid** - *String* - returns the block ID if the transaction was executed successfully;
+**Parámetros**
+- **hashes** - *String* - Hash de transacción, separados por `,`.
 
-        If the transaction execution fails, *blockid* will be `0`, and the corresponding block ID will be returned if the transaction execution error is penalized.
+**Valor de retorno**
+- **hash** - *Object* - Hash de transacción.
+    - **blockid** - *String* - Si la transacción se ejecuta correctamente, devolverá el ID del bloque; Si la ejecución de la transacción falla, *blockid* será `0`. Si el error de ejecución de la transacción es castigado, se devolverá el ID de bloque correspondiente.
+    
+    - **result** - *String* - Utilizando la variable **\$result**, se devuelve el resultado de la transacción.
+    - **errmsg** - *Object* - [Omitempty](#omitempty) Si la transacción falla, se devuelve un mensaje de error.
+        - **type** - *String* - Tipo de error.
+        - **error** - *String* - Mensaje de error.
+    - **penalty** - *Number* - Si la transacción falla, (0: sin penalización, 1: con penalización).
 
-    - **result** - *String* - Returns the result of the transaction via the **\$result** variable.
-    - **errmsg** - *Object* - [Omitempty](#omitempty) Returns an error text message if the execution of the transaction failed.
-        - **type** - *String* - Error type
-        - **error** - *String* - error message
-    - **penalty** - *Number* - if the transaction execution fails, (0: no penalty 1: penalty)
-
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.txStatus","id":1,"params":["cf46ef1ce7ecfcf48ccf209577fb8a2130426b71adc3a3855aff7f68d114fca9,4a458232de2ab2a3f5361da68e409b925c775346d14139263a69c0e8ecf0166b"]}' http://127.0.0.1:7079
@@ -1934,35 +1941,35 @@ Gets the block ID and error message of the specified transaction hash. If the re
 
 
 ### **ibax.txInfo** {#ibax-txinfo}
-Returns information about the transaction for the specified hash, including the block ID and the number of confirmations. If optional parameters are specified, the contract name and its associated parameters can also be returned.
+Devolver información relacionada con la transacción para un hash especificado, incluyendo el ID del bloque y el número de confirmaciones. Si se especifican parámetros opcionales, también puede devolver el nombre del contrato inteligente y sus parámetros relacionados.
 
-**Parameters**
-- **hash** - *String* - The transaction hash.
+**Parámetros**
+- **hash** - *String* - Hash de transacción.
 
-- **contractinfo** - *Bool* [Omitempty](#omitempty) - Contract detail parameter identifier, get contract details related to this transaction, default is `false`
+- **contractinfo** - *Bool* [Omitempty](#omitempty) - Identificación detallada de los parámetros del contrato inteligente, para obtener detalles del contrato inteligente relacionados con la transacción. El valor predeterminado es `false`.
 
-**Return Value**
-- **blockid** - *Number* - The block ID containing the transaction.
-    If the value is `0`, no transactions are found for this hash.
-    If the transaction occurred on the current node, it can be obtained via [ibax.txStatus](#ibax-txstatus)
+**Valor de retorno**
+- **blockid** - *Number* - Incluye el ID de bloque de la transacción.
+Si el valor es `0`, no se puede encontrar la transacción con ese hash.
+Si la transacción ocurre en el nodo actual, se puede obtener a través de [ibax.txStatus](#ibax-txstatus).
 
-- **confirm** - *Number* - the number of node confirmations for this block *blockid*.
+- **confirm** - *Number* - El número de confirmaciones de nodos para este bloque *blockid*.
 
-- **data** - *Object* - Returns contract details if `contentinfo=true` is specified. null if not specified
-    - **block_id** - *Number* - block height
-    - **block_hash** - *String* - block_hash
-    - **address** - *String* - transaction creation address
-    - **ecosystem** - *String* - transaction sending ecid
-    - **hash** - *String* - transaction hash
-    - **expedite** - *String* - expedited fee, or "" if not available
-    - **contract_name** - *String* - Contract name
-    - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo)
-    - **created_at** - *Number* - when the transaction was created
-    - **size** - *String* - transaction size unit: B;KiB;MiB;GiB;TiB
-    - **status** - *String* - status (0:success 1:penalty)
- 
+- **data** - *Object* - Si se especifica `contentinfo=true`, se devolverán los detalles de la información del contrato inteligente. Será nulo si no se especifica.
+    - **block_id** - *Number*- Altura del bloque.
+    - **block_hash** - *String* - Hash del bloque.
+    - **address** - *String* - Dirección de creación de la transacción.
+    - **ecosystem** - *String* - ID del ecosistema de envío de la transacción.
+    - **hash** - *String* - Hash de la transacción.
+    - **expedite** - *String* - Tarifa de aceleración, si no hay, es `""`.
+    - **contract_name** - *String* - Nombre del contrato inteligente.
+    - **params** - *Object* - Parámetros del contrato inteligente, los campos del contrato inteligente se pueden consultar a través de [ibax.getContractInfo](#ibax-getcontractinfo).
+    - **created_at** - *Number* - Tiempo de creación de la transacción.
+    - **size** - *String* - Tamaño de la transacción unit: B; KiB; MiB; GiB; TiB.
+    - **status** - *String* - Estado (0: éxito 1: castigo).
 
-**Example**
+
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.txInfo","id":1,"params":["020d8c004b3a0c00a6bfffa36e2746509295e5ea6dbb14e7cd6098c3d906bb58",true]}' http://127.0.0.1:7079
@@ -1996,32 +2003,32 @@ Returns information about the transaction for the specified hash, including the 
 
 
 ### **ibax.txInfoMultiple** {#ibax-txinfomultiple}
-Returns transaction-related information for the specified hash list.
+Return transaction-related information for a specified list of hashes.
 
-**Parameters**
-- **hashes** - *Array* - A list of transaction hashes.
- 
-- **contractinfo** - *Bool* [Omitempty](#omitempty) - Contract detail parameter identifier, get contract details related to this transaction, default is `false`
+**Parámetros**
+- **hashes** - *Array* - Lista de hash de transacciones.
 
-**Return Value**
--	**results** - *Array* - Data dictionary with transaction hash as key and transaction details as value.
-    - **hash** - *String* - The transaction hash.
-        - **blockid** - *Number* - The block ID containing the transaction. if the value is `0`, then no transaction was found for that hash.
-        - **confirm** - *Number* - the number of confirmations for this block *blockid*.
-        - **data** - *Object* - If `contentinfo=true`is specified, the contract details are returned to this parameter. null when not specified
-            - **block_id**- *Number* - Block height
-            - **block_hash** - *String* - block_hash
-            - **address** - *String* - transaction creation address
-            - **ecosystem** - *String* - transaction sending ecid
-            - **hash** - *String* - transaction hash
-            - **expedite** - *String* - expedited fee, or "" if not available
-            - **contract_name** - *String* - Contract name
-            - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo)
-            - **created_at** - *Number* - when the transaction was created
-            - **size** - *String* - transaction size unit: B;KiB;MiB;GiB;TiB
-            - **status** - *String* - status (0:success 1:penalty)
+- **contractinfo** - *Bool* [Omitempty](#omitempty) - Identificación detallada de los parámetros del contrato inteligente, para obtener detalles del contrato inteligente relacionados con la transacción. El valor predeterminado es `false`.
 
-**Example**
+**Valor de retorno**
+-   **results** - *Array* - En el diccionario de datos, el hash de la transacción se utiliza como clave y los detalles de la transacción se utilizan como valor.
+    - **hash** - *String* - Hash de la transacción.
+        - **blockid** - *Number* - ID del bloque que contiene la transacción. Si este valor es `0`, la transacción con este hash no se puede encontrar.
+        - **confirm** - *Number* - Número de confirmaciones para el bloque *blockid*.
+        - **data** - *Object* - Si se especifica `contentinfo=true`, se devuelve la información detallada del contrato inteligente para este parámetro. De lo contrario, es `nulo`.
+            - **block_id**- *Number*- Altura del bloque.
+            - **block_hash** - *String* - - **hash de bloque** - *String* - Hash del bloque.
+            - **address** - *String* - Dirección de creación de la transacción.
+            - **ecosystem** - *String* - ID del ecosistema al que se envió la transacción.
+            - **hash** - *String* - Hash de la transacción.
+            - **expedite** - *String* - Tarifa de urgencia, si no hay, es "".
+            - **contract_name** - *String* - Nombre del contrato inteligente.
+            - **params** - *Object* - Parámetros del contrato inteligente, los campos del contrato inteligente se pueden consultar a través de [ibax.getContractInfo](#ibax-getcontractinfo).
+            - **created_at** - *Number* - Tiempo de creación de la transacción.
+            - **size** - *String* - Tamaño de la transacción unidad: B; KiB; MiB; GiB; TiB.
+            - **status** - *String* - Estado (0: éxito 1: castigo).
+
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getPageValidatorsCount","id":1,"params":[["1875b4fc02a8bf5ccf0d3fbce83011dd6711d8d325c7d731ac659b8beffc0284","4a458232de2ab2a3f5361da68e409b925c775346d14139263a69c0e8ecf0166b"],true]}' http://127.0.0.1:7079
@@ -2065,16 +2072,16 @@ Returns transaction-related information for the specified hash list.
 
 
 ### **ibax.getPageValidatorsCount** {#ibax-getpagevalidatorscount}
-Returns the number of nodes to be validated for the specified page.
+"Devuelve el número de nodos de validación necesarios para acceder a la página especificada."
 
-**Parameters**
-- **name**  -  *String*  -  page  name  in  the  format  `@ecosystem_id%%%page_name%`,  e.g. @1params_list (specifying ecology 1 page name params_list) or params_list (current ecology page name params_list)
+**Parámetros**
+- **name** - *String* - Nombre de la página, con formato `@ecosystem_id%%page_name%`, por ejemplo @1params_list (nombre de la página params_list en el ecosistema 1) o params_list (nombre de la página params_list en el ecosistema actual).
 
 
-**Return Value**
-- **validate_count** - *Number* - Specifies the number of nodes to be validated by the page.
- 
-**Example**
+**Valor de retorno**
+- **validate_count** - *Number* - Número de nodos requeridos para la validación de la página especificada.
+
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getPageValidatorsCount","id":1,"params":["@1params_list"]}' http://127.0.0.1:7079
@@ -2091,24 +2098,23 @@ Returns the number of nodes to be validated for the specified page.
 
 
 ### **ibax.getPage** {#ibax-getpage}
-Gets the tree of code JSON objects for the specified page name, which is the result of processing by the templating engine.
+Obtener el árbol de objetos JSON de código para el nombre de página especificado, este es el resultado del procesamiento del motor de plantillas.
 
-[Authorization](#authorization)
+[Autorización](#authorization)
 
-**Parameters**
--	**name** - *String* - the name of the page with the ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
-`@1main_page`.
+**Parámetros**
+-   **name** - *String* - Nombre de página con ID de ecosistema, en formato `@ecosystem_id%%nombre_de_página`, por ejemplo `@1main_page`.
 
-    If you don't have an ecosystem ID, the default is to find the current ecological page, e.g. `main_page`
+    Si no se proporciona un ID de ecosistema, se buscará por defecto la página en el ecosistema actual, como `main_page`.
 
-**Return Value**
-- **menu** - *String* - The name of the menu to which the page belongs.
+**Valor de retorno**
+- **menu** - *String* - Nombre del menú al que pertenece la página.
 
-- **menutree** - *Array* - JSON object tree of the page's menus.
+- **menutree** - *Array* - Árbol de objetos JSON del menú de la página.
 
-- **tree** - *Array* - page JSON object tree. 
+- **tree** - *Array* - Árbol de objetos JSON de la página.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getPage","id":1,"params":["@1params_list"]}' http://127.0.0.1:7079
@@ -2143,24 +2149,22 @@ Gets the tree of code JSON objects for the specified page name, which is the res
 
 
 ### **ibax.getMenu** {#ibax-getmenu}
-Gets the tree of code JSON objects for the specified menu name, which is the result of processing by the template engine.
+Obtener el árbol de objetos JSON de código para el nombre de menú especificado, este es el resultado del procesamiento del motor de plantillas.
 
-[Authorization](#authorization) 
+[Autorización](#authorization)
 
-**Parameters**
--	**name** - *String* -
-    > Menu name with ecosystem ID in the format `@ecosystem_id%%%menu_name%`, e.g.
-    > `@1main_menu`.
-    > If you don't bring the ecosystem ID, the menu of the current ecology will be found by default, for example
-    > `main_menu`
- 
-**Return Value**
+**Parámetros**
+-   **name** - *String* -
+    Nombre del menú con ID de ecosistema, en formato `@ecosystem_id%%menu_name%`, por ejemplo `@1main_menu`.
+Si no se proporciona el ID de ecosistema, se buscará el menú en el ecosistema actual por defecto, por ejemplo `main_menu`.
 
-- **title** - *String* - the menu title.
+**Valor de retorno**
 
-- **tree** - *Array* - Menu JSON object tree. 
+- **title** - *String* - Título del menú.
 
-**Example**
+- **tree** - *Array* - Árbol de objetos JSON del menú.
+
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getMenu","id":1,"params":["@1default_menu"]}' http://127.0.0.1:7079
@@ -2188,20 +2192,21 @@ Gets the tree of code JSON objects for the specified menu name, which is the res
 
 
 ### **ibax.getSource** {#ibax-getsource}
-Returns a tree of coded JSON objects for the specified page name. Does not execute any functions or receive any data. The returned JSON object tree corresponds to the page template and can be used in the visual page designer. If the page is not found, a 404 error is returned.
+
+Devuelve un árbol de objetos JSON de código para el nombre de página especificado. No se ejecuta ninguna función ni se recibe ningún dato. El árbol de objetos JSON devuelto corresponde a la plantilla de página y se puede utilizar en el diseñador de páginas visual. Si no se encuentra la página, se devuelve un error 404.
 
 
-[Authorization](#authorization)
- 
-**Parameters**
--	**name** - *String* -
-    Page  name  with  ecosystem  ID  in  the  format  `@ecosystem_id%%%page_name%`,  for example `@1main_page`.
-    If you don't have an ecosystem ID, the default is to find the current ecological page e.g. `main_page`
+[Autorización](#authorization)
 
-**Return Value**
--	**tree** - *Array* - JSON object tree for the page.
+**Parámetros**
+-   **name** - *String* -
+    Nombre de página con ID de ecosistema, el formato es `@id_de_ecosistema%%nombre_de_página`, por ejemplo `@1pagina_principal`.
+    Si no se proporciona un ID de ecosistema, buscará la página en el ecosistema actual, por ejemplo `pagina_principal`.
+    
+**Valor de retorno**
+-   **tree** - *Array* - Árbol de objetos JSON de la página.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}" -d '{"jsonrpc":"2.0","method":"ibax.getSource","id":1,"params":["@1params_list"]}' http://127.0.0.1:7079
@@ -2286,26 +2291,25 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
 
 
 ### **ibax.getPageHash** {#ibax-getpagehash}
-Returns a SHA256 hash of the specified page name, or a 404 error if the page is not found.
 
-To receive the correct hash when making requests to other nodes, you must also pass the
-*ecosystem,key_id,role_id*
-parameter. To receive pages from other ecosystems, the ecosystem ID must be prefixed to the page name. For example: `@2mypage`.
+Devolver el hash SHA256 de la página especificada por su nombre. Si la página no se encuentra, se devuelve un error 404.
 
-**Parameters**
-- **name** - *String* - The name of the page with the ecosystem ID. The format is `@ecosystem_id%%%page_name%`, e.g. `@1main_page`, you can specify the eco ID
+Para recibir el hash correcto al hacer una solicitud a otros nodos, también se deben pasar los parámetros *ecosystem, key_id, role_id*. Para recibir una página de otros ecosistemas, se debe agregar el prefijo del ID del ecosistema al nombre de la página. Por ejemplo: `@2mypage`.
 
-- **ecosystem** - *Number* - [Omitempty](#omitempty) Ecosystem ID.
+**Parámetros**
+- **name** - *String* - Nombre de página con ID de ecosistema. El formato es `@ecosystem_id%%page_name%`, por ejemplo `@1main_page`, se puede especificar el ID de ecosistema.
 
-- *Object* - [Omitempty](#omitempty) Get the specified page object
-    - **key_id** - *String* - The account address.
-    - **role_id** - *String* - The role ID.
+- **ecosystem** - *Number* - [Omitempty](#omitempty) ID del ecosistema.
 
-**Return Value**
+- *Object* - [Omitempty](#omitempty) - Obtener el objeto de página especificado.
+    - **key_id** - *String* - Dirección de cuenta.
+    - **role_id** - *String* - ID de personaje.
+
+**Valor de retorno**
 - *Object* -
-    - **hash** - *String* - Hexadecimal hash.
+    - **hash** - *String* - Valor hash en hexadecimal.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getPageHash","id":1,"params":["@1params_list",0,{"role_id":"1","key_id":"-6484253546138538120"}]}' http://127.0.0.1:7079
@@ -2322,19 +2326,19 @@ parameter. To receive pages from other ecosystems, the ecosystem ID must be pref
 
 
 ### **ibax.getContent** {#ibax-getcontent}
-Returns the number of JSON objects for the page code from the **template** parameter, if the optional parameter
-**source** Specified as `true`, this JSON object tree does not perform any functions and receive data. This JSON object tree can be used in the visual page designer.
 
-**Parameters**
+Devuelve un objeto JSON de código de página desde el parámetro **template**, si se proporciona el parámetro opcional **source** como `true`, el árbol de objetos JSON no ejecutará ninguna función ni recibirá datos. Este árbol de objetos JSON se puede utilizar en el diseñador de páginas visual.
+
+**Parámetros**
 - *Object*
-    - **template** - *String* - page code.
+    - **template** - *String* - Código de página.
 
-    - **source** - *Bool* - If specified as `true`, the JSON object tree does not perform any functions and receives data.
+    - **source** - *Bool* - Si se especifica como `true`, el árbol de objetos JSON no ejecuta ninguna función ni recibe datos.
 
-**Return Value**
-- **tree** - *Object* - JSON object tree.
+**Valor de retorno**
+- **tree** - *Object* - Árbol de objetos JSON.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getContent","id":1,"params":[{"template","..."source":true}]}' http://127.0.0.1:7079
@@ -2358,28 +2362,28 @@ Returns the number of JSON objects for the page code from the **template** param
 
 
 ### **ibax.getBlockInfo** {#ibax-getblockinfo}
-Returns information about the specified block ID.
+"Devuelve información relacionada con el ID de bloque especificado."
 
-**Parameters**
--	**id** - *Number* - the height of the block. 
+**Parámetros**
+- **id** - *Number*- Altura del bloque.
 
-**Return Value**
+**Valor de retorno**
 
-- **hash** - *String* - The block hash value.
+- **hash** - *String* - Valor hash del bloque.
 
-- **key_id** - *Number* - the address of the account that signed the block.
+- **key_id** - *Number* - Dirección de cuenta que firmó el bloque.
 
-- **time** - *Number* block generation timestamp.
+- **time** - *Number* - Marca de tiempo de generación de bloque.
 
-- **tx_count** - *Number* - the total number of transactions within the block.
+- **tx_count** - *Number* - El número total de transacciones dentro de este bloque.
 
-- **rollbacks_hash** - *String* - The block rollback hash.
+- **rollbacks_hash** - *String* - Valor hash de reversión de bloque.
 
-- **node_position** - *Number* - The position of the block in the honor node list.
+- **node_position** - *Number* - Esta sección se encuentra en la posición de la lista de nodos de honor.
 
-- **consensus_mode** *Number* - Consensus mode, parameters (1: creator management mode 2: DAO governance mode)
+- **consensus_mode** *Number* - Modo de consenso, parámetros (1: Modo de gestión del creador; 2: Modo de gobernanza DAO)
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getBlockInfo","id":1,"params":[12]}' http://127.0.0.1:7079
@@ -2402,19 +2406,19 @@ Returns information about the specified block ID.
 
 
 ### **ibax.getConfig** {#ibax-getconfig}
-Get the host address and port of centrifugo
+Obtener la dirección y el puerto del host de `centrifugo`.
 
-**Parameters**
-- **option** - *String* - Configuration item
+**Parámetros**
+- **option** - *String* - Configuración.
 
-    1. "centrifugo" - messaging service
+    1."centrifugo" - Servicio de mensajería.
 
 
-**Return Value**
+**Valor de retorno**
 
-- **centrifugo** - *String* - [Omitempty](#omitempty) host address and port of centrifugo Result format `http://address:port`, e.g.: `http://127.0.0.1:8100`.
+- **centrifugo** - *String* - [Omitempty](#omitempty) - La dirección y el puerto del host de `centrifugo`, en formato `http://address:port`, por ejemplo: `http://127.0.0.1:8100`.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.getConfig","id":1,"params":["centrifugo"]}' http://127.0.0.1:7079
@@ -2433,24 +2437,24 @@ Get the host address and port of centrifugo
 
 
 ### **net.getNetwork** {#net-getnetwork}
-Get node information
- 
-**Parameters** 
-- None
+Obtener información del nodo.
 
-**Return Value**
-- **network_id** - *String* - The network identifier.
-- **centrifugo_url** - *String* - centrifugo message service address
-- **test** - *Bool* - whether it is a test chain
-- **private** - *Bool* - whether the chain is private
-- **honor_nodes** - *Object* - List of honor nodes
-    - **tcp_address** - *String* - tcp address
-    - **api_address** - *String* - api address
-    - **public_key** - *String* - node public key
-    - **unban_time** - *String* - Unlock time
+**Parámetros**
+- ninguno
+
+**Valor de retorno**
+- **network_id** - *String* - Identificador de red.
+- **centrifugo_url** - *String* - Dirección del servicio de mensajes de Centrifugo.
+- **test** - *Bool* - ¿Es una red de prueba?
+- **private** - *Bool* - ¿Es una red privada?
+- **honor_nodes** - *Object* - Lista de nodos de honor.
+    - **tcp_address** - *String* - Dirección TCP.
+    - **api_address** - *String* - Dirección API.
+    - **public_key** - *String* - Clave pública del nodo.
+    - **unban_time** - *String* - Tiempo de desbloqueo.
 
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"net.getNetwork","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2475,21 +2479,21 @@ Get node information
         }
     }
 ```
- 
+
 
 ### **net.status** {#net-status}
-Get the current node status
+Obtener el estado actual del nodo.
 
-**Parameters** 
-- None
+**Parámetros**
+- ninguno
 
-**Return Value**
-- **status** - *String* - Node Status
-    "node server status is running" - the node is running 
-    "node server is updating" - node is being updated 
-    "node server is stopped" - node suspended
+**Valor de retorno**
+- **status** - *String* - Estado del nodo.
+    `node server status is running` - Nodo en ejecución.
+    `node server is updating` - Actualización de Node en progreso.
+    `node server is stopped` - Nodo en pausa.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"net.status","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2506,15 +2510,15 @@ Get the current node status
 
 
 ### **rpc.modules** {#rpc-modules}
-Get the currently registered JSON-RPC interface
+Obtener la interfaz JSON-RPC registrada actualmente.
 
-**Parameters**
-- None
+**Parámetros**
+- ninguno
 
-**Return Value**
-- *Array* - JSON-RPC interface array
+**Valor de retorno**
+- *Array* - Array de interfaces JSON-RPC.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"rpc.modules","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2540,15 +2544,15 @@ Get the currently registered JSON-RPC interface
 
 
 ### **admin.startJsonRpc** {#admin-startjsonrpc}
-Can be used to switch between JSON-RPC change namespace services
+Puede ser utilizado para cambiar el servicio de espacio de nombres de JSON-RPC.
 
-**Parameters**
-- **methods** - *String* - JSON-RPC module, default: "ibax,net"
+**Parámetros**
+**methods** - *String* - Módulo JSON-RPC, por defecto: "ibax,net".
 
-**Return Value**
-- *bool* - execution status
+**Valor de retorno**
+- *bool* - Estado de ejecución.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"admin.startJsonRpc","id":1,"params":["ibax,net,admin"]}' http://127.0.0.1:8385
@@ -2563,15 +2567,15 @@ Can be used to switch between JSON-RPC change namespace services
 
 
 ### **admin.stopJsonRpc** {#admin-stopjsonrpc}
-Close the JSON-RPC service
+Cerrar el servicio JSON-RPC.
 
-**Parameters** 
-- None
+**Parámetros**
+- ninguno
 
-**Return Value**
-- *bool* - execution status
+**Valor de retorno**
+- *bool* - Estado de ejecución.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"admin.stopJsonRpc","id":1,"params":[]}' http://127.0.0.1:8385
@@ -2587,16 +2591,16 @@ Close the JSON-RPC service
 
 
 ### **debug.getNodeBanStat** {#debug-getnodebanstat}
-Get node disable status
+Obtener el estado de desactivación del nodo.
 
-**Parameters** 
-- None
+**Parámetros**
+- ninguno
 
-**Return Value**
-**node_position** - *Number* - node subscript
-**status** - *Bool* - Disable status, `true` ban status, `false` not disabled
+**Valor de retorno**
+**node_position** - *Number* - Nodo índice.
+**status** - *Bool* - Estado deshabilitado, estado de prohibición `true`, `fales` no deshabilitado.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"debug.getNodeBanStat","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2613,19 +2617,19 @@ Get node disable status
         ]
     }
 ```
- 
+
 
 ### **debug.getMemStat** {#debug-getmemstat}
-Get the current node memory usage
+Obtener el uso actual de memoria del nodo.
 
-**Parameters** 
-- None
+**Parámetros**
+- Ninguno
 
-**Return Value**
-- **alloc** - *Number* - Number of bytes requested and still in use
-- **sys** - *Number* - Number of bytes fetched from the system
+**Valor de retorno**
+- **alloc** - *Number* - El número de bytes que han sido solicitados y todavía están en uso.
+- **sys** - *Number* - El número de bytes obtenidos del sistema y que aún están en uso.
 
-**Example**
+**Ejemplo**
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"debug.getMemStat","id":1,"params":[]}' http://127.0.0.1:7079
@@ -2640,3 +2644,4 @@ Get the current node memory usage
         }
     }
 ```
+

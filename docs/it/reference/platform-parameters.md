@@ -13,7 +13,7 @@ Change of platform parameters can only be made through voting. You can only use 
 ### Configure the blockchain network {#configure-the-blockchain-network}
 
 Nodes:
-* [full nodes](#full-nodes)
+* [honor_nodes](#honor-nodes)
 * [number of nodes](#number-of-nodes)
 
 Node bans:
@@ -167,7 +167,7 @@ Price for operations:
 
 <!-- /TOC -->
 
-### Depreciated {#depreciated}
+## Depreciated {#depreciated}
 Depreciated parameters:
 * [blockchain url](#blockchain-url)
 
@@ -211,7 +211,7 @@ The format of this parameter:
 
 `[["ecosystem_id", "token_to_fuel_rate"], ["ecosystem_id2", "token_to_fuel_rate2"], ...]`
 
-* ``ecosystem_id``
+* `ecosystem_id`
 
     Ecosystem ID.
 * `token_to_fuel_rate`
@@ -227,7 +227,7 @@ One token of Ecosystem 1 is exchanged for 1,000,000,000,000 fuel units. One toke
 ### price create rate {#price-create-rate}
 The fuel rate of a new element.
 
-### full nodes {#full-nodes}
+## honor nodes {#honor-nodes}
 The list of honor nodes of the blockchain network.
 
 The format of this parameter: 

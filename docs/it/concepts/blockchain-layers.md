@@ -35,16 +35,16 @@ ECOLIB members can view and modify the database from application pages, just lik
 
 Applications may fall into **ECOLIB applications** and **platform applications**.
 
-ECOLIB applications
+> ECOLIB applications
 
 An ECOLIB application implements certain unique functions or business processes of an ECOLIB, but it is only available in that ECOLIB.
-Platform applications
+> Platform applications
 
 A platform application is applicable to all ECOLIBs. Any application could be developed as a platform application. IBAX developers would provide platform applications that support the core functions for ECOLIB governance, such as voting, notification, and ECOLIB member role management.
 
 ## Underlying model {#underlying-model}
 
-Definition of layers
+> Definition of layers
 
 IBAX consists of several layers:
 

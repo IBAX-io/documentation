@@ -1,279 +1,285 @@
-# Terms and Definitions {#terms-and-definitions}
+# Terminología y definiciones {#terms-and-definitions}
 
-  - [Blockchain terms](#blockchain-terms)
+  - [Términos relacionados con blockchain](#blockchain-terms)
     - [Blockchain](#blockchain)
-    - [Peer-to-peer network](#peer-to-peer-network)
+    - [Red peer-to-peer](#peer-to-peer-network)
     - [Hash](#hash)
-    - [Block](#block)
-    - [Block verification](#block-verification)
-    - [Consensus](#consensus)
+    - [Bloque](#block)
+    - [Verificación de bloque](#block-verification)
+    - [Consenso](#consensus)
     - [Token](#token)
-    - [Identification](#identification)
-    - [Unique identification](#unique-identification)
-    - [Private key](#private-key)
-    - [Public key](#public-key)
-    - [Digital signature](#digital-signature)
-    - [Smart contract](#smart-contract)
-    - [Transaction fee](#transaction-fee)
-    - [Double spend](#double-spend)
-    - [Encryption](#encryption)
-    - [Private blockchain](#private-blockchain)
-    - [Public blockchain](#public-blockchain)
-    - [Proof of Authority](#proof-of-authority)
-  - [IBAX Terms](#ibax-terms)
-    - [Testnet](#testnet)
-    - [Mainnet](#mainnet)
-    - [Gas fee](#gas-fee)
-    - [Account address](#account-address)
-    - [Wallet address](#wallet-address)
+    - [Identificador](#identification)
+    - [Identificador único](#unique-identification)
+    - [Clave privada](#private-key)
+    - [Clave pública](#public-key)
+    - [Firma digital](#digital-signature)
+    - [Contrato inteligente](#smart-contract)
+    - [Tarifa de transacción](#transaction-fee)
+    - [Doble gasto](#double-spend)
+    - [Cifrado](#encryption)
+    - [Blockchain privada](#private-blockchain)
+    - [Blockchain pública](#public-blockchain)
+    - [Prueba de autoridad](#proof-of-authority)
+  - [Términos de la plataforma blockchain IBAX](#ibax-terms)
+    - [Red de prueba](#testnet)
+    - [Red principal](#mainnet)
+    - [Tarifa de gas](#gas-fee)
+    - [Dirección de cuenta](#account-address)
+    - [Dirección de billetera](#wallet-address)
     - [Weaver](#weaver)
-    - [ECOLIB](#ecolib)
-    - [ECOLIB parameters](#ecolib-parameters)
-    - [ECOLIB members](#ecolib-members)
-    - [Virtual private ECOLIB](#virtual-private-ecolib)
-    - [Decentralized Proof-of-Authority](#decentralized-proof-of-authority)
+    - [Ecolib](#ecolib)
+    - [Parámetros de Ecolib](#ecolib-parameters)
+    - [Miembros de Ecolib](#ecolib-members)
+    - [Ecolib virtual privada](#virtual-private-ecolib)
+    - [Prueba de autoridad descentralizada](#decentralized-proof-of-authority)
     - [Needle](#needle)
     - [Logicor](#logicor)
-    - [Integrated Development Environment (IDE)](#integrated-development-environment-ide)
-    - [Page editor](#page-editor)
-    - [Visual page designer](#visual-page-designer)
-    - [Contract editor](#contract-editor)
-    - [Multilingual resources](#multilingual-resources)
-    - [Application export](#application-export)
-    - [Application import](#application-import)
-    - [Smart law](#smart-law)
-    - [Legal system](#legal-system)
-    - [Application](#application)
-    - [Page](#page)
-    - [Code segment](#code-segment)
-    - [Access rights](#access-rights)
-    - [Honor node](#honor-node)
-    - [Guardian node](#guardian-node)
-    - [Concurrent transaction processing](#concurrent-transaction-processing)
+    - [Entorno de desarrollo integrado (IDE)](#integrated-development-environment-ide)
+    - [Editor de página](#page-editor)
+    - [Diseñador de página visual](#visual-page-designer)
+    - [Editor de contrato inteligente](#contract-editor)
+    - [Recursos multilingües](#multilingual-resources)
+    - [Exportar aplicación](#application-export)
+    - [Importar aplicación](#application-import)
+    - [Ley inteligente](#smart-law)
+    - [Sistema legal](#legal-system)
+    - [Aplicación](#application)
+    - [Página](#page)
+    - [Segmento de código](#code-segment)
+    - [Derechos de acceso](#access-rights)
+    - [Nodo de honor](#honor-node)
+    - [Nodo guardián](#guardian-node)
+    - [Procesamiento de transacciones concurrentes](#concurrent-transaction-processing)
 
 
 
-## Blockchain terms {#blockchain-terms}
+## Terminología relacionada con blockchain {#blockchain-terms}
 
 ### Blockchain {#blockchain}
 
-Blockchain is an information system that stores data and transmits and processes data within the system to prevent data from being forged or lost while maintaining data reliability; Data protection is achieved by:
+> Un sistema de información para almacenar datos, transmitir y procesar datos dentro del sistema, que puede prevenir la falsificación y pérdida de datos, y al mismo tiempo mantener la confiabilidad de los datos;
+> Protege los datos de la siguiente manera:
+>
+> > 1. Escribir los datos en una cadena de bloques cifrada;
+> > 2. Almacenar copias descentralizadas de la cadena de bloques en una red de pares;
+> > 3. Sincronizar la cadena de bloques en todos los nodos mediante un mecanismo de consenso;
+> > 4. Almacenar algoritmos de contratos inteligentes en la cadena de bloques para garantizar la confiabilidad de los datos al realizar operaciones de datos en la red.
 
-1.writing data into a blockchain of a series of encrypted blocks;
+### Red de pares {#peer-to-peer-network}
 
-2.distributed storage of blockchain copies in peer-to-peer networks;
-
-3.synchronization of blockchains on all nodes using a consensus mechanism;
-
-4.ensuring data reliability when performing data operations using the network with algorithms that store data transmissions and process contracts in the blockchain.
-
-### Peer-to-peer network {#peer-to-peer-network}
-
-A computer network, consisting of equally privileged nodes (without a central server).
+> Una red de nodos de computadora (sin servidor central).
 
 ### Hash {#hash}
 
-Also known as hashing, the binary value of any file or data set length that is mapped to a shorter fixed-length binary value.
+> También conocido como función hash, es un valor binario de longitud fija más corta que se asigna a cualquier archivo o conjunto de datos de cualquier longitud.
 
-### Block {#block}
+### Bloque {#block}
 
-After verifying the format and signature of the transaction, a transaction set is grouped by the honor node into a specific data structure. A block contains a hash pointer as a link to the previous block, which is one of the measures to ensure the security of blockchain encryption.
+> Un conjunto de transacciones que se agrupan por nodos honorarios en una estructura de datos específica después de verificar el formato y la firma de la transacción.
+> Un bloque contiene un puntero hash como enlace al bloque anterior, que es una de las medidas de seguridad para la cadena de bloques.
 
-### Block verification {#block-verification}
+### Verificación de bloque {#block-verification}
 
-A procedure to verify the correctness of the block structure, generation time, compatibility with the previous block, transaction signatures, and the correspondence between the transaction and the block data.
+> Verificar la estructura del bloque, el tiempo de generación, la compatibilidad con el bloque anterior, la firma de la transacción y la correspondencia entre la transacción y los datos del bloque.
 
-### Consensus {#consensus}
+### Consenso {#consensus}
 
-The verification protocol or algorithm of this type of protocol used by the honor node in the process of adding new blocks to the blockchain.
+> Un protocolo de verificación utilizado por los nodos honorarios para agregar nuevos bloques a la cadena de bloques o un algoritmo similar.
 
-### Transaction {#transaction-1}
+### Transacción {#transaction-1}
 
-Data transmission operations on the blockchain network or records of such transactions in the blockchain.
+> Una operación de transferencia de datos en la red de blockchain o un registro de este tipo de transacción en la cadena de bloques.
 
 ### Token {#token}
 
-Proof of encrypted digital rights and shares that can be circulated on the blockchain. A set of identifiable digital records stored in a register, including a mechanism for exchanging rights and shares between these records.
+> Una prueba de derecho digital cifrado y transferible en la cadena de bloques. Un conjunto de registros digitales reconocibles almacenados en un registro, que incluyen un mecanismo para intercambiar participaciones de derechos entre estos registros.
 
-### Identification {#identification}
+### Identificador {#identification}
 
-An encryption program used to identify users in the system.
+> Un programa de cifrado utilizado para identificar a los usuarios en el sistema.
 
-### Unique identification {#unique-identification}
+### Identificador único {#unique-identification}
 
-The process of linking accounts with users requires legal and organizational efforts or other procedures to achieve biometric identification in order to link user names with actual users.
+> Un programa que vincula una cuenta con un usuario, que requiere esfuerzos legales y organizativos o programas de identificación biométrica para vincular un nombre de usuario con un usuario real.
 
-### Private key {#private-key}
+### Clave privada {#private-key}
 
-A string of characters secretly stored by its owner, used by the owner to access virtual accounts on the internet and sign transactions.
+> Una cadena de caracteres mantenida en secreto por su propietario, utilizada para acceder a cuentas virtuales en la red y firmar transacciones.
 
-### Public key {#public-key}
+### Clave pública {#public-key}
 
-A string of characters used to check the authenticity of the private key. The public key is uniquely derived from the private key.
+> Una cadena de caracteres utilizada para verificar la autenticidad de una clave privada, generada de manera única a partir de la clave privada.
 
-### Digital signature {#digital-signature}
+### Firma digital {#digital-signature}
 
-The attributes of a document or message obtained after encrypted data processing. The digital signature is used to check the integrity of the document (no modification) and authenticity (verification of the identity of the sender).
+> Una propiedad obtenida mediante la encriptación de un documento o mensaje, utilizada para verificar la integridad (sin modificaciones) y autenticidad (verificar la identidad del remitente) del documento.
 
-### Smart contract {#smart-contract}
+### Contrato inteligente {#smart-contract}
 
-In the program that performs data storage operations in the blockchain, all contracts are stored in the blockchain.
+> Un programa que ejecuta operaciones de almacenamiento de datos en una cadena de bloques, y todos los contratos inteligentes se almacenan en la cadena de bloques.
 
-### Transaction fee {#transaction-fee}
+### Tarifa de transacción {#transaction-fee}
 
-The fee paid to the honor node to execute the transaction.
+> La tarifa pagada al nodo validador por ejecutar una transacción.
 
-### Double spend {#double-spend}
+### Doble gasto {#double-spend}
 
-A method of attacking the blockchain network. The result is that a transaction costs the same token twice. 
+> Un método de ataque en la red de la cadena de bloques que resulta en gastar el mismo token dos veces en una transacción.
+>
+> Este tipo de ataque ocurre cuando la cadena de bloques se bifurca. Solo cuando el atacante controla más del 50% de la capacidad de validación de la red se puede ejecutar este tipo de ataque.
 
-This kind of attack occurs when the blockchain is forked, which can only be executed when the attacker controls more than 50% of the network's verification capability.
+### Encriptación {#encryption}
 
-### Encryption {#encryption}
+> Una forma de convertir datos digitales que solo pueden ser leídos por la parte con la clave de descifrado correspondiente.
 
-A way of digital data conversion, only the party with the corresponding decryption key can read it.
+### Cadena de bloques privada {#private-blockchain}
 
-### Private blockchain {#private-blockchain}
+> Una red de cadena de bloques donde todos los nodos y el acceso a los datos son controlados centralmente por una sola organización (gobierno, empresa o individuo).
 
-A blockchain network where all nodes and data access rights are centrally controlled by a single organization (government, company or individual).
+### Cadena de bloques pública {#public-blockchain}
 
-### Public blockchain {#public-blockchain}
+> Una red de cadena de bloques que no está controlada por ninguna organización, donde todas las decisiones son tomadas por consenso entre los participantes de la red, y todos pueden acceder y recuperar datos de la red de cadena de bloques.
 
-In a blockchain network that is not controlled by any organization, all decisions are made by reaching a consensus among network participants. Everyone can obtain and access the data of the blockchain network.
+### Prueba de autoridad {#proof-of-authority}
 
-### Proof of Authority {#proof-of-authority}
+> Prueba de autoridad (PoA), la red IBAX crea un nuevo mecanismo de consenso que combina la descentralización distribuida, la centralización débil y la autorización de certificados.
+> Lo llamamos PoA (Prueba de autoridad). Para garantizar la continuidad de toda la red IBAX, el consenso incluye no solo la red pública de IBAX,
+> sino también ecoLibs creados por cada usuario y grupo de usuarios.
+> Esto creará una organización autónoma, descentralizada, justa, transparente y antifraude verdaderamente descentralizada (DAO).
 
-Proof of Authority (PoA), IBAX Network has created a new consensus mechanism that combines distribution, weak centralization, and a certification authority. We call it PoA (Proof of Authority). To ensure continuity for the entire IBAX Network, the consensus covers not only IBAX Public Network, but also ecoLibs created by each user and user group. This creates a truly self-governed, decentralized, fair, transparent, and fraud-proof Decentralized Autonomous Organization (DAO).
-
-## IBAX Terms {#ibax-terms}
+## Términos de la plataforma de cadena de bloques IBAX {#ibax-terms}
 
 ### Testnet {#testnet}
 
-The version of the blockchain network used for testing.
+> Una versión de la red de cadena de bloques utilizada para pruebas.
 
 ### Mainnet {#mainnet}
 
-The main version of the blockchain network.
+> La versión principal de la red blockchain.
 
-### Transaction {#transaction-2}
+### Transacción {#transaction-2}
 
-Call the contract and pass the parameters to the operation command of the contract. The result of the honor node execution is the update of the database.
+> Una operación que llama a un contrato inteligente y pasa parámetros al contrato inteligente. El resultado de la transacción ejecutada por un nodo de honor es la actualización de la base de datos.
 
-### Gas fee {#gas-fee}
+### Gas {#gas-fee}
 
-A conventional unit used to calculate the cost of performing certain operations on a network of nodes. The fuel exchange rate is determined by a vote on the honor node.
+> La unidad convencional utilizada para calcular el costo de realizar ciertas operaciones en la red de nodos. La tasa de gas es determinada por votación de los nodos de honor.
 
-### Account address {#account-address}
+### Dirección de cuenta {#account-address}
 
-The data records store the token and can be accessed through a pair of keys (private key and public key).
+> Un registro de datos que almacena tokens y se puede acceder a través de un par de claves (clave privada y clave pública).
 
-### Wallet address {#wallet-address}
+### Dirección de billetera {#wallet-address}
 
-The character encoding identifier of the user on the node network that is used as the name of the user's virtual account.
+> Un identificador de caracteres de un usuario en la red de nodos, que sirve como nombre de su cuenta virtual.
 
 ### Weaver {#weaver}
 
-The software client used to connect to the node network, which provides the desktop and web browser versions.
+> Un cliente de software utilizado para conectarse a la red de nodos, disponible en versión de escritorio y versión de navegador web.
+>
+> Weaver integra un entorno de desarrollo de plataforma que incluye la creación y edición de tablas de datos, páginas y contratos inteligentes. Los usuarios pueden construir ecosistemas en Weaver, crear y utilizar aplicaciones.
 
-Weaver integrates the platform development environment, including creating and editing tables, pages, and contracts. Users can build ECOLIBs, create and use applications in Weaver. 
+### Ecosistema {#ecolib}
 
-### ECOLIB {#ecolib}
+> Un entorno de programación de software relativamente cerrado o abierto que incluye aplicaciones y miembros del ecosistema.
+>
+> Los miembros del ecosistema pueden emitir tokens exclusivos del ecosistema, establecer reglas de interacción entre los miembros mediante contratos inteligentes y establecer permisos de acceso a los elementos de la aplicación para los miembros.
 
-A relatively closed or open software programming environment, including applications and ECOLIB members.
+### Parámetros del ecosistema {#ecolib-parameters}
 
-ECOLIB members can issue exclusive tokens belonging to the ECOLIB, use smart contracts to establish interaction rules between members, and set access rights to application elements for members.
+> Un conjunto de parámetros del ecosistema configurables, que incluyen la cuenta del creador del ecosistema, los permisos para cambiar los elementos de la aplicación, etc. Estos parámetros se pueden cambiar en la tabla de parámetros.
 
-### ECOLIB parameters {#ecolib-parameters}
+### Miembros del ecosistema {#ecolib-members}
 
-A set of configurable ECOLIB parameters, such as the account of the creator of the ECOLIB and the permissions of changing application elements, can be changed in the parameter table.
+> Usuarios que pueden acceder a funciones específicas de la aplicación y del ecosistema.
 
-### ECOLIB members {#ecolib-members}
+### Virtual Private Ecosystem {#virtual-private-ecolib}
 
-Users who can access specific ECOLIBs and application features.
+> El ecosistema privado virtual Cross Ledgers Base (CLB) tiene todas las funciones de un ecosistema estándar, pero funciona fuera de la cadena de bloques.
+> En CLB, se pueden usar y crear contratos inteligentes y lenguajes de plantillas, tablas de bases de datos y se pueden crear aplicaciones con Weaver.
+> Se pueden llamar a los contratos inteligentes en el ecosistema de la cadena de bloques mediante una interfaz.
 
-### Virtual private ECOLIB {#virtual-private-ecolib}
+### Prueba de autoridad descentralizada {#decentralized-proof-of-authority}
 
-Virtual private ECOLIB - Cross Ledgers Base (CLB), which has the full set of functions of the standard ECOLIB, but works outside the blockchain. In CLB, you can use and create contracts and template languages, database tables, and use Weaver to create applications. You can call contracts on the blockchain ECOLIB via APIs.
-
-### Decentralized Proof-of-Authority {#decentralized-proof-of-authority}
-
-Decentralized Proof-of-Authority (DPoA) is a new consensus algorithm that provides high performance and fault tolerance. In DPoA, the right to generate new blocks is granted to nodes that have proven the right to do so, and such nodes must be subject to preliminary verification.
+> La Prueba de autoridad descentralizada (DPoA) es un nuevo algoritmo de consenso que proporciona alta velocidad y tolerancia a fallos.
+> En DPoA, el derecho a generar nuevos bloques se otorga a los nodos que han demostrado tener la capacidad de hacerlo y estos nodos deben ser verificados previamente.
 
 ### Needle {#needle}
 
-A scripting language used to create smart contracts that can handle data received from user pages and value operations performed in database tables.
-You can create and edit contracts in Weaver's editor.
+> Es un lenguaje de script utilizado para crear contratos inteligentes que puede manejar la funcionalidad de los datos recibidos de las páginas de usuario y las operaciones de valores realizadas en las tablas de bases de datos.
+>
+> Se pueden crear y editar contratos inteligentes en el editor de Weaver.
 
 ### Logicor {#logicor}
 
-The template language used to create pages. It can get values from database tables, build user pages, and pass user input data to the **data** section of the contract.
+> Es un lenguaje de plantillas utilizado para crear páginas que puede obtener valores de las tablas de bases de datos, construir páginas de usuario y pasar los datos de entrada del usuario a la sección **data** de los contratos inteligentes.
 
 ### Integrated Development Environment (IDE) {#integrated-development-environment-ide}
 
-Integrated Development Environment (IDE) is a set of software tools used to create applications.
+> El Entorno de Desarrollo Integrado (IDE) es un conjunto de herramientas de software utilizadas para crear aplicaciones.
+>
+> El IDE de Weaver incluye un editor de contratos inteligentes, un editor de páginas, una herramienta de gestión de tablas de bases de datos, un editor de recursos multilingües y funciones de exportación e importación de aplicaciones. El IDE se complementa con un diseñador de páginas visual basado en herramientas semánticas.
 
-Weaver's IDE includes a contract editor, page editor, database table management tool, multi-language resources editor, as well as application export and import functions. The IDE complements the visual page designer based on semantic tools.
+### Editor de páginas {#page-editor}
 
-### Page editor {#page-editor}
+> En Weaver, se pueden crear páginas de aplicaciones mediante la disposición directa de elementos básicos de la aplicación en la pantalla, como contenedores HTML, campos de formulario, botones, etc.
 
-In Weaver, you can create application pages by directly arranging basic application elements, HTML containers, form fields, buttons and other tools on the screen.
+### Diseñador de páginas visual {#visual-page-designer}
 
-### Visual page designer {#visual-page-designer}
+> Las herramientas para crear páginas de aplicaciones en Weaver incluyen un diseñador de interfaz y un generador de código de página basado en el lenguaje Logicor.
 
-Tools for creating application pages in Weaver, including interface designer and "Logicor" page code generator.
+### Editor de contratos inteligentes {#contract-editor}
 
-### Contract editor {#contract-editor}
+> Herramientas para crear contratos inteligentes visualmente en Weaver.
 
-A tool for creating contracts using visual pages in Weaver.
+### Recursos multilingües {#multilingual-resources}
 
-### Multilingual resources {#multilingual-resources}
+> Un módulo en Weaver para la localización de páginas de aplicaciones, que asocia las etiquetas en la página de la aplicación con los valores de texto en el idioma seleccionado.
 
-The module of application page localization in Weaver, which associates the label on the application page with the text value of the selected language.
+### Exportación de aplicaciones {#application-export}
 
-### Application export {#application-export}
+> Guarda todo el código fuente de la aplicación, incluyendo tablas de datos, páginas y contratos inteligentes, en un archivo.
 
-Save the source code of all tables, pages, and contracts of the application as files.
+### Importación de aplicaciones {#application-import}
 
-### Application import {#application-import}
+> Carga todas las tablas de datos, páginas y contratos inteligentes incluidos en un archivo de exportación en el ecosistema.
 
-Load all tables, pages, and contracts of an application included in the export file into the ECOLIB.
+### Ley inteligente {#smart-law}
 
-### Smart law {#smart-law}
+> Un conjunto especial de contratos inteligentes que incluyen información regulatoria. Se utiliza para gestionar y controlar las operaciones de los contratos inteligentes y el acceso a los registros.
 
-It is a special set of smart contracts that contain regulatory information and used to manage and control the operation and register access rights.
+### Sistema legal {#legal-system}
 
-### Legal system {#legal-system}
+> Un conjunto de reglas y mecanismos establecidos en la ley inteligente que pueden regular las relaciones entre los usuarios del ecosistema, definir las reglas del proceso de cambio de parámetros del protocolo y definir soluciones desafiantes.
 
-A set of rules and mechanisms established in smart law, which can regulate the relationship between ECOLIB users, define procedural rules for changing protocol parameters, and define various challenging solutions.
+### Aplicación {#application}
 
-### Application {#application}
+> Un producto de software completo y funcional creado en el entorno de desarrollo integrado de Weaver.
+>
+> Una aplicación es una colección de elementos, como tablas de bases de datos, contratos inteligentes y páginas de usuario, que tienen permisos de acceso configurados.
 
-Create fully functional software products in Weaver's IDE.
+### Página {#page}
 
-An application is a collection of elements such as database tables, smart contracts, and user pages with configuration access rights.
+> Programa escrito en el lenguaje de plantillas Logicor para crear una interfaz interactiva en la pantalla.
 
-### Page {#page}
+### Fragmento de código {#code-segment}
 
-The program code written in the Logicor template language that forms an interactive interface on the screen.
+> Programa escrito en el lenguaje de plantillas Logicor que se puede repetir en bloques de código en una página de la aplicación.
 
-### Code segment {#code-segment}
+### Derechos de acceso {#access-rights}
 
-The program code written in the Logicor template language that can be reused in application pages.
+> Condiciones para obtener acceso a la creación y edición de tablas de datos, contratos inteligentes y páginas.
+>
+> Los derechos de acceso a las tablas de datos pueden incluir permisos para agregar filas y columnas, así como para editar los valores en las columnas.
 
-### Access rights {#access-rights}
+### Nodo de honor {#honor-node}
 
-Conditions to get access rights for creating and editing tables, contracts and pages.
+> Nodo de la red que tiene el derecho de generar y verificar bloques.
 
-The access rights to tables can be configured with rights to add rows and columns, and edit the values in columns. 
+### Nodo guardián {#guardian-node}
 
-### Honor node {#honor-node}
+> Un nodo en la red que almacena la última versión completa de la cadena de bloques.
 
-A node in the network node that has the right to generate and verify blocks.
+### Procesamiento de transacciones concurrentes {#concurrent-transaction-processing}
 
-### Guardian node {#guardian-node}
-
-A node on the network used to store the latest version of the complete blockchain.
-
-### Concurrent transaction processing {#concurrent-transaction-processing}
-
-A method to increase transaction processing speed by processing data from different ECOLIBs at the same time.
+> Un método para mejorar la velocidad de procesamiento de transacciones mediante el procesamiento simultáneo de datos de diferentes ecosistemas.

@@ -1,40 +1,46 @@
-# Synchronized Monitoring Tool {#synchronized-monitoring-tool}
+# Herramienta de monitoreo sincronizado {#synchronized-monitoring-tool}
 
-Desync_monitor is a special tool that can be used to verify whether the database on the specified node has been synchronized.
+Desync_monitor es una herramienta especial que se utiliza para verificar si la base de datos en un nodo especificado está sincronizada.
 
-The tool can be used as a daemon or can be started to perform a one-time check.
+Esta herramienta se puede utilizar como un proceso en segundo plano o se puede iniciar para realizar una verificación única.
 
-The operating principle of the tool is based on the following:
+El funcionamiento de esta herramienta se basa en lo siguiente:
 
-1.Each block contains the hash of all changes of all transactions, request the specified node to provide its last block ID;
-2.Then request a block with this ID from all nodes and compare the above hashes;
-3.If the hashes are different, a synchronization error message will be sent to the email address specified in the command.
+> 1. Cada bloque contiene el hash de todos los cambios de todas las transacciones. Se solicita al nodo especificado que proporcione su último ID de bloque.
+> 2. Luego, se solicitan bloques de todos los nodos que tienen ese ID y se comparan los hashes mencionados anteriormente.
+> 3. Si los hashes son diferentes, se enviará un mensaje de error de sincronización a la dirección de correo electrónico especificada en el comando.
 
-## Location {#location}
-The tool is located in the `tools/desync_monitor/` directory.
+## Ubicación {#location}
 
-## Command prompt flags {#command-prompt-flags}
-The following flags can be used from the command prompt:
-* confPath - Path of the configuration file. The default file name is `config.toml`;
-* nodesList - Node list of the requested block, separated by commas. The default is `127.0.0.1:7079`;
-* daemonMode - Started as a daemon and should be used when authentication is required every N seconds. This flag is set to `false` by default;
-* queryingPeriod - If the tool is started as a daemon, this parameter sets the time interval (in seconds) between checks, `1` second by default.
-* alertMessageTo – The email address to which synchronization warning errors will be sent.
-    * alertMessageSubj - Message subject in the warning message, the `node synchronization` problem by default;
-    * alertMessageFrom - Address where the message was sent.
-    * smtpHost - SMTP server host, used to send emails, the `""` by default;
-    * smtpPort - SMTP server port, used to send email messages, `25` by default;
-    * smtpUsername - SMTP server username, `""` by default;
-    * smtpPassword - SMTP server password, `""` by default.
+Esta herramienta se encuentra en `tools/desync_monitor/`.
 
-## Configuration {#configuration}
-The tool uses a configuration file in toml format.
+## Banderas del símbolo del sistema {#command-prompt-flags}
 
-By default, it will look for the config.toml file in the folder where to start up the binary file.
+Se pueden utilizar las siguientes banderas desde el símbolo del sistema:
 
-The file path can be changed with the configPath flag.
+> -   **confPath** -- Ruta al archivo de configuración. El nombre de archivo predeterminado es `config.toml`;
+> -   **nodesList** -- Lista de nodos para solicitar bloques, separados por comas. El valor predeterminado es `127.0.0.1:7079`;
+> -   **daemonMode** -- Iniciar como un demonio, debe usarse cuando se necesita verificar cada N segundos. Esta bandera está establecida en `false` de forma predeterminada;
+> -   **queryingPeriod** -- Si la herramienta se inicia como un demonio, este parámetro establece el intervalo de tiempo (en segundos) entre comprobaciones. El valor predeterminado es `1` segundo.
 
-```
+-   **alertMessageTo** -- Dirección de correo electrónico a la que se enviarán las alertas de error de sincronización.
+
+    > -   **alertMessageSubj** -- Asunto del mensaje en el mensaje de alerta, el valor predeterminado es problema de sincronización del nodo;
+    > -   **alertMessageFrom** -- Dirección desde la que se envía el mensaje.
+    > -   **smtpHost** -- Host del servidor SMTP utilizado para enviar correos electrónicos, el valor predeterminado es `""`;
+    > -   **smtpPort** -- Puerto del servidor SMTP utilizado para enviar mensajes de correo electrónico, el valor predeterminado es `25`;
+    >   - **smtpUsername** -- Nombre de usuario del servidor SMTP, el valor predeterminado es `""`;
+    >   - **smtpPassword** -- Contraseña del servidor SMTP, el valor predeterminado es `""`.
+
+## Configuración {#configuration}
+
+Esta herramienta utiliza un archivo de configuración en formato toml.
+
+Por defecto, buscará el archivo *config.toml* en la carpeta donde se inició el archivo binario.
+
+Puede cambiar la ruta del archivo utilizando la opción **configPath**.
+
+```text
 nodes_list = ["http://127.0.0.1:7079", "http://127.0.0.1:7002"]
 
 [daemon]
@@ -54,22 +60,29 @@ password = ""
 ```
 
 ### nodes_list {#nodes-list}
-* nodes_list - List of nodes (hosts) requesting information.
+
+> -   **nodes_list** - Lista de nodos (hosts) que solicitan información.
 
 ### [daemon] {#daemon}
-Configuration of the daemon mode.
-* daemon_mode – A tool works as a daemon and performs synchronization checks.
-* querying_period - Time interval between synchronization checks.
+
+Configuración del modo de proceso de demonio.
+
+> - **daemon_mode** -- La herramienta funciona como un proceso de demonio y realiza comprobaciones de sincronización.
+> - **querying_period** -- El intervalo de tiempo entre las comprobaciones de sincronización.
 
 ### [alert_message] {#alert-message}
-Warning message parameters.
-* to - recipient's e-mail of synchronization error warning messages;
-* subject - message subject;
-* from - sender's e-mail.
+
+Parámetros de mensaje de advertencia.
+
+> - **to** -- Dirección de correo electrónico del destinatario para el mensaje de advertencia sincrónico;
+> - **subject** -- Tema del mensaje;
+> - **from** -- Dirección de correo electrónico del remitente.
 
 ### [smtp] {#smtp}
-Simple Mail Transfer Protocol (SMTP) server parameters, used to send synchronization error messages.
-* host – SMTP server hose;
-* port –SMTP server port; 
-* username – SMTP server user name; 
-* password –SMTP server password; 
+
+Parámetros del servidor de Protocolo de Transferencia de Correo Simple (Simple Mail Transfer Protocol, SMTP) para enviar mensajes de advertencia sincrónicos.
+
+> - **host** -- Servidor SMTP;
+> - **port** -- Puerto del servidor SMTP;
+> - **username** -- Nombre de usuario del servidor SMTP;
+> - **password** -- Contraseña del servidor SMTP;

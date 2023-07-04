@@ -24,6 +24,7 @@ In this section, we will show you how to  develop a simple application on the IB
       - [Designer views](#designer-views)
       - [Developer view](#developer-view)
       - [Fetch data from the database table](#fetch-data-from-the-database-table)
+      - [Full page code](#full-page-code-1)
       - [Save the page](#save-the-page)
   - [Part 4: Application](#part-4-application)
     - [Menu](#menu)
@@ -38,6 +39,7 @@ In this section, we will show you how to  develop a simple application on the IB
       - [Table offset](#table-offset)
       - [Button code](#button-code)
       - [Page refreshing](#page-refreshing)
+    - [Full page code](#full-page-code-2)
   - [Conclusions](#conclusions)
 
 

@@ -108,7 +108,7 @@ type Block struct {
 
 Bir blok yapısı aşağıdaki unsurlardan oluşur:
 
-* **Objects** - [ObjInfo](#objInfo-structure) pointer türündeki internal objelerin haritası. Örneğin, blokta bir değişken varsa, onun adıyla ilgili bilgi alabilirsiniz;
+* **Objects** - [ObjInfo](#objinfo-structure) pointer türündeki internal objelerin haritası. Örneğin, blokta bir değişken varsa, onun adıyla ilgili bilgi alabilirsiniz;
 * **Type** - bloğun türü. Bir fonksiyon bloğu için tipi **ObjFunc**; bir sözleşme bloğu için türü **ObjContract**'tır;
 * **Owner** - **OwnerInfo** işaretçi türünün yapısı. Bu yapı, sözleşmenin derlenmesi sırasında belirtilen veya **sözleşmeler** tablosundan elde edilen, derlenmiş sözleşmenin sahibine ilişkin bilgileri içerir;
 * **Info** - blok türüne bağlı olarak nesne hakkında bilgi içerir;
@@ -130,7 +130,7 @@ type ObjInfo struct {
 ObjInfo yapısı aşağıdaki öğelere sahiptir:
 
 * **Type** is the object type, which has any of the following values:
-   * **ObjContract** – [contract](#contractInfo-structure);
+   * **ObjContract** – [contract](#contractinfo-structure);
    * **ObjFunc** - function;
    * **ObjExtFunc** - external golang function;
    * **ObjVar** - variable;

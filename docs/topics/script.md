@@ -1,4 +1,3 @@
-
 # Smart Contracts {#smart-contracts}
   - [Contract Structure](#contract-structure)
     - [Data section](#data-section)

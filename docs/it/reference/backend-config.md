@@ -49,12 +49,12 @@ It defines parameters of the token circulation service TokenMovement.
 
 ## An example configuration file {#an-example-configuration-file}
 ```
-PidFilePath = "/IBAX-data/go-ibax.pid"
-LockFilePath = "/IBAX-data/go-ibax.lock"
-DataDir = "/IBAX-data"
-KeysDir = "/IBAX-data"
-TempDir = "/var/folders/_l/9md_m4ms1651mf5pbng1y1xh0000gn/T/IBAX-temp"
-FirstBlockPath = "/IBAX-data/1block"
+PidFilePath = "/ibax-data/go-ibax.pid"
+LockFilePath = "/ibax-data/go-ibax.lock"
+DataDir = "/ibax-data"
+KeysDir = "/ibax-data"
+TempDir = "/var/folders/_l/9md_m4ms1651mf5pbng1y1xh0000gn/T/ibax-temp"
+FirstBlockPath = "/ibax-data/1block"
 TLS = false
 TLSCert = ""
 TLSKey = ""
@@ -72,7 +72,7 @@ NodesAddr = []
   Port = 7079
 
 [DB]
-  Name = "IBAX"
+  Name = "ibax"
   Host = "127.0.0.1"
   Port = 5432
   User = "postgres"
@@ -82,7 +82,7 @@ NodesAddr = []
 [StatsD]
   Host = "127.0.0.1"
   Port = 8125
-  Name = "IBAX"
+  Name = "ibax"
 
 [Centrifugo]
   Secret = "127.0.0.1"

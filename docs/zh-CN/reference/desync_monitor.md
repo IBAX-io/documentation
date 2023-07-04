@@ -80,8 +80,7 @@ password = ""
 
 ### [smtp] {#smtp}
 
-简单邮件传输协议 (Simple Mail Transfer Protocol, SMTP)
-服务器的参数，用于发送同步错误消息。
+简单邮件传输协议 (Simple Mail Transfer Protocol, SMTP) 服务器的参数，用于发送同步错误消息。
 
 > -   **host** -- SMTP服务器主机；
 > -   **port** --SMTP服务器端口；

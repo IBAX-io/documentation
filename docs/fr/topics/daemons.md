@@ -180,7 +180,7 @@ The TCP service protocol works on honor nodes and guardian nodes, which uses the
 
 Each request has a type defined by the first two bytes of the request.
 
-## Type 1 {#type-1}
+### Type 1 {#type-1}
 
 #### Request sender {#request-sender-1}
 
@@ -200,7 +200,7 @@ Analyzes and verifies the transaction hashes, and select transactions that have 
 
 No. After processing the request, a [Type 2](#type-2) request is issued.
 
-## Type 2 {#type-2}
+### Type 2 {#type-2}
 
 #### Request sender {#request-sender-2}
 
@@ -226,7 +226,7 @@ Verifies the transaction and add it to the transaction queue.
 
 No.
 
-## Type 4 {#type-4}
+### Type 4 {#type-4}
 
 #### Request sender {#request-sender-3}
 
@@ -242,7 +242,7 @@ Block hash.
 
 Returns `0` if not having a block with this ID.
 
-## Type 7 {#type-7}
+### Type 7 {#type-7}
 
 #### Request sender {#request-sender-4}
 
@@ -268,7 +268,7 @@ The block data.
 
 The connection is closed if not having a block with this ID.
 
-## Type 10 {#type-10}
+### Type 10 {#type-10}
 
 #### Request sender {#request-sender-5}
 

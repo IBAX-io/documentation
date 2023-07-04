@@ -1641,6 +1641,8 @@ R現在のエコシステムのリクエストデータテーブルに関する�
 **例**
 ```text
     //Request
+    curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}}" -d '{"jsonrpc":"2.0","method":"ibax.getAppContent","id":1,"params":[1]}' http://127.0.0.1:7079
+    
     //Response
     {
         "jsonrpc": "2.0",

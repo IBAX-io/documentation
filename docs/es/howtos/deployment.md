@@ -1,627 +1,628 @@
-# Deployment of A IBAX Network {#deployment-of-a-ibax-network}
-In this section, we will show you how to deploy your own blockchain network.
-## An deployment example {#an-deployment-example}
+# Despliegue de la plataforma IBAX Blockchain y la red IBAX {#deployment-of-a-ibax-network}
 
-A blockchain network will be deployed with the following three nodes as an example.
+Este capítulo demuestra cómo desplegar su propia red blockchain.
 
-Three network nodes:
+## Ejemplo de despliegue {#an-deployment-example}
 
-  * Node 1 is the first node in the blockchain network, which can generate new blocks and send transactions from clients connected to it;
-  * Node 2 is another honor node, which can generate new blocks and send transactions from clients connected to it;
-  * Node 3 is a guardian node, which cannot generate new blocks, but can send transactions from clients connected to it.
+Despliegue una red blockchain con tres nodos como ejemplo.
 
-Configurations of the three nodes to be deployed:
-* Each node uses its own PostgreSQL database system instance;
-* Each node uses its own Centrifugo service instance;
-* The server side github-backend is deployed on the same host as other backend components.
+Tres nodos de red:
 
-The sample addresses and ports used by the nodes are described in the following table:
+> - El Nodo 1 es el primer nodo en la red blockchain, puede generar nuevos bloques y enviar transacciones desde clientes conectados a él;
+> - El Nodo 2 es otro nodo validador, puede generar nuevos bloques y enviar transacciones desde clientes conectados a él;
+> - El Nodo 3 es un nodo de vigilancia, no puede generar nuevos bloques, pero puede enviar transacciones desde clientes conectados a él.
 
-| Node |       Component       |    IP & port     |
-| :--: | :-------------------: | :--------------: |
-|  1   |      PostgreSQL       |  127.0.0.1:5432  |
-|  1   |      Centrifugo       | 192.168.1.1:8000 |
-|  1   | go-ibax (TCP service) | 192.168.1.1:7078 |
-|  1   | go-ibax (API service) | 192.168.1.1:7079 |
-|  2   |      PostgreSQL       |  127.0.0.1:5432  |
-|  2   |      Centrifugo       | 192.168.1.2:8000 |
-|  2   | go-ibax (TCP service) | 192.168.1.2:7078 |
-|  2   | go-ibax (API service) | 192.168.1.2:7079 |
-|  3   |      PostgreSQL       |  127.0.0.1:5432  |
-|  3   |      Centrifugo       | 192.168.1.3:8000 |
-|  3   | go-ibax (TCP service) | 192.168.1.3:7078 |
-|  3   | go-ibax (API service) | 192.168.1.3:7079 |
+La siguiente configuración se despliega para los tres nodos:
 
-## Deploy phase {#deploy-phase}
-Your own blockchain network must be deployed in several stages:
-- [Deployment of A IBAX Network](#deployment-of-a-ibax-network)
-  - [An deployment example](#an-deployment-example)
-  - [Deploy phase](#deploy-phase)
-  - [Server deployment](#server-deployment)
-    - [Deploy the first node](#deploy-the-first-node)
-    - [Dependencies and environment settings](#dependencies-and-environment-settings)
-      - [sudo](#sudo)
-    - [Golang](#golang)
-    - [PostgreSQL](#postgresql)
-    - [Centrifugo](#centrifugo)
-    - [Directory structure](#directory-structure)
-    - [Create a database](#create-a-database)
-    - [Configure Centrifugo](#configure-centrifugo)
-    - [Install go-ibax](#install-go-ibax)
-    - [Configure the first node](#configure-the-first-node)
-    - [Initiate the first node server](#initiate-the-first-node-server)
-  - [Deploy other nodes](#deploy-other-nodes)
-    - [Node 2](#node-2)
-    - [Node 3](#node-3)
-  - [Front-end deployment](#front-end-deployment)
-    - [Software prerequisites](#software-prerequisites)
-    - [Build a Weaver application](#build-a-weaver-application)
-    - [Add the configuration file for the blockchain network](#add-the-configuration-file-for-the-blockchain-network)
-    - [Build Weaver Web Application](#build-weaver-web-application)
-  - [Configure the blockchain network](#configure-the-blockchain-network)
-    - [Create the creator account](#create-the-creator-account)
-    - [Import applications, roles and templates](#import-applications-roles-and-templates)
-    - [Add the first node to the node list](#add-the-first-node-to-the-node-list)
-  - [Add other honor nodes](#add-other-honor-nodes)
-    - [Add members into the consensus role group](#add-members-into-the-consensus-role-group)
-    - [Create the owner account for other nodes](#create-the-owner-account-for-other-nodes)
-    - [Assign the node owner with the Validators role](#assign-the-node-owner-with-the-validators-role)
+> - Cada nodo utiliza su propia instancia del sistema de base de datos PostgreSQL;
+> - Cada nodo utiliza su propia instancia del servicio Centrifugo;
+> - [servidor](https://github.com/ibax-io/go-ibax) se implementa en el mismo host que otros componentes de back-end.
 
-## Server deployment {#server-deployment}
+Las direcciones y puertos de ejemplo utilizados por los nodos se describen en la siguiente tabla:
 
-### Deploy the first node {#deploy-the-first-node}
+|   |   |   |
+|---|---|---|
+| Nodo | Componente | IP y puerto |
+| 1 | PostgreSQL | 127.0.0.1:5432 |
+| 1 | Centrifugo | 192.168.1.1:8000 |
+| 1 | go-ibax (servicio TCP) | 192.168.1.1:7078 |
+| 1 | go-ibax (servicio API) | 192.168.1.1:7079 |
+| 2 | PostgreSQL | 127.0.0.1:5432 |
+| 2 | Centrifugo | 192.168.1.2:8000 |
+| 2 | go-ibax (servicio TCP) | 192.168.1.2:7078 |
+| 2 | go-ibax (servicio API) | 192.168.1.2:7079 |
+| 3 | PostgreSQL | 127.0.0.1:5432 |
+| 3 | Centrifugo | 192.168.1.3:8000 |
+| 3 | go-ibax (servicio TCP) | 192.168.1.3:7078 |
+| 3 | go-ibax (servicio API) | 192.168.1.3:7079 |
 
-The first node is a special one because it is essential to launch the blockchain network. The first block of the blockchain is generated by the first node, and all other nodes would download the blockchain from it. The owner of the first node is the platform creator.
+## Fase de implementación {#deploy-phase}
 
-### Dependencies and environment settings {#dependencies-and-environment-settings}
+Su propia red de blockchain debe ser implementada en varias fases:
+
+1. [Implementación del servidor](#server-deployment)
+
+    > 1. [Implementar el primer nodo](#deploy-the-first-node)
+    > 2. [Implementar otros nodos](#deploy-other-nodes)
+
+2. [Implementación del frontend](#front-end-deployment)
+
+3. [Configuración de la red de blockchain](#configure-the-blockchain-network)
+
+    > 1. [Crear la cuenta del creador](#create-the-creator-account)
+    > 2. [Importar aplicaciones, roles y plantillas](#import-applications-roles-and-templates)
+    > 3. [Agregar el primer nodo a la lista de nodos](#add-the-first-node-to-the-node-list)
+
+4. [Agregar otros nodos de validación](#add-other-honor-nodes)
+
+    > 1. [Agregar miembros al rol de consenso](#add-members-into-the-consensus-role-group)
+    > 2. [Crear la cuenta del propietario del nodo](#create-the-owner-account-for-other-nodes)
+    > 3. [Agregar el propietario del nodo como Validadores y agregar nuevos nodos de validación mediante votación](#assign-the-node-owner-with-the-validators-role)
+
+## Despliegue del servidor {#server-deployment}
+
+### Despliegue del primer nodo {#deploy-the-first-node}
+
+El primer nodo es un nodo especial, ya que debe ser utilizado para iniciar la red de blockchain. El primer bloque de la cadena de bloques es generado por el primer nodo, y todos los demás nodos descargan la cadena de bloques desde él. El propietario del primer nodo es el fundador de la plataforma.
+
+### Dependencias y configuración del entorno {#dependencies-and-environment-settings}
 
 #### sudo {#sudo}
 
-All commands of Debian 9 must be run as a non-root user. However, some system commands require super user permissions to execute. By default, sudo is not installed on Debian 9, you must install it first.
+Todos los comandos en Debian 9 deben ser ejecutados como un usuario no root. Sin embargo, algunos comandos del sistema requieren permisos de superusuario. Por defecto, sudo no está instalado en Debian 9, por lo que debe ser instalado primero.
 
-1. Become a super user.
+1) Convertirse en un superusuario.
 
-```shell
+``` bash
 su -
 ```
 
-2. Upgrade your system.
+2) Actualizar su sistema.
 
-```shell
+``` bash
 apt update -y && apt upgrade -y && apt dist-upgrade -y
 ```
 
-3. Install sudo.
+3) Instalar sudo.
 
-```shell
+``` bash
 apt install sudo -y
 ```
 
-4. Add your user to the sudo group.
-
-```shell
+4) Agregar su usuario al grupo sudo.
+``` bash
 usermod -a -G sudo user
 ```
 
-5. After restarting, the changes take effect.
-   
-### Golang {#golang}
+5) Después de reiniciar, los cambios tendrán efecto.
 
-Install Go according to the [Official Documents](https://golang.org/doc/install#tarball). 
+### Lenguaje Go {#golang}
 
-1. Download the latest stable version of Go (> 1.10.x) from [Golang official website](https://golang.org/dl/) or through the command line:
+Siga las instrucciones en la [documentación oficial](https://golang.org/doc/install#tarball) para instalar Go.
 
-```shell
+1) Descargue la última versión estable de Go (> 1.10.x) desde el [sitio web oficial de Golang](https://golang.org/dl/) o mediante la línea de comandos:
+
+``` bash
 wget https://dl.google.com/go/go1.11.2.linux-amd64.tar.gz
 ```
 
-2. Use tar to extract the tarball to the `/usr/local` directory.
+2) Descomprima el paquete de instalación en `/usr/local`.
 
-```shell
+``` bash
 tar -C /usr/local -xzf go1.11.2.linux-amd64.tar.gz
 ```
 
-3. Add `/usr/local/go/bin` to PATH environment variables (located at `/etc/profile` or `$HOME/.profile`).
+3) Agregue `/usr/local/go/bin` al PATH de su variable de entorno (ubicado en `/etc/profile` o `$HOME/.profile`).
 
-```shell
+``` bash
 export PATH=$PATH:/usr/local/go/bin
 ```
 
-1. Execute the `source` file to make the changes take effect, for example: 
+4) Para que los cambios surtan efecto, ejecute `source` en ese archivo, por ejemplo:
 
-```shell
+``` bash
 source $HOME/.profile
 ```
 
-2. Delete temporary files:
+5) Elimine los archivos temporales:
 
-```shell
+``` bash
 rm go1.11.2.linux-amd64.tar.gz
 ```
 
 ### PostgreSQL {#postgresql}
 
-1. Install PostgreSQL (> v.10) and psql:
+1) Instale PostgreSQL (\> v.10) y psql:
 
-```shell
+``` bash
 sudo apt install -y postgresql
 ```
 
 ### Centrifugo {#centrifugo}
 
-1. Download Centrifugo V.1.8.0 from [GitHub](https://github.com/centrifugal/centrifugo/releases/) or through the command line:
+1) Descargue Centrifugo versión 1.8.0 desde [GitHub](https://github.com/centrifugal/centrifugo/releases/) o mediante la línea de comandos:
 
-```shell
+``` bash
 wget https://github.com/centrifugal/centrifugo/releases/download/v1.8.0/centrifugo-1.8.0-linux-amd64.zip \
 && unzip centrifugo-1.8.0-linux-amd64.zip \
 && mkdir centrifugo \
 && mv centrifugo-1.8.0-linux-amd64/* centrifugo/
 ```
 
-2. Delete temporary files: 
+2) Eliminar archivos temporales:
 
-```shell
+``` bash
 rm -R centrifugo-1.8.0-linux-amd64 \
 && rm centrifugo-1.8.0-linux-amd64.zip
 ```
 
-### Directory structure {#directory-structure}
+### Estructura del directorio {#directory-structure}
 
-For the Debian 9 system, it is recommended to store all software used by the blockchain platform in a separate directory.
+Para el sistema Debian 9, se recomienda almacenar todos los software utilizados por la plataforma blockchain en un directorio separado.
 
-The `/opt/backenddir` directory is used here, but you can use any directory. In this case, please change all commands and configuration files accordingly.
+Aquí se utiliza el directorio `/opt/backenddir`, pero puede utilizar cualquier directorio. En este caso, cambie todos los comandos y archivos de configuración en consecuencia.
 
-1. Create a directory for the blockchain platform:
+1) Cree un directorio para la plataforma blockchain:
 
-```shell
+``` bash
 sudo mkdir /opt/backenddir
 ```
 
-2. Make your user the owner of the directory:
+2) Haga que su usuario sea el propietario de ese directorio:
 
-```shell
+``` bash
 sudo chown user /opt/backenddir/
 ```
 
-3. Create subdirectories for Centrifugo, go-ibax and node data. All node data is stored in a directory named `nodeX`, where `X` is the node number. According to the node to be deployed, `node1` is Node 1, `node2` is Node 2, and so forth.
+3) Cree subdirectorios para Centrifugo, go-ibax y los datos del nodo. Todos los datos del nodo se almacenan en un directorio llamado `nodeX`, donde `X` es el número del nodo. Dependiendo del nodo que se desee implementar, `node1` es el nodo 1, `node2` es el nodo 2, y así sucesivamente.
 
-```shell
+``` bash
 mkdir /opt/backenddir/go-ibax \
 mkdir /opt/backenddir/go-ibax/node1 \
 mkdir /opt/backenddir/centrifugo \
 ```
 
-### Create a database {#create-a-database}
+### Crear una base de datos {#create-a-database}
 
-1. Change the user password postgres to the default password *123456*. You can set your own password, but you must change it in the node configuration file *config.toml*.
+1) Cambiar la contraseña de usuario postgres a la contraseña predeterminada *123456*. Puede establecer su propia contraseña, pero debe cambiarla en el archivo de configuración del nodo *config.toml*.
 
-```shell
+``` bash
 sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '123456'"
 ```
 
-2. Create a current state database for the node, for example **chaindb**:
+2) Crear una base de datos de estado actual del nodo, por ejemplo, **chaindb**:
 
-```shell
+``` bash
 sudo -u postgres psql -c "CREATE DATABASE chaindb"
 ```
 
-### Configure Centrifugo {#configure-centrifugo}
+### Configurar Centrifugo {#configure-centrifugo}
 
-1. Create the Centrifugo configuration file:
+1) Crear un archivo de configuración de Centrifugo:
 
-```shell
+``` bash
 echo '{"secret":"CENT_SECRET"}' > /opt/backenddir/centrifugo/config.json
 ```
 
-You can set your own *secret*, but you must also change it in the node configuration file *config.toml*.
+Puede configurar su *secreto* personal, pero también debe cambiarlo en el archivo de configuración del nodo *config.toml*.
 
-### Install go-ibax {#install-go-ibax}
+### Instalación de go-ibax {#install-go-ibax}
 
-1. Download github-backend from GitHub:
-2. Copy the go-ibax binary file to the `/opt/backenddir/go-ibax` directory. If you are using default Go workspace, the binary files are located in the `$HOME/go/bin` directory:
+1) Descargue desde GitHub <https://github.com/ibax-io/go-ibax>:
+2) Copie el archivo binario de go-ibax en el directorio `/opt/backenddir/go-ibax`.
+   Si está utilizando el [espacio de trabajo de Go predeterminado](https://golang.org/doc/code.html#Workspaces), el archivo binario se encuentra en el directorio `$HOME/go/bin`:
 
-```shell
+``` bash
 cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
 ```
 
-### Configure the first node {#configure-the-first-node}
+### Configuración del primer nodo {#configure-the-first-node}
 
-3. Create the configuration file for Node 1:
+1) Cree el archivo de configuración del nodo 1:
 
-```shell
+``` bash
 /opt/backenddir/go-ibax config \
- --dataDir=/opt/backenddir/node1 \
- --dbName=chaindb \
- --centSecret="CENT_SECRET" --centUrl=http://192.168.1.1:8000 \
- --httpHost=192.168.1.1 \
- --httpPort=7079 \
- --tcpHost=192.168.1.1 \
- --tcpPort=7078
+    --dataDir=/opt/backenddir/node1 \
+    --dbName=chaindb \
+    --centSecret="CENT_SECRET" --centUrl=http://192.168.1.1:8000 \
+    --httpHost=192.168.1.1 \
+    --httpPort=7079 \
+    --tcpHost=192.168.1.1 \
+    --tcpPort=7078
 ```
 
-4. Generate the keys of Node 1, including the public and private keys of the node and the account:
-```shell
+4)  Generar las claves de nodo 1, incluyendo las claves públicas y privadas del nodo y las claves públicas y privadas de la cuenta:
+
+``` bash
 /opt/backenddir/go-ibax generateKeys \
- --config=/opt/backenddir/node1/config.toml
+    --config=/opt/backenddir/node1/config.toml
 ```
 
-5. Generate the first block:
+5) Generar el primer bloque:
 
-> Note
->
-> If you want to create your own blockchain network, you must use the `--test=true` option. Otherwise, you cannot create a new account.
+````text
+Si desea crear su propia red de blockchain, debe usar la opción `--test=true`. De lo contrario, no podrá crear una nueva cuenta.
+````
 
-```shell
+``` bash
 /opt/backenddir/go-ibax generateFirstBlock \
- --config=/opt/backenddir/node1/config.toml \
- --test=true
+    --config=/opt/backenddir/node1/config.toml \
+    --test=true
 ```
 
-6. Initialize the database:
+6) Inicializar la base de datos:
 
-```shell
+``` bash
 /opt/backenddir/go-ibax initDatabase \
- --config=/opt/backenddir/node1/config.toml
+    --config=/opt/backenddir/node1/config.toml
 ```
 
-### Initiate the first node server {#initiate-the-first-node-server}
+### Iniciar el servidor del primer nodo {#initiate-the-first-node-server}
 
-To start the first node server, you must start the following two services:
-* centrifugo
-* go-ibax
+Para iniciar el servidor del primer nodo, debe iniciar dos servicios:
 
-If you failed to create [services](#https://wiki.debian.org/systemd/Services) with these files, you may execute binary files from directories in different consoles.
+- centrifugo
+- go-ibax
 
-1. Run centrifugo:
+Si no ha creado estos archivos de [servicios](https://wiki.debian.org/systemd/Services), puede ejecutar los archivos binarios desde diferentes directorios en diferentes consolas.
 
-```shell
+1) Ejecutar centrifugo:
+
+``` bash
 /opt/backenddir/centrifugo/centrifugo \
- -a 192.168.1.1 -p 8000 \
- --config /opt/backenddir/centrifugo/config.json
+    -a 192.168.1.1 -p 8000 \
+    --config /opt/backenddir/centrifugo/config.json
 ```
 
-2. Run go-ibax:
+2)  Ejecutar go-ibax:
 
-```shell
+``` bash
 /opt/backenddir/go-ibax start \
- --config=/opt/backenddir/node1/config.toml
+    --config=/opt/backenddir/node1/config.toml
 ```
 
-## Deploy other nodes {#deploy-other-nodes}
+## Desplegar otros nodos {#deploy-other-nodes}
 
-Although the deployment of all other nodes (Node 2 and Node 3) is similar to the first, but there are three differences:
+El despliegue de todos los demás nodos (nodo 2 y nodo 3) es similar al del primer nodo, pero hay tres diferencias:
 
-* You do not need to generate the first block. But it must be copied from Node 1 to the current node data directory;
-* The node must download blocks from Node 1 by configuring the `--nodesAddr` option;
-* The node must use its own addresses and ports.
+-   No es necesario generar el primer bloque. Sin embargo, debe copiarse desde el directorio de datos del nodo 1 al nodo actual;
+-   El nodo debe descargar bloques del nodo 1 mediante la opción de configuración `--nodesAddr`;
+-   El nodo debe usar su propia dirección y puerto.
 
-### Node 2 {#node-2}
+### Nodo 2 {#node-2}
 
-Follow operational instructions as shown below: 
+Siga los siguientes pasos:
 
-1. [Dependencies and environment settings](#dependencies-and-environment-settings)
-2. [Create database](#create-a-database)
+> 1.  [Dependencias y configuración del entorno](#dependencies-and-environment-settings)
+>
+> 2.  [Crear una base de datos](#create-a-database)
+>
+> 3.  [Centrifugo](#centrifugo)
+>
+> 4.  [Instalar go-ibax](#install-go-ibax)
+>
+> 5.  Crear el archivo de configuración del nodo 2:
+>
+>     > ``` bash
+>     > /opt/backenddir/go-ibax config \
+>     >     --dataDir=/opt/backenddir/node2 \
+>     >     --dbName=chaindb \
+>     >     --centSecret="CENT_SECRET" --centUrl=http://192.168.1.2:8000 \
+>     >     --httpHost=192.168.1.2 \
+>     >     --httpPort=7079 \
+>     >     --tcpHost=192.168.1.2 \
+>     >     --tcpPort=7078 \
+>     >     --nodesAddr=192.168.1.1
+>     > ```
+>
+> 6.  1. Copie el primer archivo de bloque a la segunda nodo, por ejemplo, puede hacerlo en el nodo 2 a través de `scp`:
+
+> ``` bash
+> scp user@192.168.1.1:/opt/backenddir/node1/1block /opt/backenddir/node2/
+> ```
+
+2. Genere las claves para el nodo 2, incluyendo las claves públicas y privadas del nodo y de la cuenta:
+
+> ``` bash
+> /opt/backenddir/go-ibax generateKeys \
+>     --config=/opt/backenddir/node2/config.toml
+> ```
+
+3. Inicialice la base de datos:
+
+> ``` bash
+> ./go-ibax initDatabase --config=node2/config.toml
+> ```
+
+4. Ejecute Centrifugo:
+
+> ``` bash
+> /opt/backenddir/centrifugo/centrifugo \
+>      -a 192.168.1.2 -p 8000 \
+>      --config/opt/backenddir/centrifugo/config.json
+> ```
+
+5. Ejecute go-ibax:
+
+> ``` bash
+> /opt/backenddir/go-ibax start \
+>     --config=/opt/backenddir/node2/config.toml
+> ```
+
+Como resultado, el nodo descargará el bloque desde el primer nodo. Este nodo no es un nodo de validación, por lo que no puede generar nuevos bloques. El nodo 2 se agregará a la lista de nodos de validación más adelante.
+
+### Nodo 3 {#node-3}
+
+Siguiendo la siguiente serie de operaciones:
+
+1. [Dependencias y configuración del entorno](#dependencies-and-environment-settings)
+2. [Crear una base de datos](#create-a-database)
 3. [Centrifugo](#centrifugo)
-4. [Install go-ibax](#install-go-ibax)
-5. Create the configuration file for Node 2: 
+4. [Instalar go-ibax](#install-go-ibax)
+5. Crear el archivo de configuración del nodo 3:
 
-```shell
- /opt/backenddir/go-ibax config \
---dataDir=/opt/backenddir/node2 \
---dbName=chaindb \
---centSecret="CENT_SECRET" --centUrl=http://192.168.1.2:8000 \
---httpHost=192.168.1.2 \
---httpPort=7079 \
---tcpHost=192.168.1.2 \
---tcpPort=7078 \
---nodesAddr=192.168.1.1
-```
+    > ``` bash
+    > /opt/backenddir/go-ibax config \
+    >     --dataDir=/opt/backenddir/node3 \
+    >     --dbName=chaindb \
+    >     --centSecret="CENT_SECRET" --centUrl=http://192.168.1.3:8000 \
+    >     --httpHost=192.168.1.3 \
+    >     --httpPort=7079 \
+    >     --tcpHost=192.168.1.3 \
+    >     --tcpPort=7078 \
+    >     --nodesAddr=192.168.1.1
+    > ```
 
-6. Copy the first block file to Node 2. For example, you can perform this operation on Node 2 throughscp:
+6.  1. Copie el primer archivo de bloque a la Node 3, por ejemplo, puede hacerlo en la Node 3 a través de `scp`:
 
-```shell
- scp user@192.168.1.1:/opt/backenddir/node1/1block /opt/backenddir/node2/
-```
+    > ``` bash
+    > scp user@192.168.1.1:/opt/backenddir/node1/1block /opt/backenddir/node3/
+    > ```
 
-7. Generate the keys of Node 2, including the public and private keys of the node and the account:
+7. Genere las claves para la Node 3, incluyendo las claves públicas y privadas de la Node y las claves públicas y privadas de la cuenta:
 
-```shell
- /opt/backenddir/go-ibax generateKeys \
---config=/opt/backenddir/node2/config.toml
-```
+    > ``` bash
+    > /opt/backenddir/go-ibax generateKeys \
+    >     --config=/opt/backenddir/node3/config.toml
+    > ```
 
-8. Initiate the database: 
+8. Inicialice la base de datos:
 
-```shell
- ./go-ibax initDatabase --config\=node2/config.toml
-```
+    > ``` bash
+    > ./go-ibax initDatabase --config=node3/config.toml
+    > ```
 
-9. Run centrifugo:
+9. Ejecute Centrifugo:
 
-```shell
-/opt/backenddir/centrifugo/centrifugo \
--a 192.168.1.2 -p 8000 \
---config/opt/backenddir/centrifugo/config.json
-```
+    > ``` bash
+    > /opt/backenddir/centrifugo/centrifugo \
+    >     -a 192.168.1.3 -p 8000 \
+    >     --config/opt/backenddir/centrifugo/config.json
+    > ```
 
-10. Run go-ibax:
+10. Ejecute go-ibax:
 
-```shell
-/opt/backenddir/go-ibax start \
- --config=/opt/backenddir/node2/config.toml
-```
+    ``` bash
+    /opt/backenddir/go-ibax start \
+        --config=/opt/backenddir/node3/config.toml
+    ```
 
-As a result, the node downloads the block from the first node. As this node is not a verification node, it cannot generate a new block. Node 2 will be added to the list of verification nodes later.
+Como resultado, la Node descargará el bloque desde la primera Node. Esta Node no es una Node de validación, por lo que no puede generar nuevos bloques. Los clientes pueden conectarse a esta Node y enviar transacciones a la red.
 
-### Node 3 {#node-3}
+## Implementación de Front-End {#front-end-deployment}
 
-Follow operational instructions as shown below: 
+Solo se puede construir el cliente Govis utilizando el administrador de paquetes `yarn` si se instala **GNOMEGUI** en la versión oficial de Debian 9 (Stretch) de 64 bits, disponible en el [sitio web oficial](https://www.debian.org/CD/http-ftp/#stable).
 
-1. [Dependencies and environment settings](#dependencies-and-environment-settings)
+### Requisitos previos del software {#software-prerequisites}
 
-2. [Create database](#create-a-database)
+> Node.js
 
-3. [Centrifugo](#centrifugo)
+1) Descargue Node.js LTS versión 8.11 desde el [sitio web oficial de Node.js](https://nodejs.org/en/download/) o mediante la línea de comandos:
 
-4. [Install go-ibax](#install-go-ibax)
-
-5. Create the configuration file for Node 3:
-
-```shell
- /opt/backenddir/go-ibax config \
---dataDir=/opt/backenddir/node3 \
---dbName=chaindb \
---centSecret="CENT_SECRET" --centUrl=http://192.168.1.3:8000 \
---httpHost=192.168.1.3 \
---httpPort=7079 \
---tcpHost=192.168.1.3 \
---tcpPort=7078 \
---nodesAddr=192.168.1.1
-```
-
-6. Copy the first block file to Node 3. For example, you can perform this operation on Node 3 through scp:
-
-```shell
- scp user@192.168.1.1:/opt/backenddir/node1/1block /opt/backenddir/node3/
-```
-
-
-7.Generate the key of Node 3, including the public and private keys of the node and the account:
-
-```shell
- /opt/backenddir/go-ibax generateKeys \
---config=/opt/backenddir/node3/config.toml
-```
-
-8.Initiate the database: 
-
-```shell
- ./go-ibax initDatabase --config=node3/config.toml
-```
-
-9.Run centrifugo:
-
-```shell
- /opt/backenddir/centrifugo/centrifugo \
--a 192.168.1.3 -p 8000 \
---config/opt/backenddir/centrifugo/config.json
-```
-
-10.Run go-ibax:
-
-```shell
- /opt/backenddir/go-ibax start \
- --config=/opt/backenddir/node3/config.toml
-```
-
-As a result, the node downloads the block from the first node. As this node is not a verification node, it cannot generate a new block. The client may be connected to the node, and it may send transactions to the network.
-
-## Front-end deployment {#front-end-deployment}
-
-Only after installing **GNOME GUI** on Debian 9 (Stretch) 64-bit Official Release, the Govis client can be built with the `yarn` package manager.
-
-### Software prerequisites {#software-prerequisites}
-
-1. Download Node.js LTS version 8.11 from Node.js official website or through the command line:
-
-```shell
+``` bash
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash
 ```
 
-2. Install Node.js:
+2)  Para instalar Node.js:
 
-```shell
+``` bash
 sudo apt install -y nodejs
 ```
 
-1. Download Yarn version 1.7.0 from yarn's [Github](https://github.com/yarnpkg/yarn/releases) repository or through the command line:
+> Yarn
 
-```shell
+1)  Descarga Yarn versión 1.7.0 desde el repositorio de Github de Yarn (https://github.com/yarnpkg/yarn/releases) o mediante la línea de comandos.
+
+``` bash
 cd/opt/backenddir \
 && wget https://github.com/yarnpkg/yarn/releases/download/v1.7.0/yarn_1.7.0_all.deb
 ```
 
-2. Install Yarn:
+2)  Instalar Yarn:
 
-```shell
+``` bash
 sudo dpkg -i yarn_1.7.0_all.deb && rm yarn_1.7.0_all.deb
 ```
 
-### Build a Weaver application {#build-a-weaver-application}
+### Construir una aplicación Weaver {#build-a-weaver-application}
 
-1. Download the latest version of Weaver from github-frontend via git:
+1) Descargue la última versión de Weaver desde <https://github.com/ibax-io/ibax-front> a través de git:
 
-```shell
+``` bash
 cd/opt/backenddir \
 && git clone https://github.com/ibax-io/ibax-front.git
 ```
 
-2. Install Weaver dependencies via Yarn:
+2) Instalar las dependencias de Weaver a través de Yarn:
 
-```shell
+``` bash
 cd/opt/backenddir/ibax-front/ \
 && yarn install
 ```
 
-### Add the configuration file for the blockchain network {#add-the-configuration-file-for-the-blockchain-network}
+### Agregar la configuración de la red blockchain {#add-the-configuration-file-for-the-blockchain-network}
 
-1. Create a *settings.json* file that contains information about node connection:
+1) Crear un archivo *settings.json* que contenga información sobre la conexión de los nodos:
 
-```shell
+``` bash
 cp/opt/backenddir/ibax-front/public/settings.json.dist \
- /opt/backenddir/ibax-front/public/public/settings.json
+   /opt/backenddir/ibax-front/public/public/settings.json
 ```
- 
-2. Edit the *settings.json* file in any text editor and add the required settings in this format:
 
-```
+2) Editar el archivo *settings.json* en cualquier editor de texto y agregar las configuraciones necesarias en el siguiente formato:
+
+``` text
 http://Node_IP-address:Node_HTTP-Port
 ```
 
-Examples of *settings.json* files for the three nodes:
+Ejemplo de archivo *settings.json* con tres nodos:
 
-```json
+``` json
 {
-  "fullNodes": [
-    "http://192.168.1.1:7079",
-    "http://192.168.1.2:7079",
-    "http://192.168.1.3:7079"
-  ]
+    "fullNodes": [
+        "http://192.168.1.1:7079",
+        "http://192.168.1.2:7079",
+        "http://192.168.1.3:7079"
+    ]
 }
 ```
 
-Build Weaver Desktop Application
+Construyendo la aplicación de escritorio Weaver
 
-1.Use yarn to build the desktop version:
+1) Construyendo la versión de escritorio con yarn:
 
-```shell
+``` bash
 cd/opt/backenddir/ibax-front \
 && yarn build-desktop
 ```
 
-2.The desktop version will be packaged into AppImage suffix format:
+2)  El escritorio se empaquetará en formato de sufijo AppImage:
 
-```shell
+``` bash
 yarn release --publish never -l
 ```
 
-After building, your application can be used, but its connection configuration cannot be changed. If these settings need to be changed, a new version of the application must be built.
+Después de la construcción, su aplicación estará lista para usar, pero su [configuración de conexión](#add-the-configuration-file-for-the-blockchain-network) no se podrá cambiar. Si necesita cambiar estas configuraciones, deberá construir una nueva versión de la aplicación.
 
-### Build Weaver Web Application {#build-weaver-web-application}
+### Construir la aplicación web de Weaver {#build-weaver-web-application}
 
-1.Build a web application:
+1) Construir la aplicación web:
 
-```shell
+``` bash
 cd/opt/backenddir/ibax-front/ \
 && yarn build
 ```
 
-After building, the redistributable files will be placed in the /build directory. You can use any web server of your choice for deployment, and the *settings.json* file must also be placed in this directory. Note that if the connection settings are changed, there is no need to build the application again. Instead, edit the *settings.json* file and restart the web server.
+Después de la construcción, los archivos publicables se colocarán en el directorio *build*. Puede utilizar cualquier servidor web que elija para implementarlos, y el archivo *settings.json* también debe colocarse en ese directorio. Tenga en cuenta que si cambia la configuración de conexión, no es necesario volver a construir la aplicación, simplemente edite el archivo *settings.json* y reinicie el servidor web.
 
-1.For development or testing purposes, you can build Yarn's web server:
+2) Para fines de desarrollo o prueba, puede construir el servidor web de Yarn:
 
-
-```shell
+``` bash
 sudo yarn global add serve \
 && serve -s build
 ```
 
-After that, your Weaver web application will be available at the following location: `http://localhost:5000`.
+Afterwards, your Weaver Web application will be available at the following location: `http://localhost:5000`.
 
-## Configure the blockchain network {#configure-the-blockchain-network}
+## Blockchain Network Configuration {#configure-the-blockchain-network}
 
-### Create the creator account {#create-the-creator-account}
+### Create the Creator Account {#create-the-creator-account}
 
-Create an account for the first node owner. This account is the creator of the new blockchain platform and has the administrator access.
+Crear una cuenta para el primer propietario del nodo. Esta cuenta es el creador de la nueva plataforma blockchain y tiene acceso de administrador.
 
-1.Run Weaver;
+1) Ejecutar Weaver;
 
-2.Import the existing account using the following data:
+2) Importar la cuenta existente con los siguientes datos:
 
-–Load the backup of the node owner's private key located in the `/opt/backenddir/node1/PrivateKey` file.
+    - La copia de seguridad de la clave privada del propietario del nodo se encuentra en el archivo `/opt/backenddir/node1/PrivateKey`.
 
-> Note
->
->There are two private key files in this directory. The `PrivateKey` file is used create the node owner's account. The `NodePrivateKey` file is the private key of the node itself and must be kept secret.
+    ```text
+    There are two private key files in this directory. The `PrivateKey`
+    file is for the node owner's account and can create the node owner's account. The `NodePrivateKey`
+    file is the private key for the node itself and must be kept secret.
+     ```
 
-3.After logging in to the account, since no role has been created at this time, please select the Without role option.
+3) Después de iniciar sesión en la cuenta, seleccionar la opción *Sin rol* ya que aún no se han creado roles.
 
-### Import applications, roles and templates {#import-applications-roles-and-templates}
+### Importar aplicaciones, roles y plantillas {#import-applications-roles-and-templates}
 
-At this time, the blockchain platform is in a blank state. You can configure it by adding roles, templates, and application frameworks that support basic ecosystem functions.
+En este momento, la plataforma blockchain está en blanco. Puede configurarla agregando roles, plantillas y marcos de aplicación que admitan funciones básicas del ecosistema.
 
-1.Clone the application repository;
+1) Clonar el repositorio de la aplicación;
 
-```shell
+``` bash
 cd/opt/backenddir \
 && git clone https://github.com/ibax-io/dapps.git
 ```
 
-2.Navigate to Developer> Import in Weaver;
+2) Navegue a *Developer* \> *Import* en Weaver;
 
-3.Import applications as per the following order:
-```
- A./opt/backenddir/dapps/system.json 
- B./opt/backenddir/dapps/conditions.json 
- C./opt/backenddir/dapps/basic.json 
- D./opt/backenddir/dapps/lang_res.json
-```
+3) Importe las aplicaciones en este orden:
 
-4.Navigate to Admin> Role, and click Install Default Role;
+    > A./opt/backenddir/dapps/system.json
+    > B./opt/backenddir/dapps/conditions.json
+    > C./opt/backenddir/dapps/basic.json
+    > D./opt/backenddir/dapps/lang_res.json
 
-5.Exit the system through the configuration file menu in the upper right corner;
+4) Navegue a *Developer* \> *Roles*, y luego haga clic en *Instalar roles predeterminados*;
 
-6.Log in to the system as Admin;
+5) Salga del sistema a través del menú de perfil en la esquina superior derecha;
 
-7.Navigate to Home> Vote> Template List, and click Install Default Template.
+6) Inicie sesión en el sistema con el rol de *Developer*;
 
-### Add the first node to the node list {#add-the-first-node-to-the-node-list}
+7) Navegue a *Home* \> *Votación* \> *Lista de plantillas*, y luego haga clic en *Instalar plantilla predeterminada*.
 
-1.Navigate to Developer> Platform Parameters, and click the first_nodes parameter;
+### Agregar el primer nodo a la lista de nodos {#add-the-first-node-to-the-node-list}
 
-2.Specify the parameters of the first blockchain network node.
+1) Navegue a *Developer* \> *Parámetros de plataforma*, y luego haga clic en el parámetro *first_nodes*;
 
-  * public_key - The public key of the node is located in the `/opt/backenddir/node1/NodePublicKey` file;
+2) Especifique los parámetros del primer nodo de la red de blockchain.
 
-```
-{"api_address":"http://192.168.1.1:7079","public_key":"%node_public_key%","tcp_address":"192.168.1.1:7078"}
-```
+    > -   **public_key** - La clave pública del nodo se encuentra en el archivo `/opt/backenddir/node1/NodePublicKey`.
 
-## Add other honor nodes {#add-other-honor-nodes}
+    ```json
+    {"api_address":"http://192.168.1.1:7079","public_key":"%node_public_key%","tcp_address":"192.168.1.1:7078"}
+    ```
 
-### Add members into the consensus role group {#add-members-into-the-consensus-role-group}
+## Agregar otros nodos de honor {#add-other-honor-nodes}
 
-By default, only members in the consensus role (Consensus) group can participate in the voting required to add other master nodes. This means that before adding a new master node, members of the ecosystem must be assigned to the role.
-In this section, the creator's account is designated as the only member of the consensus role group. In a production environment, this role must be assigned to platform members that perform governance.
+### Agregar miembros al grupo de roles de consenso {#add-members-into-the-consensus-role-group}
 
-1.Navigate to Home> Role and click Consensus;
+Por defecto, solo los miembros del rol de consenso (Consensus) pueden participar en la votación necesaria para agregar otros nodos de honor. Esto significa que antes de agregar nuevos nodos de honor, se debe designar a los miembros del ecosistema para ese rol.
 
-2.Click Assign to assign the creator's account to the role.
+En esta sección, la cuenta del fundador se designa como el único miembro del rol de consenso. En un entorno de producción, este rol debe asignarse a los miembros que ejecutan la gobernanza de la plataforma.
 
-### Create the owner account for other nodes {#create-the-owner-account-for-other-nodes}
+1) Navegue a *Inicio* \> *Roles*, y luego haga clic en el rol de consenso (Consensus);
+2) Haga clic en *Asignar* para asignar la cuenta del fundador a ese rol.
 
-1. Run Weaver;
+### Crear la cuenta del propietario de los nodos adicionales {#create-the-owner-account-for-other-nodes}
 
-2. Import the existing account using the following data:
-     – Load the backup of the node owner's private key located in the `/opt/backenddir/node2/PrivateKey` file.
-     
-3. After logging in to the account, since no role has been created at this time, please select the Without role option.
+1) Ejecutar Weaver;
 
-4. Navigate to Home> Personal Information, and click the title of the personal information;
+2) Importar la cuenta existente con los siguientes datos:
 
-5. Add account details (personal information title, description, etc.).
+    > - La copia de seguridad de la clave privada del propietario del nodo se encuentra en el archivo `/opt/backenddir/node2/PrivateKey`.
 
-### Assign the node owner with the Validators role {#assign-the-node-owner-with-the-validators-role}
+3) Iniciar sesión en la cuenta y seleccionar la opción *Without role* ya que aún no se ha creado ningún rol;
 
-1. Operations by the new node owner: 
-    1. Navigate to Home> Verifier;
-    2. Click Create Request and fill in the application form of the verifier candidate;
-    3. Click send request.
-2. Operations by the creator: 
-    1. Log in with a consensus role (Consensus);
-    2. Navigate to Home> Verifier;
-    3. Click the "Play" icon to start voting according to the candidate's request;
-    4. Navigate to Home> Vote, and click Update voting status;
-    5. Click the voting name and vote for the node owner.
+4) Navegar a *Home* \> *Información personal* y hacer clic en el nombre de la información personal;
 
-As a result, the account of the owner of the new node is assigned with the Validator role, and the new node is added to the list of master nodes.
+5) Agregar los detalles de la cuenta (nombre de la información personal, descripción, etc.).
+
+### Asignar el propietario del nodo como Validador {#assign-the-node-owner-with-the-validators-role}
+
+1) Acciones del nuevo propietario del nodo:
+
+    > A. Navegar a *Home* > *Validadores*;
+    > B. Hacer clic en *Crear solicitud* y completar el formulario de solicitud del candidato a validador;
+    > C. Hacer clic en *Enviar solicitud*.
+
+2) Acciones del fundador:
+
+    > A. Iniciar sesión con el rol de consenso (Consensus);
+    > B. Navegar a *Home* > *Validadores*;
+    > C. Hacer clic en el icono de "reproducir" según la solicitud del candidato;
+    > D. Navegar a *Home* > *Votación* y hacer clic en *Actualizar estado de votación*;
+    > E. Hacer clic en el nombre de la votación y votar por el propietario del nodo.
+
+Como resultado, la cuenta del nuevo propietario del nodo se asigna al rol de *Validador* y el nuevo nodo se agrega a la lista de nodos honoríficos.

@@ -46,16 +46,17 @@ When encoding byte arrays, hashes, and bytecode arrays: the encoding is hexadeci
 #### Omitempty {#omitempty}
 This field is an optional parameter.
 
-If there are multiple `Omitempty` fields in a row,
-But only want to pass the value of a certain field, then you need to set the unwanted field to null (the field type null value), Example:
+If there are multiple `Omitempty` fields in a row, but only want to pass the value of a certain field, then you need to set the unwanted field to null (the field type null value), Example:
 - **id** - *Number* - [Omitempty](#omitempty) id
 - **name** - *String* - [Omitempty](#omitempty) Name
 - **column** - *String* - [Omitempty](#omitempty) Filter column names
 
 If only the name value is passed, then the request parameters are passed as follows
+
 `"params":[0, "testname"]` - *Number* null value is 0
 
 If only the column value is passed, then the request parameters are passed as follows
+
 `"params":[0,"", "title,page"]` - *String* empty value for ""
 
 
@@ -1322,12 +1323,10 @@ Hex encoding of data tables of type *BYTEA* (byte arrays, hashes, byte code arra
 
 
 ### **ibax.getSections** {#ibax-getsections}
-Return to the tab of the current ecosystem
-List of table entries, you can set the offset and the number of entries.
+Return to the tab of the current ecosystem list of table entries, you can set the offset and the number of entries.
 
-If *role_access*
-field contains a list of roles and does not include the current role, no record will be returned. *title*
-The data in the field will be replaced by the *Accept-Language* language resource in the request header.
+If *role_access* field contains a list of roles and does not include the current role, no record will be returned. 
+The data in the *title* field will be replaced by the *Accept-Language* language resource in the request header.
 
 [Authorization](#authorization) 
 
@@ -2068,7 +2067,7 @@ Returns transaction-related information for the specified hash list.
 Returns the number of nodes to be validated for the specified page.
 
 **Parameters**
-- **name**  -  *String*  -  page  name  in  the  format  `@ecosystem_id%%%page_name%`,  e.g. @1params_list (specifying ecology 1 page name params_list) or params_list (current ecology page name params_list)
+- **name**  -  *String*  -  page  name  in  the  format  `@ecosystem_id%%%page_name%`,  e.g. @1params_list (specifying ecosystem 1 page name params_list) or params_list (current ecosystem page name params_list)
 
 
 **Return Value**
@@ -2096,8 +2095,7 @@ Gets the tree of code JSON objects for the specified page name, which is the res
 [Authorization](#authorization)
 
 **Parameters**
--	**name** - *String* - the name of the page with the ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
-`@1main_page`.
+-	**name** - *String* - the name of the page with the ecosystem ID in the format `@ecosystem_id%%page_name%`, for example `@1main_page`.
 
     If you don't have an ecosystem ID, the default is to find the current ecological page, e.g. `main_page`
 
@@ -2151,7 +2149,7 @@ Gets the tree of code JSON objects for the specified menu name, which is the res
 -	**name** - *String* -
     > Menu name with ecosystem ID in the format `@ecosystem_id%%%menu_name%`, e.g.
     > `@1main_menu`.
-    > If you don't bring the ecosystem ID, the menu of the current ecology will be found by default, for example
+    > If you don't bring the ecosystem ID, the menu of the current ecosystem will be found by default, for example
     > `main_menu`
  
 **Return Value**
@@ -2288,9 +2286,7 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
 ### **ibax.getPageHash** {#ibax-getpagehash}
 Returns a SHA256 hash of the specified page name, or a 404 error if the page is not found.
 
-To receive the correct hash when making requests to other nodes, you must also pass the
-*ecosystem,key_id,role_id*
-parameter. To receive pages from other ecosystems, the ecosystem ID must be prefixed to the page name. For example: `@2mypage`.
+To receive the correct hash when making requests to other nodes, you must also pass the *ecosystem,key_id,role_id* parameter. To receive pages from other ecosystems, the ecosystem ID must be prefixed to the page name. For example: `@2mypage`.
 
 **Parameters**
 - **name** - *String* - The name of the page with the ecosystem ID. The format is `@ecosystem_id%%%page_name%`, e.g. `@1main_page`, you can specify the eco ID

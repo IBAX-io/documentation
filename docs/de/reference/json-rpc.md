@@ -1653,6 +1653,8 @@ Get application related information (including page, snippet, menu)
 **Example**
 ```text
     //Request
+    curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}}" -d '{"jsonrpc":"2.0","method":"ibax.getAppContent","id":1,"params":[1]}' http://127.0.0.1:7079
+    
     //Response
     {
         "jsonrpc": "2.0",
@@ -2068,7 +2070,7 @@ Returns transaction-related information for the specified hash list.
 Returns the number of nodes to be validated for the specified page.
 
 **Parameters**
-- **name**  -  *String*  -  page  name  in  the  format  `@ecosystem_id%%%page_name%`,  e.g. @1params_list (specifying ecology 1 page name params_list) or params_list (current ecology page name params_list)
+- **name**  -  *String*  -  page  name  in  the  format  `@ecosystem_id%%%page_name%`,  e.g. @1params_list (specifying ecosystem 1 page name params_list) or params_list (current ecosystem page name params_list)
 
 
 **Return Value**
@@ -2151,7 +2153,7 @@ Gets the tree of code JSON objects for the specified menu name, which is the res
 -	**name** - *String* -
     > Menu name with ecosystem ID in the format `@ecosystem_id%%%menu_name%`, e.g.
     > `@1main_menu`.
-    > If you don't bring the ecosystem ID, the menu of the current ecology will be found by default, for example
+    > If you don't bring the ecosystem ID, the menu of the current ecosystem will be found by default, for example
     > `main_menu`
  
 **Return Value**

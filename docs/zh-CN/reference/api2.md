@@ -1,13 +1,10 @@
 # RESTful API v2 {#restful-api-v2}
 
-Weaver提供的所有功能，包括身份验证，生态系统数据接收，错误处理，数据库表操作，
-页面和合约执行都可通过IBAX区块链平台 的REST API获得。
+Weaver提供的所有功能，包括身份验证，生态系统数据接收，错误处理，数据库表操作，页面和智能合约执行都可通过IBAX区块链平台 的REST API获得。
 
 通过使用REST API，开发者可以在不使用 Weaver 的情况下访问平台的任何功能。
 
-API命令调用通过寻址执行 `/api/v2/command/[param]`，其中 `command`是命令名称，
-`param` 是附加参数。请求参数必须使用`Content-Type: x-www-form-urlencoded`格式发送。
-服务器响应结果为JSON格式。
+API命令调用通过寻址执行 `/api/v2/command/[param]`，其中 `command`是命令名称，`param` 是附加参数。请求参数必须使用`Content-Type: x-www-form-urlencoded`格式发送。服务器响应结果为JSON格式。
 
 <!-- TOC -->
 
@@ -51,7 +48,7 @@ API命令调用通过寻址执行 `/api/v2/command/[param]`，其中 `command`�
         - [systemparams](#systemparams)
         - [history/{name}/{id}](#history-name-id)
         - [interface/{page|menu|snippet}/{name}](#interface-page-menu-snippet-name)
-    - [合约功能接口](#contract-function-interface)
+    - [智能合约功能接口](#contract-function-interface)
         - [contracts\[?limit=\... &offset=\... \]](#contracts-limit-offset)
         - [contract/{name}](#contract-name)
         - [sendTX](#sendtx)
@@ -101,7 +98,7 @@ Content-Type: application/json
 
 > `E_CONTRACT`
 
-    不存在 `%s` 合约
+    不存在 `%s` 智能合约
 
 > `E_DBNIL`
 
@@ -351,8 +348,7 @@ Content-Type: application/json
 
 **POST**/ 用户身份验证。
 
-> 应首先调用 **getuid**
-> 命令，以便接收唯一值并对其进行签名。getuid的临时JWT令牌需要放在请求头中传递。
+> 应首先调用 **getuid** 命令，以便接收唯一值并对其进行签名。getuid的临时JWT令牌需要放在请求头中传递。
 >
 > 如果请求成功，则响应中收到的令牌包含在 **Authorization** 中。
 
@@ -387,8 +383,7 @@ POST
 
 - `signature`
 
-    > 使用私钥对getuid收到的uid签名。
-    > 签名数据内容:
+    > 使用私钥对getuid收到的uid签名。签名数据内容:
     ``` text
         LOGIN+{$network_id}+uid
     ```
@@ -508,7 +503,7 @@ GET
 
 - `amount`
 
-    > 最小单位的合约帐户余额。
+    > 最小单位的智能合约帐户余额。
 
 - `money`
 
@@ -577,7 +572,7 @@ GET
     > >
     > > -   `contract_name`
     > >
-    > >     > 合约名称。
+    > >     > 智能合约名称。
     > >
     > > -   `params`
     > >
@@ -634,10 +629,10 @@ GET
    - `block_id` 区块高度。
    - `time` 区块生成时间戳。
    - `key_id` 签署该区块的账户地址。
-   - `node_position` 在 荣誉节点 列表中生成区块的节点的位置。
+   - `node_position` 在荣誉节点列表中生成区块的节点的位置。
    - `version` 区块结构版本。
  - `hash` 区块哈希。
- - `node_position` 在 荣誉节点 列表中生成区块的节点的位置。
+ - `node_position` 在荣誉节点列表中生成区块的节点的位置。
  - `key_id` 签署该区块的账户地址。
  - `time` 区块生成时间戳。
  - `tx_count` 该区块内的交易数。
@@ -1178,7 +1173,7 @@ Content-Type: application/json
 
 ### metrics/honornodes {#metrics-honornodes}
 
-**GET**/ 返回 荣誉节点 的数量。
+**GET**/ 返回荣誉节点的数量。
 
 该请求不需要登录授权。
 
@@ -1294,8 +1289,7 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**GET**/ 返回当前或指定生态系统中应用程序 **{appid}** 的参数 **{name}**
-的相关信息。
+**GET**/ 返回当前或指定生态系统中应用程序 **{appid}** 的参数 **{name}** 的相关信息。
 
 
 **请求**
@@ -1651,8 +1645,7 @@ Content-Type: application/json
 
 **GET**/ 返回当前生态系统的 *sections*表条目的列表，可以设置偏移量和条目条数。
 
-如果 *role_access*字段包含角色列表，并且不包括当前角色，则不会返回记录。
-*title* 字段内数据将被请求头的 *Accept-Language* 语言资源替换。
+如果 *role_access*字段包含角色列表，并且不包括当前角色，则不会返回记录。 *title* 字段内数据将被请求头的 *Accept-Language* 语言资源替换。
 
 **请求**
 
@@ -1831,8 +1824,7 @@ GET
 
 - `names` [Omitempty](#omitempty)
 
-请求参数列表，用逗号分隔。例如
-    `/api/v2/systemparams/?names=max_columns,max_indexes`。
+请求参数列表，用逗号分隔。例如`/api/v2/systemparams/?names=max_columns,max_indexes`。
 
 **响应**
 
@@ -2418,8 +2410,7 @@ Content-Type: application/json
 
 - `name`
 
-    > 带生态系统ID的页面名称，格式为 `@ecosystem_id%%page_name%`，例如 `@1main_page`。
-    > 如果不带生态系统ID，则默认查找第一生态的页面。
+    > 带生态系统ID的页面名称，格式为 `@ecosystem_id%%page_name%`，例如 `@1main_page`。 如果不带生态系统ID，则默认查找第一生态的页面。
 
 ```text
 GET
@@ -2455,8 +2446,7 @@ Content-Type: application/json
 **请求**
 
 - `name`
-    > 带生态系统ID的页面名称或菜单名称，格式为 `@ecosystem_id%%page_name%`，例如 `@1main_page`。
-    > 如果不带生态系统ID，则默认查找当前生态的页面或菜单。
+    > 带生态系统ID的页面名称或菜单名称，格式为 `@ecosystem_id%%page_name%`，例如 `@1main_page`。 如果不带生态系统ID，则默认查找当前生态的页面或菜单。
 
 ```text
 POST
@@ -2506,8 +2496,8 @@ Content-Type: application/json
 
 **POST**
 
-返回指定页面名称的代码JSON对象树。不执行任何函数或接收任何数据。返回的JSON对象树对应于页面模版，可以在可视化页面设计器中使用。
-如果找不到页面，则返回404错误。
+返回指定页面名称的代码JSON对象树。不执行任何函数或接收任何数据。返回的JSON对象树对应于页面模版，可以在可视化页面设计器中使用。如果找不到页面，则返回404错误。
+
 **请求**
 
 - `name`
@@ -2552,8 +2542,7 @@ Content-Type: application/json
 
 返回指定页面名称的SHA256哈希，如果找不到页面，则返回404错误。
 
-该请求不需要登录授权。要向其他节点发出请求时接收正确的哈希，还必须传递 *ecosystem,keyID,roleID* 参数。
-要从其他生态系统接收页面，生态系统ID必须在页面名称中添加前缀。例如：`@2mypage`。
+该请求不需要登录授权。要向其他节点发出请求时接收正确的哈希，还必须传递 *ecosystem,keyID,roleID* 参数。要从其他生态系统接收页面，生态系统ID必须在页面名称中添加前缀。例如：`@2mypage`。
 
 **请求**
 
@@ -2603,8 +2592,7 @@ Content-Type: application/json
 
 **POST**
 
-从 **template** 参数返回页面代码的JSON对象数，如果将可选参数 **source** 指定为`true或1`，则该JSON对象树不执行任何函数和接收数据。
-该JSON对象树可以在可视化页面设计器中使用。
+从 **template** 参数返回页面代码的JSON对象数，如果将可选参数 **source** 指定为`true或1`，则该JSON对象树不执行任何函数和接收数据。该JSON对象树可以在可视化页面设计器中使用。
 
 该请求不需要登录授权。
 
@@ -2722,7 +2710,7 @@ POST
 
 - `node_position`
 
-    > 该区块在 荣誉节点 列表的位置。
+    > 该区块在荣誉节点列表的位置。
 
 **响应示例**
 

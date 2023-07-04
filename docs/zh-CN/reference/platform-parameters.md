@@ -10,7 +10,7 @@
 
 ## 更改平台参数 {#change-of-platform-parameters}
 
-必须在投票通过后才能更改平台参数。更改平台参数只能使用**UpdateSysParam** 合约，该合约的管理在平台的法律系统中定义。
+必须在投票通过后才能更改平台参数。更改平台参数只能使用**UpdateSysParam** 智能合约，该智能合约的管理在平台的法律系统中定义。
 
 ## 平台参数配置 {#configure-platform-parameters}
 
@@ -36,7 +36,7 @@
 * [default ecosystem menu](#default-ecosystem-menu)
 
 
-默认合约:
+默认智能合约:
 
 -   [default ecosystem contract](#default-ecosystem-contract)
 
@@ -204,9 +204,9 @@
 
 ### block reward {#block-reward}
 
-> 授予生成区块的 荣誉节点 的 IBXC 通证数量。
+> 授予生成区块的荣誉节点的 IBXC 通证数量。
 >
-> 接受奖励的帐户在 [honor_nodes](#honor_nodes) 参数中指定。
+> 接受奖励的帐户在 [honor_nodes](#honor-nodes) 参数中指定。
 
 ### blockchain url {#blockchain-url}
 
@@ -216,21 +216,21 @@
 
 > 佣金百分比。
 >
-> 这笔佣金数量为执行合约总费用按百分比计算得出。该佣金通证单位 IBXC。
+> 这笔佣金数量为执行智能合约总费用按百分比计算得出。该佣金通证单位 IBXC。
 >
-> 佣金将转移到 [commission_wallet](#commission_wallet) 参数中指定的帐户地址。
+> 佣金将转移到 [commission_wallet](#commission-wallet) 参数中指定的帐户地址。
 
 ### commission wallet {#commission-wallet}
 
 > 收取佣金的账户地址。
 >
-> 佣金数量由 [commission_size](#commission_size) 参数指定。
+> 佣金数量由 [commission_size](#commission-size) 参数指定。
 
 ### default ecosystem contract {#default-ecosystem-contract}
 
-> 新生态系统默认合约的源代码。
+> 新生态系统默认智能合约的源代码。
 >
-> 该合约为生态系统创建者提供访问权限。
+> 该智能合约为生态系统创建者提供访问权限。
 
 ### default ecosystem menu {#default-ecosystem-menu}
 
@@ -268,7 +268,7 @@
 
 ## honor nodes {#honor-nodes}
 
-> 区块链网络的 荣誉节点 列表。
+> 区块链网络的荣誉节点列表。
 >
 > 该参数的格式：
 >
@@ -294,7 +294,7 @@
 
 > 节点生成前后区块的时间间隔(以秒为单位)。
 >
-> 网络中的所有节点都使用它来确定何时生成新区块，如果当前节点在此时间段内未生成新区块，则转向传递到 荣誉节点 列表中的下一个节点。
+> 网络中的所有节点都使用它来确定何时生成新区块，如果当前节点在此时间段内未生成新区块，则转向传递到荣誉节点列表中的下一个节点。
 >
 > 该参数最小值为 `1` 秒。
 
@@ -302,7 +302,7 @@
 
 > 节点每天在被禁令前允许生成的坏区块数量。
 >
-> 当网络中超过一半的节点从某个节点收到此数量的坏区块时，此节点将在 [node_ban_time](#node_ban_time) 时间内从网络中被禁令。
+> 当网络中超过一半的节点从某个节点收到此数量的坏区块时，此节点将在 [node_ban_time](#node-ban-time) 时间内从网络中被禁令。
 
 ### max block generation time {#max-block-generation-time}
 
@@ -350,7 +350,7 @@
 
 > 节点的全局禁令期，以毫秒为单位。
 >
-> 当网络中超过一半的节点从某个节点收到坏区块达到 [incorrect_blocks_per_day](#incorrect_blocks_per_day) 数量时，该节点将在该时间内从网络中被禁令。
+> 当网络中超过一半的节点从某个节点收到坏区块达到 [incorrect_blocks_per_day](#incorrect-blocks-per-day) 数量时，该节点将在该时间内从网络中被禁令。
 
 ### node ban time local {#node-ban-time-local}
 
@@ -360,16 +360,15 @@
 
 ### number of nodes {#number-of-nodes}
 
-> [honor_nodes](#honor_nodes) 参数中的最大荣誉节点数量。
+> [honor_nodes](#honor-nodes) 参数中的最大荣誉节点数量。
 
 ### price create ecosystem {#price-create-ecosystem}
 
 > 创建新单个生态系统的燃料费用。
 >
-> 该参数定义了 `@1NewEcosystem`。
-> 合约的额外燃料费用。执行该合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
+> 该参数定义了 `@1NewEcosystem`。智能合约的额外燃料费用。执行该智能合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
 >
-> 该参数以燃料单位计算。使用 [fuel_rate](#fuel_rate) 和 [price_create_rate](#price_create_rate) 将燃料单位转换为IBXC 通证。
+> 该参数以燃料单位计算。使用 [fuel_rate](#fuel-rate) 和 [price_create_rate](#price-create-rate) 将燃料单位转换为IBXC 通证。
 
 ### price create application {#price-create-application}
 
@@ -377,16 +376,15 @@
 >
 > 该参数定义了 `@1NewApplication` 合约的额外燃料费用。执行该合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
 >
-> 该参数以燃料单位计算。使用 [fuel_rate](#fuel_rate) 和 [price_create_rate](#price_create_rate) 将燃料单位转换为IBXC 通证。
+> 该参数以燃料单位计算。使用 [fuel_rate](#fuel-rate) 和 [price_create_rate](#price-create-rate) 将燃料单位转换为IBXC 通证。
 
 ### price create table {#price-create-table}
 
 > 创建新单个数据表的燃料费用。
 >
-> 该参数定义了 `@1NewTable`。
-> 合约的额外燃料费用。执行该合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
+> 该参数定义了 `@1NewTable`。合约的额外燃料费用。执行该合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
 >
-> 该参数以燃料单位计算。使用 [fuel_rate](#fuel_rate) 和 [price_create_rate](#price_create_rate) 将燃料单位转换为IBXC 通证。
+> 该参数以燃料单位计算。使用 [fuel_rate](#fuel-rate) 和 [price_create_rate](#price-create-rate) 将燃料单位转换为IBXC 通证。
 
 ### price create column {#price-create-column}
 
@@ -394,7 +392,7 @@
 >
 > 该参数定义了 `@1NewColumn`合约的额外燃料费用。执行该合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
 >
-> 该参数以燃料单位计算。使用 [fuel_rate](#fuel_rate) 和 [price_create_rate](#price_create_rate) 将燃料单位转换为IBXC 通证。
+> 该参数以燃料单位计算。使用 [fuel_rate](#fuel-rate) 和 [price_create_rate](#price-create-rate) 将燃料单位转换为IBXC 通证。
 
 ### price create contract {#price-create-contract}
 
@@ -402,7 +400,7 @@
 >
 > 该参数定义了 `@1NewContract`合约的额外燃料费用。执行该合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
 >
-> 该参数以燃料单位计算。使用 [fuel_rate](#fuel_rate) 和 [price_create_rate](#price_create_rate) 将燃料单位转换为IBXC 通证。
+> 该参数以燃料单位计算。使用 [fuel_rate](#fuel-rate) 和 [price_create_rate](#price-create-rate) 将燃料单位转换为IBXC 通证。
 
 ### price create menu {#price-create-menu}
 
@@ -410,7 +408,7 @@
 >
 > 该参数定义了 `@1NewMenu`合约的额外燃料费用。执行该合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
 >
-> 该参数以燃料单位计算。使用 [fuel_rate](#fuel_rate) 和 [price_create_rate](#price_create_rate) 将燃料单位转换为IBXC 通证。
+> 该参数以燃料单位计算。使用 [fuel_rate](#fuel-rate) 和 [price_create_rate](#price-create-rate) 将燃料单位转换为IBXC 通证。
 
 ### price create page {#price-create-page}
 
@@ -418,7 +416,7 @@
 >
 > 该参数定义了 `@1NewPage`合约的额外燃料费用。执行该合约时，还会计算执行本合约各项函数的燃料费用，并计入总费用。
 >
-> 该参数以燃料单位计算。使用 [fuel_rate](#fuel_rate) 和 [price_create_rate](#price_create_rate) 将燃料单位转换为IBXC 通证。
+> 该参数以燃料单位计算。使用 [fuel_rate](#fuel-rate) 和 [price_create_rate](#price-create-rate) 将燃料单位转换为IBXC 通证。
 
 ### price exec address to id {#price-exec-address-to-id}
 

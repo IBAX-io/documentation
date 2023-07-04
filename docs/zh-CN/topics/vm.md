@@ -1,37 +1,38 @@
 # 编译器和虚拟机 {#compiler-and-virtual-machine}
 
 <!-- TOC -->
-    - [源代码存储和编译](#source-code-storage-and-compilation)
-    - [虚拟机结构](#virtual-machine-structures)
-        - [VM结构](#vm-structure)
-        - [块结构](#block-structure)
-        - [ObjInfo结构](#objinfo-structure)
-            - [ContractInfo结构](#contractinfo-structure)
-                - [FieldInfo结构](#fieldinfo-structure)
-            - [FuncInfo结构](#funcinfo-structure)
-                - [FuncName结构](#funcname-structure)
-            - [ExtFuncInfo结构](#extfuncinfo-structure)
-            - [VarInfo结构](#varinfo-structure)
-            - [ObjExtend值](#objextend-value)
-    - [虚拟机指令](#virtual-machine-commands)
-        - [ByteCode结构](#bytecode-structure)
-        - [指令标识符](#command-identifiers)
-        - [堆栈操作指令](#stack-operation-commands)
-        - [Runtime结构](#runtime-structure)
-            - [blockStack结构](#blockstack-structure)
-        - [RunCode函数](#runcode-function)
-        - [VM的其他函数操作](#other-functions-for-operations-with-vm)
-    - [编译器](#compiler)
-    - [词法分析器](#lexical-analyzer)
-        - [lextable/lextable.go](#lextable-lextable-go)
-        - [lex.go](#lex-go)
-    - [needle 语言](#needle-language)
-        - [词法](#lexemes)
-        - [类型](#types)
-        - [表达式](#expressions)
-        - [范围](#scope)
-        - [合约执行](#contract-execution)
-        - [巴科斯范式Backus--Naur Form (BNF)](#backus-naur-form-bnf)
+
+- [源代码存储和编译](#source-code-storage-and-compilation)
+- [虚拟机结构](#virtual-machine-structures)
+    - [VM结构](#vm-structure)
+    - [块结构](#block-structure)
+    - [ObjInfo结构](#objinfo-structure)
+        - [ContractInfo结构](#contractinfo-structure)
+            - [FieldInfo结构](#fieldinfo-structure)
+        - [FuncInfo结构](#funcinfo-structure)
+            - [FuncName结构](#funcname-structure)
+        - [ExtFuncInfo结构](#extfuncinfo-structure)
+        - [VarInfo结构](#varinfo-structure)
+        - [ObjExtend值](#objextend-value)
+- [虚拟机指令](#virtual-machine-commands)
+    - [ByteCode结构](#bytecode-structure)
+    - [指令标识符](#command-identifiers)
+    - [堆栈操作指令](#stack-operation-commands)
+    - [Runtime结构](#runtime-structure)
+        - [blockStack结构](#blockstack-structure)
+    - [RunCode函数](#runcode-function)
+    - [VM的其他函数操作](#other-functions-for-operations-with-vm)
+- [编译器](#compiler)
+- [词法分析器](#lexical-analyzer)
+    - [lextable/lextable.go](#lextable-lextable-go)
+    - [lex.go](#lex-go)
+- [needle 语言](#needle-language)
+    - [词法](#lexemes)
+    - [类型](#types)
+    - [表达式](#expressions)
+    - [范围](#scope)
+    - [智能合约执行](#contract-execution)
+    - [巴科斯范式Backus--Naur Form (BNF)](#backus-naur-form-bnf)
 
 <!-- /TOC -->
 
@@ -39,19 +40,19 @@
 
 ## 源代码存储和编译 {#source-code-storage-and-compilation}
 
-合约和功能用Golang语言编写，并存储在生态系统的合约表。
+智能合约和功能用Golang语言编写，并存储在生态系统的智能合约表。
 
-执行合约时，将从数据库中读取其源代码并将其编译为字节码。
+执行智能合约时，将从数据库中读取其源代码并将其编译为字节码。
 
-合约更改后，其源代码将更新并保存在数据库中。然后编译该源代码，导致相应的虚拟机字节码也被改变。
+智能合约更改后，其源代码将更新并保存在数据库中。然后编译该源代码，导致相应的虚拟机字节码也被改变。
 
 字节码在任何地方都没有物理保存，因此当再次执行程序时，会重新编译源代码。
 
-所有生态系统的合约表中描述的整个源代码都严格按顺序编译到一个虚拟机中，虚拟机的状态在所有节点上都相同。
+所有生态系统的智能合约表中描述的整个源代码都严格按顺序编译到一个虚拟机中，虚拟机的状态在所有节点上都相同。
 
-调用合约时，虚拟机不会以任何方式更改其状态。执行任何合约或调用函数都发生在每个外部调用时创建的单独运行堆栈上。
+调用智能合约时，虚拟机不会以任何方式更改其状态。执行任何智能合约或调用函数都发生在每个外部调用时创建的单独运行堆栈上。
 
-每个生态系统都可以拥有一个所谓的虚拟生态系统，可以在一个节点内与区块链外的数据表一起使用，并且不能直接影响区块链或其他虚拟生态系统。在这种情况下，托管这样虚拟生态系统的节点会编译其合约并创建自己的虚拟机。
+每个生态系统都可以拥有一个所谓的虚拟生态系统，可以在一个节点内与区块链外的数据表一起使用，并且不能直接影响区块链或其他虚拟生态系统。在这种情况下，托管这样虚拟生态系统的节点会编译其智能合约并创建自己的虚拟机。
 
 ## 虚拟机结构  {#virtual-machine-structures}
 
@@ -75,8 +76,8 @@ VM结构具有以下元素：
 > -   **Block** - 包含一个 [块结构](#块结构)；
 > -   **ExtCost** - 一个函数，该函数返回执行外部golang函数的费用；
 > -   **FuncCallsDB** - golang函数名称集合，该函数名返回执行成本作为第一个参数。这些函数使用 **EXPLAIN** 计算处理数据库的成本；
-> -   **Extern** - 一个表示合约是否为外部合约的布尔标识，创建VM时，它设置为true，编译代码时不需要显示调用的合约。也就是说，它允许调用将来确定的合约代码；
-> -   **ShiftContract** VM中第一个合约的ID；
+> -   **Extern** - 一个表示智能合约是否为外部智能合约的布尔标识，创建VM时，它设置为true，编译代码时不需要显示调用的智能合约。也就是说，它允许调用将来确定的智能合约代码；
+> -   **ShiftContract** VM中第一个智能合约的ID；
 > -   **logger** VM的错误日志输出。
 
 ### 块结构 {#block-structure}
@@ -115,8 +116,8 @@ type Block struct {
 块结构具有以下元素：
 
 > -   **Objects** - 一个 [ObjInfo](#objinfo-structure) 指针类型的内部对象的映射。例如，如果块中有一个变量，那么可以通过它的名称获得关于它的信息；
-> -   **Type** - 块的类型。块为函数时，类型为 **ObjFunc**。块为合约时，类型为 **ObjContract**；
-> -   **Owner** - 一个 **OwnerInfo** 指针类型的结构。该结构包含有关已编译合约所有者的信息。它在合约编译期间指定或从 **contracts** 表中获取；
+> -   **Type** - 块的类型。块为函数时，类型为 **ObjFunc**。块为智能合约时，类型为 **ObjContract**；
+> -   **Owner** - 一个 **OwnerInfo** 指针类型的结构。该结构包含有关已编译智能合约所有者的信息。它在智能合约编译期间指定或从 **contracts** 表中获取；
 > -   **Info** - 包含有关对象的信息，这取决于块类型；
 > -   **Parent** - 指向父块的指针；
 > -   **Vars** - 一个包含当前块变量类型的数组；
@@ -137,7 +138,7 @@ type ObjInfo struct {
 ObjInfo结构具有以下元素：
 
 > -   **Type** 是对象类型。它可以是以下值之一：
->     -   **ObjContract** --[合约](#contractinfo-structure)；
+>     -   **ObjContract** --[智能合约](#contractinfo-structure)；
 >     -   **ObjFunc** -- 函数；
 >     -   **ObjExtFunc** -- 外部golang函数；
 >     -   **ObjVar** -- 变量；
@@ -160,15 +161,15 @@ type ContractInfo struct {
 
 ContractInfo结构具有以下元素：
 
-> -   **ID** -- 合约ID。调用合约时，该值在区块链中显示；
-> -   **Name** -- 合约名称；
-> -   **Owner** -- 关于合约的其他信息；
-> -   **Used** -- 已被调用的合约名称的映射；
-> -   **Tx** -- 合约 [数据部分](script.md#data-section) 描述的数据数组。
+> -   **ID** -- 智能合约ID。调用智能合约时，该值在区块链中显示；
+> -   **Name** -- 智能合约名称；
+> -   **Owner** -- 关于智能合约的其他信息；
+> -   **Used** -- 已被调用的智能合约名称的映射；
+> -   **Tx** -- 智能合约 [数据部分](script.md#data-section) 描述的数据数组。
 
 #### FieldInfo结构 {#fieldinfo-structure}
 
-FieldInfo结构用于 **ContractInfo** 结构并描述合约[数据部分](script.md#data-section) 的元素。
+FieldInfo结构用于 **ContractInfo** 结构并描述智能合约[数据部分](script.md#data-section) 的元素。
 
 ``` 
 type FieldInfo struct {
@@ -313,7 +314,7 @@ type ByteCode struct {
 > -   **cmdUnwrapArr** -- 如果堆栈顶部元素为数组，则定义一个布尔标记；
 > -   **cmdMapInit** -- 初始化 *map* 的值；
 > -   **cmdArrayInit** -- 初始化 *array* 的值；
-> -   **cmdError** -- 当合约或者函数以某个指定的 `error, warning, info` 错误终止时，该指令创建。
+> -   **cmdError** -- 当智能合约或者函数以某个指定的 `error, warning, info` 错误终止时，该指令创建。
 
 ### 堆栈操作指令 {#stack-operation-commands}
 
@@ -343,7 +344,7 @@ type ByteCode struct {
 
 ### Runtime结构 {#runtime-structure}
 
-执行字节码不会影响虚拟机。例如，它允许在单个虚拟机中同时运行各种函数和合约。**Runtime** 结构用于运行函数和合约，以及任何表达式和字节码。
+执行字节码不会影响虚拟机。例如，它允许在单个虚拟机中同时运行各种函数和智能合约。**Runtime** 结构用于运行函数和智能合约，以及任何表达式和字节码。
 
 ``` 
 type RunTime struct {
@@ -522,9 +523,7 @@ data := ExtFuncInfo{key, make([]reflect.Type, fobj.NumIn()), make([]reflect.Type
 for i := 0; i < fobj.NumIn(); i++ {
 ```
 
-**ExtFuncInfo** 结构有一个 **Auto** 参数数组。通常第一个参数为 `sc *SmartContract` 或 `rt *Runtime`，
-我们不能从 needle 语言中传递它们，因为在执行一些golang函数时它们对我们来说是必需的。因此，我们指定在调用函数时将自动使用这些变量。
-在这种情况下，上述四个函数的第一个参数为`rt *Runtime`。
+**ExtFuncInfo** 结构有一个 **Auto** 参数数组。通常第一个参数为 `sc *SmartContract` 或 `rt *Runtime`，我们不能从 needle 语言中传递它们，因为在执行一些golang函数时它们对我们来说是必需的。因此，我们指定在调用函数时将自动使用这些变量。在这种情况下，上述四个函数的第一个参数为`rt *Runtime`。
 
 ``` 
 if isauto, ok := ext.AutoPars[fobj.In(i).String()]; ok {
@@ -547,7 +546,7 @@ for i := 0; i < fobj.NumOut(); i++ {
 }
 ```
 
-向根 **Objects** 添加一个函数，这样编译器可以稍后在使用合约时找到它们。
+向根 **Objects** 添加一个函数，这样编译器可以稍后在使用智能合约时找到它们。
 
 ``` 
 vm.Objects[key] = &ObjInfo{ObjExtFunc, data}
@@ -557,14 +556,9 @@ vm.Objects[key] = &ObjInfo{ObjExtFunc, data}
 
 ## 编译器 {#compiler}
 
-*compile.go* 文件的函数负责编译从词法分析器获得的标记数组。
-编译可以有条件地分为两个级别，在高层级别，我们处理函数、合约、代码块、条件语句和循环语句、变量定义等等。
-在底层级别，我们编译循环和条件语句中的代码块或条件内的表达式。
+*compile.go* 文件的函数负责编译从词法分析器获得的标记数组。编译可以有条件地分为两个级别，在高层级别，我们处理函数、智能合约、代码块、条件语句和循环语句、变量定义等等。在底层级别，我们编译循环和条件语句中的代码块或条件内的表达式。
 
-首先，让我们描述简单的低层级别。在 **compileEval** 函数可以完成将表达式转换为字节码。
-由于我们是使用堆栈的虚拟机，因此有必要将普通的中缀记录表达式转换为后缀表示法或逆波兰表示法。
-例如，`1+2` 转换为 `12+`，然后将 `1` 和 `2`放入堆栈，然后我们对堆栈中的最后两个元素应用加法运算，并将结果写入堆栈。
-这种[转换算法](https://master.virmandy.net/perevod-iz-infiksnoy-notatsii-v-postfiksnuyu-obratnaya-polskaya-zapis/) 可以在互联网上找到。
+首先，让我们描述简单的低层级别。在 **compileEval** 函数可以完成将表达式转换为字节码。由于我们是使用堆栈的虚拟机，因此有必要将普通的中缀记录表达式转换为后缀表示法或逆波兰表示法。例如，`1+2` 转换为 `12+`，然后将 `1` 和 `2`放入堆栈，然后我们对堆栈中的最后两个元素应用加法运算，并将结果写入堆栈。这种[转换算法](https://master.virmandy.net/perevod-iz-infiksnoy-notatsii-v-postfiksnuyu-obratnaya-polskaya-zapis/) 可以在互联网上找到。
 
 全局变量 `opers = map [uint32] operPrior` 包含转换成逆波兰表示法时所必需的操作的优先级。
 
@@ -573,8 +567,7 @@ vm.Objects[key] = &ObjInfo{ObjExtFunc, data}
 > -   **buffer** -- 字节码指令的临时缓冲区；
 > -   **bytecode** -- 字节码指令的最终缓冲区；
 > -   **parcount** -- 调用函数时用于计算参数的临时缓冲区；
-> -   **setIndex** -- 当我们分配 *map* 或 *array* 元素时，工作过程中的变量被设置为 [true]{.title-ref}。
-      例如，`a["my"] = 10`，在这种情况下，我们需要使用指定的 **cmdSetIndex** 指令。
+> -   **setIndex** -- 当我们分配 *map* 或 *array* 元素时，工作过程中的变量被设置为 [true]{.title-ref}。例如，`a["my"] = 10`，在这种情况下，我们需要使用指定的 **cmdSetIndex** 指令。
 
 我们在一个循环体中获得一个标记并作出相应的处理，例如，如果找到大括号，然后停止解析表达式。在移动字符串时，我们会查看前一个语句是否是一个操作符以及是否在括号内，否则我们退出并解析表达式。
 
@@ -597,9 +590,7 @@ case lexNewLine:
     break main
 ```
 
-通常情况下，该算法本身对应于一种转换为逆波兰表示法的算法。
-考虑到一些必要的合约、函数、索引的调用，以及解析时不会遇到的其他事情和解析 *lexIdent* 类型标记的选项，我们将检查具有此名称的变量、函数或合约。
-如果没有找到任何相关内容而且这不是函数或合约调用，那么我们会指出错误。
+通常情况下，该算法本身对应于一种转换为逆波兰表示法的算法。考虑到一些必要的智能合约、函数、索引的调用，以及解析时不会遇到的其他事情和解析 *lexIdent* 类型标记的选项，我们将检查具有此名称的变量、函数或智能合约。如果没有找到任何相关内容而且这不是函数或智能合约调用，那么我们会指出错误。
 
 ``` 
 objInfo, tobj := vm.findObj(lexem.Value.(string), block)
@@ -608,8 +599,7 @@ if objInfo == nil && (!vm.Extern || i > *ind || i >= len(*lexems)-2 || (*lexems)
 }
 ```
 
-我们可能会遇到这样的情况，稍后将描述合约调用。在本例中，如果没有找到同名函数和变量，那么我们认为将调用合约。
-在该编译语言中，合约和函数调用没有区别。但是我们需要通过在字节码中使用的**ExecContract** 函数来调用合约。
+我们可能会遇到这样的情况，稍后将描述智能合约调用。在本例中，如果没有找到同名函数和变量，那么我们认为将调用智能合约。在该编译语言中，智能合约和函数调用没有区别。但是我们需要通过在字节码中使用的**ExecContract** 函数来调用智能合约。
 
 > ``` 
 > if objInfo.Type == ObjContract {
@@ -621,8 +611,7 @@ if objInfo == nil && (!vm.Extern || i > *ind || i >= len(*lexems)-2 || (*lexems)
 > }
 > ```
 
-我们将到目前为止的变量数量记录在 `count`中，该值也会随着函数参数数量一起写入堆栈。
-在每次后续检测参数时，我们只需在堆栈的最后一个元素中将该数量增加一个单位。
+我们将到目前为止的变量数量记录在 `count`中，该值也会随着函数参数数量一起写入堆栈。在每次后续检测参数时，我们只需在堆栈的最后一个元素中将该数量增加一个单位。
 
 ``` 
 count := 0
@@ -631,8 +620,7 @@ if (*lexems)[i+2].Type != isRPar {
 }
 ```
 
-我们有已调用合约的列表参数 *Used*，因此我们需要为合约被调用的情况做标记。
-如果在没有参数的情况下调用合约，我们必须添加两个空参数去调用 **ExecContract**，以获得最少两个参数。
+我们有已调用智能合约的列表参数 *Used*，因此我们需要为智能合约被调用的情况做标记。如果在没有参数的情况下调用智能合约，我们必须添加两个空参数去调用 **ExecContract**，以获得最少两个参数。
 
 ``` 
 if isContract {
@@ -668,15 +656,11 @@ if (*lexems)[i+1].Type == isLBrack {
 }
 ```
 
-**CompileBlock** 函数可以生成对象树和与表达式无关的字节码。编译过程基于有限状态机，就像词法分析器一样，但是有以下不同之处。
-第一，我们不使用符号但使用标记；第二，我们会立即描述所有状态和转换中的 *states* 变量。
-它表示一个按标记类型索引的对象数组，每个标记都具有 *compileState* 的结构，并在 *NewState* 中指定一个新状态。
-如果我们已经解析清楚这是什么结构，那么就可以指定 *Func* 字段中处理程序的函数。
+**CompileBlock** 函数可以生成对象树和与表达式无关的字节码。编译过程基于有限状态机，就像词法分析器一样，但是有以下不同之处。第一，我们不使用符号但使用标记；第二，我们会立即描述所有状态和转换中的 *states* 变量。它表示一个按标记类型索引的对象数组，每个标记都具有 *compileState* 的结构，并在 *NewState* 中指定一个新状态。如果我们已经解析清楚这是什么结构，那么就可以指定 *Func* 字段中处理程序的函数。
 
 让我们以主状态为例回顾一下。
 
-如果我们遇到换行符或注释，那么我们会保持相同的状态。如果我们遇到 **contract** 关键字，那么我们将状态更改为 *stateContract* 并开始解析该结构。
-如果我们遇到 **func** 关键字，那么我们将状态更改为 *stateFunc*。如果接收到其他标记，那么将调用生成错误的函数。
+如果我们遇到换行符或注释，那么我们会保持相同的状态。如果我们遇到 **contract** 关键字，那么我们将状态更改为 *stateContract* 并开始解析该结构。如果我们遇到 **func** 关键字，那么我们将状态更改为 *stateFunc*。如果接收到其他标记，那么将调用生成错误的函数。
 
 ``` 
 { // stateRoot
@@ -688,9 +672,7 @@ if (*lexems)[i+1].Type == isLBrack {
 },
 ```
 
-假设我们遇到了 **func** 关键字，并且我们已将状态更改为 *stateFunc*。由于函数名必须跟在 **func** 关键字后面，
-因此在更改该函数名时，我们将保持相同的状态。对于所有其他标记，我们生成相应的错误。
-如果我们在标记标识符中获取了函数名称，那么我们转到 *stateFParams* 状态，其中我们可以获取函数的参数。
+假设我们遇到了 **func** 关键字，并且我们已将状态更改为 *stateFunc*。由于函数名必须跟在 **func** 关键字后面，因此在更改该函数名时，我们将保持相同的状态。对于所有其他标记，我们生成相应的错误。如果我们在标记标识符中获取了函数名称，那么我们转到 *stateFParams* 状态，其中我们可以获取函数的参数。
 
 ``` 
 { // stateFunc
@@ -700,10 +682,7 @@ if (*lexems)[i+1].Type == isLBrack {
 },
 ```
 
-上述操作的同时，我们将调用 **fNameBlock** 函数。应该注意的是，*块Block* 结构是使用 *statePush* 标记创建的，
-在这里我们从缓冲区中获取它并填充我们需要的数据。**fNameBlock** 函数适用于合约和函数(包括嵌套在其中的函数和合约)。
-它使用相应的结构填充 *Info* 字段，并将其自身写入父块的 *Objects* 中。这样以便我们可以通过指定的名称调用该函数或合约。
-同样，我们为所有状态和变量创建对应的函数。这些函数通常非常小，并且在构造虚拟机树时执行一些工作。
+上述操作的同时，我们将调用 **fNameBlock** 函数。应该注意的是，*块Block* 结构是使用 *statePush* 标记创建的，在这里我们从缓冲区中获取它并填充我们需要的数据。**fNameBlock** 函数适用于智能合约和函数(包括嵌套在其中的函数和智能合约)。它使用相应的结构填充 *Info* 字段，并将其自身写入父块的 *Objects* 中。这样以便我们可以通过指定的名称调用该函数或智能合约。同样，我们为所有状态和变量创建对应的函数。这些函数通常非常小，并且在构造虚拟机树时执行一些工作。
 
 ``` 
 func fNameBlock(buf *[]*Block, state int, lexem *Lexem) error {
@@ -740,10 +719,7 @@ func fNameBlock(buf *[]*Block, state int, lexem *Lexem) error {
 > -   **stateLabel** -- 用于插入 **cmdLabel** 指令。\*while\* 结构需要这个标记；
 > -   **stateMustEval** -- 在 *if* 和 *while* 结构的开头检查条件表达式的可用性。
 
-除了 **CompileBlock** 函数，还应该提到 **FlushBlock** 函数。
-但问题是块树是独立于现有虚拟机构建的，更准确地说，我们获取有关虚拟机中存在的函数和合约的信息，但我们将已编译的块收集到一个单独的树中。
-否则，如果在编译期间发生错误，我们必须将虚拟机的状态回滚到以前的状态。因此，我们单独去编译树，但编译成功后必须调用**FlushContract**函数。
-这个函数将完成的块树添加到当前虚拟机中。此时编译阶段就完成了。
+除了 **CompileBlock** 函数，还应该提到 **FlushBlock** 函数。但问题是块树是独立于现有虚拟机构建的，更准确地说，我们获取有关虚拟机中存在的函数和智能合约的信息，但我们将已编译的块收集到一个单独的树中。否则，如果在编译期间发生错误，我们必须将虚拟机的状态回滚到以前的状态。因此，我们单独去编译树，但编译成功后必须调用**FlushContract**函数。这个函数将完成的块树添加到当前虚拟机中。此时编译阶段就完成了。
 
 ## 词法分析器 {#lexical-analyzer}
 
@@ -760,9 +736,7 @@ func fNameBlock(buf *[]*Block, state int, lexem *Lexem) error {
 > -   **lexType** -- 类型；
 > -   **lexExtend** -- 引用外部变量或函数，例如：`$myname`。
 
-在当前版本中，初步借助于 [script/lextable/lextable.go](#lextable-lextable-go) 文件构造了一个转换表(有限状态机)来解析标记，
-并将其写入 *lex_table.go* 文件。通常情况下，您可以脱离该文件初始生成的转换表，可以在启动时立即在内存(`init()`)中创建一个转换表。
-词法分析本身发生在[lex.go](#lex-go) 文件中的 **lexParser**函数中。
+在当前版本中，初步借助于 [script/lextable/lextable.go](#lextable-lextable-go) 文件构造了一个转换表(有限状态机)来解析标记，并将其写入 *lex_table.go* 文件。通常情况下，您可以脱离该文件初始生成的转换表，可以在启动时立即在内存(`init()`)中创建一个转换表。词法分析本身发生在[lex.go](#lex-go) 文件中的 **lexParser**函数中。
 
 ### lextable/lextable.go {#lextable-lextable-go}
 
@@ -782,8 +756,7 @@ func fNameBlock(buf *[]*Block, state int, lexem *Lexem) error {
 > -   **next** - 转到下一个字符，同时我们将状态更改为
 >     **solidus**，之后，获取下一个角色并查看 **solidus** 的状态。
 
-如果下一字符有 `/` 或 `/*`，那么我们转到注释 **comment** 状态，因为它们以 `//` 或 `/*`开头。
-显然，每个注释后续都有不同的状态，因为它们以不同的符号结束。
+如果下一字符有 `/` 或 `/*`，那么我们转到注释 **comment** 状态，因为它们以 `//` 或 `/*`开头。显然，每个注释后续都有不同的状态，因为它们以不同的符号结束。
 
 如果下一字符不是 `/` 和 `*`，那么我们将堆栈中的所有内容记录为 **lexOper** 类型的标记，清除堆栈并返回主状态。
 
@@ -812,13 +785,11 @@ state2int[key] = uint(len(state2int))
 
 *table* 数组的二维性在于它分为状态和来自 *alphabet* 数组的34个输入符号，它们以相同的顺序排列。
 
-我们处于 *table* 零行上的 *main* 状态。取第一个字符，在 *alphabet* 数组中查找其索引，并从给定索引的列中获取值。
-从接收到的值开始，我们在低位字节接收标记。如果解析完成，第二个字节表示接收到的标记类型。在第三个字节中，我们接收下一个新状态的索引。
+我们处于 *table* 零行上的 *main* 状态。取第一个字符，在 *alphabet* 数组中查找其索引，并从给定索引的列中获取值。从接收到的值开始，我们在低位字节接收标记。如果解析完成，第二个字节表示接收到的标记类型。在第三个字节中，我们接收下一个新状态的索引。
 
 所有这些在 *lex.go* 中的 **lexParser** 函数中有更详细的描述。
 
-如果想要添加一些新字符，则需要将它们添加到 *alphabet* 数组并增加 *AlphaSize* 常量。
-如果要添加新的符号组合，则应在状态中对其进行描述，类似于现有选项。在此之后，运行 *lextable.go* 文件来更新 *lex_table.go* 文件。
+如果想要添加一些新字符，则需要将它们添加到 *alphabet* 数组并增加 *AlphaSize* 常量。如果要添加新的符号组合，则应在状态中对其进行描述，类似于现有选项。在此之后，运行 *lextable.go* 文件来更新 *lex_table.go* 文件。
 
 ### lex.go {#lex-go}
 
@@ -843,16 +814,13 @@ type Lexem struct {
     - **lexNewLine** -- 换行符。还用于计算行和标记位置；
     - **lexString** -- 行存储为 *字符串string*；
     - **lexComment** -- 注释存储为 *字符串string*；
-    - **lexKeyword** -- 关键字仅存储相应的索引，请参阅 `keyContract ... keyTail` 常量。在这种情况下 `Type = KeyID << 8 | lexKeyword`。
-       另外，应该注意的是，`true,false,nil` 关键字会立即转换为 **lexNumber** 类型的标记，并使用相应的 `bool` 和 `intreface {}` 类型；
+    - **lexKeyword** -- 关键字仅存储相应的索引，请参阅 `keyContract ... keyTail` 常量。在这种情况下 `Type = KeyID << 8 | lexKeyword`。另外，应该注意的是，`true,false,nil` 关键字会立即转换为 **lexNumber** 类型的标记，并使用相应的 `bool` 和 `intreface {}` 类型；
     - **lexType** -- 该值包含相应的 `reflect.Type` 类型值；
     - **lexExtend** -- 以美元符号 `$` 开头的标识符。这些变量和函数从外部传递，因此分配给特殊类型的标记。该值包含字符串形式的名称，开头没有美元符号。
 -   **Line** -- 标记所在行；
 -   **Column** -- 标记的行内位置。
 
-让我们详细分析 **lexParser** 函数。**todo** 函数根据当前状态和传入符号，查找字母表中的符号索引，并从转换表中获取一个新状态、标记标识符(如果有的话)和其他标记。
-解析本身包括对每下一个字符依次调用 **todo** 函数，并切换到新的状态。一旦接收到标记，我们就在输出准则中创建相应的标记并继续解析。
-应该注意的是，在解析过程中，我们不将标记符号累积到单独的堆栈或数组中，因为我们只是保存标记开始的偏移量。获得标记之后，我们将下一个标记的偏移量移动到当前解析位置。
+让我们详细分析 **lexParser** 函数。**todo** 函数根据当前状态和传入符号，查找字母表中的符号索引，并从转换表中获取一个新状态、标记标识符(如果有的话)和其他标记。解析本身包括对每下一个字符依次调用 **todo** 函数，并切换到新的状态。一旦接收到标记，我们就在输出准则中创建相应的标记并继续解析。应该注意的是，在解析过程中，我们不将标记符号累积到单独的堆栈或数组中，因为我们只是保存标记开始的偏移量。获得标记之后，我们将下一个标记的偏移量移动到当前解析位置。
 
 剩下的就是检查解析中使用的词法状态标志：
 
@@ -869,25 +837,13 @@ type Lexem struct {
 
 以下词法类型:
 
-> -   **关键字** - `action`, `break`, `conditions`, `continue`,
->     `contract`, `data`, `else`, `error`, `false`, `func`, `if`,
->     `info`, `nil`, `return`, `settings`, `true`, `var`, `warning`,
->     `while`；
-> -   **数字** - 只接收十进制数字。有两种基本类型: **int** 和 **float**。 如果数字有一个小数点，它就变成了浮点数
+> -   **关键字** - `action`, `break`, `conditions`, `continue`,`contract`, `data`, `else`, `error`, `false`, `func`, `if`,`info`, `nil`, `return`, `settings`, `true`, `var`, `warning`,`while`；
+> -   **数字** - 只接收十进制数字。有两种基本类型: **int** 和 **float**。 如果数字有一个小数点，它就变成了浮点数。
 >     **float**。\**int*\* 类型等价于golang中的 **int64**。\**float*\*
 >     类型等价于golang中的 **float64**。
-> -   **字符串** - 字符串可以用双引号 (`"a string"`) 或反引号(
->     `` \`a string\ ``[)。这两种类型的字符串都可以包含换行符。双引号中的字符串可以包含双引号、换行符和用斜杠转义的回车符。例如，
->     ]{.title-ref}[\"This is a \"first string\".rnThis is a second
->     string.\"]{.title-ref}\`。
-> -   **注释** - 有两种类型的评论。单行注释使用两个斜杠符号
->     (`//`)。例如，`// 这是单行注释`。多行注释使用斜杠和星号符号，可以跨越多行。例如，`/* 这是多行注释 */`.
-> -   **标识符** -
->     由a-z和A-Z字母、UTF-8符号、数字和下划线组成的变量和函数的名称。名称可以以字母、下划线、`@`
->     或 `$` 符号开头。以 `$` 开头的名称为在 **数据部分**
->     中定义的变量的名称。以 `$` 开头的名称还可以用于定义 **条件部分**
->     和 **操作部分** 范围内的全局变量。生态系统的合约可以使用 `@`
->     符号来调用。例如: `@1NewTable(...)`。
+> -   **字符串** - 字符串可以用双引号 (`"a string"`) 或反引号(\`a string\`)。这两种类型的字符串都可以包含换行符。双引号中的字符串可以包含双引号、换行符和用斜杠转义的回车符。例如，[\"This is a \"first string\".rnThis is a second string.\"]{.title-ref}。
+> -   **注释** - 有两种类型的评论。单行注释使用两个斜杠符号(`//`)。例如，`// 这是单行注释`。多行注释使用斜杠和星号符号，可以跨越多行。例如，`/* 这是多行注释 */`.
+> -   **标识符** - 由a-z和A-Z字母、UTF-8符号、数字和下划线组成的变量和函数的名称。名称可以以字母、下划线、`@` 或 `$` 符号开头。以 `$` 开头的名称为在 **数据部分**中定义的变量的名称。以 `$` 开头的名称还可以用于定义 **条件部分**和 **操作部分** 范围内的全局变量。生态系统的智能合约可以使用 `@`符号来调用。例如: `@1NewTable(...)`。
 
 ### 类型 {#types}
 
@@ -906,9 +862,7 @@ type Lexem struct {
 
 这些类型的变量用 `var` 关键字定义。例如，`var var1, var2 int`。当这样定义一个变量时，它将获得其类型的默认值。
 
-所有变量值都具有 *interface{}* 类型，然后将它们分配给所需的golang类型。
-因此，例如 *array* 和 *map* 类型是golang类型 *\[\]interface{}* 和 *map\[string\]interface{}*。
-这两种类型的数组都可以包含任何类型的元素。
+所有变量值都具有 *interface{}* 类型，然后将它们分配给所需的golang类型。因此，例如 *array* 和 *map* 类型是golang类型 *\[\]interface{}* 和 *map\[string\]interface{}*。这两种类型的数组都可以包含任何类型的元素。
 
 ### 表达式 {#expressions}
 
@@ -927,15 +881,11 @@ type Lexem struct {
 
 当评估逻辑与和逻辑或时，在任何情况下都会计算表达式的两侧。
 
-needle 在编译时没有类型检查。在评估操作数时，会尝试将类型转换为更复杂的类型。
-复杂度顺序的类型可以按照如下：`string, int, float, money`，仅实现了部分类型转换。
-字符串类型支持加法操作，结果会使得字符串连接。例如，`string + string = string, money - int = money, int * float = float`。
+needle 在编译时没有类型检查。在评估操作数时，会尝试将类型转换为更复杂的类型。复杂度顺序的类型可以按照如下：`string, int, float, money`，仅实现了部分类型转换。字符串类型支持加法操作，结果会使得字符串连接。例如，`string + string = string, money - int = money, int * float = float`。
 
 对于函数，在执行时会对 `string` 和 `int` 类型执行类型检查。
 
-**array** 和 **map** 类型可以通过索引来寻址。
-对于 **array** 类型，必须将 **int** 值指定为索引。对于 **map** 类型，必须指定变量或 **string**值。
-如果将值赋给索引大于当前最大索引的 **array**元素，则将向数组添加空元素。这些元素的初始化值为 **nil** 。例如: .. code:
+**array** 和 **map** 类型可以通过索引来寻址。对于 **array** 类型，必须将 **int** 值指定为索引。对于 **map** 类型，必须指定变量或 **string**值。如果将值赋给索引大于当前最大索引的 **array**元素，则将向数组添加空元素。这些元素的初始化值为 **nil** 。例如: .. code:
 
     var my array
     my[5] = 0
@@ -967,10 +917,9 @@ a = 3
 Println(a) // 3
 ```
 
-### 合约执行 {#contract-execution}
+### 智能合约执行 {#contract-execution}
 
-当调用合约时，必须将 **data** 部分中定义的参数传递给它。在执行合约之前，虚拟机接收这些参数并将它们分配给相应的变量($Param)。
-然后调用预定义的 **conditions** 函数和 **action** 函数。
+当调用智能合约时，必须将 **data** 部分中定义的参数传递给它。在执行合约之前，虚拟机接收这些参数并将它们分配给相应的变量($Param)。然后调用预定义的 **conditions** 函数和 **action** 函数。
 
 合约执行期间发生的错误可分为两种类型：形式错误和环境错误。形式错误使用特殊命令生成：`error, warning, info` 以及当内置函数返回 `err` 不等于 *nil* 时。
 

@@ -1,26 +1,28 @@
-# Template Language {#template-language}
+# Lenguaje de plantillas {#template-language}
 
-  - [Page construction](#page-construction)
-    - [Template engine](#template-engine)
-    - [Create pages](#create-pages)
-      - [Visual page designer](#visual-page-designer)
-      - [Applicable styles](#applicable-styles)
-      - [Page module](#page-module)
-      - [Language resource editor](#language-resource-editor)
-  - [Logicor template language](#logicor-template-language)
-    - [Logicor overview](#logicor-overview)
+<!-- TOC -->
+
+- [Construcción de páginas](#page-construction)
+    - [Motor de plantillas](#template-engine)
+    - [Creación de páginas](#create-pages)
+        - [Diseñador de páginas visual](#visual-page-designer)
+        - [Uso de estilos](#applicable-styles)
+        - [Módulos de página](#page-module)
+        - [Editor de recursos multilingües](#language-resource-editor)
+- [Lenguaje de plantillas Logicor](#logicor-template-language)
+    - [Visión general de Logicor](#logicor-overview)
       - [Use PageParams to pass parameters to pages](#use-pageparams-to-pass-parameters-to-pages)
       - [Calling contracts](#calling-contracts)
-  - [Logicor function classification](#logicor-function-classification)
-    - [Operations on variables:](#operations-on-variables)
-    - [Navigational operations:](#navigational-operations)
-    - [Data manipulation:](#data-manipulation)
-    - [Data presentation:](#data-presentation)
-    - [Accepting of data:](#accepting-of-data)
-    - [Data formatting elements:](#data-formatting-elements)
-    - [Form elements:](#form-elements)
-    - [Operations on code blocks:](#operations-on-code-blocks)
-  - [Logicor function references](#logicor-function-references)
+- [Clasificación de funciones de Logicor](#logicor-function-classification)
+    - [Operaciones en variables](#operations-on-variables)
+    - [Operaciones de navegación](#navigational-operations)
+    - [Operaciones de datos](#data-manipulation)
+    - [Presentación de datos](#data-presentation)
+    - [Aceptación de datos](#accepting-of-data)
+    - [Elementos de formato de datos](#data-formatting-elements)
+    - [Elementos de formulario](#form-elements)
+    - [Operaciones en bloques de código](#operations-on-code-blocks)
+- [Referencias de funciones de Logicor](#logicor-function-references)
     - [Address](#address)
     - [AddressToId](#addresstoid)
     - [AddToolButton](#addtoolbutton)
@@ -76,137 +78,220 @@
     - [Table](#table)
     - [TransactionInfo](#transactioninfo)
     - [VarAsIs](#varasis)
-  - [App styles for mobile devices](#app-styles-for-mobile-devices)
+- [Estilo de aplicación adaptado para dispositivos móviles.](#app-styles-for-mobile-devices)
     - [Layout](#layout)
-      - [Title](#title)
-      - [Strong-class names](#strong-class-names)
-      - [Color](#color)
-      - [Grid](#grid)
-      - [Panel](#panel)
-      - [Form](#form-app)
-      - [Button](#button-app)
-      - [Icon](#icon)
+        - [Título](#title)
+        - [Nombres de clase de énfasis](#strong-class-names)
+        - [Color](#color)
+    - [Cuadrícula](#grid)
+    - [Panel](#panel)
+    - [Formulario](#form-app)
+    - [Botón](#button-app)
+    - [Icono](#icon)
 
-## Page construction {#page-construction}
+<!-- /TOC -->
 
-Weaver's Integrated Development Environment (IDE) is created using React, a JavaScript library. It has a page editor and a visual page designer. Pages are basic parts of an application, which are used to retrieve and display data from tables, create forms for receiving user input data, pass data to contracts, and navigate between application pages. Like contracts, pages are stored in the blockchain, which can ensure they are tamper-proof when loaded in the software client.
+## Construcción de páginas {#page-construction}
 
-### Template engine {#template-engine}
+El entorno de desarrollo integrado de Weaver se crea utilizando la biblioteca *JavaScript React*, que incluye un editor de páginas y un diseñador de páginas visual. Las páginas son la parte fundamental de la aplicación, que proporcionan la recuperación y visualización de datos de tablas de bases de datos, la creación de formularios para recibir datos de entrada de los usuarios, la transmisión de datos a contratos y la navegación entre páginas de la aplicación.
 
-Page elements (pages and menus) are formed by developers in the template engine of a verification node using the template language in Weaver's page editor. All pages are constructed using the Logicor language developed by IBAX's development team. Use content/... API commands to request pages from nodes on the network. What the template engine sent as a response to this type of request is not an HTML page, but a JSON code composed of HTML tags that form a tree in accordance with the template structure. If you want to test the template engine, you can refer to the [content](../reference/api2.md#content) API command.
+Las páginas, al igual que los contratos, se almacenan en la cadena de bloques, lo que garantiza que no se puedan manipular cuando se cargan en el cliente de software.
 
-### Create pages {#create-pages}
+### Motor de plantillas {#template-engine}
 
-You can use the page editor to create and edit pages, which can be found in the Pages section of Weaver's management tool. The editor can be used to:
+Los elementos de la página (página y menú) son creados por los desarrolladores en el editor de páginas de Weaver utilizando lenguaje de plantillas en el *motor de plantillas* de los nodos de validación.
 
-* Write the page code, highlight the keywords of the Logicor template language;
-* Select and display menus on pages;
-* Edit the menu page;
-* Configure the permission to change pages, by specifying the contract name with permission in the ContractConditions function, or by directly specifying the access permission in Change conditions;
-* Start the visual page designer;
-* Preview pages.
+Todas las páginas están construidas utilizando el lenguaje Logicor desarrollado por el equipo de desarrollo de la plataforma blockchain IBAX. Se utiliza el comando de API *content/\...* para solicitar páginas desde un nodo en la red.
 
-#### Visual page designer {#visual-page-designer}
+El motor de plantillas envía como respuesta a este tipo de solicitudes no una página HTML, sino un código JSON compuesto por etiquetas HTML que forman un árbol según la estructura de la plantilla. Si desea probar el motor de plantillas, consulte la interfaz de API [content](../reference/api2.md#content).
 
-The visual page designer can be used to create page layouts without using interface codes in the Logicor language. With it, you can set the position of form elements and text on pages by dragging and dropping such elements, and configure the size of page blocks. It provides a set of ready-to-use blocks for presenting standard data models: with titles, forms and information panels. After creating a page in the visual page designer, you can write program logic for receiving data and conditional structure in the page editor. In the future, we plan to create a visual page designer with additional functions.
+### Creación de páginas {#create-pages}
 
-#### Applicable styles {#applicable-styles}
+Puede utilizar el editor de páginas para crear y editar páginas, que se puede encontrar en la sección **Páginas** de las herramientas de administración de Weaver. Este editor proporciona:
 
-By default, pages are presented with Angular's Bootstrap Angle style. Users can create their own styles according to needs. The style is stored in the style parameter stylesheet in the ecosystem parameter table.
+- Escribir código de página, resaltando las palabras clave del lenguaje de plantillas Logicor;
+- Selección de menús que se mostrarán en la página;
+- Edición de la página de menú;
+- Configuración para cambiar los permisos de la página, especificando los nombres de contrato con permisos en la función *ContractConditions*, o especificando directamente los permisos de acceso en *Cambiar condiciones*;
+- Iniciar el diseñador de páginas visual;
+- Vista previa de la página.
 
-#### Page module {#page-module}
+#### Diseñador de páginas visual {#visual-page-designer}
 
-To use a code block in multiple pages, you can create a page module to hold and embed it into the page code. Page modules can be created and edited in Weaver's Module Blocks. Like pages, editing permissions can be defined.
+El diseñador de páginas visual permite crear diseños de páginas sin necesidad de utilizar código de interfaz de usuario en Logicor.
 
-#### Language resource editor {#language-resource-editor}
+El diseñador visual utiliza la función de arrastrar y soltar para establecer la posición de los elementos del formulario y el texto en la página, así como para configurar el tamaño de los bloques de la página.
 
-Weaver includes a mechanism for page localization using a function **LangRes** of the Logicor template language. It could replace language resource tags on the page with text lines corresponding to the language selected by the user in the software client or browser. You can use the short syntax **$lable$** instead of the **LangRes** function. The translation of messages in popups initiated by the contract is performed by Needle's **LangRes** function.
+El diseñador visual proporciona un conjunto de bloques listos para usar para mostrar modelos de datos estándar: con títulos, formularios y paneles de información. Después de crear una página en el diseñador visual, se puede escribir la lógica del programa que recibe los datos y las estructuras condicionales en el editor de la página.
 
-You can create and edit language resources in the Language resources section of Weaver. A language resource consists of label names and corresponding translation of such name in different languages, as well as the corresponding two-letter language identifier (EN, ZH, JP, etc.).
+En el futuro, planeamos crear un diseñador de páginas visual más completo.
 
-The permissions for adding and changing language resources can be defined in the same way as other tables.
+#### Uso de estilos {#applicable-styles}
 
-## Logicor template language {#logicor-template-language}
+El estilo predeterminado para mostrar la página es el estilo de Bootstrap Angle de Angular. Si es necesario, el usuario puede crear su propio estilo. El estilo se almacena en el parámetro de estilo *stylesheet* de la tabla de parámetros del ecosistema.
 
-Logicor functions provide the following operations:
+#### Módulos de página {#page-module}
 
-* Retrieving values from the database: ```DBFind```, showing data retrieved from the database as tables and charts;
-* Data operations for assigning and displaying variable values: ```SetVar, GetVar, Data```;
-* Displaying and comparing date/time values: ```DateTime, Now, CmpTime```;
-* Use various user data input fields to build forms: ```Form, ImageInput, Input, RadioGroup, Select```;
-* Verify the data in the form field by displaying error messages: ```Validate, InputErr```;
-* Displaying the navigation elements: ```AddToolButton, LinkPage, Button```;
-* Calling contracts: ```Button```;
-* Creating HTML page layout elements, including various tags, and choosing specific css classes: ```Div, P, Span, etc```;
-* Embedding and unloading images onto pages: ```Image, ImageInput```;
-* Displaying conditions of page layout fragment: ```If, ElseIf, Else```;
-* Creating multi-level menus;
-* Page localization.
+Para utilizar fragmentos de código en varias páginas, puedes crear módulos de página e incrustarlos en el código de la página. En los **Bloques de módulos** de Weaver puedes crear y editar estos módulos de página. Al igual que con las páginas, puedes definir permisos de edición.
 
-### Logicor overview {#logicor-overview}
+#### Editor de recursos multilingües {#language-resource-editor}
 
-The Logicor page template language is a functional language that allows a function calling another function ```FuncName(parameters)``` and nesting functions into each other. You can specify parameters without quotes, and delete unnecessary parameters.
+Weaver incluye un mecanismo para localizar páginas utilizando la función de lenguaje de plantilla Logicor **LangRes**. Reemplaza las etiquetas de recursos de idioma en la página con las líneas de texto correspondientes para el idioma seleccionado por el usuario en el cliente de software o navegador. La sintaxis **\$label\$** se puede usar en lugar de la función **LangRes**. La traducción de mensajes en ventanas emergentes iniciadas por el contrato se realiza mediante la función **LangRes** del lenguaje Needle.
 
-If the parameter contains a comma, it should be enclosed in quotes (backquotes or double quotes). If a function can only have one parameter, you can use a comma without quotes. In addition, if the parameter has an unpaired closing parenthesis, quotes should be used.
+Los recursos de idioma se pueden crear y editar en la sección **Recursos de idioma** de Weaver. Un recurso de idioma consta de un nombre de etiqueta y su traducción en diferentes idiomas, marcados con el identificador de idioma de dos caracteres correspondiente (EN, ZH, JP, etc.).
 
-If you put a parameter in quotes, but the parameter itself contains quotes, you can use different types of quotes or multiple quotes in the text.
+Los permisos para agregar y modificar recursos de idioma se pueden definir y administrar de la misma manera que para otras tablas de datos.
 
-In the function definition, each parameter has a specific name. You can call the function and specify the parameters in the order of declaration, or any parameter set in any order of name: ```Parameter_name: Parameter_value```. Using this method, you can safely add new function parameters without breaking compatibility with the current template:
+## Lenguaje de plantillas Logicor {#logicor-template-language}
 
-Functions can return texts, generate HTML elements (e.g. ```Input```), or create HTML elements with nested HTML elements (```Div, P, Span```). In the latter case, a parameter with the predefined name Body is used to define the nested element. For example, nesting two divs in another div looks like this:
+La función Logicor ofrece las siguientes operaciones:
 
-To define the nested elements described in the Body parameter, the following notation can be used: ```FuncName(...){...}```. Nested elements should be specified with braces:
+- Recuperar valores de la base de datos: `DBFind`, que representa los datos recuperados de la base de datos como tablas y gráficos;
+- Operaciones de asignación y visualización de valores de variables: `SetVar, GetVar, Data`;
+- Visualización y comparación de valores de fecha/hora: `DateTime, Now, CmpTime`;
+- Construir formularios con varios campos de entrada de datos de usuario: `Form, ImageInput, Input, RadioGroup, Select`;
+- Validar los datos en los campos del formulario y mostrar mensajes de error: `Validate, InputErr`;
+- Mostrar elementos de navegación: `AddToolButton, LinkPage, Button`;
+- Llamar a contratos: `Button`;
+- Crear elementos de diseño de página HTML, incluyendo varias etiquetas y clases CSS opcionales: `Div, P, Span, etc.`;
+- Insertar imágenes en la página y cargar imágenes: `Image, ImageInput`;
+- Mostrar fragmentos de diseño de página condicionalmente: `If, ElseIf, Else`;
+- Crear menús de varios niveles;
+- Localizar la página.
 
-If you need to specify the same function multiple times in succession, you can use the dot `.` instead of writing its name every time. For example, the following are the same:
+### Visión general de Logicor {#logicor-overview}
 
-With this language, you can assign a variable with the SetVar function and refer its value with `#name#`.
+La página de plantilla de Logicor utiliza un lenguaje funcional que permite llamar funciones con la sintaxis `FuncName(parametros)` y anidar funciones dentro de otras. Los parámetros pueden ser especificados sin comillas y se pueden eliminar los que no sean necesarios.
 
-To refer to the language resources of the ecosystem, you can use `$langres$`, where langres is the language name.
+```text
+Text FuncName(parameter number 1, parameter number 2) another text.
+FuncName(parameter 1,,,parameter 4)
+```
 
-The following variables are predefined:
+Si un parámetro contiene una coma, debe estar entre comillas (backticks o comillas dobles). Si una función solo puede tener un parámetro, se puede usar una coma sin comillas. Además, si un parámetro tiene paréntesis derechos no emparejados, se deben usar comillas.
 
-* `#key_id#` - Account address of the current user;
-* `#ecosystem_id#` - Current ecosystem ID;
-* `#guest_key#` - Address of the guest account;
-* `#isMobile#` - 1, if Weaver runs on a mobile device.
+```text
+FuncName("parameter number 1, the second part of first paremeter")
+FuncName(`parameter number 1, the second part of first paremeter`)
+```
 
-#### Use PageParams to pass parameters to pages {#use-pageparams-to-pass-parameters-to-pages}
+Si se colocan los parámetros entre comillas, pero los parámetros en sí mismos contienen comillas, se pueden usar diferentes tipos de comillas o varias comillas en el texto.
 
-Many functions support the PageParams parameter, which is used to pass parameters when redirecting to a new page. For example: PageParams: `"param1=value1,param2=value2"`. The parameter value can be a simple string or a variable with a reference value. When passing parameters to pages, a variable with the parameter name is created, e.g. `#param1#` and `#param2#`.
+```text
+FuncName("parameter number 1, ""the second part of first"" paremeter")
+FuncName(`parameter number 1, "the second part of first" paremeter`)
+```
 
-* `PageParams: "hello=world"` - The new page receives the hello parameter with world as the value;
-* `PageParams: "hello=#world#"` - The new page receives the hello parameter with the value of the world variable.
+En la definición de una función, cada parámetro tiene un nombre específico. Puede llamar a la función en el orden en que se declararon los parámetros y especificar los argumentos, o especificar cualquier conjunto de argumentos en cualquier orden mediante `Parameter_name: Parameter_value`. Este método permite agregar nuevos parámetros de función de manera segura sin romper la compatibilidad con la plantilla actual.
 
-In addition, the Val function can get data from forms, which is specified in the redirection.
+```text
+FuncName(myclass, This is value, Div(divclass, This is paragraph.))
+FuncName(Body: Div(divclass, This is paragraph.))
+FuncName(myclass, Body: Div(divclass, This is paragraph.))
+FuncName(Value: This is value, Body: 
+     Div(divclass, This is paragraph.)
+)
+FuncName(myclass, Value without Body)
+```
 
-* `PageParams: "hello=Val(world)"` - The new page receives the hello parameter with the value of the world form element.
+La función puede devolver texto, generar elementos HTML (por ejemplo, `Input`), o crear elementos HTML con elementos HTML anidados (`Div, P, Span`). En este último caso, se utiliza un parámetro con el nombre predefinido **Body** para definir los elementos anidados. Por ejemplo, para anidar dos divs dentro de otro div, se puede hacer lo siguiente:
 
-#### Calling contracts {#calling-contracts}
+```text
+Div(Body:
+   Div(class1, This is the first div.)
+   Div(class2, This is the second div.)
+)
+```
 
-Logicor implements contract calls by clicking the Button function in a form. Once an event is triggered, the data entered by the user in a form field on the page will be passed to the contract. If the form field name corresponds to the variable name in the data section of the contract called, the data will be automatically transferred. The Button function allows to open a modal window for the user to verify the contract execution, and initiate the redirection to the specified page when the contract is successfully executed, and pass certain parameters to the page.
+Para definir los elementos anidados descritos en el parámetro **Body**, puedes usar la siguiente notación: `FuncName(...){...}`. Los elementos anidados se especifican utilizando llaves:
 
-## Logicor function classification {#logicor-function-classification}
+```text
+Div(){
+   Div(class1){
+      P(This is the first div.)
+      Div(class2){
+          Span(This is the second div.)
+      }
+   }
+}
+```
 
-### Operations on variables: {#operations-on-variables}
+Si necesitas especificar repetidamente la misma función, puedes usar un punto `.` en lugar de escribir el nombre de la función cada vez. Por ejemplo, estos son equivalentes:
+
+```text
+Span(Item 1)Span(Item 2)Span(Item 3)
+Span(Item 1).(Item 2).(Item 3)
+```
+
+El lenguaje permite el uso de la función **SetVar** para asignar variables, y el valor de la variable se puede referenciar usando `#name#`.
+
+```text
+SetVar(name, My Name)
+Span(Your name: #name#)
+```
+
+Para hacer referencia a los recursos de lenguaje en el ecosistema, puedes usar `$langres$`, donde *langres* es el nombre de la fuente de lenguaje.
+
+```text
+Span($yourname$: #name#)
+```
+
+Se han predefinido las siguientes variables:
+
+- `#key_id#` - Dirección de cuenta del usuario actual;
+- `#ecosystem_id#` - ID del ecosistema actual;
+- `#guest_key#` - Dirección de cuenta de invitado;
+- `#isMobile#` - Si Weaver se está ejecutando en un dispositivo móvil, es 1.
+
+#### PageParams {#use-pageparams-to-pass-parameters-to-pages}
+
+Utiliza PageParams para pasar parámetros a la página.
+
+Hay muchas funciones que admiten el parámetro **PageParams**, que se utiliza para pasar parámetros al redirigir a una nueva página. Por ejemplo: `PageParams: "param1=value1,param2=value2"`.
+
+Los valores de los parámetros pueden ser simples cadenas o variables con valores de referencia. Al pasar los parámetros a la página, se crean variables con los nombres de los parámetros. Por ejemplo, `#param1#` y `#param2#`.
+
+-   `PageParams: "hello=world"` - la nueva página recibe el parámetro hello con el valor world;
+-   `PageParams: "hello=#world#"` - la nueva página recibe el parámetro hello con el valor de la variable world.
+
+#### Val (#val)
+
+Además, la función **Val** permite obtener datos del formulario que se especifican en la redirección.
+
+- `PageParams: "hello=Val(world)"` - La nueva página recibe el parámetro hello con el valor del elemento del formulario world.
+
+#### Llamar a un contrato inteligente. {#calling-contracts}
+
+Logicor utiliza la función **Button** para realizar llamadas de contrato haciendo clic en un botón en el formulario. Una vez que se inicia este evento, los datos ingresados por el usuario en los campos del formulario de la página se pasarán al contrato.
+
+Si el nombre del campo del formulario coincide con el nombre de la variable en la sección de datos del contrato que se llama, los datos se transferirán automáticamente.
+
+La función **Button** permite abrir una ventana modal para que el usuario verifique la ejecución del contrato y, después de una ejecución exitosa del contrato, inicie una redirección a una página específica y pase algunos parámetros a esa página.
+
+## Clasificación de funciones de Logicor {#logicor-function-classification}
+
+### Operaciones en variables {#operations-on-variables}
 
 |        |        |         |
 | ------ | ------ | ------- |
 | [GetVar](#getvar) | [SetVar](#setvar) | [VarAsIs](#varasis) |
 
-### Navigational operations: {#navigational-operations} 
+
+### Operaciones de navegación. {#navigational-operations} 
 
 |               |        |          |
 | ------------- | ------ | -------- |
 | [AddToolButton](#addtoolbutton) | [Button](#button) | [LinkPage](#linkpage) |
 
-### Data manipulation: {#data-manipulation}
+
+### Operaciones de datos {#data-manipulation}
 
 |           |          |       |
 | --------- | -------- | ----- |
 | [Calculate](#calculate) | [DateTime](#datetime) | [Money](#money) |
 | [CmpTime](#cmptime)   |          |       |
 
-### Data presentation: {#data-presentation}
+### Presentación de datos {#data-presentation}
 
 |          |           |          |
 | -------- | --------- | -------- |
@@ -215,7 +300,8 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [Chart](#chart)    | [MenuGroup](#menugroup) | [Table](#table)    |
 | [ForList](#forlist)  |           |          |
 
-### Accepting of data: {#accepting-of-data}
+
+### Aceptación de datos {#accepting-of-data}
 
 |             |               |                 |
 | ----------- | ------------- | --------------- |
@@ -225,7 +311,8 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [Data](#data)        | [JsonToSource](#jsontosource)  | [Binary](#binary)          |
 | [DBFind](#dbfind)      | [ArrayToSource](#arraytosource) | [TransactionInfo](#transactioninfo) |
 
-### Data formatting elements: {#data-formatting-elements}
+
+### Elementos de formato de datos {#data-formatting-elements}
 
 |      |          |        |
 | ---- | -------- | ------ |
@@ -233,7 +320,7 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [Em](#em)   | [Label](#label)    | [Strong](#strong) |
 | [P](#p)    |          |        |
 
-### Form elements: {#form-elements}
+### Elementos de formulario {#form-elements}
 
 |            |            |          |
 | ---------- | ---------- | -------- |
@@ -241,213 +328,227 @@ Logicor implements contract calls by clicking the Button function in a form. Onc
 | [ImageInput](#imageinput) | [RadioGroup](#radiogroup) | [Map](#map)      |
 | [Input](#input)      | [Select](#select)     |          |
 
-### Operations on code blocks: {#operations-on-code-blocks}
-
+### Operaciones en bloques de código {#operations-on-code-blocks}
 |      |      |         |
 | ---- | ---- | ------- |
 | [If](#if)   | [Or](#or)   | [Include](#include) |
 | [And](#and)  |      |         |
 
-
-
-## Logicor function references {#logicor-function-references}
+## Referencias de funciones de Logicor {#logicor-function-references}
 
 ### Address {#address}
 
-This function returns the wallet address `xxxx-xxxx-...-xxxx` of a specific account address; if no address is specified, the account address of the current user will be used as the parameter.
+La función devuelve la dirección de la billetera `xxxx-xxxx-...-xxxx` de la cuenta especificada; si no se especifica una dirección, se utiliza la dirección de la cuenta actual como parámetro.
 
-**Syntax**
+**Gramática**
 
-```
+``` text
 Address(account)
-
 ```
-> Address
-  * `account`
-  
-    Account address.
 
-**Example**
+* Address
 
-```
+  * account
+
+    账户地址。
+
+**Ejemplo**
+
+```text
 Span(Your wallet: Address(#account#))
 ```
 
 ### AddressToId {#addresstoid}
 
-It returns the account address of a specific wallet address xxxx-xxxx-...-xxxx.
+Esta función devuelve la dirección de la cuenta para la dirección de la billetera especificada `xxxx-xxxx-...-xxxx`.
 
-**Syntax**
+**Gramática**
 
-```
+``` text
 AddressToId(Wallet)
 ```
 
-> AddressToId
-  * `Wallet`
-  
-    The wallet address in XXXX-...-XXXX format.
+* AddressToId
 
-**Example**
+  * Wallet
 
-```
+    Dirección de billetera en formato `XXXX-...-XXXX`.
+
+**Ejemplo**
+
+```text
 AddressToId(#wallet#)
 ```
 
 ### AddToolButton {#addtoolbutton}
 
-Create a button panel with an addtoolbutton element.
+Crear un panel de botones con el elemento **addtoolbutton**.
 
-**Syntax**
+**Gramática**
 
+``` text
+AddToolButton(Title, Icon, Page, PageParams) 
+    [.Popup(Width, Header)]
 ```
-AddToolButton(Title, Icon, Page, PageParams)
- [.Popup(Width, Header)]
-```
 
+* AddToolButton
 
+  * Title
 
-> AddToolButton
+    Título del botón.
 
-  * `Title`
-  
-    Button title.
+  * Icon
 
-  * `Icon`
-  
-    Button icon style.
+    Estilo del icono del botón.
 
-  * `Page`
-  
-    Name of the page redirects to.
+  * Page
 
-  * `PageParams`
-  
-    The parameters passed to the page.
+    Nombre de la página a la que se redirige.
 
-    
+  * Pageparams
 
-> Popup
+    Parámetros que se pasan a la página.
 
-  The modal window pops up.
-  * `Header`
+  * Popup
 
-    Title of the window.
-  * `Width`
+    Ventana emergente modal.
 
-      Percentage of window width.
-      Its range is 1 to 100.
+  * Header
 
-**Example**
+    Título de la ventana.
 
-```
+  * Width
+
+    Porcentaje de ancho de la ventana.
+
+    El valor de este parámetro está en el rango de 1 a 100.
+
+**Ejemplo**
+
+```text
 AddToolButton(Title: $@1broadcast$, Page: @1notifications_broadcast, Icon: icon-plus).Popup(Header: $@1notifications_broadcast$, Width: "50")
 ```
 
 ### And {#and}
 
-It returns the result of an and logical operation. All parameters listed in parentheses are separated by commas. If one of the parameters is an empty string, zero or `false`, the parameter value is `false`, otherwise the parameter value is `true`. If the parameter value is `true`, the function returns `1`, otherwise it returns `0`.
+La función devuelve el resultado de la operación lógica **and** de todos los argumentos listados entre paréntesis, separados por comas. Si uno de los argumentos es una cadena vacía, cero o `false`, su valor es `false`. En cualquier otro caso, su valor es `true`. Si el valor del argumento es `true`, la función devuelve `1`, en cualquier otro caso devuelve `0`.
 
-**Syntax**
+**Gramática**
 
-```
+``` text
 And(parameters)
 ```
 
-**Example**
+**Ejemplo**
 
-```
+```text
 If(And(#myval1#,#myval2#), Span(OK))
 ```
 
 ### AppParam {#appparam}
 
-Output the application parameter value, which is taken from the app_params table of the current ecosystem. If there is a language resource with the specified name, its value will be automatically replaced.
+Muestra el valor del parámetro de la aplicación, tomado de la tabla *app_params* del ecosistema actual. Si existe un recurso de idioma con el nombre especificado, su valor se sustituirá automáticamente.
 
-**Syntax**
+**Gramática**
+
+``` text
+AppParam(App, Name, Index, Source) 
 ```
-AppParam(App, Name, Index, Source)
 
-```
+* AppParam
 
-> AppParam
-  * `App`
-  
-    Application ID.
-  * `Name`
+  * App
 
-    Parameter name.
-  * `Index`
+    Identificación de la aplicación.
 
-    It can be used when the parameter value is a comma-separated list.
-    The parameter elements index, starting from 1. For example, if `type = full,light`, then `AppParam(1, type, 2)` returns `light`.
-    It cannot be used in conjunction with the Source parameter.
-  * `Source`
+  * Name
 
-    It can be used when the parameter value is a comma-separated list.
-    Create a data object whose elements are the values of specific parameters. This object can be used as a data source for the [Table](#table) and [Select](#select) functions.
-    It cannot be used in conjunction with the Index parameter.
+    Nombre del parámetro.
 
-**Example**
+  * Index
 
-```
+    Cuando el valor del parámetro es una lista separada por comas, se puede utilizar este parámetro.
+
+    El índice del elemento del parámetro comienza en 1. Por ejemplo, si `type = full,light`, entonces `AppParam(1, type, 2)` devuelve `light`.
+
+    Este parámetro no se puede utilizar junto con el parámetro *Source*.
+
+  * Source
+
+    Cuando el valor del parámetro es una lista separada por comas, se puede utilizar este parámetro.
+
+    Crea un objeto *data* cuyos elementos son los valores especificados del parámetro. Este objeto se puede utilizar como fuente de datos para las funciones [Table](#table) y [Select](#select).
+
+    Este parámetro no se puede utilizar junto con el parámetro *Index*.
+
+**Ejemplo**
+
+```text
 AppParam(1, type, Source: mytype)
 ```
 
 ### ArrayToSource {#arraytosource}
 
-Create an arraytosource element and fill it with the key-value pairs of a JSON array. The data obtained is put into the Source element, which can be used later in the source input function (e.g. Table).
+Crear un elemento **arraytosource** y llenarlo con pares clave-valor de un arreglo JSON. Los datos resultantes se colocan en el elemento *Source*, que luego se puede utilizar en una función de entrada de origen (por ejemplo, [Table](#Table)).
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 ArrayToSource(Source, Data)
-
 ```
 
-> ArrayToSource
-  * `Source`
-  
-    Data source name.
-  * `Data`
+* ArrayToSource
 
-    A JSON array or a variable name containing a JSON array (`#name#`).
+  * Source
 
-**Example**
+    Nombre de la fuente de datos.
 
-```
+* Data
+
+    Una matriz JSON o un nombre de variable (`#name#`) que contiene una matriz JSON.
+
+**Ejemplo**
+
+```text
 ArrayToSource(src, #myjsonarr#)
 ArrayToSource(dat, [1, 2, 3])
 ```
 
 ### Binary {#binary}
 
-Returns links to static files stored in the binary table binaries.
+Devolver el enlace al archivo estático almacenado en la tabla binaria *binaries*.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 Binary(Name, AppID, MemberID)[.ById(ID)][.Ecosystem(ecosystem)]
 ```
 
-> Binary
-  * `Name`
-  
-    File name.
-  * `AppID`
-  
-    Application ID.
-  * `MemberID`
+* Binary
 
-    Account address, 0 by default.
-  * `ID`
+  * Name
 
-    Static file ID.
-  * `Ecosystem`
+    Nombre del archivo.
 
-    Ecosystem ID. If it is not specified, the binary file is requested from the current ecosystem.
+  * AppID
 
-**Example**
+    Identificación de la aplicación.
 
-```
+  * MemberID
+
+    Dirección de cuenta, por defecto 0.
+
+  * ID
+
+    ID de archivo estático.
+
+  * ecosystem
+
+    ID del ecosistema. Si no se especifica este parámetro, se solicita el archivo binario desde el ecosistema actual.
+
+**Ejemplo**
+
+```text
 Image(Src: Binary("my_image", 1))
 Image(Src: Binary().ById(2))
 Image(Src: Binary().ById(#id#).Ecosystem(#eco#))
@@ -455,157 +556,199 @@ Image(Src: Binary().ById(#id#).Ecosystem(#eco#))
 
 ### Button {#button}
 
-Create a button HTML element which will create a button to call a contract or open a page.
+Crea un elemento HTML **button**. Este elemento crea un botón que se utiliza para llamar a un contrato o abrir una página.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 Button(Body, Page, Class, Contract, Params, PageParams)
- [.CompositeContract(Contract, Data)]
- [.Alert(Text, ConfirmButton, CancelButton, Icon)]
- [.Popup(Width, Header)]
- [.Style(Style)]
- [.ErrorRedirect(ErrorID,PageName,PageParams)]
+    [.CompositeContract(Contract, Data)]
+    [.Alert(Text, ConfirmButton, CancelButton, Icon)]
+    [.Popup(Width, Header)]
+    [.Style(Style)]
+    [.ErrorRedirect((ErrorID,PageName,PageParams)]
 ```
 
-> Button
-  * `Body`
-  
-    Child text or element.
-  * `Page`
+* Button
 
-    Name of the page redirects to.
-  * `Class`
+  * Body
 
-    Button class.
-  * `Contract`
+    Subtexto o elemento.
 
-    Name of the contract called.
-  * `Params`
+  * Page
 
-    The list of values passed to the contract. Normally, the value of the contract parameter (the data section) is obtained from an HTML element (such as an input field) of id with a similar name. If the element id is different from the name of the contract parameter, then the value should be assigned in the format of contractField1=idname1, contractField2=idname2. This parameter is returned to attr as the object {contractField1: idname1, contractField2: idname2}.
-  * `PageParams`
+    Nombre de la página redirigida.
 
-    The format of parameters passed to the redirect page is pageField1=idname1, pageField2=idname2. Variables with target page parameter names #pageField1 and #pageField2 are created on the target page and assigned the specified values. See more specifications for parameter passing Use PageParams to pass parameters to pages).
-  
-> CompositeContract
+  * Class
 
-  Used to add additional contracts to the button. CompositeContract can be used multiple times.
-  * `Name`
+    Botón.
 
-    Name of the contract.
-  * `Data`
+  * Contract
 
-    The contract parameters are JSON arrays.
-> Alert
+    Nombre del contrato inteligente invocado.
 
-  Display the message.
-  * `Text`
+  * Params
 
-    Text of the message.
-  * `ConfirmButton`
-  
-    Title of the Confirm button.
-  * `CancelButton`
+    Lista de valores pasados al contrato. Por lo general, los valores de los parámetros del contrato (parte `data`) se obtienen de los elementos HTML con nombres similares al `id`. 
 
-    Title of the Cancel button.
-  * `Icon`
+    Si el `id` del elemento es diferente al nombre del parámetro del contrato, se debe asignar en el formato `contractField1=idname1, contractField2=idname2`. 
 
-    Button icon.
-> Popup
+    Este parámetro se devuelve como un objeto `{contractField1: idname1, contractField2: idname2}` en *attr*.
 
-  Output modal window.
-  * `Header`
+  * PageParams
 
-    Window title.
-  * `Width`
+    El formato de los parámetros pasados a la página de redirección es `pageField1=idname1, pageField2=idname2`.
 
-    Percentage of window width.
-    Its range is 1 to 100.
-> Style
+    Las variables con los nombres de parámetros de destino `#pageField1` y `#pageField2` se crean en la página de destino y se les asignan los valores especificados. Para obtener más información sobre la especificación de pasos de parámetros, consulte [Cómo pasar parámetros a una página usando PageParams](#pageparams).
 
-  The CSS style specified.
-  * `Style`
+* CompositeContract
 
-    CSS style.
-> ErrorRedirect
+    "Se utiliza para agregar contratos adicionales a un botón. CompositeContract se puede utilizar varias veces."
 
- Specify and redirect to a page when the :ref:contractfundef-Throw function generates an error during contract execution. There can be several ErrorRedirect calls. Therefore, when returning the *errredirect* attribute, the attribute key is ErrorID and the value is the parameters list.
+  * Name
 
-  * `ErrorID`
+    Nombre del contrato.
 
-    Error ID.
+  * Data
 
-  * `PageName`
+    The contract parameters are a JSON array.
 
-    Name of the redirect page.
+* Alert
 
-  * `PageParams`
+  Mostrar mensaje.
 
-    Parameters passed to the page.
+  * Text
 
-**Example**
+    Mensaje de texto.
 
-```
+  * ConfirmButton
+
+    El título del botón de confirmación.
+
+  * CancelButton
+
+    Título del botón Cancelar.
+
+  * Icon
+
+    Icono de botón.
+
+* Popup
+
+    Output ventana modal.
+
+  * Header
+
+    Título de la ventana.
+
+  * Width
+
+    Ancho de la ventana en porcentaje.
+
+    El valor de este parámetro varía de 1 a 100.
+
+* Style
+
+    Especifique los estilos CSS.
+
+  * Style
+
+    Estilos CSS.
+
+* ErrorRedirect
+
+    Especifique una página de redireccionamiento que se utilizará cuando la función `contractfundef-Throw`{.interpreted-text role="ref"} genere un error durante la ejecución del contrato.
+
+    Puede haber varias llamadas a *ErrorRedirect*. Por lo tanto, al devolver el atributo *errredirect*, su clave es *ErrorID* y su valor es una lista de parámetros.
+
+  * ErrorID
+
+    ID de error.
+
+  * PageName
+
+    Nombre de la página de redireccionamiento.
+
+  * PageParams
+
+    Parámetros pasados a esta página.
+
+**Ejemplo**
+
+```text
 Button(Submit, default_page, mybtn_class).Alert(Alert message)
 Button(Contract: MyContract, Body:My Contract, Class: myclass, Params:"Name=myid,Id=i10,Value")
 ```
 
 ### Calculate {#calculate}
-It returns the result of the arithmetic expression passed in the Exp parameter. The following operations are applicable: +, -, *, / and brackets ().
 
-**Syntax**
-```
+La función devuelve el resultado de la expresión aritmética pasada en el parámetro **Exp**. Se pueden utilizar las siguientes operaciones: `+, -, *, /` y paréntesis `()`.
+
+**Gramática**
+
+``` text
 Calculate(Exp, Type, Prec)
 ```
 
-> Calculate
-  * `Exp`
+* Calculate
 
-    An arithmetic expression, containing numbers and the #name# variable.
-  * `Type`
+  * Exp
 
-    Result data type: int, float, money. If not specified, it is float if there is a number with a decimal point, otherwise it is int.
-  * `Prec`
+    Arithmetic expression. Puede contener números y variables *nombre*.
 
-    float and money data, with two significant digits after the decimal point.
+  * Type
 
-**Example**
+  Resultado del tipo de datos: int, float, dinero.
 
-```
+  Si no se especifica, si hay números con decimales, el tipo de resultado será float, en otros casos será int.
+
+  * Prec
+
+    El tipo de datos **float** y **money** especifican la cantidad de dígitos significativos después del punto decimal.
+
+**Ejemplo**
+
+```text
 Calculate( Exp: (342278783438+5000)\*(#val#-932780000), Type: money, Prec:18 )
 Calculate(10000-(34+5)\*#val#)
-Calculate("((10+#val#-45)\*3.0-10)/4.5 + #val#", Prec: 4)
+Calculate("((10+#val#-45)\*3.0-10)/4.5 + #val#", Prec: 4)      
 ```
 
 ### Chart {#chart}
 
-Create HTML charts.
+Crear gráficos HTML.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 Chart(Type, Source, FieldLabel, FieldValue, Colors)
 ```
 
-> Chart
-  * `Type`
+* Chart
 
-    Chart type.
-  * `Source`
+  * Type
 
-    Name of the data source, e.g., obtained from the [DBFind](#dbfind) function.
-  * `FieldLabel`
+    Tipo de gráfico.
 
-    Name of the header field.
-  * `FieldValue`
+  * Source
 
-    Name of the value field.
-  * `Colors`
+    Nombre de la fuente de datos, por ejemplo, obtenido de la función [DBFind](#DBFind).
 
-    List of colors.
+  * FieldLabel
 
-**Example**
+    Nombre de los campos del encabezado.
 
-```
+  * FieldValue
+
+    Nombre del campo de valor.
+
+  * Colors
+
+    Lista de colores.
+
+**Ejemplo**
+
+```text
 Data(mysrc,"name,count"){
     John Silver,10
     "Mark, Smith",20
@@ -616,69 +759,75 @@ Chart(Type: "bar", Source: mysrc, FieldLabel: "name", FieldValue: "count", Color
 
 ### CmpTime {#cmptime}
 
-It compares two time values in the same format.
-It supports unixtime, `YYYY-MM-DD HH:MM:SS` and any time format, such as `YYYYMMDD`.
+Esta función compara dos valores de tiempo en el mismo formato.
 
-**Syntax**
+El formato admite unixtime, `YYYY-MM-DD HH:MM:SS`, y cualquier formato de tiempo, como desde el año hasta el segundo `YYYYMMDD`.
 
-```
+**Gramática**
+
+``` text
 CmpTime(Time1, Time2)
 ```
 
+**Valor de retorno**
 
-Return value
+-   `-1` - Time1 \< Time2；
+-   `0` - Time1 = Time2；
+-   `1` - Time1 \> Time2。
 
-* `-1` - Time1 <Time2;
-* `0` - Time1 = Time2;
-* `1` - Time1> Time2.
+**Ejemplo**
 
-**Example**
-
-```
+```text
 If(CmpTime(#time1#, #time2#)<0){...}
 ```
 
 ### Code {#code}
 
-Create a code element to display the specified code.
+Crear un elemento **code** para mostrar el código especificado.
 
-It substitute a variable with the value of the variable (for example, `#name#`).
-**Syntax**
-```
+La función reemplaza el valor de la variable con el valor de la variable (por ejemplo, `#name#`).
+
+**Gramática**
+
+``` text
 Code(Text)
 ```
 
-> Code
-  * `Text`
+* Code
 
-    Source code.
+  * Text
 
-**Example**
+    Código fuente.
 
-```
+**Ejemplo**
+
+```text
 Code( P(This is the first line.
     Span(This is the second line.))
-)
+)  
 ```
 
 ### CodeAsIs {#codeasis}
 
-Create a code element to display the specified code.
-It does not replace a variable with its value. For example, `#name#` will be displayed as is.
+Crear un elemento **code** para mostrar el código especificado.
 
-**Syntax**
-```
+Esta función no reemplazará las variables por sus valores. Por ejemplo, `#name#` se mostrará tal cual.
+
+**Gramática**
+
+``` text
 CodeAsIs(Text)
 ```
 
-> CodeAsIs
-  * `Text`
+* CodeAsIs
 
-    Source code.
+  * Text
 
-**Example**
+    Código fuente.
 
-```
+**Ejemplo**
+
+```text
 CodeAsIs( P(This is the #test1#.
     Span(This is the #test2#.))
 )
@@ -686,49 +835,52 @@ CodeAsIs( P(This is the #test1#.
 
 ### Data {#data}
 
-Create a data element, fill it with the specified data and put it in Source. Then, you can receive Source as a data input in [Table](#table) and other functions. The sequence of column names corresponds to the sequence of data entry values.
+Crear un elemento **data** y llenarlo con los datos especificados y colocarlo en *Source*, luego se puede recibir *Source* como entrada de datos en [Table](#Table) y otras funciones. La secuencia de nombres de columna corresponde a la secuencia de valores de entrada de *data*.
 
-**Syntax**
+**Gramática**
+
+``` text
+Data(Source,Columns,Data) 
+    [.Custom(Column){Body}]
 ```
-Data(Source,Columns,Data)
- [.Custom(Column){Body}]
-```
 
-> Data
-  * `Source`
+* Data
 
-    Name of the data source. You can specify any name that will be passed to other functions later as a data source.
+  * Source
 
-  * `Columns`
+    Nombre de la fuente de datos. Puede asignar cualquier nombre que desee y luego pasarlo como origen de datos a otras funciones más adelante.
 
-    A list of column names, separated by commas.
+  * Columns
 
-  * `Data`
+    Lista de nombres de columna separados por comas.
 
-    Data set.
+  * Data
 
-    One record per line. Column values must be separated by commas. Data and Columns should be set in the same order.
+   conjunto de datos.
 
-    Values with commas should be enclosed in double quotes (`"example1, example2", 1, 2`). Quoted values should be put in two double quotes (`"""example", "example2""", 1, 2`).
+    Cada registro debe estar en una línea separada. Los valores de las columnas deben estar separados por comas. *Data* y *Columns* deben tener el mismo orden.
 
-    
+    Para valores que contienen comas, se deben colocar entre comillas dobles (`"ejemplo1, ejemplo2", 1, 2`).
+
+    Para valores que contienen comillas, se deben colocar entre dos comillas dobles (`""ejemplo", "ejemplo2"", 1, 2`).
 
 ### Custom {#custom}
 
-    You can assign calculated columns to Data. For example, you can specify field templates for buttons and other page layout elements. These field templates are usually assigned to [Table](#table) and other functions to receive data.
-    Use multiple Custom functions if you want to assign multiple calculated columns.
+Se puede asignar columnas de cálculo a *Data*. Por ejemplo, puede especificar plantillas de campo para botones y otros elementos de diseño de página. Estas plantillas de campo generalmente se asignan a [Table](#Table) y otras funciones para recibir datos.
 
-  * `Column`
+Si desea asignar varias columnas de cálculo, utilice varias funciones *Custom*.
 
-    Column name, which is unique and compulsory.
+  * Column
 
-  * `Body`
+    Columna. Debe especificar un nombre único.
 
-    Code block. You can use `#columnname#` to get values from other columns in the entry, and then use those values in code blocks.
+  * Body
 
-**Example**
+    Fragmento de código. Puede usar `#nombredecolumna#` para obtener valores de otras columnas en esta entrada y luego usar esos valores en el fragmento de código.
 
-```
+**Ejemplo**
+
+```text
 Data(mysrc,"id,name"){
     "1",John Silver
     2,"Mark, Smith"
@@ -738,35 +890,40 @@ Data(mysrc,"id,name"){
 
 ### DateTime {#datetime}
 
-Display the time and date in the specified format.
+Muestra la hora y la fecha en el formato especificado.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 DateTime(DateTime, Format)
 ```
 
-> DateTime
-  * `DateTime`
+* DateTime
 
-    Time and date expressed in unixtime or standard format `2006-01-02T15:04:05`.
-  * `Format`
+  * DateTime
 
-    Format template: year in 2-digit format `YY`, 4-digit format `YYYY`, month in `MM`, day in `DD`, hour in `HH`, minute in `MM`, second in `SS`, e.g.: `YY/MM/DD HH:MM`.
-    If it is not specified or missing, `YYYY-MM-DD HH:MI:SS` will be used.
+    Representa la hora y la fecha `2006-01-02T15:04:05` en formato unixtime o estándar.
 
-**Example**
+  * Format
 
-```
+    Formato de plantilla: formato de año de 2 dígitos `YY`, formato de año de 4 dígitos `YYYY`, mes `MM`, día `DD`, hora `HH`, minutos `MM`, segundos `SS`, por ejemplo: `YY/MM/DD HH:MM`.
+
+    Si no se especifica o falta este parámetro, se utilizará el formato `YYYY-MM-DD HH:MI:SS`.
+
+**Ejemplo**
+
+``` text
 DateTime(2017-11-07T17:51:08)
 DateTime(#mytime#,HH:MI DD.MM.YYYY)
 ```
 
 ### DBFind {#dbfind}
 
-Create a dbfind element, fill it with the data of the table table and put it in the Source structure, which can later be used for the input data of [Table](#table) and other functions Source.
+Crear el elemento **dbfind**, llenarlo con los datos de la tabla *table* y colocarlo en la estructura *Source*. Esta estructura *Source* puede ser utilizada posteriormente como entrada de datos para la función [Table](#Table) y otras funciones que requieran datos de entrada de *Source*.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 DBFind(table, Source)
     [.Columns(columns)]
     [.Where(conditions)]
@@ -781,93 +938,113 @@ DBFind(table, Source)
     [.Vars(Prefix)]
 ```
 
-> DBFind
-  * `table`
+* DBFind
 
-    Table name.
-  * `Source`
+  * table
 
-    Data source name.
+    Nombre de la tabla de datos.
 
-> Columns
-  * `columns`
+  * Source
 
-    If not specified, a list of all fields will be returned. If there is a JSON type field, you can use the following syntax to process the record field: `columnname->fieldname`. In this case, the field name generated is `columnname.fieldname`.
+    Nombre de la fuente de datos.
 
-> Where
-  * `conditions`
+* Columns
 
-   Data query conditions. See DBFind.
-   If there is a JSON type field, you can use the following syntax to process the record field:      `columnname->fieldname`.
+  * columns
 
-> WhereId
-  Query by ID, e.g. `.WhereId(1)`.
-  * `Id`
+    La lista de campos devuelta, si no se especifica, devolverá todos los campos. Si hay campos de tipo JSON, se puede utilizar la siguiente sintaxis para manejar los campos de registro: `columnname->fieldname`. En este caso, el nombre del campo generado es `columnname.fieldname`.。
 
-   Entry ID.
+* Where
 
-> Order
-  Sort by field.
-  For more information about the sorting syntax, see [DBFind](#dbfind).
-  * `name`
+  * conditions
 
-   Field Name
+    Condiciones de búsqueda de datos. Consulte `contractfundef-DBFind`{.interpreted-text role="ref"}.
 
-> Limit
-  * `limit`
-  
-    The number of entries returned, 25 by default. The maximum number is 10,000.
+    Si hay campos de tipo JSON, se puede utilizar la siguiente sintaxis para manejar los campos de registro: `columnname->fieldname`.
 
-> Offset
-  * `Offset`
+* WhereId
 
-    Offset.
+    Según el ID de consulta, por ejemplo, `.WhereId(1)`.
 
-> Count
+  * id
 
-  Specify the total number of rows of the Where condition.
-  In addition to storing it in a variable, the total count is returned in the count parameter of the dbfind element.
+    ID del elemento.
 
-  If Where and WhereID are not specified, the total count of rows in the table will be returned.
+  * Order
 
-  * `countvar`
+    Ordenar por campo.
 
-    Name of the variable that holds the row count.
+    Para obtener más información sobre la sintaxis de ordenación, consulte [DBFind](#DBFind).
 
-> Ecosystem
-  * `Id`
+  * name
 
-   Ecosystem ID. By default, the data comes from the specified table in the current ecosystem.
+    Nombre del campo.
 
-> Cutoff
+* Limit
 
-  Used to cut and display large amounts of text data.
-  * `columns`
+  * limit
 
-   A comma-separated list of fields that must be processed by the Cutoff function.
-   The field value will be replaced by a JSON object that has two fields: link link and title title. If the field value contains more than 32 characters, link pointing to the first 32 characters of the full text is returned. If the field value contains 32 characters or less, link is set to void and title contains the complete field value.
+    El número de entradas devueltas. El valor predeterminado es de 25 entradas y el máximo es de 10,000 entradas.
 
-> Custom
+* offset
 
-  You can assign calculated columns to Data. For example, you can specify field templates for buttons and other page layout elements. These field templates are usually assigned to [Table](#table) and other functions to receive data.
-  If you want to assign multiple calculated columns, use multiple Custom functions.
-  * `Column`
+  Es la cantidad de desplazamiento.
 
-   Column name, which is unique and compulsory.
-  * `Body`
+* Count
 
-   Code block. You can use `#columnname#` to get values from other columns in the entry, and then use those values in code blocks.
+  Se refiere al número total de filas que cumplen con la condición especificada en la cláusula *Where*.
 
-> Vars
+  Además de almacenarse en una variable, también se devuelve el recuento total en el parámetro *count* del elemento *dbfind*.
 
-  The first row obtained by the query will generate a set of variables with values. When it is specified, the Limit parameter automatically becomes 1, and only one (1) record is returned.
-  * `Prefix`
+  Si no se especifica *Where* y *WhereID*, se devolverá el número total de filas de la tabla de datos.
 
-   The prefix added to the variable name. Its format is `#prefix_columnname#`, where the column name immediately follows the underscore symbol. If there is a column containing a JSON field, the variable generated will be in the following format: `#prefix_columnname_field#`.
+* countvar
 
-**Example**
+  Es el nombre de la variable que almacena el recuento de filas.
 
-```
+* Ecosystem
+
+  * id
+
+    ID del ecosistema. Por defecto, los datos provienen de la tabla especificada en el ecosistema actual.
+
+* Cutoff
+
+    Utilizado para cortar y mostrar grandes cantidades de datos de texto.
+
+  * columns
+
+    Una lista de campos separados por comas que deben ser procesados por la función *Cutoff*.
+
+    Los valores de los campos son reemplazados por un objeto JSON que tiene dos campos: enlace *link* y título *title*. Si el valor del campo es mayor a 32 caracteres, se devuelve un *link* que apunta a los primeros 32 caracteres del texto completo. Si el valor es exactamente de 32 caracteres o menos, el *link* está vacío y el *title* contiene el valor completo del campo.
+
+* Custom
+
+    Se puede asignar columnas de cálculo para *Data*. Por ejemplo, puede asignar plantillas de campo para botones y otros elementos de diseño de página.
+
+    Estas plantillas de campo generalmente se asignan a `templatefundef-Table`{.interpreted-text role="ref"} y otras funciones para recibir datos.
+
+    Si desea asignar varias columnas de cálculo, utilice varias funciones *Custom*.
+
+  * Column
+
+    Column name. Unique name must be specified.
+
+  * Body
+
+    Snippet de código. Puedes usar `#columnname#` para obtener valores de otras columnas en esta entrada y luego usar esos valores en el snippet de código.
+
+* Vars
+
+    La primera fila obtenida mediante la consulta genera un conjunto de variables con valores. Al especificar esta función, el parámetro *Limit* se establece automáticamente en 1 y solo se devuelve un registro.
+
+  * Prefix
+
+    Agregue un prefijo al nombre de la variable. El formato es `#prefijo_nombredecolumna#`, donde el nombre de la columna va seguido inmediatamente por un guión bajo. Si hay columnas que contienen campos JSON, las variables generadas usarán el siguiente formato: `#prefijo_nombredecolumna_campo#`.
+
+**Ejemplo**
+
+```text
 DBFind(parameters,myparam)
 DBFind(parameters,myparam).Columns(name,value).Where({name:"money"})
 DBFind(parameters,myparam).Custom(myid){Strong(#id#)}.Custom(myname){
@@ -877,45 +1054,56 @@ DBFind(parameters,myparam).Custom(myid){Strong(#id#)}.Custom(myname){
 
 ### Div {#div}
 
-Create a div HTML element.
+Crear un elemento HTML **div**.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 Div(Class, Body)
- [.Style(Style)]
- [.Show(Condition)]
- [.Hide(Condition)]
+    [.Style(Style)]
+    [.Show(Condition)]
+    [.Hide(Condition)]
 ```
 
-> Div
-  * `Class`
+* Div
 
-    Class name of the div.
-  * `Body`
+  * Class
 
-    Child element.
-> Style
+    El nombre de la clase de este *div*.
 
-  The CSS style specified.
-  * `Style`
+  * Body
 
-   CSS style.
-> Show
+    elementos secundarios.
 
- Define the conditions for displaying Div.
-   * `Condition`
+* Style
 
-   See Hide below.
-> Hide
+    Especifique los estilos CSS.
 
- Define the conditions for hiding Div.
-   * `Condition`
+  * Style
 
-   The expression format is `InputName=Value`, when all expressions are true, *Condition* is true, and when the value of `InputName` is equal to `Value`, *Condition* is true. If multiple *Show* or *Hide* are called, there must be at least one *Condition* parameter is true.
+    Estilos CSS.
 
-**Example**
+* Show
 
-```
+    Definir la condición para mostrar un Div.
+
+  * Condition
+
+    Ver *Ocultar* a continuación.
+
+* Hide
+
+    Defina la condición para ocultar un Div.
+
+  * Condition
+
+  El formato de la expresión es `InputName=Value`. Cuando todas las expresiones son verdaderas, *Condition* es verdadero. *Condition* es verdadero cuando el valor de `InputName` es igual a `Value`.
+
+  Si se llaman múltiples *Show* o *Hide*, al menos un parámetro *Condition* debe ser verdadero.
+
+**Ejemplo**
+
+```text
 Form(){
     Div(text-left){
         Input(Name: "broadcast", Type: "checkbox", Value: "false")
@@ -931,28 +1119,35 @@ Form(){
 
 ### EcosysParam {#ecosysparam}
 
-This function obtains parameter values from the ecosystem parameter table of the current ecosystem. If the returned result name contains the language resources, it will be translated accordingly.
+Esta función recupera los valores de los parámetros de la tabla de parámetros del ecosistema actual. Si el nombre del resultado devuelto tiene recursos de idioma, se traducirá en consecuencia.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 EcosysParam(Name, Index, Source)
 ```
 
-> EcosysParam
-  * `Name`
+* EcosysParam
 
-    Parameter name.
-  * `Index`
+  * Name
 
-    If the requested parameter is a list of comma-separated elements, you can specify an index starting from 1. For example, if `gender = male,female`, then `gender = male,female` returns `female`.
-    It cannot be used in conjunction with the Source parameter.
-  * `Source`
+    Nombre del parámetro.
 
-    It can be used when the parameter value is a comma-separated list.
-    Create a data object whose elements are the values of the specified parameters. This object can be used as a data source for the [Table](#table) and [Select](#select) functions.
-    It cannot be used in conjunction with the Index parameter.
+  * Index
 
-```
+    Si los parámetros de solicitud son una lista de elementos separados por comas, se puede especificar un índice que comience en 1. Por ejemplo, si `gender = male,female`, entonces `gender = male,female` devuelve `female`.
+
+    Este parámetro no se puede utilizar junto con el parámetro *Source*.
+
+  * Source
+
+    Cuando el valor del parámetro es una lista separada por comas, se puede utilizar este parámetro.
+
+    Crea un objeto *data* cuyos elementos son los valores especificados del parámetro. Este objeto se puede utilizar como fuente de datos para las funciones [Table](#Table) y [Select](#Select).
+
+    Este parámetro no se puede utilizar junto con el parámetro *Index*.
+
+```text
 Address(EcosysParam(founder_account))
 EcosysParam(gender, Source: mygender)
 
@@ -962,204 +1157,241 @@ Select(Name: gender, Source: src_gender, NameColumn: name, ValueColumn: id)
 
 ### Em {#em}
 
-Create an em HTML element.
+Crea un elemento HTML **em**.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 Em(Body, Class)
 ```
 
-> Em
-  * `Body`
+* Em
 
-    Child text or element.
-  * `Class`
+  * Body
 
-    The em class name.
+    Subtexto o elemento.
 
-**Example**
+  * Class
 
-```
+    El nombre de la clase de *em*.
+
+**Ejemplo**
+
+```text
 This is an Em(important news).
 ```
 
 ### ForList {#forlist}
 
-Display the list of elements in the Source data source in the template format set in Body and create a **forlist** element.
+Display the list of elements from the *Source* data source using the template format set in the *Body*, and create the **forlist** element.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 ForList(Source, Index){Body}
 ```
 
-> ForList
-  * `Source`
+* ForList
 
-    Data source obtained from the [DBFind](#dbfind) or [Data](#data) function.
-  * `Index`
+  * Source
 
-    The variable of the iteration counter, starting from 1.
-    An optional parameter. If not specified, the iteration count value will be written to the [Source] _index variable.
-  * `Body`
+    Datos obtenidos de la función [DBFind](#dbfind) o [Data](#data).
 
-    Template for inserting elements.
+  * Index
 
-```
+    La variable del contador de iteración. El conteo comienza en 1.
+
+    Parámetro opcional. Si no se especifica, el valor del contador de iteración se escribirá en la variable *\[Source\] \_index*.
+
+  * Body
+
+    Template para insertar elementos.
+
+```text
 ForList(mysrc){Span(#mysrc_index#. #name#)}
 ```
 
 ### Form {#form}
-   Create a form HTML element.
 
-**Syntax**
-```
+Crear el elemento HTML **form**.
+
+**Gramática**
+
+``` text
 Form(Class, Body) [.Style(Style)]
 ```
-> Form
-  * `Body`
 
-    Child text or element.
-  * `Class`
+* Form
 
-    Class name of the form.
-> Style
-  The CSS style specified.
-  * `Style`
+  * Body
 
-   CSS style.
+    Subtexto o elemento.
 
-**Example**
+  * Class
 
-```
+    El nombre de la clase de este *form*.
+
+* Style
+
+    Especifique los estilos CSS.
+
+  * Style
+
+    Estilos CSS.
+
+**Ejemplo**
+
+```text
 Form(class1 class2, Input(myid))
 ```
 
 ### GetColumnType {#getcolumntype}
 
-Returns the field data type of a specific table.
+Devolver los tipos de datos de los campos en una tabla especificada.
 
-Types returned include: `text, varchar, number, money, double, bytes, json, datetime, double`.
-**Syntax**
+Los siguientes tipos son devueltos: `texto, varchar, número, dinero, doble, bytes, json, datetime, doble`.
 
-```
+**Gramática**
+
+``` text
 GetColumnType(Table, Column)
 ```
 
-> GetColumnType
-  * `Table`
+* GetColumnType
 
-    Table name.
-  * `Column`
+  * Table
 
-    Field name.
+    Nombre de la tabla de datos.
 
-**Example**
+  * Column
 
-```
+    Nombre del campo.
+
+**Ejemplo**
+
+```text
 SetVar(coltype,GetColumnType(members, member_name))Div(){#coltype#}
 ```
 
 ### GetHistory {#gethistory}
 
-Create a gethistory element and fill it with the history change records of the entries in the specified table. The data generated will be placed in the Source element, which can be used later in the source input function (for example, [Table](#table)).
-The array is sorted in order from the last modified.
-The id field in the array points to the id of the rollback_tx table. block_id represents the block ID, block_time represents the block generation timestamp.
+Crear el elemento **gethistory**, que utiliza el registro de cambios históricos de las entradas de una tabla de datos especificada para llenarlo. Los datos generados se colocarán en el elemento *Source*.
 
-**Syntax**
+Este elemento se puede utilizar más adelante en una función de entrada de origen, como [Table](#Table).
+
+El arreglo se ordena en orden de cambios más recientes. El campo *id* en el arreglo apunta al campo *id* de la tabla *rollback_tx*. *block_id* representa el ID del bloque y *block_time* representa la marca de tiempo de generación del bloque.
+
+**Gramática**
+
+``` text
+GetHistory(Source, Name, Id, RollbackId)  
 ```
-GetHistory(Source, Name, Id, RollbackId)
-```
 
-> GetHistory
-  * `Source`
+* GetHistory
 
-    Data source name.
-  * `Name`
+  * Source
 
-    Table name.
-  * `Id`
+    Nombre de la fuente de datos.
 
-    Entry ID.
-  * `RollbackId`
+  * Name
 
-    An optional parameter. If specified, only one record with the specified ID will be returned from the rollback_tx table.
+    Nombre de la tabla de datos.
 
-**Example**
+  * Id
 
-```
+    ID de entrada.
+
+  * RollbackId
+
+    Optional parameter. Si se especifica, devuelve solo un registro de la tabla *rollback_tx* con el ID especificado.
+
+**Ejemplo**
+
+```text
 GetHistory(blocks, BlockHistory, 1)
 ```
 
 ### GetVar {#getvar}
 
-It returns the value of the specified variable that already exists, or an empty string if it does not exist.
-The getvar element is only created when an editable tree is requested. The difference between `GetVar(varname)` and `#varname` is that if varname does not exist, GetVar will return an empty string, while #varname# will be interpreted as a string value.
+Esta función devuelve el valor de la variable especificada si ya existe, de lo contrario devuelve una cadena vacía.
 
-**Syntax**
-```
+Solo se creará el elemento **getvar** al solicitar la edición del árbol. La diferencia entre `GetVar(varname)` y `#varname#` es que si *varname* no existe, *GetVar* devolverá una cadena vacía, mientras que *#varname#* se interpretará como un valor de cadena.
+
+**Gramática**
+
+``` text
 GetVar(Name)
 ```
 
-> GetVar
-  * `Name`
+* GetVar
+
+  * Name
 
     Variable name.
 
-**Example**
+**Ejemplo**
 
-```
+```text
 If(GetVar(name)){#name#}.Else{Name is unknown}
 ```
 
 ### Hint {#hint}
 
-Create a hint element for hints.
+Crear un elemento **hint** para proporcionar una sugerencia o pista.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 Hint(Icon,Title,Text)
 ```
 
-> Hint
-  * `Icon`
+* Hint
 
-    Icon name.
-  * `Title`
+  * Icon
 
-    Hint title.
-  * `Text`
+    Nombre del icono.
 
-    Hint text.
+  * Title
 
-**Example**
+    Título rápido.
 
-```
+  * Text
+
+    Texto rápido.
+
+**Ejemplo**
+
+```text
 Hint(Icon: "icon-wrench",Title:$@1pa_settings$,Text: This is a hint text)
 ```
 
 ### If {#if}
 
-Condition statement.
-Returns the first If or ElseIf child element that satisfies Condition. Otherwise, return the Else child element.
+Declaración de condición. 
 
-**Syntax**
+Devuelve el primer elemento secundario de *If* o *ElseIf* que cumpla con la *Condición*. De lo contrario, devuelve los elementos secundarios de *Else*.
+
+**Gramática**
+
+``` text
+If(Condition){ Body } 
+    [.ElseIf(Condition){ Body }]
+    [.Else{ Body }]
 ```
-If(Condition){ Body}
- [.ElseIf(Condition){ Body }]
- [.Else{ Body }]
-```
 
-> If
-  * `Condition`
+* If
 
-    If the condition is equal to an empty string, 0 or false, it is considered that the condition is not met. In all other cases, this condition is considered to be satisfied.
-  * `Body`
+  * Condition
 
-    Child element.
+    Si la condición es igual a una *empty string*, *0*, o *false*, se considera que no se cumple la condición. En todos los demás casos, se considera que la condición se cumple.
 
-**Example**
+  * Body
 
-```
+    elementos secundarios.
+
+**Ejemplo**
+
+```text
 If(#value#){
    Span(Value)
 }.ElseIf(#value2#){Span(Value 2)
@@ -1169,353 +1401,418 @@ If(#value#){
 ```
 
 ### Image {#image}
-Create a image HTML element.
 
-**Syntax**
-```
+Crear el elemento HTML **imagen**.
+
+**Gramática**
+
+``` text
 Image(Src, Alt, Class)
- [.Style(Style)]
+    [.Style(Style)]
 ```
 
-> Image
-  * `Src`
+* Image
 
-    Image source, file or `data:...`
-  * `Alt`
+  * Src
 
-    Alternative text when the image cannot be displayed.
-  * `Сlass`
+    Imagen de origen, archivo o `data:...`.
 
-    Image class name.
+  * Alt
 
-**Example**
+    Texto alternativo cuando no se puede mostrar una imagen.
 
-```
+  * Сlass
+
+    Nombre de la clase de imagen.
+
+**Ejemplo**
+
+```text
 Image(Src: Binary().ById(#id#), Class: preview).Style(height: 40px; widht 40px;)
 ```
 
 ### ImageInput {#imageinput}
 
-Create an imageinput element to upload an image.
+Crear un elemento **imageinput** para cargar imágenes.
 
-**Syntax**
+**Gramática**
+
+``` text
+ImageInput(Name, Width, Ratio, Format) 
 ```
-ImageInput(Name, Width, Ratio, Format)
-```
 
-> ImageInput
-  * `Name`
+* ImageInput
 
-    Element name.
-  * `Width`
+  * Name
 
-    Width of the cropped image.
-  * `Ratio`
+    Nombre del elemento.
 
-    Aspect ratio or image height.
-  * `Format`
+  * Width
 
-    The format of the uploaded image.
+    Ancho de recorte de la imagen.
 
-**Example**
+  * Ratio
 
-```
+    Relación de aspecto o altura de la imagen.
+
+  * Format
+
+    El formato de carga de imágenes.
+
+**Ejemplo**
+
+```text
 ImageInput(avatar, 100, 2/1)
 ```
 
 ### Include {#include}
 
-Insert the template with a specified name into the page code.
+Inserta la plantilla con el nombre especificado en el código de la página.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 Include(Name)
 ```
 
-> Include
-  * `Name`
+* Include
 
-    Template name.
+  * Name
 
-**Example**
+    Nombre de la plantilla.
 
-```
+**Ejemplo**
+
+```text
 Div(myclass, Include(mywidget))
 ```
 
 ### Input {#input}
 
-Create an input HTML element.
+Crear el elemento HTML **input**.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 Input(Name, Class, Placeholder, Type, Value, Disabled)
- [.Validate(validation parameters)]
- [.Style(Style)]
+    [.Validate(validation parameters)]
+    [.Style(Style)]
 ```
 
-> Input
-  * `Name`
+* Input
 
-    Element name.
-  * `Class`
+  * Name
 
-    Class name.
-  * `Placeholder`
+    Nombre del elemento.
 
-    Prompt for the expected value of the input field.
-  * `Type`
+  * Class
 
-    input type.
-  * `Value`
+    Nombre de la clase.
 
-    Element value.
-  * `Disabled`
+  * Placeholder
 
-    Disable the input element.
-> Validate
+    Mensaje de sugerencia para el valor esperado del campo de entrada.
 
-  Validate the parameter.
-> Style
+  * Type
 
-  The CSS style specified.
-  * `Style`
+    *entrada* tipo.
 
-    CSS style.
+  * Value
 
-**Example**
+    Valor del elemento.
 
-```
+  * Disabled
+
+    Desactivar el elemento *input*.
+
+* Validate
+
+    Validación de parámetros.
+
+* Style
+
+    Especifique los estilos CSS.
+
+  * Style
+
+    Estilos CSS.
+
+**Ejemplo**
+
+```text
 Input(Name: name, Type: text, Placeholder: Enter your name)
 Input(Name: num, Type: text).Validate(minLength: 6, maxLength: 20)
 ```
 
 ### InputErr {#inputerr}
 
-Create an inputerr element to validate the error text.
+Crear el elemento **inputerr** para validar el texto de error.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 InputErr(Name,validation errors)]
 ```
 
-> InputErr
-  * `Name`
+* InputErr
 
-    Corresponds to the name of the [Input](#input) element.
-  * `validation errors`
+  * Name
 
-    Validation error message for one or more parameters.
+    Nombre del elemento correspondiente a [Input](#Input).
 
-**Example**
+  * validation errors
 
-```
-InputErr(Name: name,
-minLength: Value is too short,
-maxLength: The length of the value must be less than 20 characters)
+    Mensaje de error de validación de uno o varios parámetros.
+
+**Ejemplo**
+
+```text
+InputErr(Name: name, 
+    minLength: Value is too short, 
+    maxLength: The length of the value must be less than 20 characters)
 ```
 
 ### InputMap {#inputmap}
 
-Create an text input field for address, able to select coordinates on the map.
+Create un campo de entrada de texto para la dirección. Proporcionar la funcionalidad de seleccionar coordenadas en el mapa.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 InputMap(Name, Type, MapType, Value)
 ```
 
-> InputMap
-  * `Name`
+* InputMap
 
-    Element name.
-  * `Value`
+  * Name
 
-    Default value.
-    The value is an object in string format. For example, `{"coords":[{"lat":number,"lng":number},]}` or `{"zoom":int, "center":{"lat":number,"lng": number}}`. When the InputMap is created with the predefined Value, the address field can be used to save the address value, so the it is not void.
-  * `Type`
+    Nombre del elemento.
 
-    Type of map spot mapping:
-    * `polygon` - indicates the area of a multi-spot closed loop;
-    * `Line` - means a polyline with multiple points without closed loop;
-    * `Point` - indicates a single point coordinate.
-  * `MapType`
+  * Value
 
-    Map type.
-    It has the following values: `hybrid, roadmap, satellite, terrain`.
+    Valor predeterminado.
 
-**Example**
+    Este valor es un objeto en formato de cadena. Por ejemplo, `{"coords":[{"lat":number,"lng":number},]}` o `{"zoom":int, "center":{"lat":number,"lng":number}}`.
 
-```
+    Cuando se crea un InputMap utilizando un valor predefinido *Value*, el campo de dirección puede ser utilizado para almacenar el valor de la dirección, por lo que el campo de dirección no estará vacío.
+
+  * Type
+
+    Tipos de medición de puntos en el mapa:
+
+    - *Polygon* - representa un área cerrada de múltiples puntos;
+    - *Line* - representa una línea de múltiples puntos sin cerrar;
+    - *Point* - representa una sola coordenada.
+
+  * MapType
+
+    Tipo de mapa.
+
+    Este parámetro tiene los siguientes valores: `hybrid`, `roadmap`, `satellite`, `terrain`.
+
+**Ejemplo**
+
+```text
 InputMap(Name: Coords,Type: polygon, MapType: hybrid, Value: `{"zoom":8, "center":{"lat":55.749942860682545,"lng":37.6207172870636}}`)
 ```
 
 ### JsonToSource {#jsontosource}
 
-Create a jsontosource element and fill it with the key-value pairs of a JSON array. The data obtained is put into the Source element, which can be used later in the source input function (e.g. [Table](#table)).
-The records in the result data are sorted alphabetically by JSON key.
+Crear un elemento **jsontosource** y llenarlo con pares de clave-valor de un arreglo JSON. Los datos resultantes se colocan en el elemento *Source*, que luego se puede utilizar en una función de entrada de origen, como [Table](#Table). Los registros en los datos resultantes se ordenan por orden alfabético de las claves JSON.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 JsonToSource(Source, Data)
 ```
 
-> JsonToSource
-  * `Source`
+* JsonToSource
 
-    Data source name.
-  * `Data`
+  * Source
 
-    A JSON object or a variable name containing a JSON object (`#name#`).
+    Nombre de la fuente de datos.
 
-**Example**
+  * Data
 
-```
+    JSON object or variable name containing a JSON object (`#name#`).
+
+**Ejemplo**
+
+```text
 JsonToSource(src, #myjson#)
 JsonToSource(dat, {"param":"value", "param2": "value 2"})
 ```
 
 ### Label {#label}
 
-Create a label HTML element.
+Crear el elemento HTML **label**.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 Label(Body, Class, For)
- [.Style(Style)]
+    [.Style(Style)]
 ```
 
-> Label
-  * `Body`
+* Label
 
-    Child text or element.
-  * `Class`
+  * Body
 
-    Class name.
-  * `For`
+    Subtexto o elemento.
 
-    Bind to a form element.
-> `StyleThe`:CSS style specified.
-  * `Style`
+  * Class
 
-    CSS style.
+    Nombre de la clase.
 
-**Example**
+  * For
 
-```
+    Vincular a un elemento de formulario específico.
+
+* Style
+
+    Especifique los estilos CSS.
+
+  * Style
+
+    Estilos CSS.
+
+**Ejemplo**
+
+```text
 Label(The first item).
 ```
 
 ### LangRes {#langres}
 
-Returns a specific language resource. If requested to edit the tree, the langres element is returned, and you may use the short format symbol $langres$.
-**Syntax**
+Devuelve el recurso de idioma especificado. Si se solicita la edición del árbol, devuelve el elemento **langres**, que se puede referenciar utilizando el símbolo de formato abreviado **\$langres\$.**
 
-```
+**Gramática**
+
+``` text
 LangRes(Name)
 ```
 
-> LangRes
-  * `Name`
+* LangRes
 
-    Name of the language resource.
+  * Name
 
-**Example**
+    Nombre de los recursos de lenguaje.
 
-```
+**Ejemplo**
+
+```text
 LangRes(name)
 LangRes(myres)
 ```
 
 ### LinkPage {#linkpage}
 
-Create a linkpage element, linking to the page.
-**Syntax**
+Crear un elemento **linkpage** que enlace a la página.
 
-```
+**Gramática**
+
+``` text
 LinkPage(Body, Page, Class, PageParams)
- [.Style(Style)]
+    [.Style(Style)]
 ```
 
-> LinkPage
-  * `Body`
+* LinkPage
 
-    Child text or element.
-  * `Page`
+  * Body
 
-    Name of the redirect page.
-  * `Class`
+    Subtexto o elemento.
 
-    Button class name.
-  * `PageParams`
+  * Page
 
-    Redirect page parameters.
-> Style
+    Nombre de la página redirigida.
 
-  The CSS style specified.
-  * `Style`
+  * Class
 
-  CSS styles
-  
-**Example**
+    Nombre de la categoría de botones.
 
-```
+  * PageParams
+
+    Parámetros de la página redirigida.
+
+* Style
+
+    Especifique los estilos CSS.
+
+  * Style
+
+    Estilos CSS
+
+**Ejemplo**
+
+```text
 LinkPage(Class: #style_link# h5 text-bold, Page: @1roles_view, PageParams: "v_role_id=#recipient.role_id#")
 ```
 
 ### Map {#map}
 
-Create a visual map and display coordinates in any format.
+Create un mapa visual y muestra las coordenadas en cualquier formato.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 Map(Hmap, MapType, Value)
 ```
 
-> Map
-  * `Hmap`
+* Map
 
-    Height of an HTML element on the page.
-    The default value is 100.
-  * `Value`
+  * Hmap
 
-    Map value, an object in string format.
-    For example, `{"coords":[{"lat":number,"lng":number},]}` or `{"zoom":int, "center":{"lat":number,"lng": number}}`. If `center` is not specified, the map window will automatically adjust according to the specified coordinates.
-  * `MapType`
+    Altura de los elementos HTML en la página.
 
-    Map type.
-    It has the following values: `hybrid, roadmap, satellite, terrain`.
+    El valor predeterminado es 100.
 
-**Example**
+  * Value
 
-```
+    Valor del mapa, objeto en formato de cadena.
+
+    Por ejemplo, `{"coords":[{"lat":número,"lng":número},]}` o `{"zoom":entero, "center":{"lat":número,"lng":número}}`.
+
+    Si no se especifica `center`, la ventana del mapa se ajustará automáticamente en función de las coordenadas especificadas.
+
+  * MapType
+
+    Tipo de mapa.
+
+    Este parámetro tiene los siguientes valores: `hybrid`, `roadmap`, `satellite`, `terrain`.
+
+**Ejemplo**
+
+```text
 Map(MapType:hybrid, Hmap:400, Value:{"coords":[{"lat":55.58774531752405,"lng":36.97260184619233},{"lat":55.58396161622043,"lng":36.973803475831005},{"lat":55.585222890513975,"lng":36.979811624024364},{"lat":55.58803635636347,"lng":36.978781655762646}],"area":146846.65783403456,"address":"Unnamed Road, Moscow, Russia, 143041"})
 ```
 
 ### MenuGroup {#menugroup}
 
-Create a nested submenu in the menu and return the menugroup element. Before replacing it with the language resource, the name parameter will return the value of Title.
+Crear un submenú anidado en el menú y devolver el elemento **menugroup**. Antes de usar la sustitución de recursos de idioma, el parámetro **name** devuelve el valor de **Title**.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 MenuGroup(Title, Body, Icon)
 ```
-> MenuGroup
 
-  * `Title`
+* MenuGroup
 
-    Name of the menu item.
+  * Title
 
-  * `Body`
+    Nombre del elemento del menú.
 
-    Child elements in a submenu.
+  * Body
 
-  * `Icon`
+    Elementos secundarios en un submenú.
 
-    Icon.
+  * Icon
 
-**Example**
+    Icono.
 
-```
+**Ejemplo**
+
+``` text
 MenuGroup(My Menu){
     MenuItem(Interface, sys-interface)
     MenuItem(Dahsboard, dashboard_default)
@@ -1524,219 +1821,229 @@ MenuGroup(My Menu){
 
 ### MenuItem {#menuitem}
 
-Create a menu item and return the menuitem element.
+Crear un elemento de menú y devolver el elemento **menuitem**.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 MenuItem(Title, Page, Params, Icon)
 ```
 
-> MenuItem
+* MenuItem
 
-  * `Title`
+  * Title
 
-    Name of the menu item.
+    Nombre del elemento del menú.
 
-  * `Page`
+  * Page
 
-    Name of the redirect page.
+    Nombre de la página redirigida.
 
-  * `Params`
+  * Params
 
-    Redirect page parameters.
+    Parámetros de la página redirigida.
 
-  * `Icon`
+  * Icon
 
-    Icon.
+    Icono.
 
-**Example**
+**Ejemplo**
 
-```
+```text
 MenuItem(Title:$@1roles$, Page:@1roles_list, Icon:"icon-pie-chart")
 ```
 
 ### Money {#money}
 
-Returns the string value of exp / 10 ^ digit.
+Returna el valor de cadena de *exp / 10 \^ digit*.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 Money(Exp, Digit)
 ```
 
-> Money
+* Money
 
-  * `Exp`
+  * Exp
 
-    A number in string format.
+    Formato de cadena de números.
 
-  * `Digit`
+  * Digit
 
-    The exponent of 10 in the expression `Exp/10^digit`. The value can be positive or negative, and a positive value determines the number of digits after the decimal point.
+    La expresión `exp/10^digit` tiene un exponente de 10, que puede ser positivo o negativo. Un valor positivo determina la cantidad de decimales después del punto decimal.
 
-**Example**
+**Ejemplo**
 
-```
+```text
 Money(Exp, Digit)
 ```
 
 ### Or {#or}
 
-It returns the result of an if logical operation. All parameters listed in parentheses are separated by commas. If having one parameter that is value is not an empty string, zero or `false`, the parameter value is `true`, otherwise the parameter value is `false`. If the parameter value is `true`, the function returns `1`, otherwise it returns `0`.
+La función devuelve el resultado de la operación lógica **if** con todos los argumentos listados entre paréntesis separados por comas. Si un argumento no es una cadena vacía, cero o `false`, su valor es `true`, de lo contrario su valor es `false`.
 
-**Syntax**
-```
+Si el valor del argumento es `true`, la función devuelve `1`, de lo contrario devuelve `0`.
+
+**Gramática**
+
+``` text
 Or(parameters)
 ```
 
+**Ejemplo**
 
-**Example**
-
-```
+```text
 If(Or(#myval1#,#myval2#), Span(OK))
 ```
 
 ### P {#p}
 
-Create a p HTML element.
+Crear un elemento HTML **p**.
 
-**Syntax**
+**Gramática**
+
+``` text
+P(Body, Class) 
+    [.Style(Style)]
 ```
-P(Body, Class)
- [.Style(Style)]
-```
 
-> P
+* P
 
-  * `Body`
+  * Body
 
-    Child text or element.
+    Subtexto o elemento.
 
-  * `Class`
+  * Class
 
-    Class name.
+    Nombre de la clase.
 
-> Style
+* Style
 
-The CSS style specified.
+    Especifique los estilos CSS.
 
-  * `Style`
+  * Style
 
-    CSS style.
+    Estilos CSS.
 
-**Example**
+**Ejemplo**
 
-```
+```text
 P(This is the first line.
   This is the second line.)
 ```
 
 ### QRcode {#qrcode}
 
-Returns the QR code with the specified text and create a qrcode element.
+Crea un código QR con el texto especificado y genera un elemento **qrcode**.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 QRcode(Text)
 ```
 
-> QRcode
-  * `Text`
+* QRcode
 
-    QR code text.
+  * Text
 
-**Example**
+    Código QR.
 
-```
+**Ejemplo**
+
+```text
 QRcode(#name#)
 ```
 
 ### RadioGroup {#radiogroup}
 
-Create a radiogroup element.
+Crear un elemento **radiogroup**.
 
-**Syntax**
+**Gramática**
+
+``` text
+RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class) 
+    [.Validate(validation parameters)] 
+    [.Style(Style)]
 ```
-RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class)
- [.Validate(validation parameters)]
- [.Style(Style)]
-```
 
-> RadioGroup
+* RadioGroup
 
-  * `Name`
+  * Name
 
-    Element name.
+    Nombre del elemento.
 
-  * `Source`
+  * Source
 
-    Data source obtained from the DBFind or Data function.
+    Desde la fuente de datos obtenida de la función [DBFind](#DBFind) o [Data](#Data).
 
-  * `NameColumn`
+  * NameColumn
 
-    Field name of the data source.
+    Nombre de campo de la fuente de datos.
 
-  * `ValueColumn`
+  * ValueColumn
 
-    Value name of the data source.
-    Fields created with Custom cannot be used in this parameter.
+    Nombre del valor de la fuente de datos.
 
-  * `Value`
+    Los campos creados con [Custom](#data) no deben usarse en este parámetro.
 
-    Default value.
+  * Value
 
-  * `Class`
+    Valor predeterminado.
 
-    Class name.
+  * Class
 
-> Validate
+    Nombre de la clase.
 
-  Validate the parameter.
+* Validate
 
-> Style
+    Validación de parámetros.
 
-  The CCS style specified.
+* Style
 
-  * `Style`
+    Especifique los estilos CSS.
 
-    CSS style.
+  * Style
 
-**Example**
+    Estilos CSS.
 
-```
+**Ejemplo**
+
+```text
 RadioGroup(Name: type_decision, Source: numbers_type_decisions, NameColumn: name, ValueColumn: value)
 ```
 
 ### Range {#range}
 
-Create a range element, use step size Step from From to To (not including To) to fill integer elements. The data generated will be put into Source and can be used later in the function of the source input (e.g. [Table](#table)). If an invalid parameter is specified, an empty Source is returned.
+Crear un elemento **range**, utilizando el paso *Step* desde *From* hasta *To* (sin incluir *To*) para rellenar elementos enteros. Los datos generados se colocarán en *Source*, que se puede utilizar más adelante en una función de entrada de origen (por ejemplo, [Table](#Table)). Si se especifican argumentos no válidos, se devolverá un *Source* vacío.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 Range(Source,From,To,Step)
 ```
 
-> Range
+* Range
 
-  * `Source`
+  * Source
 
-    Data source name.
+    Nombre de la fuente de datos.
 
-  * `From`
+  * From
 
-    Starting value (i = From).
+    Valor inicial (i = From).
 
-  * `To`
+  * To
 
-    End value (i <To).
+    Valor final (i < To).
 
-  * `Step`
+  * Step
 
-    Step of value change. If it is not specified, the default value is 1.
+    El paso de cambio de valor, si no se especifica este parámetro, es 1 por defecto.
 
-**Example**
+**Ejemplo**
 
-```
+```text
 Range(my,0,5)
 SetVar(from, 5).(to, -4).(step,-2)
 Range(Source: neg, From: #from#, To: #to#, Step: #step#)
@@ -1744,350 +2051,363 @@ Range(Source: neg, From: #from#, To: #to#, Step: #step#)
 
 ### Select {#select}
 
-Create a select HTML element.
+Crear un elemento HTML **select**.
 
-**Syntax**
+**Gramática**
+
+``` text
+Select(Name, Source, NameColumn, ValueColumn, Value, Class) 
+    [.Validate(validation parameters)]
+    [.Style(Style)]
 ```
-Select(Name, Source, NameColumn, ValueColumn, Value, Class)
- [.Validate(validation parameters)]
- [.Style(Style)]
-```
 
-> Select
+* Select
 
-  * `Name`
+  * Name
 
-    Element name.
+    Nombre de los elementos.
 
-  * `Source`
+  * Source
 
-    Data source obtained from the [DBFind](#dbfind) or [Data](#data) function.
+    Fuente de datos obtenida de la función [DBFind](#dbfind) o [Data](#data).
 
-  * `NameColumn`
+  * NameColumn
 
-    Field name of the data source.
+    Nombre de campo de la fuente de datos.
 
-  * `ValueColumn`
+  * ValueColumn
 
-    Value name of the data source.
-    Fields created with [Custom](#custom) cannot be used in this parameter.
+    Nombre del valor de la fuente de datos.
 
-  * `Value`
+    Los campos creados con [Custom](#custom) no deben usarse en este parámetro.
 
-    Default value.
+  * Value
 
-  * `Class`
+    Valor predeterminado.
 
-    Class name.
+  * Class
 
-> Validate
+    Nombre de la clase.
 
-  Validate the parameter.
+* Validate
 
-> Style
+    Validación de parámetros.
 
-  The CCS style specified.
+  * Style
 
-  * `Style`
+    Especifique los estilos CSS.
 
-    CSS style.
+  * Style
 
-**Example**
+    Estilos CSS.
 
-```
+**Ejemplo**
+
+```text
 DBFind(mytable, mysrc)
-Select(mysrc, name)
+Select(mysrc, name) 
 ```
 
 ### SetTitle {#settitle}
 
-To set the page title and create a settitle element.
+Crear un elemento **settitle** para establecer el título de la página.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 SetTitle(Title)
 ```
 
-> SetTitle
-  * `Title`
+* SetTitle
 
-    Page title.
+  * Title
 
-**Example**
+    Título de la página.
 
-```
+**Ejemplo**
+
+```text
 SetTitle(My page)
 ```
 
 ### SetVar {#setvar}
 
-Assign the value Value to the specified variable Name.
+Asignar el valor *Value* a la variable especificada *Name*.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 SetVar(Name, Value)
 ```
 
-> SetVar
+* SetVar
 
-  * `Name`
+  * Name
 
     Variable name.
 
-  * `Value`
+  * Value
 
-    Variable value, may contain a reference to another variable.
+    Un valor de variable, que puede contener una referencia a otra variable.
 
-**Example**
+**Ejemplo**
 
-```
+```text
 SetVar(name, John Smith).(out, I am #name#)
-Span(#out#)
+Span(#out#)      
 ```
 
 ### Span {#span}
 
-Create a span HTML element.
+Crear un elemento HTML **span**.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 Span(Body, Class)
- [.Style(Style)]
+    [.Style(Style)]
 ```
 
-> Span
+* Span
 
-  * `Body`
+  * Body
 
-    Child text or element.
+    Subtexto o elemento.
 
-  * `Class`
+  * Class
 
-    Class name.
+    Nombre de la clase.
 
-> Style
+* Style
 
-  The CCS style specified.
+    Especifique los estilos CSS.
 
-  * `Style`
+  * Style
 
-    CSS style.
+    Estilos CSS.
 
-**Example**
+**Ejemplo**
 
-```
+```text
 This is Span(the first item, myclass1).
 ```
 
 ### Strong {#strong}
 
-Create a strong HTML element.
+Crear el elemento HTML **strong**.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 Strong(Body, Class)
 ```
 
-> Strong
+* Strong
 
-  * `Body`
+  * Body
 
-    Child text or element.
+    Subtexto o elemento.
 
-  * `Class`
+  * Class
 
-    Class name.
+    Nombre de la clase.
 
-**Example**
+**Ejemplo**
 
-```
+```text
 This is Strong(the first item, myclass1).
 ```
 
 ### SysParam {#sysparam}
 
-Get the value of a specific parameter in the platform parameter table system_parameters.
+Obtener el valor de un parámetro específico en la tabla de parámetros de la plataforma (*platform ecosystem*).
 
-**Syntax**
+**Gramática**
+
+``` text
+SysParam(Name) 
 ```
-SysParam(Name)
-```
 
-> SysParam
-  * `Name`
+* SysParam
 
-    Name of the platform parameter.
+  * Name
 
-**Example**
+    Nombre del parámetro de la plataforma.
 
-```
+**Ejemplo**
+
+```text
 SysParam(max_columns)
 ```
 
 ### Table {#table}
 
-Create a table HTML element.
+Crear el elemento HTML **table**.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 Table(Source, Columns)
- [.Style(Style)]
+    [.Style(Style)]
 ```
 
-> Table
+* Table
 
-  * `Source`
+  * Source
 
-    Name of a specific data source.
+    El nombre del origen de datos especificado.
 
-  * `Columns`
+  * Columns
 
-    Title and corresponding column name, e.g.: Title1=column1,Title2=column2.
+    Título y nombres de columna correspondientes, por ejemplo: `Título1=columna1, Título2=columna2`.
 
-> Style
+* Style
 
-  The CSS style specified.
+    Especifique los estilos CSS.
 
-  * `Style`
+  * Style
 
-    CSS style.
+    Estilos CSS.
 
-**Example**
+**Ejemplo**
 
-```
+```text
 DBFind(mytable, mysrc)
 Table(mysrc,"ID=id,Name=name")
 ```
 
 ### TransactionInfo {#transactioninfo}
 
-It queries transactions by specified hash and returns information about the executed contracts and their parameters.
+ La función busca una transacción por un valor de hash especificado y devuelve información sobre el contrato ejecutado y sus parámetros.
 
-**Syntax**
-```
+**Gramática**
+
+``` text
 TransactionInfo(Hash)
 ```
 
-> TransactionInfo
-  * `Hash`
+* TransactionInfo
 
-    Transaction hashes in hexadecimal string format.
-> Return value
+  * Hash
 
-  It returns a string in JSON format:
+    Formato de cadena hexadecimal de hash de transacción.
 
-```
-{"contract":"ContractName", "params":{"key": "val"}, "block": "N"}
-```
+**Valor de retorno**
 
-Where:
+La función devuelve una cadena en formato JSON:
 
-* `contract` - Contract name;
-* `params` - Data passed to the contract parameters;
-* `block` - ID of the block that processed the transaction.
+`{"contract":"NombreDelContrato", "params":{"clave": "val"}, "block": "N"}`
 
-**Example**
+Donde:
+  - *contract* - Nombre del contrato;
+  - *params* - Datos que se pasan como parámetros al contrato;
+  - *block* - ID del bloque que procesa la transacción.
+**Ejemplo**
 
-```
+```text
 P(TransactionInfo(#hash#))
 ```
 
 ### VarAsIs {#varasis}
 
-Assigns the value Value to a specific variable Name, which is the name of a specific variable instead of its value.
+Asistente virtual: Asignar el valor *Value* a la variable especificada *Name*. El valor de la variable especificada es el nombre de la variable en lugar de su valor.
 
-For versions with variable substitution, see [SetVar](#setvar).
-**Syntax**
-```
+Para la versión con reemplazo de variables, consulte [SetVar](#setvar).
+
+**Gramática**
+
+``` text
 VarAsIs(Name, Value)
 ```
 
-> VarAsIs
+* VarAsIs
 
-  * `Name`
+  * Name
 
     Variable name.
 
-  * `Value`
+  * Value
 
-    A variable value. Variable name in the value will not be substituted. For example, if Value is example #varname#, then the variable value is also example #varname#.
+    El valor de la variable, incluyendo el nombre de la variable dentro del valor, no será reemplazado. Por ejemplo, si *Value* es `ejemplo #nombredevariable#`, entonces el valor de la variable también será `ejemplo #nombredevariable#`.
 
-**Example**
+El valor de la variable, incluyendo el nombre de la variable dentro del valor, no será reemplazado. Por ejemplo, si *Value* es `example #varname#`, entonces el valor de la variable también será `example #varname#`.
 
-```
+**Ejemplo**
+
+```text
 SetVar(Name,"John")
 VarAsIs(name, I am #Name#)
 Span(#name#) // I am #Name#
 ```
 
-## App styles for mobile devices {#app-styles-for-mobile-devices}
+## Estilo de aplicación adaptado para dispositivos móviles {#app-styles-for-mobile-devices}
 
 ### Layout {#layout}
 
-#### Title {#title}
+#### Título {#title}
 
-* `h1`… `h6`
+-   `h1` \... `h6`
 
-#### Strong-class names {#strong-class-names}
+#### Nombres de clase de énfasis {#strong-class-names}
 
-* `.text-muted`
-* `.text-primary`
-* `.text-success`
-* `.text-info`
-* `.text-warning`
-* `.text-danger`
+-   `.text-muted`
+-   `.text-primary`
+-   `.text-success`
+-   `.text-info`
+-   `.text-warning`
+-   `.text-danger`
 
 #### Color {#color}
 
-* `.bg-danger-dark`
-* `.bg-danger`
-* `.bg-danger-light`
-* `.bg-info-dark`
-* `.bg-info`
-* `.bg-info-light`
-* `.bg-primary-dark`
-* `.bg-primary`
-* `.bg-primary-light`
-* `.bg-success-dark`
-* `.bg-success`
-* `.bg-success-light`
-* `.bg-warning-dark`
-* `.bg-warning`
-* `.bg-warning-light`
-* `.bg-gray-darker`
-* `.bg-gray-dark`
-* `.bg-gray`
-* `.bg-gray-light`
-* `.bg-gray-lighter`
+-   `.bg-danger-dark`
+-   `.bg-danger`
+-   `.bg-danger-light`
+-   `.bg-info-dark`
+-   `.bg-info`
+-   `.bg-info-light`
+-   `.bg-primary-dark`
+-   `.bg-primary`
+-   `.bg-primary-light`
+-   `.bg-success-dark`
+-   `.bg-success`
+-   `.bg-success-light`
+-   `.bg-warning-dark`
+-   `.bg-warning`
+-   `.bg-warning-light`
+-   `.bg-gray-darker`
+-   `.bg-gray-dark`
+-   `.bg-gray`
+-   `.bg-gray-light`
+-   `.bg-gray-lighter`
 
-#### Grid {#grid}
+#### Cuadrícula {#grid}
 
-* `.row`
-* `.row.row-table`
-* `.col-xs-1`… `.col-xs-12`, only used in `.row.row-table`.
+-   `.row`
+-   `.row.row-table`
+-   `.col-xs-1` a `.col-xs-12` solo se pueden usar dentro de `.row.row-table`.
 
 #### Panel {#panel}
 
-* `.panel`
-* `.panel.panel-heading`
-* `.panel.panel-body`
-* `.panel.panel-footer`
+-   `.panel`
+-   `.panel.panel-heading`
+-   `.panel.panel-body`
+-   `.panel.panel-footer`
 
-#### Form {#form-app}
+#### Formulario {#form-app}
 
-* `.form-control`
+-   `.form-control`
 
-#### Button {#button-app}
+#### Botón {#button-app}
 
-* `.btn.btn-default`
-* `.btn.btn-link`
-* `.btn.btn-primary`
-* `.btn.btn-success`
-* `.btn.btn-info`
-* `.btn.btn-warning`
-* `.btn.btn-danger`
+-   `.btn.btn-default`
+-   `.btn.btn-link`
+-   `.btn.btn-primary`
+-   `.btn.btn-success`
+-   `.btn.btn-info`
+-   `.btn.btn-warning`
+-   `.btn.btn-danger`
 
-#### Icon {#icon}
+#### Icono {#icon}
 
-* All fa-class icons are from FontAwesome: `fa fa-<icon-name></icon-name>`.
-* All icon-class icons are from SimpleLineIcons: `icon-<icon-name>`.
+- Todos los iconos de la clase "fa" provienen de FontAwesome: `fa fa-<nombre-del-icono></nombre-del-icono>`.
+- Todos los iconos de la clase "icon" provienen de SimpleLineIcons: `icon-<nombre-del-icono>`.

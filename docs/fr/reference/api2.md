@@ -307,7 +307,7 @@ Content-Type: application/json
 ```json
 {
     "uid": "4999317241855959593",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....... .I7LY6XX4IP12En6nr8UPklE9U4qicqg3K9KEzGq_8zE"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9........I7LY6XX4IP12En6nr8UPklE9U4qicqg3K9KEzGq_8zE",
     "network_id": "4717243765193692211"
 }
 ```
@@ -519,6 +519,9 @@ GET
 - `utxo`
 
     > UTXO account balance.
+-   *digits*
+
+    > precision.
 
 **Response Example**
 
@@ -529,6 +532,7 @@ Content-Type: application/json
     "amount": "877450000000000",
     "money": "877.45",
     "total": "877450000000000",
+    "digits": 6,
     "utxo": "0"
 } 
 ```
@@ -584,7 +588,7 @@ GET
 
 **Response Example**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 { "1":
@@ -776,7 +780,7 @@ GET
 
 ``` text
 200 (OK)
-Content-Type: *
+Content-Type: application/octet-stream
 Content-Disposition: attachment
 
 SetVar(this_page, @1voting_list).(this_table, @1votings)
@@ -963,8 +967,8 @@ Content-Type: application/json
     >
     > For details, please refer to [DBFind](../ topics/script.md#dbfind) where syntax
 
-``` text
-GET
+```text
+POST
 /api/v2/listWhere/mytable
 ```
 
@@ -1083,7 +1087,7 @@ Content-Type: application/json
 
 
 
-## Get Metrics Interface
+## Get Metrics Interface {#get-metrics-interface}
 
 ### metrics/keys {#metrics-keys}
 
@@ -1639,7 +1643,7 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**GET**/ Returns the *sections* of the current ecosystem
+**GET**/ Returns the *sections* of the current ecosystem 
 List of table entries, you can set the offset and the number of entries.
 
 If *role_access*
@@ -1777,12 +1781,12 @@ Content-Type: application/json
 
 ```text
 GET
-/API/V2/ROW/MyTable/name/John? Columns = name
-`` `
+/api/v2/row/mytable/name/John?columns=name
+```
 
 **Response**
 
-- `Value`
+- `value`
 
      > Array of receiving column values
      Forecast
@@ -1796,13 +1800,13 @@ GET
 
 ```text
 200 (OK)
-Content-type: Application/JSON
-{{
-     "Values": {
-     "ID": "10",
-     "name": "John",
-     }
-}
+Content-Type: application/json
+{
+    "values": {
+    "id": "10",
+    "name": "John",
+    }
+}   
 ```
 
 **Error Response**
@@ -2048,20 +2052,20 @@ Content-Type: application/json
         "token_id": "1", 
         "wallet_id": "0", 
         "value": "contract MainCondition {
-conditions {
-  if(EcosysParam(`founder_account`)! =$key_id)
-  {
-      warning `Sorry, you dont have access to this action.`
-    }
-  }
-}",
-"address": "0000-0000-0000-0000-0000-0000",
-"conditions": "ContractConditions(`MainCondition`)"        
- }, 
-...
-  ]
-} 
-```
+                conditions {
+                if(EcosysParam(`founder_account`)!=$key_id)
+                {
+                    warning `Sorry, you dont have access to this action.`
+                }
+                }
+            }",
+            "address":"0000-0000-0000-0000-0000",
+            "conditions":"ContractConditions(`MainCondition`)"
+        },
+    ...
+    ]
+ }
+ ```
 
 ### contract/{name} {#contract-name}
 
@@ -2118,9 +2122,7 @@ GET
     > >
     > > > Parameter name.
     > >
-    > > - 
-    > >
-    > > `type`
+    > > - `type`
     > >
     > > Parameter type.
     > >
@@ -2604,9 +2606,10 @@ Content-Type: application/json
 
 **POST**
 
-Returns the number of JSON objects for the page code from the **template** parameter, if the optional parameter
-**source** is specified as
-`true or 1`, then this JSON object tree does not perform any functions and receive data. This JSON object tree can be used in the visual page designer.
+Returns the number of JSON objects for the page code from the **template** parameter, 
+if the optional parameter **source** is specified as `true or 1`, 
+then this JSON object tree does not perform any functions and receive data. 
+This JSON object tree can be used in the visual page designer.
 
 This request does not require login authorization.
 

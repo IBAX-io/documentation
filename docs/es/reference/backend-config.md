@@ -1,60 +1,64 @@
-# Server Configuration File {#server-configuration-file}
+# Archivo de configuración del servidor {#server-configuration-file}
 
-In this section, we will introduce parameters in the server configuration file. 
-## Introduction to the server configuration file {#introduction-to-the-server-configuration-file}
+Esta sección describe los parámetros del archivo de configuración del servidor.
 
-The server configuration file defines the node configuration of IBAX.
-## Location {#location}
+## Introducción al archivo de configuración del servidor {#introduction-to-the-server-configuration-file}
 
-This file is located in the working directory of the server and is named `config.toml`.
-## Sections {#sections}
+El archivo de configuración del servidor define la configuración del nodo de la plataforma de blockchain IBAX.
 
-The configuration file consists the following sections:
+## Ubicación {#location}
 
-> general section
+Este archivo se encuentra en el directorio de trabajo del servidor y se llama `config.toml`.
 
-It defines the working directory DataDir, the first block directory FirstBlockPath and other parameters.
+## Secciones {#sections}
+
+El archivo de configuración tiene las siguientes secciones:
+
+> Parte normal
+
+    Se define el directorio de trabajo DataDir, la ruta del primer bloque FirstBlockPath y otros parámetros.
 
 > [TCPServer]
 
-It defines the TCP service parameters.
+    Se definen los parámetros del servicio TCP.
 
-TCPServer is used for the network interaction between nodes.
+    TCPServer se utiliza para la interacción de red entre nodos.
 
 > [HTTP]
 
-It defines the HTTP service parameters.
+    Se definen los parámetros del servicio HTTP.
 
-HTTPServer provides RESTful APIs.
+    HTTPServer proporciona una API RESTful.
 
 > [DB]
 
-It defines parameters of the PostgreSQL node database.
+    Se definen los parámetros de la base de datos del nodo PostgreSQL.
 
 > [StatsD]
 
-It defines parameters of the node operation indicator collector StatsD.
+    Se definen los parámetros del recolector de métricas de operación del nodo StatsD.
 
 > [Centrifugo]
 
-It defines parameters of the notification service Centrifugo.
+    Se definen los parámetros del servicio de notificación Centrifugo.
 
 > [Log]
 
-It defines parameters of the log service Log.
+    Se definen los parámetros del servicio de registro Log.
 
 > [TokenMovement]
 
-It defines parameters of the token circulation service TokenMovement.
+    Se definen los parámetros del servicio de circulación de tokens TokenMovement.
 
-## An example configuration file {#an-example-configuration-file}
-```
-PidFilePath = "/IBAX-data/go-ibax.pid"
-LockFilePath = "/IBAX-data/go-ibax.lock"
-DataDir = "/IBAX-data"
-KeysDir = "/IBAX-data"
-TempDir = "/var/folders/_l/9md_m4ms1651mf5pbng1y1xh0000gn/T/IBAX-temp"
-FirstBlockPath = "/IBAX-data/1block"
+## Ejemplo de archivo de configuración {#an-example-configuration-file}
+
+``` js
+PidFilePath = "/ibax-data/go-ibax.pid"
+LockFilePath = "/ibax-data/go-ibax.lock"
+DataDir = "/ibax-data"
+KeysDir = "/ibax-data"
+TempDir = "/var/folders/_l/9md_m4ms1651mf5pbng1y1xh0000gn/T/ibax-temp"
+FirstBlockPath = "/ibax-data/1block"
 TLS = false
 TLSCert = ""
 TLSKey = ""
@@ -72,7 +76,7 @@ NodesAddr = []
   Port = 7079
 
 [DB]
-  Name = "IBAX"
+  Name = "ibax"
   Host = "127.0.0.1"
   Port = 5432
   User = "postgres"
@@ -82,7 +86,7 @@ NodesAddr = []
 [StatsD]
   Host = "127.0.0.1"
   Port = 8125
-  Name = "IBAX"
+  Name = "ibax"
 
 [Centrifugo]
   Secret = "127.0.0.1"

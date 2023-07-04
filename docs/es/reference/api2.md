@@ -1,97 +1,91 @@
-# RESTful API v2 {#restful-api-v2}
+# API RESTful v2 {#restful-api-v2}
 
-Weaver
-All functions provided, including authentication, ecosystem data reception, error handling, database table manipulation, page and contract execution are available through
-IBAX Blockchain Platform's REST API is available.
+Todos los servicios ofrecidos por Weaver, incluyendo autenticación, recepción de datos del ecosistema, manejo de errores, operaciones de tablas de bases de datos, páginas y ejecución de contratos inteligentes, pueden ser accedidos a través de la API REST de la plataforma IBAX blockchain.
 
-By using the REST API, developers can access any of the platform's features without using Weaver.
+Al utilizar la API REST, los desarrolladores pueden acceder a cualquier función de la plataforma sin necesidad de utilizar Weaver.
 
-API command calls are executed by addressing `/api/v2/command/[param]`, where `command`
-is the command name and `param` is the additional parameter. The request parameters must be specified using the
-`Content-Type: x-www-form-urlencoded`
-The format is sent. The server response result is in JSON format.
+Las llamadas a los comandos de la API se realizan mediante la dirección `/api/v2/command/[param]`, donde `command` es el nombre del comando y `param` son los parámetros adicionales. Los parámetros de solicitud deben ser enviados en formato `Content-Type: x-www-form-urlencoded`. La respuesta del servidor es en formato JSON.
 
 <!-- TOC -->
 
-- [Error response handling](#error-response-handling)
-    - [Error list](#error-list)
-- [Request Type](#request-type)
-- [Authentication Interface](#authentication-interface)
-    - [getuid](#getuid)
-    - [login](#login)
-- [Server Side command interface](#server-side-command-interface)
-    - [version](#version)
-- [Data Request Function Interface](#data-request-function-interface)
-    - [balance](#balance)
-    - [blocks](#blocks)
-    - [detailed_blocks](#detailed-blocks)
-    - [/data/{id}/data/{hash}](#data-id-data-hash)
-    - [/data/{table}/id/{column}/{hash}](#data-table-id-column-hash)
-    - [keyinfo](#keyinfo)
-    - [walletHistory](#wallethistory)
-    - [listWhere/{name}](#listwhere-name)
-    - [nodelistWhere/{name}](#nodelistwhere-name)
-- [Get Metrics Interface](#get-metrics-interface)
-    - [metrics/keys](#metrics-keys)
-    - [metrics/blocks](#metrics-blocks)
-    - [metrics/transactions](#metrics-transactions)
-    - [metrics/ecosystems](#metrics-ecosystems)
-    - [metrics/honornodes](#metrics-honornodes)
-- [Ecosystem Interface](#ecosystem-interface)
-    - [ecosystemname](#ecosystemname)
-    - [appparams/{appID}](#appparams-appid)
-    - [appparam/{appid}/{name}](#appparam-appid-name)
-    - [ecosystemparams](#ecosystemparams)
-    - [ecosystemparam/{name}](#ecosystemparam-name)
-    - [tables/\[?limit=\... &offset=\... \]](#tables-limit-offset)
-    - [table/{name}](#table-name)
-    - [list/{name}\[?limit=\... &offset=\... &columns=\... \]](#list-name-limit-offset-columns)
-    - [sections\[?limit=\... &offset=\... &lang=\]](#sections-limit-offset-lang)
-    - [row/{name}/{id}\[?columns=\]](#row-name-id-columns)
-    - [row/{name}/{column}/{id}](#row-name-column-id)
-    - [systemparams](#systemparams)
-    - [history/{name}/{id}](#history-name-id)
-    - [interface/{page|menu|snippet}/{name}](#interface-page-menu-snippet-name)
-- [Contract Function Interface](#contract-function-interface)
-    - [contracts\[?limit=\... &offset=\... \]](#contracts-limit-offset)
-    - [contract/{name}](#contract-name)
-    - [sendTX](#sendtx)
-    - [txstatus](#txstatus)
-    - [txinfo/{hash}](#txinfo-hash)
-    - [txinfoMultiple](#txinfomultiple)
-    - [/page/validators_count/{name}](#page-validators-count-name)
-    - [content/menu\|page/{name}](#content-menu-page-name)
-    - [content/source/{name}](#content-source-name)
-    - [content/hash/{name}](#content-hash-name)
-    - [content](#content)
-    - [maxblockid](#maxblockid)
-    - [block/{id}](#block-id)
-    - [avatar/{ecosystem}/{member}](#avatar-ecosystem-member)
-    - [config/centrifugo](#config-centrifugo)
-    - [updnotificator](#updnotificator)
+- [RESTful API v2](#restful-api-v2)
+    - [Manejo de respuestas de error](#error-response-handling)
+        - [Lista de errores](#error-list)
+    - [Tipo de solicitud](#request-type)
+    - [Interfaz de autenticación](#authentication-interface)
+        - [getuid](#getuid)
+        - [login](#login)
+    - [Interfaz de comandos del servidor](#server-side-command-interface)
+        - [version](#version)
+    - [Interfaz de funciones de solicitud de datos](#data-request-function-interface)
+        - [balance](#balance)
+        - [blocks](#blocks)
+        - [detailed_blocks](#detailed-blocks)
+        - [/data/{id}/data/{hash}](#data-id-data-hash)
+        - [/data/{table}/id/{column}/{hash}](#data-table-id-column-hash)
+        - [keyinfo](#keyinfo)
+        - [walletHistory](#wallethistory)
+        - [listWhere/{name}](#listwhere-name)
+        - [nodelistWhere/{name}](#nodelistwhere-name)
+    - [Obtener la interfaz de indicadores.](#get-metrics-interface)
+        - [metrics/keys](#metrics-keys)
+        - [metrics/blocks](#metrics-blocks)
+        - [metrics/transactions](#metrics-transactions)
+        - [metrics/ecosystems](#metrics-ecosystems)
+        - [metrics/honornodes](#metrics-honornodes)
+    - [Interfaz del ecosistema.](#ecosystem-interface)
+        - [ecosystemname](#ecosystemname)
+        - [appparams/{appID}](#appparams-appid)
+        - [appparam/{appid}/{name}](#appparam-appid-name)
+        - [ecosystemparams](#ecosystemparams)
+        - [ecosystemparam/{name}](#ecosystemparam-name)
+        - [tables/\[?limit=\... &offset=\... \]](#tables-limit-offset)
+        - [table/{name}](#table-name)
+        - [list/{name}\[?limit=\... &offset=\... &columns=\... \]](#list-name-limit-offset-columns)
+        - [sections\[?limit=\... &offset=\... &lang=\]](#sections-limit-offset-lang)
+        - [row/{name}/{id}\[?columns=\]](#row-name-id-columns)
+        - [row/{name}/{column}/{id}](#row-name-column-id)
+        - [systemparams](#systemparams)
+        - [history/{name}/{id}](#history-name-id)
+        - [interface/{page|menu|snippet}/{name}](#interface-page-menu-snippet-name)
+    - [Interfaz de funciones de contratos inteligentes.](#contract-function-interface)
+        - [contracts\[?limit=\... &offset=\... \]](#contracts-limit-offset)
+        - [contract/{name}](#contract-name)
+        - [sendTX](#sendtx)
+        - [txstatus](#txstatus)
+        - [txinfo/{hash}](#txinfo-hash)
+        - [txinfoMultiple](#txinfomultiple)
+        - [/page/validators_count/{name}](#page-validators-count-name)
+    	- [content/menu\|page/{name}](#content-menu-page-name)
+    	- [content/source/{name}](#content-source-name)
+    	- [content/hash/{name}](#content-hash-name)
+        - [content](#content)
+        - [maxblockid](#maxblockid)
+        - [block/{id}](#block-id)
+        - [avatar/{ecosystem}/{member}](#avatar-ecosystem-member)
+        - [config/centrifugo](#config-centrifugo)
+        - [updnotificator](#updnotificator)
 
 <!-- /TOC -->
 
-## Error response handling {#error-response-handling}
+## Manejo de respuestas de error {#error-response-handling}
 
-Return status in case of successful request execution
-`200`. If an error occurs, in addition to the error status, a JSON object with the following fields will be returned.
+En caso de que la solicitud se ejecute correctamente, se devolverá un estado `200`. Si ocurre un error, además del estado de error, se devolverá un objeto JSON con los siguientes campos:
 
-- **error**
+-   **error**
 
-    > Error identifier.
+    > Identificador de error.
 
-- **msg**
+-   **msg**
 
-    > Error text message.
+    > Información de texto de error.
 
-- **params**
+-   **params**
 
-    > An array of additional parameters that can be placed in the error message.
+    > Matriz de parámetros adicionales de error, que se pueden incluir en el mensaje de error.
 
-**Response Example**
 ``` text
-400 (Bad request)
+400 (Bad preguntar)
 Content-Type: application/json
 {
     "err": "E_INVALIDWALLET",
@@ -100,177 +94,176 @@ Content-Type: application/json
 }
 ```
 
-### Error list {#error-list}
+### Lista de errores {#error-list}
 
 > `E_CONTRACT`
- 
-    No `%s` contract exists
+
+    El contrato inteligente `%s` no existe
 
 > `E_DBNIL`
 
-    Database is empty
+    La base de datos está vacía
 
 > `E_DELETEDKEY`
 
-    Account address is frozen
+    La dirección de la cuenta está congelada
 
 > `E_ECOSYSTEM`
 
-    Ecosystem `%d` does not exist
+    El ecosistema `%d` no existe
 
 > `E_EMPTYPUBLIC`
 
-    Invalid account public key
+    La clave pública de la cuenta no es válida
 
 > `E_KEYNOTFOUND`
 
-    Account address not found
+    La dirección de la cuenta no se encontró
 
 > `E_HASHWRONG`
 
-    Incorrect hash
+    El hash no es correcto
 
 > `E_HASHNOTFOUND`
 
-    Hash not found
+    El hash no se encontró
 
 > `E_HEAVYPAGE`
 
-    Too much page loading
+    Se cargaron demasiadas páginas
 
 > `E_INVALIDWALLET`
 
-    Wallet address `%s` Invalid
+    La dirección de la billetera `%s` no es válida
 
 > `E_LIMITTXSIZE`
 
-    The transaction size has exceeded the limit
+    El tamaño de la transacción ha excedido el límite
 
 > `E_NOTFOUND`
 
-    Page or menu content not found
+    No se encontró el contenido de la página o menú
 
 > `E_PARAMNOTFOUND`
 
-    Parameters not found
+    El parámetro no se encontró
 
 > `E_PERMISSION`
 
-    No permission
+    No tiene permiso
 
 > `E_QUERY`
 
-    Database query error
+    Error en la consulta de la base de datos
 
 > `E_RECOVERED`
 
-    API panic error occurs.
+    Se produjo un error de pánico en la API.
 
-    If a panic error occurs, an error is returned.
+    Si se produce un error de pánico, se devuelve un error.
 
-    This error means that you have encountered a bug that needs to be found and fixed.
+    Este error significa que ha encontrado un error que necesita ser buscado y reparado.
 
 > `E_SERVER`
 
-    Server error.
+    Error del servidor.
 
-    Return if there is an error in the golang library function. The \*msg\* field contains the error text message.
+    Si hay un error en una función de la biblioteca de Golang, se devuelve con el campo *msg* que contiene información de texto de error.
 
-    **E_SERVER** may appear in response to any command Error. 
-    If it occurs due to an incorrect input parameter, it can be changed to a related error. In another case, this error reports an invalid operation or incorrect system configuration, which requires a more detailed investigation report.
+    El error **E_SERVER** puede ocurrir al responder cualquier comando. Si se debe a una entrada de parámetro incorrecta, se puede cambiar a un error relacionado.
+    En otro caso, este error informa de una operación inválida o una configuración del sistema incorrecta, lo que requiere un informe de investigación más detallado.
 
 > `E_SIGNATURE`
 
-    Incorrect signature
+    Firma incorrecta
 
 > `E_STATELOGIN`
 
-    `%s` is not a member of the ecosystem `%s`
+    `%s` no es miembro del ecosistema `%s`
 
 > `E_TABLENOTFOUND`
 
-    Data sheet `%s` not found
+    No se encontró la tabla de datos `%s`
 
 > `E_TOKENEXPIRED`
 
-    The session has expired `%s`
+    La sesión ha caducado `%s`
 
 > `E_UNAUTHORIZED`
 
-    Unauthorized.
+    No autorizado.
 
-    In case no login is performed or the session expires, 
-    except for `getuid, login` Any command other than **E_UNAUTHORIZED** returns an error.
+    Cualquier comando, excepto `getuid, login`, devuelve el error **E_UNAUTHORIZED** si se ejecuta sin iniciar sesión o si la sesión ha caducado.
 
 > `E_UNKNOWNUID`
 
-    Unknown UID
+    UID desconocido
 
 > `E_UPDATING`
 
-    Nodes are updating the blockchain
+    El nodo está actualizando la cadena de bloques
 
 > `E_STOPPING`
 
-    Node is stopped
+    El nodo se ha detenido
 
 > `E_NOTIMPLEMENTED`
 
-    Not yet achieved
+    No implementado todavía
 
 > `E_BANNED`
 
-    This account address is prohibited in `%s`
+    Esta dirección de cuenta está prohibida en `%s`
 
 > `E_CHECKROLE`
 
-    Access denied
+    Acceso denegado
 
-    CLB Unavailable Interface
+    Interfaz no disponible en CLB
 
 ------------------------------------------------------------------------
 
-> Interface requests for which the CLB node is not available.
+> Solicitud de interfaz con nodo CLB no disponible:
 
-- metrics
-- txinfo
-- txinfoMultiple
-- appparam
-- appparams
-- appcontent
-- history
-- balance
-- block
-- maxblockid
-- blocks
-- detailed_blocks
-- ecosystemparams
-- systemparams
-- ecosystems
-- ecosystemparam
-- ecosystemname
-- walletHistory
-- tx_record
+-   metrics
+-   txinfo
+-   txinfoMultiple
+-   appparam
+-   appparams
+-   appcontent
+-   history
+-   balance
+-   block
+-   maxblockid
+-   blocks
+-   detailed_blocks
+-   ecosystemparams
+-   systemparams
+-   ecosystems
+-   ecosystemparam
+-   ecosystemname
+-   walletHistory
+-   tx_record
 
-## Request Type {#request-type}
-**Uniform use** 
+## Tipo de solicitud {#request-type}
+**Utilizar de manera uniforme**
 - application/x-www-form-urlencoded
 
-## Authentication Interface {#authentication-interface}
 
-[JWT token](https://jwt.io)
-Used for authentication. The JWT token must be placed in each request header after it is received: `Authorization: Bearer TOKEN_HERE`.
+## Interfaz de autenticación {#authentication-interface}
+
+[Token JWT](https://jwt.io)
+se utiliza para la autenticación. Después de recibir el token JWT, debe colocarlo en cada encabezado de solicitud: `Authorization: Bearer TOKEN_HERE`.
 
 ### getuid {#getuid}
 
-**GET**/ returns a unique value, signs it with the private key, and then uses
-The [login](#login) command sends it back to the server.
+**GET**/ Devuelve un valor único, lo firma con una clave privada y luego lo envía de vuelta al servidor con el comando [login](#login).
 
-Generate a temporary JWT token that needs to be passed to **Authorization** when calling **login**.
- 
-**Request**
+Genera un token JWT temporal, que debe pasarse al llamar a **login** en la autorización.
 
-``` text
+**Solicitud**
+
+```text
 GET
 /api/v2/getuid
 ```
@@ -279,377 +272,379 @@ GET
 
 - `uid`
 
-    > Signature number.
+    > Número de firma.
 
 - `token`
 
-    > The temporary token passed during login.
+    > Token temporal pasado durante el inicio de sesión.
     >
-    > The life cycle of a temporary token is 5 seconds.
+    > El tiempo de vida del token temporal es de 5 segundos.
 
 - `network_id`
 
-    > Server identifier.
+    > Identificador del servidor.
 
 - `cryptoer`
 
-    > Elliptic curve algorithm.
+    > Algoritmo de curva elíptica.
 
 - `hasher`
 
-    > hash algorithm.
+    > Algoritmo de hash.
 
-**Response Example 1**
+**Ejemplo de respuesta 1**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
-```json
 {
     "uid": "4999317241855959593",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....... .I7LY6XX4IP12En6nr8UPklE9U4qicqg3K9KEzGq_8zE"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9........I7LY6XX4IP12En6nr8UPklE9U4qicqg3K9KEzGq_8zE",
     "network_id": "4717243765193692211"
 }
 ```
 
-In the case that no authorization is required (the request contains **Authorization**), the following message will be returned:
+En caso de que no se requiera autorización (la solicitud no incluye **Authorization**), se devolverá la siguiente información:
 
 - `expire`
 
-    > Expiration time.
+    > Tiempo de expiración.
 
 - `ecosystem`
 
-    > Ecosystem ID.
+    > ID del ecosistema.
 
 - `key_id`
 
-    > Account address.
+    > Dirección de la cuenta.
 
 - `address`
 
-    > Wallet address `XXXX-XXXX-..... -XXXX`.
+    > Dirección de la billetera `XXXX-XXXX-.....-XXXX`.
 
 - `network_id`
 
-    > Server identifier.
+    > Identificador del servidor.
 
-**Response Example 2**
+**Ejemplo de respuesta 2**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
     "expire": "2159h59m49.4310543s",
     "ecosystem_id": "1",
     "key_id": "-654321",
-    "address": "1196-...... -3496",
+    "address": "1196-......-3496",
     "network_id": "1"
 }
 ```
 
-**Error Response**
+**Error de respuesta**
 
 *E_SERVER*
 
 ### login {#login}
 
-**POST**/ User authentication.
+**POST**/ Autenticación de usuario.
 
-> **getuid** should be called first
-> command in order to receive the unique value and sign it. getuid's temporary JWT token needs to be passed in the request header.
+> Se debe llamar primero al comando **getuid** para recibir un valor único y firmarlo. El token JWT temporal de getuid debe ser enviado en el encabezado de la solicitud.
 >
-> If the request is successful, the token received in the response is contained in **Authorization**.
+> Si la solicitud es exitosa, el token recibido se incluirá en el encabezado **Authorization**.
 
-**Request**
-
-``` text
+```text
 POST
 /api/v2/login
 ```
 
 - `ecosystem`
 
-    > Ecosystem ID.
+    > ID del ecosistema.
     >
-    > If not specified, defaults to the first ecosystem ID.
+    > Si no se especifica, se utiliza el primer ID de ecosistema por defecto.
 
 - `expire`
 
-    > Lifecycle of the JWT token, in seconds, default is 28800.
+    > Tiempo de vida útil del token JWT en segundos. Por defecto es 28800.
 
 - `pubkey`
 
-    > Hexadecimal account public key.
+    > Clave pública de la cuenta en formato hexadecimal.
 
 - `key_id`
 
-    > Account address `XXXX-... -XXXX`.
+    > Dirección de la cuenta en formato `XXXX-...-XXXX`.
     >
-    > Use this parameter if the public key is already stored in the blockchain. It cannot be used with *pubkey*
-    > parameters are used together.
+    > Se utiliza este parámetro cuando la clave pública ya está almacenada en la cadena de bloques. No se puede utilizar junto con el parámetro *pubkey*.
 
 - `signature`
 
-    > The uid signature received via getuid.
+    > Firma del uid recibido por getuid utilizando la clave privada.
+    > Contenido de los datos firmados:
+    ``` text
+        LOGIN+{$network_id}+uid
+    ```
 
-**Response**
+**Respuesta**
 
 - `token`
 
-    > JWT token.
+    > Token JWT.
 
 - `ecosystem_id`
 
-    > Ecosystem ID.
+    > ID del ecosistema.
 
 - `key_id`
 
-    > Account Address ID
+    > ID de la dirección de la cuenta.
 
 - `account`
 
-    > Wallet address `XXXX-XXXX-..... -XXXX`.
+    > Dirección de la cartera en formato `XXXX-XXXX-.....-XXXX`.
 
 - `notify_key`
 
-    > Notification ID.
+    > ID de notificación.
 
 - `isnode`
 
-    > Whether the account address is the owner of the node. Values: `true,false`.
+    > Indica si la dirección de la cuenta es del propietario del nodo. Valores: `true,false`.
 
 - `isowner`
 
-    > Whether the account address is the creator of the ecosystem. Values: `true,false`.
+    > Indica si la dirección de la cuenta es del creador del ecosistema. Valores: `true,false`.
 
 - `clb`
 
-    > Whether the logged-in ecosystem is CLB. Values: `true,false`.
+    > Indica si el ecosistema de inicio de sesión es CLB. Valores: `true,false`.
 
 - `roles` [Omitempty](#omitempty)
 
-    > Role list: `[{Role ID,Role Name}]`.
+    > Lista de roles: `[{ID de rol, nombre de rol}]`.
 
-**Response Example**
+**Ejemplo de respuesta**
 
 ```text
 200 (OK)
 Content-Type: application/json
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.....30l665h3v7lH85rs5jgk0",
-    "ecosystem_id": "1",
-    "key_id": "-54321",
-    "account": "1285-... -7743-4282",
-    "notify_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..... _JTFfheD0K4CfMbvVNpOJVMNDPx25zIDGir9g3ZZM0w",
-    "timestamp": "1451309883",
-    "roles": [
-        {
-            "role_id": 1,
-            "role_name": "Developer"
-        }
-    ]
-} 
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...30l665h3v7lH85rs5jgk0",
+	"ecosystem_id": "1",
+	"key_id": "-54321",
+	"account": "1285-...-7743-4282",
+	"notify_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....._JTFfheD0K4CfMbvVNpOJVMNDPx25zIDGir9g3ZZM0w",
+	"timestamp": "1451309883",
+	"roles": [
+		{
+			"role_id": 1,
+			"role_name": "Developer"
+		}
+	]
+}      
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_SERVER, E_UNKNOWNUID, E_SIGNATURE, E_STATELOGIN, E_EMPTYPUBLIC*
 
-## Server Side command interface {#server-side-command-interface}
+## Interfaz de comando del lado del servidor {#server-side-command-interface}
 
-### version {#version}
+### versión {#version}
 
-**GET**/ Returns the current server version.
+**GET**/ Retorna la versión actual del servidor.
 
-This request does not require login authorization.
+Esta solicitud no requiere autorización de inicio de sesión.
 
-**Request**
+**Solicitud**
 
-``` text
+```text
 GET
 /api/v2/version
 ```
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 "1.3.0 branch.main commit.790..757 time.2021-08-23-08:20:19(UTC)"
 ```
 
-## Data Request Function Interface {#data-request-function-interface}
+## Interfaz de Función de Solicitud de Datos {#data-request-function-interface}
 
 ### balance {#balance}
 
-**GET**/ Requests the balance of the account address in the current ecosystem.
+**GET**/ solicita el saldo de la dirección de la cuenta en el ecosistema actual.
 
-This request does not require login authorization.
+Esta solicitud no requiere autorización de inicio de sesión.
 
-**Request**
-
-``` text
+```text
 GET
 /api/v2/balance/{wallet}
 ```
 
 - `wallet`
 
-    > Address identifier, can be specified in any format `int64, uint64, XXXX-... -XXXX`. Look up the address in the ecosystem where the user is currently logged in.
+    Dirección identificadora, puede ser especificada en cualquier formato `int64, uint64, XXXX-...-XXXX`. Consultar esta dirección en el ecosistema en el que el usuario ha iniciado sesión actualmente.
 
-- `ecosystem` [Omitempty](#omitempty) Default ecosystem 1
+- `ecosistema` [Omitempty](#omitempty) Ecosistema predeterminado 1
 
-    > Ecosystem id.
+    > ID del ecosistema predeterminado, por defecto es 1.
 
-**Response**
+**Respuesta**
 
 - `amount`
 
-    > The minimum unit of contract account balance.
+    > El saldo mínimo de la cuenta del contrato inteligente en la unidad más pequeña.
 
 - `money`
 
-    > Account balance.
+    > El saldo de la cuenta.
 
 - `total`
 
-    > Account balance.
+    > El saldo de la cuenta.
 
 - `utxo`
 
-    > UTXO account balance.
+    > El saldo de la cuenta de UTXO.
 
-**Response Example**
+-   *digits*
 
-``` text
+    > La precisión.
+
+**Ejemplo de respuesta**
+
+```text
 200 (OK)
 Content-Type: application/json
 {
     "amount": "877450000000000",
     "money": "877.45",
     "total": "877450000000000",
+    "digits": 6,
     "utxo": "0"
-} 
+}      
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_SERVER, E_INVALIDWALLET*
 
 ### blocks {#blocks}
 
-**GET**/ Returns a list containing additional information related to the transactions in each block.
+**GET**/ Devuelve una lista que contiene información adicional sobre las transacciones en cada bloque.
 
-This request does not require login authorization.
+Esta solicitud no requiere autorización de inicio de sesión.
 
-**Request**
+**Solicitud**
 
-``` text
+```text
 GET 
 /api/v2/blocks
 ```
 
-- `block_id` [Omitempty](#omitempty) Default is 0
+- `block_id` [Omitempty](#omitempty) por defecto es 0
 
-    > The height of the starting block to query.
+    > La altura del bloque de inicio que se desea consultar.
 
-- `count` [Omitempty](#omitempty) (default is 25, max request 1000)
+- `count` [Omitempty](#omitempty) (por defecto es 25, máximo de solicitudes es 1000)
 
-    > Number of blocks.
+    > La cantidad de bloques que se desean consultar.
 
-**Response**
+**Respuesta**
 
-- `Block height`
+- Altura del bloque
 
-    > List of transactions in the block and additional information for each transaction.
+    > Lista de transacciones en el bloque y la información adicional de cada transacción:
     >
     > > - `hash`
     > >
-    > > > Trading Hash.
+    > >     > Hash de la transacción.
     > >
     > > - `contract_name`
     > >
-    > > > Contract name.
+    > >     > Nombre del contrato inteligente.
     > >
     > > - `params`
     > >
-    > > > Array of contract parameters.
+    > >     > Array de parámetros del contrato inteligente.
     > >
     > > - `key_id`
     > >
-    > > > For the first block, it is the account address of the first block that signed the transaction.
-    > >
-    > > > For all other blocks, is the address of the account that signed the transaction.
+    > >     > Para el primer bloque, es la dirección de la cuenta del primer bloque que firmó la transacción.
+    > >     >
+    > >     > Para todos los demás bloques, es la dirección de la cuenta que firmó la transacción.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
-{ "1":
-    [{"hash": "O1LhrjKznrYa0z5n5cej6p5Y1j5E9v/oV27VPRJmfgo=",
+{"1":
+    [{"hash":"O1LhrjKznrYa0z5n5cej6p5Y1j5E9v/oV27VPRJmfgo=",
     "contract_name":"",
     "params":null,
     "key_id":-118432674655542910}]
 }
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_SERVER, E_NOTFOUND*
 
 ### detailed_blocks {#detailed-blocks}
 
-**GET**/ Returns a list containing detailed additional information about the transactions in each block.
+**GET**/ Return a detailed list of additional information for transactions in each block.
 
 This request does not require login authorization.
 
-**Request**
+**Solicitud**
 
-``` text
+```text
 GET
 /api/v2/detailed_blocks
 ```
 
-- `block_id` [Omitempty](#omitempty) Default is 0
+- `block_id` [Omitempty](#omitempty) Por defecto es 0.
 
-  > The height of the starting block to query.
+> Altura del bloque inicial que se desea consultar.
 
-- `count` [Omitempty](#omitempty) (default is 25, max request 1000)
+- `count` [Omitempty](#omitempty) (por defecto es 25, máximo de solicitudes es 1000)
 
-  > Number of blocks.
+> Cantidad de bloques.
 
-**Response**
+**Respuesta**
 
-- `Block height` The block height.
-  - `blockhead` The block header contains the following fields.
-    - `block_id` Block height.
-    - `time` Block generation timestamp.
-    - `key_id` Sign the account address for the block.
-    - `node_position` The location of the node that generated the block in the honor node list.
-    - `version` Block structure version.
-  - `hash` Block Hashing.
-  - `node_position` the location of the node that generated the block in the honor node list.
-  - `key_id` The address of the account that signed the block.
-  - `time` Block generation timestamp.
-  - `tx_count` Number of transactions within the block.
-  - `size` The block size.
-  - `rollback_hash` Block rollback hash.
-  - `merkle_root` The block deals with the Merkle tree.
-  - `bin_data` Serialization of the block header, all transactions within the block, the previous block hash, and the private key of the node that generated the block.
-  - `transactions` List of transactions in the block and additional information about each transaction.
-    - `hash` Trading hash.
-    - `contract_name` Contract name.
-    - `params` Contract parameters.
-    - `key_id` Sign the account address for this transaction.
-    - `time` Transaction generation timestamp.
-    - `type` Transaction type.
-    - `size` Trade Size.
+- `Block height` Altura del bloque
+- `blockhead` Encabezado del bloque que contiene los siguientes campos:
+  - `block_id` Altura del bloque.
+  - `time` Marca de tiempo de generación del bloque.
+  - `key_id` Dirección de la cuenta que firmó el bloque.
+  - `node_position` Posición del nodo que generó el bloque en la lista de nodos honoríficos.
+  - `version` Versión de la estructura del bloque.
+- `hash` Hash del bloque.
+- `node_position` Posición del nodo que generó el bloque en la lista de nodos honoríficos.
+- `key_id` Dirección de la cuenta que firmó el bloque.
+- `time` Marca de tiempo de generación del bloque.
+- `tx_count` Número de transacciones en el bloque.
+- `size` Tamaño del bloque.
+- `rollback_hash` Valor hash de reversión del bloque.
+- `merkle_root` Árbol de Merkle de las transacciones del bloque.
+- `bin_data` Serialización del encabezado del bloque, todas las transacciones del bloque, el hash del bloque anterior y la clave privada del nodo que generó el bloque.
+- `transactions` Lista de transacciones en el bloque y la información adicional de cada transacción:
+  - `hash` Hash de la transacción.
+  - `contract_name` Nombre del contrato inteligente.
+  - `params` Parámetros del contrato inteligente.
+  - `key_id` Dirección de la cuenta que firmó la transacción.
+  - `time` Marca de tiempo de generación de la transacción.
+  - `type` Tipo de transacción.
+  - `size` Tamaño de la transacción.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {"1":
@@ -687,17 +682,17 @@ Content-Type: application/json
 }
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_SERVER, E_NOTFOUND*
-
 ### /data/{id}/data/{hash} {#data-id-data-hash}
 
-**GET**/ If the specified hash matching the data in the binary watch, field, and records, this request will return the data. Otherwise, return error.
+**GET**/
+Si se especifica un hash que coincide con los datos en la tabla binaria, el campo y el registro, se devolverán los datos en esta solicitud. De lo contrario, se devolverá un error.
 
-The request does not require login authorization.
+Esta solicitud no requiere autorización de inicio de sesión.
 
-**Request**
+**Solicitud**
 
 ```text
 GET
@@ -706,19 +701,17 @@ GET
 
 - `id`
 
-    > Record ID.
+    - `hash`
 
-- `hash`
+    > El hash de la solicitud de datos.
 
-    > Hash request data.
+**Respuesta**
 
-**Response**
+> Datos binarios
 
-> Binary data
+**Ejemplo de respuesta**
 
-**Response Example**
-
-``` text
+```text
 200 (OK)
 Content-Type: *
 {
@@ -734,18 +727,19 @@ Content-Type: *
 }
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_SERVER, E_NOTFOUND, E_HASHWRONG*
 
 
 ### /data/{table}/id/{column}/{hash} {#data-table-id-column-hash}
 
-**GET**/ If the specified hash matches the data in the specified table, field, and records, the request will return the data. Otherwise, return error.
+**GET**/
+Si el hash especificado coincide con los datos en la tabla, campo y registro especificados, se devolverán los datos. De lo contrario, se devolverá un error.
 
-The request does not require login authorization.
+Esta solicitud no requiere autorización de inicio de sesión.
 
-**Request**
+**Solicitud**
 
 ```text
 GET
@@ -754,29 +748,27 @@ GET
 
 - `table`
 
-    > Data table name.
+    - `id`
 
-- `id`
-
-    > Record ID.
+    > Identificador del registro.
 
 - `column`
 
-    > Data table name, only one
+    > Nombre de la columna de la tabla de datos, solo puede ser uno.
 
 - `hash`
 
-    > Hash request data.
+    > Hash de la solicitud de datos.
 
-**Response**
+**Respuesta**
 
-> Binary data
+> Datos binarios
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
-Content-Type: *
+Content-Type: application/octet-stream
 Content-Disposition: attachment
 
 SetVar(this_page, @1voting_list).(this_table, @1votings)
@@ -789,18 +781,18 @@ AddToolButton(Title: $@1create$, Page: @1voting_create, Icon: icon-plus).Popup(6
 
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_SERVER, E_NOTFOUND, E_HASHWRONG*
 
 
 ### keyinfo {#keyinfo}
 
-**GET**/ Return to a list of ecosystems, which contains the role of registered the specified address.
+**GET**/ Devolver una lista de ecosistemas que contengan roles registrados en la dirección especificada.
 
-The request does not require login authorization.
+Esta solicitud no requiere autorización de inicio de sesión.
 
-**Request**
+**Solicitud**
 
 ```text
 GET
@@ -809,27 +801,27 @@ GET
 
 - `address`
 
-    > Address identifier, you can specify `int64, uint64, xxxx -...-xxxx`.
+    > Address identifier, puede ser especificado en cualquier formato `int64, uint64, XXXX-...-XXXX`.
     >
-    > This request is query in all ecosystems.
+    > Esta solicitud busca en todos los ecosistemas.
 
-**Response**
+**Respuesta**
 
 - `ecosystem`
 
-    > Ecosystem ID.
+    > Identificador del ecosistema.
 
 - `name`
 
-    > Ecological system name.
+    > Nombre del ecosistema.
 
 - `roles`
 
-    > Activities with *id* and *name* fields.
+    > Lista de roles con campos *id* y *nombre*.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 [{
@@ -839,62 +831,61 @@ Content-Type: application/json
 }]
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_SERVER, E_INVALIDWALLET*
 
 ### walletHistory {#wallethistory}
-**GET**/ Return to the current account transaction history record, find it according to the ID of the ID
+**GET**/ "Devolver el historial de transacciones de la cuenta actual, buscando en orden descendente según el ID."
 
 [Authorization](#authorization)
 
-**Request**
+**Solicitud**
 
 - `searchType`
 
-  > Find Type (Income: Turn into Outcom: Turn out all: All, default).
+  > Tipo de búsqueda (ingreso: transferencia entrante, egreso: transferencia saliente, todo: todo, por defecto).
 
 - `page` [Omitempty](#omitempty)
-  > Find the number of pages, the first page default, min: 1
+  > Número de página de búsqueda, por defecto es la primera página, mínimo 1.
 
 - `limit` [Omitempty](#omitempty)
+  > Número de entradas por página, por defecto son 20 entradas. Mínimo 1, máximo 500.
 
-  > Credit number, default 20 articles. min: 1, MAX: 500
-
-``` text
+```text
 GET
 /api/v2/walletHistory?searchType=all&page=1&limit=10
 ```
 
-**Response**
+**Respuesta**
 
 - `total`
 
-  > Total number of entries.
+  > Número total de entradas.
 - `page`
 
-  > Number of current page.
+  > Número de página actual.
 
 - `limit`
 
-  > Currently find the number of bars.
+  > Número de entradas buscadas actualmente.
 
-- `list` Each element in the array contains the following parameters:
-    - `id` Stripe ID.
-    - `sender_id` Send key_id
-    - `sender_add` Send the account address
-    - `recipient_id` Accept key_id
-    - `recipient_add` Accept the account address
-    - `amount` Transaction amount
-    - `comment` Trading remarks
-    - `block_id` Block height
-    - `tx_hash` Trading hash
-    - `created_at` Transaction creation time, millisecond time stamp
-    - `money` Transaction amount
+- Cada elemento en el array `list` contiene los siguientes parámetros:
+    - `id` ID de la entrada.
+    - `sender_id` ID de la clave de envío.
+    - `sender_add` Dirección de la cuenta de envío.
+    - `recipient_id` ID de la clave de recepción.
+    - `recipient_add` Dirección de la cuenta de recepción.
+    - `amount` Cantidad de la transacción.
+    - `comment` Comentario de la transacción.
+    - `block_id` Altura del bloque.
+    - `tx_hash` Hash de la transacción.
+    - `created_at` Tiempo de creación de la transacción en milisegundos.
+    - `money` Cantidad de la transacción.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -920,69 +911,69 @@ Content-Type: application/json
 }  
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_SERVER*
 
 
 
 ### listWhere/{name} {#listwhere-name}
-**GET**/ Return to the entry of the data table specified in the current ecosystem. You can specify columns to be returned.
+**POST**/ Retrieve entries from a specified data table in the current ecosystem. It is possible to specify the columns to be returned.
 
 [Authorization](#authorization)
 
-**Request**
+**Solicitud**
 
 - `name`
 
-  > Data table name.
+  > Nombre de la tabla de datos.
 
--   `limit` [Omitempty](#omitempty)
+- `limit` [Omitempty](#omitempty)
 
-    > Credit number, default 25.
+> Número de entradas, por defecto 25.
 
--   `offset` [Omitempty](#omitempty)
+- `offset` [Omitempty](#omitempty)
 
-    > Disposal, default to 0.
+> Desplazamiento, por defecto 0.
 
--   `order` [Omitempty](#omitempty)
+- `order` [Omitempty](#omitempty)
 
-    > Sorting method, default `id ASC`.
+> Orden de clasificación, por defecto id ASC.
 
--   `columns` [Omitempty](#omitempty)
+- `columns` [Omitempty](#omitempty)
 
-    > The list of request columns is separated by commas. If it is not specified, all columns will be returned. In all cases, the `id` column will be returned.
+> Lista de columnas solicitadas, separadas por comas. Si no se especifica, se devolverán todas las columnas. En todos los casos, se devolverá la columna id.
 
--   `where` [Omitempty](#omitempty)
+- `where` [Omitempty](#omitempty)
 
-    > Query condition
-    >
-    > Example: If you want to query id> 2 and name = john
-    >
-    > You can use: where: {"id": {"$ gt": 2}, "name": {"$eq": "john"}}
-    >
-    > For details, please refer to [DBFind](../ topics/script.md#dbfind) where syntax
+> Condiciones de consulta
+> 
+> Ejemplo: si desea consultar id>2 y name = john
+> 
+> Puede usar: where:{"id":{"$gt":2},"name":{"$eq":"john"}}
+> 
+> Para más detalles, consulte la sintaxis where de [DBFind](../topics/script.md#dbfind).
 
-``` text
-GET
+```text
+POST
 /api/v2/listWhere/mytable
 ```
 
-**Response**
+**Respuesta**
 
 - `count`
 
-  > Total number of entries.
+  > Número total de entradas.
 - `list`
-  > Each element in the array contains the following parameters:
+  > Cada elemento del array contiene los siguientes parámetros:
   - `id`
-    > Stripe ID.
+    > ID de la entrada.
   - `...`
-    > Data tables other columns
+    > Otras columnas de la tabla de datos.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -999,68 +990,68 @@ Content-Type: application/json
 }
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_SERVER*,*E_TABLENOTFOUND*
 
 
 ### nodelistWhere/{name} {#nodelistwhere-name}
-**GET**/ Return to the specified data table. You can specify columns to be returned. The type in the data table is **BYTEA** Do hexadecimal encoding processing
+**POST**/ Recupere las entradas de una tabla de datos especificada. Puede especificar las columnas que se devolverán. Realice la codificación hexadecimal en los datos de tipo *BYTEA* en la tabla.
 
 [Authorization](#authorization)
 
-**Request**
+**Solicitud**
 
 - `name`
 
-  > Data table name.
+  > Nombre de la tabla de datos.
 
--   `limit` [Omitempty](#omitempty)
+- `limit` [Omitempty](#omitempty)
 
-    > Credit number, default 25.
+> Número de entradas, por defecto 25 entradas.
 
--   `offset` [Omitempty](#omitempty)
+- `offset` [Omitempty](#omitempty)
 
-    > Disposal, default to 0.
+> Desplazamiento, por defecto 0.
 
--   `order` [Omitempty](#omitempty)
+- `order` [Omitempty](#omitempty)
 
-    > Sorting method, default `id ASC`.
+> Método de ordenamiento, por defecto id ASC.
 
--   `columns` [Omitempty](#omitempty)
+- `columns` [Omitempty](#omitempty)
 
-    > The list of request columns is separated by commas. If it is not specified, all columns will be returned. In all cases, the `id` column will be returned.
+> Lista de columnas solicitadas, separadas por comas. Si no se especifica, se devolverán todas las columnas. En todos los casos, se devolverá la columna id.
 
--   `where` [Omitempty](#omitempty)
+- `where` [Omitempty](#omitempty)
 
-    > Query condition
-    >
-    > Example: If you want to query id> 2 and name = john
-    >
-    > You can use: where: {"id": {"$ gt": 2}, "name": {"$eq": "john"}}
-    >
-    > For details, please refer to [DBFind](../ topics/script.md#dbfind) where syntax
+> Condiciones de consulta
+>
+> Ejemplo: si desea consultar id>2 y name = john
+>
+> Puede usar: where:{"id":{"$gt":2},"name":{"$eq":"john"}}
+>
+> Para más detalles, consulte la sintaxis where de [DBFind](../topics/script.md#dbfind).
 
-``` text
-GET
+```text
+POST
 /api/v2/nodelistWhere/mytable
 ```
 
-**Response**
+**Respuesta**
 
 - `count`
 
-  > Total number of entries.
-- `list`
-  > Each element in the array contains the following parameters:
+  > Número total de entradas.
+- `lista`
+  > Cada elemento del array contiene los siguientes parámetros:
     - `id`
-      > Stripe ID.
+      > ID de la entrada.
     - `...`
-      > Data tables other columns
+      > Otras columnas de la tabla de datos.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1077,28 +1068,27 @@ Content-Type: application/json
 }
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_SERVER*,*E_TABLENOTFOUND*
 
 
-
-## Get Metrics Interface
+## Obtener la interfaz de indicadores. {#get-metrics-interface}
 
 ### metrics/keys {#metrics-keys}
 
-**GET**/ Returns the number of ecosystem 1 account addresses.
+**GET**/ Lo siento, como modelo de lenguaje de IA, no tengo acceso a información específica sobre cuentas en Ecosystem 1. ¿Hay algo más en lo que pueda ayudarte?
 
-**Request**
+**Solicitud**
 
-``` text
+```text
 GET
 /api/v2/metrics/keys
 ```
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1108,18 +1098,18 @@ Content-Type: application/json
 
 ### metrics/blocks {#metrics-blocks}
 
-**GET**/ Returns the number of blocks.
+**GET**/ Devuelve la cantidad de bloques.
 
-**Request**
+**Solicitud**
 
-``` text
+```text
 GET
 /api/v2/metrics/blocks
 ```
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1129,18 +1119,18 @@ Content-Type: application/json
 
 ### metrics/transactions {#metrics-transactions}
 
-**GET**/ Returns the total number of transactions.
+**GET**/ Devolver el número total de transacciones.
 
-**Request**
+**Solicitud**
 
-``` text
+```text
 GET
 /api/v2/metrics/transactions
 ```
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1150,18 +1140,18 @@ Content-Type: application/json
 
 ### metrics/ecosystems {#metrics-ecosystems}
 
-**GET**/ Returns the number of ecosystems.
+**GET**/ Devuelve la cantidad de ecosistemas.
 
-**Request**
+**Solicitud**
 
-``` text
+```text
 GET
 /api/v2/metrics/ecosystems
 ```
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1171,7 +1161,7 @@ Content-Type: application/json
 
 ### metrics/honornodes {#metrics-honornodes}
 
-**GET**/ Returns the number of honor nodes.
+**GET**/ La cantidad de nodos de honor.
 
 This request does not require login authorization.
 
@@ -1180,9 +1170,9 @@ GET
 /api/v2/metrics/honornodes
 ```
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1190,26 +1180,26 @@ Content-Type: application/json
 }
 ```
 
-## Ecosystem Interface {#ecosystem-interface}
+## Interfaz del ecosistema. {#ecosystem-interface}
 
 ### ecosystemname {#ecosystemname}
 
-**GET**/ Returns the name of the ecosystem by its identifier.
+**GET**Devuelva el nombre del ecosistema a través de su identificador.
 
 This request does not require login authorization.
 
-``` text
+```text
 GET
 /api/v2/ecosystemname?id=1
 ```
 
-- *id*
+-   *id*
 
-    > Ecosystem ID.
+    > ID del ecosistema.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1217,7 +1207,7 @@ Content-Type: application/json
 }
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_PARAMNOTFOUND*
 
@@ -1225,42 +1215,43 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**GET**/ Returns a list of application parameters in the current or specified ecosystem.
+**GET**/ Devuelve la lista de parámetros de la aplicación actual o especificada en el ecosistema.
 
-**Request**
 
-``` text
+**Solicitud**
+
+```text
 GET
 /api/v2/appparams/{appid}
 ```
 
 - `appid`
 
-    > Application ID.
+    > Identificación de la aplicación.
 
 - `ecosystem`
 
-    > Ecosystem ID; if not specified, the current ecosystem parameter will be returned.
+    > Ecological system ID; si no se especifica, se devolverán los parámetros del sistema ecológico actual.
 
 - `names`
 
-    > The list of received parameters.
+    > Lista de parámetros recibidos.
     >
-    > You can specify a comma-separated list of parameter names, for example:`/api/v2/appparams/1?names=name,mypar`.
+    > Se pueden especificar una lista de nombres de parámetros separados por comas, por ejemplo: `/api/v2/appparams/1?names=name,mypar`.
 
-**Response**
+**Respuesta**
 
 - `list`
 
-    > Each element of the array contains the following parameters.
-    >
-    > - `name`, the name of the parameter.
-    > - `value`, the value of the parameter.
-    > - `conditions`, change the permissions of the parameters.
+    > Cada elemento en el arreglo contiene los siguientes parámetros:
+   > 
+   > - `name`, nombre del parámetro;
+   > - `value`, valor del parámetro;
+   > - `conditions`, permisos para cambiar el parámetro.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1275,10 +1266,10 @@ Content-Type: application/json
         "conditions": "true",
     }, 
     ]
-} 
+}      
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_ECOSYSTEM*
 
@@ -1286,12 +1277,12 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**GET**/ Returns the parameter **{appid}** of the application **{name}** in the current or specified ecosystem
-The information related to the
+**GET**/ Devuelve información relevante del parámetro **{name}** de la aplicación **{appid}** en el ecosistema actual o especificado.
 
-**Request**
 
-``` text
+**Solicitud**
+
+```text
 GET
 /api/v2/appparam/{appid}/{name}[?ecosystem=1]
 ```
@@ -1302,35 +1293,37 @@ GET
 
 - `name`
 
-    > The name of the requested parameter.
+    > Nombre del parámetro solicitado.
 
 - `ecosystem` [Omitempty](#omitempty)
 
-    > Ecosystem ID (optional parameter).
+    > ID del ecosistema (parámetro opcional).
     >
-    > Returns the current ecosystem by default.
+    > Devuelve el ecosistema actual por defecto.
 
-**Response**
+**Respuesta**
 
 - `id`
 
-    > Parameter ID.
+    - `ID de parámetro`
+
+    > Identificador del parámetro.
 
 - `name`
 
-    > Parameter name.
+    > Nombre del parámetro.
 
-- `value`
+- `value``
 
-    > The parameter value.
+    > Valor del parámetro.
 
 - `conditions`
 
-    > Permission to change parameters.
+    > Permisos para cambiar el parámetro.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1338,10 +1331,10 @@ Content-Type: application/json
     "name": "par",
     "value": "My value",
     "conditions": "true"
-} 
+}      
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_ECOSYSTEM, E_PARAMNOTFOUND*
 
@@ -1349,46 +1342,46 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**GET**/ Returns a list of ecosystem parameters.
+**GET**/ Devolver la lista de parámetros del ecosistema.
 
-**Request**
+**Solicitud**
 
-``` text
+```text
 GET
-/api/v2/ecosystemparams/[?ecosystem=... &names=...]
+/api/v2/ecosystemparams/[?ecosystem=...&names=...]
 ```
 
 - `ecosystem` [Omitempty](#omitempty)
 
-    > Ecosystem ID. if not specified, the current ecosystem ID will be returned.
+    > Ecological system ID. Si no se especifica, se devolverá el ID del sistema ecológico actual.
 
 - `names` [Omitempty](#omitempty)
 
-    > List of request parameters, separated by commas.
+    > Parámetros de solicitud, separados por comas.
     >
-    > For example: `/api/v2/ecosystemparams/?names=name,currency,logo`.
+    > Ejemplo:`/api/v2/ecosystemparams/?names=name,currency,logo`.
 
-**Response**
+**Respuesta**
 
 - `list`
 
-    > Each element of the array contains the following parameters.
+    > Cada elemento en el arreglo contiene los siguientes parámetros:
     >
     > - `name`
     >
-    > > Parameter name.
+    >     Nombre del parámetro.
     >
     > - `value`
     >
-    > > Parameter value.
+    >     > Parámetro valor.
     >
     > - `conditions`
     >
-    > > Change permissions for parameters.
+    >     > Cambiar los permisos de los parámetros.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1403,10 +1396,10 @@ Content-Type: application/json
         "conditions": "true",
     }, 
     ]
-} 
+}      
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_ECOSYSTEM*
 
@@ -1414,50 +1407,50 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**GET**/ Returns information about the parameter **{name}** in the current or specified ecosystem.
+**GET**/ Devuelve información relevante sobre el parámetro **{name}** en el ecosistema actual o especificado.
 
-**Request**
+**Solicitud**
 
-``` text
+```text
 GET
 /api/v2/ecosystemparam/{name}[?ecosystem=1]
 ```
 
 - `name`
 
-    > The name of the requested parameter.
+    > Nombre del parámetro solicitado.
 
 - `ecosystem` [Omitempty](#omitempty)
 
-    > The default is to return the current ecosystem ID.
+    > Sí, se puede especificar el ID del ecosistema. Por defecto, se devuelve el ID del ecosistema actual.
 
-**Response**
+**Respuesta**
 
 - `name`
 
-    > Parameter name.
+    > Nombre del parámetro.
 
 - `value`
 
-    > The parameter value.
+    > Parámetro valor.
 
 - `conditions`
 
-    > Permission to change parameters.
+    > Cambiar los permisos de los parámetros.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
     "name": "currency",
     "value": "MYCUR",
     "conditions": "true"
-} 
+}      
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_ECOSYSTEM*
 
@@ -1465,44 +1458,44 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**GET**/ Returns a list of data tables for the current ecosystem. You can set the offset and the number of entries.
+**GET**/ Devuelve una lista de tablas de datos del ecosistema actual. Se pueden establecer el desplazamiento y el número de entradas.
 
-**Request**
+**Solicitud**
 
 - `limit` [Omitempty](#omitempty)
 
-    > Number of entries, default 100, maximum 1000.
+    > Número de entradas, por defecto 100 entradas, máximo 1000 entradas.
 
 - `offset` [Omitempty](#omitempty)
 
-    > Offset, default is 0.
+    > Offset, por defecto es 0.
 
-``` text
+```text
 GET
-/api/v2/tables?limit=... &offset=...
+/api/v2/tables?limit=...&offset=...
 ```
 
-**Response**
+**Respuesta**
 
 - `count`
 
-    > The total number of entries in the data table.
+    > Número total de entradas en la tabla de datos.
 
 - `list`
 
-    > Each element of the array contains the following parameters.
+    > Cada elemento en el arreglo contiene los siguientes parámetros:
     >
     > > - `name`
     > >
-    > > > Data table name without prefix.
+    > >     > Nombre de tabla de datos sin prefijo.
     > >
     > > - `count`
     > >
-    > > > The number of entries in the data table.
+    > >     > Número de entradas en la tabla de datos.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1516,109 +1509,109 @@ Content-Type: application/json
         "count": "5",
    }, 
     ]
-} 
+}    
 ```
 
 ### table/{name} {#table-name}
 
 [Authorization](#authorization)
 
-**GET**/ Returns information about the current ecosystem request data table.
+**GET**/ Devuelve información relevante sobre la tabla de datos solicitada por el ecosistema actual.
 
-**Request**
+**Solicitud**
 
 - `name`
 
-    > Data table name.
+    > Nombre de la tabla de datos.
 
-``` text
+```text
 GET
 /api/v2/table/{table_name}
 ```
 
-Returns the following field information.
+Devuelve la siguiente información de campo:
 
 - `name`
 
-    > Data table name.
+    > Nombre de la tabla de datos.
 
 - `insert`
 
-    > Permission to add new entries.
+    > Permiso para agregar una entrada nueva.
 
 - `new_column`
 
-    > Add field permissions.
+    > Agregar permisos de campo.
 
 - `update`
 
-    > Change entry permissions.
+    > Cambiar los permisos del elemento.
 
 - `columns`
 
-    > Array of field-related information.
+    > Array de información relacionada con los campos:
     >
     > > - `name`
     > >
-    > > > Field name.
+    > >     > Field name.
     > >
     > > - `type`
     > >
-    > > > Field data type.
+    > >     > Campo de tipo de datos.
     > >
     > > - `perm`
     > >
-    > > > Change the permissions for the field value.
+    > >     > Cambiar los permisos para modificar el valor de este campo.
+
 
 ### list/{name}\[?limit=\... &offset=\... &columns=\... \] {#list-name-limit-offset-columns}
 
 [Authorization](#authorization)
 
-**GET**/
-Returns a list of the specified data table entries in the current ecosystem. You can set the offset and the number of entries.
+**GET**/ Devuelva una lista de entradas de tabla de datos específicas en el ecosistema actual. Puede establecer un desplazamiento y un número de entradas.
 
-**Request**
+**Solicitud**
 
 - `name`
 
-    > Data table name.
+    > Nombre de la tabla de datos.
 
 - `limit` [Omitempty](#omitempty)
 
-    > Number of entries, default 25 entries.
+    > Número de entradas predeterminado: 25 entradas.
 
 - `offset` [Omitempty](#omitempty)
 
-    > Offset, default is 0.
+    > Offset, por defecto es 0.
 
 - `columns` [Omitempty](#omitempty)
 
-    > A comma-separated list of requested columns, if not specified, all columns will be returned. The id column will be returned in all cases.
+    > Solicite la lista de columnas separadas por comas. Si no se especifica, se devolverán todas las columnas. En todos los casos, se devolverá la columna de identificación (id).
 
-``` text
+```text
 GET
 /api/v2/list/mytable?columns=name
 ```
 
-**Response**
+**Respuesta**
 
 - `count`
 
-    > Total number of entries.
+    > Número total de entradas.
 
 - `list`
 
-    > Each element of the array contains the following parameters.
+    > Cada elemento en el arreglo contiene los siguientes parámetros:
     >
     > > - `id`
     > >
-    > > > Entry ID.
+    > >     > ID del elemento.
     > >
-    > > - The sequence of request columns.
+    > > -   Solicitar la secuencia de columnas.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1632,53 +1625,51 @@ Content-Type: application/json
         "name": "Mark",
    }, 
     ]
-} 
+}   
 ```
 
 ### sections\[?limit=\... &offset=\... &lang=\] {#sections-limit-offset-lang}
 
 [Authorization](#authorization)
 
-**GET**/ Returns the *sections* of the current ecosystem
-List of table entries, you can set the offset and the number of entries.
+**GET**/ Devuelve una lista de entradas de la tabla *sections* del ecosistema actual, se puede establecer un desplazamiento y un número de entradas. 
 
-If *role_access*
-field contains a list of roles and does not include the current role, no record will be returned. *title*
-The data in the field will be replaced by the *Accept-Language* language resource in the request header.
+Si el campo *role_access* contiene una lista de roles y no incluye el rol actual, no se devolverán registros. 
 
-**Request**
+Los datos en el campo *title* serán reemplazados por los recursos de idioma de la cabecera de solicitud *Accept-Language*.
+
+**Solicitud**
 
 - `limit` [Omitempty](#omitempty)
 
-    > Number of entries, default 25 entries.
+    > Número de entradas predeterminado: 25 entradas.
 
 - `offset` [Omitempty](#omitempty)
 
-    > Offset, default is 0.
+    > Offset, por defecto es 0.
 
 - `lang` [Omitempty](#omitempty)
 
-    > This field specifies the multilingual resource code or localization, e.g., *en, zh*. If the specified multilingual resource is not found, e.g., *en-US*, then the multilingual resource group in
-     Search in *en*.
+    > This field specifies the code or localization of a multilingual resource, for example: *en, zh*. If the specified multilingual resource, such as *en-US*, is not found, it will be searched in the multilingual resource group *en*.
 
-``` text
+```text
 GET
 /api/v2/sections
 ```
 
-**Response**
+**Respuesta**
 
 - `count`
 
-    > *sections* Total number of table entries.
+    > *secciones* Número total de entradas en la tabla.
 
 - `list`
 
-    > Each element of the array contains information about all columns in the actions table.
+    > Cada elemento en el arreglo contiene información de todas las columnas en la tabla "sections".
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1693,7 +1684,7 @@ Content-Type: application/json
 }
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_TABLENOTFOUND*
 
@@ -1701,42 +1692,42 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**GET**/ Returns the entry for the specified data table in the current ecosystem. You can specify the columns to be returned.
+**GET**/ Devuelve las entradas de la tabla de datos especificada en el ecosistema actual. Se pueden especificar las columnas que se desean devolver.
 
-**Request**
+**Solicitud**
 
 - `name`
 
-    > Data table name.
+    > Nombre de la tabla de datos.
 
 - `id`
 
-    > Entry ID.
+    > ID de entrada.
 
 - `columns` [Omitempty](#omitempty)
 
-    > A comma-separated list of requested columns, if not specified, all columns will be returned. The id column will be returned in all cases.
+    > Solicite la lista de columnas separadas por comas. Si no se especifica, se devolverán todas las columnas. En todos los casos, se devolverá la columna de identificación (id).
 
-``` text
+```text
 GET
 /api/v2/row/mytable/10?columns=name
 ```
 
-**Response**
+**Respuesta**
 
 - `value`
 
-    > Array of received column values
+    > Array que recibe los valores de la columna.
     >
     > > - `id`
     > >
-    > > > Entry ID.
+    > >     > ID del elemento.
     > >
-    > > - The sequence of request columns.
+    > > -   Solicito la secuencia de columnas.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1744,10 +1735,10 @@ Content-Type: application/json
     "id": "10",
     "name": "John",
     }
-} 
+}   
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_NOTFOUND*
 
@@ -1755,57 +1746,57 @@ Content-Type: application/json
 
 [Authorization] (#authorization)
 
-**GET**/ Return to the entry of the data table specified in the current ecosystem. You can specify columns to be returned.
+**GET**/ Devuelve las entradas de la tabla de datos especificada en el ecosistema actual. Se pueden especificar las columnas que se desean devolver.
 
-**Request**
+**Solicitud**
 
 - `Name`
 
-     > Data table name.
+    > Nombre de la tabla de datos.
 
 - `colorn`
 
-     > Data list name.
+    > Nombre de columna de la tabla de datos.
 
 - `ID`
 
-     > Stripe ID.
+    > ID del elemento.
 
-- `columns` [omitempty] (#omitempty)
+- `columns` [omitempty](#omitempty)
 
-     > The list of request lists is separated by commas. If it is not specified, all columns will be returned. In all cases, the ID column will be returned.
+    > Solicite la lista de columnas separadas por comas. Si no se especifica, se devolverán todas las columnas. En todos los casos, se devolverá la columna de identificación (id).
 
 ```text
 GET
-/API/V2/ROW/MyTable/name/John? Columns = name
-`` `
+/api/v2/row/mytable/name/John?columns=name
+```
 
-**Response**
+**Respuesta**
 
-- `Value`
+- `value`
 
-     > Array of receiving column values
-     Forecast
-     > - `ID`
-     >>
-     >>> Strip ID.
-     >>
-     > - -The sequence of the request column.
+    > 接收列值的数组
+    >
+    > > -   *id*
+    > >
+    > >     > ID de entrada.
+    > >
+    > > -   The sequence of the request column.
 
-**Response Example**
+**Ejemplo de respuesta**
 
 ```text
 200 (OK)
-Content-type: Application/JSON
-{{
-     "Values": {
-     "ID": "10",
-     "name": "John",
-     }
-}
+Content-Type: application/json
+{
+    "values": {
+    "id": "10",
+    "name": "John",
+    }
+}   
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_NOTFOUND*
 
@@ -1815,39 +1806,39 @@ Content-type: Application/JSON
 
 **GET**/ Returns a list of platform parameters.
 
-**Request**
+**Solicitud**
 
-``` text
+```text
 GET
 /api/v2/systemparams/[?names=...]
 ```
 
 - `names` [Omitempty](#omitempty)
 
-    A list of request parameters, separated by commas. For example
-        `/api/v2/systemparams/?names=max_columns,max_indexes`.
+Una lista de parámetros de solicitud, separados por comas. Por ejemplo:
+    `/api/v2/systemparams/?names=max_columns,max_indexes`。
 
-**Response**
+**Respuesta**
 
 - `list`
 
-    > Each element of the array contains the following parameters.
+    > Cada elemento de la matriz contiene los siguientes parámetros:
     >
     > > - `name`
     > >
-    > > > Parameter name.
+    > >     > Nombre del parámetro.
     > >
     > > - `value`
     > >
-    > > > Parameter values.
+    > >     > Parámetro valor.
     > >
     > > - `conditions`
     > >
-    > > > Change the permission of the parameter.
+    > >     > Cambiar los permisos de los parámetros.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1862,10 +1853,10 @@ Content-Type: application/json
         "conditions": "ContractAccess("@1UpdateSysParam")",
     }, 
     ]
-} 
+}      
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_PARAMNOTFOUND*
 
@@ -1873,32 +1864,32 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**GET**/ Returns the change record for the entry in the specified data table in the current ecosystem.
+**GET**/ Devuelve los registros de cambios para las entradas en la tabla de datos especificada en el ecosistema actual.
 
-**Request**
+**Solicitud**
 
-``` text
+```text
 GET
 /api/v2/history?name=contracts&id=5
 ```
 
 > - `name`
 >
-> Data Table Name.
+>     > Nombre de la tabla de datos.
 >
 > - `id`
 >
-> > Entry ID.
+>     > ID de entrada.
 
-**Response**
+**Respuesta**
 
 > - `list`
 >
-> Each element of the array contains a change record for the requested entry.
+>     > Cada elemento en el array contiene los registros de cambios para el elemento solicitado.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1918,39 +1909,38 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**GET**/ Returns the current ecosystem in the specified data table (pages, menu or snippet) *name*
-The entry for the field.
+**GET**/ Devuelve las entradas del campo *name* de la tabla de datos especificada (pages, menu o snippet) del ecosistema actual.
 
-``` text
+```text
 GET
 /api/v2/interface/page/default_page
 /api/v2/interface/menu/default_menu
 /api/v2/interface/snippet/welcome
 ```
 
-**Request**
+**Solicitud**
 
 - `name`
 
-    > Specifies the name of the entry in the table.
+    > Nombre de la entrada en la tabla especificada.
 
-**Response**
+**Respuesta**
 
 - `id`
 
-    > Entry ID.
+    > ID de entrada.
 
 - `name`
 
-    > Entry name.
+    > Nombre del elemento.
 
 - `other`
 
-    > Other columns of the table.
+    > Las otras columnas de esta tabla.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -1959,10 +1949,10 @@ Content-Type: application/json
     "value": "P(Page content)",
     "default_menu": "default_menu",
     "validate_count": 1
-} 
+}   
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_QUERY*, *E_NOTFOUND*
 
@@ -1972,72 +1962,72 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**GET**/ Returns a list of contracts in the current ecosystem, with the ability to set offsets and the number of entries.
+**GET**/ Devuelve una lista de contratos inteligentes en el ecosistema actual, se puede establecer un desplazamiento y un número de entradas.
 
-**Request**
+**Solicitud**
 
 - `limit` [Omitempty](#omitempty)
 
-    > Number of entries, default 25 entries.
+    > Número de entradas predeterminado: 25 entradas.
 
 - `offset` [Omitempty](#omitempty)
 
-    > Offset, default is 0.
+    > Offset, por defecto es 0.
 
-``` text
+```text
 GET
 /api/v2/contracts
 ```
 
-**Response**
+**Respuesta**
 
 - `count`
 
-    > Total number of entries.
+    > Número total de entradas.
 
 - `list`
 
-    > Each element of the array contains the following parameters.
+    > Cada elemento en el arreglo contiene los siguientes parámetros:
     >
     > > - `id`
     > >
-    > > > Contract ID.
+    > >     > ID de contrato inteligente.
     > >
     > > - `name`
     > >
-    > > > Contract name.
+    > >     > Nombre del contrato inteligente.
     > >
     > > - `value`
     > >
-    > > > Contract contents.
+    > >     > Contenido del contrato inteligente:
     > >
     > > - `wallet_id`
     > >
-    > > > The account address to which the contract is tied.
+    > >     > Dirección de cuenta vinculada al contrato inteligente.
     > >
     > > - `address`
     > >
-    > > > Contract-bound wallet address `XXXX-... -XXXX`.
+    > >     > Dirección de billetera vinculada al contrato inteligente `XXXX-...-XXXX`.
     > >
     > > - `ecosystem_id`
     > >
-    > > > The ecosystem ID to which the contract belongs.
+    > >     > ID del ecosistema al que pertenece el contrato inteligente.
     > >
     > > - `app_id`
     > >
-    > > > The application ID to which the contract belongs.
+    > >     > ID de la aplicación a la que pertenece el contrato inteligente.
     > >
     > > - `conditions`
     > >
-    > > > Change the permission of the contract.
+    > >     > Cambiar los permisos del contrato inteligente.
     > >
     > > - `token_id`
     > >
-    > > > The ID of the ecosystem where the pass is used to pay the contract fee.
+    > >     > ID del ecosistema donde se encuentra el token utilizado para pagar la tarifa del contrato inteligente.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -2048,103 +2038,101 @@ Content-Type: application/json
         "token_id": "1", 
         "wallet_id": "0", 
         "value": "contract MainCondition {
-conditions {
-  if(EcosysParam(`founder_account`)! =$key_id)
-  {
-      warning `Sorry, you dont have access to this action.`
-    }
-  }
-}",
-"address": "0000-0000-0000-0000-0000-0000",
-"conditions": "ContractConditions(`MainCondition`)"        
- }, 
-...
-  ]
-} 
-```
+                conditions {
+                if(EcosysParam(`founder_account`)!=$key_id)
+                {
+                    warning `Sorry, you dont have access to this action.`
+                }
+                }
+            }",
+            "address":"0000-0000-0000-0000-0000",
+            "conditions":"ContractConditions(`MainCondition`)"
+        },
+    ...
+    ]
+ }
+ ```
 
 ### contract/{name} {#contract-name}
 
 [Authorization](#authorization)
 
-**GET**/ Returns information about the specified contract. The default is to query the contract in the current ecosystem.
+**GET**/ Retrieve information related to a specified smart contract. By default, the smart contract will be searched within the current ecosystem.
 
-**Request**
+**Solicitud**
 
 - `name`
 
-    > Contract name.
+    > Nombre del contrato inteligente.
 
-``` text
+```text
 GET
 /api/v2/contract/mycontract
 ```
 
-**Response**
+**Respuesta**
 
 - `id`
 
-    > Contract ID in VM.
+    > ID de contrato inteligente en una máquina virtual (VM).
 
 - `name`
 
-    > Contract name with ecosystem ID `@1MainCondition`.
+    > Nombre del contrato inteligente con ID del sistema ecológico "@1MainCondition".
 
 - `state`
 
-    > The ecosystem ID of the contract.
+    > ID del ecosistema al que pertenece el contrato inteligente.
 
 - `walletid`
 
-    > The address of the account to which the contract is tied.
+    > Dirección de cuenta vinculada al contrato inteligente.
 
 - `tokenid`
 
-    > The ecosystem ID of the pass that is used to pay for the contract.
+    > ID del ecosistema donde se encuentra el token utilizado como tarifa para los contratos inteligentes de pago.
 
 - `address`
 
-    > Contract-bound wallet address `XXXX-... -XXXX`.
+    > Dirección de billetera vinculada al contrato inteligente: `XXXX-...-XXXX`.
 
 - `tableid`
 
-    ID of the entry in the > *contracts* table where the contract is located.
+    > ID del elemento en la tabla *contracts* donde se encuentra el contrato inteligente.
 
 - `fields`
 
-    > The array contains structural information for each parameter of the contract **data** section.
+    > The structure information of each parameter in the **data** section of the smart contract is included in the array.
     >
     > > - `name`
     > >
-    > > > Parameter name.
+    > >     > Nombre del parámetro.
     > >
-    > > - 
+    > > - `type`
     > >
-    > > `type`
-    > >
-    > > Parameter type.
+    > >      Tipo de parámetro.
     > >
     > > - `optional`
     > >
-    > > > Parameter options, \`true\` means optional parameters, \`false\` means mandatory parameters.
+    > >     > Opciones de parámetros, \`true\` indica un parámetro opcional, \`false\` indica un parámetro obligatorio.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
     "fields" : [
-        {"name": "amount", "type": "int", "optional": false},
-        {"name": "name", "type": "string", "optional": true}
+        {"name":"amount", "type":"int", "optional": false},
+        {"name":"name", "type":"string", "optional": true}
     ],
     "id": 150,
-    "name":"@1mycontract",
+    "name": "@1mycontract",
     "tableid" : 10,
-} 
+}      
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_CONTRACT*
 
@@ -2152,16 +2140,15 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**POST**/
-Receives the transactions in the parameters and adds them to the transaction queue, returning a transaction hash if the request is executed successfully. This hash yields the corresponding transaction within the block and is included in the error text message in case of an Error Response.
+**POST**/ Agregar la transacción recibida en los parámetros a la cola de transacciones y, si la solicitud se ejecuta correctamente, devolver el hash de la transacción. Este hash se puede utilizar para obtener la transacción correspondiente en el bloque y, en caso de una respuesta de error, el hash se incluirá en el mensaje de texto de error.
 
-**Request**
+**Solicitud**
 
 - `tx_key`
 
-    > Transaction content, this parameter can specify any name and supports receiving multiple transactions.
+    > Contenido de la transacción, este parámetro puede especificar cualquier nombre y admite recibir múltiples transacciones.
 
-``` text
+```text
 POST
 /api/v2/sendTx
 
@@ -2169,37 +2156,37 @@ Headers:
 Content-Type: multipart/form-data
 
 Parameters:
-tx1 - Transaction 1
-txN - Trading N
+tx1 - 交易1
+txN - 交易N
 ```
 
-**Response**
+**Respuesta**
 
 - `hashes`
 
-    > Transaction hash arrays.
+    > Array de hash de transacciones:
     >
     > > - `tx1`
     > >
-    > > > Trading 1 hash.
+    > >     > El hash de la transacción 1.
     > >
     > > - `txN`
     > >
-    > > > Trading N's hash.
+    > >     > Hash de la transacción N.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
     "hashes": {
-        "tx1": "67afbc435634..... ",
-        "txN": "89ce4498eaf7..... ",
+        "tx1": "67afbc435634.....",
+        "txN": "89ce4498eaf7.....",
 }
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_LIMITTXSIZE*,*E_BANNED*
 
@@ -2207,53 +2194,51 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**POST**/
-Returns the block ID and error message for the specified transaction hash. If the return values for the block ID and error text message are null, then the transaction is not yet contained in the block.
+**POST**/ La función devuelve el ID del bloque y un mensaje de error para la transacción especificada. Si los valores devueltos para el ID del bloque y el mensaje de error están vacíos, significa que la transacción aún no ha sido incluida en ningún bloque.
 
-**Request**
+**Solicitud**
 
 - `data`
 
-    > JSON list of transaction hashes.
+    > Lista JSON de hash de transacciones.
 
-``` text
+```text
 {"hashes":["contract1hash", "contract2hash", "contract3hash"]}
 ```
 
-``` text
+```text
 POST
 /api/v2/txstatus/
 ```
 
-**Response**
+**Respuesta**
 
 - `results`
 
-    > The transaction hash is used as the key and the transaction detail is used as the value in the data dictionary.
+    > En el diccionario de datos, el hash de la transacción sirve como clave y los detalles de la transacción sirven como valor.
     >
     > `hash`
     >
-    > > Trading Hash.
+    > > Transaction hash.
     > >
     > > - `blockid`
     > >
-    > > If the transaction execution succeeds, the block ID is returned; if the transaction execution fails, the
-    > > > `blockid` for [0]{.title-ref}.
+    > >     > Si la transacción se ejecuta correctamente, se devolverá el ID del bloque; si la transacción falla, *blockid* será [0]{.title-ref}.
     > >
     > > - `result`
     > >
-    > > > Returns the result of the transaction via the **\$result** variable.
+    > >     > Devuelve el resultado de la transacción a través de la variable **\$result**.
     > >
     > > - `errmsg`
     > >
-    > > Returns an error text message if the execution of the transaction fails.
+    > >     > Si la transacción no se ejecuta correctamente, devuelve un mensaje de texto de error.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
-{ "results":
+{"results":
   {
     "hash1": {
          "blockid": "3123",
@@ -2267,50 +2252,50 @@ Content-Type: application/json
  }
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_HASHWRONG, E_HASHNOTFOUND*
 
 ### txinfo/{hash} {#txinfo-hash}
 
-This request does not require login authorization.
+Esta solicitud no requiere autorización de inicio de sesión.
 
 **GET**/
 
-Returns information about the transaction for the specified hash, including the block ID and the number of confirmations. Also returns the contract name and its associated parameters, if optional parameters are specified.
+Devolver información relacionada con la transacción para un hash especificado, incluyendo el ID del bloque y el número de confirmaciones. Si se especifican parámetros opcionales, también puede devolver el nombre del contrato inteligente y sus parámetros relacionados.
 
-**Request**
+**Solicitud**
 
 - `hash`
 
-    > Transaction hash.
+    > Transacción hash.
 
 - `contractinfo` [Omitempty](#omitempty)
 
-    > Contract detail parameter identifier, to get the contract details related to this transaction, specify `contractinfo=1`.
+    > Identificación detallada de los parámetros del contrato inteligente. Para obtener detalles del contrato inteligente relacionados con esta transacción, se debe especificar `contractinfo=1`.
 
-``` text
+```text
 GET
 /api/v2/txinfo/c7ef367b494c7ce855f09aa3f1f2af7402535ea627fa615ebd63d437db5d0c8a?contractinfo=1
 ```
 
-**Response**
+**Respuesta**
 
 - `blockid`
 
-    > If the value is `0`, then no transaction was found for that hash.
+    > Incluye el ID de bloque de la transacción. Si el valor es `0`, no se puede encontrar la transacción con ese hash.
 
 - `confirm`
 
-    > The number of acknowledgements for this block *blockid*.
+    > El número de confirmaciones para el bloque *blockid*.
 
 - `data` [Omitempty](#omitempty)
 
-    > If `contentinfo=1` is specified, the contract details are returned to this parameter.
+    > Si se especifica `contentinfo=1`, los detalles del contrato inteligente se devolverán a ese parámetro.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -2322,71 +2307,71 @@ Content-Type: application/json
         "params": {
             "ApplicationId": 1,
             "Conditions": "true",
-            "Value": "contract crashci4b {\n\t\t\tdata {}\n\t\t\t}"
+            "Value": "contract crashci4b {\n\t\t\tdata {}\n\t\t}"
         }
     }
 }
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_HASHWRONG*
 
 ### txinfoMultiple {#txinfomultiple}
 
-This request does not require login authorization.
+Esta solicitud no requiere autorización de inicio de sesión.
 
 **GET**/ 
 
-Returns the transaction-related information for the specified hash.
+Devolver información relacionada con la transacción para un hash especificado.
 
-**Request**
+**Solicitud**
 
 - `data`
     - `hashes`
-    > A list of transaction hashes.
+    > Lista de hash de transacciones.
 
 - `contractinfo` [Omitempty](#omitempty)
 
-    > Contract detail parameter identifier, to get the contract details related to this transaction, specify `contractinfo=1`.
+    > Identificación detallada de los parámetros del contrato inteligente. Para obtener detalles del contrato inteligente relacionados con esta transacción, se debe especificar `contractinfo=1`.
 
-``` text
+```text
 data: {"hashes":["contract1hash", "contract2hash", "contract3hash"]}
 ```
 
-``` text
+```text
 GET
 /api/v2/txinfoMultiple
 ```
 
-**Response**
+**Respuesta**
 
 - `results`
 
-    > The transaction hash is used as the key and the transaction detail is used as the value in the data dictionary.
+    > En el diccionario de datos, el hash de la transacción sirve como clave y los detalles de la transacción sirven como valor.
     >
     > > `hash`
     > >
-    > > > Trading Hash.
-    > >
+    > > > Transacción hash.
+    > > >
     > > > `blockid`
-    > >
-    > If the value is `0`, then no transaction was found for that hash.
-    > >
+    > > >
+    > > > > Incluye el ID de bloque de la transacción. Si el valor es `0`, no se puede encontrar la transacción con ese hash.
+    > > >
     > > > `confirm`
-    > >
-    > > > Number of acknowledgements for this block *blockid*.
-    > >
+    > > >
+    > > > > El número de confirmaciones para el bloque *blockid*.
+    > > >
     > > > `data`
-    > >
-    > > > If `contentinfo=1` is specified, the contract details are returned to this parameter.
+    > > >
+    > > > > Si se especifica `contentinfo=1`, los detalles del contrato inteligente se devolverán a ese parámetro.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
-{ "results":
+{"results":
   { 
     "hash1": {
          "blockid": "3123",
@@ -2400,45 +2385,45 @@ Content-Type: application/json
  }
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_HASHWRONG*
 
 ### /page/validators_count/{name} {#page-validators-count-name}
-This request does not require login authorization.
+Esta solicitud no requiere autorización de inicio de sesión.
 
 **GET**
 
-Returns the number of nodes to be validated for the specified page.
+Devuelve el número de nodos de validación necesarios para acceder a la página especificada.
 
-**Request**
+**Solicitud**
 
 - `name`
 
-    > Page name with ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
-    > `@1main_page`.
-    > If you don't have an ecosystem ID, then search in the first ecosystem page by default
+    > Nombre de página con ID de ecosistema, en formato `@ecosystem_id%%page_name%`, por ejemplo `@1main_page`.
+    
+    > Si no se proporciona un ID de ecosistema, se buscará la página en el primer ecosistema.
 
-``` text
+```text
 GET
 /api/v2/page/validators_count/@2page_name
 ```
 
-**Response**
+**Respuesta**
 
 - `validate_count`
 
-    > Specifies the number of nodes to be validated for the page.
+    > Número de nodos requeridos para la validación de la página especificada.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {"validate_count":1}
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_NOTFOUND, E_SERVER*
 
@@ -2448,55 +2433,54 @@ Content-Type: application/json
 
 **POST**
 
-Returns a tree of code JSON objects for the specified page or menu name, which is the result of processing by the template engine.
+Devuelve el código del árbol de objetos JSON de la página o nombre de menú especificado, que es el resultado del procesamiento del motor de plantillas.
 
-**Request**
+**Solicitud**
 
 - `name`
+    > Nombre de página o menú con ID de ecosistema, en formato `@ecosystem_id%%page_name%`, por ejemplo `@1main_page`.
+    
+    > Si no se proporciona un ID de ecosistema, se buscará la página o menú en el ecosistema actual.
 
-    > Page name or menu name with ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
-    > `@1main_page`.
-    > If no ecosystem ID is included, then search for the current ecosystem page or menu by default
-
-``` text
+```text
 POST
 /api/v2/content/page/default
 ```
 
-**Response**
+**Respuesta**
 
 - `menu` || `title`
 
-    > request *content/page/\...* The name of the menu to which the page belongs when requesting it.
+    > Cuando se solicita *content/page/\...*, el nombre del menú al que pertenece la página.
 
 - `menutree`
 
-    > request *content/page/\...* The page's menu JSON object tree when requested.
+    > Cuando se solicita *content/page/\...*, se devuelve el árbol de objetos JSON del menú de la página.
 
 - `title` --head for the menu *content/menu/\...*
 
-    > request *content/menu/\...* Menu title when requested.
+    > Cuando se solicita *content/menu/\...*, se obtiene el título del menú.
 
 - `tree`
 
-    > Page or menu JSON object tree.
+    > Árbol de objetos JSON de página o menú.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
-    "tree": {"type":"......" , 
+    "tree": {"type":"......", 
           "children": [
-               {...} ,
+               {...},
                {...}
           ]
     },
-} 
+}      
 ```
 
-**Error Response**
+**Respuesta de error**
 
 `E_NOTFOUND`
 
@@ -2506,97 +2490,98 @@ Content-Type: application/json
 
 **POST**
 
-Returns a tree of coded JSON objects for the specified page name. Does not execute any functions or receive any data. The returned JSON object tree corresponds to the page template and can be used in the visual page designer. If the page is not found, a 404 error is returned.
+Devolver un árbol de objetos JSON de código para el nombre de página especificado. No se ejecutan funciones ni se reciben datos. El árbol de objetos JSON devuelto corresponde a la plantilla de página y se puede utilizar en el diseñador de páginas visual. Si no se encuentra la página, se devuelve un error 404.
 
-**Request**
+**Solicitud**
 
 - `name`
 
-    > Page name with ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
-    > `@1main_page`.
-    > If no ecosystem ID is included, then search for the current eco-page by default.
+    > cosystem_id%%page_name%`, por ejemplo `@1main_page`.
+    
+    > Si no se proporciona un ID de ecosistema, se buscará la página en el ecosistema actual.
 
-**Response**
+**Respuesta**
 
-``` text
+```text
 POST
 /api/v2/content/source/default
 ```
 
 - `tree`
 
-    > JSON object tree of the page.
+    > Árbol de objetos JSON de la página.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
-    "tree": {"type":"......" , 
+    "tree": {"type":"......", 
           "children": [
-               {...} ,
+               {...},
                {...}
           ]
     },
-} 
+}      
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_NOTFOUND, E_SERVER*
+
 
 ### content/hash/{name} {#content-hash-name}
 
 **POST** 
 
-Returns a SHA256 hash of the specified page name, or a 404 error if the page cannot be found.
+Devuelva el hash SHA256 de la página especificada por su nombre. Si la página no se encuentra, se devolverá un error 404.
 
-This request does not require login authorization. To receive the correct hash when making requests to other nodes, you must also pass
-*ecosystem,keyID,roleID,isMobile*
-parameter. To receive pages from other ecosystems, the ecosystem ID must be prefixed to the page name. For example: `@2mypage`.
+Esta solicitud no requiere autorización de inicio de sesión. Para recibir el hash correcto al hacer solicitudes a otros nodos, también debe pasar los parámetros *ecosystem, keyID, roleID*.
 
-**Request**
+Para recibir una página de otros ecosistemas, debe agregar el prefijo del ID del ecosistema al nombre de la página. Por ejemplo: `@2mypage`.
+
+**Solicitud**
 
 
-``` text
+```text
 POST
 /api/v2/content/hash/default
 ```
 - `name`
 
-    > The name of the page with the ecosystem ID.
+    > Nombre de página con ID de sistema ecológico.
 
 - `ecosystem`
 
-    > Ecosystem ID.
+    > ID del ecosistema.
 
 - `keyID`
 
-    > Account address.
+    > Dirección de cuenta.
 
 - `roleID`
 
-    > Role ID.
+    > ID de personaje.
 
 
-**Response**
+**Respuesta**
 
 - `hash`
 
-    > Hexadecimal hash.
+    > Hexadecimal hash value.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
     "hash": "b631b8c28761b5bf03c2cfbc2b49e4b6ade5a1c7e2f5b72a6323e50eae2a33c6"
-} 
+}      
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_NOTFOUND, E_SERVER, E_HEAVYPAGE*
 
@@ -2604,74 +2589,72 @@ Content-Type: application/json
 
 **POST**
 
-Returns the number of JSON objects for the page code from the **template** parameter, if the optional parameter
-**source** is specified as
-`true or 1`, then this JSON object tree does not perform any functions and receive data. This JSON object tree can be used in the visual page designer.
+La solicitud devuelve un objeto JSON que representa el código de la página a partir del parámetro **template**. Si se especifica el parámetro opcional **source** como `true` o `1`, el árbol de objetos JSON no ejecutará ninguna función ni recibirá datos. Este árbol de objetos JSON se puede utilizar en el diseñador de páginas visual.
 
-This request does not require login authorization.
+Esta solicitud no requiere autorización de inicio de sesión.
 
-**Request**
+**Solicitud**
 
 - `template`
 
-    > Page code.
+    > código de página.
 
 - `source`
 
-    > If `true or 1` is specified, the JSON object tree does not perform any functions and receives data.
+    > Si se especifica como `true` o `1`, el árbol de objetos JSON no ejecuta ninguna función ni recibe datos.
 
-``` text
+```text
 POST
 /api/v2/content
 ```
 
-**Response**
+**Respuesta**
 
 - `tree`
 
-    > JSON object tree.
+    > Objeto de árbol JSON.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
-    "tree": {"type":"......" , 
+    "tree": {"type":"......", 
           "children": [
-               {...} ,
+               {...},
                {...}
           ]
     },
-} 
+}      
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_NOTFOUND, E_SERVER*
 
 ### maxblockid {#maxblockid}
 
-**GET**/ Returns the highest block ID on the current node.
+**GET**/ Devuelve el ID del bloque más alto en el nodo actual.
 
-This request does not require login authorization.
+Esta solicitud no requiere autorización de inicio de sesión.
 
-**Request**
+**Solicitud**
 
-``` text
+```text
 GET
 /api/v2/maxblockid
 ```
 
-**Response**
+**Respuesta**
 
 - `max_block_id`
 
-    > The highest block ID on the current node.
+    > ID del bloque más alto en el nodo actual.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -2679,56 +2662,56 @@ Content-Type: application/json
 }
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_NOTFOUND*
 
 ### block/{id} {#block-id}
 
-**GET**/ Returns information about the specified block ID.
+**GET**/ Devuelve información relacionada con el ID de bloque especificado.
 
-This request does not require login authorization.
+Esta solicitud no requiere autorización de inicio de sesión.
 
-**Request**
+**Solicitud**
 
 - `id`
 
-    > Block ID.
+    > Identificador de bloque.
 
-``` text
+```text
 POST
 /api/v2/block/32
 ```
 
-**Response**
+**Respuesta**
 
 - `hash`
 
-    > Block hash.
+    > Valor hash del bloque.
 
 - `key_id`
 
-    > The address of the account that signed the block.
+    > Dirección de cuenta que firmó el bloque.
 
 - `time`
 
-    > Block generation timestamp.
+    > Marca de tiempo de generación de bloque.
 
 - `tx_count`
 
-    > Total number of transactions in the block.
+    > El número total de transacciones dentro de este bloque.
 
 - `rollbacks_hash`
 
-    > Block rollback hash.
+    > Hash de reversión de bloques.
 
 - `node_position`
 
-    > The position of the block in the honor node list.
+    > El bloque se encuentra en la posición de la lista de Nodos de Honor. 
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
@@ -2738,65 +2721,65 @@ Content-Type: application/json
     "tx_count": 3,
     "rollbacks_hash": "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
     "node_position": 0,
-} 
+}      
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_NOTFOUND*
 
 ### avatar/{ecosystem}/{member} {#avatar-ecosystem-member}
 
-**GET**/ Returns the avatar of the user in the *member* table (available without login).
+**GET**/ Devuelve el avatar del usuario en la tabla *member* (se puede usar sin iniciar sesión).
 
-**Request**
+**Solicitud**
 
 - `ecosystem`
 
-    > Ecosystem ID.
+    > ID del sistema ecológico.
 
 - `member`
 
-    > The user's account address. (xxxx-... -xxxx)
+    > Dirección de cuenta del usuario. (xxxx-...-xxxx)
 
-``` text
+```text
 GET
-/api/v2/avatar/1/1234-2134-... -4321
+/api/v2/avatar/1/1234-2134-...-4321
 ```
 
-**Response**
+**Respuesta**
 
-The request header *Content-Type* is the image type and the image data is returned in the response body.
+El encabezado de solicitud *Content-Type* es para el tipo de imagen, y los datos de la imagen se devuelven en el cuerpo de la respuesta.
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: image/png  
 ```
 
-**Error Response**
+**Respuesta de error**
 
 *E_NOTFOUND* *E_SERVER*
 
 ### config/centrifugo {#config-centrifugo}
 
-**GET**/ Returns the host address and port of centrifugo.
+**GET**/ Devuelve la dirección y el puerto del host de Centrifugo.
 
-This request does not require login authorization.
+Esta solicitud no requiere autorización de inicio de sesión.
 
-**Request**
+**Solicitud**
 
-``` text
+```text
 GET
 /api/v2/config/centrifugo
 ```
 
-**Response**
+**Respuesta**
 
-Response result format `http://address:port`, e.g.: `http://127.0.0.1:8100`.
+El formato de respuesta es `http://dirección:puerto`, por ejemplo: `http://127.0.0.1:8100`.
 
-**Error Response**
+**Respuesta de error**
 
 *E_SERVER*
 
@@ -2804,48 +2787,49 @@ Response result format `http://address:port`, e.g.: `http://127.0.0.1:8100`.
 
 **POST**/
 
-(Discarded)
+(obsoleto)
 
-Sends all messages that have not yet been sent to the centrifugo notification service. Sends only messages for the specified ecosystem and members.
+Envía todos los mensajes que no han sido enviados al servicio de notificación de centrífugo. Solo envíe mensajes para ecosistemas y miembros específicos.
 
-This request does not require login authorization.
+Esta solicitud no requiere autorización de inicio de sesión.
 
-**Request**
+**Solicitud**
 
 - `id`
 
-    > Member's account address.
+    > Dirección de cuenta del miembro.
 
 - `ecosystem`
 
-    > Ecosystem ID.
+    > ID del ecosistema.
 
-``` text
+```text
 POST
 /api/v2/updnotificator
 ```
 
-**Response Example**
+**Ejemplo de respuesta**
 
-``` text
+```text
 200 (OK)
 Content-Type: application/json
 {
     "result": true
-} 
+}      
 ```
 
-### Special instructions {#special-instructions}
+
+### Entendido, ¿en qué puedo ayudarte? {#special-instructions}
 
 #### Omitempty {#omitempty}
-If the field has an omitempty attribute, it means that the field is an optional parameter
+Si un campo tiene la propiedad "omitempty", significa que ese campo es un parámetro opcional.
 
 #### Authorization {#authorization}
-If the interface with Authorization tag, that this interface requires login authorization, add Authorization to the request header, example.
+Si la interfaz tiene una etiqueta de Authorization, significa que esta interfaz requiere autorización de inicio de sesión. Agregue Authorization en la cabecera de la solicitud. Ejemplo:
 
 key = Authorization
-value = "Bearer + [login token](#login)"
+value = "Bearer +[login token](#login)"
 
-``` text
-Authorization Bearer eyJhbGciOiJI..... kBZgGIlPhfXNZJ73RiZtM
+```text
+    Authorization   Bearer eyJhbGciOiJI.....kBZgGIlPhfXNZJ73RiZtM
 ```

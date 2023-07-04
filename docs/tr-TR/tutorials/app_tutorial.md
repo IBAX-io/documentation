@@ -24,6 +24,7 @@ Bu bölümde size IBAX Ağı üzerinde basit bir uygulamanın nasıl geliştiril
       - [Tasarımcı görünümleri](#designer-views)
       - [Geliştirici görünümü](#developer-view)
       - [Veritabanı tablosundan veri getir](#fetch-data-from-the-database-table)
+      - [Tam sayfa kodu](#full-page-code-1)
       - [Sayfayı Kaydet](#save-the-page)
   - [Bölüm 4: Uygulama](#part-4-application)
     - [Menü](#menu)
@@ -38,6 +39,7 @@ Bu bölümde size IBAX Ağı üzerinde basit bir uygulamanın nasıl geliştiril
       - [Tablo ofseti](#table-offset)
       - [Buton kodu](#button-code)
       - [Sayfa kodu](#page-refreshing)
+    - [Tam sayfa kodu](#full-page-code-2)
   - [Sonuçlar](#conclusions)
 
 

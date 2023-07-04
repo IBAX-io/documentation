@@ -167,7 +167,7 @@ Yeni elemanların fiyatı:
 
 <!-- /TOC -->
 
-### Amortismana tabi tutuldu {#depreciated}
+## Amortismana tabi tutuldu {#depreciated}
 Amortismana tabi tutulmuş parametreler:
 * [blockchain url](#blockchain-url)
 

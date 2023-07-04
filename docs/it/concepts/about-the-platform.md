@@ -15,6 +15,7 @@
     - [Tables](#tables)
     - [Ecosystem Parameters](#ecosystem-parameters)
   - [Access rights control mechanism](#access-rights-control-mechanism)
+    - [Access Control Actions](#access-control-actions)
     - [Access rights management](#access-rights-management)
     - [Exclusive rights](#exclusive-rights)
   - [Virtual private ecosystem](#virtual-private-ecosystem)
@@ -244,6 +245,7 @@ IBAX has a multi-level access permission management system. By configuring acces
 By default, all rights in the IBAX ecosystem are managed by its creator, which is defined in the MainCondition contract of each ecosystem. But after creating smart laws, access control can be transferred to all or a group of ecosystem members.
 Access rights control
 
+### Access Control Actions {#access-control-actions}
 The access rights are defined in contract tables (**1_contracts** ), data tables (**1_tables** ), user page tables (**1_pages** ), menu tables (**1_menu** ), and code block tables (**1_blocks** ). You can find the corresponding menus in Weaver.
 
 ### Access rights management {#access-rights-management}

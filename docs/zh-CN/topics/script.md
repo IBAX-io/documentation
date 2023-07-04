@@ -2,16 +2,16 @@
 
 <!-- TOC -->
 
-- [合约结构](#contract-structure)
+- [智能合约结构](#contract-structure)
     - [数据部分](#data-section)
     - [条件部分](#conditions-section)
     - [操作部分](#action-section)
 - [变量](#variables)
-- [嵌套合约](#nested-contracts)
+- [嵌套智能合约](#nested-contracts)
 - [文件上传](#file-upload)
 - [JSON格式查询语句](#queries-in-json-format)
 - [日期时间格式查询语句](#queries-with-date-and-time-operations)
-- [needle 合约语言](#needle-contract-language)
+- [needle 智能合约语言](#needle-contract-language)
     - [基本要素和结构](#basic-elements-and-structure)
     - [数据类型和变量](#data-types-and-variables)
     - [数组](#array)
@@ -105,7 +105,7 @@
     - [RunOBS](#runobs)
     - [StopOBS](#stopobs)
     - [RemoveOBS](#removeobs)
-- [系统合约](#system-contracts)
+- [系统智能合约](#system-contracts)
     - [NewEcosystem](#newecosystem)
     - [EditEcosystemName](#editecosystemname)
     - [NewContract](#newcontract)
@@ -139,12 +139,11 @@
 <!-- /TOC -->
 
 
-智能合约（下文称为合约）是应用程序的基本元素。用户在页面中执行合约通常是单个操作，结果是更改或创建数据库的条目。
-应用程序的所有数据操作形成了合约系统，这些合约通过数据库或者合约内容的函数彼此交互。
+用户在页面中执行智能合约通常是单个操作，结果是更改或创建数据库的条目。应用程序的所有数据操作形成了智能合约系统，这些智能合约通过数据库或者智能合约内容的函数彼此交互。
 
-## 合约结构 {#contract-structure}
+## 智能合约结构 {#contract-structure}
 
-使用 **contract**关键字声明合约，后面接上合约名称，合约内容必须用大括号括起来。合约结构有三个主要部分：
+使用 **contract**关键字声明智能合约，后面接上智能合约名称，智能合约内容必须用大括号括起来。智能合约结构有三个主要部分：
 
 > 1.  **data** - [数据部分](#data-section)，声明输入数据的变量，包括变量名称和变量类型；
 > 2.  **conditions** - [条件部分](#conditions-section)，验证数据的正确性；
@@ -168,7 +167,7 @@ contract MyContract {
 
 ### 数据部分 {#data-section}
 
-`data` 部分描述了合约数据输入以及接收的表单参数。
+`data` 部分描述了智能合约数据输入以及接收的表单参数。
 
 每行的依次顺序结构：
 
@@ -193,8 +192,7 @@ contract my {
 
 `conditions` 部分描述了对接收的数据进行验证。
 
-以下命令用于错误警告：严重性错误 `error`、警告性错误`warning`、提示性错误`info`，
-这三种命令都会生成一个终止合约执行的错误，每个错误都会打印不同类型的错误日志信息。例如：
+以下命令用于错误警告：严重性错误 `error`、警告性错误`warning`、提示性错误`info`，这三种命令都会生成一个终止智能合约执行的错误，每个错误都会打印不同类型的错误日志信息。例如：
 
 ``` js
 if fuel == 0 {
@@ -210,7 +208,7 @@ if idexist > 0 {
 
 ### 操作部分 {#action-section}
 
-`action`部分描述了合约的主要代码，该代码检索其他数据并将结果值记录到数据库表中。例如：
+`action`部分描述了智能合约的主要代码，该代码检索其他数据并将结果值记录到数据库表中。例如：
 
 ``` js
 action {
@@ -221,31 +219,28 @@ action {
 
 ## 变量 {#variables}
 
-**data** 部分声明的变量通过 `$`符号后面跟上变量名称传递给其他合约部分。`$`符号也可以声明其他不在数据部分内的变量。
-这些变量被认为是这个合约和所有嵌套该合约的全局变量。
+**data** 部分声明的变量通过 `$`符号后面跟上变量名称传递给其他智能合约部分。`$`符号也可以声明其他不在数据部分内的变量。这些变量被认为是这个智能合约和所有嵌套该智能合约的全局变量。
 
-合约内可以使用预定义变量，这些变量包含调用该合约的交易数据：
+智能合约内可以使用预定义变量，这些变量包含调用该智能合约的交易数据：
 
 > -   `$time` -- 交易时间戳；
 > -   `$ecosystem_id` -- 生态系统ID；
 > -   `$block` -- 包含该交易的区块ID；
 > -   `$key_id` -- 签署当前交易的账户地址；
-> -   `$type` 虚拟机中合约ID；
+> -   `$type` 虚拟机中智能合约ID；
 > -   `$block_key_id` -- 生成区块的节点账户地址；
 > -   `$block_time` -- 区块生成时间戳；
-> -   `$original_contract` -- 最初进行交易处理的合约名称。如果该变量为空字符串，表示交易在验证过程中调用了该合约。
-      要检查该合约是由另一个合约调用还是直接从交易调用，需要比较 *\$original_contract* 和 *\$this_contract* 的值。
-      如果它们相等，则表示合约是从交易调用的；
-> -   `$this_contract` -- 当前执行合约名称；
+> -   `$original_contract` -- 最初进行交易处理的智能合约名称。如果该变量为空字符串，表示交易在验证过程中调用了该智能合约。要检查该智能合约是由另一个智能合约调用还是直接从交易调用，需要比较 *\$original_contract* 和 *\$this_contract* 的值。 如果它们相等，则表示智能合约是从交易调用的；
+> -   `$this_contract` -- 当前执行智能合约名称；
 > -   `$guest_key` -- 访客账户地址；
-> -   `$stack` -- 合约数组堆栈，\*array\* 类型，包含所有执行的合约，数组第一个元素表示当前执行的合约名称，最后一个元素表示最初进行交易处理的合约名称；
+> -   `$stack` -- 智能合约数组堆栈，\*array\* 类型，包含所有执行的智能合约，数组第一个元素表示当前执行的智能合约名称，最后一个元素表示最初进行交易处理的智能合约名称；
 > -   `$node_position` -- 区块所在的验证节点数组的索引号；
 > -   `$txhash` -- 交易哈希；
-> -   `$contract` -- 当前合约结构数组。
+> -   `$contract` -- 当前智能合约结构数组。
 
-预定义变量不仅可以在合约中访问，还可以在定义应用程序元素的访问权限条件的权限字段中访问。当用于权限字段时，关于区块信息的预定义变量始终等于零，例如`$time`， `$block` 等。
+预定义变量不仅可以在智能合约中访问，还可以在定义应用程序元素的访问权限条件的权限字段中访问。当用于权限字段时，关于区块信息的预定义变量始终等于零，例如`$time`， `$block` 等。
 
-预定义变量 `$result` 赋值于合约的返回结果。
+预定义变量 `$result` 赋值于智能合约的返回结果。
 
 ``` js
 contract my {
@@ -268,10 +263,9 @@ contract my {
 }
 ```
 
-## 嵌套合约 {#nested-contracts}
+## 嵌套智能合约 {#nested-contracts}
 
-在合约的 *conditions* 和 *action*部分可以嵌套合约。嵌套合约可以直接调用，合约参数在其合约名称后面的括号中指定，
-例如，`@1NameContract(Params)`。也可以使用[CallContract](#CallContract) 函数调用。
+在智能合约的 *conditions* 和 *action*部分可以嵌套合约。嵌套合约可以直接调用，合约参数在其合约名称后面的括号中指定，例如，`@1NameContract(Params)`。也可以使用[CallContract](#CallContract) 函数调用。
 
 ## 文件上传 {#file-upload}
 
@@ -290,6 +284,7 @@ contract Upload {
 ## JSON格式查询语句 {#queries-in-json-format}
 
 在合约语言中，**JSON** 格式类型可以指定为字段类型。使用语法：
+
 **columnname->fieldname** 来处理条目字段。获得的值记录在**columnname.fieldname**。 
 
 上述语法可以在[DBFind](templates2.md#dbfind) 函数的*Columns,One,Where* 中使用。
@@ -307,9 +302,7 @@ val = DBFind("mytable").WhereId($Id).One("doc->check")
 
 ## 日期时间格式查询语句 {#queries-with-date-and-time-operations}
 
-合约语言函数不能直接查询和更新日期时间，但是可以像示例中在Where语句中使用PostgreSQL的函数和功能。
-例如，需要比较字段*date_column* 和当前时间，如果 *date_column*是timestamp类型，那么表达式为 `date_column < NOW()`；
-如果 *date_column*是Unix类型，那么表达式为 `to_timestamp(date_column) > NOW()`。
+合约语言函数不能直接查询和更新日期时间，但是可以像示例中在Where语句中使用PostgreSQL的函数和功能。例如，需要比较字段*date_column* 和当前时间，如果 *date_column*是timestamp类型，那么表达式为 `date_column < NOW()`；如果 *date_column*是Unix类型，那么表达式为 `to_timestamp(date_column) > NOW()`。
 
 ``` js
 Where("to_timestamp(date_column) > NOW()")
@@ -438,8 +431,7 @@ MyFunc({key: val, sub: {name: "My name", "color": "Red"}})
 
 合约语言支持标准 **if** 条件语句和 **while**循环，可以在合约和函数中使用。这些语句可以相互嵌套。
 
-**if** 和 **while**
-关键字后必须跟条件语句。如果条件语句返回一个数字，则当其值为0，被视为*false*。
+**if** 和 **while** 关键字后必须跟条件语句。如果条件语句返回一个数字，则当其值为0，被视为*false*。
 
 *val == 0* 等于 *!val*，*val != 0* 等于 *val*。**if** 语句可以有**else** 代码块，在 **if** 条件语句为 *false* 时执行 **else** 。
 
@@ -480,9 +472,7 @@ while true {
 
 #### 函数声明 {#function-declaration}
 
-使用 **func**关键词声明一个函数，后面是函数名称和传递给它的参数列表及其参数类型，所有参数都用小括号括起来，用逗号分隔。
-在小括号之后，必须声明函数返回值的数据类型。函数体必须用大括号括起来。如果函数没有参数，那么大括号可以省略。 
-使用`return` 关键字返回函数返回值。
+使用 **func**关键词声明一个函数，后面是函数名称和传递给它的参数列表及其参数类型，所有参数都用小括号括起来，用逗号分隔。在小括号之后，必须声明函数返回值的数据类型。函数体必须用大括号括起来。如果函数没有参数，那么大括号可以省略。使用`return` 关键字返回函数返回值。
 
 ``` js
 func myfunc(left int, right int) int {
@@ -500,9 +490,7 @@ func ooops {
 
 #### 可变长度参数 {#variable-length-parameters}
 
-函数可以定义可变长度参数，使用 `...`符号作为函数的最后一个参数类型，表示可变长度参数，其数据类型为`array`。
-可变长度参数包含从调用传递该参数变量开始的所有变量。
-任何类型的变量都可以传递，但是您需要处理与数据类型不匹配的冲突。
+函数可以定义可变长度参数，使用 `...`符号作为函数的最后一个参数类型，表示可变长度参数，其数据类型为`array`。可变长度参数包含从调用传递该参数变量开始的所有变量。任何类型的变量都可以传递，但是您需要处理与数据类型不匹配的冲突。
 
 ``` js
 func sum(out string, values ...) {
@@ -522,13 +510,9 @@ func main() {
 
 #### 可选参数 {#optional-parameters}
 
-函数有很多参数，但在调用它时我们只需要其中某些参数。这样的情况下，您可以通过以下方式声明可选参数：
-`func myfunc(name string).Param1(param string).Param2(param2 int) {...}`，
-这样您就可以调用任意顺序指定的参数：`myfunc("name").Param2(100)`。
+函数有很多参数，但在调用它时我们只需要其中某些参数。这样的情况下，您可以通过以下方式声明可选参数：`func myfunc(name string).Param1(param string).Param2(param2 int) {...}`，这样您就可以调用任意顺序指定的参数：`myfunc("name").Param2(100)`。
 
-在函数体中，您可以像正常处理这些变量。如果未调用指定的可选参数，它们默认为零值。
-您还可以使用`...`指定可变长度参数：`func DBFind(table string).Where(request string, params ...)`。
-然后调用它：`DBFind("mytable").Where({"id": $myid, "type": 2})`。
+在函数体中，您可以像正常处理这些变量。如果未调用指定的可选参数，它们默认为零值。您还可以使用`...`指定可变长度参数：`func DBFind(table string).Where(request string, params ...)`。然后调用它：`DBFind("mytable").Where({"id": $myid, "type": 2})`。
 
 ``` js
 func DBFind(table string).Columns(columns string).Where(format string, tail ...)
@@ -782,8 +766,7 @@ DBFind(table string)
 
     > 等价于 `field is null`。
 
-请确保不要覆盖对象数组的键。例如，如果想用 `id>2 and id<5`语句查询，不能使用`{id:{"$gt": 2}, id:{"$lt": 5}}`，
-因为第一个元素会被第二个元素覆盖。应该使用如下结构查询：
+请确保不要覆盖对象数组的键。例如，如果想用 `id>2 and id<5`语句查询，不能使用`{id:{"$gt": 2}, id:{"$lt": 5}}`，因为第一个元素会被第二个元素覆盖。应该使用如下结构查询：
 
 ``` js
 {id: [{"$gt": 2}, {"$lt": 5}]}
@@ -1417,8 +1400,7 @@ if Len(mylist) == 0 {
 
 ### Row {#row}
 
-The *list* parameter must not be specified in this case.
-返回数组列表的第一个对象数组。如果列表为空，则返回结果为空。该函数主要与[DBFind](templates2.md#dbfind)函数一起使用，使用时该函数不能指定参数。
+The *list* parameter must not be specified in this case. 返回数组列表的第一个对象数组。如果列表为空，则返回结果为空。该函数主要与[DBFind](templates2.md#dbfind)函数一起使用，使用时该函数不能指定参数。
 
 **语法**
 
@@ -1565,8 +1547,7 @@ ContractAccess("MyContract","SimpleContract")
 
 从指定名称的合约中调用 **conditions** 条件部分。
 
-对于该类的合约，数据部分必须为空。如果条件部分执行没有错误，则返回*true*。如果在执行期间生成错误，则父合约也将以此错误结束。
-该函数通常用于控制合约对表的访问，并且可以在编辑系统表时在权限字段中调用。
+对于该类的合约，数据部分必须为空。如果条件部分执行没有错误，则返回*true*。如果在执行期间生成错误，则父合约也将以此错误结束。该函数通常用于控制合约对表的访问，并且可以在编辑系统表时在权限字段中调用。
 
 **语法**
 
@@ -2909,8 +2890,7 @@ RemoveOBS(OBSName string)
 
 ### BindWallet {#bindwallet}
 
-将合约绑定到当前生态系统中的钱包地址。合同绑定后，该地址将支付执行该合约的费用。
-参数：
+将合约绑定到当前生态系统中的钱包地址。合同绑定后，该地址将支付执行该合约的费用。参数：
 
 > -   *Id int* - 要绑定的合约ID。
 > -   *WalletId string \"optional\"* - 合约绑定的钱包地址。
@@ -3177,6 +3157,7 @@ Parameters
 ### UploadBinary {#uploadbinary}
 
 在 *X_binaries* 表中添加或覆盖静态文件。通过HTTP API调用合约时，请求格式必须使用`multipart/form-data`；
+
 该DataMimeType参数将与表单数据一起使用。
 
 参数：
