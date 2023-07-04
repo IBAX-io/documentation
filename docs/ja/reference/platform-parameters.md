@@ -167,7 +167,7 @@ Node bans:
 
 <!-- /TOC -->
 
-### Depreciated {#depreciated}
+## Depreciated {#depreciated}
 廃止されたパラメータ:
 * [blockchain url](#blockchain-url)
 

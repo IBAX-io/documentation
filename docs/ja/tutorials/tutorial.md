@@ -761,18 +761,19 @@ value.data->Data のデータを 1 次元配列 [a,b,c,d] に組み立てます�
 ## エコロジーの設定（コマンドラインツールを使用） {#ecological-configuration-using-command-line-tool}
 
 このチュートリアルでは、以下の手順を実行します:
-- 1. [エコロジーへの参加申請](#apply-to-join-the-ecology)
-- 2. [エコロジーメンバーの追加](#add-ecological-members)
-- 3. [役割管理](#role-management)
-- 4. [トークンの発行](#issuance-of-token)
-- 5. [エコロジー控除](#eco-deduction)
-- 6. [DAOガバナンスエコロジー](#dao-governance-ecology)
+1. [エコロジーへの参加申請](#apply-to-join-the-ecosystem)
+2. [エコロジーメンバーの追加](#add-ecosystem-members)
+3. [アカウントの凍結](#freezing-of-accounts) 
+4. [役割管理](#role-management)
+5. [トークンの発行](#issuance-of-token)
+6. [エコロジー控除](#eco-deduction)
+7. [DAOガバナンスエコロジー](#dao-governance-ecosystem)
 
 
 このチュートリアルを開始する前に、独自のアプリケーションを用意し、エコロジーとアプリケーションの概念を理解する必要があります。[スタート ガイド](#getting-started-guide) を参照してください。
 [コマンドラインツール](https://github.com/IBAX-io/ibax-cli) を使用して、IBAX ブロックチェーン上でエコロジー構成を実行します。
 
-### エコロジーへの参加を申請する {#apply-to-join-the-ecology}
+### エコロジーへの参加を申請する {#apply-to-join-the-ecosystem}
 `@1MembershipRequest` コントラクトを呼び出して、エコロジーへの参加をリクエストできます。
 次の例:
 ```shell
@@ -782,7 +783,7 @@ value.data->Data のデータを 1 次元配列 [a,b,c,d] に組み立てます�
 申請が成功すると対象エコロジー管理者に申請が届き、エコロジー管理者が申請を承認した場合のみ対象エコロジーに参加したとみなされます。
 もちろん、ターゲットのエコロジーが公開されている場合は、ターゲットのエコロジーに直接参加することもできます
 
-### エコロジーメンバーを追加する  {#add-ecological-members}
+### エコロジーメンバーを追加する  {#add-ecosystem-members}
 エコロジーが作成されたばかりの場合、エコロジー メンバーはエコロジー作成者のみです。他のメンバーを参加に招待する必要がある場合は、招待された人の公開鍵を知っていて、コントラクト `@1MembershipAdd` を呼び出してメンバーを追加する必要があります。
 ```shell
 >callContract @1MembershipAdd {"Keys": "04f2c1780ca0aa0f343d0e541c77811...3b0d5bf3a9903253aad6e78c966b5f91ffb32703884020"}
@@ -922,11 +923,11 @@ value.data->Data のデータを 1 次元配列 [a,b,c,d] に組み立てます�
 
 
 ### トークンの発行 {#issuance-of-token}
-- [エコロジーをクリエイト](#create-ecology)
+- [エコロジーをクリエイト](#create-ecosystem)
 - [基本アプリケーションのインストール](#installing-basic-applications)
 - [トークン発行](#token-issuance)
 
-#### エコロジーを創造する {#create-ecology}
+#### エコロジーを創造する {#create-ecosystem}
 エコロジーを作成し、`@1NewEcosystem` コントラクトを呼び出します
 ```shell
 >callContract @1NewEcosystem {"Name": "Test Ecosystem"}
@@ -1038,7 +1039,7 @@ value.data->Data のデータを 1 次元配列 [a,b,c,d] に組み立てます�
 すべてのユーザーは、エコロジー内で発生するガス料金のみを支払う必要があります。 もちろん、実際のニーズに応じてコストパラメータを調整できます
 
 
-### DAO ガバナンス エコロジー {#dao-governance-ecology}
+### DAO ガバナンス エコロジー {#dao-governance-ecosystem}
 DAO ガバナンス エコロジーに変更する前に、現在のエコロジーがトークンを発行していることを確認する必要があります。DAO ガバナンス エコロジーに変更した後、エコロジーのすべての提案はガバナンス委員会のメンバーによって投票されます。
 DAO 統治委員会はもはやエコ開発業者だけによって運営されることはなく、エコホールディングスの上位 50 人の代表者が選出されます。
 

@@ -56,37 +56,42 @@ module.exports = {
         '/de/': {
             lang: 'de',
             title: 'IBAX Dokumentation',
-            description: 'Ein dezentralisiertes kommerzielles kettenübergreifendes Infrastrukturnetzwerk',
+            description: 'Ein dezentrales kommerzielles Cross-Chain-Infrastrukturnetzwerk',
         },
         '/es/': {
             lang: 'es',
             title: 'IBAX Documentación',
-            description: 'Una red de infraestructura comercial descentralizada entre cadenas',
+            description: 'Una red de infraestructura de cadena cruzada comercial descentralizada',
         },
         '/fr/': {
             lang: 'fr',
             title: 'IBAX Documentation',
-            description: 'A Decentralized Commercial Cross-Chain infrastructure Network',
+            description: 'Un réseau d\'infrastructures commerciales inter-chaînes décentralisées',
         },
         '/it/': {
             lang: 'it',
             title: 'IBAX Documentazione',
-            description: 'A Decentralized Commercial Cross-Chain infrastructure Network',
+            description: 'Una rete di infrastrutture cross-chain commerciale decentralizzata',
         },
         '/ja/': {
             lang: 'ja',
             title: 'IBAX ドキュメンテーション',
-            description: 'A Decentralized Commercial Cross-Chain infrastructure Network',
+            description: '分散型商用クロスチェーンインフラストラクチャネットワーク',
         },
         '/zh-CN/': {
             lang: 'zh-CN',
             title: 'IBAX 文档',
-            description: 'A Decentralized Commercial Cross-Chain infrastructure Network',
+            description: '去中心化商业跨链基础设施网络',
         },
         '/tr-TR/': {
             lang: 'tr-TR',
             title: 'IBAX Belgeleri',
             description: 'A Decentralized Commercial Cross-Chain infrastructure Network',
+        },
+        '/kr/': {
+            lang: 'kr',
+            title: 'IBAX 설명서',
+            description: '탈중앙화 상업 크로스 체인 인프라 네트워크',
         }
     },
     themeConfig: {
@@ -189,10 +194,10 @@ module.exports = {
                 lastUpdated: '上次更新',
                 contributorsLabel: '贡献者',
                 nav: [
-                    {text: '概念', link: '/zh-CN/concepts/about-the-platform',},
-                    {text: '教程', link: '/zh-CN/tutorials/app_tutorial',},
+                    {text: '概念', link: '/zh-CN/concepts/about-the-platform'},
+                    {text: '教程', link: '/zh-CN/tutorials/app_tutorial'},
                     {text: '指南', link: '/zh-CN/topics/script'},
-                    {text: '参考', link: '/zh-CN/reference/api2',},
+                    {text: '参考', link: '/zh-CN/reference/api2'},
                     {text: '部署', link: '/zh-CN/howtos/deployment'},
                 ],
                 sidebar: {
@@ -273,10 +278,10 @@ module.exports = {
                 editLinkText: 'Bearbeiten Sie diese Seite auf GitHub',
                 lastUpdated: 'Letzte Aktualisierung',
                 nav: [
-                    {text: 'Konzept', link: '/de/concepts/about-the-platform',},
-                    {text: 'Lernprogramm', link: '/de/tutorials/app_tutorial',},
+                    {text: 'Konzept', link: '/de/concepts/about-the-platform'},
+                    {text: 'Lernprogramm', link: '/de/tutorials/app_tutorial'},
                     {text: 'Handbuch', link: '/de/topics/script'},
-                    {text: 'Referenz', link: '/de/reference/api2',},
+                    {text: 'Referenz', link: '/de/reference/api2'},
                     {text: 'Einsatz', link: '/de/howtos/deployment'},
                 ],
                 sidebar: {
@@ -357,10 +362,10 @@ module.exports = {
                 editLinkText: 'Edita esta página en GitHub',
                 lastUpdated: 'Última actualización',
                 nav: [
-                    {text: 'Concepto', link: '/es/concepts/about-the-platform',},
-                    {text: 'Tutorial', link: '/es/tutorials/app_tutorial',},
+                    {text: 'Concepto', link: '/es/concepts/about-the-platform'},
+                    {text: 'Tutorial', link: '/es/tutorials/app_tutorial'},
                     {text: 'Guía', link: '/es/topics/script'},
-                    {text: 'Referencia', link: '/es/reference/api2',},
+                    {text: 'Referencia', link: '/es/reference/api2'},
                     {text: 'Despliegue', link: '/es/howtos/deployment'},
                 ],
                 sidebar: {
@@ -441,10 +446,10 @@ module.exports = {
                 editLinkText: 'Modifier cette page sur GitHub',
                 lastUpdated: 'Dernière mise à jour',
                 nav: [
-                    {text: 'Concept', link: '/fr/concepts/about-the-platform',},
-                    {text: 'Didacticiel', link: '/fr/tutorials/app_tutorial',},
+                    {text: 'Concept', link: '/fr/concepts/about-the-platform'},
+                    {text: 'Didacticiel', link: '/fr/tutorials/app_tutorial'},
                     {text: 'Guider', link: '/fr/topics/script'},
-                    {text: 'Référence', link: '/fr/reference/api2',},
+                    {text: 'Référence', link: '/fr/reference/api2'},
                     {text: 'Déploiement', link: '/fr/howtos/deployment'},
                 ],
                 sidebar: {
@@ -525,10 +530,10 @@ module.exports = {
                 editLinkText: 'GitHubでこのページを編集する',
                 lastUpdated: '最終更新',
                 nav: [
-                    {text: 'コンセプト', link: '/ja/concepts/about-the-platform',},
-                    {text: 'チュートリアル', link: '/ja/tutorials/app_tutorial',},
+                    {text: 'コンセプト', link: '/ja/concepts/about-the-platform'},
+                    {text: 'チュートリアル', link: '/ja/tutorials/app_tutorial'},
                     {text: 'ガイド', link: '/ja/topics/script'},
-                    {text: 'リファレンス', link: '/ja/reference/api2',},
+                    {text: 'リファレンス', link: '/ja/reference/api2'},
                     {text: '展開', link: '/ja/howtos/deployment'},
                 ],
                 sidebar: {
@@ -609,10 +614,10 @@ module.exports = {
                 editLinkText: 'Modifica questa pagina su GitHub',
                 lastUpdated: 'Ultimo aggiornamento',
                 nav: [
-                    {text: 'Concetto', link: '/it/concepts/about-the-platform',},
-                    {text: 'Tutorial', link: '/it/tutorials/app_tutorial',},
+                    {text: 'Concetto', link: '/it/concepts/about-the-platform'},
+                    {text: 'Tutorial', link: '/it/tutorials/app_tutorial'},
                     {text: 'Guida', link: '/it/topics/script'},
-                    {text: 'Riferimento', link: '/it/reference/api2',},
+                    {text: 'Riferimento', link: '/it/reference/api2'},
                     {text: 'Distribuzione', link: '/it/howtos/deployment'},
                 ],
                 sidebar: {
@@ -694,10 +699,10 @@ module.exports = {
                 lastUpdated: 'son Güncelleme',
                 contributorsLabel: 'katkıda bulunan',
                 nav: [
-                    {text: 'Genel Bakış', link: '/tr-TR/concepts/about-the-platform',},
-                    {text: 'öğretici', link: '/tr-TR/tutorials/app_tutorial',},
+                    {text: 'Genel Bakış', link: '/tr-TR/concepts/about-the-platform'},
+                    {text: 'öğretici', link: '/tr-TR/tutorials/app_tutorial'},
                     {text: 'kılavuz', link: '/tr-TR/topics/script'},
-                    {text: 'başvurmak', link: '/tr-TR/reference/api2',},
+                    {text: 'başvurmak', link: '/tr-TR/reference/api2'},
                     {text: 'dağıtmak', link: '/tr-TR/howtos/deployment'},
                 ],
                 sidebar: {
@@ -769,6 +774,91 @@ module.exports = {
                         }
                     ],
                     '/tr-TR/': 'auto',
+                },
+            },
+            '/kr/': {
+                selectText: '언어를 선택하세요',
+                label: '한국인',
+                ariaLabel: '언어를 선택하세요',
+                editLinkText: 'GitHub에서 이 페이지 편집',
+                lastUpdated: '마지막 업데이트',
+                contributorsLabel: '기부자',
+                nav: [
+                    {text: '개념', link: '/kr/concepts/about-the-platform'},
+                    {text: '지도 시간', link: '/kr/tutorials/app_tutorial'},
+                    {text: '가이드', link: '/kr/topics/script'},
+                    {text: '인용하다', link: '/kr/reference/api2'},
+                    {text: '전개하다', link: '/kr/howtos/deployment'},
+                ],
+                sidebar: {
+                    '/kr/concepts/': [
+                        {
+                            title: '개념',
+                            sidebarDepth: 2,
+                            children: [
+                                'about-the-platform',
+                                'blockchain-layers',
+                                'consensus',
+                                'thesaurus',
+                            ],
+                        },
+                        {
+                            title: '일반적인 문제',
+                            sidebarDepth: 2,
+                            children: [
+                                'faq',
+                            ],
+                        },
+                    ],
+                    '/kr/tutorials/': [
+                        {
+                            title: '지도 시간',
+                            collapsable: false,
+                            sidebarDepth: 2,
+                            children: [
+                                'app_tutorial',
+                                'tutorial',
+                            ],
+                        },
+                    ],
+                    '/kr/topics/': [
+                        {
+                            title: '가이드',
+                            collapsable: false,
+                            sidebarDepth: 2,
+                            children: [
+                                'script',
+                                'templates2',
+                                'vm',
+                                'daemons',
+                            ],
+                        },
+                    ],
+                    '/kr/reference/': [
+                        {
+                            title: '인용하다',
+                            collapsable: false,
+                            sidebarDepth: 2,
+                            children: [
+                                'api2',
+                                'platform-parameters',
+                                'backend-config',
+                                'desync_monitor',
+                                "json-rpc",
+                            ],
+                        },
+                    ],
+                    '/kr/howtos/': [
+                        {
+                            title: '전개하다',
+                            collapsable: false,
+                            sidebarDepth: 2,
+                            children: [
+                                'deployment',
+                            ]
+                        }
+                    ],
+                    '/kr/': 'auto',
                 },
             },
         },

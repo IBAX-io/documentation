@@ -1,4 +1,3 @@
-
 # FAQ {#faq}
 
   - [1. Please briefly describe IBAX?](#question-1)
@@ -76,9 +75,10 @@
 ## 10. What is a platform application? {#question-10}
 
   * An application is a complete software product that implements a function or service. The application consists of database tables, contracts and pages.
-## 11. What programming language is used to create the application? {#question-11}
-  * The contract is written in the Needle language, which is developed by the platform team, For more information, see: [Smart Contract](../topics/script.md).
 
+## 11. What programming language is used to create the application? {#question-11}
+
+  * The contract is written in the Needle language, which is developed by the platform team, For more information, see: [Smart Contract](../topics/script.md).
   * The page is written in Logicor language, which is a page template language. For more information, see: [Template Language](../topics/templates2.md).
 
 ## 12. What software is used to create applications and interact with users? {#question-12}
@@ -149,13 +149,14 @@
 ## 26. Who pays for the operation of applications? {#question-26}
 
  For corresponding account addresses, there are currently 4 ways to pay for the operation of applications:
+
   * For contract callers, the fee will be paid from the user's account by default when the user calls the contract; 
   * For contract binding parties, the fee will be paid from the binding account specified by the contract creator;
   * For ecosystem creators, the fee of all applications within an ecosystem will be paid by the ecosystem creator respectively;
-
   * Exclusive ecosystem wallet. Each ecosystem has an exclusive account. If the ecosystem creator activated it, the fee of all applications within the ecosystem will be paid from this account.
 
- Order of payment precedence: Exclusive ecosystem wallet> Ecosystem creator> Contract binding party> Contract caller.
+ Order of payment precedence: 
+ Exclusive ecosystem wallet> Ecosystem creator> Contract binding party> Contract caller.
 
 ## 27. How to protect the applications in the ecosystem from attacks due to vulnerabilities? {#question-27}
 
@@ -163,21 +164,15 @@
 
 ## 28. What new features will be implemented in future plans? {#question-28}
 
-  * Visual smart contract designer;
-
-
-  * Support for hybrid databases (SQL and NoSQL);
-
-  * Parallel multi-threaded processing of transactions from different ecosystems;
-
-  * Perform resource-intensive calculations on the client;
-
-  * Ecosystem hosting and computing power exchange;
-
-  * Child nodes, only store some blocks on the server;
-
-  * Semantic references (ontology) are used to unify the operation of data in the platform.
+  -   Visual smart contract designer;
+  -   Support for hybrid databases (SQL and NoSQL);
+  -   Parallel multi-threaded processing of transactions from different ecosystems;
+  -   Perform resource-intensive calculations on the client;
+  -   Ecosystem hosting and computing power exchange;
+  -   Child nodes, only store some blocks on the server;
+  -   Semantic references (ontology) are used to unify the operation of data in the platform.
 
 ## 29. How to prove its operability? {#question-29}
 
   * A number of proof of concept projects and cases have been implemented on the IBax Network: a socialized tax collection and electronic invoice generation and circulation system, a medical apparatus and instruments supervision, forgery prevention and tracing system, a financing and supervision system, a voting/poll system, business registration, trade finance tools, assets registration contract management system, etc.
+  

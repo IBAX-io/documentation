@@ -11,6 +11,7 @@ In this section, we will brief you how to use IBAX.
   - [Implementation](#implementation)
   
 
+
 If you are interested in the development, use or management of applications in IBAX, then you may not need to understand it at all.
 
 In IBAX, the blockchain and the blockchain network are hidden from ECOLIB members, administrators, and application developers. IBAX offers [RESTful API](../reference/api2.md) for all user groups, which provide a tamper-proof and distributed access to the **global state** of the blockchain.
@@ -35,16 +36,17 @@ ECOLIB members can view and modify the database from application pages, just lik
 
 Applications may fall into **ECOLIB applications** and **platform applications**.
 
-ECOLIB applications
+> ECOLIB applications
 
 An ECOLIB application implements certain unique functions or business processes of an ECOLIB, but it is only available in that ECOLIB.
-Platform applications
+
+> Platform applications
 
 A platform application is applicable to all ECOLIBs. Any application could be developed as a platform application. IBAX developers would provide platform applications that support the core functions for ECOLIB governance, such as voting, notification, and ECOLIB member role management.
 
 ## Underlying model {#underlying-model}
 
-Definition of layers
+> Definition of layers
 
 IBAX consists of several layers:
 
@@ -59,6 +61,7 @@ IBAX consists of several layers:
 * Global state layer
 
     Update and synchronize the global state (database) based on operations written to the distributed ledger (blockchain)
+
 * Blockchain layer
 
     Update the distributed ledger with new blocks. Operations (transactions) saved in new blocks must be performed on the global state.
@@ -79,11 +82,8 @@ Therefore, the flow of transactions is as follows:
 
   * A user operation in a user page will become a transaction;
   * The transaction is contained in a block;
-
   * The block is included in the blockchain;
-
   * The change of operation will cause the global state of the blockchain to change, and such operation will be applied to the database;
-
   * Any database change will be reflected in the application.
 
 ## Implementation {#implementation}
@@ -92,16 +92,22 @@ IBAX has two major components, i.e. server [go-ibax](https://github.com/IBAX-io/
 
 Weaver:
   * Providing the user pages;
+
   * Providing the IDE for application development;
+
   * Storing public keys of user accounts and perform authorization;
+
   * Requesting database data from application pages and display application pages to users;
+
   * Sending transactions to the server through [REST APIs](../reference/api2.md);
 
       In order to automatically create transactions against user operations, Weaver will convert such operations into transactions when application developers implement a contract from the IDE.
 
 Server:
+
   * Keeping the global state (database) of the node;
   * Implementation of the blockchain protocol;
   * Implementation of contract codes in the IBAX [Virtual Machine](../topics/vm.md);
   * Implementation of page codes in the [Template Engine](../topics/templates2.md);
   * Implementation of [RESTful API](../reference/api2.md).
+  

@@ -91,16 +91,11 @@
 
 ## 页面构建 {#page-construction}
 
-Weaver 的集成开发环境使用 *JavaScript React库*创建，包括页面编辑器和可视化页面设计器。
-页面是应用程序的基本组成部分，它提供从数据库表中检索和显示数据，创建用于接收用户输入数据的表单，将数据传递给合约以及在应用程序页面之间导航。
-页面和合约一样，都存储在区块链中，这可以确保在软件客户端中加载它们时防止篡改。
+Weaver 的集成开发环境使用 *JavaScript React库*创建，包括页面编辑器和可视化页面设计器。页面是应用程序的基本组成部分，它提供从数据库表中检索和显示数据，创建用于接收用户输入数据的表单，将数据传递给合约以及在应用程序页面之间导航。页面和合约一样，都存储在区块链中，这可以确保在软件客户端中加载它们时防止篡改。
 
 ### 模版引擎 {#template-engine}
 
-页面元素（页面和菜单）是由开发者在 Weaver 的页面编辑器中使用模版语言在验证节点的 *模版引擎*中形成的。
-所有页面均使用由 IBAX区块链平台 开发团队开发的 Logicor 语言构建。使用 *content/\...* API命令从网络上的节点请求页面。
-模版引擎作为对此类请求的回复发送的内容不是HTML页面，而是由HTML标记组成的JSON代码，这些标记根据模版结构形成树模版引擎对此类请求的响应发送的不是HTML页面，
-而是由HTML标记组成的JSON代码，这些标记根据模版结构形成树。如果想要测试模版引擎可参考[content](../reference/api2.md#content) API接口。
+页面元素（页面和菜单）是由开发者在 Weaver 的页面编辑器中使用模版语言在验证节点的 *模版引擎*中形成的。所有页面均使用由 IBAX区块链平台 开发团队开发的 Logicor 语言构建。使用 *content/\...* API命令从网络上的节点请求页面。模版引擎作为对此类请求的回复发送的内容不是HTML页面，而是由HTML标记组成的JSON代码，这些标记根据模版结构形成树模版引擎对此类请求的响应发送的不是HTML页面，而是由HTML标记组成的JSON代码，这些标记根据模版结构形成树。如果想要测试模版引擎可参考[content](../reference/api2.md#content) API接口。
 
 ### 创建页面 {#create-pages}
 
@@ -115,10 +110,7 @@ Weaver 的集成开发环境使用 *JavaScript React库*创建，包括页面编
 
 #### 可视化页面设计器 {#visual-page-designer}
 
-可视化页面设计器可以创建页面设计而无需借助 Logicor语言中的界面代码。
-视图化Designer可以使用拖放操作在页面上设置表单元素和文本的位置，以及配置页面块大小。
-视图化提供了一组用于显示标准数据模型的即用型块：带有标题，表单和信息面板。在视图化中创建页面后，可在页面编辑器中编写接收数据和条件结构的程序逻辑。
-未来我们计划创建一个更加完整的可视化页面设计器。
+可视化页面设计器可以创建页面设计而无需借助 Logicor语言中的界面代码。视图化Designer可以使用拖放操作在页面上设置表单元素和文本的位置，以及配置页面块大小。视图化提供了一组用于显示标准数据模型的即用型块：带有标题，表单和信息面板。在视图化中创建页面后，可在页面编辑器中编写接收数据和条件结构的程序逻辑。未来我们计划创建一个更加完整的可视化页面设计器。
 
 #### 样式使用 {#applicable-styles}
 
@@ -130,12 +122,9 @@ Weaver 的集成开发环境使用 *JavaScript React库*创建，包括页面编
 
 #### 多语言资源编辑器 {#language-resource-editor}
 
-Weaver 包括一个使用 Logicor 模版语言的函数 **LangRes**进行页面本地化的机制。
-它将页面上的语言资源标签替换为用户在软件客户端或浏览器中选择的语言对应的文本行。
-可以使用简短的语法 **\$lable\$** 代替 **LangRes**函数。由合约发起的弹出窗口中的消息翻译是由 needle 语言的 **LangRes**函数执行的。
+Weaver 包括一个使用 Logicor 模版语言的函数 **LangRes**进行页面本地化的机制。它将页面上的语言资源标签替换为用户在软件客户端或浏览器中选择的语言对应的文本行。可以使用简短的语法 **\$lable\$** 代替 **LangRes**函数。由合约发起的弹出窗口中的消息翻译是由 needle 语言的 **LangRes**函数执行的。
 
-可以在 Weaver 的 **多语言资源Language resources**部分中创建和编辑语言资源。
-语言资源由一个标签名称和该名称在不同语言中的翻译组成，并标记相应的双字符语言标识符(EN、ZH、JP等)。
+可以在 Weaver 的 **多语言资源Language resources**部分中创建和编辑语言资源。语言资源由一个标签名称和该名称在不同语言中的翻译组成，并标记相应的双字符语言标识符(EN、ZH、JP等)。
 
 可以使用与其他数据表相同的方式定义添加和更改语言资源的权限。
 
@@ -242,9 +231,7 @@ Span($yourname$: #name#)
 -   `#isMobile#` - 如果 Weaver 在移动设备上运行，则为1。
 
 #### PageParams {#use-pageparams-to-pass-parameters-to-pages}
-使用PageParams将参数传递给页面。
-有很多函数都支持 **PageParams**参数，该参数用于在重定向到新页面时传递参数。例如：`PageParams: "param1=value1,param2=value2"`。
-参数值既可以是简单的字符串，也可以是具有引用值的变量。将参数传递给页面时，会创建带参数名称的变量。例如，`#param1#`和 `#param2#`。
+使用PageParams将参数传递给页面。有很多函数都支持 **PageParams**参数，该参数用于在重定向到新页面时传递参数。例如：`PageParams: "param1=value1,param2=value2"`。参数值既可以是简单的字符串，也可以是具有引用值的变量。将参数传递给页面时，会创建带参数名称的变量。例如，`#param1#`和 `#param2#`。
 
 -   `PageParams: "hello=world"` - 新页面以world为值接收hello参数；
 -   `PageParams: "hello=#world#"` - 新页面接收带有world变量值的hello参数。
@@ -256,9 +243,7 @@ Span($yourname$: #name#)
 
 #### 调用合约 {#calling-contracts}
 
-Logicor 通过单击表单中的按钮 **Button**函数来实现合约调用。一旦启动该事件，用户在页面表单字段中输入的数据将传递给合约，
-如果表单字段的名称对应于被调用合约的数据部分中的变量名称，则会自动传输数据。
-**Button**函数允许打开一个模式窗口，用于用户验证合约执行，并在成功执行合约后启动重定向到指定页面的操作，并将某些参数传递到该页面。
+Logicor 通过单击表单中的按钮 **Button**函数来实现合约调用。一旦启动该事件，用户在页面表单字段中输入的数据将传递给合约，如果表单字段的名称对应于被调用合约的数据部分中的变量名称，则会自动传输数据。**Button**函数允许打开一个模式窗口，用于用户验证合约执行，并在成功执行合约后启动重定向到指定页面的操作，并将某些参数传递到该页面。
 
 ## Logicor 函数功能分类 {#logicor-function-classification}
 
@@ -423,8 +408,7 @@ AddToolButton(Title: $@1broadcast$, Page: @1notifications_broadcast, Icon: icon-
 
 ### And {#and}
 
-该函数返回执行 **and** 逻辑运算的结果，括号中列出的所有参数以逗号分隔。
-如果有一个参数为空字符串、零或`false`，参数值为 `false`，其他情况参数值为 `true`。如果参数值为`true`，则该函数返回 `1`，其他情况返回 `0`。
+该函数返回执行 **and** 逻辑运算的结果，括号中列出的所有参数以逗号分隔。如果有一个参数为空字符串、零或`false`，参数值为 `false`，其他情况参数值为 `true`。如果参数值为`true`，则该函数返回 `1`，其他情况返回 `0`。
 
 **语法**
 
@@ -582,14 +566,11 @@ Button(Body, Page, Class, Contract, Params, PageParams)
 
   * Params
 
-    传递给合约的值列表。通常情况下，合约参数的值（`data`部分）是从具有相似名称的 `id` 的HTML元素(例如输入字段)中获得。
-    如果元素`id` 与合约参数的名称不同，那么应该使用`contractField1=idname1, contractField2=idname2`格式赋值。
-    该参数作为对象`{contractField1: idname1, contractField2: idname2}` 返回给 *attr*。
+    传递给合约的值列表。通常情况下，合约参数的值（`data`部分）是从具有相似名称的 `id` 的HTML元素(例如输入字段)中获得。如果元素`id` 与合约参数的名称不同，那么应该使用`contractField1=idname1, contractField2=idname2`格式赋值。该参数作为对象`{contractField1: idname1, contractField2: idname2}` 返回给 *attr*。
 
   * PageParams
 
-    传递给重定向页面的参数的格式`pageField1=idname1, pageField2=idname2`。
-    目标页面参数名称为`#pageField1` 和 `#pageField2`的变量在目标页面上创建，并分配指定的值。更多参数传递规范[使用PageParams将参数传递给页面](#pageparams)。
+    传递给重定向页面的参数的格式`pageField1=idname1, pageField2=idname2`。目标页面参数名称为`#pageField1` 和 `#pageField2`的变量在目标页面上创建，并分配指定的值。更多参数传递规范[使用PageParams将参数传递给页面](#pageparams)。
 
 * CompositeContract
 
@@ -647,8 +628,7 @@ Button(Body, Page, Class, Contract, Params, PageParams)
 
 * ErrorRedirect
 
-    指定一个重定向页面，当`contractfundef-Throw`{.interpreted-text role="ref"} 函数在合约执行期间生成错误时，将使用该重定向页面。
-    可以有几个*ErrorRedirect* 调用。因此返回\*errredirect\*属性时，其属性的键为*ErrorID* ，值为参数列表。
+    指定一个重定向页面，当`contractfundef-Throw`{.interpreted-text role="ref"} 函数在合约执行期间生成错误时，将使用该重定向页面。可以有几个*ErrorRedirect* 调用。因此返回\*errredirect\*属性时，其属性的键为*ErrorID* ，值为参数列表。
 
   * ErrorID
 
@@ -687,8 +667,7 @@ Calculate(Exp, Type, Prec)
 
   * Type
 
-    结果数据类型：int, float,money。
-    如果未指定，如果有带小数点的数字，则结果类型为float，其他情况则为int。
+    结果数据类型：int, float,money。如果未指定，如果有带小数点的数字，则结果类型为float，其他情况则为int。
 
   * Prec
 
@@ -848,10 +827,9 @@ Data(Source,Columns,Data)
 
     每行一条记录。列值必须用逗号分隔。*Data* 和 *Columns*应设置相同的顺序。
 
-    对于带有逗号的值，将该值放在双引号中 (`"example1, example2", 1, 2`)。
-    对于带引号的值，将该值放在两个双引号中(`"""example", "example2""", 1, 2`)。
+    对于带有逗号的值，将该值放在双引号中 (`"example1, example2", 1, 2`)。对于带引号的值，将该值放在两个双引号中(`"""example", "example2""", 1, 2`)。
 
-* Custom
+### Custom {#custom}
 
     可以为 *Data*分配计算列。例如，您可以为按钮和其他页面布局元素指定字段模版。这些字段模版通常分配给[Table](#Table)和其他函数来接收数据。
 
@@ -1005,13 +983,11 @@ DBFind(table, Source)
 
     由逗号分隔的字段列表，这些字段必须由 *Cutoff* 函数处理。
 
-    字段值被一个JSON对象替换，该对象有两个字段: 链接 *link* 和标题 *title*。
-    如果字段值大于32个字符，则返回指向全文前32个字符的*link*。如果值为32个字符且更短，则 *link* 为空，\*title\* 包含完整的字段值。
+    字段值被一个JSON对象替换，该对象有两个字段: 链接 *link* 和标题 *title*。如果字段值大于32个字符，则返回指向全文前32个字符的*link*。如果值为32个字符且更短，则 *link* 为空，\*title\* 包含完整的字段值。
 
 * Custom
 
-    可以为 *Data*分配计算列。例如，您可以为按钮和其他页面布局元素指定字段模版。
-    这些字段模版通常分配给`templatefundef-Table`{.interpreted-text role="ref"} 和其他函数来接收数据。
+    可以为 *Data*分配计算列。例如，您可以为按钮和其他页面布局元素指定字段模版。这些字段模版通常分配给`templatefundef-Table`{.interpreted-text role="ref"} 和其他函数来接收数据。
 
     如果想要分配多个计算列，请使用多个 *Custom* 函数。
 
@@ -1086,8 +1062,7 @@ Div(Class, Body)
 
   * Condition
 
-    表达式格式 `InputName=Value`，当所有表达式都为真时，*Condition* 为真，当 `InputName` 的值等于 `Value`，*Condition*为真。
-    如果调用了多个 *Show* 或 *Hide*，则至少有一个 *Condition* 参数必须为真。
+    表达式格式 `InputName=Value`，当所有表达式都为真时，*Condition* 为真，当 `InputName` 的值等于 `Value`，*Condition*为真。如果调用了多个 *Show* 或 *Hide*，则至少有一个 *Condition* 参数必须为真。
 
 **示例**
 
@@ -1123,8 +1098,7 @@ EcosysParam(Name, Index, Source)
 
   * Index
 
-    如果请求的参数是以逗号分隔的元素列表，可以指定从1开始的索引。
-    例如，如果`gender = male,female`，那么 `gender = male,female` 返回 `female`。
+    如果请求的参数是以逗号分隔的元素列表，可以指定从1开始的索引。例如，如果`gender = male,female`，那么 `gender = male,female` 返回 `female`。
 
     该参数不能与 *Source* 参数一起使用。
 
@@ -1264,8 +1238,7 @@ SetVar(coltype,GetColumnType(members, member_name))Div(){#coltype#}
 
 ### GetHistory {#gethistory}
 
-创建 **gethistory** 元素，使用指定数据表的条目的历史更改记录来填充它。生成的数据将放入 *Source* 元素中。
-该元素稍后可以在源输入的函数中使用，例如 [Table](#Table) 。
+创建 **gethistory** 元素，使用指定数据表的条目的历史更改记录来填充它。生成的数据将放入 *Source* 元素中。该元素稍后可以在源输入的函数中使用，例如 [Table](#Table) 。
 
 数组按从最近更改顺序排序。
 
@@ -1582,8 +1555,7 @@ InputMap(Name, Type, MapType, Value)
 
     默认值。
 
-    该值是字符串格式的对象。例如，`{"coords":[{"lat":number,"lng":number},]}`或 `{"zoom":int, "center":{"lat":number,"lng":number}}`。
-    当使用预定义的 *Value* 创建InputMap时，地址字段可用于保存地址值，因此地址字段不为空。
+    该值是字符串格式的对象。例如，`{"coords":[{"lat":number,"lng":number},]}`或 `{"zoom":int, "center":{"lat":number,"lng":number}}`。当使用预定义的 *Value* 创建InputMap时，地址字段可用于保存地址值，因此地址字段不为空。
 
   * Type
 
@@ -1607,8 +1579,7 @@ InputMap(Name: Coords,Type: polygon, MapType: hybrid, Value: `{"zoom":8, "center
 
 ### JsonToSource {#jsontosource}
 
-创建一个 **jsontosource**元素，并用JSON数组的键值对填充它。得到的数据被放入 *Source* 元素，
-该元素稍后可以在源输入的函数中使用例如：[Table](#Table)。
+创建一个 **jsontosource**元素，并用JSON数组的键值对填充它。得到的数据被放入 *Source* 元素，该元素稍后可以在源输入的函数中使用例如：[Table](#Table)。
 
 结果数据中的记录按JSON键的字母顺序排序。
 
@@ -1762,8 +1733,7 @@ Map(Hmap, MapType, Value)
 
     地图值，字符串格式的对象。
 
-    例如， `{"coords":[{"lat":number,"lng":number},]}` 或者`{"zoom":int, "center":{"lat":number,"lng":number}}`。
-    如果没有指定`center` ，则地图窗口将根据指定的坐标自动调整。
+    例如， `{"coords":[{"lat":number,"lng":number},]}` 或者`{"zoom":int, "center":{"lat":number,"lng":number}}`。如果没有指定`center` ，则地图窗口将根据指定的坐标自动调整。
 
   * MapType
 
@@ -1872,8 +1842,7 @@ Money(Exp, Digit)
 
 ### Or {#or}
 
-该函数返回执行 **if** 逻辑运算的结果，括号中列出的所有参数以逗号分隔。如果有一个参数不为空字符串、零或 `false`，参数值为 `true`，其他情况参数值为 `false`。
-如果参数值为`true`，则该函数返回 `1`，其他情况返回 `0`。
+该函数返回执行 **if** 逻辑运算的结果，括号中列出的所有参数以逗号分隔。如果有一个参数不为空字符串、零或 `false`，参数值为 `true`，其他情况参数值为 `false`。如果参数值为`true`，则该函数返回 `1`，其他情况返回 `0`。
 
 **语法**
 
@@ -2005,8 +1974,7 @@ RadioGroup(Name: type_decision, Source: numbers_type_decisions, NameColumn: name
 
 ### Range {#range}
 
-创建 **range** 元素，使用步长 *Step* 从 *From* 到 *To* （不包括 *To*）填充整数元素。生成的数据将放入 *Source*中，
-稍后可以在源输入的函数中使用(例如 [Table](#Table))。如果指定无效参数，则返回空的 *Source*。
+创建 **range** 元素，使用步长 *Step* 从 *From* 到 *To* （不包括 *To*）填充整数元素。生成的数据将放入 *Source*中，稍后可以在源输入的函数中使用(例如 [Table](#Table))。如果指定无效参数，则返回空的 *Source*。
 
 **语法**
 

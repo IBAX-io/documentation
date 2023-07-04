@@ -108,7 +108,7 @@ type Block struct {
 
 A block structure consists of the following elements:
 
-* **Objects** - a map of internal objects of the pointer type [ObjInfo](#objInfo-structure). For example, if there is a variable in the block, you can get information about it by its name;
+* **Objects** - a map of internal objects of the pointer type [ObjInfo](#objinfo-structure). For example, if there is a variable in the block, you can get information about it by its name;
 * **Type** - the type of the block. For a function block, its type is **ObjFunc**; for a contract block, its type is **ObjContract**;
 * **Owner** - a structure of **OwnerInfo** pointer type. This structure contains information about the owner of the compiled contract, which is specified during contract compilation or obtained from the **contracts** table;
 * **Info** - it contains information about the object, which depends on the block type;
@@ -130,7 +130,7 @@ type ObjInfo struct {
 The ObjInfo structure has the following elements:
 
 * **Type** is the object type, which has any of the following values:
-   * **ObjContract** – [contract](#contractInfo-structure);
+   * **ObjContract** – [contract](#contractinfo-structure);
    * **ObjFunc** - function;
    * **ObjExtFunc** - external golang function;
    * **ObjVar** - variable;

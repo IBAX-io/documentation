@@ -1,183 +1,179 @@
+# Preguntas frecuentes {#faq}
 
-# FAQ {#faq}
+  - [1. ¿Puede describir brevemente la plataforma de blockchain IBAX?](#question-1)
+  - [2. ¿Es la plataforma de blockchain IBAX adecuada para Bitcoin, Ethereum u otras blockchains?](#question-2)
+  - [3. ¿Cuál es la principal diferencia entre la plataforma de blockchain pública con mecanismos de contrato inteligente incorporados y otras plataformas de blockchain?](#question-3)
+  - [4. ¿Tiene su propia criptomoneda?](#question-4)
+  - [5. ¿Qué es un nodo de honor y quién puede mantenerlo?](#question-5)
+  - [6. ¿Qué es un ecosistema de plataforma?](#question-6)
+  - [7. ¿Quién puede crear un ecosistema?](#question-7)
+  - [8. ¿Cómo puede un usuario convertirse en miembro del ecosistema?](#question-8)
+  - [9. ¿Puede un usuario crear múltiples ecosistemas?](#question-9)
+  - [10. ¿Qué son las aplicaciones de plataforma?](#question-10)
+  - [11. ¿Qué lenguaje de programación se utiliza para crear aplicaciones?](#question-11)
+  - [12. ¿Qué software se utiliza para crear aplicaciones e interactuar con los usuarios?](#question-12)
+  - [13. ¿Pueden los contratos inteligentes de la plataforma acceder a datos a través de API de terceros?](#question-13)
+  - [14. ¿Se pueden modificar los contratos inteligentes almacenados en la blockchain?](#question-14)
+  - [15. ¿Qué son los contratos inteligentes legales?](#question-15)
+  - [16. ¿Pueden los contratos inteligentes llamar y ejecutar otros contratos inteligentes?](#question-16)
+  - [17. ¿Es necesario un contrato inteligente principal para que funcione la aplicación?](#question-17)
+  - [18. ¿Pueden las aplicaciones ser localizadas en diferentes idiomas?](#question-18)
+  - [19. ¿Se pueden crear páginas sin usar lenguaje de plantilla?](#question-19)
+  - [20. ¿Se almacenan las páginas en la blockchain?](#question-20)
+  - [21. ¿Qué tipos de bases de datos se pueden utilizar para operar con contratos inteligentes?](#question-21)
+  - [22. ¿Cómo se gestiona el acceso a los datos de la tabla?](#question-22)
+  - [23. ¿Pueden las aplicaciones del ecosistema intercambiar datos con aplicaciones de otro ecosistema?](#question-23)
+  - [24. ¿Es necesario escribir todas las aplicaciones desde cero en un nuevo ecosistema?](#question-24)
+  - [25. ¿Hay algún costo asociado con el funcionamiento de la aplicación?](#question-25)
+  - [26. ¿Quién paga los costos de funcionamiento de la aplicación?](#question-26)
+  - [27. ¿Cómo se protegen las aplicaciones del ecosistema de los ataques a sus vulnerabilidades?](#question-27)
+  - [28. ¿Qué nuevas características se planean implementar en el futuro?](#question-28)
+  - [29. ¿Cómo se demuestra la operabilidad?](#question-29)
 
-  - [1. Please briefly describe IBAX?](#question-1)
-  - [2. Is IBax applicable for Bitcoin, Ethereum or other blockchains?](#question-2)
-  - [3. What are the main differences between IBax and other public blockchain platforms with built-in mechanisms for executing smart contracts?](#question-3)
-  - [4. Do you have your own cryptocurrency?](#question-4)
-  - [5. What is a honor node and who can maintain it?](#question-5)
-  - [6. What is a platform ecosystem?](#question-6)
-  - [7. Who can create an ecosystem?](#question-7)
-  - [8. How do users become members of the ecosystem?](#question-8)
-  - [9. Can one user create multiple ecosystems?](#question-9)
-  - [10. What is a platform application?](#question-10)
-  - [11. What programming language is used to create the application?](#question-11)
-  - [12. What software is used to create applications and interact with users?](#question-12)
-  - [13. Can platform contracts use third-party APIs to access data?](#question-13)
-  - [14. Can the contract stored in the blockchain be changed?](#question-14)
-  - [15. What is smart law?](#question-15)
-  - [16. Can the contract call and execute other contracts?](#question-16)
-  - [17. Does the application run with a master contract?](#question-17)
-  - [18. Can the application be localized for different languages?](#question-18)
-  - [19. Can I create a page without using a template language?](#question-19)
-  - [20. Are the pages stored in the blockchain?](#question-20)
-  - [21. What types of databases can be used for contract operations?](#question-21)
-  - [22. How to manage access to the data in the database table?](#question-22)
-  - [23. Can an application in an ecosystem exchange data with other applications from another ecosystem?](#question-23)
-  - [24. Should all applications in a new ecosystem be written from scratch?](#question-24)
-  - [25. Are there any fees for the operation of applications?](#question-25)
-  - [26. Who pays for the operation of applications?](#question-26)
-  - [27. How to protect the applications in the ecosystem from attacks due to vulnerabilities?](#question-27)
-  - [28. What new features will be implemented in future plans?](#question-28)
-  - [29. How to prove its operability?](#question-29)
+## 1. Por favor, describe brevemente la plataforma blockchain IBAX. {#question-1}
 
-## 1. Please briefly describe IBAX? {#question-1}
+- IBAX Network es una plataforma blockchain que tiene como objetivo construir un ecosistema digital basado en un entorno de desarrollo de aplicaciones integradas, que cuenta con un sistema de múltiples niveles de permisos para la gestión de datos, interfaces y acceso a contratos inteligentes.
 
-  * It is a blockchain platform that aims to build a digital ecosystem based on an integrated application development environment that has a multi-level permission system for managing the access rights to data, interfaces, and smart contracts.
+## 2. ¿Es IBAX adecuado para Bitcoin, Ethereum u otras blockchains? {#question-2}
 
-## 2. Is IBax applicable for Bitcoin, Ethereum or other blockchains? {#question-2}
+- No es adecuado. La plataforma blockchain IBAX Network se construye sobre su propia blockchain original.
 
-  * Not applicable. IBax is built on the basis of its own original blockchain.
+## 3. ¿Cuál es la principal diferencia entre la plataforma blockchain pública con mecanismos de contratos inteligentes incorporados y otras? {#question-3}
 
-## 3. What are the main differences between IBax and other public blockchain platforms with built-in mechanisms for executing smart contracts? {#question-3}
+- La plataforma blockchain IBAX tiene características únicas que no se encuentran en otras blockchains, como:
+  - Un entorno de desarrollo de aplicaciones integradas en un solo software cliente;
+  - Un lenguaje de plantillas dedicado para el diseño de páginas, Logicor, que se coordina con el lenguaje de contratos inteligentes, Needle;
+  - Un sistema de múltiples niveles de permisos para la gestión de datos, interfaces y acceso a contratos inteligentes, donde se pueden otorgar permisos a miembros, roles y contratos inteligentes;
+  - Un ecosistema para crear aplicaciones blockchain y un entorno de software autónomo para que los usuarios interactúen con ellas;
+  - Un sistema legal, una serie de reglas escritas en contratos inteligentes especializados que regulan las relaciones entre los usuarios de la plataforma y definen el proceso de cambio de parámetros de protocolo para resolver problemas.
 
-  * IBax has unique features that cannot be found in the above-mentioned blockchains:
-    *  has an integrated application development environment in a single client software;
-      *  the special template language Logicor for page design and the contract language Needle coordinate with each other;
-      *  has a multi-level permission system for managing the access rights to data, interfaces and smart contracts, in which permissions can be granted to members, roles and contracts;
-      * the ecosystem, used to create blockchain applications and autonomous software environments for users to interact with them;
-      * the legal system, a set of rules written in smart laws (dedicated smart contracts), regulates the relationship between platform users and defines the process of changing protocol parameters for problem solving.
+## 4. ¿Tiene su propia criptomoneda? {#question-4}
 
-## 4. Do you have your own cryptocurrency? {#question-4}
+- Sí, la plataforma blockchain IBAX utiliza su propia moneda, IBXC.
 
-  * Yes, IBax uses its own token, IBXC.
+## 5. ¿Qué es un nodo de honor y quién puede mantenerlo? {#question-5}
 
-## 5. What is a honor node and who can maintain it? {#question-5}
+- Un nodo de honor es un nodo de red que tiene el poder de validar transacciones y generar nuevos bloques.
+- Cualquier nodo de red con suficiente capacidad de procesamiento y tolerancia a fallos puede convertirse en un nodo de honor.
+- La plataforma blockchain IBAX utiliza un mecanismo de consenso de prueba de autoridad (DPoA), donde los nodos pueden convertirse en nodos de validación mediante votación en el ecosistema, pero solo aquellos que son propietarios de tokens de la plataforma y que han demostrado tener la capacidad de operar normalmente en el ecosistema pueden participar en este tipo de votación.
+- Con este algoritmo de autorización, los nodos de honor son ejecutados por el ecosistema principal, ya que mantener la red es lo que más les conviene.
 
-  * The honor node is the network node that has the authority to verify transactions and generate new blocks.
-  * Any network node with sufficient processing power and fault tolerance can become a honor node. IBax uses a Proof of Authority (PoA) consensus mechanism. Nodes can become verification nodes based on ecosystem voting, but only ecosystems that are proven by the platform's token owner to have normal operational capabilities can participate in such voting. Using this authorization algorithm, the master node is run by major ecosystems because it is in their best interest to maintain the network operation.
+## 6. ¿Qué es un ecosistema de plataforma? {#question-6}
 
-## 6. What is a platform ecosystem? {#question-6}
+- Un ecosistema es un entorno de software autónomo utilizado para crear aplicaciones de blockchain y las operaciones de los usuarios en ellas.
 
-  * An ecosystem is actually an autonomous software environment used to create blockchain applications and the operations of users in them.
+## 7. ¿Quién puede crear un ecosistema? {#question-7}
 
-## 7. Who can create an ecosystem? {#question-7}
+- Todos los usuarios de la plataforma pueden crear nuevos ecosistemas.
 
-  * All users of the platform can create new ecosystems.
+## 8. ¿Cómo se convierte un usuario en miembro de un ecosistema? {#question-8}
 
-## 8. How do users become members of the ecosystem? {#question-8}
+- El registro de miembros del ecosistema de la red de la plataforma se puede realizar en cualquier ecosistema existente. La política del ecosistema define los diferentes procedimientos de incorporación de miembros, y esta política se publica en el directorio especializado de ecosistemas que contiene información clave sobre los nuevos ecosistemas.
 
-  * Users may be registered as members of any existing ecosystem. The ecosystem strategy defines different member admission procedures, which publishes key public information of the new ecosystem in a dedicated ecosystem catalog.
+## 9. ¿Puede un usuario crear varios ecosistemas? {#question-9}
 
-## 9. Can one user create multiple ecosystems? {#question-9}
+- Sí, cada usuario puede crear cualquier cantidad de ecosistemas y también puede ser miembro de varios ecosistemas.
 
-  * Yes, each user can create any number of ecosystems and can also become a member of multiple ecosystems.
+## 10. ¿Qué son las aplicaciones de plataforma? {#question-10}
 
-## 10. What is a platform application? {#question-10}
+- Las aplicaciones son productos de software completos que implementan funciones o servicios. Las aplicaciones están compuestas por tablas de bases de datos, contratos inteligentes y páginas.
 
-  * An application is a complete software product that implements a function or service. The application consists of database tables, contracts and pages.
-## 11. What programming language is used to create the application? {#question-11}
-  * The contract is written in the Needle language, which is developed by the platform team, For more information, see: [Smart Contract](../topics/script.md).
+## 11. ¿Qué lenguaje de programación se utiliza para crear aplicaciones? {#question-11}
 
-  * The page is written in Logicor language, which is a page template language. For more information, see: [Template Language](../topics/templates2.md).
+- Los contratos inteligentes se escriben en el lenguaje Needle, desarrollado por el equipo de la plataforma. Para obtener más información, consulte: [Contratos inteligentes](../topics/script.md)
+- Las páginas se escriben en el lenguaje Logicor, que es un lenguaje de plantillas de página. Para obtener más información, consulte: [Lenguaje de plantillas](../topics/templates2.md)
 
-## 12. What software is used to create applications and interact with users? {#question-12}
+## 12. ¿Qué software se utiliza para crear aplicaciones y la interacción con el usuario? {#question-12}
 
-  * The application program is written and executed in Weaver, no other software is required.
+    - Las aplicaciones se escriben y ejecutan en Weaver, no se necesita otro software.
 
-## 13. Can platform contracts use third-party APIs to access data? {#question-13}
+## 13. ¿Puede el contrato inteligente de la plataforma acceder a datos a través de una API de terceros? {#question-13}
 
-  * No, the contract can only directly access the data stored in the blockchain. [CLB](about-the-platform.md#virtual-private-ecosystem) is used to process external data sources.
+    - No, el contrato inteligente solo puede acceder directamente a los datos almacenados en la cadena de bloques. [CLB](about-the-platform.md#virtual-dedicated-ecosystem) se utiliza para manejar fuentes de datos externas.
 
-## 14. Can the contract stored in the blockchain be changed? {#question-14}
+## 14. ¿Se pueden modificar los contratos inteligentes almacenados en la cadena de bloques? {#question-14}
 
-  * Yes, the contract can be changed. The permission to change the contract is specified by its creator, who can grant the permission to refuse to change, or grant permission to make changes with contracts or by members, or configure a complex set of conditions in the smart law.
-  * Weaver provides access to all versions of contracts.
+    - Sí, los contratos inteligentes se pueden modificar. El permiso para modificar el contrato inteligente es especificado por su creador. El creador del contrato inteligente puede especificar permisos para rechazar cambios, o especificar permisos para cambiar el contrato inteligente y los miembros, o configurar un conjunto de condiciones complejas en el contrato inteligente.
+    - Weaver proporciona acceso a todas las versiones de los contratos inteligentes.
 
-## 15. What is smart law? {#question-15}
+## 15. ¿Qué es un contrato inteligente legal? {#question-15}
 
-  * Smart law is a contract designed to control and restrict the operation of conventional contracts, thereby controlling and restricting the activities of ecosystem members.
-  * A set of smart laws can be regarded as the legal system of an ecosystem.
+    - Un contrato inteligente legal es un tipo de contrato inteligente diseñado para controlar y limitar el funcionamiento de los contratos inteligentes convencionales, y así controlar y limitar las actividades de los miembros del ecosistema.
+    - Un conjunto de contratos inteligentes legales puede considerarse como un sistema legal del ecosistema.
 
-## 16. Can the contract call and execute other contracts? {#question-16}
+## 16. ¿Pueden los contratos inteligentes llamar y ejecutar otros contratos inteligentes? {#question-16}
 
-  * Yes, the contract can call other contracts by direct addressing and provide parameters for it, or call the contract by link name. For more information, see: [Smart Contract](../topics/script.md).
+    - Sí, los contratos inteligentes pueden llamar a otros contratos inteligentes proporcionando parámetros a través de la dirección directa, o llamando a los contratos inteligentes a través del nombre de enlace. Para obtener más información, consulte: [Scripting de contratos inteligentes](../topics/script.md)
 
-## 17. Does the application run with a master contract? {#question-17}
+## 17. ¿Es necesario un contrato inteligente principal para que funcione la aplicación? {#question-17}
 
-  * No, the contract is an autonomous program module that performs certain functions. Each contract is configured to receive specified data, then check the correctness of these data, and perform some operations that are recorded in the database as transactions.
+    - No es necesario, el contrato inteligente es un módulo de programa autónomo que ejecuta ciertas funciones. Cada contrato inteligente está configurado para recibir datos específicos, verificar la corrección de estos datos y realizar algunas operaciones, que se registran como transacciones en la base de datos.
 
-## 18. Can the application be localized for different languages? {#question-18}
+## 18. ¿Puede la aplicación ser localizada en diferentes idiomas? {#question-18}
 
-  * Yes, Weaver has a built-in localization support mechanism and can create pages in any language.
+    - Sí, Weaver tiene un mecanismo de soporte de localización incorporado que permite crear páginas en cualquier idioma.
 
-## 19. Can I create a page without using a template language? {#question-19}
+## 19. ¿Es posible crear páginas sin usar lenguaje de plantilla? {#question-19}
 
-  * Yes, it can be done using the platform [RESTful API](../reference/api2.md) v2.
+    - Sí, se puede hacer utilizando la API RESTful de la plataforma.
 
-## 20. Are the pages stored in the blockchain? {#question-20}
+## 20. ¿Las páginas se almacenan en la cadena de bloques? {#question-20}
 
-  * Yes, the pages and contracts are stored in the blockchain, which prevents them from being forged.
+    - Sí, las páginas y los contratos inteligentes se almacenan en la cadena de bloques, lo que evita que sean falsificados.
 
-## 21. What types of databases can be used for contract operations? {#question-21}
+## 21. ¿Qué tipos de bases de datos se pueden utilizar para las operaciones de contrato inteligente? {#question-21}
 
-  * Currently, PostgreSQL is used.
+    - Actualmente se utiliza la base de datos PostgreSQL.
 
-## 22. How to manage access to the data in the database table? {#question-22}
+## 22. ¿Cómo se gestiona el acceso a los datos de la tabla? {#question-22}
 
-  * You can add new fields, new entries, or change the permissions of the data in columns for ecosystem members, roles, or specified contract configurations. Except for contracts created by performing specific operations.
+    - Se pueden agregar nuevos campos, entradas o cambiar los permisos de los datos en las columnas para los miembros del ecosistema, roles o contratos inteligentes específicos, excepto para los contratos inteligentes creados para realizar operaciones específicas.
 
-## 23. Can an application in an ecosystem exchange data with other applications from another ecosystem? {#question-23}
+## 23. ¿Pueden las aplicaciones del ecosistema intercambiar datos con aplicaciones de otro ecosistema? {#question-23}
 
-  * Yes, data exchange can be organized through global data tables that apply to all ecosystems.
+    - Sí, se puede organizar el intercambio de datos a través de una tabla de datos global que es aplicable a todos los ecosistemas.
 
-## 24. Should all applications in a new ecosystem be written from scratch? {#question-24}
+## 24. ¿Es necesario escribir todas las aplicaciones en un nuevo ecosistema desde cero? {#question-24}
 
-  * No, every new ecosystem has some applications out of the box:
-      * A mechanism to manage ecosystem members and roles;
-      * Issuing and configuring other tokens;
-      *  A voting system;
-      *  A notification system;
-      *  A messenger between ecosystem members.
+    - No es necesario, cada nuevo ecosistema tiene algunas aplicaciones listas para usar:
+          - Mecanismo para administrar miembros y roles del ecosistema;
+          - Emisión y configuración de otros tokens;
+          - Sistema de votación;
+          - Sistema de notificación;
+          - Comunicación de mensajes entre miembros del ecosistema.
+    
+    Estas aplicaciones se pueden editar y configurar para satisfacer las necesidades específicas de cualquier ecosistema.
 
- These applications can be edited and configured to meet the special needs of any ecosystem.
+## 25. ¿Hay algún costo para el funcionamiento de la aplicación? {#question-25}
 
-## 25. Are there any fees for the operation of applications? {#question-25}
+    -   Sí, el uso de los recursos del Nodo de Honor requiere el pago de tokens en la plataforma.
 
-  * Yes, the use of the resources of the honor node requires payment in the platform.
+## 26. ¿Quién paga los costos de funcionamiento de la aplicación? {#question-26}
 
-## 26. Who pays for the operation of applications? {#question-26}
+     Hay 4 formas de pagar los costos de funcionamiento de la aplicación con la dirección de cuenta correspondiente:
+    
+     -   El llamador del contrato inteligente, la dirección de cuenta predeterminada, paga cuando el usuario llama al contrato inteligente;
+     -   El vinculador del contrato inteligente, la dirección de cuenta especificada por el creador del contrato inteligente, paga todos los costos de los usuarios que llaman a ese contrato inteligente;
+     -   El creador del ecosistema paga todos los costos de funcionamiento de todas las aplicaciones en el ecosistema;
+     -   La billetera exclusiva del ecosistema, cada ecosistema tiene una dirección de cuenta única, si el creador del ecosistema activa esa dirección de cuenta, todos los costos de funcionamiento de las aplicaciones en el ecosistema serán pagados por esa dirección de cuenta.
+    
+     Prioridad de pago: *Billetera exclusiva del ecosistema* > *Creador del ecosistema* >
+     *Vinculador del contrato inteligente* > *Llamador del contrato inteligente*.
 
- For corresponding account addresses, there are currently 4 ways to pay for the operation of applications:
-  * For contract callers, the fee will be paid from the user's account by default when the user calls the contract; 
-  * For contract binding parties, the fee will be paid from the binding account specified by the contract creator;
-  * For ecosystem creators, the fee of all applications within an ecosystem will be paid by the ecosystem creator respectively;
+## 27. ¿Cómo se protegen las aplicaciones en el ecosistema de los ataques de sus vulnerabilidades? {#question-27}
 
-  * Exclusive ecosystem wallet. Each ecosystem has an exclusive account. If the ecosystem creator activated it, the fee of all applications within the ecosystem will be paid from this account.
+    -   El equipo de la plataforma sabe que no hay forma de evitar completamente los errores en el código de la aplicación, especialmente considerando que cualquier usuario puede escribir una aplicación. Esta es la razón por la que decidimos establecer un mecanismo para eliminar las consecuencias de la explotación de vulnerabilidades. El sistema legal puede detener las operaciones de ataque de la aplicación y utilizar algunas transacciones para restaurar el estado original. El sistema legal establece los permisos para ejecutar este tipo de contratos inteligentes y otorga estos permisos a los programas de votación.
 
- Order of payment precedence: Exclusive ecosystem wallet> Ecosystem creator> Contract binding party> Contract caller.
+## 28. ¿Qué nuevas características se planean implementar en el futuro? {#question-28}
 
-## 27. How to protect the applications in the ecosystem from attacks due to vulnerabilities? {#question-27}
+    -   Diseñador visual de contratos inteligentes;
+    -   Soporte para bases de datos mixtas (SQL y NoSQL);
+    -   Procesamiento paralelo de subprocesos múltiples de transacciones de diferentes ecosistemas;
+    -   Cálculo intensivo de recursos en el cliente;
+    -   Hospedaje del ecosistema y intercambio de capacidad de cómputo;
+    -   Nodo ligero, solo almacena parte de los bloques en el servidor;
+    -   Referencia semántica (ontología) para operaciones de datos unificadas en la plataforma, etc.
 
-  * The platform team also knows that there is no way to completely avoid errors in the application code, especially considering that the application can be written by any user. This is why we decided to establish a mechanism to eliminate the consequences of exploiting vulnerabilities. The legal system can stop the attack operation of the application and use some transactions to restore it to its original state. The legal system stipulates the permissions to execute such contracts and the voting procedures for granting these permissions.
+## 29. ¿Cómo se demuestra la operabilidad? {#question-29}
 
-## 28. What new features will be implemented in future plans? {#question-28}
-
-  * Visual smart contract designer;
-
-
-  * Support for hybrid databases (SQL and NoSQL);
-
-  * Parallel multi-threaded processing of transactions from different ecosystems;
-
-  * Perform resource-intensive calculations on the client;
-
-  * Ecosystem hosting and computing power exchange;
-
-  * Child nodes, only store some blocks on the server;
-
-  * Semantic references (ontology) are used to unify the operation of data in the platform.
-
-## 29. How to prove its operability? {#question-29}
-
-  * A number of proof of concept projects and cases have been implemented on the IBax Network: a socialized tax collection and electronic invoice generation and circulation system, a medical apparatus and instruments supervision, forgery prevention and tracing system, a financing and supervision system, a voting/poll system, business registration, trade finance tools, assets registration contract management system, etc.
+    -   Se han implementado una serie de proyectos y casos de prueba de concepto en la plataforma de blockchain IBAX: sistema de recaudación de impuestos y generación y circulación de facturas electrónicas, sistema de supervisión y rastreo de dispositivos médicos, sistema de financiamiento y supervisión, sistema de votación / encuesta, registro comercial, herramientas financieras de comercio, sistema de gestión de contratos inteligentes de registro de activos, etc.

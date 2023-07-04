@@ -1,154 +1,133 @@
+# Consenso de prueba de autoridad descentralizado {#decentralized-proof-of-authority-consensus}
+<!-- TOC -->
 
-# Decentralized Proof-of-Authority Consensus {#decentralized-proof-of-authority-consensus}
+- [¿Qué es el consenso descentralizado de prueba de autoridad?](#what-is-decentralized-proof-of-authority-consensus)
+- [Ventajas del consenso DPoA](#advantages-of-dpoa-consensus)
+- [Consensus DPoA y medios comunes de ataque](#dpoa-consensus-and-common-means-of-attack)
+    - [Ataque de denegación de servicio](#dos)
+    - [Ataque del 51%](#percent-attack-51)
+- [Implementación del consenso DPoA en IBAX](#implementation-of-dpoa-consensus-in-ibax)
+    - [Nodo de honor](#honor-node)
+    - [Nodo líder](#leader-node)
+    - [Generación de nuevos bloques](#generation-of-new-blocks)
+    - [Bifurcación](#forks)
 
-* What is Decentralized Proof-of-Authority consensus
+<!-- /TOC -->
 
-* Advantages of DPoA consensus
+Esta sección describe el consenso de Prueba de Autoridad y su implementación en la plataforma blockchain IBAX.
 
-* DPoA consensus and common means of attack
+## ¿Qué es el Consenso de Prueba de Autoridad Descentralizada? {#what-is-decentralized-proof-of-authority-consensus}
 
-* Implementation of DPoA consensus in IBAX
+La red IBAX ha desarrollado un nuevo mecanismo de consenso llamado DPoA (Prueba de Autoridad Descentralizada) considerando los escenarios de aplicación empresarial y el entorno del mundo real.
 
-In this section, we will describe the Decentralized Proof-of-Authority consensus and its implementation in IBAX. 
+La descentralización siempre ha sido nuestra firme creencia. No solo se refiere al entorno de red de infraestructura de IBAX, sino que también permite que la descentralización arraigue en cada ecoLib creado en la red IBAX y logre una alta autonomía en cada ecosistema utilizando soluciones técnicas. Para lograr una autonomía altamente distribuida, hemos realizado muchos cambios en la arquitectura general y la implementación técnica. Sin embargo, en la práctica, no podemos evitar el concepto de gestión centralizada. Para encontrar un equilibrio entre la centralización y la descentralización, hemos desarrollado ciertos esquemas de recompensa e incentivos además del mecanismo de consenso DPoA.
 
+La red IBAX ha creado un nuevo mecanismo de consenso que combina la autorización distribuida, la centralización débil y el certificado. Lo llamamos DPoA (Prueba de Autoridad Descentralizada). Para garantizar la continuidad de toda la red IBAX, el consenso incluye no solo la red pública de IBAX, sino también los ecoLibs creados por cada usuario y grupo de usuarios. Esto creará una organización autónoma, descentralizada, justa, transparente y antifraude de organización autónoma descentralizada (DAO).
 
- - [What is Decentralized Proof-of-Authority consensus](#what-is-decentralized-proof-of-authority-consensus)
-  - [Advantages of DPoA consensus](#advantages-of-dpoa-consensus)
-  - [DPoA consensus and common means of attack](#dpoa-consensus-and-common-means-of-attack)
-    - [DoS](#dos)
-    - [51 percent attack](#percent-attack-51)
-  - [Implementation of DPoA consensus in IBAX](#implementation-of-dpoa-consensus-in-ibax)
-    - [Honor node](#honor-node)
-    - [Leader node](#leader-node)
-    - [Generation of new blocks](#generation-of-new-blocks)
-    - [Forks](#forks)
+DPoA tiene mecanismos para prevenir ataques de red y permite la creación de nodos de acuñación que protegen la red y acuñan nuevos tokens IBXC. Los titulares de IBAXCoin pueden apostar una parte de su saldo de liquidez de IBXC en los nodos de acuñación para recibir recompensas de emisión de acuñación y apuesta. La acuñación y la apuesta ayudan a aumentar el costo y la dificultad de los ataques y aumentan proporcionalmente el valor total de las monedas IBXC. Con este mecanismo, la probabilidad y el daño de cualquier ataque son infinitamente cercanos a cero.
 
-## What is Decentralized Proof-of-Authority consensus {#what-is-decentralized-proof-of-authority-consensus}
+## Ventajas del Consenso DPoA {#advantages-of-dpoa-consensus}
 
-Considering commercial application scenarios and real-world environments, IBAX Network has built a new consensus mechanism, DPoA (Decentralized Proof of Authority). 
+En comparación con los mecanismos de consenso de Prueba de Trabajo (PoW) y Prueba de Participación (PoS), DPoA tiene las siguientes ventajas:
 
-Decentralization has always been our firm belief. It refers not only to IBAX’s infrastructure network environment. Instead, we will let decentralization take root in each ecoLib created in IBAX Network and use technical solutions to achieve a high degree of self-governance in each of them. For the purpose of highly distributed self-governance, we have made many changes in the overall architecture and technical implementation. However, in practice, we cannot avoid the centralized management concept. In order to find a balance between centralization and decentralization, in addition to the DPoA consensus mechanism, we have also formulated certain reward and incentive programs.
+- No se requiere hardware de alto rendimiento. En comparación con el consenso PoW, el consenso DPoA no requiere que los nodos gasten recursos informáticos para resolver lógica matemática compleja.
+- El intervalo de tiempo para generar nuevos bloques es predecible, lo que difiere del consenso PoW y PoS.
+- Alta tasa de transacción. Los nodos de red autorizados generan bloques en secuencia en intervalos de tiempo especificados, lo que aumenta la velocidad de verificación de transacciones.
+- Tolerancia para nodos atacados y maliciosos, siempre y cuando no se ataque al 51% de los nodos. La plataforma blockchain IBAX implementa mecanismos para prohibir nodos y revocar los derechos de generación de bloques.
 
-IBAX Network has created a new consensus mechanism that combines distribution, weak centralization, and a certification authority. We call it DPoA (Decentralized Proof of Authority). To ensure continuity for the entire IBAX Network, the consensus covers not only IBAX Public Network, but also ecoLibs created by each user and user group. This creates a truly self-governed, decentralized, fair, transparent, and fraud-proof Decentralized Autonomous Organization (DAO). 
+## Consenso DPoA y métodos comunes de ataque {#dpoa-consensus-and-common-means-of-attack}
 
-DPoA has a prevention mechanism against network attacks and allows creation of Mint Nodes that guard the network and mint new IBXC coins. IBAXCoin holders can stake a part of their IBXC liquidity balance in Mint Nodes for Mint & Stake Emission Rewards. Minting and staking serve to increase the cost and difficulty of attacks and increase the total value of IBXC coins proportionally. With this mechanism, the probability and harm of any attack are infinitely close to zero. 
+### Ataque de denegación de servicio (DoS) {#dos}
 
+El atacante envía una gran cantidad de transacciones y bloques al nodo de red objetivo en un intento de interrumpir su actividad y hacerlo no disponible.
 
-## Advantages of DPoA consensus {#advantages-of-dpoa-consensus}
+El mecanismo DPoA puede resistir este tipo de ataque:
 
-Compared to Proof-of-Work (PoW) or Proof-of-Stake (PoS) consensus, DPoA consensus has the following advantages:
+> - Dado que los nodos de red han sido preverificados, los permisos de generación de bloques solo pueden otorgarse a nodos que puedan resistir los ataques DoS;
+> - Si un cierto nodo de honor no está disponible durante un período de tiempo, puede ser excluido de la lista de nodos de honor.
 
-* No need of high-performance hardware. Compared to PoW consensus, nodes implementing the DPoA consensus does not spend computational resources for solving complex mathematical logic tasks;
+### Ataque del 51% {#percent-attack-51}
 
-* The interval of time to generate new blocks is predictable, but that for  PoW and PoS consensuses are different;
+En el consenso DPoA, un ataque del 51% requiere que el atacante tome el control del 51% de los nodos de la red. Esto es diferente del ataque del 51% en el consenso PoW, donde el atacante necesita obtener el 51% del poder de cómputo de la red. Es mucho más difícil tomar el control de los nodos en una red de blockchain con permisos que obtener el poder de cómputo.
 
-* High transaction rate. Blocks are generated in a sequence at specified time interval by authorized network nodes, which increases the speed of transaction verification.
+Por ejemplo, en una red de consenso PoW, el atacante puede aumentar el poder de cómputo (rendimiento) del segmento de red controlado, aumentando así el porcentaje controlado. Esto no tiene sentido para el consenso DPoA porque el poder de cómputo de los nodos no tiene impacto en las decisiones de la red de blockchain.
 
-* Tolerance to compromised and malicious nodes, as long as 51% of nodes are not compromised. IBAX implements a mechanism of banning nodes and revoking block generation rights.
+## Implementación del consenso DPoA en IBAX {#implementation-of-dpoa-consensus-in-ibax}
 
-## DPoA consensus and common means of attack {#dpoa-consensus-and-common-means-of-attack}
+### Nodo de honor {#honor-node}
 
-### DoS {#dos}
+En la plataforma de blockchain IBAX, solo los nodos de honor tienen el derecho de generar nuevos bloques, y estos nodos mantienen la red de blockchain y el libro mayor distribuido.
 
-An attacker may send large amount of transactions and blocks to a targeted node in the network, making an attempt to disrupt its operation and make its services unavailable.
+La lista de nodos de honor se guarda en el registro de blockchain. El orden de los nodos en esta lista determina el orden en que los nodos generan nuevos bloques.
 
-The DPoA mechanism is possible to defend against DoS attacks:
+### Nodo líder {#leader-node}
 
-* Because network nodes are pre-authenticated, block generation rights can be granted only to nodes that can withstand DoS attacks.
+El nodo líder es el nodo de honor que genera nuevos bloques en el momento actual. La siguiente fórmula determina el nodo líder en la lista actual de nodos de honor:
 
-* If a honor node is unavailable for a certain period, it can be excluded from the list of honor nodes.
-
-### 51 percent attack {#percent-attack-51}
-
-As to the scenario with the DPoA consensus, the 51% attack requires an attacker to obtain control over 51% of network nodes. But the scenario for the PoW consensus is different, which an attacker needs to obtain 51% of network computational power. Obtaining the control over nodes in a permissioned blockchain network is much harder than obtaining the computational power.
-
-For example, in a network implementing the PoW consensus, an attacker can increase computation power (performance) of the controlled network segment thus increasing the percentage of controlled nodes. This makes no sense for DPoA consensus, because the computational power of the node has no impact on the blockchain network decisions.
-
-## Implementation of DPoA consensus in IBAX {#implementation-of-dpoa-consensus-in-ibax}
-
-### Honor node {#honor-node}
-
-In IBAX, only honor nodes can generate new blocks, which maintain the blockchain network and the distributed ledger.
-
-The list of honor nodes is kept in the blockchain registry. The order of nodes determines the sequence in which nodes generate new blocks.
-
-### Leader node {#leader-node}
-
-
-The leader node is the honor node that generates a new block at the current time. The following formula determines the leader node in the current honor node list:
-
-```
+``` text
 leader = ((time - first) / step) % nodes
 ```
 
 > leader
 
-    Current leader node.
+El índice de la lista actual de nodos de honor, que se puede representar como un nodo líder según el índice.
 
 > time
 
-    Current time (UNIX).
+El tiempo actual (UNIX).
 
 > first
 
-    First block generation time (UNIX).
+La hora de generación del bloque inicial (UNIX).
 
 > step
 
-    Number of seconds in the block generation interval.
+El número de segundos en el intervalo de generación de bloques.
 
 > nodes
 
-    Total number of honor nodes.
+El número total de nodos de honor.
 
-#### Generation of new blocks {#generation-of-new-blocks}
+#### Generación de nuevos bloques {#generation-of-new-blocks}
 
-New blocks are generated by a [leader node](#leader-node) of the current time interval. At each time interval, the leader role is passed to the next honor node from the list of honor nodes.
+Los nuevos bloques son generados por el [nodo líder](#leader-node) del intervalo de tiempo actual. En cada intervalo de tiempo, el nodo líder pasa la responsabilidad al siguiente nodo de honor en la lista.
 
-![avatar](/block-generation.png)
+![image](/block-generation.png)
 
-a) Steps for Generation of new blocks
+a) Pasos para generar un nuevo bloque
 
-Main steps for generating a new block are as follows:
+Los pasos principales son los siguientes:
 
-1. Collects all new transactions from the transaction queue of the node;
+> 1.  Recopilar todas las nuevas transacciones de la cola de transacciones del nodo;
+> 2.  Ejecutar cada transacción una por una, las transacciones inválidas o que no se pueden ejecutar serán rechazadas;
+> 3.  Verificar si cumple con el [rango de límite de generación de bloques](../reference/platform-parameters.md#configure-the-generation-of-blocks);
+> 4.  Generar un nuevo bloque con transacciones válidas y firmar el bloque con la clave privada del nodo de honor utilizando el algoritmo ECDSA;
+> 5.  Enviar el bloque a otros nodos de honor.
 
-2. Executes transactions one by one. Invalid or inexecutable transactions are rejected;
+b) Verificación del nuevo bloque
 
-3. Checks if the [block generation limits](../reference/platform-parameters.md#configure-the-generation-of-blocks) is in compliance; 
+Los otros nodos de honor verifican los siguientes pasos:
 
-4. Generates a block with valid transactions and signs it with the private key of the honor node through the ECDSA algorithm;
-
-5. Sends this block to other honor nodes.
-
-b) Verification of new blocks
-
-Steps for verifying new blocks on other honor nodes:
-
-1.Receive a new block and verify:
-
-    – whether the new block was generated by the leader node of a current interval;
-
-    – whether there are no other blocks generated by the leader node of a current interval;
-
-    – whether the new block is properly signed. 
-
-2. Execute transactions from the block one by one. Check whether the transactions are executed successfully and within the [block generation limits](../reference/platform-parameters.md#configure-the-generation-of-blocks) .
-
-3. Add or reject the block, depending on the previous step:
-
-    – If block validation is successful, add the new block to the blockchain of the current node;
-
-    – If block validation failed, reject the block and send a **bad block** transaction;
-
-    – If the honor node that created this invalid block continues to generate bad blocks, it can be banned or excluded from the list of honor nodes.
+> 1.  Recibir y verificar el nuevo bloque:
+>
+>     > -   El nuevo bloque fue generado por el nodo líder del intervalo de tiempo actual;
+>     > -   El nodo líder del intervalo de tiempo actual no ha generado otros bloques;
+>     > -   El nuevo bloque está firmado correctamente.
+>
+> 2.  Ejecutar cada transacción en el bloque. Verificar si la transacción se ejecutó correctamente y si está dentro del [rango de límite de generación de bloques](../reference/platform-parameters.md#configure-the-generation-of-blocks).
+>
+> 3.  Aceptar o rechazar el bloque, dependiendo del paso anterior:
+>
+>     > -   Si la verificación del bloque es exitosa, agregar el nuevo bloque a la cadena de bloques del nodo actual;
+>     > -   Si la verificación del bloque falla, rechazar el bloque, marcar el bloque y enviar una transacción de **bloque malo**;
+>     > -   Si el nodo de honor que generó el bloque malo sigue generando ese tipo de bloques, puede ser desactivado o excluido de la lista de nodos de honor.
 
 ### Forks {#forks}
 
-A **fork** is an alternative version of the blockchain, which contains one or more blocks that were generated independently from the rest of the blockchain.
+**Forks** son versiones alternativas de la cadena de bloques. Los forks contienen uno o más bloques generados de forma independiente al resto de la cadena de bloques.
 
-Forks usually occur when a part of the network becomes desynchronized. Factors that are probably result in forks are high network latency, intentional or unintentional time limits violation, time desynchronization at nodes. If network nodes have a significant geographic distribution, block generation interval must be increased.
+Los forks suelen ocurrir cuando una parte de los nodos de la red no están sincronizados. Los factores que afectan la probabilidad de un fork son la alta latencia de la red, violaciones intencionales o no intencionales de límites de tiempo, y la falta de sincronización del tiempo del sistema de los nodos. Si los nodos de la red están geográficamente dispersos, se debe aumentar el intervalo de generación de bloques.
 
-Forks are resolved by following the longest blockchain rule. When two blockchain versions are detected, honor nodes rollback the shorter one and accept the longer one. 
+Los forks se resuelven siguiendo la regla de la cadena de bloques más larga. Cuando se detectan dos versiones de la cadena de bloques, los nodos honorables revertirán la versión más corta y aceptarán la versión más larga.
 
-![avatar](/block-fork-resolution.png)
+![image](/block-fork-resolution.png)

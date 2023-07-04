@@ -13,12 +13,10 @@
 
 
 ## 通过命令行工具部署第一个智能合约 {#deploy-first-smart-contract-via-command-line-tool}
-我们将通过[命令行工具](https://github.com/IBAX-io/ibax-cli) 在IBAX区块链上部署[智能合约](../concepts/thesaurus.md#smart-contract) , 并学习何如调用智能合约。
-作为我们的第一个智能合约，我们将其部署到[本地测试网络](../concepts/blockchain-layers.md) 上，
-如何部署本地网络你可以参考[网络部署](../howtos/deployment.md) , 因此您不需要任何开销就可以随意部署和运行它。
+我们将通过[命令行工具](https://github.com/IBAX-io/ibax-cli) 在IBAX区块链上部署[智能合约](../concepts/thesaurus.md#smart-contract) , 并学习何如调用智能合约。作为我们的第一个智能合约，我们将其部署到[本地测试网络](../concepts/blockchain-layers.md) 上，如何部署本地网络你可以参考[网络部署](../howtos/deployment.md) , 因此您不需要任何开销就可以随意部署和运行它。
 
 ### 创建应用 {#create-application}
-调用合约@1NewApplication创建应用，该合约有一个应用名称参数和一个修改[权限参数](../concepts/about-the-platform.md#access-rights-control-mechanism) 。
+调用智能合约@1NewApplication创建应用，该智能合约有一个应用名称参数和一个修改[权限参数](../concepts/about-the-platform.md#access-rights-control-mechanism) 。
 ``` text
 1    $ ibax-cli console
 2    
@@ -36,13 +34,13 @@
 
 下面按行解释：
 - 第1行，启动命令行终端。
-- 第5行，调用合约@1NewApplication创建一个应用，应用名称为`testapp`,应用修改权限为开发者权限`@1DeveloperCondition`。
+- 第5行，调用智能合约@1NewApplication创建一个应用，应用名称为`testapp`,应用修改权限为开发者权限`@1DeveloperCondition`。
 - 第8行，交易产生的区块id。
 - 第9行，交易产生的区块哈希。
 - 第10行，如果交易执行失败（0：无惩罚 1：惩罚）。
 - 第11行，如果交易执行失败，则返回一条错误文本消息，如果返回了区块id，err字段为该应用的id。
 
-当然如果你想查看这个合约有哪些字段，字段类型，可以调用`getContractInfo`方法,它将返回合约信息，如下：
+当然如果你想查看这个智能合约有哪些字段，字段类型，可以调用`getContractInfo`方法,它将返回智能合约信息，如下：
 ```text
 >getContractInfo @1NewApplication
 
@@ -76,12 +74,11 @@
     "conditions": "ContractConditions(\"@1DeveloperCondition\")"
 }
 ```
-`fields`字段为该合约的参数,包括参数的名称`name`，类型`type`，可选项`optional`，`Name`和`Conditions`为必填项，`VotingId`为可选项,可参考[contract/name](../reference/api2.md#contract-name)  API方法。
+`fields`字段为该智能合约的参数,包括参数的名称`name`，类型`type`，可选项`optional`，`Name`和`Conditions`为必填项，`VotingId`为可选项,可参考[contract/name](../reference/api2.md#contract-name)  API方法。
 
 
-### 编写合约 {#writing-contracts}
-我们使用[Needle](../topics/script.md#needle-contract-language) 编写智能合约，
-我们实现一个简单的加法运算，合约源码如下,我们将合约保存为`SumMath.sim`。
+### 编写智能合约 {#writing-contracts}
+我们使用[Needle](../topics/script.md#needle-contract-language) 编写智能合约，我们实现一个简单的加法运算，智能合约源码如下,我们将智能合约保存为`SumMath.sim`。
 ``` text
 1    contract SumMath {
 2        data {
@@ -99,16 +96,16 @@
 14    }
 ```
 下面按行解释：
-- 第1行，我们定义了一个名称为SumMath的合约。
+- 第1行，我们定义了一个名称为SumMath的智能合约。
 - 第2行, [数据部分](../topics/script.md#data-section) 。
 - 第3-第4行，我们定义了两个输入64位整数型参数`A B`。
 - 第6行,[条件部分](../topics/script.md#conditions-section) 。
-- 第9行,[操作部分](../topics/script.md#action-section) 我们定义了一个变量sum，用于接收A+B结果，
-将sum的值赋给$result,作为合约的返回结果.当然也可以直接将A+B的值赋给$result，但它可以作为一个例子展示.
+- 第9行,[操作部分](../topics/script.md#action-section) 我们定义了一个变量sum，用于接收A+B结果，将sum的值赋给$result,作为智能合约的返回结果.当然也可以直接将A+B的值赋给$result，但它可以作为一个例子展示.
 
-### 创建合约 {#create-contract}
-有两种方法创建合约，第一种方法：
-第一步我们编写一个合约参数文件，文件格式为json：
+### 创建智能合约 {#create-contract}
+有两种方法创建智能合约，第一种方法：
+
+第一步我们编写一个智能合约参数文件，文件格式为json：
 ``` json
 {
   "ApplicationId": 31,
@@ -116,12 +113,12 @@
   "Conditions": "ContractConditions(\"@1DeveloperCondition\")"
 }
 ```
-其中`ApplicationId`为应用id,`Value`为合约源码，需要对特殊字符进行转义处理，`Conditions`为该合约修改权限。
+其中`ApplicationId`为应用id,`Value`为智能合约源码，需要对特殊字符进行转义处理，`Conditions`为该智能合约修改权限。
 
 我们将它命名为`SumMathParams.json`。
 
 
-第二步调用创建合约@1NewContract。
+第二步调用创建智能合约@1NewContract。
 ```
 1    >callContract @1NewContract -f=./data/SumMathParams.json
 2    {
@@ -133,7 +130,8 @@
 ```
 
 第二种方法：
-直接将保存的合约源码文件传入合约参数中，参数格式为`参数名称`+ `-` + "file",`paramsName-file`如下：
+
+直接将保存的智能合约源码文件传入智能合约参数中，参数格式为`参数名称`+ `-` + "file",`paramsName-file`如下：
 ```shell
 1    >callContract @1NewContract {"ApplicationId": 31, "Value-file": "SumMath.sim", "Conditions": "true"}    
 2    {
@@ -145,14 +143,14 @@
 ```
 
 下面按行解释：
-- 第1行：调用合约@1NewContract创建合约，-f使用文件导入合约参数。
+- 第1行：调用智能合约@1NewContract创建智能合约，-f使用文件导入智能合约参数。
 - 第3行，交易产生的区块id。
 - 第4行，交易产生的区块哈希。
 - 第5行，如果交易执行失败（0：无惩罚 1：惩罚）。
-- 第6行，如果交易执行失败，则返回一条错误文本消息，如果返回了区块id，err字段为该合约的id。
+- 第6行，如果交易执行失败，则返回一条错误文本消息，如果返回了区块id，err字段为该智能合约的id。
 
 
-我们试着调用一下刚刚部署的合约。
+我们试着调用一下刚刚部署的智能合约。
 ```
 1  >callContract @5SumMath {"A":1, "B":2}
 2  
@@ -164,11 +162,11 @@
 8  }
 ```
 调用完成，结果符合预期,下面按行解释：
-- 第1行调用合约，这里我们将合约部署到了生态id为5的生态里，当然如果当前所在生态id为5,同一个生态中时，也可以这么调用`callContract SumMath {"A":1, "B":2}`。
+- 第1行调用智能合约，这里我们将智能合约部署到了生态id为5的生态里，当然如果当前所在生态id为5,同一个生态中时，也可以这么调用`callContract SumMath {"A":1, "B":2}`。
 - 第3行，交易产生的区块id。
 - 第4行，交易产生的区块哈希。
 - 第5行，如果交易执行失败（0：无惩罚 1：惩罚）。
-- 第6行，如果交易执行失败，则返回一条错误文本消息，如果返回了区块id，err字段为该合约的结果，也就是`$result`的值。
+- 第6行，如果交易执行失败，则返回一条错误文本消息，如果返回了区块id，err字段为该智能合约的结果，也就是`$result`的值。
 
 
 ## 命令行工具生态开发 {#command-line-tool-eco-development}
@@ -177,23 +175,19 @@
 2、[创建应用](#step-2-create-application)
 3、[创建数据表](#step-3-create-table)
 4、[创建应用参数](#step-4-create-application-parameters)
-5、[创建和部署合约](#step-5-create-contract-deploy-contract)
+5、[创建和部署智能合约](#step-5-create-contract-deploy-contract)
 6、[创建生态参数](#step-6-create-ecological-parameters)
 7、[添加本地化](#step-7-add-localization)
-8、[修改合约](#step-8-modify-the-contract)
+8、[修改智能合约](#step-8-modify-the-contract)
 9、[修改数据表权限](#step-9-modify-data-table-permissions)
 
 为了更清楚的了解IBAX生态与应用是怎么样的，做什么用的，首选我们了解一下生态和应用应该属于那一部分，我们通过一个简单的思维导图可以更好的理解：
-![image](_ststic/ibax-eco.png)
+![image](ibax-eco.png)
 
-可以看到IBAX网络可以有许多[生态](../concepts/about-the-platform.md#ecolib) ,
-每个生态可以有多个[应用](https://docs.ibax.io/concepts/about-the-platform.html#applications) ,
-每个应用都有[合约](https://docs.ibax.io/concepts/thesaurus.html#smart-contract) ,
-[数据表](https://docs.ibax.io/concepts/about-the-platform.html#tables) , 生态有生态参数，应用有应用参数
+可以看到IBAX网络可以有许多[生态](../concepts/about-the-platform.md#ecolib) ,每个生态可以有多个[应用](../concepts/about-the-platform.md#applications) ,每个应用都有[智能合约](../concepts/thesaurus.md#smart-contract) ,[数据表](../concepts/about-the-platform.md#tables) , 生态有生态参数，应用有应用参数
 
 ### 第1步创建生态 {#step-1-create-ecosystem}
-我们先使用[命令行工具](https://github.com/IBAX-io/ibax-cli) 创建一个生态, 调用合约@1NewEcosystem.
-如果你想修改生态名称，可以调用`@1EditEcosystemName`合约.
+我们先使用[命令行工具](https://github.com/IBAX-io/ibax-cli) 创建一个生态, 调用智能合约@1NewEcosystem.如果你想修改生态名称，可以调用`@1EditEcosystemName`智能合约.
 
 ```shell
 1    $ ibax-cli console
@@ -204,7 +198,7 @@
 6    
 7    {
 8        "block_id": 1199,
-9        "hash": "a1dc90c1772545c16394b9521645ae60c0c292227676b27b145743556a8973dd",
+9        "hash": "a1dc90c1772545c16394b9521...227676b27b145743556a8973dd",
 10       "penalty": 0,
 11       "err": "18"
 12   }
@@ -212,7 +206,7 @@
 
 下面按行解释：
 - 第1行，启动了命令行控制台程序。
-- 第5行，调用合约@1NewEcosystem创建一个生态，该生态名称为`test ecosystem`。
+- 第5行，调用智能合约@1NewEcosystem创建一个生态，该生态名称为`test ecosystem`。
 - 第8行，交易产生的区块id。
 - 第9行，交易产生的区块哈希。
 - 第10行，如果交易执行失败（0：无惩罚 1：惩罚）。
@@ -233,7 +227,7 @@ To exit, press ctrl-d or type exit
 ```
 
 ### 第2步创建应用 {#step-2-create-application}
-调用合约`@1NewApplication`创建应用，该合约有一个应用名称参数和一个修改[权限参数](https://docs.ibax.io/concepts/about-the-platform.html#access-rights-control-mechanism) 。
+调用智能合约`@1NewApplication`创建应用，该智能合约有一个应用名称参数和一个修改[权限参数](https://docs.ibax.io/concepts/about-the-platform.html#access-rights-control-mechanism) 。
 ``` text
 1  >callContract @1NewApplication {"Name": "GradesRecorder", "Conditions": "ContractConditions(\"@1DeveloperCondition\")"}
 2  
@@ -244,22 +238,20 @@ To exit, press ctrl-d or type exit
 7     "err": "47"
 8  }
 ```
-如果你需要修改应用权限，可以调用`EditApplication`合约。
+如果你需要修改应用权限，可以调用`EditApplication`智能合约。
 
 
 下面按行解释：
-- 第1行，调用合约@1NewApplication创建一个应用，应用名称为`GradesRecorder`,应用修改权限为开发者权限`@1DeveloperCondition`。
+- 第1行，调用智能合约@1NewApplication创建一个应用，应用名称为`GradesRecorder`,应用修改权限为开发者权限`@1DeveloperCondition`。
 - 第4行，交易产生的区块id。
 - 第5行，交易产生的区块哈希。
 - 第6行，如果交易执行失败（0：无惩罚 1：惩罚）。
 - 第7行，如果交易执行失败，则返回一条错误文本消息，如果返回了区块id，err字段该应用的id为`47`。
 
-我们写一个简单的例子，这个应用可以记录学生的成绩，
-数据表字段包括学生的信息，年级`grade`，班级`class`，科目成绩`mathematics,physics,literature`，
-综合评分`overall_score`，评级`score`,创建时间戳（ms）`created_at`。
+我们写一个简单的例子，这个应用可以记录学生的成绩，数据表字段包括学生的信息，年级`grade`，班级`class`，科目成绩`mathematics,physics,literature`，综合评分`overall_score`，评级`score`,创建时间戳（ms）`created_at`。
 
 ### 第3步创建数据表 {#step-3-create-table}
-第一步我们编写一个合约参数文件，文件格式为json：
+第一步我们编写一个智能合约参数文件，文件格式为json：
 ```json
 {
   "ApplicationId": 47,
@@ -292,22 +284,15 @@ To exit, press ctrl-d or type exit
   "NewColumnPerm": "ContractConditions(\"MainCondition\")"
 }
 ```
-其中`ApplicationId`为应用id,`Name`为创建的数据表名`test_teble`，
-`ColumnsArr`为数据表字段数组，`TypesArr`为数据表字段的类型，包括9种[类型](../concepts/about-the-platform.md#tables) 。
-`varchar`,`character`,`json`,`number`,`datetime`,`double`,`money`,`text`,`bytea`,字段名跟字段类型是一一对应关系，
-`InsertPerm`为数据表新建条目权限，`UpdatePerm`为数据表更新条目权限，`ReadPerm`为数据表数据读取权限，`NewColumnPerm`为新建数据表字段权限。
-参考[权限管理](../concepts/about-the-platform.md#access-rights-control-mechanism) ,这里的`ContractConditions(\"MainCondition\")`为当前生态创建者可用。
+其中`ApplicationId`为应用id,`Name`为创建的数据表名`test_teble`，`ColumnsArr`为数据表字段数组，`TypesArr`为数据表字段的类型，包括9种[类型](../concepts/about-the-platform.md#tables) 。`varchar`,`character`,`json`,`number`,`datetime`,`double`,`money`,`text`,`bytea`,字段名跟字段类型是一一对应关系，`InsertPerm`为数据表新建条目权限，`UpdatePerm`为数据表更新条目权限，`ReadPerm`为数据表数据读取权限，`NewColumnPerm`为新建数据表字段权限。参考[权限管理](../concepts/about-the-platform.md#access-rights-control-mechanism) ,这里的`ContractConditions(\"MainCondition\")`为当前生态创建者可用。
 
-我们将它命名为createTable.json,然后调用合约创建数据表`@1NewTableJoint`。
+我们将它命名为createTable.json,然后调用智能合约创建数据表`@1NewTableJoint`。
 ```text
 >callContract @1NewTableJoint -f ./createTestTable.json
 ```
 
 #### 修改数据表字段权限 {#modify-data-table-field-permissions}
-我们可以修改数据表字段权限,数据表字段权限包括读取权限和更新权限，其中读取权限，在合约使用`DBFind.Columns`筛选字段或者接口如[list](https://docs.ibax.io/reference/api2.html#list-name-limit-offset-columns) 查询时,如果没有权限则会报权限错误,
-更新权限即为更新数据表字段的权限。
-我们将`student`字段读取和更新权限设置为`false`，当然也可以设置为某个合约可操作。
-调用`@1EditColumn`合约修改数据表字段权限。
+我们可以修改数据表字段权限,数据表字段权限包括读取权限和更新权限，其中读取权限，在智能合约使用`DBFind.Columns`筛选字段或者接口如[list](https://docs.ibax.io/reference/api2.html#list-name-limit-offset-columns) 查询时,如果没有权限则会报权限错误,更新权限即为更新数据表字段的权限。 我们将`student`字段读取和更新权限设置为`false`，当然也可以设置为某个智能合约可操作。 调用`@1EditColumn`智能合约修改数据表字段权限。
 ```shell
 >callContract @1EditColumn {"TableName": "grade_info", "Name": "student", "UpdatePerm": "false", "ReadPerm": "false"}
 ```
@@ -316,7 +301,7 @@ To exit, press ctrl-d or type exit
 我们可以创建几个应用参数`grade_best_type`,`grade_type_a+`,`grade_type_a`,`grade_type_b+`,`grade_type_b`,`grade_type_c`,成绩评级类型。
 
 ### 第4步创建应用参数 {#step-4-create-application-parameters}
-调用合约`@1NewAppParam`创建应用参数,如果你要修改应用参数可以调用`@1EditAppParam`合约.
+调用智能合约`@1NewAppParam`创建应用参数,如果你要修改应用参数可以调用`@1EditAppParam`智能合约.
 ```text
 >callContract @1NewAppParam {"ApplicationId": 47, "Name": "grade_best_type", "Value": "A+", "Conditions": "ContractConditions(\"MainCondition\")"}
 >callContract @1NewAppParam {"ApplicationId": 47, "Name": "grade_type_a+", "Value": "{\"max\": 101,\"min\": 90}", "Conditions": "ContractConditions(\"MainCondition\")"}
@@ -325,17 +310,14 @@ To exit, press ctrl-d or type exit
 >callContract @1NewAppParam {"ApplicationId": 47, "Name": "grade_type_b", "Value": "{\"max\": 70,\"min\": 60}", "Conditions": "ContractConditions(\"MainCondition\")"}
 >callContract @1NewAppParam {"ApplicationId": 47, "Name": "grade_type_c", "Value": "{\"max\": 60,\"min\": 0}", "Conditions": "ContractConditions(\"MainCondition\")"}
 ```
-其中`grade_best_type`为最好的评级类型，
-`grade_type_a+`为评级`A+`所触发的条件，当分数大于等于90并且小于101时，评为`A+`,其他参数类似。
+其中`grade_best_type`为最好的评级类型，`grade_type_a+`为评级`A+`所触发的条件，当分数大于等于90并且小于101时，评为`A+`,其他参数类似。
 
 
-### 第5步创建合约部署合约 {#step-5-create-contract-deploy-contract}
+### 第5步创建智能合约部署智能合约 {#step-5-create-contract-deploy-contract}
 
-我们创建一个合约，用于记录学生各科目成绩信息与最终评级，录入信息时输入学生的年级班级与各科目成绩，
-根据输入的各科的成绩做平均运算，得出综合评分`overallScore`与最终评级`score`,
-当调用合约时，将创建一条记录到我们刚刚创建的数据表中`grade_info`。
+我们创建一个智能合约，用于记录学生各科目成绩信息与最终评级，录入信息时输入学生的年级班级与各科目成绩，根据输入的各科的成绩做平均运算，得出综合评分`overallScore`与最终评级`score`,当调用智能合约时，将创建一条记录到我们刚刚创建的数据表中`grade_info`。
 
-首先我们编写一个合约，将它命名为`NewRecord.sim`。
+首先我们编写一个智能合约，将它命名为`NewRecord.sim`。
 ```text
 1	contract NewRecord {				
 2	    data {				
@@ -436,17 +418,14 @@ To exit, press ctrl-d or type exit
 - 第38行，[条件部分](../topics/script.md#conditions-section) 。
 - 第39行，[操作部分](../topics/script.md#action-section) 。
 
-可以看到，当合约被调用时，首先走条件部分，验证合约输入参数是否有效，比如学生名称`if Size($Student) == 0 {`是否为空(第39行)，如果为空，则返回报错信息。
-`"Student Can not be empty"`(第30行),当所有输入参数都校验通过后，第61行，使用[DBFind](../topics/script.md#dbfind) 从数据库检索生态id为`18`，应用名称为`GradesRecorder`并且未删除`deleted=0`的应用信息，
-第69行-74行，使用[AppParam](../topics/script.md#appparam) 检索应用参数， 如`$gradeBestType = AppParam(app_id, "grade_best_type", $eId)`（第69行）,
-如果应用参数为json格式存储，如`grade_type_a`,你可以参考`$gradeTypeABest = safeJsonDecode(AppParam(app_id, "grade_type_a+", $eId))`,将获取到的应用参数通过safeJsonDecode函数转为map格式。
+可以看到，当智能合约被调用时，首先走条件部分，验证智能合约输入参数是否有效，比如学生名称`if Size($Student) == 0 {`是否为空(第39行)，如果为空，则返回报错信息。`"Student Can not be empty"`(第30行),当所有输入参数都校验通过后，第61行，使用[DBFind](../topics/script.md#dbfind) 从数据库检索生态id为`18`，应用名称为`GradesRecorder`并且未删除`deleted=0`的应用信息，第69行-74行，使用[AppParam](../topics/script.md#appparam) 检索应用参数， 如`$gradeBestType = AppParam(app_id, "grade_best_type", $eId)`（第69行）,如果应用参数为json格式存储，如`grade_type_a`,你可以参考`$gradeTypeABest = safeJsonDecode(AppParam(app_id, "grade_type_a+", $eId))`,将获取到的应用参数通过safeJsonDecode函数转为map格式。
 
-然后执行到操作部分，调用getScore函数获取得出综合评分与最终评级(第10行),使用map存储，第79行，定义一个map，保存学生成绩信息，
-[DBInsert](../topics/script.md#dbinsert) 往数据表`@18grade_info`插入数据。
+然后执行到操作部分，调用getScore函数获取得出综合评分与最终评级(第10行),使用map存储，第79行，定义一个map，保存学生成绩信息，[DBInsert](../topics/script.md#dbinsert) 往数据表`@18grade_info`插入数据。
 
 
-有两种方法创建合约，第一种方法：
-首先我们编写一个合约参数文件，文件格式为json：
+有两种方法创建智能合约，第一种方法：
+
+首先我们编写一个智能合约参数文件，文件格式为json：
 ```json
 {
   "ApplicationId": 47,
@@ -455,11 +434,10 @@ To exit, press ctrl-d or type exit
 }
 ```
 
-其中`ApplicationId`为应用id,，需要对特殊字符进行转义处理，`Conditions`为该合约修改权限,
-`Value`合约源码，我们将它保存为`NewRecordParams.json`：
+其中`ApplicationId`为应用id,，需要对特殊字符进行转义处理，`Conditions`为该智能合约修改权限,`Value`智能合约源码，我们将它保存为`NewRecordParams.json`：
 
 
-编写完合约后，我们需要部署合约，调用创建合约`@1NewContract`。
+编写完智能合约后，我们需要部署智能合约，调用创建智能合约`@1NewContract`。
 ```text
 1    >>callContract @1NewContract -f=./data/NewRecordParams.json
 2    {
@@ -470,19 +448,20 @@ To exit, press ctrl-d or type exit
 7    }
 ```
 下面按行解释：
-- 第1行：调用合约`@1NewContract`创建合约，-f使用文件导入刚刚创建的文件`NewRecord.json`作为合约参数。
+- 第1行：调用智能合约`@1NewContract`创建智能合约，-f使用文件导入刚刚创建的文件`NewRecord.json`作为智能合约参数。
 - 第3行，交易产生的区块id。
 - 第4行，交易产生的区块哈希。
 - 第5行，如果交易执行失败（0：无惩罚 1：惩罚）。
-- 第6行，如果交易执行失败，则返回一条错误文本消息，如果返回了区块id，err字段该合约的id为`348`。
+- 第6行，如果交易执行失败，则返回一条错误文本消息，如果返回了区块id，err字段该智能合约的id为`348`。
 
 第二种方法：
-直接将保存的合约源码文件传入合约参数中，参数格式为`参数名称`+ `-` + "file",`paramsName-file`如下：
+
+直接将保存的智能合约源码文件传入智能合约参数中，参数格式为`参数名称`+ `-` + "file",`paramsName-file`如下：
 ```shell
 callContract @1NewContract {"ApplicationId": 47, "Value-file": "NewRecord.sim", "Conditions": "ContractConditions(\"@1DeveloperCondition\")"}
 ```
 
-我们试着调用一下刚刚创建的合约。
+我们试着调用一下刚刚创建的智能合约。
 ```text
 1  >callContract @18NewRecord {"Student": "tom", "Grade": 1, "Class": 1, "Mathematics": 18, "Physics": 57, "Literature": 93}
 2  
@@ -516,12 +495,12 @@ callContract @1NewContract {"ApplicationId": 47, "Value-file": "NewRecord.sim", 
 ```
 可以看到在数据表中已有一条记录，`student` tom的综合评分为56 评级为C。
 
-以上例子仅用于学习研究使用，你需要根据实际情况更改相关参数，比如数据表的写入权限, 合约的修改权限等。
+以上例子仅用于学习研究使用，你需要根据实际情况更改相关参数，比如数据表的写入权限, 智能合约的修改权限等。
 
-比如说我们要指定一个一个人才能调用这个新建记录的合约，其他所有人都不可以调用，我们可以设置一个生态参数`new_record_account`。
+比如说我们要指定一个一个人才能调用这个新建记录的智能合约，其他所有人都不可以调用，我们可以设置一个生态参数`new_record_account`。
 
 ### 第6步设置生态参数 {#step-6-create-ecological-parameters}
-调用合约`@1NewParameter`,将在`@1parameters`表创建生态参数`new_record_account`,如果你需要修改生态参数可以调用`@1EditParameter`。
+调用智能合约`@1NewParameter`,将在`@1parameters`表创建生态参数`new_record_account`,如果你需要修改生态参数可以调用`@1EditParameter`。
 ```text
 >callContract @1NewParameter {"Name": "new_record_account", "Value": "6667782293976713160", "Conditions": "ContractConditions(\"MainCondition\")"}
 
@@ -532,16 +511,15 @@ callContract @1NewContract {"ApplicationId": 47, "Value-file": "NewRecord.sim", 
     "err": "273"
 }
 ```
-我们创建了一个生态参数`new_record_account`，设置值为keyId `6667782293976713160`, 修改权限为`ContractConditions("MainCondition")`指当前生态创建者可修改。
-交易执行成功时，"err"字段该生态参数id为`273`。
+我们创建了一个生态参数`new_record_account`，设置值为keyId `6667782293976713160`, 修改权限为`ContractConditions("MainCondition")`指当前生态创建者可修改。交易执行成功时，"err"字段该生态参数id为`273`。
 
 ### 第7步添加本地化 {#step-7-add-localization}
-可以调用`@1NewLangJoint`合约创建本地化参数`account_not_access`，将在`@1languages`表创建参数，你可以通过`@1EditLangJoint`修改本地化参数.
+可以调用`@1NewLangJoint`智能合约创建本地化参数`account_not_access`，将在`@1languages`表创建参数，你可以通过`@1EditLangJoint`修改本地化参数.
 ```shell
 callContract @1NewLangJoint {"Name": "account_not_access", "LocaleArr": ["en", "ja"], "ValueArr": ["Sorry, you do not have access to this action", "申し訳ありませんが、このアクションにアクセスする権限がありません"]}
 ```
 
-### 第8步修改合约 {#step-8-modify-the-contract}
+### 第8步修改智能合约 {#step-8-modify-the-contract}
 接着我们需要修改一下合约源码`conditions`部分,在`conditions`添加如下代码。
 ```text
 conditions {
@@ -557,9 +535,7 @@ conditions {
 
 
 #### 第9步修改数据表权限 {#step-9-modify-data-table-permissions}
-这里我们需要将数据表的插入权限修改，原先权限`ContractConditions("MainCondition")`为生态创建人，而合约设置`new_record_account`并不是生态创建人，
-所以只需将`ContractConditions("MainCondition")`修改为指定合约可操作`ContractAccess("@18NewRecord")`即可.
-调用合约`@1EditTable`修改数据表权限。
+这里我们需要将数据表的插入权限修改，原先权限`ContractConditions("MainCondition")`为生态创建人，而合约设置`new_record_account`并不是生态创建人，所以只需将`ContractConditions("MainCondition")`修改为指定合约可操作`ContractAccess("@18NewRecord")`即可.调用合约`@1EditTable`修改数据表权限。
 ```text
 >callContract @1EditTable {"Name": "@18grade_info", "InsertPerm": "ContractAccess(\"@18NewRecord\")", "UpdatePerm": "ContractConditions(\"MainCondition\")", "ReadPerm": "true", "NewColumnPerm": "ContractConditions(\"MainCondition\")"}
 ```
@@ -577,9 +553,7 @@ conditions {
 ```
 可以看到我们刚刚设置的本地化参数`account_not_access`起作用了。
 
-发现报了权限错误，当前用户没有权限操作，我们切换到keyId为`6667782293976713160`的账户,我们可以通过命令行工具`account info`获取当前用户的信息。
-设置命令行工具`config.yml，切换到keyId为`6667782293976713160`的账户。
-设置完成后，再次调用合约。
+发现报了权限错误，当前用户没有权限操作，我们切换到keyId为`6667782293976713160`的账户,我们可以通过命令行工具`account info`获取当前用户的信息。设置命令行工具`config.yml，切换到keyId为`6667782293976713160`的账户。设置完成后，再次调用合约。
 ```text
 >callContract @18NewRecord {"Student": "tini", "Grade": 1, "Class": 3, "Mathematics": 69, "Physics": 89, "Literature": 98}
 
@@ -600,8 +574,7 @@ conditions {
 - 1.[导出应用](#export-application)
 - 2.[导入应用](#import-application)
 
-在开始本教程之前，你需要有一个自己的应用并且知道生态与应用的概念，你可以参考[入门指南](#getting-started-guide) 。
-我们将通过[命令行工具](https://github.com/IBAX-io/ibax-cli) 在IBAX区块链上导入应用、导出应用。
+在开始本教程之前，你需要有一个自己的应用并且知道生态与应用的概念，你可以参考[入门指南](#getting-started-guide) 。我们将通过[命令行工具](https://github.com/IBAX-io/ibax-cli) 在IBAX区块链上导入应用、导出应用。
 
 
 ### 导出应用 {#export-application}
@@ -646,18 +619,17 @@ To exit, press ctrl-d or type exit
     "value": ""
 }
 ```
-这里的-f参数，将要导出的应用保存到当前目录`data.json`文件中，
-如果没有-f参数，则将在命令终端输出应用数据。
+这里的-f参数，将要导出的应用保存到当前目录`data.json`文件中，如果没有-f参数，则将在命令终端输出应用数据。
 
 
 `export`命令封装了导出应用的步骤，你可以使用以上命令导出应用，或使用以下步骤，具体步骤如下：
+
 调用合约`@1ExportNewApp`导出一个新的应用，会在`1_buffer_data`表生成一条导出应用的记录。
 ```shell
 >callContract @1ExportNewApp {"ApplicationId": 36}
 ```
 
-调用合约`@1Export`导出应用,在`1_buffer_data`表中查找所选应用程序，并将所有应用程序资源导出到生成的 json 字符串中。
-生成的 json 字符串将写入当前生态系统的`1_binaries`表。
+调用合约`@1Export`导出应用,在`1_buffer_data`表中查找所选应用程序，并将所有应用程序资源导出到生成的 json 字符串中。生成的 json 字符串将写入当前生态系统的`1_binaries`表。
 ```shell
 >callContract @1Export
 ```
@@ -676,8 +648,7 @@ To exit, press ctrl-d or type exit
     ]
 }
 ```
-得到二进制文件id和hash。
-调用`binaryVerify`命令导出二进制文件。
+得到二进制文件id和hash。调用`binaryVerify`命令导出二进制文件。
 ```shell
 >binaryVerify 14 8542cb57b77e0ae2c...92c3e05dbbe35ab646789be5b8ba8 -f=./data.json
 
@@ -702,11 +673,7 @@ To exit, press ctrl-d or type exit
 其中`import`命令封装了导入应用的步骤，你可以使用以上命令导入应用。
 
 或使用以下步骤，为方便学习与研究，具体步骤如下：
-- 第1步
-调用合约`@1ImportUpload`导入一个新的应用，会在`1_buffer_data`表生成一条导出应用的记录。
-`@1ImportUpload`该合约参数`Data`为`file`[类型](../topics/vm.md#types) ,
-包含关键字`Name`文件名(string),`MimeType`文件类型(string),`Body`([]byte)文件内容。
-你需要将应用文件数据进行base64编码后传入`Body`中，可以使用`base64Encode`命令进行base64编码。
+- 第1步,调用合约`@1ImportUpload`导入一个新的应用，会在`1_buffer_data`表生成一条导出应用的记录。`@1ImportUpload`该合约参数`Data`为`file`[类型](../topics/vm.md#types) ,包含关键字`Name`文件名(string),`MimeType`文件类型(string),`Body`([]byte)文件内容。你需要将应用文件数据进行base64编码后传入`Body`中，可以使用`base64Encode`命令进行base64编码。
 ```shell
 >base64Encode -f=./data.json
 
@@ -715,8 +682,7 @@ Encode:ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsb
 >callContract @1ImportUpload {"Data": {"Name": "filename", "MimeType": "mimeType", "Body": "ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsbG9Xb3JsZCIsCgkJCSJWYWx1ZSI6..."}}
 ```
 
-- 第2步
-调用完成后，使用`getList`命令查询`1_buffer_data`表中的数据。
+- 第2步,调用完成后，使用`getList`命令查询`1_buffer_data`表中的数据。
 ```shell
 >getList @1buffer_data -w={"key": "import", "account": "0666-0819-xxxx-7879-5186", "ecosystem": 19} -l=1 -c=value->'data'
 
@@ -731,14 +697,12 @@ Encode:ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsb
 }
 ```
 
-- 第3步
-将value.data->Data中的数据组装成一维数组，[a,b,c,d],
-然后创建一个合约参数文件`importParams.json`,内容如下：
+- 第3步,将value.data->Data中的数据组装成一维数组，[a,b,c,d],然后创建一个合约参数文件`importParams.json`,内容如下：
 ```json
 {"Data":"[a,b,c,d]"}
 ```
 
--第4步 调用合约`@1Import`导入应用数据。
+-第4步,调用合约`@1Import`导入应用数据。
 ```shell
 >callContract @1Import -f=./importParams.json
 ```
@@ -746,34 +710,30 @@ Encode:ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsb
 
 ## 使用命令行工具生态配置 {#ecological-configuration-using-command-line-tool}
 在本教程中，您将学习如何：
-- 1.[申请加入生态](#apply-to-join-the-ecology)
-- 2.[添加生态成员](#add-ecological-members)
-- 3.[角色管理](#role-management)
-- 4.[生态代币发行](#issuance-of-token)
-- 5.[生态代扣](#eco-deduction)
-- 6.[DAO治理生态](#dao-governance-ecology)
+1. [申请加入生态](#apply-to-join-the-ecosystem)
+2. [添加生态成员](#add-ecosystem-members)
+3. [冻结账户](#freezing-of-accounts)
+4. [角色管理](#role-management)
+5. [生态代币发行](#issuance-of-token)
+6. [生态代扣](#eco-deduction)
+7. [DAO治理生态](#dao-governance-ecosystem)
 
-在开始本教程之前，你需要有一个自己的应用并且知道生态与应用的概念，你可以参考[入门指南](#getting-started-guide) 。
-我们将通过[命令行工具](https://github.com/IBAX-io/ibax-cli) 在IBAX区块链上进行生态配置。
+在开始本教程之前，你需要有一个自己的应用并且知道生态与应用的概念，你可以参考[入门指南](#getting-started-guide) 。我们将通过[命令行工具](https://github.com/IBAX-io/ibax-cli) 在IBAX区块链上进行生态配置。
 
-### 申请加入生态 {#apply-to-join-the-ecology}
-我们可以调用`@1MembershipRequest`合约申请加入生态。
-如下例子：
+### 申请加入生态 {#apply-to-join-the-ecosystem}
+我们可以调用`@1MembershipRequest`合约申请加入生态。如下例子：
 ```shell
 >callContract @1MembershipRequest {"EcosystemId": 19}
 ```
-申请加入生态id为`19`的生态，`@1MembershipRequest`合约对调用生态做了限制，只有在基础生态才可调用，
-当申请成功后，目标生态管理者会收到一条申请，只有申请被生态管理者批复后才算是加入了目标生态,
-当然如果目标生态时公开的，你可以直接加入目标生态。
+申请加入生态id为`19`的生态，`@1MembershipRequest`合约对调用生态做了限制，只有在基础生态才可调用，当申请成功后，目标生态管理者会收到一条申请，只有申请被生态管理者批复后才算是加入了目标生态,当然如果目标生态是公开的，你可以直接加入目标生态。
 
-### 添加生态成员 {#add-ecological-members}
+### 添加生态成员 {#add-ecosystem-members}
 当生态刚创建时,生态成员只有生态创建者,当你需要邀请其他成员加入时,你需要知道被邀请人的公钥,然后调用合约`@1MembershipAdd`添加成员。
 ```shell
 >callContract @1MembershipAdd {"Keys": "04f2c1780ca0aa0f343d0e541c77811...3b0d5bf3a9903253aad6e78c966b5f91ffb32703884020"}
 ```
 
-如果生态是公开的允许任何人加入，你可以设置生态参数`free_membership` = 1,默认是不公开的，
-设置完成后，无需通过审批即可加入你的生态。
+如果生态是公开的允许任何人加入，你可以设置生态参数`free_membership` = 1,默认是不公开的，设置完成后，无需通过审批即可加入你的生态。
 ```shell
 >callContract @1NewParameter {"Name": "free_membership", "Value": "1", "Conditions": "ContractConditions(\"MainCondition\")"}
 ```
@@ -844,9 +804,7 @@ Encode:ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsb
     ]
 }
 ```
-其中`where`条件`ecosystem`指定生态，`role->id`指定角色id，`deleted`: 0指定未删除。
-我们可以看到查询到了3条记录,假如我们要移除成员为`1273-2644-xxxx-5846-6598`的角色权限，即`id`为`21`的角色。
-管理员可以调用合约`@1RolesUnassign`删除角色成员,如下所示：
+其中`where`条件`ecosystem`指定生态，`role->id`指定角色id，`deleted`: 0指定未删除。我们可以看到查询到了3条记录,假如我们要移除成员为`1273-2644-xxxx-5846-6598`的角色权限，即`id`为`21`的角色。管理员可以调用合约`@1RolesUnassign`删除角色成员,如下所示：
 ```shell
 >callContract @1RolesUnassign {"RowId": 21}
 ```
@@ -877,8 +835,7 @@ Encode:ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsb
     ]
 }
 ```
-其中`roles_access`为当前角色的管理角色，它是一个数组，可以有多个。
-我们给`teacher`这个角色添加管理角色，调用`@1RolesAccessManager`合约,其中合约参数`Action` 管理操作符(`clean`清空,`remove`删除,`add`添加),`Rid`要管理的角色ID,`ManagerRid`该 Rid 角色的管理者。
+其中`roles_access`为当前角色的管理角色，它是一个数组，可以有多个。我们给`teacher`这个角色添加管理角色，调用`@1RolesAccessManager`合约,其中合约参数`Action` 管理操作符(`clean`清空,`remove`删除,`add`添加),`Rid`要管理的角色ID,`ManagerRid`该 Rid 角色的管理者。
 ```shell
 >callContract @1RolesAccessManager {"Action": "add", "Rid": 20, "ManagerRid": 13}
 
@@ -905,11 +862,11 @@ Encode:ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsb
 
 
 ### 生态代币发行 {#issuance-of-token}
-- [创建生态](#create-ecology)
+- [创建生态](#create-ecosystem)
 - [安装基础应用](#installing-basic-applications)
 - [生态发币](#token-issuance)
 
-#### 创建生态 {#create-ecology}
+#### 创建生态 {#create-ecosystem}
 创建一个生态, 调用`@1NewEcosystem`合约。
 ```shell
 >callContract @1NewEcosystem {"Name": "Test Ecosystem"}
@@ -978,9 +935,7 @@ Encode:ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsb
 >callContract @1TeBurn {"Amount": 1000000000000}
 ```
 
-默认增发代币和销毁代币是允许的，你可以通过`@1TeChange`设置关闭，其中`TypeChange`为类型(`emission`增发,`withdraw`销毁),
-`Value`为开关状态(`1`开启,`2`关闭)，例如：
-**关闭增发** 注意：关闭后无法开启 。
+默认增发代币和销毁代币是允许的，你可以通过`@1TeChange`设置关闭，其中`TypeChange`为类型(`emission`增发,`withdraw`销毁),`Value`为开关状态(`1`开启,`2`关闭)，例如：**关闭增发** 注意：关闭后无法开启 。
 ```shell
 >callContract @1TeChange {"TypeChange": "emission", "Value": 2}
 ```
@@ -1018,13 +973,11 @@ Encode:ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsb
 - `VmCostConversionRate`	   虚拟机费用转换率，小数位2位，仅代付生效，大于零。
 - `StorageConversionRate`	   存储费用转换率，小数位2位，仅代付生效，大于零。
 
-如果你使用了上述设置,所有用户在该生态内调用合约所产生的交易费用，由当前生态设置的生态钱包统一支付。
-所有用户只需要支付在该生态内所产生的gas费用.当然你可以根据实际需要，调整对应费用参数。
+如果你使用了上述设置,所有用户在该生态内调用合约所产生的交易费用，由当前生态设置的生态钱包统一支付。所有用户只需要支付在该生态内所产生的gas费用.当然你可以根据实际需要，调整对应费用参数。
 
 
-### DAO治理生态 {#dao-governance-ecology}
-在修改为DAO治理生态之前，你需要确保当前生态已经发行代币，修改为DAO治理生态后，生态所有的提案都将由治理委员会成员投票决定，
-不再单独由生态开发者管理， DAO治理委员会成员由生态持币量前50名代表当选。
+### DAO治理生态 {#dao-governance-ecosystem}
+在修改为DAO治理生态之前，你需要确保当前生态已经发行代币，修改为DAO治理生态后，生态所有的提案都将由治理委员会成员投票决定，不再单独由生态开发者管理， DAO治理委员会成员由生态持币量前50名代表当选。
 
 
 调用`@1EditControlMode`合约，将生态治理模式改为DAO治理模式。
@@ -1085,9 +1038,7 @@ AddAirdrop.sim  ClaimAirdrop.sim  SpeedAirdrop.sim
 tables:
 airdrop_info.json
 ```
-其中`app_params`目录存放应用参数文件，命名使用参数名+文件格式`.csv`，文件内容为参数值.
-`contracts`目录存放合约，`.sim`文件格式，文件内容为合约源码.
-`tables`目录存放应用数据表结构，`json`文件格式，如下所示：
+其中`app_params`目录存放应用参数文件，命名使用参数名+文件格式`.csv`，文件内容为参数值.`contracts`目录存放合约，`.sim`文件格式，文件内容为合约源码.`tables`目录存放应用数据表结构，`json`文件格式，如下所示：
 ```json
 [
   { "name": "account", "conditions": "{\"read\": \"true\", \"update\": \"ContractConditions(\"MainCondition\")\"}", "type": "varchar" },
@@ -1097,7 +1048,7 @@ airdrop_info.json
   { "name": "total_amount", "conditions": "true", "type": "money" }
 ]
 ```
-`name`为数据表字段名称，`conditions`为数据表字段权限， `type`为字段类型。
+`name`为数据表字段名称，`conditions`为数据表字段权限，`type`为字段类型。
 
 第1步，我们生成一个config.json文件，将它保存到airdrop目录，文件内容如下所示：
 ```text
@@ -1113,6 +1064,7 @@ airdrop_info.json
 $ ./app-tool airdrop/
 ```
 我们可以通过[命令行工具](https://github.com/IBAX-io/ibax-cli) 导入应用,如下所示：
+
 使用`import`命令导入应用，`-f`参数为指定导入的应用文件。
 ```shell
 $ ibax-cli console

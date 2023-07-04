@@ -4,26 +4,27 @@
 
   - [目标](#the-goal)
   - [第1部分：环境](#part-1-the-environment)
-  - [第2部分：合约](#part-2-contract)
+  - [第2部分：智能合约](#part-2-contract)
     - [创始人账户](#creator-account)
     - [新应用程序](#new-application)
     - [新数据表](#new-database-table)
-    - [新合约](#new-contract)
-      - [合约代码部分](#contract-code)
-      - [创建合约](#create-a-contract)
-      - [合约名称](#contract-name)
+    - [新智能合约](#new-contract)
+      - [智能合约代码部分](#contract-code)
+      - [创建智能合约](#create-a-contract)
+      - [智能合约名称](#contract-name)
       - [数据部分](#data)
       - [条件部分](#conditions)
       - [操作部分](#action)
-      - [完整合约代码](#full-contract-code)
+      - [完整智能合约代码](#full-contract-code)
       - [保存并执行](#save-and-run)
   - [第3部分：页面](#part-3-page)
     - [新字段](#new-field)
-    - [更改合约](#update-the-contract)
+    - [更改智能合约](#update-the-contract)
     - [页面](#page)
       - [设计器视图](#designer-views)
       - [开发者视图](#developer-view)
       - [获取数据表数据](#fetch-data-from-the-database-table)
+      - [完整页面代码](#full-page-code-1)
       - [保存页面](#save-the-page)
   - [第4部分：应用程序](#part-4-application)
     - [菜单](#menu)
@@ -38,6 +39,7 @@
       - [表格偏移量](#table-offset)
       - [按钮代码](#button-code)
       - [页面刷新](#page-refreshing)
+    - [完整页面代码](#full-page-code-2)
   - [结论](#conclusions)
 
 
@@ -45,22 +47,19 @@
 
 应用程序开始时很简单，随着教程的深入，其复杂性也在增加。
 
-应用程序的最终版本在数据表中存储为简单消息（字符串），其中包含时间戳和消息发送者的帐户标识符。
-用户可以访问这些消息列表并从应用程序页面添加新消息。该应用程序的页面可以从生态系统菜单中访问。
+应用程序的最终版本在数据表中存储为简单消息（字符串），其中包含时间戳和消息发送者的帐户标识符。用户可以访问这些消息列表并从应用程序页面添加新消息。该应用程序的页面可以从生态系统菜单中访问。
 
 ## 第1部分：环境 {#part-1-the-environment}
 
 **Weaver** 
 
-Weaver 是 IBAX区块链平台 的唯一客户端，Weaver 为所有用户和生态系统角色提供功能。
-应用程序开发人员可以在 Weaver 中开发和测试应用程序，生态系统管理员使用 Weaver 来管理生态系统，用户可以通过 Weaver 与生态系统应用进行交互。
+Weaver 是 IBAX区块链平台 的唯一客户端，Weaver 为所有用户和生态系统角色提供功能。应用程序开发人员可以在 Weaver 中开发和测试应用程序，生态系统管理员使用 Weaver 来管理生态系统，用户可以通过 Weaver 与生态系统应用进行交互。
 
-在本教程中，你将在 Weaver 中编写合约代码、页面模版代码和执行其他所有操作。
-Weaver 还提供一种恢复、保存和执行合约代码，管理数据结构（数据表），分配访问权限和创建应用程序的方法。
+在本教程中，你将在 Weaver 中编写智能合约代码、页面模版代码和执行其他所有操作。Weaver 还提供一种恢复、保存和执行智能合约代码，管理数据结构（数据表），分配访问权限和创建应用程序的方法。
 
 每个节点都有自己的 Weaver 实例。
 
-## 第2部分：合约 {#part-2-contract}
+## 第2部分：智能合约 {#part-2-contract}
 
 您的第一个简单的应用程序为"Hello，World！"。
 
@@ -69,9 +68,7 @@ Weaver 还提供一种恢复、保存和执行合约代码，管理数据结构�
 ```
 ### 创始人账户 {#creator-account}
 
-具有 *Developer* 角色的帐户可以使用生态系统的"root"特权。默认情况下，该角色可以访问所有操作。
-在新的生态系统中，创始人帐户被分配给*Developer*角色。
-您必须使用这个帐户来引入生态系统的重大更改，比如创建新的应用程序和数据表。
+具有 *Developer* 角色的帐户可以使用生态系统的"root"特权。默认情况下，该角色可以访问所有操作。在新的生态系统中，创始人帐户被分配给*Developer*角色。您必须使用这个帐户来引入生态系统的重大更改，比如创建新的应用程序和数据表。
 
 使用创始人的帐户登录生态系统。
 
@@ -132,23 +129,23 @@ Weaver 还提供一种恢复、保存和执行合约代码，管理数据结构�
 >     > 作为选项，您可以限定读写权限给创始人帐户，在这种情况下，
       请在该字段中指定为`ContractConditions("MainCondition")`。
 
-### 新合约 {#new-contract}
+### 新智能合约 {#new-contract}
 
-#### 合约代码部分 {#contract-code}
+#### 智能合约代码部分 {#contract-code}
 
-每个合约都有三个部分，更多请参阅：[合约结构](../topics/script.md#contract-structure) 。
+每个智能合约都有三个部分，更多请参阅：[智能合约结构](../topics/script.md#contract-structure) 。
 
-#### 创建合约 {#create-a-contract}
+#### 创建智能合约 {#create-a-contract}
 
-1.  在 **Developer** 选项卡选择 **应用程序** > **APP** > *合约*；
+1.  在 **Developer** 选项卡选择 **应用程序** > **APP** > *智能合约*；
 
-    > 这将显示所选应用程序的所有合约。新应用程序该列表将为空。
+    > 这将显示所选应用程序的所有智能合约。新应用程序该列表将为空。
 
 2.  单击 *创建*；
 
-    > 将在编辑器中打开一个新的合约模版。
+    > 将在编辑器中打开一个新的智能合约模版。
 
-空合约模版如下所示：
+空智能合约模版如下所示：
 
 ``` js
 contract ... {
@@ -164,12 +161,13 @@ contract ... {
 }
 ```
 
-#### 合约名称 {#contract-name}
+#### 智能合约名称 {#contract-name}
 
-首先，给合约命名。
+首先，给智能合约命名。
 
 ``` js
 contract AppContract {
+}
 ```
 
 #### 数据部分 {#data}
@@ -186,7 +184,7 @@ data {
 
 #### 条件部分 {#conditions}
 
-填写 `conditions` 部分。简单的验证条件是指定的字符串不能为空，如果 `Message` 长度为 `0`，则合约将在执行时生成带有已定义的消息警告。
+填写 `conditions` 部分。简单的验证条件是指定的字符串不能为空，如果 `Message` 长度为 `0`，则智能合约将在执行时生成带有已定义的消息警告。
 
 ``` js
 conditions {
@@ -207,11 +205,11 @@ action {
 }
 ```
 
-#### 完整合约代码 {#full-contract-code}
+#### 完整智能合约代码 {#full-contract-code}
 
-以下部分是完整合约的代码。
+以下部分是完整智能合约的代码。
 
-IBAX区块链平台 的所有合约都像这样构建，包含 `data`、`conditions` 和 `action` 部分。
+IBAX区块链平台 的所有智能合约都像这样构建，包含 `data`、`conditions` 和 `action` 部分。
 
 ``` js
 contract AppContract {
@@ -232,19 +230,19 @@ contract AppContract {
 
 #### 保存并执行 {#save-and-run}
 
-合约准备进行测试：
+智能合约准备进行测试：
 
 > 1.  在编辑器菜单中，单击 **保存**；
 >
->     > 这样就会更改合约代码，更改的版本可供所有网络节点使用。
+>     > 这样就会更改智能合约代码，更改的版本可供所有网络节点使用。
 >
 > 2.  在编辑器菜单中，单击 **执行**；
 >
->     > 这将显示 **执行合约** 页面。
+>     > 这将显示 **执行智能合约** 页面。
 >
-> 3.  在 **执行合约** 页面。填写合约的输入参数；
+> 3.  在 **执行智能合约** 页面。填写智能合约的输入参数；
 >
->     > 该合约有一个参数 `Message`，所以在 **键** 指定 `Message`，在 **值** 指定 `Hello, World`。
+>     > 该智能合约有一个参数 `Message`，所以在 **键** 指定 `Message`，在 **值** 指定 `Hello, World`。
 >     >
 >     > ![image](/app-tut-execute.png)
 >
@@ -263,7 +261,7 @@ contract AppContract {
 
 ## 第3部分：页面 {#part-3-page}
 
-在合约生效之后，是时候把它扩展成更有用的东西了。在这部分中，您将实现UI和其他功能。
+在智能合约生效之后，是时候把它扩展成更有用的东西了。在这部分中，您将实现UI和其他功能。
 
 
 ````
@@ -284,15 +282,15 @@ contract AppContract {
 
 -   `timestamp` 字段，类型 `Date/Time`，**更改** 设置为 `true`。
 
-### 更改合约 {#update-the-contract}
+### 更改智能合约 {#update-the-contract}
 
-更改合约代码来处理作者ID和时间戳。
+更改智能合约代码来处理作者ID和时间戳。
 
-作者ID是生态系统帐户ID。时间戳是以Unix时间格式执行合约的日期和时间。
+作者ID是生态系统帐户ID。时间戳是以Unix时间格式执行智能合约的日期和时间。
 
 这两个值都由 [预定义变量](../topics/script.md#variable) 提供。所以无需输入或验证预定义变量，因此仅在操作部分中进行更改。
 
-更改合约，以便在添加消息时将作者的ID和时间戳写入数据表中。作者的ID由 `$key_id` 定义，时间戳由定义 `$time`。
+更改智能合约，以便在添加消息时将作者的ID和时间戳写入数据表中。作者的ID由 `$key_id` 定义，时间戳由定义 `$time`。
 
 ``` js
 action {
@@ -346,9 +344,7 @@ IBAX区块链平台 的用户页面用 [模版语言](../topics/templates2.md) �
 
 1. 想要请求表中数据，使用 [DBFind](../topics/script.md#dbfind) 函数；
 
-    > 以下示例中该函数调用从 `apptable` 表中获取数据，并将其放入
-    `src_table` 源中。并按时间戳字段对其进行排序。该 `src_table`
-    源稍后用作页面上表视图的数据源。
+    > 以下示例中该函数调用从 `apptable` 表中获取数据，并将其放入`src_table` 源中。并按时间戳字段对其进行排序。该 `src_table` 源稍后用作页面上表视图的数据源。
     >
     > ``` js
     > DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp)
@@ -389,7 +385,7 @@ Div(Class: panel panel-primary) {
 
 ## 第4部分：应用程序 {#part-4-application}
 
-在前面的部分中，您创建了一个合约，一个用于存储数据的表，以及一个用于显示该数据的基本UI页面。
+在前面的部分中，您创建了一个智能合约，一个用于存储数据的表，以及一个用于显示该数据的基本UI页面。
 
 在该部分中，您将确定最终的应用程序，因此它的外观和操作类似于实际应用程序。
 
@@ -442,24 +438,21 @@ Div(Class: panel panel-primary) {
 
 ### 发送消息 {#send-a-message}
 
-Logicor 中的按钮可以执行合约和打开页面，具体取决于参数。
-[Button](../topics/templates2.md#button) 函数有合约的两个参数：
+Logicor 中的按钮可以执行智能合约和打开页面，具体取决于参数。[Button](../topics/templates2.md#button) 函数有智能合约的两个参数：
 
 -   `Contract`
 
-    > 激活的合约名称。
+    > 激活的智能合约名称。
 
 -   `Params`
 
-    > 合约的输入参数。
+    > 智能合约的输入参数。
 
 #### 表单 {#form}
 
-要将数据发送到合约，请将表单添加到应用程序页面。该表单必须具有消息的输入字段，以及将激活AppContract合约的按钮。
+要将数据发送到智能合约，请将表单添加到应用程序页面。该表单必须具有消息的输入字段，以及将激活AppContract合约的按钮。
 
-以下是该类表格的示例。它嵌套在自己的 [Div](../topics/templates2.md#div) 中。
-将它放在包含表单视图的Div元素之后，该表单定义了 [Input](../topics/templates2.md#input) 字段有一个已定义的名称 `message_input`。
-按钮使用这个名称向合约发送 `Message` 参数值。最后，[Val](../topics/templates2.md#val) 函数用于获取输入字段的值。
+以下是该类表格的示例。它嵌套在自己的 [Div](../topics/templates2.md#div) 中。将它放在包含表单视图的Div元素之后，该表单定义了 [Input](../topics/templates2.md#input) 字段有一个已定义的名称 `message_input`。按钮使用这个名称向合约发送 `Message` 参数值。最后，[Val](../topics/templates2.md#val) 函数用于获取输入字段的值。
 
 ```text
 Div(Class: panel panel-primary) {
@@ -470,7 +463,7 @@ Div(Class: panel panel-primary) {
 }
 ```
 
-您可能会注意到通过发送消息测试该新功能时，表单不会刷新。这将在 [页面刷新](#page-refresh) 介绍。
+您可能会注意到通过发送消息测试该新功能时，表单不会刷新。这将在 [页面刷新](#page-refreshing) 介绍。
 
 ### 表格导航 {#form-navigation}
 
@@ -480,8 +473,7 @@ Div(Class: panel panel-primary) {
 
 该导航将使用两个按钮。每个按钮都会重新加载应用程序的页面并将参数传递给它。
 
-> -   *Previous*
->     按钮将显示前25个条目。如果没有其他条目，则不会显示该按钮；
+> -   *Previous* 按钮将显示前25个条目。如果没有其他条目，则不会显示该按钮；
 > -   *Next* 按钮将显示下25个条目。如果没有其他条目，则不会显示该按钮。
 
 #### 变量 {#variables}
@@ -611,5 +603,4 @@ Div(Class: panel panel-primary) {
 
 ## 结论 {#conclusions}
 
-本教程将介绍生态系统的基本应用程序。它没有为应用程序开发者解析其他重要的主题，
-比如布局样式、管理访问权限以及应用程序和资源之间的交互。有关这些高级主题的更多信息，请参阅其他文档。
+本教程将介绍生态系统的基本应用程序。它没有为应用程序开发者解析其他重要的主题，比如布局样式、管理访问权限以及应用程序和资源之间的交互。有关这些高级主题的更多信息，请参阅其他文档。

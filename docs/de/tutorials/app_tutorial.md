@@ -23,6 +23,7 @@ In diesem Abschnitt zeigen wir Ihnen, wie Sie eine einfache Anwendung im IBAX-Ne
        - [Designer-Ansichten](#designer-views)
        - [Entwickleransicht](#developer-view)
        - [Daten aus der Datenbanktabelle holen](#fetch-data-from-the-database-table)
+       - [Ganzseitiger Code](#full-page-code-1)
        - [Seite speichern](#save-the-page)
   - [Teil 4: Bewerbung](#part-4-application)
      - [Menü](#menu)
@@ -37,6 +38,7 @@ In diesem Abschnitt zeigen wir Ihnen, wie Sie eine einfache Anwendung im IBAX-Ne
        - [Tabellenoffset](#table-offset)
        - [Schaltflächencode](#button-code)
        - [Seitenaktualisierung](#page-refreshing)
+     - [Vollständiger Seitencode](#full-page-code-2)
    - [Schlussfolgerungen](#conclusions)
 
 ## Das Ziel {#the-goal}

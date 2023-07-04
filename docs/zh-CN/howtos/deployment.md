@@ -175,8 +175,7 @@ sudo mkdir /opt/backenddir
 sudo chown user /opt/backenddir/
 ```
 
-3) 为Centrifugo、go-ibax 和节点数据创建子目录。所有节点数据都存储在名为`nodeX` 的目录中， 
-   其中 `X` 为节点号。根据要部署的节点，`node1`为节点1，`node2` 为节点2，以此类推。
+3) 为Centrifugo、go-ibax 和节点数据创建子目录。所有节点数据都存储在名为`nodeX` 的目录中，其中 `X` 为节点号。根据要部署的节点，`node1`为节点1，`node2` 为节点2，以此类推。
 
 ``` bash
 mkdir /opt/backenddir/go-ibax \
@@ -186,8 +185,7 @@ mkdir /opt/backenddir/centrifugo \
 
 ### 创建数据库 {#create-a-database}
 
-1) 将用户密码postgres更改为默认密码*123456*。您可以设置自己的密码，
-   但必须在节点配置文件 *config.toml*中进行更改。
+1) 将用户密码postgres更改为默认密码*123456*。您可以设置自己的密码，但必须在节点配置文件 *config.toml*中进行更改。
 
 ``` bash
 sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '123456'"
@@ -207,14 +205,12 @@ sudo -u postgres psql -c "CREATE DATABASE chaindb"
 echo '{"secret":"CENT_SECRET"}' > /opt/backenddir/centrifugo/config.json
 ```
 
-您可以设置自己的 *secret*，但是您还必须在节点配置文件 *config.toml*
-中更改它。
+您可以设置自己的 *secret*，但是您还必须在节点配置文件 *config.toml* 中更改它。
 
 ### 安装 go-ibax {#install-go-ibax}
 
 1) 从GitHub下载 <https://github.com/ibax-io/go-ibax>：
-2) 将 go-ibax 二进制文件复制到 `/opt/backenddir/go-ibax`目录。
-   如果您使用的是[默认的Go工作区](https://golang.org/doc/code.html#Workspaces) 则二进制文件位于 `$HOME/go/bin` 目录：
+2) 将 go-ibax 二进制文件复制到 `/opt/backenddir/go-ibax`目录。如果您使用的是[默认的Go工作区](https://golang.org/doc/code.html#Workspaces) 则二进制文件位于 `$HOME/go/bin` 目录：
 
 ``` bash
 cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
@@ -245,8 +241,7 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
 5)  生成第一个区块：
 
 ````text
-如果您要创建自己的区块链网络。你必须使用该 `--test=true`
-选项。否则您将无法创建新帐户。
+如果您要创建自己的区块链网络。你必须使用该 `--test=true` 选项。否则您将无法创建新帐户。
 ````
 
 ``` bash
@@ -416,8 +411,7 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
 
 ## 前端部署 {#front-end-deployment}
 
-只有在Debian 9(Stretch)64位
-[官方发行版](https://www.debian.org/CD/http-ftp/#stable) 上安装 **GNOMEGUI**，Govis客户端才能由 `yarn` 包管理器构建。
+只有在Debian 9(Stretch)64位[官方发行版](https://www.debian.org/CD/http-ftp/#stable) 上安装 **GNOMEGUI**，Govis客户端才能由 `yarn` 包管理器构建。
 
 ### 软件先决条件 {#software-prerequisites}
 
@@ -508,8 +502,7 @@ cd/opt/backenddir/ibax-front \
 yarn release --publish never -l
 ```
 
-构建之后，您的应用程序就可以使用了，但是其[连接配置](#add-the-configuration-file-for-the-blockchain-network) 将无法更改。
-如果这些设置需要更改，则必须构建新版本的应用程序。
+构建之后，您的应用程序就可以使用了，但是其[连接配置](#add-the-configuration-file-for-the-blockchain-network) 将无法更改。如果这些设置需要更改，则必须构建新版本的应用程序。
 
 ### 构建 Weaver Web应用程序 {#build-weaver-web-application}
 
@@ -520,9 +513,7 @@ cd/opt/backenddir/ibax-front/ \
 && yarn build
 ```
 
-构建之后，可再发行文件将放置到 *build*目录中。您可以使用您选择的任何Web服务器进行部署，
-*settings.json*文件也必须放在该目录。请注意，如果连接设置发生更改，则无需再次构建应用程序。
-而是编辑*settings.json* 文件并重新启动Web服务器。
+构建之后，可再发行文件将放置到 *build*目录中。您可以使用您选择的任何Web服务器进行部署，*settings.json*文件也必须放在该目录。请注意，如果连接设置发生更改，则无需再次构建应用程序。而是编辑*settings.json* 文件并重新启动Web服务器。
 
 2)  出于开发或测试目的，您可以构建Yarn的Web服务器：
 
@@ -546,9 +537,9 @@ sudo yarn global add serve \
     - 节点所有者私钥的备份加载位于`/opt/backenddir/node1/PrivateKey` 文件中。
 
     ```text
-    该目录中有两个私钥文件。`PrivateKey`
-    文件用于节点所有者的帐户，可创建节点所有者的帐户。`NodePrivateKey`
-    文件是节点本身的私钥，必须保密。
+    该目录中有两个私钥文件:
+   `PrivateKey` 文件用于节点所有者的帐户，可创建节点所有者的帐户。
+   `NodePrivateKey` 文件是节点本身的私钥，必须保密。
      ```
 
 3) 登录该账户后，由于此时尚未创建角色，因此请选择 *Without role* 选项。
@@ -597,8 +588,7 @@ cd/opt/backenddir \
 
 ### 将成员添加到共识角色 {#add-members-into-the-consensus-role-group}
 
-默认情况下，只有共识角色（Consensus）的成员才能参与添加其他 荣誉节点所需的投票。
-这意味着在添加新的 荣誉节点之前，必须为该角色指定生态系统的成员。
+默认情况下，只有共识角色（Consensus）的成员才能参与添加其他 荣誉节点所需的投票。这意味着在添加新的 荣誉节点之前，必须为该角色指定生态系统的成员。
 
 在本章节中，创始人的帐户被指定为共识角色的唯一成员。在生产环境中，必须将该角色分配给平台执行治理的成员。
 

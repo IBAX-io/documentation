@@ -1,5 +1,7 @@
 # Deployment of A IBAX Network {#deployment-of-a-ibax-network}
+
 In this section, we will show you how to deploy your own blockchain network.
+
 ## An deployment example {#an-deployment-example}
 
 A blockchain network will be deployed with the following three nodes as an example.
@@ -11,11 +13,13 @@ Three network nodes:
   * Node 3 is a guardian node, which cannot generate new blocks, but can send transactions from clients connected to it.
 
 Configurations of the three nodes to be deployed:
+
 * Each node uses its own PostgreSQL database system instance;
 * Each node uses its own Centrifugo service instance;
 * The server side github-backend is deployed on the same host as other backend components.
 
 The sample addresses and ports used by the nodes are described in the following table:
+
 
 | Node |       Component       |    IP & port     |
 | :--: | :-------------------: | :--------------: |

@@ -74,7 +74,7 @@ Example:
 ````
 
 #### AccountOrKeyId {#accountorkeyid}
-账户地址参数,可以使用两种格式的地址,例
+账户地址参数,可以使用两种格式的地址,例:
 1. - *String* - 账户地址 `"XXXX-XXXX-XXXX-XXXX-XXXX"` 或 账户Id `"64842...538120"`
 
 2. - *Object* - 地址对象
@@ -84,7 +84,7 @@ Example:
     **账户地址和账户Id同时存在时优先使用账户Id**.
 
 #### BlockOrHash {#blockorhash}
-区块高度或区块HASH，例
+区块高度或区块HASH，例:
 
 1. - *String* - 区块高度 `"100"` 或 区块HASH `"4663aa47...a60753c18d9ba9cb4"`
 
@@ -305,9 +305,7 @@ Example:
 ### **ibax.login** {#ibax-login}
 用户身份验证。[Authorization](#authorization)
 
-应首先调用 [**ibax.getUid**](#ibax-getuid) 命令，以便接收唯一值并对其进行签名。
-getuid的临时JWT令牌需要放在请求头中传递。
-如果请求成功，则响应中收到的令牌包含在 [**Authorization**](#authorization) 中。
+应首先调用 [**ibax.getUid**](#ibax-getuid) 命令，以便接收唯一值并对其进行签名。getuid的临时JWT令牌需要放在请求头中传递。如果请求成功，则响应中收到的令牌包含在 [**Authorization**](#authorization) 中。
 
 **参数**
 
@@ -498,8 +496,7 @@ getuid的临时JWT令牌需要放在请求头中传递。
 
     - **params** - *Object* - 合约参数,合约字段可通过 [ibax.getContractInfo](#ibax-getcontractinfo) 查询。
 
-    - **key_id** - *Number* -
-        对于第一个区块，是签署该交易的第一个区块的账户地址。
+    - **key_id** - *Number* - 对于第一个区块，是签署该交易的第一个区块的账户地址。
 
         对于所有其他区块，是签署该交易的账户地址。
 
@@ -553,10 +550,10 @@ getuid的临时JWT令牌需要放在请求头中传递。
         - **block_id** - *Number* - 区块高度。
         - **time** - *Number* - 区块生成时间戳。
         - **key_id** - *Number* - 签署该区块的账户地址。
-        - **node_position** - *Number* - 在 荣誉节点 列表中生成区块的节点的位置。
+        - **node_position** - *Number* - 在荣誉节点列表中生成区块的节点的位置。
         - **version** - *Number* - 区块结构版本。
     - **hash** - *[Hex](#hex) String* - 区块哈希。
-    - **node_position** - *Number* - 在 荣誉节点 列表中生成区块的节点的位置。
+    - **node_position** - *Number* - 在荣誉节点列表中生成区块的节点的位置。
     - **key_id** - *Number* - 签署该区块的账户地址。
     - **time** - *Number* - 区块生成时间戳。
     - **tx_count** - *Number* - 该区块内的交易数。
@@ -713,11 +710,11 @@ getuid的临时JWT令牌需要放在请求头中传递。
     - **block_id** - *Number* - 区块高度。
     - **time** - *Number* - 区块生成时间戳。
     - **key_id** - *Number* - 签署该区块的账户地址。
-    - **node_position** - *Number* - 在 荣誉节点 列表中生成区块的节点的位置。
+    - **node_position** - *Number* - 在荣誉节点列表中生成区块的节点的位置。
     - **version** - *Number* - 区块结构版本。
 
 - **hash** - *[Hex](#hex) String* - 区块哈希。
-- **node_position** - *Number* - 在 荣誉节点 列表中生成区块的节点的位置。
+- **node_position** - *Number* - 在荣誉节点列表中生成区块的节点的位置。
 - **key_id** - *Number* - 签署该区块的账户地址。
 - **time** - *Number* - 区块生成时间戳。
 - **tx_count** - *Number* - 该区块内的交易数。
@@ -1321,8 +1318,7 @@ getuid的临时JWT令牌需要放在请求头中传递。
 ### **ibax.getSections** {#ibax-getsections}
 返回当前生态系统的 选项卡表条目的列表，可以设置偏移量和条目条数。
 
-如果 *role_access*字段包含角色列表，并且不包括当前角色，则不会返回记录。
-*title*字段内数据将被请求头的 *Accept-Language* 语言资源替换。
+如果 *role_access*字段包含角色列表，并且不包括当前角色，则不会返回记录。*title*字段内数据将被请求头的 *Accept-Language* 语言资源替换。
 
 [Authorization](#authorization)
 
@@ -1433,8 +1429,7 @@ getuid的临时JWT令牌需要放在请求头中传递。
 **参数**
 - **names** - *String* [Omitempty](#omitempty) - 请求参数列表，用逗号分隔。
 
-    例如 `names="name1,name2"`。
-    当有筛选参数时,*offset* 与 *limit* 参数无效。
+    例如 `names="name1,name2"`。当有筛选参数时,*offset* 与 *limit* 参数无效。
 
 - **offset** - *Number* - [Omitempty](#omitempty) 偏移量，默认为0。
 
@@ -1646,6 +1641,8 @@ getuid的临时JWT令牌需要放在请求头中传递。
 **示例**
 ```text
     //Request
+    curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {$Token}}" -d '{"jsonrpc":"2.0","method":"ibax.getAppContent","id":1,"params":[1]}' http://127.0.0.1:7079
+    
     //Response
     {
         "jsonrpc": "2.0",
@@ -1935,9 +1932,7 @@ getuid的临时JWT令牌需要放在请求头中传递。
 - **contractinfo** - *Bool* [Omitempty](#omitempty) - 合约详细参数标识，获取该交易相关的合约详情,默认为`false`。
 
 **返回值**
-- **blockid** - *Number* - 包含该交易的区块ID。
-    如果该值为 `0`，则找不到该哈希的交易。
-    如果交易发生在当前节点上，可通过[ibax.txStatus](#ibax-txstatus)获取。
+- **blockid** - *Number* - 包含该交易的区块ID。如果该值为 `0`，则找不到该哈希的交易。如果交易发生在当前节点上，可通过[ibax.txStatus](#ibax-txstatus)获取。
 
 - **confirm** - *Number* - 该区块 *blockid* 的节点确认数。
 
@@ -2141,8 +2136,7 @@ getuid的临时JWT令牌需要放在请求头中传递。
 
 **参数**
 -   **name** - *String* -
-    > 带生态系统ID的菜单名称，格式为 `@ecosystem_id%%menu_name%`，例如 `@1main_menu`。
-    > 如果不带生态系统ID，则默认查找当前生态的菜单，例如 `main_menu`
+    > 带生态系统ID的菜单名称，格式为 `@ecosystem_id%%menu_name%`，例如 `@1main_menu`。如果不带生态系统ID，则默认查找当前生态的菜单，例如 `main_menu`
 
 **返回值**
 
@@ -2185,8 +2179,7 @@ getuid的临时JWT令牌需要放在请求头中传递。
 
 **参数**
 -   **name** - *String* -
-    带生态系统ID的页面名称，格式为 `@ecosystem_id%%page_name%`，例如 `@1main_page`。
-    如果不带生态系统ID，则默认查找当前生态的页面例如 `main_page`。
+    带生态系统ID的页面名称，格式为 `@ecosystem_id%%page_name%`，例如 `@1main_page`。如果不带生态系统ID，则默认查找当前生态的页面例如 `main_page`。
     
 **返回值**
 -   **tree** - *Array* - 页面的JSON对象树。
@@ -2278,8 +2271,7 @@ getuid的临时JWT令牌需要放在请求头中传递。
 ### **ibax.getPageHash** {#ibax-getpagehash}
 返回指定页面名称的SHA256哈希，如果找不到页面，则返回404错误。
 
-要向其他节点发出请求时接收正确的哈希，还必须传递 *ecosystem,key_id,role_id*参数。
-要从其他生态系统接收页面，生态系统ID必须在页面名称中添加前缀。例如：`@2mypage`。
+要向其他节点发出请求时接收正确的哈希，还必须传递 *ecosystem,key_id,role_id*参数。要从其他生态系统接收页面，生态系统ID必须在页面名称中添加前缀。例如：`@2mypage`。
 
 **参数**
 - **name** - *String* - 带生态系统ID的页面名称。格式为 `@ecosystem_id%%page_name%`，例如 `@1main_page`,可指定生态ID
@@ -2311,8 +2303,7 @@ getuid的临时JWT令牌需要放在请求头中传递。
 
 
 ### **ibax.getContent** {#ibax-getcontent}
-从 **template** 参数返回页面代码的JSON对象数，如果将可选参数。
-**source** 指定为 `true`，则该JSON对象树不执行任何函数和接收数据。该JSON对象树可以在可视化页面设计器中使用。
+从 **template** 参数返回页面代码的JSON对象数，如果将可选参数。**source** 指定为 `true`，则该JSON对象树不执行任何函数和接收数据。该JSON对象树可以在可视化页面设计器中使用。
 
 **参数**
 - *Object*
@@ -2364,7 +2355,7 @@ getuid的临时JWT令牌需要放在请求头中传递。
 
 - **rollbacks_hash** - *String* - 区块回滚哈希值。
 
-- **node_position** - *Number* - 该区块在 荣誉节点 列表的位置。
+- **node_position** - *Number* - 该区块在荣誉节点列表的位置。
 
 - **consensus_mode** *Number* - 共识模式，参数（1: 创建者管理模式 2:DAO治理模式）
 
@@ -2582,8 +2573,10 @@ getuid的临时JWT令牌需要放在请求头中传递。
 无
 
 **返回值**
-**node_position** - *Number* - 节点下标。
-**status** - *Bool* - 禁用状态，`true`禁令状态，`false`未禁用。
+
+- **node_position** - *Number* - 节点下标。
+
+- **status** - *Bool* - 禁用状态，`true`禁令状态，`false`未禁用。
 
 **示例**
 ```text
@@ -2611,7 +2604,9 @@ getuid的临时JWT令牌需要放在请求头中传递。
 无
 
 **返回值**
+
 - **alloc** - *Number* - 已申请且仍在使用的字节数。
+
 - **sys** - *Number* - 从系统中获取的字节数。
 
 **示例**

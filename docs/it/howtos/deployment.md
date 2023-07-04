@@ -270,7 +270,7 @@ To start the first node server, you must start the following two services:
 * centrifugo
 * go-ibax
 
-If you failed to create [services](#https://wiki.debian.org/systemd/Services) with these files, you may execute binary files from directories in different consoles.
+If you failed to create [services](https://wiki.debian.org/systemd/Services) with these files, you may execute binary files from directories in different consoles.
 
 1. Run centrifugo:
 

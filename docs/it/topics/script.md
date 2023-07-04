@@ -459,11 +459,11 @@ In addition to conditional statements, Needle also supports standard arithmetic 
 
 Variables of string and bytes types can be used as a conditional statement. If the length of the type is greater than zero, the condition is true, otherwise it is false.
 
-## Functions {#functions}
+### Functions {#functions}
 
 Functions can perform some operations on the data received by the [data section](#data-section) of a contract: read and write data from the database, convert the type of value, and establish the interaction between contracts.
 
-### Function declaration {#function-declaration}
+#### Function declaration {#function-declaration}
 
 Use the func keyword to declare a function, followed by the name and the list of parameters passed to it and their types. All parameters are enclosed in parentheses and separated by commas. After the parentheses, the data type of the value returned by the function must be declared. The function body must be enclosed in braces. If the function has no parameters, the braces can be omitted. To return a value from a function, use the `return` keyword.
 
@@ -481,7 +481,7 @@ func ooops {
 
 Function do not return errors, because all error checks are performed automatically. If there is an error in any function, the contract will terminate its operation and present the error description in a window.
 
-### Variable-length parameters {#variable-length-parameters}
+#### Variable-length parameters {#variable-length-parameters}
 
 Functions can define variable-length parameters, use the `...` symbol as the last parameter type of the function to indicate variable-length parameters, with a data type of `array`. Variable-length parameters include all variables from the time the parameter is passed in the call. All types of variables can be passed, but you need to deal with conflicts of mismatching of data types.
 
@@ -508,7 +508,7 @@ func main() {
 
 
 
-### Optional parameters {#optional-parameters}
+#### Optional parameters {#optional-parameters}
 
 A function has many parameters, but we only need some of them when calling it. In this case, you can declare optional parameters in the following way: `func myfunc(name string).Param1(param string).Param2(param2 int) {...}`, then you can call the specified parameters in any order: `myfunc("name").Param2(100)`.
 
@@ -619,7 +619,12 @@ Operations with date and time in SQL format:
 
 
 Operations with platform parameters:
+|           |          |              |
+| --------- | -------- | ------------ |
+| [SysParamString](#sysparamstring) | [SysParamInt](#sysparamint) | [DBUpdateSysParam](#dbupdatesysparam) |
+| [UpdateNotifications](#updatenotifications) | [UpdateRolesNotifications](#updaterolesnotifications) | |
 
+CLB mode function operation:
 |             |              |      |
 | ----------- | ------------ | ---- |
 | [HTTPRequest](#httprequest) | [HTTPPostJSON](#httppostjson) |      |

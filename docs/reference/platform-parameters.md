@@ -1,22 +1,28 @@
 # Platform Parameters {#platform-parameters}
+
 These are parameters to configure IBAX. They are applicable to the blockchain network and all ecosystems within it.
 
 ## Location to store platform parameters {#location-to-store-platform-parameters}
+
 Platform parameters are stored in the `system parameters` table.
 
 This table is located in the first (default) ecosystem created on the blockchain network.
 
 ## Change of platform parameters {#change-of-platform-parameters}
+
 Change of platform parameters can only be made through voting. You can only use the UpdateSysParam contract to change any platform parameter, which is managed by definitions in the legal system of the platform.
 
 ## Configure platform parameters {#configure-platform-parameters}
+
 ### Configure the blockchain network {#configure-the-blockchain-network}
 
 Nodes:
+
 * [honor_nodes](#honor-nodes)
 * [number of nodes](#number-of-nodes)
 
 Node bans:
+
 * [incorrect blocks per day](#incorrect-blocks-per-day)
 * [node ban time](#node-ban-time)
 * [node ban time local](#node-ban-time-local)
@@ -24,54 +30,67 @@ Node bans:
 ### Configure a new ecosystem {#configure-a-new-ecosystem}
 
 Default page and menu:
+
 * [default ecosystem page](#default-ecosystem-page)
 * [default ecosystem menu](#default-ecosystem-menu)
 
 Default contract: 
+
 * [default ecosystem contract](#default-ecosystem-contract)
 
 ### Configure the database {#configure-the-database}
 
 Table limits:
+
 * [max columns](#max-columns)
 * [max indexes](#max-indexes)
 
 ### Configure the generation of blocks {#configure-the-generation-of-blocks}
 Time limits:
+
 * [gap between blocks](#gap-between-blocks)
 * [max block generation time](#max-block-generation-time)
 
 Transaction limits:
+
 * [max tx block](#max-tx-block)
 * [max tx block per user](#max-tx-block-per-user)
 
 Size limits:
+
 * [max tx size](#max-tx-size)
 * [max block size](#max-block-size)
 * [max forsign size](#max-forsign-size)
 
 Fuel limits:
+
 * [max fuel block](#max-fuel-block)
 * [max fuel tx](#max-fuel-tx)
 
 Block rollback limits:
+
 * [rollback blocks](#rollback-blocks)
 
 ### Configure the fuel tokens {#configure-the-fuel-tokens}
+
 Rewards and commissions:
+
 * [block reward](#block-reward)
 * [commission wallet](#commission-wallet)
 * [commission size](#commission-size)
 
 Fuel rate conversion:
+
 * [fuel rate](#fuel-rate)
 * [price create rate](#price-create-rate)
 
 Transaction size and data price:
+
 * [price tx data](#price-tx-data)
 * [price tx size wallet](#price-tx-size-wallet)
 
 Price for new elements:
+
 * [price create ecosystem](#price-create-ecosystem)
 * [price create table](#price-create-table)
 * [price create column](#price-create-column)
@@ -167,21 +186,26 @@ Price for operations:
 
 <!-- /TOC -->
 
-### Depreciated {#depreciated}
+## Depreciated {#depreciated}
+
 Depreciated parameters:
+
 * [blockchain url](#blockchain-url)
 
 ## Details of platform parameters {#details-of-platform-parameters}
 
 ### block reward {#block-reward}
+
 The number of IBXC tokens granted to the honor node that generates the block.
 
 The account that receives the reward is specified in the [full nodes](#full-nodes) parameter.
 
 ### blockchain url {#blockchain-url}
+
 Depreciated. 
 
 ### commission size {#commission-size}
+
 Percentage of the commission.
 
 The amount of the commission is calculated as a percentage of the total cost of implement the contract. The unit of the commission token is IBXC.
@@ -189,22 +213,27 @@ The amount of the commission is calculated as a percentage of the total cost of 
 The commission will be transferred to the account address specified in the commission_wallet parameter.
 
 ### commission wallet {#commission-wallet}
+
 The account address to receive the commission.
 
 The amount of commission is specified by the commission_size parameter.
 
 ### default ecosystem contract {#default-ecosystem-contract}
+
 The source code of the default contract in the new ecosystem.
 
 This contract provides access to the ecosystem creator.
 
 ### default ecosystem menu {#default-ecosystem-menu}
+
 The source code of the default menu of the new ecosystem.
 
 ### default ecosystem page {#default-ecosystem-page}
+
 The source code of the default page of the new ecosystem.
 
 ### fuel rate {#fuel-rate}
+
 The exchange rates of different ecosystem tokens by fuel unit.
 
 The format of this parameter:
@@ -225,9 +254,11 @@ For example:
 One token of Ecosystem 1 is exchanged for 1,000,000,000,000 fuel units. One token of Ecosystem 2 is exchanged for 1,000 fuel units.
 
 ### price create rate {#price-create-rate}
+
 The fuel rate of a new element.
 
 ## honor nodes {#honor-nodes}
+
 The list of honor nodes of the blockchain network.
 
 The format of this parameter: 

@@ -13,45 +13,45 @@ features:
 - title: Respuesta de servicio real en segundos
 - title: Interacción de datos entre cadenas y sistemas
 - title: Una nueva red de infraestructura que integra cadenas públicas, de alianzas y privadas.
-- title: Un mecanismo de consenso personalizable
-- title: Separación de front-end y back-end para satisfacer diversas necesidades de cifrado
+- title: Mecanismo de consenso personalizable
+- title: Separación de los extremos frontal y posterior para satisfacer diversas necesidades de cifrado
 
-footer: © Copyright 2019 - 2023, IBAX Updated Date 20/06/2023 | Built with VuePress
+footer: © Copyright 2019 - 2023, IBAX Updated Date 07/04/2023 | Built with VuePress
 ---
 
 
-# IBAX Documentación
+# Documentación IBAX
 
 
 ## Concepto
 
-* [IBAX Overview](concepts/about-the-platform.md)
-* [The IBAX Network](concepts/blockchain-layers.md)
-* [Proof-of-Authority Consensus](concepts/consensus.md)
-* [Terms and Definitions](concepts/thesaurus.md)
-* [FAQ](concepts/faq.md)
+* [Descripción de la plataforma blockchain IBAX](concepts/about-the-platform.md)
+* [La plataforma de blockchain IBAX](concepts/blockchain-layers.md)
+* [Consenso de prueba de autoridad descentralizado](concepts/consensus.md)
+* [Terminología y definiciones](concepts/thesaurus.md)
+* [Preguntas frecuentes](concepts/faq.md)
 
 ## Tutorial
 
-* [Tutorial for application development](tutorials/app_tutorial.md)
-* [Development Tutorial](tutorials/tutorial.md)
+* [Tutorial de desarrollo de aplicaciones](tutorials/app_tutorial.md)
+* [Tutorial para desarrolladores de redes IBAX](tutorials/tutorial.md)
 
 ## Guía
 
-* [Smart Contracts](topics/script.md)
-* [Template Language](topics/templates2.md)
-* [Compiler and Virtual Machine](topics/vm.md)
-* [Daemon](topics/daemons.md)
+* [Contratos inteligentes](topics/script.md)
+* [Lenguaje de plantillas](topics/templates2.md)
+* [Compilador y máquina virtual](topics/vm.md)
+* [Demonio](topics/daemons.md)
 
-## Referencia
+## Referirse a
 
-* [RESTful API](reference/api2.md)
-* [Platform Parameters](reference/platform-parameters.md)
-* [Server Configuration File](reference/backend-config.md)
-* [Synchronized Monitoring Tool](reference/desync_monitor.md)
-* [JSON-RPC Application Programming Interface](reference/json-rpc.md)
+* [API RESTful v2](reference/api2.md)
+* [Parámetros de la plataforma](reference/platform-parameters.md)
+* [Archivo de configuración del servidor](reference/backend-config.md)
+* [Herramienta de monitoreo sincronizado](reference/desync_monitor.md)
+* [Interfaz de programación de aplicaciones JSON-RPC](reference/json-rpc.md)
 
-## Despliegue
+## Desplegar
 
-* [Deployment of A IBAX Network](howtos/deployment.md)
+* [Despliegue de la plataforma IBAX Blockchain y la red IBAX](howtos/deployment.md)
 

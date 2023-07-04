@@ -1,286 +1,293 @@
-# Daemon {#daemon}
+# Demonio {#daemon}
 
-In this section, we will describe how IBax nodes interact with each other from a technical perspective.
+En esta sección se describe cómo los nodos de la plataforma de blockchain IBAX interactúan entre sí desde un punto de vista técnico.
 
-## About the server daemon {#about-the-server-daemon}
-The server daemon needs to run on every network node, which executes various server functions and supports IBax's blockchain protocol. In the blockchain network, the daemon distributes blocks and transactions, generates new blocks, and verifies blocks and transactions received, and it can avoid the fork issue.
-### Honor node daemon {#honor-node-daemon}
-A honor node runs the following server daemons:
-* [BlockGenerator daemon](#blockgenerator-daemon)
+## Acerca del demonio del servidor {#about-the-server-daemon}
 
-    Generating new blocks.
+Debe ejecutarse en cada nodo de la red. El demonio del servidor ejecuta las diversas funciones del servidor y admite el protocolo de cadena de bloques de la plataforma de cadena de bloques IBAX.
 
-* [BlockCollection daemon](#blockcollection-daemon)
+El demonio distribuye bloques y transacciones en la red de la cadena de bloques, genera nuevos bloques y verifica los bloques y transacciones recibidos. El demonio puede prevenir problemas de bifurcación de la cadena de bloques.
 
-    Downloading new blocks from other nodes.
+### Nodo de Honor Demonio Protector {#honor-node-daemon}
 
-* [Confirmations daemon](#confirmations-daemon)
+El nodo de honor ejecuta los siguientes demonios de servidor:
 
-    Confirming that blocks on the node also exist on most other nodes.
+> -   [Demonio BlockGenerator.](#blockgenerator-daemon)
+>
+>     > Genera nuevos bloques.
+>
+> -   [Demonio BlockCollection](#blockcollection-daemon)
+>
+>     > Descarga nuevos bloques de otros nodos.
+>
+> -   [Demonio Disseminator](#confirmations-daemon)
+>
+>     > Confirma que los bloques existentes en el nodo también existen en la mayoría de los demás nodos.
+>
+> -   Demonio Disseminator
+>
+>     > Distribuye transacciones y bloques a otros nodos principales.
+>
+> -   Demonio QueueParserBlocks
+>
+>     > Procesa los bloques en la cola de bloques, que contiene bloques de otros nodos.
+>     >
+>     > La lógica de procesamiento de bloques es la misma que la del demonio BlockCollection.
+>
+> -   Demonio QueueParserTx
+>
+>     > Verifica las transacciones en la cola de transacciones.
+>
+> -   Demonio Scheduler
+>
+>     > Ejecuta contratos según lo programado.
 
-* [Disseminator daemon](#disseminator-daemon)
+### Guardian node, proceso guardián. {#guardian-node-daemon}
 
-    Distributing transactions and blocks to other honor nodes.
+Guardian Node ejecuta los siguientes procesos de servidor de demonio:
 
-* QueueParserBlocks daemon
+> -   [Demonio BlockCollection.](#blockcollection-daemon)
+> -   [Demonio Confirmations](#confirmations-daemon)
+> -   [Demonio Disseminator](#disseminator-daemon)
+> -   QueueParserTx
+> -   Scheduler
 
-    Blocks in the queue, which contains blocks from other nodes.
+## BlockCollection es un proceso de guardián. {#blockcollection-daemon}
 
-    Block processing logic is the same as [BlockCollection daemon](#blockcollection-daemon).
+El proceso de demonio de BlocksCollection es responsable de descargar bloques y sincronizar la cadena de bloques con otros nodos de la red.
 
-* QueueParserTx daemon
+### Sincronización de blockchain {#blockchain-synchronization}
 
-    Verifying the transactions in queue.
+El proceso de BlocksCollection Daemon sincroniza la cadena de bloques mediante la determinación de la altura máxima de bloque en la red de la cadena de bloques, solicitando nuevos bloques y resolviendo bifurcaciones en la cadena de bloques.
 
-* Scheduler daemon
+#### Actualización de verificación de blockchain. {#check-for-blockchain-updates}
 
-    Running contracts as scheduled.
+El proceso de vigilancia de BlocksCollection envía solicitudes del ID de bloque actual a todos los nodos honorables. 
 
-### Guardian node daemon {#guardian-node-daemon}
+Si el ID de bloque actual del nodo de este proceso es menor que el ID de bloque actual de cualquier nodo honorable, entonces se considera que el nodo de la red de la cadena de bloques está desactualizado.
 
-A guardian node runs the following server daemons:
+#### Descargar un nuevo bloque. {#download-new-blocks}
 
-* [BlockCollection daemon](#blockcollection-daemon)
-* [Confirmations daemon](#confirmations-daemon)
-* [Disseminator daemon](#disseminator-daemon)
-* QueueParserTx
-* Scheduler
+El nodo que devuelve la altura máxima del bloque actual se considera el nodo más reciente.
 
-## BlockCollection daemon {#blockcollection-daemon}
+El demonio descarga todos los bloques que aún no conoce.
 
-This daemon downloads blocks and synchronizes the blockchain with other network nodes.
+#### Para resolver el problema de bifurcación: {#solving-the-fork-issue}
 
-### Blockchain synchronization {#blockchain-synchronization}
+Si se detecta una bifurcación en la cadena de bloques, el proceso de vigilancia avanzará hacia atrás la bifurcación descargando todos los bloques hasta llegar al bloque padre común.
 
-This daemon synchronizes the blockchain by determining the maximum block height in the blockchain network, requesting new blocks, and solving the fork issue in the blockchain.
+Una vez encontrado el bloque padre común, se realizará un rollback en la cadena de bloques del nodo del proceso de vigilancia y se agregarán los bloques correctos a la cadena de bloques hasta llegar al bloque más reciente.
 
-#### Check for blockchain updates {#check-for-blockchain-updates}
+### Tabla de datos {#tables-1}
 
-This daemon sends requests from the current block ID to all honor nodes.
 
-If the current block ID of the node running the daemon is less than the current block ID of any honor node, the blockchain network node is considered out of date.
+El proceso de BlocksCollection utiliza las siguientes tablas de datos:
 
-#### Download new blocks {#download-new-blocks}
+> -   block_chain
+> -   transactions
+> -   transactions_status
+> -   info_block
 
-The node that returns the largest current block height is considered the latest node.
-The daemon downloads all unknown blocks.
+### Solicitud {#request-1}
 
-#### Solving the fork issue {#solving-the-fork-issue}
+El programa BlockCollection envía la siguiente solicitud a otros programas de guardia:
 
-If a fork is detected in the blockchain, the daemon moves the fork backward by downloading all blocks to a common parent block.
-When found the common parent block, a blockchain rollback is performed on the node running the daemon, and the correct block is added to the blockchain until the latest one is included.
+> -   [Type 10](#type-10) apunta al ID de bloque más grande en todos los nodos de **nodos de honor**.
+> -   [Type 7](#type-7) se refiere a los datos que apuntan al ID del bloque más grande.
 
-### Tables {#tables-1}
+## Demonio de BlockGenerator. {#blockgenerator-daemon}
 
-The BlocksCollection daemon uses the following tables:
+El proceso de BlockGenerator genera nuevos bloques en segundo plano.
 
-* block_chain
-* transactions
-* transactions_status
-* info_block
+### Autenticación previa {#pre-verification}
 
-### Request {#request-1}
+El proceso de BlockGenerator Daemon planifica la generación de nuevos bloques analizando el último bloque de la cadena de bloques.
 
-The BlockCollection daemon sends the following requests to other daemons:
+Se pueden generar nuevos bloques si se cumplen las siguientes condiciones:
 
-* [Type 10](#type-10) points to the largest block ID among all honor nodes.
-* [Type 7](#type-7) points to the data with the largest block ID.
+> - El nodo que genera el último bloque se encuentra en la lista de nodos de Honor del nodo del proceso de BlockGenerator.
+> - El tiempo más corto transcurrido desde la generación del último bloque no validado.
 
-## BlockGenerator daemon {#blockgenerator-daemon}
+### Generación de bloques {#block-generation}
 
-The BlockGenerator daemon generates new blocks.
+Después de que el proceso de protección genere un nuevo bloque, el nuevo bloque contendrá todas las nuevas transacciones. Estas transacciones pueden ser recibidas desde otros nodos del [Demonio Disseminator](#disseminator-daemon), o pueden ser generadas por el nodo de este proceso de protección. Los bloques generados se guardan en la base de datos del nodo de este proceso.
 
-### Pre-verification {#pre-verification}
+### Tabla de datos {#tables-2}
 
-The BlockGenerator daemon analyzes the latest blocks in the blockchain to make new block generation plans. 
+El programa BlockGenerator utiliza la siguiente tabla:
 
-If the following conditions are met, a new block can be generated:
+> -   block_chain (saves new blocks)
+> -   transactions
+> -   transactions_status
+> -   info_block
 
-* The node that generated the latest block is in a node within the honor node list and runs the daemon.
-* The shortest time since the latest unverified block was generated.
+### Solicitud {#request-2}
 
-### Block generation {#block-generation}
+El proceso de BlockGenerator no envía ninguna solicitud a otros procesos de demonio.
 
-A new block generated by the daemon contains all new transactions, which can be received from the [Disseminator daemon](#disseminator-daemon) of other nodes or generated by the node running the daemon. The block generated is stored in the node database.
+## Demonio de Disseminator {#disseminator-daemon}
 
-### Tables {#tables-2}
+El proceso de Disseminator envía transacciones y bloques a todos los nodos Honor.
 
-The BlockGenerator daemon uses the following tables:
+### Nodo de guardia {#guardian-node}
 
-* block_chain (saves new blocks)
-* transactions
-* transactions_status
-* info_block
+Cuando se trabaja en un nodo guardián, el daemon envía las transacciones generadas por su nodo a todos los nodos de honor.
 
-### Request {#request-2}
+### Nodo de Honor {#honor-node}
 
-The BlockGenerator daemon does not make any request to other daemons.
+Cuando se trabaja en un nodo de honor, el proceso de guardián envía el hash de los bloques y transacciones generados a todos los nodos de honor.
 
-## Disseminator daemon {#disseminator-daemon}
+Luego, los nodos de honor responden a las solicitudes de transacciones desconocidas de su nodo. El proceso de guardián envía los datos completos de la transacción como respuesta.
 
-The Disseminator daemon sends transactions and blocks to all honor nodes.
+### Tabla de datos {#tables-3}
 
-### Guardian node {#guardian-node}
+El proceso de guardián Disseminator utiliza las siguientes tablas:
 
-When working on a guardian node, the daemon sends transactions generated by its node to all honor nodes.
+> -   transactions
 
-### Honor node {#honor-node}
+### Solicitud {#request-3}
 
-When working on a honor node, the daemon sends blocks generated and transaction hashes to all honor nodes.
+El proceso de guardián Disseminator envía la siguiente solicitud a otros procesos de guardián:
 
-Then, the honor node responds to transaction requests unknown to it. The daemon sends the complete transaction data as a response.
+> -   [Type 1](#type-1) Enviar transacciones y hash de bloques al nodo de honor.
+> -   [Type 2](#type-2) Receive transaction data from the node of honor.
 
-### Tables {#tables-3}
+## Demonio de confirmaciones {#confirmations-daemon}
 
-The Disseminator daemon uses the following tables:
+Confirmations es un proceso de vigilancia que verifica si todos los bloques de su nodo están presentes en la mayoría de los otros nodos.
 
-* transactions
+### Confirmación de bloqueo {#block-confirmation}
 
-### Request {#request-3}
+Cuando varios nodos en la red han confirmado un bloque, se considera confirmado.
 
-The Disseminator daemon sends the following requests to other daemons:
+El daemon comienza a confirmar todos los bloques uno por uno, comenzando desde el primer bloque no confirmado en la base de datos.
 
-* [Type 1](#type-1) Send transactions and block hashes to the honor node.
-* [Type 2](#type-2) Receive transaction data from the honor node.
+Cada bloque se confirma de la siguiente manera:
 
-## Confirmations daemon {#confirmations-daemon}
+> - Se envía una solicitud a todos los nodos honorables que contienen el ID del bloque que se está confirmando.
+> - Todos los nodos honorables responden con el hash del bloque.
+> - Si el valor hash de la respuesta coincide con el valor hash del bloque en el nodo del daemon, se incrementa el contador de confirmación. Si el hash no coincide, se incrementa el contador de no confirmación.
 
-The Confirmations daemon checks whether all the blocks in its node exist on most other nodes.
+### Tabla de datos {#tables-4}
 
-### Block confirmation {#block-confirmation}
+El proceso de confirmaciones del guardián utiliza la siguiente tabla de datos:
 
-A block confirmed by multiple node in the network is considered as a confirmed block.
+> -   confirmation
+> -   info_block
 
-The daemon confirms all blocks one by one starting from the first that is currently not confirmed in the database.
+### Solicitud {#request-4}
 
-Each block is confirmed in the way as follows:
+El demonio de Confirmaciones envía las siguientes solicitudes a otros demonios:
+> -   [Type 4](#type-4) Solicitar el hash del bloque al nodo de honor.
 
-* Sending a request containing the ID of the block being confirmed to all honor nodes.
-* All honor nodes respond to the block hash.
-* If the hash responded matches the hash of the block on the daemon node, the confirmation counter value is increased. If not, the cancellation counter value is increased.
+## Protocolo de servicio TCP {#tcp-service-protocol}
 
-### Tables {#tables-4}
+El protocolo de servicio TCP funciona en nodos de honor y nodos completos. Utiliza un protocolo binario sobre TCP para manejar solicitudes de los procesos de BlocksCollection, Disseminator y Confirmation.
 
-The Confirmations daemon uses the following tables:
+## Tipo de solicitud {#request-type}
 
-* confirmation
-* info_block
+Cada solicitud tiene un tipo definido por los primeros dos bytes de la solicitud.
 
-### Request {#request-4}
+### Tipo 1 {#type-1}
 
-The Confirmations daemon sends the following requests to other daemons:
+#### Solicitante de la solicitud {#request-sender-1}
 
-* [Type 4](#type-4) Request block hashes from the honor node.
+El [Demonio de Disseminator](#disseminator-daemon) envió esta solicitud.
 
-## TCP service protocol {#tcp-service-protocol}
+#### Solicitud de datos {#request-data-1}
 
-The TCP service protocol works on honor nodes and guardian nodes, which uses the binary protocol on TCP to requests from the BlocksCollection, Disseminator, and Confirmation daemons.
+Hash de transacciones y bloques.
 
-## Request type {#request-type}
+#### Procesamiento de solicitud {#request-processing-1}
 
-Each request has a type defined by the first two bytes of the request.
+El hash del bloque se agrega a la cola de bloques.
 
-## Type 1 {#type-1}
+Se verifica y analiza el hash de la transacción y se selecciona una transacción que aún no ha aparecido en el nodo.
 
-#### Request sender {#request-sender-1}
+#### Respuesta {#response-1}
 
-This request is sent by the [Disseminator daemon](#disseminator-daemon).
+No hay respuesta. Después de procesar esta solicitud, se enviará una solicitud [Tipo 2](#type-2).
 
-#### Request data {#request-data-1}
+### Tipo 2 {#type-2}
 
-Hashes of the transaction and block.
+#### Remitente de la solicitud {#request-sender-2}
 
-#### Request processing {#request-processing-1}
+El [Demonio de Disseminator](#disseminator-daemon) envía esta solicitud.
 
-The block hash is added to the block queue.
+#### Solicitud de datos {#request-data-2}
 
-Analyzes and verifies the transaction hashes, and select transactions that have not yet appeared on the node.
+Datos de transacción, incluyendo el tamaño de los datos:
 
-#### Response {#response-1}
+> -   *data_size* (4 bytes)
+>
+>     > El tamaño de los datos de la transacción, en bytes.
+>
+> -   *data* (data_size bytes)
+>
+>     > Los datos de la transacción.
 
-No. After processing the request, a [Type 2](#type-2) request is issued.
+#### Procesamiento de solicitud {#request-processing-2}
 
-## Type 2 {#type-2}
+Verifica la transacción y la agrega a la cola de transacciones.
 
-#### Request sender {#request-sender-2}
+#### Respuesta {#response-2}
 
-This request is sent by the [Disseminator daemon](#disseminator-daemon).
+Ninguna.
 
-#### Request data {#request-data-2}
+### Tipo 4 {#type-4}
 
-The transaction data, including the data size:
+#### Solicitante de solicitud {#request-sender-3}
 
-* data_size (4 bytes)
+El [Demonio de confirmaciones](#confirmations-daemon) envía esta solicitud.
 
-* Size of the transaction data, in bytes.
+#### Datos de solicitud {#request-data-3}
 
-* data (data_size bytes)
+ID del bloque.
 
-The transaction data.
+#### Respuesta {#response-3}
 
-#### Request processing {#request-processing-2}
+Hash del bloque.
 
-Verifies the transaction and add it to the transaction queue.
+Si no existe un bloque con ese ID, se devuelve `0`.
 
-#### Response {#response-2}
+### Tipo 7 {#type-7}
 
-No.
+#### Remitente de la solicitud {#request-sender-4}
 
-## Type 4 {#type-4}
+El [Demonio de BlockCollection](#blockcollection-daemon) envía esta solicitud.
 
-#### Request sender {#request-sender-3}
+#### Datos de la solicitud {#request-data-4}
 
-This request is sent by the [Confirmations daemon](#confirmations-daemon).
+ID del bloque.
 
-#### Request data {#request-data-3}
+> -   *block_id* (4 bytes)
 
-Block ID.
+#### Respuesta {#response-4}
 
-#### Response {#response-3}
+Datos del bloque, incluido el tamaño de los datos.
 
-Block hash.
+> -   *data_size* (4 bytes)
+>
+>     > Tamaño de los datos del bloque, en bytes.
+>
+> -   *data* (data_size bytes)
+>
+>     > Datos del bloque.
 
-Returns `0` if not having a block with this ID.
+Si no existe el bloque con ese ID, se cierra la conexión.
 
-## Type 7 {#type-7}
+### Type 10 {#type-10}
 
-#### Request sender {#request-sender-4}
+#### Remitente de la solicitud {#request-sender-5}
 
-This request is sent by the [BlockCollection daemon](#blockcollection-daemon).
+La solicitud la envía el [Demonio de BlockCollection](#blockcollection-daemon).
 
-#### Request data {#request-data-4}
+#### Datos de la solicitud {#request-data-5}
 
-Block ID.
+ninguno
 
-* block_id (4 bytes)
+#### Respuesta {#response-5}
 
-#### Response {#response-4}
+ID de bloque.
 
-The block data, including data size.
-
-* data_size (4 bytes)
-
-* Size of the block data, in bytes.
-
-* data (data_size bytes)
-
-The block data.
-
-The connection is closed if not having a block with this ID.
-
-## Type 10 {#type-10}
-
-#### Request sender {#request-sender-5}
-
-This request is sent by the [BlockCollection daemon](#blockcollection-daemon).
-
-#### Request data {#request-data-5}
-
-No.
-
-#### Response {#response-5}
-
-Block ID.
-
-* block_id (4 bytes)
-
+> -   *block_id* (4 bytes)

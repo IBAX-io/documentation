@@ -33,7 +33,6 @@ IBAX Network has created a new consensus mechanism that combines distribution, w
 
 DPoA has a prevention mechanism against network attacks and allows creation of Mint Nodes that guard the network and mint new IBXC coins. IBAXCoin holders can stake a part of their IBXC liquidity balance in Mint Nodes for Mint & Stake Emission Rewards. Minting and staking serve to increase the cost and difficulty of attacks and increase the total value of IBXC coins proportionally. With this mechanism, the probability and harm of any attack are infinitely close to zero. 
 
-
 ## Advantages of DPoA consensus {#advantages-of-dpoa-consensus}
 
 Compared to Proof-of-Work (PoW) or Proof-of-Stake (PoS) consensus, DPoA consensus has the following advantages:
@@ -58,7 +57,7 @@ The DPoA mechanism is possible to defend against DoS attacks:
 
 * If a honor node is unavailable for a certain period, it can be excluded from the list of honor nodes.
 
-### 51 percent attack {#percent-attack-51}
+### 51% attack {#percent-attack-51}
 
 As to the scenario with the DPoA consensus, the 51% attack requires an attacker to obtain control over 51% of network nodes. But the scenario for the PoW consensus is different, which an attacker needs to obtain 51% of network computational power. Obtaining the control over nodes in a permissioned blockchain network is much harder than obtaining the computational power.
 
@@ -77,7 +76,7 @@ The list of honor nodes is kept in the blockchain registry. The order of nodes d
 
 The leader node is the honor node that generates a new block at the current time. The following formula determines the leader node in the current honor node list:
 
-```
+``` text
 leader = ((time - first) / step) % nodes
 ```
 
