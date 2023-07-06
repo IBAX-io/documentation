@@ -6,7 +6,7 @@
 
 ## デプロイ {#deployment}
 - [コマンドラインツールを使用してアプリケーションをデプロイする](#deploy-application-using-command-line-tools)
-- [コマンドラインツールを使用したエコ設定](#ecological-configuration-using-command-line-tool)
+- [コマンドラインツールを使用したエコ設定](#ecosystem-configuration-using-command-line-tool)
 
 ## 高度なガイド {#advanced-guide}
 - [アプリケーションパッケージングツールを使用してアプリケーションをデプロイする](#deploy-applications-using-application-packaging-tool)
@@ -181,7 +181,7 @@ SumMathParams.json という名前を付けました。
 - 3.[テーブルの作成](#step-3-create-table)
 - 4.[アプリケーションパラメータの作成](#step-4-create-application-parameters)
 - 5.[コントラクトの作成とデプロイ](#step-5-create-contract-deploy-contract)
-- 6.[生態パラメータの作成](#step-6-create-ecological-parameters)
+- 6.[生態パラメータの作成](#step-6-create-ecosystem-parameters)
 - 7.[ローカリゼーションを追加](#step-7-add-localization)
 - 8.[契約変更](#step-8-modify-the-contract)
 - 9.[データテーブル権限の変更](#step-9-modify-data-table-permissions)
@@ -348,97 +348,97 @@ To exit, press ctrl-d or type exit
 まず、契約を作成し、`NewRecord.sim`という名前を付けます。
 
 ```text
-1	contract NewRecord {				
-2	    data {				
-3	        Student string				
-4	        Grade int				
-5	        Class int				
-6	        Mathematics int				
-7	        Physics int				
-8	        Literature int				
-9	    }				
-10	    func getScore(a b c int) map{				
-11	        var m map				
-12	        var overallScore int				
-13	        overallScore = (a+b+c) / 3				
-14	        m["overallScore"] = overallScore				
-15	        if overallScore >= $gradeTypeABest["min"] && overallScore < $gradeTypeABest["max"] {				
-16	            m["score"] = "A+"				
-17	        }elif overallScore >= $gradeTypeA["min"] && overallScore < $gradeTypeA["max"] {				
-18	            m["score"] = "A"				
-19	        }elif overallScore >= $gradeTypeBBest["min"] && overallScore < $gradeTypeBBest["max"] {				
-20	            m["score"] = "B+"				
-21	        }elif overallScore >= $gradeTypeB["min"] && overallScore < $gradeTypeB["max"] {				
-22	            m["score"] = "B"				
-23	        }elif overallScore >= $gradeTypeC["min"] && overallScore < $gradeTypeC["max"]{				
-24	            m["score"] = "C"				
-25	        }else{				
-26	            m["score"] = "Notset"				
-27	        }				
-28	        return m				
-29	    }				
-30	    func safeJsonDecode(m string) map {				
-31	        var res map				
-32	        if Size(m) > 0 {				
-33	            res = JSONDecode(m)				
-34	        }				
-35	        return res				
-36	    }				
-37					
-38	    conditions {				
-39	        if Size($Student) == 0 {				
-40	            warning "Student Can not be empty"				
-41	        }				
-42	        if $Class <= 0{				
-43	            warning "Class cannot be less than or equal to zero"				
-44	        }				
-45	        if $Grade <= 0{				
-46	            warning "Grade cannot be less than or equal to zero"				
-47	        }				
-48	        if $Mathematics < 0 {				
-49	            warning "Mathematics cannot be less than zero"				
-50	        }				
-51	        if $Physics < 0 {				
-52	            warning "Physics cannot be less than zero"				
-53	        }				
-54	        if $Literature < 0 {				
-55	            warning "Literature cannot be less than zero"				
-56	        }				
-57	        if $Mathematics > 100 || $Physics > 100 ||  $Literature > 100{				
-58	            warning "Score cannot exceed 100"				
-59	        }				
-60	        var app map				
-61	        app = DBFind("@1applications").Columns("id,ecosystem").Where({"ecosystem": 18,"name":"GradesRecorder","deleted":0}).Row()				
-62	        if !app {				
-63	            warning LangRes("@1app_not_found")				
-64	        }				
-65					
-66	        var app_id int				
-67	        app_id = Int(app["id"])				
-68	        $eId = Int(app["ecosystem"])				
-69	        $gradeBestType = AppParam(app_id, "grade_best_type", $eId)				
-70	        $gradeTypeABest = safeJsonDecode(AppParam(app_id, "grade_type_a+", $eId))				
-71	        $gradeTypeA = safeJsonDecode(AppParam(app_id, "grade_type_a", $eId))				
-72	        $gradeTypeBBest = safeJsonDecode(AppParam(app_id, "grade_type_b+", $eId))				
-73	        $gradeTypeB = safeJsonDecode(AppParam(app_id, "grade_type_b", $eId))				
-74	        $gradeTypeC = safeJsonDecode(AppParam(app_id, "grade_type_c", $eId))				
-75	    }				
-76	    action {				
-77	        var m map 				
-78	        m = getScore($Mathematics,$Physics,$Literature)				
-79	        var in map				
-80	        in["student"] = $Student				
-81	        in["class"] = $Class				
-82	        in["grade"] = $Grade				
-83	        in["mathematics"] = $Mathematics				
-84	        in["physics"] = $Physics 				
-85	        in["literature"] = $Literature 				
-86	        in["overall_score"] = m["overallScore"]				
-87	        in["score"] = m["score"]				
-88	        in["created_at"] = $time				
-89	        DBInsert("@"+ Str($eId)+"grade_info", in)				
-90	    }				
-91	}				
+1 contract NewRecord {
+2       data {
+3         Student string
+4         Grade int
+5         Class int
+6         Mathematics int
+7         Physics int
+8         Literature int
+9       }
+10     func getScore(a b c int) map{
+11          var m map
+12          var overallScore int
+13          overallScore = (a+b+c) / 3
+14          m["overallScore"] = overallScore
+15          if overallScore >= $gradeTypeABest["min"] && overallScore < $gradeTypeABest["max"] {
+16              m["score"] = "A+"
+17          }elif overallScore >= $gradeTypeA["min"] && overallScore < $gradeTypeA["max"] {
+18              m["score"] = "A"
+19          }elif overallScore >= $gradeTypeBBest["min"] && overallScore < $gradeTypeBBest["max"] {
+20              m["score"] = "B+"
+21          }elif overallScore >= $gradeTypeB["min"] && overallScore < $gradeTypeB["max"] {
+22              m["score"] = "B"
+23          }elif overallScore >= $gradeTypeC["min"] && overallScore < $gradeTypeC["max"]{
+24              m["score"] = "C"
+25          }else{
+26              m["score"] = "Notset"
+27          }
+28          return m
+29      }
+30      func safeJsonDecode(m string) map {
+31          var res map
+32          if Size(m) > 0 {
+33             res = JSONDecode(m)
+34          }
+35          return res
+36      }
+37
+38      conditions {
+39          if Size($Student) == 0 {
+40            warning "Student Can not be empty"
+41          }
+42          if $Class <= 0{
+43              warning "Class cannot be less than or equal to zero"
+44          }
+45          if $Grade <= 0{
+46              warning "Grade cannot be less than or equal to zero"
+47          }
+48          if $Mathematics < 0 {
+49              warning "Mathematics cannot be less than zero"
+50          }
+51          if $Physics < 0 {
+52              warning "Physics cannot be less than zero"
+53          }
+54          if $Literature < 0 {
+55              warning "Literature cannot be less than zero"
+56          }
+57          if $Mathematics > 100 || $Physics > 100 ||  $Literature > 100{
+58              warning "Score cannot exceed 100"
+59          }
+60          var app map
+61          app = DBFind("@1applications").Columns("id,ecosystem").Where({"ecosystem": 18,"name":"GradesRecorder","deleted":0}).Row()
+62          if !app {
+63              warning LangRes("@1app_not_found")
+64          }
+65
+66          var app_id int
+67          app_id = Int(app["id"])
+68          $eId = Int(app["ecosystem"])
+69          $gradeBestType = AppParam(app_id, "grade_best_type", $eId)
+70          $gradeTypeABest = safeJsonDecode(AppParam(app_id, "grade_type_a+", $eId))
+71          $gradeTypeA = safeJsonDecode(AppParam(app_id, "grade_type_a", $eId))
+72          $gradeTypeBBest = safeJsonDecode(AppParam(app_id, "grade_type_b+", $eId))
+73          $gradeTypeB = safeJsonDecode(AppParam(app_id, "grade_type_b", $eId))
+74          $gradeTypeC = safeJsonDecode(AppParam(app_id, "grade_type_c", $eId))
+75      }
+76      action {
+77          var m map
+78          m = getScore($Mathematics,$Physics,$Literature)
+79          var in map
+80          in["student"] = $Student
+81          in["class"] = $Class
+82          in["grade"] = $Grade
+83          in["mathematics"] = $Mathematics
+84          in["physics"] = $Physics
+85          in["literature"] = $Literature
+86          in["overall_score"] = m["overallScore"]
+87          in["score"] = m["score"]
+88          in["created_at"] = $time
+89          DBInsert("@"+ Str($eId)+"grade_info", in)
+90      }
+91  }
 ```
 以下は各行の説明です：
 - 2行目は、[データセクション](../topics/script.md#data-section)で、入力パラメータ`Student`（学生の名前）、`Grade`（成績）、`Class`（クラス）、`Mathematics`（数学の得点）、`Physics`（物理の得点）、`Literature`（文学の得点）を定義しています。
@@ -530,7 +530,7 @@ callContract @1NewContract {"ApplicationId": 47, "Value-file": "NewRecord.sim", 
  
 たとえば、この新しいレコード コントラクトを 1 人だけが呼び出すことができ、他の人は呼び出せないように指定したい場合は、エコロジカル パラメータ `new_record_account` を設定できます。
 
-### ステップ 6 生態学的パラメータの作成 {#step-6-create-ecological-parameters}
+### ステップ 6 生態学的パラメータの作成 {#step-6-create-ecosystem-parameters}
 コントラクト `@1NewParameter` を呼び出すと、エコパラメータが作成されます
 `@1parameters` テーブルの `new_record_account` で、エコパラメータを変更する必要がある場合は、`@1EditParameter` を呼び出します。
 ```text
@@ -728,7 +728,7 @@ Encode:ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsb
 >callContract @1ImportUpload {"Data": {"Name": "filename", "MimeType": "mimeType", "Body": "ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsbG9Xb3JsZCIsCgkJCSJWYWx1ZSI6..."}}
 ```
 
--	ステップ12
+- ステップ12
 呼び出しが完了したら、`getList`コマンドを使用して「1_buffer_data」テーブル内のデータをクエリします。
 ```shell
 >getList @1buffer_data -w={"key": "import", "account": "0666-0819-xxxx-7879-5186", "ecosystem": 19} -l=1 -c=value->'data'
@@ -744,21 +744,21 @@ Encode:ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsb
 }
 ```
 
--	ステップ3
+- ステップ3
 value.data->Data のデータを 1 次元配列 [a,b,c,d] に組み立てます。
 次に、次の内容を含むコントラクト パラメーター ファイル`importParams.json`を作成します。
 ```json
 {"Data":"[a,b,c,d]"}
 ```
 
--	ステップ4
+- ステップ4
 コントラクト `@1Import` を呼び出してアプリケーション データをインポートします
 ```shell
 >callContract @1Import -f=./importParams.json
 ```
 
 
-## エコロジーの設定（コマンドラインツールを使用） {#ecological-configuration-using-command-line-tool}
+## エコロジーの設定（コマンドラインツールを使用） {#ecosystem-configuration-using-command-line-tool}
 
 このチュートリアルでは、以下の手順を実行します:
 1. [エコロジーへの参加申請](#apply-to-join-the-ecosystem)

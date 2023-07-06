@@ -278,7 +278,7 @@ Sözleşmeleri, sözleşmenin koşullar ve eylem bölümlerine yerleştirebilirs
 ```
 contract Upload {
      data {
-  	   File file
+        File file
      }
      ...
 }
@@ -1134,7 +1134,7 @@ count = GetRowsCountXLSX(binid, 1)
 
 ### LangRes {#langres}
 
-İki karakterli bir kod olarak belirtilen dil dili için ad etiketine sahip çok dilli bir kaynak döndürür, örneğin: `en`, `zh`. Seçilen bir dil için dil yoksa,  `en` etiketinin dil kaynağı döndürülür.
+İki karakterli bir kod olarak belirtilen dil dili için ad etiketine sahip çok dilli bir kaynak döndürür, örneğin: `en`, `tr`. Seçilen bir dil için dil yoksa,  `en` etiketinin dil kaynağı döndürülür.
 
 
 **Sözdizimi**
@@ -1155,7 +1155,7 @@ LangRes(label string, lang string) string
 
 ```
 warning LangRes("@1confirm", "en")
-error LangRes("@1problems", "zh")
+error LangRes("@1problems", "tr")
 ```
 
 
@@ -3290,7 +3290,7 @@ Mevcut ekosisteme dil kaynakları ekler ve bunu yapma izni, ekosistem parametrel
 Parameters:
 
   * **Name** string - Latin karakterleriyle dil kaynaklarının adı;
-  * **Trans** string - anahtar olarak iki karakterlik bir dil kodu ve değer olarak çevrilmiş dize ile JSON biçiminde dize. Örneğin, `{"en": "English text", "zh": "Chinese text"}`.
+  * **Trans** string - anahtar olarak iki karakterlik bir dil kodu ve değer olarak çevrilmiş dize ile JSON biçiminde dize. Örneğin, `{"en": "English text", "tr": "türkçe text"}`.
 
 ### EditLang {#editlang}
 
@@ -3299,7 +3299,7 @@ Geçerli ekosistemdeki dil kaynaklarını değiştirir ve bunu yapma izni, ekosi
 Parameters:
 
   * **Id** int - dil kaynakları ID.
-  * **Trans** - anahtar olarak iki karakterlik bir dil kodu ve değer olarak çevrilmiş dize ile JSON biçiminde dize. Örneğin, `{"en": "English text", "zh": "Chinese text"}`.
+  * **Trans** - anahtar olarak iki karakterlik bir dil kodu ve değer olarak çevrilmiş dize ile JSON biçiminde dize. Örneğin, `{"en": "English text", "tr": "türkçe text"}`.
 
 ### Import {#import}
 

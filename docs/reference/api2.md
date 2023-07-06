@@ -74,8 +74,7 @@ The format is sent. The server response result is in JSON format.
 
 ## Error response handling {#error-response-handling}
 
-Return status in case of successful request execution
-`200`. If an error occurs, in addition to the error status, a JSON object with the following fields will be returned.
+Return status in case of successful request execution `200`. If an error occurs, in addition to the error status, a JSON object with the following fields will be returned.
 
 - **error**
 
@@ -90,6 +89,7 @@ Return status in case of successful request execution
     > An array of additional parameters that can be placed in the error message.
 
 **Response Example**
+
 ``` text
 400 (Bad request)
 Content-Type: application/json
@@ -199,8 +199,7 @@ Content-Type: application/json
 
     Unauthorized.
 
-    In case no login is performed or the session expires, 
-    except for `getuid, login` Any command other than **E_UNAUTHORIZED** returns an error.
+    In case no login is performed or the session expires, except for `getuid, login` Any command other than **E_UNAUTHORIZED** returns an error.
 
 > `E_UNKNOWNUID`
 
@@ -263,7 +262,8 @@ Used for authentication. The JWT token must be placed in each request header aft
 
 ### getuid {#getuid}
 
-**GET**/ returns a unique value, signs it with the private key, and then uses
+**GET**/ returns a unique value, signs it with the private key, and then uses.
+
 The [login](#login) command sends it back to the server.
 
 Generate a temporary JWT token that needs to be passed to **Authorization** when calling **login**.
@@ -356,8 +356,7 @@ Content-Type: application/json
 
 **POST**/ User authentication.
 
-> **getuid** should be called first
-> command in order to receive the unique value and sign it. getuid's temporary JWT token needs to be passed in the request header.
+> **getuid** should be called first command in order to receive the unique value and sign it. getuid's temporary JWT token needs to be passed in the request header.
 >
 > If the request is successful, the token received in the response is contained in **Authorization**.
 
@@ -386,8 +385,7 @@ POST
 
     > Account address `XXXX-... -XXXX`.
     >
-    > Use this parameter if the public key is already stored in the blockchain. It cannot be used with *pubkey*
-    > parameters are used together.
+    > Use this parameter if the public key is already stored in the blockchain. It cannot be used with *pubkey* parameters are used together.
 
 - `signature`
 
@@ -519,6 +517,7 @@ GET
 - `utxo`
 
     > UTXO account balance.
+
 -   *digits*
 
     > precision.
@@ -825,7 +824,7 @@ GET
 
 - `name`
 
-    > Ecological system name.
+    > Ecosystem name.
 
 - `roles`
 
@@ -848,7 +847,7 @@ Content-Type: application/json
 *E_SERVER, E_INVALIDWALLET*
 
 ### walletHistory {#wallethistory}
-**GET**/ Return to the current account transaction history record, find it according to the ID of the ID
+**GET**/ Return to the current account transaction history record, find it according to the ID of the ID.
 
 [Authorization](#authorization)
 
@@ -875,6 +874,7 @@ GET
 - `total`
 
   > Total number of entries.
+
 - `page`
 
   > Number of current page.
@@ -884,6 +884,7 @@ GET
   > Currently find the number of bars.
 
 - `list` Each element in the array contains the following parameters:
+
     - `id` Stripe ID.
     - `sender_id` Send key_id
     - `sender_add` Send the account address
@@ -931,6 +932,7 @@ Content-Type: application/json
 
 
 ### listWhere/{name} {#listwhere-name}
+
 **GET**/ Return to the entry of the data table specified in the current ecosystem. You can specify columns to be returned.
 
 [Authorization](#authorization)
@@ -1009,6 +1011,7 @@ Content-Type: application/json
 
 
 ### nodelistWhere/{name} {#nodelistwhere-name}
+
 **GET**/ Return to the specified data table. You can specify columns to be returned. The type in the data table is **BYTEA** Do hexadecimal encoding processing
 
 [Authorization](#authorization)
@@ -1055,6 +1058,7 @@ GET
 - `count`
 
   > Total number of entries.
+
 - `list`
   > Each element in the array contains the following parameters:
     - `id`
@@ -1250,7 +1254,7 @@ GET
 
     > The list of received parameters.
     >
-    > You can specify a comma-separated list of parameter names, for example:`/api/v2/appparams/1?names=name,mypar`.
+    > You can specify a comma-separated list of parameter names, for example: `/api/v2/appparams/1?names=name,mypar`.
 
 **Response**
 
@@ -1290,8 +1294,7 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**GET**/ Returns the parameter **{appid}** of the application **{name}** in the current or specified ecosystem
-The information related to the
+**GET**/ Returns information about the parameter **{name}** of the application **{appid}** in the current or specified ecosystem.
 
 **Request**
 
@@ -1643,12 +1646,9 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**GET**/ Returns the *sections* of the current ecosystem 
-List of table entries, you can set the offset and the number of entries.
+**GET**/ Returns a list of entries in the *sections* table of the current ecosystem, with the ability to set an offset and number of entries.
 
-If *role_access*
-field contains a list of roles and does not include the current role, no record will be returned. *title*
-The data in the field will be replaced by the *Accept-Language* language resource in the request header.
+If the *role_access* field contains a list of roles and does not include the current role, no records will be returned. The data in the *title* field will be replaced with the language resource specified in the request header *Accept-Language*.
 
 **Request**
 
@@ -1662,8 +1662,7 @@ The data in the field will be replaced by the *Accept-Language* language resourc
 
 - `lang` [Omitempty](#omitempty)
 
-    > This field specifies the multilingual resource code or localization, e.g., *en, zh*. If the specified multilingual resource is not found, e.g., *en-US*, then the multilingual resource group in
-     Search in *en*.
+    > This field specifies the multilingual resource code or localization, e.g., *en, de*. If the specified language resource is not found, e.g., *en-US*, it will search within the language resource group *en*.
 
 ``` text
 GET
@@ -1922,8 +1921,7 @@ Content-Type: application/json
 
 [Authorization](#authorization)
 
-**GET**/ Returns the current ecosystem in the specified data table (pages, menu or snippet) *name*
-The entry for the field.
+**GET**/ Returns the entry for the *name* field in the specified data table (pages, menu or snippet) for the current ecosystem.
 
 ``` text
 GET
@@ -2239,16 +2237,15 @@ POST
     > >
     > > - `blockid`
     > >
-    > > If the transaction execution succeeds, the block ID is returned; if the transaction execution fails, the
-    > > > `blockid` for [0]{.title-ref}.
+    > >     > If the transaction is executed successfully, the block ID will be returned. If the transaction fails, the *blockid* will be [0]{.title-ref}.
     > >
     > > - `result`
     > >
-    > > > Returns the result of the transaction via the **\$result** variable.
+    > >     >  Returns the result of the transaction via the **\$result** variable.
     > >
     > > - `errmsg`
     > >
-    > > Returns an error text message if the execution of the transaction fails.
+    > >     > Returns an error text message if the execution of the transaction fails.
 
 **Response Example**
 
@@ -2456,9 +2453,11 @@ Returns a tree of code JSON objects for the specified page or menu name, which i
 
 - `name`
 
-    > Page name or menu name with ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
+    > Page name or menu name with ecosystem ID in the format `@ecosystem_id%%page_name%`, for example: 
+    >
     > `@1main_page`.
-    > If no ecosystem ID is included, then search for the current ecosystem page or menu by default
+    >
+    > If no ecosystem ID is included, then search for the current ecosystem page or menu by default.
 
 ``` text
 POST
@@ -2514,8 +2513,10 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
 
 - `name`
 
-    > Page name with ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
+    > Page name with ecosystem ID in the format `@ecosystem_id%%page_name%`, for example:
+    >
     > `@1main_page`.
+    >
     > If no ecosystem ID is included, then search for the current eco-page by default.
 
 **Response**
@@ -2554,9 +2555,7 @@ Content-Type: application/json
 
 Returns a SHA256 hash of the specified page name, or a 404 error if the page cannot be found.
 
-This request does not require login authorization. To receive the correct hash when making requests to other nodes, you must also pass
-*ecosystem,keyID,roleID,isMobile*
-parameter. To receive pages from other ecosystems, the ecosystem ID must be prefixed to the page name. For example: `@2mypage`.
+This request does not require login authorization. To receive the correct hash when making requests to other nodes, you must also pass *ecosystem,keyID,roleID,isMobile* parameter. To receive pages from other ecosystems, the ecosystem ID must be prefixed to the page name. For example: `@2mypage`.
 
 **Request**
 
@@ -2606,9 +2605,8 @@ Content-Type: application/json
 
 **POST**
 
-Returns the number of JSON objects for the page code from the **template** parameter, 
-if the optional parameter **source** is specified as `true or 1`, 
-then this JSON object tree does not perform any functions and receive data. 
+Returns the number of JSON objects for the page code from the **template** parameter, if the optional parameter **source** is specified as `true or 1`, then this JSON object tree does not perform any functions and receive data. 
+
 This JSON object tree can be used in the visual page designer.
 
 This request does not require login authorization.
@@ -2841,10 +2839,12 @@ Content-Type: application/json
 ### Special instructions {#special-instructions}
 
 #### Omitempty {#omitempty}
+
 If the field has an omitempty attribute, it means that the field is an optional parameter
 
 #### Authorization {#authorization}
-If the interface with Authorization tag, that this interface requires login authorization, add Authorization to the request header, example.
+
+If the interface has an Authorization tag, it means that this interface requires login authorization. Please add the Authorization to the request header. Here is an example:
 
 key = Authorization
 value = "Bearer + [login token](#login)"

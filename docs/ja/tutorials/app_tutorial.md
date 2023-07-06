@@ -25,7 +25,7 @@
         - [デザイナービュー](#designer-views)
         - [開発者ビュー](#developer-view)
         - [データベーステーブルからのデータの取得](#fetch-data-from-the-database-table)
-	- [ページの全体コード](#full-page-code-1)
+    - [ページの全体コード](#full-page-code-1)
         - [ページの保存](#save-the-page)
 - [パート4：アプリケーション](#part-4-application)
     - [メニュー](#menu)

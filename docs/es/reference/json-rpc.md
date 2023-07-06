@@ -26,7 +26,7 @@ A continuación se proporciona un ejemplo de cómo utilizar la interfaz de aplic
 Las solicitudes de Curl pueden devolver mensajes de error relacionados con el tipo de contenido. Esto se debe a que la opción --data establece el tipo de contenido en application/x-www-form-urlencoded. Si tiene este problema en su solicitud, establezca manualmente el encabezado colocando -H "Content-Type: application/json" al comienzo de la llamada. Estos ejemplos tampoco incluyen la combinación de dirección web/protocolo e puerto, que debe ser el último parámetro de curl (por ejemplo, 127.0.0.1:7079). Una solicitud completa de curl que incluye estos datos adicionales se presenta en la siguiente forma:
 
 ``` text
-curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","params":[],"id":1}' http://127.0.0.1:7079	
+curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","params":[],"id":1}' http://127.0.0.1:7079
 ```
 
 ## Convenio {#covenant}
@@ -161,7 +161,7 @@ Si ocurre un error, se devolverá un objeto JSON con los siguientes campos:
 - [ibax.login](#ibax-login)
 - [ibax.getAuthStatus](#ibax-getauthstatus)
 
-#### Interfaz de comando del servidor {server-side-command-interface}
+#### Interfaz de comando del servidor {#server-side-command-interface}
 - [ibax.getVersion](#ibax-getversion)
 
 #### Función de interfaz de solicitud de datos. {#data-request-function-interface}
@@ -315,7 +315,7 @@ Si la solicitud es exitosa, el token recibido en la respuesta se incluye en [**A
 **Parámetros**
 
 *Object* - Objeto de llamada de autenticación de identidad.
-- **ecosystem_id** - *Number* - Ecological system ID. Si no se especifica, se utilizará el ID del primer sistema ecológico por defecto.
+- **ecosystem_id** - *Number* - Ecosystem system ID. Si no se especifica, se utilizará el ID del primer sistema ecológico por defecto.
 
 - **expire** - *Number* - El ciclo de vida del token JWT, en segundos, es de forma predeterminada 28800, es decir, 8 horas.
 
@@ -1077,7 +1077,7 @@ Obtener la lista de parámetros del ecosistema.
 **Parámetros**
 - **ecosystem** - *Number* - [Omitempty](#omitempty) - ID del ecosistema.
     
-    If it is 0 or there is no such parameter, the default is: the current ecological ID.
+    If it is 0 or there is no such parameter, the default is: the current ecosystem ID.
 
 - **names** - *String* - [Omitempty](#omitempty) - Nombre de parámetros de filtrado.
 
@@ -2229,7 +2229,7 @@ Devuelve un árbol de objetos JSON de código para el nombre de página especifi
                                 "where": "{\"ecosystem\": \"#ecosystem_id#\", \"name\": \"System\"}"
                             }
                         }
-						...
+                        ...
                     ]
                 },
                 {
@@ -2251,7 +2251,7 @@ Devuelve un árbol de objetos JSON de código para el nombre de página especifi
                                 "where": "{\"ecosystem\": \"#ecosystem_id#\", \"$and\": [{\"role->id\": {\"$in\": [#role_developer_id#]}}, {\"role->id\": \"#role_id#\"}], \"member->account\": \"#account_id#\", \"deleted\": 0}"
                             }
                         }
-						...
+                        ...
                     ]
                 },
                 {
@@ -2267,7 +2267,7 @@ Devuelve un árbol de objetos JSON de código para el nombre de página especifi
                                 "value": "@1params_list"
                             }
                         }
-						...
+                        ...
                     ],
                     "tail": [
                         {
@@ -2279,7 +2279,7 @@ Devuelve un árbol de objetos JSON de código para el nombre de página especifi
                                         "title": "$@1ecosystem_parameters$"
                                     }
                                 }
-								...
+                                ...
                             ]
                         }
                     ]

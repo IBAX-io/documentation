@@ -24,7 +24,7 @@ REST API를 통해 얻을 수 있습니다.
 Curl 요청은 콘텐츠 유형과 관련된 오류 메시지를 반환할 수 있습니다. 이는 --data 옵션으로 콘텐츠 유형을 application/x-www-form-urlencoded로 설정하기 때문입니다. 이 문제가 발생하는 경우 호출 시작 시 -H "Content-Type: application/json"을 사용하여 수동으로 헤더를 설정하십시오. 이러한 예제에는 또한 URL/인터넷 프로토콜 및 포트 조합이 포함되어 있지 않으며, 이 조합은 curl의 마지막 매개변수여야 합니다 (예: 127.0.0.1:7079). 이러한 추가 데이터를 포함하는 완전한 curl 요청은 다음과 같은 형식을 취합니다:
 
 ``` text
-curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","params":[],"id":1}' http://127.0.0.1:7079	
+curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","params":[],"id":1}' http://127.0.0.1:7079
 ```
 
 ## 계약 {#covenant}
@@ -158,7 +158,7 @@ Example:
 - [ibax.login](#ibax-login)
 - [ibax.getAuthStatus](#ibax-getauthstatus)
 
-#### 서버 명령 인터페이스 {server-side-command-interface}
+#### 서버 명령 인터페이스 {#server-side-command-interface}
 - [ibax.getVersion](#ibax-getversion)
 
 #### 데이터 요청 기능 인터페이스 {#data-request-function-interface}
@@ -1324,7 +1324,7 @@ Example:
     - **offset** - *Number* - [Omitempty](#omitempty) - 오프셋, 기본값은 0입니다.
 
     - **lang** - *String* - [Omitempty](#omitempty) - 
-        이 필드는 다국어 리소스 코드 또는 로캘을 지정합니다. 예를 들어: *en, zh*. 지정된 다국어 리소스를 찾을 수 없는 경우, 예를 들어: *en-US*, 다국어 리소스 그룹에서 **default**: **en**을 검색합니다.
+        이 필드는 다국어 리소스 코드 또는 로캘을 지정합니다. 예를 들어: *en, kr*. 지정된 다국어 리소스를 찾을 수 없는 경우, 예를 들어: *en-US*, 다국어 리소스 그룹에서 **default**: **en**을 검색합니다.
 
 **반환 값**
 
@@ -2204,7 +2204,7 @@ Example:
                                 "where": "{\"ecosystem\": \"#ecosystem_id#\", \"name\": \"System\"}"
                             }
                         }
-						...
+                        ...
                     ]
                 },
                 {
@@ -2226,7 +2226,7 @@ Example:
                                 "where": "{\"ecosystem\": \"#ecosystem_id#\", \"$and\": [{\"role->id\": {\"$in\": [#role_developer_id#]}}, {\"role->id\": \"#role_id#\"}], \"member->account\": \"#account_id#\", \"deleted\": 0}"
                             }
                         }
-						...
+                        ...
                     ]
                 },
                 {
@@ -2242,7 +2242,7 @@ Example:
                                 "value": "@1params_list"
                             }
                         }
-						...
+                        ...
                     ],
                     "tail": [
                         {
@@ -2254,7 +2254,7 @@ Example:
                                         "title": "$@1ecosystem_parameters$"
                                     }
                                 }
-								...
+                                ...
                             ]
                         }
                     ]

@@ -6,9 +6,9 @@ The tool can be used as a daemon or can be started to perform a one-time check.
 
 The operating principle of the tool is based on the following:
 
-1.Each block contains the hash of all changes of all transactions, request the specified node to provide its last block ID;
-2.Then request a block with this ID from all nodes and compare the above hashes;
-3.If the hashes are different, a synchronization error message will be sent to the email address specified in the command.
+1. Each block contains the hash of all changes of all transactions, request the specified node to provide its last block ID;
+2. Then request a block with this ID from all nodes and compare the above hashes;
+3. If the hashes are different, a synchronization error message will be sent to the email address specified in the command.
 
 ## Location {#location}
 

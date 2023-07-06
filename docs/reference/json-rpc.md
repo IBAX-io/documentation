@@ -2,15 +2,12 @@
 
 In order for a software application to interact with the IBAX blockchain (fetch block data or send transactions to the network), it must be connected to an IBAX network node.
 
-
 Due to the generality and extensibility of the original REST API interface, it will become more and more complex with more and more interfaces and different clients. We realize the importance of interface unification to ensure that all clients can use the same set of specifications, regardless of the specific node and client implementation.
-
 
 JSON-RPC  is  a  stateless,  lightweight  remote  procedure  call  (RPC)  protocol.  It  defines  a number of data structures and their processing rules. It is transport independent, as these concepts can be used in the same process, via an interface, hypertext transfer protocol, or in many different messaging environments. It uses JSON (RFC 4627) as the data format.
 
+JSON-RPC is compatible with most of the REST API interfaces, retaining the original REST API interface, the client using the REST API interface can easily transfer to the JSON-RPC interface, part of the interface:
 
-
-JSON-RPC is compatible with most of the REST API interfaces, retaining the original REST API interface, the client using the REST API interface can easily transfer to the JSON-RPC interface, part of the interface
 - [/data/{id}/data/{hash}](api2.md#data-id-data-hash)
 - [/data/{table}/id/{column}/{hash}](api2.md#data-table-id-column-hash)
 - [avatar/{ecosystem}/{member}](api2.md#avatar-ecosystem-member) 
@@ -18,17 +15,19 @@ JSON-RPC is compatible with most of the REST API interfaces, retaining the origi
 Available through the REST API interface.
 
 ## Client-side implementation {#client-side-implementation}
+
 Each client can use a different programming language when  implementing  the JSON-RPC specification, and you can use the
 [GO-SDK](https://github.com/IBAX-io/go-ibax-sdk)
 
 
 ## Curl example {#curl-example}
+
 The following provides examples of using the JSON RPC API by making curl requests to IBAX nodes. Each example includes a description of the particular endpoint, its parameters, the return type, and a working example of how it should be used.
 
-Curl requests may return an error message related to the content type. This is because the --data option sets the content type to application/x-www-form-urlencoded. If your request has this problem, set the header manually by placing -H "Content-Type: application/json" at the beginning of the call. These examples also do not include the URL/Internet Protocol and port combination that must be the last parameter of the curl (e.g. 127.0.0.1:7079 A full curl request with this additional data takes the form of
+Curl requests may return an error message related to the content type. This is because the --data option sets the content type to application/x-www-form-urlencoded. If your request has this problem, set the header manually by placing -H "Content-Type: application/json" at the beginning of the call. These examples also do not include the URL/Internet Protocol and port combination that must be the last parameter of the curl (e.g. 127.0.0.1:7079). A full curl request with this additional data takes would be in the following form:
 
 ``` text
-curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","params":[],"id":1}' http://127.0.0.1:7079	
+curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","params":[],"id":1}' http://127.0.0.1:7079 
 ```
 
 ## Covenant {#covenant}
@@ -47,6 +46,7 @@ When encoding byte arrays, hashes, and bytecode arrays: the encoding is hexadeci
 This field is an optional parameter.
 
 If there are multiple `Omitempty` fields in a row, but only want to pass the value of a certain field, then you need to set the unwanted field to null (the field type null value), Example:
+
 - **id** - *Number* - [Omitempty](#omitempty) id
 - **name** - *String* - [Omitempty](#omitempty) Name
 - **column** - *String* - [Omitempty](#omitempty) Filter column names
@@ -62,6 +62,7 @@ If only the column value is passed, then the request parameters are passed as fo
 
 
 #### Authorization {#authorization}
+
 Authorization header, add Authorization to the request header, example:
 
 **name** : Authorization **value** : Bearer +[login token](#ibax-login)
@@ -74,30 +75,34 @@ Example:
 ````
 
 #### AccountOrKeyId {#accountorkeyid}
-For the account address parameter, you can use two formats of addresses, for example
+For the account address parameter, you can use two formats of addresses, for example:
+
 1. - *String* - Account Address `"XXXX-XXXX-XXXX-XXXX-XXXX"` or Account Id `"64842...538120"` .538120"`
 
 2. - *Object* - Address object
-    - **key_id** - *Number* - Account Id, Example: `{"key_id":-64842	38120}`
-    - **account** - *String* - Account address, Example: `{"account": "1196-... -	-... -3496"}`
+    - **key_id** - *Number* - Account Id, Example: `{"key_id":-64842...38120}`
+    - **account** - *String* - Account address, Example: `{"account": "1196-...-...-...-3496"}`
 
     **Account Id is preferred when both account address and account Id exist**. 
     
 #### BlockOrHash {#blockorhash}
-Block height or block HASH, example
 
-1.	- *String*	-	Block	Height	`"100"`	or	Block	HASH`"4663aa47...a60753c18d9ba9cb4"`
+Block height or block HASH, example:
 
-2.	- *Object* - Block information object
+1. - *String* - Block Height `"100"` or Block HASH`"4663aa47...a60753c18d9ba9cb4"`
+
+2. - *Object* - Block information object
         - **id** - *Number* - block height, example: `{"id":2}`
-        - **hash**	-	*[Hex](#hex)	String*	-	Block	HASH,	Example:	`{"hash": "d36b8996c	c616d3043a0d02a0f59"}`
+        - **hash** - *[Hex](#hex) String* - Block HASH, Example: `{"hash": "d36b8996c...c616d3043a0d02a0f59"}`
 
         **Block Height and Block HASH can only choose one**. 
 
 ### Batch requests {#batch-requests}
+
 This feature can be used to reduce network latency, especially when acquiring a large number of largely independent data objects.
 
 The following is an example of obtaining the highest block and total number of transactions:
+
 ```text
     //Request
     curl -X POST -H "Content-Type: application/json" -d '[{"jsonrpc":"2.0","method":"ibax.getTxCount","id":1,"params":[]},{"jsonrpc":"2.0","method":"ibax.maxBlockId","id":2,"params":[]}]' http://127.0.0.1:7079
@@ -124,19 +129,19 @@ Returns status `200` in case the request is executed successfully.
 
 If an error occurs, a JSON object with the following fields will be returned:
 
--	jsonrpc
+- jsonrpc
 
     Error identifier.
 
--	id
+- id
 
     Error text message.
 
--	error
-    -	code
+- error
+    - code
 
         Response Status Code
-    -	message
+    - message
 
         Response Status Description
 
@@ -161,7 +166,7 @@ If an error occurs, a JSON object with the following fields will be returned:
 - [ibax.login](#ibax-login)
 - [ibax.getAuthStatus](#ibax-getauthstatus)
 
-#### server-side command interface {server-side-command-interface}
+#### server-side command interface {#server-side-command-interface}
 - [ibax.getVersion](#ibax-getversion)
 
 #### Data Request Function Interface {#data-request-function-interface}
@@ -237,7 +242,7 @@ If an error occurs, a JSON object with the following fields will be returned:
 
 [Authorization](#authorization) [Omitempty](#omitempty)
 
-Generate a temporary JWT token,	which needs to be passed to [**Authorization**](#authorization) when calling **[login](#ibax-login)**
+Generate a temporary JWT token, which needs to be passed to [**Authorization**](#authorization) when calling **[login](#ibax-login)**.
 
 **Parameters**
 - None
@@ -303,15 +308,20 @@ In the case that no authorization is required(the request contains [Authorizatio
 ```
 
 ### **ibax.login** {#ibax-login}
-User authentication. [Authorization](#authorization)
+User authentication. 
+
+[Authorization](#authorization)
 
 The [**ibax.getUid**](#ibax-getuid) command should be called first in order to receive the unique value and sign it.
+
 The temporary JWT token for getuid needs to be passed in the request header.
+
 If the request is successful, the token received in the response is contained in [**Authorization**](#authorization).
 
 **Parameters**
 
 *Object* - Authentication call object
+
 - **ecosystem_id** - *Number* - Ecosystem ID. if not specified, defaults to the first ecosystem ID.
 
 - **expire** - *Number* - The lifecycle of the JWT token in seconds, default is 28800,8 hours.
@@ -319,21 +329,23 @@ If the request is successful, the token received in the response is contained in
 - **public_key** - *[Hex](#hex) String* - Hexadecimal account public key.
 
 - **key_id** - *String* -
-    >	Account address `XXXX-... -XXXX`.
+    > Account address `XXXX-... -XXXX`.
     >
-    >	Use this parameter if the public key is already stored in the blockchain. It cannot be used with *pubkey*
-    >	parameters are used together.
+    > Use this parameter if the public key is already stored in the blockchain. It cannot be used with *pubkey*
+    > parameters are used together.
 
 - **signature** - *String* -
+
     Use the private key to sign the uid received by getuid. 
 
-    Signature data content:LOGIN+{$network_id}+uid
+    Signature data content: LOGIN+{$network_id}+uid
 
 - **role_id** - *Number* - Role ID, default role 0
 
 
 **Return Value**
 *Object* - Authentication object
+
 - **token** - *String* - JWT token.
 
 - **ecosystem_id** - *String* - Ecosystem ID.
@@ -381,7 +393,8 @@ If the request is successful, the token received in the response is contained in
 ```
 
 ### **ibax.getAuthStatus** {#ibax-getauthstatus}
-User authentication status 
+User authentication status.
+
 [Authorization](#authorization)
 
 **Parameters**
@@ -442,6 +455,7 @@ Get the account address balance.
 
 **Return Value**
 *Object* - Get the balance object
+
 - **amount** - *String* - the minimum unit of the contract account balance.
 
 - **total** - *String* - the total balance of the minimum unit account (amount + utxo).
@@ -479,6 +493,7 @@ Get the account address balance.
 
 
 ### **ibax.getBlocksTxInfo** {#ibax-getblockstxinfo}
+
 Returns a list containing additional information about the transactions in each block. 
 
 **Parameters**
@@ -488,9 +503,10 @@ Returns a list containing additional information about the transactions in each 
 - **count** - *Number* - number of blocks, default is 25, maximum request is 100
 
 **Return Value**
-*Object* - Get the block information object
+*Object* - Get the block information object.
+
 - **block_id** - *String* - block height
--	List of transactions in the block and additional information for each transaction:
+- List of transactions in the block and additional information for each transaction:
 
     - **hash** - *[Hex](#hex) String* - The transaction hash.
 
@@ -499,6 +515,7 @@ Returns a list containing additional information about the transactions in each 
     - **params** - *Object* - contract parameters, contract fields can be queried via [ibax.getContractInfo](#ibax-getcontractinfo).
 
     - **key_id** - *Number* -
+
         For the first block, it is the account address of the first block that signed the transaction.
 
         For all other blocks, it is the address of the account that signed the transaction.
@@ -538,6 +555,7 @@ Returns a list containing additional information about the transactions in each 
 
 
 ### **ibax.detailedBlocks** {#ibax-detailedblocks}
+
 Returns a list containing detailed additional information about the transactions in each block.
 
 **Parameters**
@@ -547,7 +565,8 @@ Returns a list containing detailed additional information about the transactions
 
 
 **Return Value**
-*Object* - Get the block details object
+*Object* - Get the block details object.
+
 - **block_id** - *String* - block height
     - **header** - *Object* - block header The block header contains the following fields.
         - **block_id** - *Number* - the height of the block.
@@ -714,7 +733,7 @@ Returns a detailed list of additional information about the transactions in the 
     - **time** - *Number* - block generation timestamp.
     - **key_id** - *Number* - the address of the account that signed the block.
     - **node_position** - *Number* - The position of the node that generated the block in the honor node list.
-    -	**version** - *Number* - the block structure version.
+    - **version** - *Number* - the block structure version.
 
 - **hash** - *[Hex](#hex) String* - The block hash.
 - **node_position** - *Number* - The position of the node that generated the block in the honor node list.
@@ -790,7 +809,7 @@ Get the highest block ID on the current node
 - None
 
 **Return Value**
--	**Block Id** - *Number* - The highest block on the current node
+- **Block Id** - *Number* - The highest block on the current node
 
 **Example**
 ```text
@@ -935,7 +954,7 @@ Number of ecosystem acquisitions
 - None
 
 **Return Value**
-- **Count** - *Number* - Ecological number
+- **Count** - *Number* - Ecosystem number
 
 **Example**
 ```text
@@ -954,14 +973,14 @@ Number of ecosystem acquisitions
 
 
 ### **ibax.ecosystemInfo** {#ibax-ecosysteminfo}
-Access to ecological information
+Access to ecosystem information
 
 **Parameters**
-- **ecosystem id** - *Number* - ecological ID
+- **ecosystem id** - *Number* - ecosystem ID
 
 **Return Value**
 - **id** - *Number* - Eco-ID
-- **name** - *String* - Ecological name
+- **name** - *String* - Ecosystem name
 - **digits** - *Number* - Accuracy
 - **token_symbol** - *String* - Token symbols
 - **token_name** - *String* - the name of the token
@@ -1133,7 +1152,7 @@ Offset and number of entries can be set
 - **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
 
 **Return Value**
-- **count** - *Number* - The total number of sheets of the current ecological data table.
+- **count** - *Number* - The total number of sheets of the current ecosystem data table.
 
 - **list** - *Array* - Each element of the array contains the following parameters:
     - **name** - *String* - The name of the data table without prefix.
@@ -1339,7 +1358,7 @@ The data in the *title* field will be replaced by the *Accept-Language* language
 
     - **lang** - *String* - [Omitempty](#omitempty) -
 
-        This field specifies the multilingual resource code or localization, e.g. *en, zh*. If the specified multilingual resource is not found, e.g. *en-US*, then search in the Multilingual Resources group, **default**: **en**.
+        This field specifies the multilingual resource code or localization, e.g. *en, de*. If the specified multilingual resource is not found, e.g. *en-US*, then search in the Multilingual Resources group, **default**: **en**.
 
 **Return Value**
 
@@ -1447,7 +1466,7 @@ Returns the list of platform parameters.
 
 **Return Value**
 
--	**list** - *Array* - Each element of the array contains the following parameters:
+- **list** - *Array* - Each element of the array contains the following parameters:
     - **id** - *String* - Unique id
     - **name** - *String* - The name of the parameter.
     - **value** - *String* - The value of the parameter.
@@ -1785,7 +1804,7 @@ Returns information about the specified contract.
 [Authorization](#authorization)
 
 **Parameters**
-- **contractName**	-	*String*	-	The	name	of	the	contract.	The	format	is `@ecosystem_id%%contractName%`, e.g. @1contractName (the specified eco1contract name contractName) or contractName (the current eco-contract name contractName).
+- **contractName** - *String* - The name of the contract. The format is `@ecosystem_id%%contractName%`, e.g. @1contractName (the specified eco1contract name contractName) or contractName (the current eco-contract name contractName).
 
 **Return Value**
 
@@ -2003,7 +2022,7 @@ Returns transaction-related information for the specified hash list.
 - **contractinfo** - *Bool* [Omitempty](#omitempty) - Contract detail parameter identifier, get contract details related to this transaction, default is `false`
 
 **Return Value**
--	**results** - *Array* - Data dictionary with transaction hash as key and transaction details as value.
+- **results** - *Array* - Data dictionary with transaction hash as key and transaction details as value.
     - **hash** - *String* - The transaction hash.
         - **blockid** - *Number* - The block ID containing the transaction. if the value is `0`, then no transaction was found for that hash.
         - **confirm** - *Number* - the number of confirmations for this block *blockid*.
@@ -2064,9 +2083,11 @@ Returns transaction-related information for the specified hash list.
 
 
 ### **ibax.getPageValidatorsCount** {#ibax-getpagevalidatorscount}
+
 Returns the number of nodes to be validated for the specified page.
 
 **Parameters**
+
 - **name**  -  *String*  -  page  name  in  the  format  `@ecosystem_id%%%page_name%`,  e.g. @1params_list (specifying ecosystem 1 page name params_list) or params_list (current ecosystem page name params_list)
 
 
@@ -2090,14 +2111,15 @@ Returns the number of nodes to be validated for the specified page.
 
 
 ### **ibax.getPage** {#ibax-getpage}
+
 Gets the tree of code JSON objects for the specified page name, which is the result of processing by the templating engine.
 
 [Authorization](#authorization)
 
 **Parameters**
--	**name** - *String* - the name of the page with the ecosystem ID in the format `@ecosystem_id%%page_name%`, for example `@1main_page`.
+- **name** - *String* - the name of the page with the ecosystem ID in the format `@ecosystem_id%%page_name%`, for example `@1main_page`.
 
-    If you don't have an ecosystem ID, the default is to find the current ecological page, e.g. `main_page`
+    If you don't have an ecosystem ID, the default is to find the current ecosystem page, e.g. `main_page`
 
 **Return Value**
 - **menu** - *String* - The name of the menu to which the page belongs.
@@ -2141,12 +2163,13 @@ Gets the tree of code JSON objects for the specified page name, which is the res
 
 
 ### **ibax.getMenu** {#ibax-getmenu}
+
 Gets the tree of code JSON objects for the specified menu name, which is the result of processing by the template engine.
 
 [Authorization](#authorization) 
 
 **Parameters**
--	**name** - *String* -
+- **name** - *String* -
     > Menu name with ecosystem ID in the format `@ecosystem_id%%%menu_name%`, e.g.
     > `@1main_menu`.
     > If you don't bring the ecosystem ID, the menu of the current ecosystem will be found by default, for example
@@ -2186,18 +2209,19 @@ Gets the tree of code JSON objects for the specified menu name, which is the res
 
 
 ### **ibax.getSource** {#ibax-getsource}
+
 Returns a tree of coded JSON objects for the specified page name. Does not execute any functions or receive any data. The returned JSON object tree corresponds to the page template and can be used in the visual page designer. If the page is not found, a 404 error is returned.
 
 
 [Authorization](#authorization)
  
 **Parameters**
--	**name** - *String* -
+- **name** - *String* -
     Page  name  with  ecosystem  ID  in  the  format  `@ecosystem_id%%%page_name%`,  for example `@1main_page`.
-    If you don't have an ecosystem ID, the default is to find the current ecological page e.g. `main_page`
+    If you don't have an ecosystem ID, the default is to find the current ecosystem page e.g. `main_page`
 
 **Return Value**
--	**tree** - *Array* - JSON object tree for the page.
+- **tree** - *Array* - JSON object tree for the page.
 
 **Example**
 ```text
@@ -2222,7 +2246,7 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
                                 "where": "{\"ecosystem\": \"#ecosystem_id#\", \"name\": \"System\"}"
                             }
                         }
-						...
+                        ...
                     ]
                 },
                 {
@@ -2244,7 +2268,7 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
                                 "where": "{\"ecosystem\": \"#ecosystem_id#\", \"$and\": [{\"role->id\": {\"$in\": [#role_developer_id#]}}, {\"role->id\": \"#role_id#\"}], \"member->account\": \"#account_id#\", \"deleted\": 0}"
                             }
                         }
-						...
+                        ...
                     ]
                 },
                 {
@@ -2260,7 +2284,7 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
                                 "value": "@1params_list"
                             }
                         }
-						...
+                        ...
                     ],
                     "tail": [
                         {
@@ -2272,7 +2296,7 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
                                         "title": "$@1ecosystem_parameters$"
                                     }
                                 }
-								...
+                                ...
                             ]
                         }
                     ]
@@ -2284,11 +2308,13 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
 
 
 ### **ibax.getPageHash** {#ibax-getpagehash}
+
 Returns a SHA256 hash of the specified page name, or a 404 error if the page is not found.
 
 To receive the correct hash when making requests to other nodes, you must also pass the *ecosystem,key_id,role_id* parameter. To receive pages from other ecosystems, the ecosystem ID must be prefixed to the page name. For example: `@2mypage`.
 
 **Parameters**
+
 - **name** - *String* - The name of the page with the ecosystem ID. The format is `@ecosystem_id%%%page_name%`, e.g. `@1main_page`, you can specify the eco ID
 
 - **ecosystem** - *Number* - [Omitempty](#omitempty) Ecosystem ID.
@@ -2318,8 +2344,8 @@ To receive the correct hash when making requests to other nodes, you must also p
 
 
 ### **ibax.getContent** {#ibax-getcontent}
-Returns the number of JSON objects for the page code from the **template** parameter, if the optional parameter
-**source** Specified as `true`, this JSON object tree does not perform any functions and receive data. This JSON object tree can be used in the visual page designer.
+
+Returns the number of JSON objects for the page code from the **template** parameter, if the optional parameter **source** Specified as `true`, this JSON object tree does not perform any functions and receive data. This JSON object tree can be used in the visual page designer.
 
 **Parameters**
 - *Object*
@@ -2357,7 +2383,7 @@ Returns the number of JSON objects for the page code from the **template** param
 Returns information about the specified block ID.
 
 **Parameters**
--	**id** - *Number* - the height of the block. 
+- **id** - *Number* - the height of the block. 
 
 **Return Value**
 

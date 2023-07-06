@@ -107,123 +107,123 @@ Content-Type: application/json
 
 > `E_CONTRACT`
  
-	No `%s` contract exists
+    No `%s` contract exists
 
 > `E_DBNIL`
 
-	Leere Datenbank
+    Leere Datenbank
 
 > `E_DELETEDKEY`
 
-	Kontoadresse gesperrt
+    Kontoadresse gesperrt
 
 > `E_ECOSYSTEM`
 
-	Ökosystem `%d` existiert nicht
+    Ökosystem `%d` existiert nicht
 
 > `E_EMPTYPUBLIC`
 
-	Ungültiger öffentlicher Schlüssel für das Konto
+    Ungültiger öffentlicher Schlüssel für das Konto
 > `E_KEYNOTFOUND`
 
-	Kontoadresse nicht gefunden
+    Kontoadresse nicht gefunden
 
 > `E_HASHWRONG`
 
-	Falscher Hash
+    Falscher Hash
 
 > `E_HASHNOTFOUND`
 
-	Nicht gefunden
+    Nicht gefunden
 
 > `E_HEAVYPAGE`
 
-	Zu viele Seiten geladen
+    Zu viele Seiten geladen
 
 > `E_INVALIDWALLET`
 
-	Ungültige Wallet-Adresse `%s`
+    Ungültige Wallet-Adresse `%s`
 
 > `E_LIMITTXSIZE`
 
-	Größe einer Transaktion außerhalb des Limits
+    Größe einer Transaktion außerhalb des Limits
 
 > `E_NOTFOUND`
 
-	Seiten- oder Menüinhalt nicht gefunden
+    Seiten- oder Menüinhalt nicht gefunden
 
 > `E_PARAMNOTFOUND`
 
-	Parameter nicht gefunden
+    Parameter nicht gefunden
 
 > `E_PERMISSION`
 
-	Keine Erlaubnis
+    Keine Erlaubnis
 > `E_QUERY`
 
-	Datenbankabfragefehler
+    Datenbankabfragefehler
 
 > `E_RECOVERED`
 
-	Die API hat einen Panikfehler.
-	Gibt einen Fehler zurück, wenn ein Panikfehler vorliegt.
-	Es bedeutet, dass Sie auf einen Fehler gestoßen sind, der lokalisiert und behoben werden muss.
+    Die API hat einen Panikfehler.
+    Gibt einen Fehler zurück, wenn ein Panikfehler vorliegt.
+    Es bedeutet, dass Sie auf einen Fehler gestoßen sind, der lokalisiert und behoben werden muss.
 
 > `E_SERVER`
 
-	Serverfehler.
-	Wenn es einen Fehler in der golang-Bibliotheksfunktion gibt, kehrt sie zurück. Das msg-Feld enthält den im Fehlerfall zurückgegebenen Text.
+    Serverfehler.
+    Wenn es einen Fehler in der golang-Bibliotheksfunktion gibt, kehrt sie zurück. Das msg-Feld enthält den im Fehlerfall zurückgegebenen Text.
 
-	Als Antwort auf jeden Befehl kann ein **E_SERVER**-Fehler auftreten. Wenn es aufgrund falscher Eingabeparameter auftritt, können Sie es in einen verwandten Fehler ändern. In einem anderen Fall meldet dieser Fehler einen ungültigen Betrieb oder eine falsche Systemkonfiguration, was einen detaillierteren Untersuchungsbericht erfordert.
+    Als Antwort auf jeden Befehl kann ein **E_SERVER**-Fehler auftreten. Wenn es aufgrund falscher Eingabeparameter auftritt, können Sie es in einen verwandten Fehler ändern. In einem anderen Fall meldet dieser Fehler einen ungültigen Betrieb oder eine falsche Systemkonfiguration, was einen detaillierteren Untersuchungsbericht erfordert.
 
 > `E_SIGNATURE`
 
-	Falsche Signatur
+    Falsche Signatur
 
 > `E_STATELOGIN`
 
-	`%s` ist kein Mitglied des Ökosystems `%s`
+    `%s` ist kein Mitglied des Ökosystems `%s`
 
 > `E_TABLENOTFOUND`
 
-	Tabelle `%s` nicht gefunden
+    Tabelle `%s` nicht gefunden
 > `E_TOKENEXPIRED`
 
-	Sitzung `%s` ist abgelaufen
+    Sitzung `%s` ist abgelaufen
 
 > `E_UNAUTHORIZED`
 
-	Unbefugt.
+    Unbefugt.
 
-	Wenn Sie nicht angemeldet sind oder die Sitzung abgelaufen ist, gibt jeder Befehl außer `getuid, login` einen
+    Wenn Sie nicht angemeldet sind oder die Sitzung abgelaufen ist, gibt jeder Befehl außer `getuid, login` einen
 
-	E_UNAUTHORIZED-Fehler zurück.
+    E_UNAUTHORIZED-Fehler zurück.
 
 > `E_UNKNOWNUID`
 
-	Unbekannte UID
+    Unbekannte UID
 
 > `E_UPDATING`
 
-	Der Knoten aktualisiert die Blockchain
+    Der Knoten aktualisiert die Blockchain
 
 > `E_STOPPING`
 
-	Der Knoten wurde gestoppt
+    Der Knoten wurde gestoppt
 
 > `E_NOTIMPLEMENTED`
 
-	Noch nicht implementiert
+    Noch nicht implementiert
 
 > `E_BANNED`
 
-	Die Kontoadresse ist in `%s` verboten
+    Die Kontoadresse ist in `%s` verboten
 
 > `E_CHECKROLE`
 
-	Zugriff verweigert
-	
-	APIs sind für CLB nicht verfügbar
+    Zugriff verweigert
+
+    APIs sind für CLB nicht verfügbar
 
 ------------------------------------------------------------------------
 > Schnittstellenanforderung für den CLB-Knoten nicht verfügbar:
@@ -802,7 +802,7 @@ GET
 
 - `name`
 
-    > Ecological system name.
+    > Ecosystem name.
 
 - `roles`
 
@@ -1429,15 +1429,15 @@ GET/ Gibt die Liste der Tabellen des aktuellen Ökosystems zurück, in der Sie d
 
     Gesamteinträge in der Tabelle.
 
-- `list`
+  - `list`
 
-    Jedes Element im Array enthält die folgenden Parameter:
-	* name
+      Jedes Element im Array enthält die folgenden Parameter:
+  * name
+  
+    Tabellenname ohne Präfix.
+  * count
 
-	    Tabellenname ohne Präfix.
-	* count
-
-	   Anzahl der Einträge in der Tabelle.
+    Anzahl der Einträge in der Tabelle.
 
 **Response Example**
 
@@ -1598,7 +1598,7 @@ The data in the field will be replaced by the *Accept-Language* language resourc
 
 - `lang` [Omitempty](#omitempty)
 
-    > This field specifies the multilingual resource code or localization, e.g., *en, zh*. If the specified multilingual resource is not found, e.g., *en-US*, then the multilingual resource group in
+    > This field specifies the multilingual resource code or localization, e.g., *en, de*. If the specified multilingual resource is not found, e.g., *en-US*, then the multilingual resource group in
      Search in *en*.
 
 ``` text
@@ -2085,7 +2085,7 @@ POST/ Empfangen Sie die Transaktion im Parameter und fügen Sie sie der Transakt
 
 - `tx_key`
 
-	> Transaktionsinhalt. Sie können einen beliebigen Namen angeben und unterstützen den Empfang mehrerer Transaktionen mit diesem Parameter.
+ > Transaktionsinhalt. Sie können einen beliebigen Namen angeben und unterstützen den Empfang mehrerer Transaktionen mit diesem Parameter.
 > POST /api/v2/sendTx
 ```
 Headers:

@@ -28,7 +28,7 @@ JSON-RPC兼容了大部分REST API接口，保留了原有的REST API接口，�
 Curl 请求可能会返回与内容类型相关的错误消息。 这是因为 --data 选项将内容类型设置为 application/x-www-form-urlencoded。 如果你的请求有此问题，请通过在调用开始时放置 -H "Content-Type: application/json" 来手动设置标头。 这些示例也未包括网址/互联网协议与端口组合，该组合必须是 curl 的最后一个参数（例如 127.0.0.1:7079 包含这些附加数据的完整 curl 请求采用以下形式：
 
 ``` text
-curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","params":[],"id":1}' http://127.0.0.1:7079	
+curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","params":[],"id":1}' http://127.0.0.1:7079
 ```
 
 ## 约定 {#covenant}
@@ -161,7 +161,7 @@ Example:
 - [ibax.login](#ibax-login)
 - [ibax.getAuthStatus](#ibax-getauthstatus)
 
-#### 服务端命令接口 {server-side-command-interface}
+#### 服务端命令接口 {#server-side-command-interface}
 - [ibax.getVersion](#ibax-getversion)
 
 #### 数据请求功能接口 {#data-request-function-interface}
@@ -1331,7 +1331,7 @@ Example:
 
     - **lang** - *String* - [Omitempty](#omitempty) - 
         
-        该字段指定多语言资源代码或本地化，例如：*en，zh*。如果未找到指定的多语言资源，例如：*en-US*，则在多语言资源组, **default**: **en** 中搜索。
+        该字段指定多语言资源代码或本地化，例如：*en，tr*。如果未找到指定的多语言资源，例如：*en-US*，则在多语言资源组, **default**: **en** 中搜索。
 
 **返回值**
 
@@ -2207,7 +2207,7 @@ Example:
                                 "where": "{\"ecosystem\": \"#ecosystem_id#\", \"name\": \"System\"}"
                             }
                         }
-						...
+                        ...
                     ]
                 },
                 {
@@ -2229,7 +2229,7 @@ Example:
                                 "where": "{\"ecosystem\": \"#ecosystem_id#\", \"$and\": [{\"role->id\": {\"$in\": [#role_developer_id#]}}, {\"role->id\": \"#role_id#\"}], \"member->account\": \"#account_id#\", \"deleted\": 0}"
                             }
                         }
-						...
+                        ...
                     ]
                 },
                 {
@@ -2245,7 +2245,7 @@ Example:
                                 "value": "@1params_list"
                             }
                         }
-						...
+                        ...
                     ],
                     "tail": [
                         {
@@ -2257,7 +2257,7 @@ Example:
                                         "title": "$@1ecosystem_parameters$"
                                     }
                                 }
-								...
+                                ...
                             ]
                         }
                     ]

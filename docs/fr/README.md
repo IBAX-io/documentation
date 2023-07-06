@@ -16,42 +16,43 @@ features:
 - title: Un mécanisme de consensus personnalisable
 - title: Séparation du front-end et du back-end pour répondre aux divers besoins de cryptage
 
-footer: © Copyright 2019 - 2023, IBAX Updated Date 20/06/2023 | Built with VuePress
+footer: © Copyright 2019 - 2023, IBAX Updated Date 07/05/2023 | Built with VuePress
 ---
 
 
-# IBAX Documentation
+# Documentation IBAX
 
 
 ## Concept
 
-* [IBAX Overview](concepts/about-the-platform.md)
-* [The IBAX Network](concepts/blockchain-layers.md)
-* [Proof-of-Authority Consensus](concepts/consensus.md)
-* [Terms and Definitions](concepts/thesaurus.md)
+* [Aperçu d'IBAX](concepts/about-the-platform.md)
+* [Le réseau IBAX](concepts/blockchain-layers.md)
+* [Consensus de Preuve d'Autorité](concepts/consensus.md)
+* [Termes et Définitions](concepts/thesaurus.md)
 * [FAQ](concepts/faq.md)
 
-## Didacticiel
+## Tutoriel
 
-* [Tutorial for application development](tutorials/app_tutorial.md)
-* [Development Tutorial](tutorials/tutorial.md)
+* [Tutoriel de développement d'application](tutorials/app_tutorial.md)
+* [Tutoriel de développement](tutorials/tutorial.md)
 
-## Guider
+## Guide
 
-* [Smart Contracts](topics/script.md)
-* [Template Language](topics/templates2.md)
-* [Compiler and Virtual Machine](topics/vm.md)
-* [Daemon](topics/daemons.md)
+* [Contrats Intelligents](topics/script.md)
+* [Langage de Modèle](topics/templates2.md)
+* [Compilateur et Machine Virtuelle](topics/vm.md)
+* [Démon](topics/daemons.md)
 
 ## Référence
 
-* [RESTful API](reference/api2.md)
-* [Platform Parameters](reference/platform-parameters.md)
-* [Server Configuration File](reference/backend-config.md)
-* [Synchronized Monitoring Tool](reference/desync_monitor.md)
-* [JSON-RPC Application Programming Interface](reference/json-rpc.md)
+* [API RESTful](reference/api2.md)
+* [Paramètres de la Plateforme](reference/platform-parameters.md)
+* [Fichier de Configuration du Serveur](reference/backend-config.md)
+* [Outil de Surveillance Synchronisée](reference/desync_monitor.md)
+* [Interface de Programmation d'Application JSON-RPC](reference/json-rpc.md)
 
 ## Déploiement
 
-* [Deployment of A IBAX Network](howtos/deployment.md)
+* [Déploiement d'un Réseau IBAX](howtos/deployment.md)
+
 

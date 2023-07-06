@@ -1268,15 +1268,15 @@ GET/ Ekosistem parametrelerinin listesini döndürür.
 * `list`
 
     Dizideki her öğe aşağıdaki parametreleri içerir:
-	* `name`
+  * `name`
 
-	    Parametre adı.
-	* `value`
+      Parametre adı.
+  * `value`
 
-	    Parametre değeri.
-	* `conditions`
+      Parametre değeri.
+  * `conditions`
 
-	    Parametreleri değiştirme izni.
+     Parametreleri değiştirme izni.
 
 **Cevap Örneği**
 200 (OK)
@@ -1370,12 +1370,12 @@ GET
 - `list`
 
     Dizideki her öğe aşağıdaki parametreleri içerir:
-	* `name`
+  * `name`
 
-	    Ön eki olmayan tablo adı.
-	* `count`
+     Ön eki olmayan tablo adı.
+  * `count`
 
-	    Tablodaki giriş sayısı.
+     Tablodaki giriş sayısı.
 
 **Cevap Örneği**
 
@@ -1565,7 +1565,7 @@ role_access alanı bir roller listesi içeriyorsa ve mevcut rolü içermiyorsa, 
     Offset, 0 by default.
 * [lang]
 
-    Bu alan, dil kaynaklarını veya yerelleştirme kodunu belirtir, örneğin: en, zh. Belirtilen dil kaynakları bulamazsanız, örneğin: en-US, o zaman en dil kaynakları grubunda arama yapın.
+    Bu alan, dil kaynaklarını veya yerelleştirme kodunu belirtir, örneğin: en, tr. Belirtilen dil kaynakları bulamazsanız, örneğin: en-US, o zaman en dil kaynakları grubunda arama yapın.
 
 > GET /api/v2/sections
 
@@ -1726,10 +1726,10 @@ GET
         Parametre adı.
     * value
 
-    	Parametre değeri.
+        Parametre değeri.
     * conditions
 
-    	Parametreyi değiştirme izinleri.
+        ametreyi değiştirme izinleri.
 
 **Cevap Örneği**
 200 (OK)

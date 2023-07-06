@@ -281,6 +281,7 @@ The format of this parameter:
 
 
 ### gap between blocks {#gap-between-blocks}
+
 The time interval (in seconds) of generating two blocks on a node.
 
 All nodes in the network use it to determine when to generate a new block. If the current node does not generate a new block within this time period, the turn passes to the next node in the list of honor nodes.
@@ -288,11 +289,13 @@ All nodes in the network use it to determine when to generate a new block. If th
 The minimum value of this parameter is `1` second.
 
 ### incorrect blocks per day {#incorrect-blocks-per-day}
+
 The number of bad blocks that a node is allowed to generate per day before being banned.
 
 When more than half of the nodes in the network receive the same number of bad blocks from a node, the node will be banned from the network within a time period specified in [node ban time](#node-ban-time).
 
 ### max block generation time {#max-block-generation-time}
+
 The maximum time for generating a block, in milliseconds. If a block is not successfully generated within this time period, a timeout error will be reported.
 
 ### max block size {#max-block-size}
@@ -325,19 +328,23 @@ The maximum number of transactions of an account in a block.
 The maximum size of a transaction in bytes.
 
 ### node ban time {#node-ban-time}
+
 The global ban period of the node, in milliseconds.
 
 When more than half of the nodes in the network receive bad blocks from a node up to the number of [incorrect blocks per day](#incorrect-blocks-per-day), the node will be banned in the network for this time period.
 
 ### node ban time local {#node-ban-time-local}
+
 The local ban period of the node, in milliseconds.
 
 When a node receives an incorrect block from another node, it will locally ban the sender's node during this time period.
 
 ### number of nodes {#number-of-nodes}
+
 The maximum number of honor nodes in the [full nodes](#full-nodes) parameter. 
 
 ### price create ecosystem {#price-create-ecosystem}
+
 The fuel fee to create a new single ecosystem.
 
 This parameter defines the additional fuel fee of the `@1NewEcosystem` contract. When the contract is implemented, the fuel fee for executing various functions of this contract will also be calculated and included in the total cost.
@@ -345,6 +352,7 @@ This parameter defines the additional fuel fee of the `@1NewEcosystem` contract.
 This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
 
 ### price create application {#price-create-application}
+
 The fuel fee to create a new single application.
 
 This parameter defines the additional fuel fee of the `@1NewApplication` contract. When the contract is implemented, the fuel fee for executing various functions of this contract will also be calculated and included in the total cost.
@@ -359,6 +367,7 @@ This parameter defines the additional fuel cost of the `@1NewTable` contract. Wh
 This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
 
 ### price create column {#price-create-column}
+
 The fuel fee to create a new single table field.
 
 This parameter defines the additional fuel cost of the `@1NewColumn` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
@@ -366,6 +375,7 @@ This parameter defines the additional fuel cost of the `@1NewColumn` contract. W
 This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
 
 ### price create contract {#price-create-contract}
+
 The fuel fee to create a new single contract.
 
 This parameter defines the additional fuel cost of the `@1NewContract` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
@@ -373,6 +383,7 @@ This parameter defines the additional fuel cost of the `@1NewContract` contract.
 This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
 
 ### price create menu {#price-create-menu}
+
 The fuel fee to create a new single menu.
 
 This parameter defines the additional fuel cost of the `@1NewMenu` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.

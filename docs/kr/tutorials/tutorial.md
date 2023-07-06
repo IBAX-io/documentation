@@ -6,7 +6,7 @@
 
 ## 배포 {#deployment}
 - [명령 줄 도구를 사용하여 애플리케이션 배포하기](#deploy-application-using-command-line-tools)
-- [명령 줄 도구를 사용하여 생태학적 구성하기](#ecological-configuration-using-command-line-tool)
+- [명령 줄 도구를 사용하여 생태학적 구성하기](#ecosystem-configuration-using-command-line-tool)
 
 ## 고급 가이드 {#advanced-guide}
 - [애플리케이션 패키징 도구를 사용하여 애플리케이션 배포하기](#deploy-applications-using-application-packaging-tool)
@@ -188,7 +188,7 @@ sum의 값을 $result에 할당하여 컨트랙트의 결과로 설정합니다.
 3. [데이터 테이블 생성](#step-3-create-table)
 4. [애플리케이션 매개변수 생성](#step-4-create-application-parameters)
 5. [컨트랙트 생성 및 배포](#step-5-create-contract-deploy-contract)
-6. [생태계 매개변수 생성](#step-6-create-ecological-parameters)
+6. [생태계 매개변수 생성](#step-6-create-ecosystem-parameters)
 7. [로컬라이제이션 추가](#step-7-add-localization)
 8. [컨트랙트 수정](#step-8-modify-the-contract)
 9. [데이터 테이블 권한 수정](#step-9-modify-data-table-permissions)
@@ -367,97 +367,97 @@ To exit, press ctrl-d or type exit
 
 
 ```text
-1	contract NewRecord {				
-2	    data {				
-3	        Student string				
-4	        Grade int				
-5	        Class int				
-6	        Mathematics int				
-7	        Physics int				
-8	        Literature int				
-9	    }				
-10	    func getScore(a b c int) map{				
-11	        var m map				
-12	        var overallScore int				
-13	        overallScore = (a+b+c) / 3				
-14	        m["overallScore"] = overallScore				
-15	        if overallScore >= $gradeTypeABest["min"] && overallScore < $gradeTypeABest["max"] {				
-16	            m["score"] = "A+"				
-17	        }elif overallScore >= $gradeTypeA["min"] && overallScore < $gradeTypeA["max"] {				
-18	            m["score"] = "A"				
-19	        }elif overallScore >= $gradeTypeBBest["min"] && overallScore < $gradeTypeBBest["max"] {				
-20	            m["score"] = "B+"				
-21	        }elif overallScore >= $gradeTypeB["min"] && overallScore < $gradeTypeB["max"] {				
-22	            m["score"] = "B"				
-23	        }elif overallScore >= $gradeTypeC["min"] && overallScore < $gradeTypeC["max"]{				
-24	            m["score"] = "C"				
-25	        }else{				
-26	            m["score"] = "Notset"				
-27	        }				
-28	        return m				
-29	    }				
-30	    func safeJsonDecode(m string) map {				
-31	        var res map				
-32	        if Size(m) > 0 {				
-33	            res = JSONDecode(m)				
-34	        }				
-35	        return res				
-36	    }				
-37					
-38	    conditions {				
-39	        if Size($Student) == 0 {				
-40	            warning "Student Can not be empty"				
-41	        }				
-42	        if $Class <= 0{				
-43	            warning "Class cannot be less than or equal to zero"				
-44	        }				
-45	        if $Grade <= 0{				
-46	            warning "Grade cannot be less than or equal to zero"				
-47	        }				
-48	        if $Mathematics < 0 {				
-49	            warning "Mathematics cannot be less than zero"				
-50	        }				
-51	        if $Physics < 0 {				
-52	            warning "Physics cannot be less than zero"				
-53	        }				
-54	        if $Literature < 0 {				
-55	            warning "Literature cannot be less than zero"				
-56	        }				
-57	        if $Mathematics > 100 || $Physics > 100 ||  $Literature > 100{				
-58	            warning "Score cannot exceed 100"				
-59	        }				
-60	        var app map				
-61	        app = DBFind("@1applications").Columns("id,ecosystem").Where({"ecosystem": 18,"name":"GradesRecorder","deleted":0}).Row()				
-62	        if !app {				
-63	            warning LangRes("@1app_not_found")				
-64	        }				
-65					
-66	        var app_id int				
-67	        app_id = Int(app["id"])				
-68	        $eId = Int(app["ecosystem"])				
-69	        $gradeBestType = AppParam(app_id, "grade_best_type", $eId)				
-70	        $gradeTypeABest = safeJsonDecode(AppParam(app_id, "grade_type_a+", $eId))				
-71	        $gradeTypeA = safeJsonDecode(AppParam(app_id, "grade_type_a", $eId))				
-72	        $gradeTypeBBest = safeJsonDecode(AppParam(app_id, "grade_type_b+", $eId))				
-73	        $gradeTypeB = safeJsonDecode(AppParam(app_id, "grade_type_b", $eId))				
-74	        $gradeTypeC = safeJsonDecode(AppParam(app_id, "grade_type_c", $eId))				
-75	    }				
-76	    action {				
-77	        var m map 				
-78	        m = getScore($Mathematics,$Physics,$Literature)				
-79	        var in map				
-80	        in["student"] = $Student				
-81	        in["class"] = $Class				
-82	        in["grade"] = $Grade				
-83	        in["mathematics"] = $Mathematics				
-84	        in["physics"] = $Physics 				
-85	        in["literature"] = $Literature 				
-86	        in["overall_score"] = m["overallScore"]				
-87	        in["score"] = m["score"]				
-88	        in["created_at"] = $time				
-89	        DBInsert("@"+ Str($eId)+"grade_info", in)				
-90	    }				
-91	}				
+1 contract NewRecord {
+2       data {
+3         Student string
+4         Grade int
+5         Class int
+6         Mathematics int
+7         Physics int
+8         Literature int
+9       }
+10     func getScore(a b c int) map{
+11          var m map
+12          var overallScore int
+13          overallScore = (a+b+c) / 3
+14          m["overallScore"] = overallScore
+15          if overallScore >= $gradeTypeABest["min"] && overallScore < $gradeTypeABest["max"] {
+16              m["score"] = "A+"
+17          }elif overallScore >= $gradeTypeA["min"] && overallScore < $gradeTypeA["max"] {
+18              m["score"] = "A"
+19          }elif overallScore >= $gradeTypeBBest["min"] && overallScore < $gradeTypeBBest["max"] {
+20              m["score"] = "B+"
+21          }elif overallScore >= $gradeTypeB["min"] && overallScore < $gradeTypeB["max"] {
+22              m["score"] = "B"
+23          }elif overallScore >= $gradeTypeC["min"] && overallScore < $gradeTypeC["max"]{
+24              m["score"] = "C"
+25          }else{
+26              m["score"] = "Notset"
+27          }
+28          return m
+29      }
+30      func safeJsonDecode(m string) map {
+31          var res map
+32          if Size(m) > 0 {
+33             res = JSONDecode(m)
+34          }
+35          return res
+36      }
+37
+38      conditions {
+39          if Size($Student) == 0 {
+40            warning "Student Can not be empty"
+41          }
+42          if $Class <= 0{
+43              warning "Class cannot be less than or equal to zero"
+44          }
+45          if $Grade <= 0{
+46              warning "Grade cannot be less than or equal to zero"
+47          }
+48          if $Mathematics < 0 {
+49              warning "Mathematics cannot be less than zero"
+50          }
+51          if $Physics < 0 {
+52              warning "Physics cannot be less than zero"
+53          }
+54          if $Literature < 0 {
+55              warning "Literature cannot be less than zero"
+56          }
+57          if $Mathematics > 100 || $Physics > 100 ||  $Literature > 100{
+58              warning "Score cannot exceed 100"
+59          }
+60          var app map
+61          app = DBFind("@1applications").Columns("id,ecosystem").Where({"ecosystem": 18,"name":"GradesRecorder","deleted":0}).Row()
+62          if !app {
+63              warning LangRes("@1app_not_found")
+64          }
+65
+66          var app_id int
+67          app_id = Int(app["id"])
+68          $eId = Int(app["ecosystem"])
+69          $gradeBestType = AppParam(app_id, "grade_best_type", $eId)
+70          $gradeTypeABest = safeJsonDecode(AppParam(app_id, "grade_type_a+", $eId))
+71          $gradeTypeA = safeJsonDecode(AppParam(app_id, "grade_type_a", $eId))
+72          $gradeTypeBBest = safeJsonDecode(AppParam(app_id, "grade_type_b+", $eId))
+73          $gradeTypeB = safeJsonDecode(AppParam(app_id, "grade_type_b", $eId))
+74          $gradeTypeC = safeJsonDecode(AppParam(app_id, "grade_type_c", $eId))
+75      }
+76      action {
+77          var m map
+78          m = getScore($Mathematics,$Physics,$Literature)
+79          var in map
+80          in["student"] = $Student
+81          in["class"] = $Class
+82          in["grade"] = $Grade
+83          in["mathematics"] = $Mathematics
+84          in["physics"] = $Physics
+85          in["literature"] = $Literature
+86          in["overall_score"] = m["overallScore"]
+87          in["score"] = m["score"]
+88          in["created_at"] = $time
+89          DBInsert("@"+ Str($eId)+"grade_info", in)
+90      }
+91  }
 ```
 
 다음은 라인별로 설명됩니다:
@@ -556,7 +556,7 @@ callContract @1NewContract {"ApplicationId": 47, "Value-file": "NewRecord.sim", 
  
 예를 들어, 한 사람만 이 새 레코드 계약을 호출할 수 있고 다른 사람은 호출할 수 없도록 지정하려는 경우 생태학적 매개변수 `new_record_account`를 설정할 수 있습니다.
 
-### Step 6. 생태 매개변수 생성 {#step-6-create-ecological-parameters}
+### Step 6. 생태 매개변수 생성 {#step-6-create-ecosystem-parameters}
 
 계약 `@1NewParameter`를 호출하면 에코 매개변수가 생성됩니다.
 `@1parameters` 테이블의 `new_record_account`, 에코 매개변수를 수정해야 하는 경우 `@1EditParameter`를 호출할 수 있습니다.
@@ -776,7 +776,7 @@ Encode:ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsb
 >callContract @1ImportUpload {"Data": {"Name": "filename", "MimeType": "mimeType", "Body": "ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsbG9Xb3JsZCIsCgkJCSJWYWx1ZSI6..."}}
 ```
 
--	단계 2
+- 단계 2
 호출이 완료되면 `getList` 명령을 사용하여 `1_buffer_data` 테이블의 데이터를 쿼리합니다.
 
 ```shell
@@ -801,7 +801,7 @@ value.data->Data의 데이터를 1차원 배열 [a,b,c,d]로 어셈블합니다.
 {"Data":"[a,b,c,d]"}
 ```
 
--	단계 4
+- 단계 4
 계약 `@1Import`를 호출하여 애플리케이션 데이터를 가져옵니다.
 
 ```shell
@@ -809,7 +809,7 @@ value.data->Data의 데이터를 1차원 배열 [a,b,c,d]로 어셈블합니다.
 ```
 
 
-## 생태 파라미터를 구성하기 위해 명령 줄 도구를 사용합니다. {#ecological-configuration-using-command-line-tool}
+## 생태 파라미터를 구성하기 위해 명령 줄 도구를 사용합니다. {#ecosystem-configuration-using-command-line-tool}
 
 이 자습서에서는 다음 방법을 배웁니다.
 - 1. [생태계 가입 신청](#apply-to-join-the-ecosystem)
@@ -821,7 +821,7 @@ value.data->Data의 데이터를 1차원 배열 [a,b,c,d]로 어셈블합니다.
 
 
 Before starting this tutorial, you need to have an application of your own and know the concept of ecosystem and application, you can refer to [Getting Started Guide](#getting-started-guide)
-We will do the ecological configuration on the IBAX blockchain via [command line tool](https://github.com/IBAX-io/ibax-cli)
+We will do the ecosystem configuration on the IBAX blockchain via [command line tool](https://github.com/IBAX-io/ibax-cli)
 
 ### 생태계 가입 신청 (Apply to join the ecosystem) {#apply-to-join-the-ecosystem}
 

@@ -277,7 +277,7 @@ To upload a file using a form in the format of `multipart/form-data`, the data t
 ```
 contract Upload {
      data {
-  	   File file
+        File file
      }
      ...
 }
@@ -1116,7 +1116,7 @@ count = GetRowsCountXLSX(binid, 1)
 
 ### LangRes {#langres}
 
-Returns a multilingual resource with name label for language lang, specified as a two-character code, for example: `en`, `zh`. If there is no language for a selected language, then the language resource of the `en` label is returned.
+Returns a multilingual resource with name label for language lang, specified as a two-character code, for example: `en`, `it`. If there is no language for a selected language, then the language resource of the `en` label is returned.
 
 **Syntax**
 
@@ -1135,7 +1135,7 @@ LangRes(label string, lang string) string
 
 ```
 warning LangRes("@1confirm", "en")
-error LangRes("@1problems", "zh")
+error LangRes("@1problems", "it")
 ```
 
 
@@ -3255,7 +3255,7 @@ Adds language resources to the current ecosystem, and the permission to do so is
 Parameters:
 
   * **Name** string - name of the language resources in Latin characters;
-  * **Trans** string - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "zh": "Chinese text"}`.
+  * **Trans** string - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "it": "italiano text"}`.
 
 ### EditLang {#editlang}
 
@@ -3264,7 +3264,7 @@ Changes the language resources in the current ecosystem, and the permission to d
 Parameters:
 
   * **Id** int - language resources ID.
-  * **Trans** - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "zh": "Chinese text"}`.
+  * **Trans** - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "it": "italiano text"}`.
 
 ### Import {#import}
 

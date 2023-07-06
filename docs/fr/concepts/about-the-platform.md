@@ -1,268 +1,312 @@
-# IBAX Overview {#ibax-overview}
+# Aperçu d'IBAX {#ibax-overview}
 
-- [IBAX Overview](#ibax-overview)
-  - [Features](#features)
+- [Aperçu d'IBAX](#ibax-overview)
+  - [Fonctionnalités](#features)
   - [Architecture](#architecture)
-    - [Network](#network)
-    - [Honor Node](#honor-node)
+    - [Réseau](#network)
+    - [Nœud Honor](#honor-node)
     - [Transactions](#transactions)
-    - [Network protocol](#network-protocol)
-    - [Block and transaction verification](#block-and-transaction-verification)
-    - [Database](#database)
+    - [Protocole réseau](#network-protocol)
+    - [Vérification des blocs et des transactions](#block-and-transaction-verification)
+    - [Base de données](#database)
   - [ECOLIB](#ecolib)
     - [IDE](#ide)
     - [Applications](#applications)
     - [Tables](#tables)
-    - [Ecosystem Parameters](#ecosystem-parameters)
-  - [Access rights control mechanism](#access-rights-control-mechanism)
-    - [Access Control Actions](#access-control-actions)
-    - [Access rights management](#access-rights-management)
-    - [Exclusive rights](#exclusive-rights)
-  - [Virtual private ecosystem](#virtual-private-ecosystem)
-    - [Requests to web resources](#requests-to-web-resources)
-    - [Rights to read data](#rights-to-read-data)
-    - [CLB creation](#clb-creation)
-    - [CLB usage](#clb-usage)
+    - [Paramètres de l'écosystème](#ecosystem-parameters)
+  - [Mécanisme de contrôle des droits d'accès](#access-rights-control-mechanism)
+    - [Actions de contrôle d'accès](#access-control-actions)
+    - [Gestion des droits d'accès](#access-rights-management)
+    - [Droits exclusifs](#exclusive-rights)
+  - [Écosystème virtuel privé](#virtual-private-ecosystem)
+    - [Demandes vers des ressources web](#requests-to-web-resources)
+    - [Droits de lecture des données](#rights-to-read-data)
+    - [Création de CLB](#clb-creation)
+    - [Utilisation de CLB](#clb-usage)
 
-## Features {#features}
+## Fonctionnalités {#features}
 
-The IBAX Network (IBAX) has an integrated application development environment (IDE). It is a multi-level access control system for data, user pages and smart contracts.
+Le réseau IBAX (IBAX) dispose d'un environnement de développement d'applications intégré (IDE). Il s'agit d'un système de contrôle d'accès multi-niveaux pour les données, les pages utilisateur et les contrats intelligents.
 
-In terms of its structure and functions, IBAX is quite different from most existing blockchain platforms:
+En termes de structure et de fonctions, IBAX est assez différent des plateformes blockchain existantes :
 
-* The development and use of IBAX applications are in an autonomous software environment called **ecosystem**. Each ecosystem has its own membership rules that are initially established by the creator;
+* Le développement et l'utilisation des applications IBAX se font dans un environnement logiciel autonome appelé **écosystème**. Chaque écosystème a ses propres règles d'adhésion établies initialement par le créateur ;
 
-* Ecosystem activities, such as the data involved in <font color=Red>database table</font> records or updates, are based on **registers** created with **smart contracts**. In most other blockchain platforms, activities are based on transaction exchange between accounts;
+* Les activités de l'écosystème, telles que les données impliquées dans les enregistrements ou les mises à jour de **tables de base de données**, sont basées sur des **registres** créés avec des **contrats intelligents**. Dans la plupart des autres plateformes blockchain, les activités sont basées sur l'échange de transactions entre les comptes ;
 
-* The access to **registers** and the control of relationships between ecosystem members are managed by a set of rules called **smart laws**.
+* L'accès aux **registres** et le contrôle des relations entre les membres de l'écosystème sont gérés par un ensemble de règles appelées **lois intelligentes**.
 
 ## Architecture {#architecture}
 
-### Network {#network}
+### Réseau {#network}
 
-IBAX  is built on a peer-to-peer (P2P) network.
+IBAX est construit sur un réseau pair à pair (P2P).
 
-Guardian nodes in the network store the latest version of the blockchain database, which records the latest status of  IBAX's blockchain.
+Les nœuds gardiens du réseau stockent la dernière version de la base de données blockchain, qui enregistre le dernier état de la blockchain d'IBAX.
 
-Network users can receive data by sending requests from the guardian node database via **Weaver** or REST API commands. After signing by users, new requests are sent to the network as transactions in binary format. Essentially, these transactions are commands to modify relevant database records. Transactions are aggregated in blocks, and such blocks are sent to the blockchains of all network nodes. Each guardian node will process the transactions in the block, thereby updating the corresponding data in the database.
+Network users can receive data by sending requests from the guardian node database via **Weaver** or REST API commands. After signing by users, new requests are sent to the network as transactions in binary format. 
+Essentially, these transactions are commands to modify relevant database records. 
+Transactions are aggregated in blocks, and such blocks are sent to the blockchains of all network nodes. 
+Each guardian node will process the transactions in the block, thereby updating the corresponding data in the database.
 
-### Honor Node {#honor-node}
+### Nœud d'honneur {#honor-node}
 
-A guardian node which is privileged to generate new blocks in the network is called a honor node. The maximum number of honor nodes is defined by [number_of_nodes](../reference/platform-parameters.md#number-of-nodes) in the platform parameters table, showing that the number of honor nodes is limited.
+Un nœud gardien qui est privilégié pour générer de nouveaux blocs dans le réseau est appelé un nœud d'honneur. 
+Le nombre maximum de nœuds d'honneur est défini par [number_of_nodes](../reference/platform-parameters.md#number-of-nodes) dans le tableau des paramètres de la plateforme, montrant que le nombre de nœuds d'honneur est limité.
 
-An Honor Node is one of the key components of IBAX Public Network. It executes and validates transactions, collects transaction information from other nodes, adds transactions to the queue, and verifies the correctness and validity of new blocks using the confirmation mechanism. Generally, it has two states: packaging and non-packaging. 
+Un nœud d'honneur est l'un des composants clés du réseau public IBAX. 
+Il exécute et valide les transactions, collecte les informations de transaction des autres nœuds, ajoute les transactions à la file d'attente et vérifie la justesse et la validité des nouveaux blocs en utilisant le mécanisme de confirmation. En général, il a deux états : l'emballage et le non-emballage.
 
-An Honor Node in the packaging state delivers the highest performance. It obtains transaction requests to be executed from the transaction queue and verifies the ignature validity and correctness of transactions, e.g. transfer amount, permission for transaction operations, and accurate execution of transactions. 
+Un nœud d'honneur dans l'état d'emballage offre les meilleures performances. Il obtient les demandes de transaction à exécuter à partir de la file d'attente des transactions et vérifie la validité de la signature et la justesse des transactions, par exemple le montant du transfert, l'autorisation des opérations de transaction et l'exécution précise des transactions. 
 
-All ransactional operations, correct or wrong (wrong transactions will be rolled back), will be written into the block. 
+Toutes les opérations transactionnelles, correctes ou incorrectes (les transactions incorrectes seront annulées), seront écrites dans le bloc. 
 
-Wrong transactions will incur a punitive gas fee. Executed transactions are notified to other Honor Nodes along with the block through broadcasting.
+Les transactions incorrectes entraîneront des frais de gaz punitifs. Les transactions exécutées sont notifiées aux autres nœuds d'honneur avec le bloc via une diffusion.
 
-An Honor Node in the non-packaging state is mainly responsible for block verification to ensure in-block transactions generated by a packaging node are executed orrectly. In case of an anomaly, it will trigger the exception handling mechanism and IBAX Network will roll back and re-verify the block. 
+Un nœud d'honneur dans l'état de non-emballage est principalement responsable de la vérification des blocs pour s'assurer que les transactions dans le bloc générées par un nœud d'emballage sont exécutées correctement. En cas d'anomalie, il déclenchera le mécanisme de gestion des exceptions et le réseau IBAX effectuera un retour en arrière et une nouvelle vérification du bloc.
 
-In order to ensure transaction execution efficiency, Honor Nodes collect transaction information constantly. 
+Afin de garantir l'efficacité de l'exécution des transactions, les nœuds d'honneur collectent en permanence des informations sur les transactions.
 
-### Transactions {#transactions}
+### Transactions (fr: Transactions) {#transactions}
+Les transactions, y compris les données utilisées pour mettre en œuvre les **contrats intelligents**, sont générées par Weaver.
 
-Transactions, including data used to implement **smart contracts**, are generated by Weaver.
+Les transactions sont signées par les utilisateurs avec une clé privée. La clé privée et la fonction de signature de Weaver peuvent être stockées dans les navigateurs, les clients logiciels, les cartes SIM ou des dispositifs physiques dédiés. Dans l'implémentation actuelle, la clé privée est chiffrée avec l'algorithme ECDSA et stockée du côté de Weaver. Toutes les transactions sont signées avec l'algorithme ECDSA.
 
-Transactions are signed by users with a private key. The private key and Weaver's signature function can be stored in browsers, software clients, SIM cards or dedicated physical devices. In the current implementation, the private key is encrypted with the ECDSA algorithm and stored at the Weaver side. All transactions are signed with the ECDSA algorithm.
+La structure d'une transaction est conforme au format suivant :
 
-The structure of a transaction complies with the following format:
+> -   ID - ID du contrat intelligent mis en œuvre ;
+> -   Params - paramètres envoyés au contrat intelligent ;
+> -   KeyID - ID de l'utilisateur envoyant la transaction ;
+> -   PublicKey - clé publique du nœud honoraire ;
+> -   Time - horodatage généré par la transaction ;
+> -   EcosystemID - ID de l'écosystème où la transaction est effectuée ;
+> -   ТokenEcosystem - ID de l'écosystème, 1 par défaut, et les jetons à l'intérieur sont utilisés pour couvrir les frais de transaction.
 
-> -   ID - ID of the contract implemented;
-> -   Params - parameters sent to the contract;
-> -   KeyID - ID of the user sending the transaction;
-> -   PublicKey - public key of the honor node;
-> -   Time - timestamp generated by the transaction;
-> -   EcosystemID - ID of the ecosystem where the transaction is made;
-> -   ТokenEcosystem - ID of the ecosystem, 1 by default, and tokens within it are used to cover the transaction costs.
+### Protocole réseau {#network-protocol}
 
-### Network protocol {#network-protocol}
+Les transactions seront envoyées aux nœuds honorés par les utilisateurs, où elles seront soumises à une vérification de base pour s'assurer que les formats sont corrects, puis elles seront ajoutées à la file d'attente.
+Les transactions sont également envoyées à d'autres nœuds honorés du réseau et ajoutées à leur file d'attente respective.
 
-Transactions will be sent to honor nodes by users, where they are subject to basic verification to ensure the formats are correct and then are added to the queue.Transactions are also sent to other honor nodes on the network and added to the respective queue.
+Un nœud honoré a le privilège de générer de nouveaux blocs pendant une période de temps spécifique, déterminée par le paramètre de la plateforme **full_nodes** et un algorithme spécial.
+Les nœuds honorés récupèrent les transactions des files d'attente et les envoient au générateur de blocs.
 
-A honor node is privileged to generate new blocks within a specific time period which is determined by the platform parameter **full_nodes** and a special algorithm. Honor nodes retrieve transactions from queues and send them to the block generator. 
+Lors de la génération d'un nouveau bloc, les transactions de ce bloc sont également traitées : chaque transaction est envoyée à une machine virtuelle, où le contrat intelligent correspondant aux paramètres de la transaction est implémenté, mettant ainsi à jour les enregistrements dans la base de données.
 
-When generating a new block, transactions in such block will also be processed: each transaction is sent to a virtual machine, where the contract corresponding to the transaction parameters is implemented, thereby updating records in the database.
+Les nouveaux blocs doivent être vérifiés pour s'assurer qu'il n'y a pas d'erreurs avant d'être envoyés à d'autres nœuds honorés sur d'autres réseaux.
 
-New blocks should be verified to ensure there are no errors before sending to other honor nodes on other networks. 
+Un nouveau bloc sera ajouté à la file d'attente des blocs lorsqu'il est reçu par un autre nœud honoré, puis, après vérification, il sera ajouté à la blockchain du nœud honoré où il se trouve pour traiter les transactions du bloc et mettre à jour les enregistrements dans la base de données.
 
-A new block will be added to the block queue when received by other honor node and, after verification, to the blockchain of the honor node where it is located to process transactions in the block, and thereby updating records in the database. 
+### Vérification des blocs et des transactions {#block-and-transaction-verification}
 
-### Block and transaction verification {#block-and-transaction-verification}
+Après avoir généré ou reçu un nouveau bloc, il sera vérifié sur tous les autres nœuds honorables, qui couvrent ce qui suit:
 
-After generating or receiving a new block, it will be verified on all other honor nodes, which cover the following:  
-
-> -   The first byte of the data received should be 0. If not, the data received will not be considered as a block;
+> - Le premier octet des données reçues doit être 0. Sinon, les données reçues ne seront pas considérées comme un bloc;
 >
-> -   The received block generation timestamp should be before the current timestamp;
+> - Le timestamp de génération du bloc reçu doit être antérieur au timestamp actuel;
 >
-> -   The block generation timestamp should correspond to the time interval at which the honor node having privilege to generate new blocks; 
+> - Le timestamp de génération du bloc doit correspondre à l'intervalle de temps pendant lequel le nœud honoré a le privilège de générer de nouveaux blocs;
 >
-> -   The height of a new block should be greater than the height of the largest block on the existing blockchain;
+> - La hauteur d'un nouveau bloc doit être supérieure à la hauteur du plus grand bloc de la blockchain existante;
 >
-> -   It cannot exceed the maximum expenses allowed for all transactions in the block;
+> - Il ne peut pas dépasser les dépenses maximales autorisées pour toutes les transactions dans le bloc;
 >
-> -   The block must be properly signed with the secret key of the node which it is located. The signature data should contain:
+> - Le bloc doit être correctement signé avec la clé secrète du nœud dans lequel il se trouve. Les données de signature doivent contenir:
 >
->     > - The height of the block, the hash of the previous block, the timestamp of the block, the ID of the ecosystem where the block is located, and the account address of the honor node of the block;
->     > - The position of the honor node in the platform parameter full_nodes array, the Merkel Root (MrklRoot) of all transactions in the block, and the revert hash of the previous block.
+>     > - La hauteur du bloc, le hash du bloc précédent, le timestamp du bloc, l'ID de l'écosystème où se trouve le bloc et l'adresse du nœud honoré du bloc;
+>     > - La position du nœud honoré dans le tableau full_nodes des paramètres de la plateforme, la racine de Merkel (MrklRoot) de toutes les transactions dans le bloc et le hash de retour du bloc précédent.
 
-To check the correctness of each transaction in the block with the following methods:
+Pour vérifier la validité de chaque transaction dans le bloc, utilisez les méthodes suivantes:
 
-> - The hash of each transaction must be unique;
-> - A key-signed transaction cannot exceed the limit ([max_tx_block_per_user](../reference/platform-parameters.md#max-tx-block-per-user));
-> - It cannot exceed the limit of the maximum transaction size ([max_tx_size](../reference/platform-parameters.md#max-tx-size));
-> - The transaction time can neither be greater than the block generation time nor be greater than the block generation time plus 600 seconds, and it can be no less than the block generation time minus 86400 seconds;
-> - The transaction must be signed properly;
-> - The user who implements the contract must have sufficient tokens in his account to pay for the transaction cost.
+> - Le hachage de chaque transaction doit être unique ;
+> - Une transaction signée par clé ne peut pas dépasser la limite ([max_tx_block_per_user](../reference/platform-parameters.md#max-tx-block-per-user)) ;
+> - Elle ne peut pas dépasser la limite de la taille maximale de transaction ([max_tx_size](../reference/platform-parameters.md#max-tx-size)) ;
+> - Le temps de transaction ne peut être supérieur au temps de génération de bloc ni supérieur au temps de génération de bloc plus 600 secondes, et il ne peut être inférieur au temps de génération de bloc moins 86400 secondes ;
+> - La transaction doit être correctement signée ;
+> - L'utilisateur qui implémente le contrat intelligent doit avoir suffisamment de jetons sur son compte pour payer les frais de transaction.
 
-### Database {#database}
-The underlying data storage layer of IBAX Network is a `PGSQL` database completely open to the public. Based on the permission design of the IBAX Operating System Platform, users do not need to worry about data security. With an object-oriented design philosophy, IBAX Network pre-compiles data through a relational PGSQL database and improves the data processing efficiency. 
+### Base de données {#database}
+La couche de stockage de données sous-jacente du réseau IBAX est une base de données `PGSQL` entièrement ouverte au public. 
+Basé sur la conception de permission de la plateforme du système d'exploitation IBAX, les utilisateurs n'ont pas besoin de se soucier de la sécurité des données. 
+Avec une philosophie de conception orientée objet, le réseau IBAX précompile les données via une base de données relationnelle PGSQL et améliore l'efficacité du traitement des données. 
 
-You may be interested in the following if you are a technical specialist, or just skip it if you are not.
-① All tables without a number prefix in their name belong to permission tables of IBAX Network Basic; 
-② All tables with a number prefix in their name belong to permission tables of ecoLibs.
+Vous pourriez être intéressé par ce qui suit si vous êtes un spécialiste technique, ou vous pouvez simplement le sauter si vous ne l'êtes pas.
+① Toutes les tables sans préfixe numérique dans leur nom appartiennent aux tables de permission de base du réseau IBAX ;
+② Toutes les tables avec un préfixe numérique dans leur nom appartiennent aux tables de permission d'ecoLibs.
 
 ## ECOLIB {#ecolib}
 
-It is quite easy for users, even common users, to create an ecoLib of their own on the IBAX Network System Platform. We have integrated and developed an application where ecoLib creation takes just one click. 
+Il est assez facile pour les utilisateurs, même les utilisateurs ordinaires, de créer leur propre écoLib sur la plateforme du système réseau IBAX. 
+Nous avons intégré et développé une application où la création d'écoLib ne nécessite qu'un seul clic. 
 
-When creating an ecoLib, you can configure the ecosystem parameters and rules, and set the administrator account and charging model. Most importantly, to apply the DPoA consensus within ecoLibs better, creators can set it up by writing or importing their own contracts. 
+Lors de la création d'un écoLib, vous pouvez configurer les paramètres et règles de l'écosystème, et définir le compte administrateur et le modèle de tarification. 
+Plus important encore, pour appliquer le consensus DPoA au sein des écoLibs, les créateurs peuvent le configurer en écrivant ou en important leurs propres contrats intelligents. 
 
-We support quick emission of ecoLib tokens by importing contract templates.
+Nous soutenons l'émission rapide de jetons écoLib en important des modèles de contrats intelligents.
 
-Due to the differences in consensus and management permissions, ecoLibs fall into decentralized and centralized ones. They have no specific advantage or disadvantage by type. You should choose the appropriate one against your service needs. What to do if it is OK for now but not for the future? You can change ecoLib parameters, even the consensus mechanism, token, and governance method, on the IBAX Network System Platform.  You can leave it all to the self-governance mechanism maintained by the ecoLib administrator or members (depending on the ecoLib type). 
+En raison des différences de consensus et de permissions de gestion, les écoLibs se divisent en décentralisés et centralisés. 
+Ils n'ont aucun avantage ou inconvénient spécifique par type. Vous devriez choisir celui qui convient le mieux à vos besoins de service. 
+Que faire si cela convient pour le moment mais pas pour l'avenir ? 
+Vous pouvez modifier les paramètres de l'écoLib, même le mécanisme de consensus, le jeton et la méthode de gouvernance, sur la plateforme du système réseau IBAX. 
+Vous pouvez tout laisser au mécanisme d'autogouvernance maintenu par l'administrateur ou les membres de l'écoLib (selon le type d'écoLib). 
 
-On the IBAX Network System Platform, an ecoLib has complete data control permissions and permissions to design and access independent database tables and fields. In the data control permission design, we support triggering when a field satisfies a logical expression. This feature allows for imagination space in special services like monitoring, logic satisfaction, and triggering by time and specific conditions. 
+Sur la plateforme du système réseau IBAX, un écoLib dispose de permissions de contrôle complet des données et de permissions pour concevoir et accéder à des tables et champs de base de données indépendants. 
+Dans la conception des permissions de contrôle des données, nous prenons en charge le déclenchement lorsque un champ satisfait une expression logique. 
+Cette fonctionnalité permet d'imaginer des services spéciaux tels que la surveillance, la satisfaction logique et le déclenchement en fonction du temps et de conditions spécifiques. 
 
-There may be multiple DApps in an ecoLib, and each of them can have independent parameters. An ecoLib is like a platform where you can implement anything you want. 
+Il peut y avoir plusieurs DApps dans un écoLib, et chacun d'entre eux peut avoir des paramètres indépendants. 
+Un écoLib est comme une plateforme où vous pouvez implémenter tout ce que vous voulez. 
 
-In order to better support ecosystem developers, we provide the editing, management, and development tool Weaver. It will reduce the ecosystem development, maintenance, and management costs greatly.
+Afin de mieux soutenir les développeurs d'écosystèmes, nous fournissons l'outil d'édition, de gestion et de développement Weaver. 
+Il réduira considérablement les coûts de développement, de maintenance et de gestion de l'écosystème.
 
 ### IDE {#ide}
 
-Weaver has a complete integrated development environment (IDE) for creating blockchain applications, which does not require software developers to have a deep understanding of the blockchain technology.
+Weaver dispose d'un environnement de développement intégré (IDE) complet pour créer des applications blockchain, qui ne nécessite pas aux développeurs de logiciels d'avoir une compréhension approfondie de la technologie blockchain.
 
-Weaver provides a table management tool, contract editor, page editor and other functions needed to create applications in the ecosystem, without the support of any software module.
+Weaver fournit un outil de gestion de table, un éditeur de smart contract, un éditeur de page et d'autres fonctions nécessaires pour créer des applications dans l'écosystème, sans le support d'un module logiciel quelconque.
 
-The IDE mainly includes the following parts:
+L'IDE comprend principalement les parties suivantes :
 
-> -   list of ecosystem parameters;
-> -   contract editor;
-> -   table management tool;
-> -   page editor and visual page designer;
-> -   multi-language resources editor;
-> -   application import/export functions.
+> - liste des paramètres de l'écosystème ;
+> - éditeur de smart contract ;
+> - outil de gestion de table ;
+> - éditeur de page et concepteur de page visuel ;
+> - éditeur de ressources multilingues ;
+> - fonctions d'import/export d'applications.
 
 ### Applications {#applications}
 
-An application is a collection of elements such as database tables, smart contracts, and user pages with access rights for configuration. The ecosystem to which the application element belongs is indicated by the prefix in the element name, such as <font color=Red>@1ElementName</font>, where the ecosystem ID is indicated by the number <font color=Red>1</font> after the <font color=Red>@</font> symbol. When using application elements in the current ecosystem, the prefix <font color=Red>@1</font> can be omitted. These applications can perform useful functions or implement various services.
+Une application est une collection d'éléments tels que des tables de base de données, des smart contracts et des pages utilisateur avec des droits d'accès pour la configuration.
+L'écosystème auquel l'élément de l'application appartient est indiqué par le préfixe dans le nom de l'élément, tel que <font color=Red>@1NomElement</font>, où l'ID de l'écosystème est indiqué par le nombre <font color=Red>1</font> après le symbole <font color=Red>@</font>.
+Lors de l'utilisation des éléments de l'application dans l'écosystème actuel, le préfixe <font color=Red>@1</font> peut être omis.
+Ces applications peuvent effectuer des fonctions utiles ou mettre en œuvre divers services.
 
 ### Tables {#tables}
 
-In IBAX's database, each ecosystem can create an unlimited number of tables. Tables of a specific ecosystem can be identified by a prefix containing the ecosystem ID, which will not be displayed in Weaver.
+Dans la base de données d'IBAX, chaque écosystème peut créer un nombre illimité de tables.
+Les tables d'un écosystème spécifique peuvent être identifiées par un préfixe contenant l'ID de l'écosystème, qui ne sera pas affiché dans Weaver.
 
-A table is not bound in any way and belongs to a certain contract. It can be used by all applications within the scope of the table's access rights.
+Une table n'est liée d'aucune manière et appartient à un certain contrat intelligent. Elle peut être utilisée par toutes les applications dans le cadre des droits d'accès de la table.
 
-Each ecosystem can create a set of data tables for developing its applications or may, possibly, access data tables of other ecosystems by specifying the table name prefix.
+Chaque écosystème peut créer un ensemble de tables de données pour développer ses applications ou éventuellement accéder aux tables de données d'autres écosystèmes en spécifiant le préfixe du nom de la table.
 
-By configuring access rights through smart laws, data are logged into tables. Smart laws are used for rights management.
+En configurant les droits d'accès via des lois intelligentes, les données sont enregistrées dans les tables. Les lois intelligentes sont utilisées pour la gestion des droits.
 
- >  Table management tool
+> Outil de gestion des tables
 
-You can find the table management tool in Weaver **menu Table**, which cover the following functions:
+Vous pouvez trouver l'outil de gestion des tables dans le menu Table de Weaver, qui comprend les fonctions suivantes :
 
--   View the list of tables and their entries;
--   Create new tables;
--   Add a table field and specify its data type, such as `Text` ， `Date/Time` ， `Varchar` , `Character` ， `JSON` ， `Number` ， `Money` ， `Double` ，`Binary`；
-  - `Text` correspond `postgresql` `text`
-  - `Date/Time` correspond `postgresql` `timestamp`
-  - `Varchar` correspond `postgresql` `varchar(102400)`
-  - `Character` correspond `postgresql` `character(1) NOT NULL DEFAULT '0'`
-  - `JSON` correspond `postgresql` `jsonb`
-  - `Number` correspond `postgresql` `bigint NOT NULL DEFAULT '0'`
-  - `Money` correspond `postgresql` `decimal (30, 0) NOT NULL DEFAULT '0'`
-  - `Double` correspond `postgresql` `double precision`
-  - `Binary` correspond `postgresql` `bytea NOT NULL DEFAULT '\x'`
+- Afficher la liste des tables et de leurs entrées ;
+- Créer de nouvelles tables ;
+-   Ajoutez un champ de tableau et spécifiez son type de données, tel que`Text` ， `Date/Time` ， `Varchar` , `Character` ， `JSON` ， `Number` ， `Money` ， `Double` ，`Binary`；
+  - `Text` correspond à `texte` `postgresql`
+  - `Date/Time` correspond à `timestamp` dans `postgresql`.
+  - `Varchar` correspond à `postgresql` `varchar(102400)`
+  - `Character` correspond à `postgresql` `character(1) NOT NULL DEFAULT '0'`
+  - `JSON` correspond à `postgresql` `jsonb`
+  - `Number` correspond à `postgresql` `bigint NOT NULL DEFAULT '0'`
+  - `Money` correspond à `postgresql` `decimal (30, 0) NOT NULL DEFAULT '0'`
+  - `Double` correspond à `double precision` dans `postgresql`
+  - `Binary` correspond à `bytea NOT NULL DEFAULT '\x'` dans `postgresql`
 
-- Manage privileges for insert, update data and change table structure.
+- Gérer les privilèges pour insérer, mettre à jour les données et modifier la structure de la table.
 
-> Table data manipulation
+> Manipulation des données de la table
 
-For better database manipulation, both Needle and Logicor have the **DBFind** function, which is used to retrieve values and data arrays from tables.
+Pour une meilleure manipulation de la base de données, Needle et Logicor disposent tous deux de la fonction **DBFind**, qui est utilisée pour récupérer des valeurs et des tableaux de données à partir des tables.
 
-The contract language [DBInsert](../topics/script.md#dbinsert) function is used to add entries to tables. The [DBUpdate](../topics/script.md#dbupdate) and[DBUpdateExt](../topics/script.md#dbupdateext) functions are used to update the value of an existing entry. During updating, the corresponding data in tables will be updated, and the blockchain will add new transactions while retaining all historical transactions. Data in tables can only be modified and cannot be deleted.
+La fonction [DBInsert](../topics/script.md#dbinsert) du langage de contrat intelligent est utilisée pour ajouter des entrées aux tables. Les fonctions [DBUpdate](../topics/script.md#dbupdate) et [DBUpdateExt](../topics/script.md#dbupdateext) sont utilisées pour mettre à jour la valeur d'une entrée existante. 
+Lors de la mise à jour, les données correspondantes dans les tables seront mises à jour et la blockchain ajoutera de nouvelles transactions tout en conservant toutes les transactions historiques. 
+Les données dans les tables ne peuvent être modifiées que et ne peuvent pas être supprimées.
 
-In order to minimize the contract implementation time, the [DBFind](../topics/script.md#dbfind) function cannot query multiple tables simultaneously, and JOIN is not supported. Therefore, we recommend not to normalize application tables, but to store all available information in entries or repeat the information available in other tables. This is not mandatory but necessary for a blockchain application. In this case, data should be stored fully, which cannot be updated even if the same data in other tables is updated, though it is updated synchronously in a relational database.
+Afin de minimiser le temps de mise en œuvre du contrat, la fonction [DBFind](../topics/script.md#dbfind) ne peut pas interroger plusieurs tables simultanément et la jointure n'est pas prise en charge. 
+Par conséquent, nous vous recommandons de ne pas normaliser les tables d'application, mais de stocker toutes les informations disponibles dans les entrées ou de répéter les informations disponibles dans d'autres tables. 
+Ceci n'est pas obligatoire mais nécessaire pour une application blockchain. 
+Dans ce cas, les données doivent être stockées intégralement, ce qui ne peut pas être mis à jour même si les mêmes données dans d'autres tables sont mises à jour, bien qu'elles soient mises à jour de manière synchrone dans une base de données relationnelle.
 
-### Ecosystem Parameters {#ecosystem-parameters}
+### Paramètres de l'écosystème {#ecosystem-parameters}
 
-You may view and edit the list of ecosystem parameters (**1_parameters**) in Weaver's menu. Ecosystem parameters can be divided into the following groups:
+Vous pouvez consulter et modifier la liste des paramètres de l'écosystème (**1_parameters**) dans le menu de Weaver. Les paramètres de l'écosystème peuvent être divisés en groupes suivants :
 
-> - General parameters: the account of the ecosystem creator (founder_account) and other information;
+> - Paramètres généraux : le compte du créateur de l'écosystème (founder_account) et d'autres informations ;
 >
-> - Access rights parameters: used to define access permissions for application elements
+> - Paramètres de droits d'accès : utilisés pour définir les permissions d'accès pour les éléments de l'application
 
->     > - change the table structure (changing_tables);
->     > - change the contract (changing_contracts);
->     > - change the user page (changing_page);
->     > - change the menu (changing_menu);
->     > - change the multi-language resources (changing_language).
+>     > - modifier la structure de la table (changing_tables) ;
+>     > - modifier le contrat intelligent (changing_contracts) ;
+>     > - modifier la page utilisateur (changing_page) ;
+>     > - modifier le menu (changing_menu) ;
+>     > - modifier les ressources multilingues (changing_language).
 
 
-> -  Technical parameters: used to define the user styles (stylesheet);
+> - Paramètres techniques : utilisés pour définir les styles utilisateur (feuille de style) ;
 
-> -  User parameters: used to define constants or lists (separated by commas) required for application operation.
+> - Paramètres utilisateur : utilisés pour définir des constantes ou des listes (séparées par des virgules) nécessaires au fonctionnement de l'application.
 
-You may specify the edit permission for parameters of each ecosystem.
+Vous pouvez spécifier les autorisations de modification pour les paramètres de chaque écosystème.
 
-You may use the [EcosysParam](../topics/script.md#ecosysparam)  function to retrieve the value of an ecosystem parameter by passing the ecosystem parameter title as a parameter to it.
+Vous pouvez utiliser la fonction [EcosysParam](../topics/script.md#ecosysparam) pour récupérer la valeur d'un paramètre d'écosystème en passant le titre du paramètre d'écosystème en tant que paramètre.
 
-## Access rights control mechanism {#access-rights-control-mechanism}
+## Mécanisme de contrôle des droits d'accès {#access-rights-control-mechanism}
 
-IBAX has a multi-level access permission management system. By configuring access rights, you can create and change any application element, such as the contracts, tables, user pages, ecosystem parameters. You may also change the access rights through configuration.
+IBAX dispose d'un système de gestion des autorisations d'accès à plusieurs niveaux.
+En configurant les droits d'accès, vous pouvez créer et modifier n'importe quel élément d'application, tel que les contrats intelligents, les tables, les pages utilisateur, les paramètres d'écosystème. Vous pouvez également modifier les droits d'accès via la configuration.
 
-By default, all rights in the IBAX ecosystem are managed by its creator, which is defined in the MainCondition contract of each ecosystem. But after creating smart laws, access control can be transferred to all or a group of ecosystem members.
-Access rights control
+Par défaut, tous les droits dans l'écosystème IBAX sont gérés par son créateur, qui est défini dans le contrat intelligent MainCondition de chaque écosystème.
+Mais après la création de lois intelligentes, le contrôle d'accès peut être transféré à tous ou à un groupe de membres de l'écosystème.
+Contrôle des droits d'accès
 
-### Access Control Actions {#access-control-actions}
+### Actions de contrôle d'accès {#access-control-actions}
 
-The access rights are defined in contract tables (**1_contracts** ), data tables (**1_tables** ), user page tables (**1_pages** ), menu tables (**1_menu** ), and code block tables (**1_blocks** ). You can find the corresponding menus in Weaver.
+Les droits d'accès sont définis dans les tables des contrats intelligents (**1_contracts**), les tables de données (**1_tables**), les tables de pages utilisateur (**1_pages**), les tables de menus (**1_menu**) et les tables de blocs de code (**1_blocks**). 
+Vous pouvez trouver les menus correspondants dans Weaver.
 
-### Access rights management {#access-rights-management}
+### Gestion des droits d'accès {#access-rights-management}
 
-The rules of access rights are configured by filling in the corresponding contract expressions **ContractConditions(“@1MainCondition”)**, **ContractAccess(“@1MainCondition”)** or logical expressions in the permission field. If the result of the request expression passes (true ), then access is granted. Otherwise, access is denied and related operations are terminated.
+Les règles des droits d'accès sont configurées en remplissant les expressions correspondantes des contrats intelligents **ContractConditions("@1MainCondition")**, **ContractAccess("@1MainCondition")** ou des expressions logiques dans le champ des permissions. 
+Si le résultat de l'expression de demande est vrai (true), alors l'accès est accordé. 
+Sinon, l'accès est refusé et les opérations associées sont interrompues.
 
-The easy way to define rights is to enter a logical expression in the right field. For example, `$key_id == 8919730491904441614`, where **$keyid** represents the ID of an ecosystem member.
+La manière la plus simple de définir des droits est d'entrer une expression logique dans le champ des droits. Par exemple, `$key_id == 8919730491904441614`, où **$key_id** représente l'ID d'un membre de l'écosystème.
 
-The most common and recommended way to define rights is to use the `ContractConditions("@1ContractsName1","@1ContractsName2")` function. The contract name **ContractsName** is passed to the function as a parameter, and the contract result must be the result of a logical expression (true or false).
+La façon la plus courante et recommandée de définir des droits est d'utiliser la fonction `ContractConditions("@1ContractsName1","@1ContractsName2")`. 
+Le nom du contrat intelligent **ContractsName** est passé à la fonction en tant que paramètre, et le résultat du contrat doit être le résultat d'une expression logique (vrai ou faux).
 
-Another way to define rights is to use the `ContractAccess("@1ContractsName3","@1ContractsName4")` function. The contract **ContractsName** qualified to implement the corresponding operation can be passed to the function as a parameter. For example, if the right field of the amount column is configured as `ContractAccess("@1TokenTransfer")`, then you can only implement the contract **@1TokenTransfer** if you want to change the value in the amount column. The right to access the contract itself can be managed in the conditions section, which are quite complex and may contain many other contracts.
+Une autre façon de définir des droits est d'utiliser la fonction `ContractAccess("@1ContractsName3","@1ContractsName4")`. 
+Le contrat intelligent **ContractsName** qualifié pour implémenter l'opération correspondante peut être passé à la fonction en tant que paramètre. 
+Par exemple, si le champ de droit de la colonne montant est configuré comme `ContractAccess("@1TokenTransfer")`, alors vous ne pouvez implémenter que le contrat intelligent **@1TokenTransfer** si vous souhaitez modifier la valeur dans la colonne montant. 
+Le droit d'accès au contrat intelligent lui-même peut être géré dans la section des conditions, 
+qui sont assez complexes et peuvent contenir de nombreux autres contrats intelligents.
 
-### Exclusive rights {#exclusive-rights}
+### Droits exclusifs {#exclusive-rights}
 
-In case of emergencies or situations that are critical to the operation of an ecosystem, there are many special parameters in the list of ecosystem parameters (**1_parameters**) (such as **changing_contracts**、**changing_pages**), etc., which defines rights to access all contracts, data tables, and pages of the current ecosystem. These rights are configured by key contracts.
+En cas d'urgence ou de situations critiques pour le fonctionnement d'un écosystème, il existe de nombreux paramètres spéciaux dans la liste des paramètres de l'écosystème (**1_parameters**) (tels que **changing_contracts**, **changing_pages**, etc.), 
+qui définissent les droits d'accès à tous les contrats intelligents, tables de données et pages de l'écosystème actuel. Ces droits sont configurés par des contrats clés.
 
-## Virtual private ecosystem {#virtual-private-ecosystem}
+## Écosystème virtuel privé {#virtual-private-ecosystem}
 
-In IBAX, you can create a virtual private ecosystem - **Cross Ledgers Base (CLB)**. A CLB has the full functionality of the standard ecosystem, but operates outside the blockchain. In CLB, you can use and create contracts and template languages, tables, and use Weaver to create applications. You may call contracts on the blockchain ecosystem via API.
+Dans IBAX, vous pouvez créer un écosystème virtuel privé - **Cross Ledgers Base (CLB)**.
+Un CLB possède toutes les fonctionnalités de l'écosystème standard, mais fonctionne en dehors de la blockchain. Dans CLB, vous pouvez utiliser et créer des contrats intelligents et des langages de modèle, des tables, et utiliser Weaver pour créer des applications.
+Vous pouvez appeler des contrats intelligents sur l'écosystème de la blockchain via une API.
 
-### Requests to web resources {#requests-to-web-resources}
+### Requêtes vers des ressources web {#requests-to-web-resources}
 
 CLB
-> The main difference between a CLB and a standard ecosystem is that you can use contract functions [HTTPRequest](../topics/script.md#httprequest) and [HTTPPostJSON](../topics/script.md#httppostjson) to request any web resource within the contract via **HTTP / HTTPS** requests.
-> Parameters passed to this function include: URLs, request methods (GET or POST), request headers and request parameters.
+> La principale différence entre un CLB et un écosystème standard est que vous pouvez utiliser les fonctions de contrat intelligent [HTTPRequest](../topics/script.md#httprequest) et [HTTPPostJSON](../topics/script.md#httppostjson) pour demander n'importe quelle ressource web à l'intérieur du contrat intelligent via des requêtes **HTTP / HTTPS**.
+> Les paramètres transmis à cette fonction comprennent: les URL, les méthodes de requête (GET ou POST),
+> les en-têtes de requête et les paramètres de requête.
 
-### Rights to read data {#rights-to-read-data}
+### Droits de lecture des données {#rights-to-read-data}
 
-Though it is readable, data in CLB is not saved within the blockchain. You can choose to grant the read permission to database tables. You can set rights to read for individual columns, or for any row using a special contract.
+Bien qu'il soit lisible, les données dans CLB ne sont pas enregistrées dans la blockchain. Vous pouvez choisir d'accorder la permission de lecture aux tables de la base de données.
+Vous pouvez définir des droits de lecture pour des colonnes individuelles, ou pour n'importe quelle ligne en utilisant un contrat intelligent spécial.
 
-### CLB creation {#clb-creation}
+### Création de CLB {#clb-creation}
 
-You may create a CLB node on the network. As predefined, the CLB node administrator is privileged to use the ecosystem list with the CLB functionality, and designate a user with ecosystem creator privileges to install applications, receive new members and configure the resources access permissions. 
+Vous pouvez créer un nœud CLB sur le réseau. Par défaut, l'administrateur du nœud CLB est autorisé à utiliser la liste des écosystèmes avec la fonctionnalité CLB,
+et désigner un utilisateur avec les privilèges de créateur d'écosystème pour installer des applications, recevoir de nouveaux membres et configurer les permissions d'accès aux ressources.
 
-### CLB usage {#clb-usage}
+### Utilisation de CLB {#clb-usage}
 
-You may use a CLB to create registration forms, send verification information to users via email or phone, and store publicly accessible data. You can write and test applications, and then import them into the blockchain ecosystem. In a CLB, you may use scheduling contract tasks, create oracle machines to receive data from web resources and send such data to the blockchain ecosystem.
+Vous pouvez utiliser un CLB pour créer des formulaires d'inscription, envoyer des informations de vérification aux utilisateurs par e-mail ou téléphone, et stocker des données accessibles au public. 
+Vous pouvez écrire et tester des applications, puis les importer dans l'écosystème de la blockchain. Dans un CLB, vous pouvez utiliser des tâches de contrat de planification, créer des machines oracle pour recevoir des données à partir de ressources web et envoyer ces données à l'écosystème de la blockchain.

@@ -276,7 +276,7 @@ To upload a file using a form in the format of `multipart/form-data`, the data t
 ```
 contract Upload {
      data {
-  	   File file
+        File file
      }
      ...
 }
@@ -1115,7 +1115,7 @@ count = GetRowsCountXLSX(binid, 1)
 
 ### LangRes {#langres}
 
-Returns a multilingual resource with name label for language lang, specified as a two-character code, for example: `en`, `zh`. If there is no language for a selected language, then the language resource of the `en` label is returned.
+Returns a multilingual resource with name label for language lang, specified as a two-character code, for example: `en`, `de`. If there is no language for a selected language, then the language resource of the `en` label is returned.
 
 **Syntax**
 
@@ -1134,7 +1134,7 @@ LangRes(label string, lang string) string
 
 ```
 warning LangRes("@1confirm", "en")
-error LangRes("@1problems", "zh")
+error LangRes("@1problems", "de")
 ```
 
 
@@ -1521,8 +1521,6 @@ val["k1"] = "v1"
 arr = SortedKeys(val)
 ```
 
-
-
 ### CallContract {#callcontract}
 
 Calls the contract with a specified name. All parameters of the data section in the contract must be included in an object array. This function returns the value assigned to the **$result** variable by a specified contract.
@@ -1549,15 +1547,11 @@ par["Name"] = "My Name"
 CallContract("MyContract", par)
 ```
 
-
-
 ### ContractAccess {#contractaccess}
 
 Checks if the name of contract being executed matches one of the names listed in the parameters. Usually it is used to control contract access to tables. When editing table fields or inserting and adding new column fields in the permissions section of the table, please specify this function in the permissions fields.
 
 **Syntax**
-
-  
 
 ```
 ContractAccess(name string, [name string]) bool
@@ -1573,7 +1567,6 @@ ContractAccess(name string, [name string]) bool
 ContractAccess("MyContract")
 ContractAccess("MyContract","SimpleContract")
 ```
-
 
 
 ### ContractConditions {#contractconditions}
@@ -1598,7 +1591,6 @@ ContractConditions(name string, [name string]) bool
 ```
 ContractConditions("MainCondition")
 ```
-
 
 
 ### EvalCondition {#evalcondition}
@@ -1627,7 +1619,6 @@ EvalCondition(tablename string, name string, condfield string)
 ```
 EvalCondition(`menu`, $Name, `conditions`)
 ```
-
 
 
 ### GetContractById {#getcontractbyid}
@@ -3254,7 +3245,7 @@ Adds language resources to the current ecosystem, and the permission to do so is
 Parameters:
 
   * **Name** string - name of the language resources in Latin characters;
-  * **Trans** string - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "zh": "Chinese text"}`.
+  * **Trans** string - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "de": "deutscher text"}`.
 
 ### EditLang {#editlang}
 
@@ -3263,7 +3254,7 @@ Changes the language resources in the current ecosystem, and the permission to d
 Parameters:
 
   * **Id** int - language resources ID.
-  * **Trans** - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "zh": "Chinese text"}`.
+  * **Trans** - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "de": "deutscher text"}`.
 
 ### Import {#import}
 

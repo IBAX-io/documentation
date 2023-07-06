@@ -279,7 +279,7 @@ contract my {
 ```
 contract Upload {
      data {
-  	   File file
+        File file
      }
      ...
 }
@@ -1120,7 +1120,7 @@ count = GetRowsCountXLSX(binid, 1)
 
 ### LangRes {#langres}
 
-2 文字のコード (例: `en`、`zh`) として指定された、言語 lang の名前ラベルを持つ多言語リソースを返します。 選択した言語に対応する言語がない場合は、`en`ラベルの言語リソースが返されます。
+2 文字のコード (例: `en`、`ja`) として指定された、言語 lang の名前ラベルを持つ多言語リソースを返します。 選択した言語に対応する言語がない場合は、`en`ラベルの言語リソースが返されます。
 
 **Syntax**
 
@@ -1139,7 +1139,7 @@ LangRes(label string, lang string) string
 
 ```
 warning LangRes("@1confirm", "en")
-error LangRes("@1problems", "zh")
+error LangRes("@1problems", "ja")
 ```
 
 
