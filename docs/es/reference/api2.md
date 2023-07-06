@@ -56,9 +56,9 @@ Las llamadas a los comandos de la API se realizan mediante la dirección `/api/v
         - [txinfo/{hash}](#txinfo-hash)
         - [txinfoMultiple](#txinfomultiple)
         - [/page/validators_count/{name}](#page-validators-count-name)
-    	- [content/menu\|page/{name}](#content-menu-page-name)
-    	- [content/source/{name}](#content-source-name)
-    	- [content/hash/{name}](#content-hash-name)
+        - [content/menu\|page/{name}](#content-menu-page-name)
+        - [content/source/{name}](#content-source-name)
+        - [content/hash/{name}](#content-hash-name)
         - [content](#content)
         - [maxblockid](#maxblockid)
         - [block/{id}](#block-id)
@@ -429,18 +429,18 @@ POST
 200 (OK)
 Content-Type: application/json
 {
-	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...30l665h3v7lH85rs5jgk0",
-	"ecosystem_id": "1",
-	"key_id": "-54321",
-	"account": "1285-...-7743-4282",
-	"notify_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....._JTFfheD0K4CfMbvVNpOJVMNDPx25zIDGir9g3ZZM0w",
-	"timestamp": "1451309883",
-	"roles": [
-		{
-			"role_id": 1,
-			"role_name": "Developer"
-		}
-	]
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...30l665h3v7lH85rs5jgk0",
+    "ecosystem_id": "1",
+    "key_id": "-54321",
+    "account": "1285-...-7743-4282",
+    "notify_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....._JTFfheD0K4CfMbvVNpOJVMNDPx25zIDGir9g3ZZM0w",
+    "timestamp": "1451309883",
+    "roles": [
+        {
+           "role_id": 1,
+            "role_name": "Developer"
+        }
+    ]
 }      
 ```
 
@@ -1231,7 +1231,7 @@ GET
 
 - `ecosystem`
 
-    > Ecological system ID; si no se especifica, se devolverán los parámetros del sistema ecológico actual.
+    > Ecosystem system ID; si no se especifica, se devolverán los parámetros del sistema ecológico actual.
 
 - `names`
 
@@ -1353,7 +1353,7 @@ GET
 
 - `ecosystem` [Omitempty](#omitempty)
 
-    > Ecological system ID. Si no se especifica, se devolverá el ID del sistema ecológico actual.
+    > Ecosystem system ID. Si no se especifica, se devolverá el ID del sistema ecológico actual.
 
 - `names` [Omitempty](#omitempty)
 
@@ -1650,7 +1650,7 @@ Los datos en el campo *title* serán reemplazados por los recursos de idioma de 
 
 - `lang` [Omitempty](#omitempty)
 
-    > This field specifies the code or localization of a multilingual resource, for example: *en, zh*. If the specified multilingual resource, such as *en-US*, is not found, it will be searched in the multilingual resource group *en*.
+    > This field specifies the code or localization of a multilingual resource, for example: *en, es*. If the specified multilingual resource, such as *en-US*, is not found, it will be searched in the multilingual resource group *en*.
 
 ```text
 GET

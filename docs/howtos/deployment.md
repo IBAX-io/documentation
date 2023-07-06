@@ -244,6 +244,7 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
 ```
 
 4. Generate the keys of Node 1, including the public and private keys of the node and the account:
+
 ```shell
 /opt/backenddir/go-ibax generateKeys \
  --config=/opt/backenddir/node1/config.toml
@@ -389,21 +390,20 @@ Follow operational instructions as shown below:
  scp user@192.168.1.1:/opt/backenddir/node1/1block /opt/backenddir/node3/
 ```
 
-
-7.Generate the key of Node 3, including the public and private keys of the node and the account:
+7. Generate the key of Node 3, including the public and private keys of the node and the account:
 
 ```shell
  /opt/backenddir/go-ibax generateKeys \
 --config=/opt/backenddir/node3/config.toml
 ```
 
-8.Initiate the database: 
+8. Initiate the database: 
 
 ```shell
  ./go-ibax initDatabase --config=node3/config.toml
 ```
 
-9.Run centrifugo:
+9. Run centrifugo:
 
 ```shell
  /opt/backenddir/centrifugo/centrifugo \
@@ -411,7 +411,7 @@ Follow operational instructions as shown below:
 --config/opt/backenddir/centrifugo/config.json
 ```
 
-10.Run go-ibax:
+10. Run go-ibax:
 
 ```shell
  /opt/backenddir/go-ibax start \
@@ -438,14 +438,14 @@ curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash
 sudo apt install -y nodejs
 ```
 
-1. Download Yarn version 1.7.0 from yarn's [Github](https://github.com/yarnpkg/yarn/releases) repository or through the command line:
+a) Download Yarn version 1.7.0 from yarn's [Github](https://github.com/yarnpkg/yarn/releases) repository or through the command line:
 
 ```shell
 cd/opt/backenddir \
 && wget https://github.com/yarnpkg/yarn/releases/download/v1.7.0/yarn_1.7.0_all.deb
 ```
 
-2. Install Yarn:
+b) Install Yarn:
 
 ```shell
 sudo dpkg -i yarn_1.7.0_all.deb && rm yarn_1.7.0_all.deb
@@ -494,16 +494,16 @@ Examples of *settings.json* files for the three nodes:
 }
 ```
 
-Build Weaver Desktop Application
+Build Weaver Desktop Application:
 
-1.Use yarn to build the desktop version:
+1. Use yarn to build the desktop version:
 
 ```shell
 cd/opt/backenddir/ibax-front \
 && yarn build-desktop
 ```
 
-2.The desktop version will be packaged into AppImage suffix format:
+2. The desktop version will be packaged into AppImage suffix format:
 
 ```shell
 yarn release --publish never -l
@@ -513,7 +513,7 @@ After building, your application can be used, but its connection configuration c
 
 ### Build Weaver Web Application {#build-weaver-web-application}
 
-1.Build a web application:
+1. Build a web application:
 
 ```shell
 cd/opt/backenddir/ibax-front/ \
@@ -522,7 +522,7 @@ cd/opt/backenddir/ibax-front/ \
 
 After building, the redistributable files will be placed in the /build directory. You can use any web server of your choice for deployment, and the *settings.json* file must also be placed in this directory. Note that if the connection settings are changed, there is no need to build the application again. Instead, edit the *settings.json* file and restart the web server.
 
-1.For development or testing purposes, you can build Yarn's web server:
+1. For development or testing purposes, you can build Yarn's web server:
 
 
 ```shell
@@ -538,32 +538,33 @@ After that, your Weaver web application will be available at the following locat
 
 Create an account for the first node owner. This account is the creator of the new blockchain platform and has the administrator access.
 
-1.Run Weaver;
+1. Run Weaver;
 
-2.Import the existing account using the following data:
+2. Import the existing account using the following data:
 
-–Load the backup of the node owner's private key located in the `/opt/backenddir/node1/PrivateKey` file.
+      –Load the backup of the node owner's private key located in the `/opt/backenddir/node1/PrivateKey` file.
 
-> Note
+> Note:
 >
 >There are two private key files in this directory. The `PrivateKey` file is used create the node owner's account. The `NodePrivateKey` file is the private key of the node itself and must be kept secret.
 
-3.After logging in to the account, since no role has been created at this time, please select the Without role option.
+3. After logging in to the account, since no role has been created at this time, please select the Without role option.
 
 ### Import applications, roles and templates {#import-applications-roles-and-templates}
 
 At this time, the blockchain platform is in a blank state. You can configure it by adding roles, templates, and application frameworks that support basic ecosystem functions.
 
-1.Clone the application repository;
+1. Clone the application repository;
 
 ```shell
 cd/opt/backenddir \
 && git clone https://github.com/ibax-io/dapps.git
 ```
 
-2.Navigate to Developer> Import in Weaver;
+2. Navigate to Developer> Import in Weaver;
 
-3.Import applications as per the following order:
+3. Import applications as per the following order:
+
 ```
  A./opt/backenddir/dapps/system.json 
  B./opt/backenddir/dapps/conditions.json 
@@ -571,19 +572,19 @@ cd/opt/backenddir \
  D./opt/backenddir/dapps/lang_res.json
 ```
 
-4.Navigate to Admin> Role, and click Install Default Role;
+4. Navigate to Admin> Role, and click Install Default Role;
 
-5.Exit the system through the configuration file menu in the upper right corner;
+5. Exit the system through the configuration file menu in the upper right corner;
 
-6.Log in to the system as Admin;
+6. Log in to the system as Admin;
 
-7.Navigate to Home> Vote> Template List, and click Install Default Template.
+7. Navigate to Home> Vote> Template List, and click Install Default Template.
 
 ### Add the first node to the node list {#add-the-first-node-to-the-node-list}
 
-1.Navigate to Developer> Platform Parameters, and click the first_nodes parameter;
+1. Navigate to Developer> Platform Parameters, and click the first_nodes parameter;
 
-2.Specify the parameters of the first blockchain network node.
+2. Specify the parameters of the first blockchain network node.
 
   * public_key - The public key of the node is located in the `/opt/backenddir/node1/NodePublicKey` file;
 
@@ -596,17 +597,19 @@ cd/opt/backenddir \
 ### Add members into the consensus role group {#add-members-into-the-consensus-role-group}
 
 By default, only members in the consensus role (Consensus) group can participate in the voting required to add other master nodes. This means that before adding a new master node, members of the ecosystem must be assigned to the role.
+
 In this section, the creator's account is designated as the only member of the consensus role group. In a production environment, this role must be assigned to platform members that perform governance.
 
-1.Navigate to Home> Role and click Consensus;
+1. Navigate to Home> Role and click Consensus;
 
-2.Click Assign to assign the creator's account to the role.
+2. Click Assign to assign the creator's account to the role.
 
 ### Create the owner account for other nodes {#create-the-owner-account-for-other-nodes}
 
 1. Run Weaver;
 
 2. Import the existing account using the following data:
+
      – Load the backup of the node owner's private key located in the `/opt/backenddir/node2/PrivateKey` file.
      
 3. After logging in to the account, since no role has been created at this time, please select the Without role option.

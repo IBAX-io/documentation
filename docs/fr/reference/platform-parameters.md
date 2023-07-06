@@ -1,95 +1,96 @@
-# Platform Parameters {#platform-parameters}
+# Paramètres de la plateforme {#platform-parameters}
 
-These are parameters to configure IBAX. They are applicable to the blockchain network and all ecosystems within it.
+Voici les paramètres pour configurer IBAX. Ils s'appliquent au réseau blockchain et à tous les écosystèmes qui en font partie.
 
-## Location to store platform parameters {#location-to-store-platform-parameters}
+## Emplacement pour stocker les paramètres de la plateforme {#location-to-store-platform-parameters}
 
-Platform parameters are stored in the `system parameters` table.
+Les paramètres de la plateforme sont stockés dans la table des `paramètres système`.
 
-This table is located in the first (default) ecosystem created on the blockchain network.
+Cette table se trouve dans le premier (par défaut) écosystème créé sur le réseau de la blockchain.
 
-## Change of platform parameters {#change-of-platform-parameters}
+## Changement des paramètres de la plateforme {#change-of-platform-parameters}
 
-Change of platform parameters can only be made through voting. You can only use the UpdateSysParam contract to change any platform parameter, which is managed by definitions in the legal system of the platform.
+Le changement des paramètres de la plateforme ne peut être effectué que par le biais d'un vote. Vous ne pouvez utiliser que le contrat UpdateSysParam pour modifier tout paramètre de la plateforme, qui est géré par des définitions dans le système juridique de la plateforme.
 
-## Configure platform parameters {#configure-platform-parameters}
+## Configurer les paramètres de la plateforme {#configure-platform-parameters}
 
-### Configure the blockchain network {#configure-the-blockchain-network}
+### Configurer le réseau blockchain {#configure-the-blockchain-network}
 
-Nodes:
+Nœuds:
 
 * [honor_nodes](#honor-nodes)
 * [number of nodes](#number-of-nodes)
 
-Node bans:
+Interdictions de nœuds :
 
 * [incorrect blocks per day](#incorrect-blocks-per-day)
 * [node ban time](#node-ban-time)
 * [node ban time local](#node-ban-time-local)
 
-### Configure a new ecosystem {#configure-a-new-ecosystem}
+### Configurer un nouvel écosystème {#configure-a-new-ecosystem}
 
-Default page and menu:
+Page par défaut et menu:
 
 * [default ecosystem page](#default-ecosystem-page)
 * [default ecosystem menu](#default-ecosystem-menu)
 
-Default contract: 
+Contrat par défaut:
 
 * [default ecosystem contract](#default-ecosystem-contract)
 
-### Configure the database {#configure-the-database}
+### Configurer la base de données {#configure-the-database}
 
-Table limits:
+Limites de table:
 
 * [max columns](#max-columns)
 * [max indexes](#max-indexes)
 
-### Configure the generation of blocks {#configure-the-generation-of-blocks}
-Time limits:
+### Configurer la génération de blocs {#configure-the-generation-of-blocks}
+
+Limites de temps:
 
 * [gap between blocks](#gap-between-blocks)
 * [max block generation time](#max-block-generation-time)
 
-Transaction limits:
+Limites de transaction:
 
 * [max tx block](#max-tx-block)
 * [max tx block per user](#max-tx-block-per-user)
 
-Size limits:
+Limites de taille :
 
 * [max tx size](#max-tx-size)
 * [max block size](#max-block-size)
 * [max forsign size](#max-forsign-size)
 
-Fuel limits:
+Limites de carburant :
 
 * [max fuel block](#max-fuel-block)
 * [max fuel tx](#max-fuel-tx)
 
-Block rollback limits:
+Limites de blocage de retour en arrière :
 
 * [rollback blocks](#rollback-blocks)
 
 ### Configure the fuel tokens {#configure-the-fuel-tokens}
 
-Rewards and commissions:
+Récompenses et commissions:
 
 * [block reward](#block-reward)
 * [commission wallet](#commission-wallet)
 * [commission size](#commission-size)
 
-Fuel rate conversion:
+Conversion du taux de consommation de carburant :
 
 * [fuel rate](#fuel-rate)
 * [price create rate](#price-create-rate)
 
-Transaction size and data price:
+Taille de la transaction et prix des données:
 
 * [price tx data](#price-tx-data)
 * [price tx size wallet](#price-tx-size-wallet)
 
-Price for new elements:
+Prix pour les nouveaux éléments :
 
 * [price create ecosystem](#price-create-ecosystem)
 * [price create table](#price-create-table)
@@ -99,7 +100,7 @@ Price for new elements:
 * [price create page](#price-create-page)
 * [price create application](#price-create-application)
 
-Price for operations:
+Prix pour les opérations :
 <!-- TOC -->
 
 - [Platform Parameters](#platform-parameters)
@@ -188,80 +189,80 @@ Price for operations:
 
 ## Depreciated {#depreciated}
 
-Depreciated parameters:
+Paramètres dépréciés:
 
 * [blockchain url](#blockchain-url)
 
-## Details of platform parameters {#details-of-platform-parameters}
+## Détails des paramètres de la plateforme {#details-of-platform-parameters}
 
 ### block reward {#block-reward}
 
-The number of IBXC tokens granted to the honor node that generates the block.
+Le nombre de jetons IBXC accordés au nœud d'honneur qui génère le bloc.
 
-The account that receives the reward is specified in the [full nodes](#full-nodes) parameter.
+Le compte qui reçoit la récompense est spécifié dans le paramètre [nœuds complets](#nœuds-complets).
 
 ### blockchain url {#blockchain-url}
 
-Depreciated. 
+Déprécié.
 
 ### commission size {#commission-size}
 
-Percentage of the commission.
+Pourcentage de la commission.
 
-The amount of the commission is calculated as a percentage of the total cost of implement the contract. The unit of the commission token is IBXC.
+Le montant de la commission est calculé en pourcentage du coût total de la mise en œuvre du contrat. L'unité de la commission est IBXC.
 
-The commission will be transferred to the account address specified in the commission_wallet parameter.
+La commission sera transférée à l'adresse du compte spécifiée dans le paramètre commission_wallet.
 
 ### commission wallet {#commission-wallet}
 
-The account address to receive the commission.
+L'adresse du compte pour recevoir la commission.
 
-The amount of commission is specified by the commission_size parameter.
+Le montant de la commission est spécifié par le paramètre commission_size.
 
 ### default ecosystem contract {#default-ecosystem-contract}
 
-The source code of the default contract in the new ecosystem.
+Le code source du contrat par défaut dans le nouvel écosystème.
 
-This contract provides access to the ecosystem creator.
+Ce contrat permet d'accéder au créateur de l'écosystème.
 
 ### default ecosystem menu {#default-ecosystem-menu}
 
-The source code of the default menu of the new ecosystem.
+Le code source du menu par défaut du nouvel écosystème.
 
 ### default ecosystem page {#default-ecosystem-page}
 
-The source code of the default page of the new ecosystem.
+Le code source de la page par défaut du nouvel écosystème.
 
 ### fuel rate {#fuel-rate}
 
-The exchange rates of different ecosystem tokens by fuel unit.
+Les taux de change des différents jetons d'écosystème par unité de carburant.
 
-The format of this parameter:
+Le format de ce paramètre :
 
 `[["ecosystem_id", "token_to_fuel_rate"], ["ecosystem_id2", "token_to_fuel_rate2"], ...]`
 
 * `ecosystem_id`
 
-    Ecosystem ID.
+    Identifiant de l'écosystème.
 * `token_to_fuel_rate`
 
-    Exchange rate of the token by fuel unit.
+    Taux de change du jeton par unité de carburant.
 
-For example:
+Par exemple:
 
 `[["1","1000000000000"], ["2", "1000"]]`
 
-One token of Ecosystem 1 is exchanged for 1,000,000,000,000 fuel units. One token of Ecosystem 2 is exchanged for 1,000 fuel units.
+Un jeton de l'écosystème 1 est échangé contre 1 000 000 000 000 unités de carburant. Un jeton de l'écosystème 2 est échangé contre 1 000 unités de carburant.
 
 ### price create rate {#price-create-rate}
 
-The fuel rate of a new element.
+Le taux de carburant d'un nouvel élément.
 
 ## honor nodes {#honor-nodes}
 
-The list of honor nodes of the blockchain network.
+La liste des nœuds d'honneur du réseau blockchain.
 
-The format of this parameter: 
+Le format de ce paramètre :
 
 `
 [{"api_address":"https://apihost1:port1","public_key":"nodepub1","tcp_address":"tcphost1:port2"},{"api_address":"https://apihost2:port1","public_key":"nodepub2","tcp_address":"tcphost2:port2"}]
@@ -269,235 +270,235 @@ The format of this parameter:
 
 * `tcp_address`
 
-     TCP address and port of the node host.
-     Transactions and new blocks will be sent to this host address, which can also be used to obtain the complete blockchain from the first block.
+     Adresse TCP et port de l'hôte du nœud.
+     Les transactions et les nouveaux blocs seront envoyés à cette adresse d'hôte, qui peut également être utilisée pour obtenir la blockchain complète à partir du premier bloc.
 * `api_address`
 
-    API address and port of the node host.
-    Through the API address, you can access any function of the platform without using Weaver. See details in RESTful API.
+    Adresse API et port de l'hôte du nœud.
+    Grâce à l'adresse API, vous pouvez accéder à n'importe quelle fonction de la plateforme sans utiliser Weaver. Voir les détails dans l'API RESTful.
 * `public_key`
 
-    Public key of the node, which is used to verify the block signature.
+    Clé publique du nœud, utilisée pour vérifier la signature du bloc.
 
 
 ### gap between blocks {#gap-between-blocks}
-The time interval (in seconds) of generating two blocks on a node.
+L'intervalle de temps (en secondes) de génération de deux blocs sur un nœud.
 
-All nodes in the network use it to determine when to generate a new block. If the current node does not generate a new block within this time period, the turn passes to the next node in the list of honor nodes.
+Tous les nœuds du réseau l'utilisent pour déterminer quand générer un nouveau bloc. Si le nœud actuel ne génère pas de nouveau bloc dans cette période de temps, le tour passe au nœud suivant dans la liste des nœuds honorés.
 
-The minimum value of this parameter is `1` second.
+La valeur minimale de ce paramètre est de `1` seconde.
 
 ### incorrect blocks per day {#incorrect-blocks-per-day}
-The number of bad blocks that a node is allowed to generate per day before being banned.
+Le nombre de blocs défectueux qu'un nœud est autorisé à générer par jour avant d'être banni.
 
-When more than half of the nodes in the network receive the same number of bad blocks from a node, the node will be banned from the network within a time period specified in [node ban time](#node-ban-time).
+Lorsque plus de la moitié des nœuds du réseau reçoivent le même nombre de blocs défectueux d'un nœud, ce dernier sera banni du réseau dans une période de temps spécifiée dans [temps de bannissement du nœud](#node-ban-time).
 
 ### max block generation time {#max-block-generation-time}
-The maximum time for generating a block, in milliseconds. If a block is not successfully generated within this time period, a timeout error will be reported.
+Le temps maximum pour générer un bloc, en millisecondes. Si un bloc n'est pas généré avec succès dans ce laps de temps, une erreur de délai d'attente sera signalée.
 
 ### max block size {#max-block-size}
-The maximum size of a block, in bytes.
+La taille maximale d'un bloc, en octets.
 
 ### max columns {#max-columns}
-The maximum number of fields in a single table.
+Le nombre maximum de champs dans une seule table.
 
-However, it does not include the predefined `id` column.
+Cependant, cela n'inclut pas la colonne prédéfinie `id`.
 
 ### max forsign size {#max-forsign-size}
-The maximum size of a transaction signature in bytes. 
+La taille maximale d'une signature de transaction en octets.
 
 ### max fuel block {#max-fuel-block}
-The maximum total fuel fee of a single block.
+Le montant maximum total des frais de carburant d'un seul bloc.
 
 ### max fuel tx {#max-fuel-tx}
-The maximum total fuel fee of a single transaction.
+Le montant maximum total des frais de carburant pour une seule transaction.
 
 ### max indexes {#max-indexes}
-The maximum number of primary key fields in a single table.
+Le nombre maximum de champs de clé primaire dans une seule table.
 
 ### max tx block {#max-tx-block}
-The maximum number of transactions in a single block.
+Le nombre maximum de transactions dans un seul bloc.
 
 ### max tx block per user {#max-tx-block-per-user}
-The maximum number of transactions of an account in a block.
+Le nombre maximum de transactions d'un compte dans un bloc.
 
 ### max tx size {#max-tx-size}
-The maximum size of a transaction in bytes.
+La taille maximale d'une transaction en octets.
 
 ### node ban time {#node-ban-time}
-The global ban period of the node, in milliseconds.
+La période d'interdiction globale du nœud, en millisecondes.
 
-When more than half of the nodes in the network receive bad blocks from a node up to the number of [incorrect blocks per day](#incorrect-blocks-per-day), the node will be banned in the network for this time period.
+Lorsque plus de la moitié des nœuds du réseau reçoivent des blocs incorrects d'un nœud jusqu'au nombre de [blocs incorrects par jour](#incorrect-blocks-per-day), le nœud sera banni du réseau pour cette période de temps.
 
 ### node ban time local {#node-ban-time-local}
-The local ban period of the node, in milliseconds.
+La période d'interdiction locale du nœud, en millisecondes.
 
-When a node receives an incorrect block from another node, it will locally ban the sender's node during this time period.
+Lorsqu'un nœud reçoit un bloc incorrect d'un autre nœud, il interdira localement le nœud de l'expéditeur pendant cette période de temps.
 
 ### number of nodes {#number-of-nodes}
-The maximum number of honor nodes in the [full nodes](#full-nodes) parameter. 
+Le nombre maximum de nœuds d'honneur dans le paramètre [full nodes](#full-nodes) .
 
 ### price create ecosystem {#price-create-ecosystem}
-The fuel fee to create a new single ecosystem.
+La taxe de carburant pour créer un nouvel écosystème unique.
 
-This parameter defines the additional fuel fee of the `@1NewEcosystem` contract. When the contract is implemented, the fuel fee for executing various functions of this contract will also be calculated and included in the total cost.
+Ce paramètre définit la taxe de carburant supplémentaire du contrat `@1NewEcosystem`. Lorsque le contrat est mis en œuvre, la taxe de carburant pour l'exécution des différentes fonctions de ce contrat sera également calculée et incluse dans le coût total.
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+Ce paramètre est calculé en unités de carburant. Utilisez le [fuel rate](#fuel-rate)  et le [price create rate](#price-create-rate) pour convertir les unités de carburant en jetons IBXC.
 
 ### price create application {#price-create-application}
-The fuel fee to create a new single application.
+La taxe de carburant pour créer une nouvelle application unique.
 
-This parameter defines the additional fuel fee of the `@1NewApplication` contract. When the contract is implemented, the fuel fee for executing various functions of this contract will also be calculated and included in the total cost.
+Ce paramètre définit la taxe de carburant supplémentaire du contrat `@1NewApplication`. Lorsque le contrat est mis en œuvre, la taxe de carburant pour l'exécution des différentes fonctions de ce contrat sera également calculée et incluse dans le coût total.
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+Ce paramètre est calculé en unités de carburant. Utilisez le [fuel rate](#fuel-rate) et le [price create rate](#price-create-rate) pour convertir les unités de carburant en jetons IBXC.
 
 ### price create table {#price-create-table}
-The fuel fee to create a new single table.
+Les frais de carburant pour créer une nouvelle table unique.
 
-This parameter defines the additional fuel cost of the `@1NewTable` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
+Ce paramètre définit le coût supplémentaire en carburant du contrat `@1NewTable`. Lorsque le contrat est mis en œuvre, le coût en carburant de l'exécution des différentes fonctions de ce contrat sera également calculé et inclus dans le coût total.
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+Ce paramètre est calculé en unités de carburant. Utilisez le [fuel rate](#fuel-rate) et le [price create rate](#price-create-rate) pour convertir les unités de carburant en jetons IBXC.
 
 ### price create column {#price-create-column}
-The fuel fee to create a new single table field.
+Les frais de carburant pour créer un nouveau champ de table unique.
 
-This parameter defines the additional fuel cost of the `@1NewColumn` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
+Ce paramètre définit le coût supplémentaire en carburant du contrat `@1NewColumn`. Lorsque le contrat est mis en œuvre, le coût en carburant de l'exécution des différentes fonctions de ce contrat sera également calculé et inclus dans le coût total.
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+Ce paramètre est calculé en unités de carburant. Utilisez le [fuel rate](#fuel-rate) et le [price create rate](#price-create-rate) pour convertir les unités de carburant en jetons IBXC.
 
 ### price create contract {#price-create-contract}
-The fuel fee to create a new single contract.
+Les frais de carburant pour créer un nouveau contrat unique.
 
-This parameter defines the additional fuel cost of the `@1NewContract` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
+Ce paramètre définit le coût supplémentaire en carburant du contrat `@1NewContract`. Lorsque le contrat est mis en œuvre, le coût en carburant de l'exécution des différentes fonctions de ce contrat sera également calculé et inclus dans le coût total.
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+Ce paramètre est calculé en unités de carburant. Utilisez le [fuel rate](#fuel-rate) et le [price create rate](#price-create-rate) pour convertir les unités de carburant en jetons IBXC.
 
 ### price create menu {#price-create-menu}
-The fuel fee to create a new single menu.
+Les frais de carburant pour créer un nouveau menu unique.
 
-This parameter defines the additional fuel cost of the `@1NewMenu` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
+Ce paramètre définit le coût supplémentaire en carburant du contrat `@1NewMenu`. Lorsque le contrat est mis en œuvre, le coût en carburant de l'exécution des différentes fonctions de ce contrat sera également calculé et inclus dans le coût total.
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+Ce paramètre est calculé en unités de carburant. Utilisez le [fuel rate](#fuel-rate) et le [price create rate](#price-create-rate) pour convertir les unités de carburant en jetons IBXC.
 
 ### price create page {#price-create-page}
-The fuel fee to create a new single page.
+La taxe de carburant pour créer une nouvelle page unique.
 
-This parameter defines the additional fuel cost of the `@1NewPage` contract. When the contract is implemented, the fuel cost for executing various functions of this contract will also be calculated and included in the total cost.
+Ce paramètre définit le coût supplémentaire en carburant du contrat `@1NewPage`. Lorsque le contrat est mis en œuvre, le coût en carburant de l'exécution des différentes fonctions de ce contrat sera également calculé et inclus dans le coût total.
 
-This parameter is calculated in fuel units. Use [fuel rate](#fuel-rate) and [price create rate](#price-create-rate) to convert fuel units to IBXC tokens.
+Ce paramètre est calculé en unités de carburant. Utilisez le [fuel rate](#fuel-rate) et le [price create rate](#price-create-rate) pour convertir les unités de carburant en jetons IBXC.
 
 ### price exec address to id {#price-exec-address-to-id}
-The fuel fee of calling the `AddressToId()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `AddressToId()`, calculée en unités de carburant.
 
 ### price exec bind wallet {#price-exec-bind-wallet}
-The fuel fee of calling the `Activate()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `Activate()`, calculée en unités de carburant.
 
 ### price exec column condition {#price-exec-column-condition}
-The fuel fee of calling the `ColumnCondition()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `ColumnCondition()`, calculée en unités de carburant. 
 
 ### price exec compile contract {#price-exec-compile-contract}
-The fuel fee of calling the `CompileContract()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `CompileContract()`, calculée en unités de carburant.
 
 ### price exec contains {#price-exec-contains}
-The fuel fee of calling the `Contains()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `Contains()`, calculée en unités de carburant.
 
 ### price exec contract by id {#price-exec-contract-by-id}
-The fuel fee of calling the `GetContractById()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `GetContractById()`, calculée en unités de carburant.
 
 ### price exec contract by name {#price-exec-contract-by-name}
-The fuel fee of calling the GetContractByName() function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction GetContractByName(), calculée en unités de carburant.
 
 ### price exec contracts list {#price-exec-contracts-list}
-The fuel fee of calling the `ContractsList()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `ContractsList()`, calculée en unités de carburant.
 
 ### price exec create column {#price-exec-create-column}
-The fuel fee of calling the `CreateColumn()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `CreateColumn()`, calculée en unités de carburant.
 
 ### price exec create ecosystem {#price-exec-create-ecosystem}
-The fuel fee of calling the `CreateEcosystem()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `CreateEcosystem()`, calculée en unités de carburant.
 
 ### price exec create table {#price-exec-create-table}
-The fuel fee of calling the `CreateTable()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `CreateTable()`, calculée en unités de carburant.
 
 ### price exec ecosys param {#price-exec-ecosys-param}
-The fuel fee of calling the `EcosysParam()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `EcosysParam()`, calculée en unités de carburant.
 
 ### price exec eval {#price-exec-eval}
-The fuel fee of calling the `Eval()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `Eval()`, calculée en unités de carburant.
 
 ### price exec eval condition {#price-exec-eval-condition}
-The fuel fee of calling the `EvalCondition()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `EvalCondition()`, calculée en unités de carburant.
 
 ### price exec flush contract {#price-exec-flush-contract}
-The fuel fee of calling the `FlushContract()` function, calculated in fuel units. 
+Les frais de carburant de l'appel à la fonction `FlushContract()`, calculés en unités de carburant.
 
 ### price exec has prefix {#price-exec-has-prefix}
-The fuel fee of calling the `HasPrefix()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `HasPrefix()`, calculée en unités de carburant.
 
 ### price exec id to address {#price-exec-id-to-address}
-The fuel fee of calling the `IdToAddress()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `IdToAddress()`, calculée en unités de carburant.
 
 ### price exec is object {#price-exec-is-object}
-The fuel fee of calling the `IsObject()` function, calculated in fuel units. 
+La taxe de carburant de l'appel de la fonction `IsObject()`, calculée en unités de carburant.
 
 ### price exec join {#price-exec-join}
-The fuel fee of calling the `Join()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `Join()`, calculée en unités de carburant.
 
 ### price exec json to map {#price-exec-json-to-map}
-The fuel fee of calling the `JSONToMap()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `JSONToMap()`, calculée en unités de carburant.
 
 ### price exec len {#price-exec-len}
-The fuel fee of calling the `Len()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `Len()`, calculée en unités de carburant.
 
 ### price exec perm column {#price-exec-perm-column}
-The fuel fee of calling the `PermColumn()` function, calculated in fuel units. 
+La taxe de carburant de l'appel de la fonction `PermColumn()`, calculée en unités de carburant.
 
 ### price exec perm table {#price-exec-perm-table}
-The fuel fee of calling the `PermTable()` function, calculated in fuel units. 
+La taxe de carburant de l'appel de la fonction `PermTable()`, calculée en unités de carburant.
 
 ### price exec pub to id {#price-exec-pub-to-id}
-The fuel fee of calling the `PubToID()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `PubToID()`, calculée en unités de carburant.
 
 ### price exec replace {#price-exec-replace}
-The fuel fee of calling the `Replace()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `Replace()`, calculée en unités de carburant.
 
 ### price exec sha256 {#price-exec-sha256}
-The fuel fee of calling the `Sha256()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `Sha256()`, calculée en unités de carburant.
 
 ### price exec size {#price-exec-size}
-The fuel fee of calling the `Size()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `Size()`, calculée en unités de carburant.
 
 ### price exec substr {#price-exec-substr}
-The fuel fee of calling `theSubstr()` function, calculated in fuel units. 
+La taxe de carburant de l'appel de la fonction `theSubstr()`, calculée en unités de carburant.
 
 ### price exec sys fuel {#price-exec-sys-fuel}
-The fuel fee of calling the `SysFuel()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `SysFuel()`, calculée en unités de carburant.
 
 ### price exec sys param int {#price-exec-sys-param-int}
-The fuel fee of calling the `SysParamInt()` function, calculated in fuel units. 
+La taxe de carburant de l'appel de la fonction `SysParamInt()`, calculée en unités de carburant.
 
 ### price exec sys param string {#price-exec-sys-param-string}
-The fuel fee of calling the `SysParamString()` function, calculated in fuel units. 
+La taxe de carburant de l'appel de la fonction `SysParamString()`, calculée en unités de carburant.
 
 ### price exec table conditions {#price-exec-table-conditions}
-The fuel fee of calling the `TableConditions()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `TableConditions()`, calculée en unités de carburant. 
 
 ### price exec unbind wallet {#price-exec-unbind-wallet}
-The fuel fee of calling the `Deactivate()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `Deactivate()`, calculée en unités de carburant.
 
 ### price exec update lang {#price-exec-update-lang}
-The fuel fee of calling the `UpdateLang()` function, calculated in fuel units. 
+La taxe de carburant de l'appel de la fonction `UpdateLang()`, calculée en unités de carburant.
 
 ### price exec validate condition {#price-exec-validate-condition}
-The fuel fee of calling the `ValidateCondition()` function, calculated in fuel units. 
+La taxe de carburant de l'appel à la fonction `ValidateCondition()`, calculée en unités de carburant.
 
 ### price tx data {#price-tx-data}
-The fuel fee for every 1024 bytes of a transaction, calculated in fuel units. 
+La taxe de carburant pour chaque tranche de 1024 octets d'une transaction, calculée en unités de carburant.
 
 ### price tx size wallet {#price-tx-size-wallet}
-The fee by transaction size, its unit is the IBXC token.
+La commission en fonction de la taille de la transaction, son unité est le jeton IBXC.
 
-Except the ecosystem 1, a block space usage fee will be incurred proportionally when implementing a contract in other ecosystems, and its rate is *price tx size wallet* IBXC tokens per megabyte.
+Sauf pour l'écosystème 1, des frais d'utilisation de l'espace de bloc seront facturés proportionnellement lors de la mise en œuvre d'un contrat dans d'autres écosystèmes, et son taux est de *price tx size wallet* jetons IBXC par mégaoctet.
 
 ### rollback blocks {#rollback-blocks}
-Maximum number of blocks that can be rolled back when detecting a fork in the blockchain.
+Nombre maximum de blocs pouvant être annulés lors de la détection d'une bifurcation dans la blockchain.

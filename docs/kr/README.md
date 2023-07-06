@@ -4,7 +4,7 @@ heroImage: /ibax.png
 heroText: IBAX
 tagline: 탈중앙화 상업 크로스 체인 인프라 네트워크
 actionText: 빠른 시작 →
-actionLink: /zh-CN/concepts/about-the-platform.html
+actionLink: /kr/concepts/about-the-platform.html
 features:
 - title: 블록체인 애플리케이션 비용 대폭 절감
 - title: 독립적으로 구축된 물리적 생태계

@@ -274,7 +274,7 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
 * centrifugo
 * go-ibax
 
-これらのファイルを使用して [サービス](#https://wiki.debian.org/systemd/Services) を作成できなかった場合は、別のコンソールのディレクトリからバイナリ ファイルを実行する可能性があります。
+これらのファイルを使用して [サービス](https://wiki.debian.org/systemd/Services) を作成できなかった場合は、別のコンソールのディレクトリからバイナリ ファイルを実行する可能性があります。
 
 1. centrifugoを実行します:
 

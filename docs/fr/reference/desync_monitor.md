@@ -1,44 +1,44 @@
-# Synchronized Monitoring Tool {#synchronized-monitoring-tool}
+# Outil de surveillance synchronisée {#synchronized-monitoring-tool}
 
-Desync_monitor is a special tool that can be used to verify whether the database on the specified node has been synchronized.
+Desync_monitor est un outil spécial qui peut être utilisé pour vérifier si la base de données sur le nœud spécifié a été synchronisée.
 
-The tool can be used as a daemon or can be started to perform a one-time check.
+L'outil peut être utilisé comme un démon ou peut être lancé pour effectuer une vérification ponctuelle.
 
-The operating principle of the tool is based on the following:
+Le principe de fonctionnement de l'outil est basé sur ce qui suit :
 
-1.Each block contains the hash of all changes of all transactions, request the specified node to provide its last block ID;
-2.Then request a block with this ID from all nodes and compare the above hashes;
-3.If the hashes are different, a synchronization error message will be sent to the email address specified in the command.
+1. Chaque bloc contient le hachage de toutes les modifications de toutes les transactions, demandez au nœud spécifié de fournir son dernier ID de bloc ;
+2. Ensuite, demandez un bloc avec cet ID à tous les nœuds et comparez les hachages ci-dessus ;
+3. Si les hachages sont différents, un message d'erreur de synchronisation sera envoyé à l'adresse e-mail spécifiée dans la commande.
 
-## Location {#location}
+## Emplacement {#location}
 
-The tool is located in the `tools/desync_monitor/` directory.
+L'outil est situé dans le répertoire `tools/desync_monitor/`.
 
-## Command prompt flags {#command-prompt-flags}
+## Drapeaux de la ligne de commande {#command-prompt-flags}
 
-The following flags can be used from the command prompt:
+Les drapeaux suivants peuvent être utilisés depuis l'invite de commande :
 
-> -   **confPath** -- Path of the configuration file. The default file name is `config.toml`;
-> -   **nodesList** -- Node list of the requested block, separated by commas. The default is `127.0.0.1:7079`;
-> -   **daemonMode** -- Started as a daemon and should be used when authentication is required every N seconds. This flag is set to `false` by default;
-> -   **queryingPeriod** -- If the tool is started as a daemon, this parameter sets the time interval (in seconds) between checks, `1` second by default.
+> -   **confPath** -- Chemin du fichier de configuration. Le nom de fichier par défaut est `config.toml`;
+> -   **nodesList** -- Liste des nœuds du bloc demandé, séparés par des virgules. La valeur par défaut est `127.0.0.1:7079`;
+> -   **daemonMode** -- Démarré en tant que démon et doit être utilisé lorsque l'authentification est requise toutes les N secondes. Ce drapeau est par défaut défini sur `false`;
+> -   **queryingPeriod** -- Si l'outil est démarré en tant que démon, ce paramètre définit l'intervalle de temps (en secondes) entre les vérifications, `1` seconde par défaut.
 
--   **alertMessageTo** -- The email address to which synchronization warning errors will be sent.
+-   **alertMessageTo** -- L'adresse e-mail à laquelle les erreurs de synchronisation seront envoyées.
 
-    > -   **alertMessageSubj** -- Message subject in the warning message, the `node synchronization` problem by default;
-    > -   **alertMessageFrom** -- Address where the message was sent.
-    > -   **smtpHost** -- SMTP server host, used to send emails, the `""` by default;
-    > -   **smtpPort** -- SMTP server port, used to send email messages, `25` by default;
-    > -   **smtpUsername** -- SMTP server username, `""` by default;
-    > -   **smtpPassword** -- SMTP server password, `""` by default.
+    > -   **alertMessageSubj** -- Sujet du message dans le message d'avertissement, le problème de `synchronisation du nœud` par défaut;
+    > -   **alertMessageFrom** -- Adresse à partir de laquelle le message a été envoyé.
+    > -   **smtpHost** -- Hôte du serveur SMTP utilisé pour envoyer des e-mails, `""` par défaut;
+    > -   **smtpPort** -- Port du serveur SMTP utilisé pour envoyer des messages électroniques, `25` par défaut;
+    > -   **smtpUsername** -- Nom d'utilisateur du serveur SMTP, `""` par défaut;
+    > -   **smtpPassword** -- Mot de passe du serveur SMTP, `""` par défaut.
 
 ## Configuration {#configuration}
 
-The tool uses a configuration file in toml format.
+L'outil utilise un fichier de configuration au format toml.
 
-By default, it will look for the config.toml file in the folder where to start up the binary file.
+Par défaut, il recherchera le fichier config.toml dans le dossier où démarrer le fichier binaire.
 
-The file path can be changed with the **configPath**.
+Le chemin du fichier peut être modifié avec **configPath**.
 
 ```text
 nodes_list = ["http://127.0.0.1:7079", "http://127.0.0.1:7002"]
@@ -61,28 +61,28 @@ password = ""
 
 ### nodes_list {#nodes-list}
 
-* nodes_list - List of nodes (hosts) requesting information.
+* nodes_list - Liste des nœuds (hôtes) demandant des informations.
 
 ### [daemon] {#daemon}
 
-Configuration of the daemon mode.
+Configuration du mode démon.
 
-> -   **daemon_mode** -- A tool works as a daemon and performs synchronization checks.
-> -   **querying_period** -- Time interval between synchronization checks.
+> -   **daemon_mode** -- Un outil fonctionne comme un démon et effectue des vérifications de synchronisation.
+> -   **querying_period** -- Intervalle de temps entre les vérifications de synchronisation.
 
 ### [alert_message] {#alert-message}
 
-Warning message parameters.
+Paramètres du message d'avertissement.
 
-> -   **to** -- recipient's e-mail of synchronization error warning messages;
-> -   **subject** -- message subject;
-> -   **from** -- sender's e-mail.
+> -   **to** -- Destinataire des messages d'avertissement d'erreur de synchronisation ;
+> -   **subject** -- sujet du message;
+> -   **from** -- e-mail de l'expéditeur.
 
 ### [smtp] {#smtp}
 
-Simple Mail Transfer Protocol (SMTP) server parameters, used to send synchronization error messages.
+Paramètres du serveur de protocole de transfert de courrier simple (SMTP), utilisés pour envoyer des messages d'erreur de synchronisation.
 
-> -   **host** -- SMTP server hose;
-> -   **port** -- SMTP server port; 
-> -   **username** -- SMTP server user name; 
-> -   **password** --SMTP server password; 
+> -   **host** -- Serveur SMTP hébergé;
+> -   **port** -- Port du serveur SMTP;
+> -   **username** -- Nom d'utilisateur du serveur SMTP;
+> -   **password** -- Mot de passe du serveur SMTP;

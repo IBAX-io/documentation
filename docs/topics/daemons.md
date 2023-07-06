@@ -3,9 +3,13 @@
 In this section, we will describe how IBax nodes interact with each other from a technical perspective.
 
 ## About the server daemon {#about-the-server-daemon}
+
 The server daemon needs to run on every network node, which executes various server functions and supports IBax's blockchain protocol. In the blockchain network, the daemon distributes blocks and transactions, generates new blocks, and verifies blocks and transactions received, and it can avoid the fork issue.
+
 ### Honor node daemon {#honor-node-daemon}
+
 A honor node runs the following server daemons:
+
 * [BlockGenerator daemon](#blockgenerator-daemon)
 
     Generating new blocks.

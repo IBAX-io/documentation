@@ -28,7 +28,7 @@ The following provides examples of using the JSON RPC API by making curl request
 Curl requests may return an error message related to the content type. This is because the --data option sets the content type to application/x-www-form-urlencoded. If your request has this problem, set the header manually by placing -H "Content-Type: application/json" at the beginning of the call. These examples also do not include the URL/Internet Protocol and port combination that must be the last parameter of the curl (e.g. 127.0.0.1:7079 A full curl request with this additional data takes the form of
 
 ``` text
-curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","params":[],"id":1}' http://127.0.0.1:7079	
+curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"ibax.maxBlockId","params":[],"id":1}' http://127.0.0.1:7079 
 ```
 
 ## Covenant {#covenant}
@@ -77,19 +77,19 @@ For the account address parameter, you can use two formats of addresses, for exa
 1. - *String* - Account Address `"XXXX-XXXX-XXXX-XXXX-XXXX"` or Account Id `"64842...538120"` .538120"`
 
 2. - *Object* - Address object
-    - **key_id** - *Number* - Account Id, Example: `{"key_id":-64842	38120}`
-    - **account** - *String* - Account address, Example: `{"account": "1196-... -	-... -3496"}`
+    - **key_id** - *Number* - Account Id, Example: `{"key_id":-64842...38120}`
+    - **account** - *String* - Account address, Example: `{"account": "1196-...-...-...-3496"}`
 
     **Account Id is preferred when both account address and account Id exist**. 
     
 #### BlockOrHash {#blockorhash}
 Block height or block HASH, example
 
-1.	- *String*	-	Block	Height	`"100"`	or	Block	HASH`"4663aa47...a60753c18d9ba9cb4"`
+1. - *String* - Block Height `"100"` or Block HASH`"4663aa47...a60753c18d9ba9cb4"`
 
-2.	- *Object* - Block information object
+2. - *Object* - Block information object
         - **id** - *Number* - block height, example: `{"id":2}`
-        - **hash**	-	*[Hex](#hex)	String*	-	Block	HASH,	Example:	`{"hash": "d36b8996c	c616d3043a0d02a0f59"}`
+        - **hash** - *[Hex](#hex) String* - Block HASH, Example: `{"hash": "d36b8996c c616d3043a0d02a0f59"}`
 
         **Block Height and Block HASH can only choose one**. 
 
@@ -123,19 +123,19 @@ Returns status `200` in case the request is executed successfully.
 
 If an error occurs, a JSON object with the following fields will be returned:
 
--	jsonrpc
+- jsonrpc
 
     Error identifier.
 
--	id
+- id
 
     Error text message.
 
--	error
-    -	code
+- error
+    - code
 
         Response Status Code
-    -	message
+    - message
 
         Response Status Description
 
@@ -160,7 +160,7 @@ If an error occurs, a JSON object with the following fields will be returned:
 - [ibax.login](#ibax-login)
 - [ibax.getAuthStatus](#ibax-getauthstatus)
 
-#### server-side command interface {server-side-command-interface}
+#### server-side command interface {#server-side-command-interface}
 - [ibax.getVersion](#ibax-getversion)
 
 #### Data Request Function Interface {#data-request-function-interface}
@@ -236,7 +236,7 @@ If an error occurs, a JSON object with the following fields will be returned:
 
 [Authorization](#authorization) [Omitempty](#omitempty)
 
-Generate a temporary JWT token,	which needs to be passed to [**Authorization**](#authorization) when calling **[login](#ibax-login)**
+Generate a temporary JWT token, which needs to be passed to [**Authorization**](#authorization) when calling **[login](#ibax-login)**
 
 **Parameters**
 - None
@@ -318,10 +318,10 @@ If the request is successful, the token received in the response is contained in
 - **public_key** - *[Hex](#hex) String* - Hexadecimal account public key.
 
 - **key_id** - *String* -
-    >	Account address `XXXX-... -XXXX`.
+    > Account address `XXXX-... -XXXX`.
     >
-    >	Use this parameter if the public key is already stored in the blockchain. It cannot be used with *pubkey*
-    >	parameters are used together.
+    > Use this parameter if the public key is already stored in the blockchain. It cannot be used with *pubkey*
+    > parameters are used together.
 
 - **signature** - *String* -
     Use the private key to sign the uid received by getuid. 
@@ -489,7 +489,7 @@ Returns a list containing additional information about the transactions in each 
 **Return Value**
 *Object* - Get the block information object
 - **block_id** - *String* - block height
--	List of transactions in the block and additional information for each transaction:
+- List of transactions in the block and additional information for each transaction:
 
     - **hash** - *[Hex](#hex) String* - The transaction hash.
 
@@ -713,7 +713,7 @@ Returns a detailed list of additional information about the transactions in the 
     - **time** - *Number* - block generation timestamp.
     - **key_id** - *Number* - the address of the account that signed the block.
     - **node_position** - *Number* - The position of the node that generated the block in the honor node list.
-    -	**version** - *Number* - the block structure version.
+    - **version** - *Number* - the block structure version.
 
 - **hash** - *[Hex](#hex) String* - The block hash.
 - **node_position** - *Number* - The position of the node that generated the block in the honor node list.
@@ -789,7 +789,7 @@ Get the highest block ID on the current node
 - None
 
 **Return Value**
--	**Block Id** - *Number* - The highest block on the current node
+- **Block Id** - *Number* - The highest block on the current node
 
 **Example**
 ```text
@@ -934,7 +934,7 @@ Number of ecosystem acquisitions
 - None
 
 **Return Value**
-- **Count** - *Number* - Ecological number
+- **Count** - *Number* - Ecosystem number
 
 **Example**
 ```text
@@ -953,14 +953,14 @@ Number of ecosystem acquisitions
 
 
 ### **ibax.ecosystemInfo** {#ibax-ecosysteminfo}
-Access to ecological information
+Access to ecosystem information
 
 **Parameters**
-- **ecosystem id** - *Number* - ecological ID
+- **ecosystem id** - *Number* - ecosystem ID
 
 **Return Value**
 - **id** - *Number* - Eco-ID
-- **name** - *String* - Ecological name
+- **name** - *String* - Ecosystem name
 - **digits** - *Number* - Accuracy
 - **token_symbol** - *String* - Token symbols
 - **token_name** - *String* - the name of the token
@@ -1132,7 +1132,7 @@ Offset and number of entries can be set
 - **limit** - *Number* [Omitempty](#omitempty) The number of entries, default 100, max 100.
 
 **Return Value**
-- **count** - *Number* - The total number of sheets of the current ecological data table.
+- **count** - *Number* - The total number of sheets of the current ecosystem data table.
 
 - **list** - *Array* - Each element of the array contains the following parameters:
     - **name** - *String* - The name of the data table without prefix.
@@ -1340,7 +1340,7 @@ The data in the field will be replaced by the *Accept-Language* language resourc
 
     - **lang** - *String* - [Omitempty](#omitempty) -
 
-        This field specifies the multilingual resource code or localization, e.g. *en, zh*. If the specified multilingual resource is not found, e.g. *en-US*, then search in the Multilingual Resources group, **default**: **en**.
+        This field specifies the multilingual resource code or localization, e.g. *en, de*. If the specified multilingual resource is not found, e.g. *en-US*, then search in the Multilingual Resources group, **default**: **en**.
 
 **Return Value**
 
@@ -1448,7 +1448,7 @@ Returns the list of platform parameters.
 
 **Return Value**
 
--	**list** - *Array* - Each element of the array contains the following parameters:
+- **list** - *Array* - Each element of the array contains the following parameters:
     - **id** - *String* - Unique id
     - **name** - *String* - The name of the parameter.
     - **value** - *String* - The value of the parameter.
@@ -1788,7 +1788,7 @@ Returns information about the specified contract.
 [Authorization](#authorization)
 
 **Parameters**
-- **contractName**	-	*String*	-	The	name	of	the	contract.	The	format	is `@ecosystem_id%%contractName%`, e.g. @1contractName (the specified eco1contract name contractName) or contractName (the current eco-contract name contractName).
+- **contractName** - *String* - The name of the contract. The format is `@ecosystem_id%%contractName%`, e.g. @1contractName (the specified eco1contract name contractName) or contractName (the current eco-contract name contractName).
 
 **Return Value**
 
@@ -2006,7 +2006,7 @@ Returns transaction-related information for the specified hash list.
 - **contractinfo** - *Bool* [Omitempty](#omitempty) - Contract detail parameter identifier, get contract details related to this transaction, default is `false`
 
 **Return Value**
--	**results** - *Array* - Data dictionary with transaction hash as key and transaction details as value.
+- **results** - *Array* - Data dictionary with transaction hash as key and transaction details as value.
     - **hash** - *String* - The transaction hash.
         - **blockid** - *Number* - The block ID containing the transaction. if the value is `0`, then no transaction was found for that hash.
         - **confirm** - *Number* - the number of confirmations for this block *blockid*.
@@ -2098,10 +2098,10 @@ Gets the tree of code JSON objects for the specified page name, which is the res
 [Authorization](#authorization)
 
 **Parameters**
--	**name** - *String* - the name of the page with the ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
+- **name** - *String* - the name of the page with the ecosystem ID in the format `@ecosystem_id%%page_name%`, for example
 `@1main_page`.
 
-    If you don't have an ecosystem ID, the default is to find the current ecological page, e.g. `main_page`
+    If you don't have an ecosystem ID, the default is to find the current ecosystem page, e.g. `main_page`
 
 **Return Value**
 - **menu** - *String* - The name of the menu to which the page belongs.
@@ -2150,7 +2150,7 @@ Gets the tree of code JSON objects for the specified menu name, which is the res
 [Authorization](#authorization) 
 
 **Parameters**
--	**name** - *String* -
+- **name** - *String* -
     > Menu name with ecosystem ID in the format `@ecosystem_id%%%menu_name%`, e.g.
     > `@1main_menu`.
     > If you don't bring the ecosystem ID, the menu of the current ecosystem will be found by default, for example
@@ -2196,12 +2196,12 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
 [Authorization](#authorization)
  
 **Parameters**
--	**name** - *String* -
+- **name** - *String* -
     Page  name  with  ecosystem  ID  in  the  format  `@ecosystem_id%%%page_name%`,  for example `@1main_page`.
-    If you don't have an ecosystem ID, the default is to find the current ecological page e.g. `main_page`
+    If you don't have an ecosystem ID, the default is to find the current ecosystem page e.g. `main_page`
 
 **Return Value**
--	**tree** - *Array* - JSON object tree for the page.
+- **tree** - *Array* - JSON object tree for the page.
 
 **Example**
 ```text
@@ -2226,7 +2226,7 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
                                 "where": "{\"ecosystem\": \"#ecosystem_id#\", \"name\": \"System\"}"
                             }
                         }
-						...
+                        ...
                     ]
                 },
                 {
@@ -2248,7 +2248,7 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
                                 "where": "{\"ecosystem\": \"#ecosystem_id#\", \"$and\": [{\"role->id\": {\"$in\": [#role_developer_id#]}}, {\"role->id\": \"#role_id#\"}], \"member->account\": \"#account_id#\", \"deleted\": 0}"
                             }
                         }
-						...
+                        ...
                     ]
                 },
                 {
@@ -2264,7 +2264,7 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
                                 "value": "@1params_list"
                             }
                         }
-						...
+                        ...
                     ],
                     "tail": [
                         {
@@ -2276,7 +2276,7 @@ Returns a tree of coded JSON objects for the specified page name. Does not execu
                                         "title": "$@1ecosystem_parameters$"
                                     }
                                 }
-								...
+                                ...
                             ]
                         }
                     ]
@@ -2363,7 +2363,7 @@ Returns the number of JSON objects for the page code from the **template** param
 Returns information about the specified block ID.
 
 **Parameters**
--	**id** - *Number* - the height of the block. 
+- **id** - *Number* - the height of the block. 
 
 **Return Value**
 

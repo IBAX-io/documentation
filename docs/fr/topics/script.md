@@ -1,25 +1,24 @@
-
-# Smart Contracts {#smart-contracts}
-  - [Contract Structure](#contract-structure)
-    - [Data section](#data-section)
-    - [Conditions section](#conditions-section)
-    - [Action section](#action-section)
+# Contrats intelligents {#smart-contracts}
+  - [Structure du contrat](#contract-structure)
+    - [Section des données](#data-section)
+    - [Section des conditions](#conditions-section)
+    - [Section des actions](#action-section)
   - [Variables](#variables)
-  - [Nested Contracts](#nested-contracts)
-  - [File upload](#file-upload)
-  - [Queries in JSON format](#queries-in-json-format)
-  - [Queries with date and time operations](#queries-with-date-and-time-operations)
-  - [Needle contract language](#needle-contract-language)
-    - [Basic elements and structure](#basic-elements-and-structure)
-    - [Data types and variables](#data-types-and-variables)
-    - [Array](#array)
-    - [If and While statements](#if-and-while-statements)
-  - [Functions](#functions)
-    - [Function declaration](#function-declaration)
-    - [Variable-length parameters](#variable-length-parameters)
-    - [Optional parameters](#optional-parameters)
-  - [Needle functions classification](#needle-functions-classification)
-  - [Needle functions reference](#needle-functions-reference)
+  - [Contrats imbriqués](#nested-contracts)
+  - [Téléchargement de fichiers](#file-upload)
+  - [Requêtes au format JSON](#queries-in-json-format)
+  - [Requêtes avec des opérations de date et d'heure](#queries-with-date-and-time-operations)
+  - [Langage du contrat NEEDLE](#needle-contract-language)
+    - [Éléments de base et structure](#basic-elements-and-structure)
+    - [Types de données et variables](#data-types-and-variables)
+    - [Tableau](#array)
+    - [Instructions If et While](#if-and-while-statements)
+  - [Fonctions](#functions)
+    - [Déclaration de fonction](#function-declaration)
+    - [Paramètres de longueur variable](#variable-length-parameters)
+    - [Paramètres facultatifs](#optional-parameters)
+  - [Classification des fonctions Needle](#needle-functions-classification)
+  - [Référence des fonctions Needle](#needle-functions-reference)
     - [AppParam](#appparam)
     - [DBFind](#dbfind)
     - [DBRow](#dbrow)
@@ -103,7 +102,7 @@
     - [RunOBS](#runobs)
     - [StopOBS](#stopobs)
     - [RemoveOBS](#removeobs)
-  - [System Contracts](#system-contracts)
+  - [Contrats intelligents du système](#system-contracts)
     - [NewEcosystem](#newecosystem)
     - [EditEcosystemName](#editecosystemname)
     - [NewContract](#newcontract)
@@ -135,17 +134,18 @@
     - [UploadBinary](#uploadbinary)
 
 
-Smart Contract (hereinafter referred to as Contract) is one of the basic elements of an application. The implementation of a contract on a page by the user is usually a single operation that the purpose is to update or create a database entry. All data operations of an application form a contract system, and these contracts interact with each other through database or contract content functions.
+Le contrat intelligent (ci-après dénommé le contrat) est l'un des éléments de base d'une application. L'implémentation d'un contrat sur une page par l'utilisateur est généralement une opération unique dont le but est de mettre à jour ou de créer une entrée dans une base de données. Toutes les opérations de données d'une application forment un système de contrats, et ces contrats interagissent les uns avec les autres grâce aux fonctions de contenu de la base de données ou du contrat.
 
-## Contract Structure {#contract-structure}
+## Structure du contrat {#contract-structure}
 
-Use the keyword `contract` to declare a contract, followed by the contract name, and the contract content must be enclosed in braces. A contract mainly consists of three sections:
+Utilisez le mot-clé `contract` pour déclarer un contrat, suivi du nom du contrat, et le contenu du contrat doit être enclos entre des accolades. Un contrat se compose principalement de trois sections :
 
-1. **data** - [data section](#data-section), where declares the variables of the input data, including variable name and variable type;
+1. **data** - [section des données](#data-section), où sont déclarées les variables des données d'entrée, y compris le nom de la variable et le type de la variable ;
 
-2. **conditions** - [conditions section](#conditions-section), where validates the correctness of the data;
+2. **conditions** - [section des conditions](#conditions-section), où l'on vérifie la justesse des données ;
 
-3. **action** - [action section](#action-section), where defines the data manipulations.
+3. **action** - [section des actions](#action-section), où l'on définit les manipulations des données.
+
 ```
 contract MyContract {
   data {
@@ -164,15 +164,15 @@ contract MyContract {
 
 
 
-### Data section {#data-section}
+### Section des données {#data-section}
 
-The `data` section describes the contract data inputs and the form parameters received.
+La section `data` décrit les entrées de données du contrat et les paramètres de formulaire reçus.
 
-The structure of each line by sequence:
+La structure de chaque ligne par séquence :
 
-* Variable name - only receive variables, not arrays;
-* Variable data type - the [data type](#data-types-and-variables) of the variable;
-* optional - an optional parameter that do not need to fill in the form element.
+* Nom de la variable - ne reçoit que des variables, pas des tableaux ;
+* Type de données de la variable - le [type de données](#data-types-and-variables) de la variable ;
+* optionnel - un paramètre facultatif qui n'a pas besoin d'être rempli dans l'élément de formulaire.
 
 ```
 contract my {
@@ -189,11 +189,11 @@ contract my {
 
 
 
-### Conditions section {#conditions-section}
+### Section des conditions {#conditions-section}
 
-The `conditions` section describes the validation of data received.
+La section "conditions" décrit la validation des données reçues.
 
-The following commands are used for error warnings: serious errors `error`, warning errors `warning`, suggestive errors `info`. These three commands will generate an error that terminates the execution of contracts, and each error will print a different type of error log information. For example:
+Les commandes suivantes sont utilisées pour les avertissements d'erreur : erreurs graves `error`, erreurs avertissement `warning`, erreurs suggestives `info`. Ces trois commandes généreront une erreur qui mettra fin à l'exécution des contrats, et chaque erreur affichera un type différent d'informations de journal d'erreur. Par exemple :
 
 ```
 if fuel == 0 {
@@ -207,9 +207,9 @@ if idexist > 0 {
 }
 ```
 
-### Action section {#action-section}
+### Section d'action {#action-section}
 
-The `action` section describes the main code of the contract, which retrieves other data and records the result values in tables. For example:
+La section "action" décrit le code principal du contrat, qui récupère d'autres données et enregistre les valeurs de résultat dans des tables. Par exemple:
 
 ```
 action {
@@ -222,28 +222,28 @@ DBUpdate("keys", $recipient, {"+amount": $amount, "pub": $Pub})
 
 ## Variables {#variables}
 
-Variables declared in the data section are passed to other contract sections through the `$` symbol followed by the variable name. The `$` symbol can also be used to declare other variables that are not within the data section, which are considered as global variables of this contract and all contracts that this contract is nested.
+Les variables déclarées dans la section des données sont transmises aux autres sections du contrat via le symbole `$` suivi du nom de la variable. Le symbole `$` peut également être utilisé pour déclarer d'autres variables qui ne se trouvent pas dans la section des données, et qui sont considérées comme des variables globales de ce contrat et de tous les contrats dans lesquels ce contrat est imbriqué.
 
-Pre-defined variables can be used in contracts, which contain transaction data that called the contract:
+Des variables prédéfinies peuvent être utilisées dans les contrats, elles contiennent les données de transaction qui ont appelé le contrat :
 
-* `$time` - transaction timestamp;
-* `$ecosystem_id` - ecosystem ID;
-* `$block` - ID of the block containing the transaction;
-* `$key_id` - address of the account that signed the current transaction;
-* `$type` - contract ID in the virtual machine;
-* `$block_key_id` - account address of the node generated the block;
-* `$block_time` - block generation timestamp;
-* `$original_contract` - name of the contract that initially processed the transaction. It means the contract is called during transaction validation if the variable is an empty string. To check whether the contract is called by another contract or directly by the transaction, you need to compare the values of $original_contract and $this_contract. It means that the contract is called by the transaction if they are equal;
-* `$this_contract` - name of the contract currently being executed;
-* `$guest_key` - guest account address;
-* `$stack` - contract array stack with a data type of array, containing all contracts executed. The first element of the array represents the name of the contract currently being executed, while the last element represents the name of the contract that initially processed the transaction;
-* `$node_position` - the index number of the verification node array where the block is located;
-* `$txhash` - transaction hash;
-* `$contract` - the current contract structure array.
+* `$time` - horodatage de la transaction;
+* `$ecosystem_id` - ID de l'écosystème;
+* `$block` - ID du bloc contenant la transaction;
+* `$key_id` - adresse du compte ayant signé la transaction actuelle;
+* `$type` - ID du contrat dans la machine virtuelle;
+* `$block_key_id` - adresse du compte du nœud ayant généré le bloc;
+* `$block_time` - horodatage de génération du bloc;
+* `$original_contract` - nom du contrat qui a initialement traité la transaction. Cela signifie que le contrat est appelé lors de la validation de la transaction si la variable est une chaîne vide. Pour vérifier si le contrat est appelé par un autre contrat ou directement par la transaction, vous devez comparer les valeurs de $original_contract et $this_contract. Cela signifie que le contrat est appelé par la transaction s'ils sont égaux;
+* `$this_contract` - nom du contrat actuellement en cours d'exécution;
+* `$guest_key` - adresse du compte invité;
+* `$stack` - pile de tableaux de contrats avec un type de données de tableau, contenant tous les contrats exécutés. Le premier élément du tableau représente le nom du contrat actuellement en cours d'exécution, tandis que le dernier élément représente le nom du contrat qui a initialement traité la transaction;
+* `$node_position` - le numéro d'index du tableau de nœuds de vérification où se trouve le bloc;
+* `$txhash` - hachage de la transaction;
+* `$contract` - tableau de structure de contrat actuel.
 
-Predefined variables can be accessed not only in contracts, but also in permission fields that defines the access permission conditions of the application elements. When used in permission fields, predefined variables for block information are always equal to zero, such as `$time`, `$block`, etc.
+Les variables prédéfinies peuvent être utilisées non seulement dans les contrats, mais aussi dans les champs de permission qui définissent les conditions d'accès des éléments de l'application. Lorsqu'elles sont utilisées dans les champs de permission, les variables prédéfinies pour les informations de bloc sont toujours égales à zéro, telles que `$time`, `$block`, etc.
 
-A predefined variable `$result` is assigned with the return result of the contract.
+Une variable prédéfinie `$result` est assignée avec le résultat de retour du contrat.
 
 ```
 contract my {
@@ -266,13 +266,13 @@ contract my {
 }
 ```
 
-## Nested Contracts {#nested-contracts}
+## Contrats imbriqués {#nested-contracts}
 
-You can nest contracts in the conditions and action sections of the contract. Nested contracts can be called directly, and the contract parameters are specified in parentheses after the contract name, for example, `@1NameContract(Params)`. You may also call nested contracts with the [CallContract](#callcontract) function.
+Vous pouvez imbriquer des contrats dans les sections des conditions et des actions du contrat. Les contrats imbriqués peuvent être appelés directement, et les paramètres du contrat sont spécifiés entre parenthèses après le nom du contrat, par exemple, `@1NomContrat(Paramètres)`. Vous pouvez également appeler des contrats imbriqués avec la fonction [CallContract](#callcontract).
 
-## File upload {#file-upload}
+## Téléchargement de fichier {#file-upload}
 
-To upload a file using a form in the format of `multipart/form-data`, the data type of the contract must be `file`.
+Pour télécharger un fichier en utilisant un formulaire au format `multipart/form-data`, le type de données du contrat doit être `file`.
 
 ```
 contract Upload {
@@ -283,11 +283,11 @@ contract Upload {
 }
 ```
 
-The [UploadBinary](#uploadbinary) contract is used to upload and store files. With the Logicor language function [Binary](templates2.md#binary) in the page editor, you can get the file download link.
+Le contrat [UploadBinary](#uploadbinary) est utilisé pour télécharger et stocker des fichiers. Avec la fonction [Binary](templates2.md#binary) du langage Logicor dans l'éditeur de page, vous pouvez obtenir le lien de téléchargement du fichier.
 
-## Queries in JSON format {#queries-in-json-format}
+## Requêtes au format JSON {#queries-in-json-format}
 
-In the contract language, **JSON** can be specified as a field type. You can use the syntax: **columnname->fieldname** to process the entry field. The value obtained is recorded in **columnname.fieldname**. The above syntax can be used in Columns,One,Where of the [DBFind](#dbfind) function.
+Dans le langage du contrat, **JSON** peut être spécifié comme type de champ. Vous pouvez utiliser la syntaxe : **columnname->fieldname** pour traiter le champ d'entrée. La valeur obtenue est enregistrée dans **columnname.fieldname**. La syntaxe ci-dessus peut être utilisée dans les colonnes, les conditions et les clauses "Where" de la fonction [DBFind](#dbfind).
 
 ```
 var ret map
@@ -302,53 +302,53 @@ val = DBFind("mytable").WhereId($Id).One("doc->check")
 
 
 
-## Queries with date and time operations {#queries-with-date-and-time-operations}
+## Requêtes avec des opérations de date et d'heure {#queries-with-date-and-time-operations}
 
-You cannot directly query and update the date and time with the contract language functions, but you can use PostgreSQL functions and features in the Where statement as in the example below. For example, you need to compare the field date_column with the current time. If date_column is a timestamp type, the expression should be `date_column <NOW()`; if date_column is a Unix type, the expression should be `to_timestamp(date_column)> NOW()`.
+Vous ne pouvez pas interroger directement et mettre à jour la date et l'heure avec les fonctions du langage de contrat, mais vous pouvez utiliser les fonctions et fonctionnalités de PostgreSQL dans la clause Where comme dans l'exemple ci-dessous. Par exemple, vous devez comparer le champ date_column avec l'heure actuelle. Si date_column est de type timestamp, l'expression devrait être `date_column < NOW()`; si date_column est de type Unix, l'expression devrait être `to_timestamp(date_column) > NOW()`.
 
 ```
 Where("to_timestamp(date_column)> NOW()")
 Where("date_column <NOW() - 30 * interval '1 day'")
 ```
 
-The following Needle function is used to process date and time in SQL format:
+La fonction Needle suivante est utilisée pour traiter la date et l'heure au format SQL :
 
 * [BlockTime](#blocktime)
 * [DateTime](#datetime)
 * [UnixDateTime](#unixdatetime)
 
-## Needle contract language {#needle-contract-language}
+## Langage du contrat NEEDLE {#needle-contract-language}
 
-The contract language includes a set of functions, operators and structures, which can realize data algorithm processing and database operations.
+Le langage du contrat comprend un ensemble de fonctions, d'opérateurs et de structures, qui permettent de réaliser le traitement algorithmique des données et les opérations de base de données.
 
-The contract content can be modified if the contract editing permission is not set to `false`. The complete history of contract changes is stored in the blockchain, which is available in Weaver.
+Le contenu du contrat peut être modifié si l'autorisation de modification du contrat n'est pas définie sur "fausse". L'historique complet des modifications du contrat est stocké dans la blockchain, ce qui est disponible dans Weaver.
 
-Data operations in the blockchain are executed in accordance with the latest version of the contract.
+Les opérations de données dans la blockchain sont exécutées conformément à la dernière version du contrat.
 
-### Basic elements and structure {#basic-elements-and-structure}
+### Éléments de base et structure {#basic-elements-and-structure}
 
-### Data types and variables {#data-types-and-variables}
+### Types de données et variables {#data-types-and-variables}
 
-Data type must be defined for every variables. Normally, data types are converted automatically. The following data types can be used:
+Le type de données doit être défini pour chaque variable. Normalement, les types de données sont convertis automatiquement. Les types de données suivants peuvent être utilisés :
 
-* `bool` - Boolean, `true` or `false`;
-* `bytes` - a byte format;
-* `Int` - a 64-bit integer;
-* `Array` - an array of any type;
-* `map` - an object array;
-* `money` - a big integer;
-* `float` - a 64-bit float number;
-* `string` - a string must be defined with double quotes or escape format: "This is a string" or \`This is a string\`;
-* `file` - an object array:
-  * `Name` - file name, `string` type;
-  * `MimeType` - **mime-type** file, `string` type;
-  * `Body` - file content, `bytes` type.
+* `bool` - Booléen, `true` ou `false`;
+* `bytes` - un format de byte;
+* `Int` - un entier sur 64 bits;
+* `Array` - un tableau de n'importe quel type;
+* `map` - un tableau d'objets;
+* `money` - un grand entier;
+* `float` - un nombre à virgule flottante sur 64 bits;
+* `string` - une chaîne de caractères doit être définie avec des guillemets doubles ou un format d'échappement : "Ceci est une chaîne de caractères" ou \`Ceci est une chaîne de caractères\`;
+* `file` - un tableau d'objets :
+  * `Name` - nom du fichier, de type `string`;
+  * `MimeType` - type MIME du fichier, de type `string`;
+  * `Body` - contenu du fichier, de type `bytes`.
 
-All identifiers, including the names of variables, functions and contracts, are case sensitive (MyFunc and myFunc are different names).
+Tous les identifiants, y compris les noms de variables, de fonctions et de contrats, sont sensibles à la casse (MyFunc et myFunc sont des noms différents).
 
-Use the **var** keyword to declare a variable, followed by the name and type of the variable. Variables declared in braces must be used in the same pair of braces.
+Utilisez le mot-clé **var** pour déclarer une variable, suivi du nom et du type de la variable. Les variables déclarées entre accolades doivent être utilisées dans la même paire d'accolades.
 
-The default value of any variable declared is zero: the zero value of bool type is false, the zero value of all numeric types is 0, and the zero value, for strings, empty strings. An example of variable declaration:
+La valeur par défaut de toute variable déclarée est zéro : la valeur zéro du type booléen est false, la valeur zéro de tous les types numériques est 0, et la valeur zéro pour les chaînes de caractères est une chaîne vide. Un exemple de déclaration de variable :
 
 ```
 func myfunc( val int) int {
@@ -364,13 +364,13 @@ func myfunc( val int) int {
 
 
 
-### Array {#array}
+### Tableau {#array}
 
-The contract language supports two array types:
-* `Array` - an array with index starting from 0;
-* `map` - an array of objects.
+Le langage du contrat prend en charge deux types de tableaux :
+* `Array` - un tableau dont l'index commence à 0 ;
+* `map` - un tableau d'objets.
 
-When allocating and retrieving array elements, the index must be placed in square brackets. Multiple indexes are not supported in the array, and the array elements cannot be treated as myarr[i][j].
+Lors de l'allocation et de la récupération des éléments d'un tableau, l'indice doit être placé entre crochets. Les index multiples ne sont pas pris en charge dans le tableau, et les éléments du tableau ne peuvent pas être traités comme myarr[i][j].
 
 ```
 var myarr array
@@ -386,7 +386,7 @@ s = Sprintf("%v, %v, %v", myarr[0] + mymap["value"], myarr[1], mymap["param"])
 // s = 877, This is a line, Parameter
 ```
 
-You can also define arrays of array type by specifying elements in `[]`. For map type `arrays`, please use `{}`.
+Vous pouvez également définir des tableaux de type tableau en spécifiant les éléments entre `[]`. Pour les tableaux de type map, veuillez utiliser `{}`.
 
 ```
 var my map
@@ -395,21 +395,21 @@ var mya array
 mya=["value1", {key2: i}, $Name]
 ```
 
-You can use such initialization in expressions. For example, use it in function parameters.
+Vous pouvez utiliser cette initialisation dans les expressions. Par exemple, utilisez-la dans les paramètres de fonction.
 
 ```
 DBFind...Where({id: 1})
 ```
 
-For an array of objects, you must specify a key. Key are specified as strings in double quotes (`""`). If the key name is limited to letters, numbers and underscores, you can omit the double quotes.
+Pour un tableau d'objets, vous devez spécifier une clé. Les clés sont spécifiées en tant que chaînes de caractères entre guillemets doubles (`""`). Si le nom de la clé est limité aux lettres, aux chiffres et aux underscores, vous pouvez omettre les guillemets doubles.
 
 ```
 {key1: "value1", key2: "value2"}
 ```
 
-An array can contain strings, numbers, variable names of any type, and variable names with the `$` symbol. It supports nested arrays. You can specify different maps or arrays as values.
+Un tableau peut contenir des chaînes de caractères, des nombres, des noms de variables de n'importe quel type, et des noms de variables avec le symbole `$`. Il prend en charge les tableaux imbriqués. Vous pouvez spécifier différentes cartes ou tableaux en tant que valeurs.
 
-Expressions cannot be used as array elements. Use a variable to store the expression result and specify this variable as an array element.
+Les expressions ne peuvent pas être utilisées comme éléments de tableau. Utilisez une variable pour stocker le résultat de l'expression et spécifiez cette variable en tant qu'élément de tableau.
 
 ```
 [1+2, myfunc(), name["param"]] // don't do this
@@ -420,15 +420,15 @@ val = my["param"]
 MyFunc({key: val, sub: {name: "My name", "color": "Red"}})
 ```
 
-### If and While statements {#if-and-while-statements}
+### If et While déclarations {#if-and-while-statements}
 
-The contract language supports standard **if** conditional statements and **while** loops, which can be used in contracts and functions. These statements can be nested within each other.
+Le langage du contrat prend en charge les déclarations conditionnelles standard **if** et les boucles **while**, qui peuvent être utilisées dans les contrats et les fonctions. Ces déclarations peuvent être imbriquées les unes dans les autres.
 
-**if** and **while** must be followed by a conditional statement. If the conditional statement returns a number, it is regarded as false when its value is 0.
+Les déclarations **if** et **while** doivent être suivies d'une déclaration conditionnelle. Si la déclaration conditionnelle renvoie un nombre, elle est considérée comme fausse lorsque sa valeur est 0.
 
-val == 0 is equal to !val, val != 0 is equal to val. The **if** statement can have an **else** code block, and the **else** is executed when the **if** conditional statement is false.
+val == 0 est équivalent à !val, val != 0 est équivalent à val. L'instruction **if** peut avoir un bloc de code **else**, et le **else** est exécuté lorsque la déclaration conditionnelle **if** est fausse.
 
-The following comparison operators can be used in conditional statements: `<, >, >=, <=, ==, !=, ||, &&`
+Les opérateurs de comparaison suivants peuvent être utilisés dans les déclarations conditionnelles : `<, >, >=, <=, ==, !=, ||, &&`
 
 ```
 if val> 10 || id != $block_key_id {
@@ -438,7 +438,7 @@ if val> 10 || id != $block_key_id {
 }
 ```
 
-The code block is executed when the conditional statement of the **while** loop is true. **break** means to terminate the loop of the code block. If you want to start a loop from the beginning, use **continue**.
+Le bloc de code est exécuté lorsque la condition de l'instruction **while** est vraie. **break** signifie terminer la boucle du bloc de code. Si vous souhaitez recommencer une boucle depuis le début, utilisez **continue**.
 
 ```
 var i int
@@ -455,17 +455,17 @@ while true {
 }
 ```
 
-In addition to conditional statements, Needle also supports standard arithmetic operations: `+`, `-`, `*`, `/`.
+En plus des instructions conditionnelles, Needle prend également en charge les opérations arithmétiques standard : `+`, `-`, `*`, `/`.
 
-Variables of string and bytes types can be used as a conditional statement. If the length of the type is greater than zero, the condition is true, otherwise it is false.
+Les variables de type chaîne de caractères et octets peuvent être utilisées comme condition. Si la longueur du type est supérieure à zéro, la condition est vraie, sinon elle est fausse.
 
-### Functions {#functions}
+### Fonctions {#functions}
 
-Functions can perform some operations on the data received by the [data section](#data-section) of a contract: read and write data from the database, convert the type of value, and establish the interaction between contracts.
+Les fonctions peuvent effectuer des opérations sur les données reçues par la [section de données](#data-section) d'un contrat : lire et écrire des données dans la base de données, convertir le type de valeur et établir l'interaction entre les contrats.
 
-#### Function declaration {#function-declaration}
+#### Déclaration de fonction {#function-declaration}
 
-Use the func keyword to declare a function, followed by the name and the list of parameters passed to it and their types. All parameters are enclosed in parentheses and separated by commas. After the parentheses, the data type of the value returned by the function must be declared. The function body must be enclosed in braces. If the function has no parameters, the braces can be omitted. To return a value from a function, use the `return` keyword.
+Utilisez le mot-clé `func` pour déclarer une fonction, suivi du nom et de la liste des paramètres qui lui sont passés ainsi que de leurs types. Tous les paramètres sont enclos entre parenthèses et séparés par des virgules. Après les parenthèses, le type de données de la valeur renvoyée par la fonction doit être déclaré. Le corps de la fonction doit être enclos entre accolades. Si la fonction n'a pas de paramètres, les accolades peuvent être omises. Pour renvoyer une valeur à partir d'une fonction, utilisez le mot-clé `return`.
 
 ```
 func myfunc(left int, right int) int {
@@ -479,11 +479,11 @@ func ooops {
 }
 ```
 
-Function do not return errors, because all error checks are performed automatically. If there is an error in any function, the contract will terminate its operation and present the error description in a window.
+La fonction ne renvoie pas d'erreurs, car toutes les vérifications d'erreur sont effectuées automatiquement. Si une erreur se produit dans n'importe quelle fonction, le contrat mettra fin à son fonctionnement et affichera la description de l'erreur dans une fenêtre.
 
-#### Variable-length parameters {#variable-length-parameters}
+#### Paramètres de longueur variable {#variable-length-parameters}
 
-Functions can define variable-length parameters, use the `...` symbol as the last parameter type of the function to indicate variable-length parameters, with a data type of `array`. Variable-length parameters include all variables from the time the parameter is passed in the call. All types of variables can be passed, but you need to deal with conflicts of mismatching of data types.
+Les fonctions peuvent définir des paramètres de longueur variable, utilisez le symbole `...` comme dernier type de paramètre de la fonction pour indiquer des paramètres de longueur variable, avec un type de données `array`. Les paramètres de longueur variable incluent toutes les variables à partir du moment où le paramètre est passé dans l'appel. Tous les types de variables peuvent être passés, mais vous devez gérer les conflits de types de données incompatibles.
 
 ```
 func sum(out string, values ...) {
@@ -508,11 +508,11 @@ func main() {
 
 
 
-#### Optional parameters {#optional-parameters}
+#### Paramètres optionnels {#optional-parameters}
 
-A function has many parameters, but we only need some of them when calling it. In this case, you can declare optional parameters in the following way: `func myfunc(name string).Param1(param string).Param2(param2 int) {...}`, then you can call the specified parameters in any order: `myfunc("name").Param2(100)`.
+Une fonction a de nombreux paramètres, mais nous n'avons besoin que de certains d'entre eux lors de son appel. Dans ce cas, vous pouvez déclarer des paramètres optionnels de la manière suivante : `func myfunc(name string).Param1(param string).Param2(param2 int) {...}`, puis vous pouvez appeler les paramètres spécifiés dans n'importe quel ordre : `myfunc("nom").Param2(100)`.
 
-In the function body, you can handle these variables normally. If no specified optional parameters called, their default values are zero. You can also use ... to specify a variable-length parameter: `func DBFind(table string).Where(request string, params ...)` and then call it: `DBFind("mytable").Where({" id": $myid, "type": 2})`
+Dans le corps de la fonction, vous pouvez manipuler ces variables normalement. Si aucun paramètre optionnel spécifié n'est appelé, leurs valeurs par défaut sont zéro. Vous pouvez également utiliser ... pour spécifier un paramètre de longueur variable : `func DBFind(table string).Where(request string, params ...)` puis l'appeler : `DBFind("matable").Where({" id": $monid, "type": 2})`.
 
 ```
 func DBFind(table string).Columns(columns string).Where(format string, tail ...)
@@ -526,9 +526,9 @@ func names() string {
 }
 ```
 
-## Needle functions classification {#needle-functions-classification}
+## Classification des fonctions Needle {#needle-functions-classification}
 
-Retrieving values from the database:
+Récupération des valeurs de la base de données :
 
 |                 |               |                 |
 | --------------- | ------------- | --------------- |
@@ -537,14 +537,14 @@ Retrieving values from the database:
 | [DBRow](#dbrow)           | [GetHistoryRow](#gethistoryrow) | [GetBlock](#getblock)        |
 | [DBSelectMetrics](#dbselectmetrics) | [GetColumnType](#getcolumntype) | [LangRes](#langres)         |
 
-Updating data in tables:
+Mise à jour des données dans les tables :
 
 |          |             |          |
 | -------- | ----------- | -------- |
 | [DBInsert](#dbinsert) | [DBUpdateExt](#dbupdateext) | [DelTable](#deltable) |
 | [DBUpdate](#dbupdate) | [DelColumn](#delcolumn)   |          |
 
-Operations with arrays:
+Opérations avec des tableaux :
 
 |        |      |            |
 | ------ | ---- | ---------- |
@@ -552,7 +552,7 @@ Operations with arrays:
 | [Join](#join)   | [Row](#row)  | [SortedKeys](#sortedkeys) |
 | [Split](#split)  | [One](#one)  |            |
 
-Operations with contracts and permissions:
+Opérations avec des contrats et des autorisations:
 
 |                    |                   |                   |
 | ------------------ | ----------------- | ----------------- |
@@ -562,14 +562,14 @@ Operations with contracts and permissions:
 | [EvalCondition](#evalcondition)      |                   |                   |
 
 
-Operations with addresses:
+Opérations avec des adresses :
 
 |             |             |         |
 | ----------- | ----------- | ------- |
 | [AddressToId](#addresstoid) | [IdToAddress](#idtoaddress) | [PubToID](#pubtoid) |
 
 
-Operations with variable values:
+Opérations avec des valeurs de variables:
 
 |              |             |        |
 | ------------ | ----------- | ------ |
@@ -578,7 +578,7 @@ Operations with variable values:
 | [Float](#float)        | [Int](#int)         | [Str](#str)    |
 | [HexToBytes](#hextobytes)   |             |        |
 
-Arithmetic operations:
+Opérations arithmétiques :
 
 |       |       |       |
 | ----- | ----- | ----- |
@@ -588,14 +588,14 @@ Arithmetic operations:
 
 
 
-Operations with JSON:
+Opérations avec JSON:
 
 |            |                  |            |
 | ---------- | ---------------- | ---------- |
 | [JSONEncode](#jsonencode) | [JSONEncodeIndent](#jsonencodeindent) | [JSONDecode](#jsondecode) |
 
 
-Operations with strings:
+Opérations avec des chaînes de caractères:
 
 |           |         |           |
 | --------- | ------- | --------- |
@@ -604,27 +604,27 @@ Operations with strings:
 | [Replace](#replace)   | [Substr](#substr)  | [TrimSpace](#trimspace) |
 
 
-Operations with bytes:
+Opérations avec des octets :
 
 |               |               |      |
 | ------------- | ------------- | ---- |
 | [StringToBytes](#stringtobytes) | [BytesToString](#bytestostring) |      |
 
 
-Operations with date and time in SQL format:
+Opérations avec date et heure au format SQL :
 
 |           |          |              |
 | --------- | -------- | ------------ |
 | [BlockTime](#blocktime) | [DateTime](#datetime) | [UnixDateTime](#unixdatetime) |
 
 
-Operations with platform parameters:
+Opérations avec les paramètres de la plateforme:
 |           |          |              |
 | --------- | -------- | ------------ |
 | [SysParamString](#sysparamstring) | [SysParamInt](#sysparamint) | [DBUpdateSysParam](#dbupdatesysparam) |
 | [UpdateNotifications](#updatenotifications) | [UpdateRolesNotifications](#updaterolesnotifications) | |
 
-CLB mode function operation:
+Fonctionnement du mode CLB :
 |             |              |      |
 | ----------- | ------------ | ---- |
 | [HTTPRequest](#httprequest) | [HTTPPostJSON](#httppostjson) |      |
@@ -632,7 +632,7 @@ CLB mode function operation:
 
 
 
-Functions for master CLB nodes:
+Fonctions pour les nœuds maîtres CLB :
 
 |            |         |           |
 | ---------- | ------- | --------- |
@@ -641,14 +641,14 @@ Functions for master CLB nodes:
 
 
 
-## Needle functions reference {#needle-functions-reference}
+## Référence des fonctions Needle {#needle-functions-reference}
 
 
 ### AppParam {#appparam}
 
-Returns the value of a specified application parameter (from the application parameter table app_params).
+Retourne la valeur d'un paramètre d'application spécifié (à partir de la table des paramètres d'application app_params).
 
-**Syntax**
+**Syntaxe**
 
 ```
 AppParam(app int, name string, ecosystemid int) string
@@ -656,17 +656,17 @@ AppParam(app int, name string, ecosystemid int) string
 
 * **App**
 
-  Application ID.
+  Identifiant de l'application.
 
 * **name**
 
-    Application parameter name.
+    Nom du paramètre de l'application.
 
 * **Ecosystemid**
 
-    Ecosystem ID.
+    Identifiant de l'écosystème.
 
-**Example**
+**Exemple**
 
 ```
 AppParam(1, "app_account", 1)
@@ -676,11 +676,11 @@ AppParam(1, "app_account", 1)
 
 ### DBFind {#dbfind}
 
-Queries data from a specified table with the specified parameters and returns an array array consisting of an array of objects map.
+Interroge les données d'une table spécifiée avec les paramètres spécifiés et renvoie un tableau de tableaux d'objets map.
 
-`.Row()` can get the first map element in the query, `.One(column string)` can get the first map element of a specified column in the query.
+`.Row()` permet d'obtenir le premier élément map dans la requête, `.One(column string)` permet d'obtenir le premier élément map d'une colonne spécifiée dans la requête.
 
-**Syntax**
+**Syntaxe**
 
 ```
 DBFind(table string)
@@ -697,71 +697,71 @@ DBFind(table string)
 
 * **table**
 
-  Table name.
+  Nom de la table.
 
-* **сolumns**
+* **colonnes**
 
-  Returns a list of columns. If not specified, all columns will be returned.
+  Retourne une liste de colonnes. Si non spécifié, toutes les colonnes seront renvoyées.
 
-  The value is an array or a string separated by commas.
+  La valeur est un tableau ou une chaîne de caractères séparée par des virgules.
 
-* **where**
+* **où**
 
-  Query conditions.
+  Conditions de requête.
 
-  Example: `.Where({name: "John"})` or `.Where({"id": {"$gte": 4}})`.
+Exemple: `.Where({name: "John"})` ou `.Where({"id": {"$gte": 4}})`.
 
-  This parameter must contain an array of objects with search criteria. The array can contain nested elements.
+Ce paramètre doit contenir un tableau d'objets avec des critères de recherche. Le tableau peut contenir des éléments imbriqués.
 
-  Following syntactic constructions are used:
-  * `{"field1": "value1", "field2": "value2"}`
-     Equivalent to `field1 = "value1" AND field2 = "value2"`.
+Les constructions syntaxiques suivantes sont utilisées :
+* `{"field1": "value1", "field2": "value2"}`
+     Équivalent à `field1 = "value1" ET field2 = "value2"`.
 
-  * `{"field1": {"$eq":"value"}}`
-     Equivalent to `field = "value"`.
+* `{"field1": {"$eq":"value"}}`
+     Équivalent à `field = "value"`.
 
-  * `{"field1": {"$neq": "value"}}`
-     Equivalent to `field != "value"`.
+* `{"field1": {"$neq": "value"}}`
+     Équivalent à `field != "value"`.
 
-  * `{"field1: {"$in": [1,2,3]}`
-     Equivalent to `field IN (1,2,3)`.
+* `{"field1: {"$in": [1,2,3]}}`
+     Équivalent à `field IN (1,2,3)`.
 
-  * `{"field1": {"$nin": [1,2,3]}`
-     Equivalent to field NOT IN (1,2,3).
+* `{"field1": {"$nin": [1,2,3]}}`
+     Équivalent à `field NOT IN (1,2,3)`.
 
-  * `{"field": {"$lt": 12}}`
-     Equivalent to `field <12`.
+* `{"field": {"$lt": 12}}`
+     Équivalent à `field < 12`.
 
-  * `{"field": {"$lte": 12}}`
-     Equivalent to f`ield <= 12`.
+* `{"field": {"$lte": 12}}`
+     Équivalent à `field <= 12`.
 
-  * `{"field": {"$gt": 12}}`
-     Equivalent to `field> 12`.
+* `{"field": {"$gt": 12}}`
+     Équivalent à `field > 12`.
 
-  * `{"field": {"$gte": 12}}`
-     Equivalent to `field >= 12`.
+* `{"field": {"$gte": 12}}`
+     Équivalent à `field >= 12`.
 
-  * `{"$and": [<expr1>, <expr2>, <expr3>]}`
-     Equivalent to `expr1 AND expr2 AND expr3`.
+* `{"$and": [<expr1>, <expr2>, <expr3>]}` 
+     Équivalent à `expr1 ET expr2 ET expr3`.
 
-  * `{"$or": [<expr1>, <expr2>, <expr3>]}`
-     Equivalent to `expr1 OR expr2 OR expr3`.
+* `{"$or": [<expr1>, <expr2>, <expr3>]}` 
+     Équivalent à `expr1 OU expr2 OU expr3`.
 
-  * `{field: {"$like": "value"}}`
-     Equivalent to `field like'%value%'` (fuzzy search).
+* `{field: {"$like": "value"}}`
+     Équivalent à `field like '%value%'` (recherche floue).
 
-  * `{field: {"$begin": "value"}}`
-     Equivalent to `field like'value%'` (starts with `value`).
+* `{field: {"$begin": "value"}}`
+     Équivalent à `field like 'value%'` (commence par `value`).
 
-  * `{field: {"$end": "value"}}`
-     Equivalent to `field like'%value'` (ends with `value`).
+* `{field: {"$end": "value"}}`
+     Équivalent à `field like '%value'` (se termine par `value`).
 
-  * `{field: "$isnull"}`
-     Equivalent to field is null.
+* `{field: "$isnull"}`
+     Équivalent à `field is null`.
 
      
 
-Make sure not to overwrite the keys of object arrays. For example, if you want to query with `id>2 and id<5`, you cannot use `{id:{"$gt": 2}, id:{"$lt": 5}}`, because the first element will be overwritten by the second element. You should use the following query structure:
+Assurez-vous de ne pas écraser les clés des tableaux d'objets. Par exemple, si vous souhaitez interroger avec `id>2 et id<5`, vous ne pouvez pas utiliser `{id:{"$gt": 2}, id:{"$lt": 5}}`, car le premier élément sera écrasé par le deuxième élément. Vous devriez utiliser la structure de requête suivante :
 ```
 {id: [{"$gt": 2}, {"$lt": 5}]}
 ```
@@ -769,37 +769,37 @@ Make sure not to overwrite the keys of object arrays. For example, if you want t
 {"$and": [{id:{"$gt": 2}}, {id:{"$lt": 5}}]}
 ```
 
-* **Id**
+> Id
 
-     Queries by ID. For example, .WhereId(1).
-
-     
-
-* **Order**
-
-     Used to sort the result set by a specified column, or by id by default.
-
-     If you use only one field for sorting, you can specify it as a string. To sort multiple fields, you need to specify an array of string objects:
-
-     Descending order: `{"field": "-1"}` Equivalent to `field desc`.
-
-     Ascending order: `{"field": "1"}` Equivalent to `field asc`.
-
-* **limit**
-
-     Returns the number of entries. 25, by default. The maximum number is 10,000.
-
-* **Offset**
-
-     Offset.
-
-* **Ecosystemid**
-
-     Ecosystem ID. By default, the table of the current ecosystem is queried.
+    Requêtes par ID. Par exemple, .WhereId(1).
 
      
 
-**Example**
+> Order
+
+    Utilisé pour trier l'ensemble de résultats par une colonne spécifiée, ou par id par défaut.
+
+    Si vous utilisez uniquement un champ pour le tri, vous pouvez le spécifier en tant que chaîne de caractères. Pour trier plusieurs champs, vous devez spécifier un tableau d'objets de chaînes de caractères :
+
+    Ordre décroissant : `{"field": "-1"}` Équivalent à `field desc`.
+
+    Ordre croissant : `{"field": "1"}` Équivalent à `field asc`.
+
+> limit
+
+    Renvoie le nombre d'entrées. 25, par défaut. Le nombre maximum est de 10 000.
+
+> Offset
+
+    Décalage.
+
+> Ecosystemid
+
+    Identifiant de l'écosystème. Par défaut, la table de l'écosystème actuel est interrogée.
+
+     
+
+**Exemple**
 
 ```
 var i int
@@ -822,9 +822,9 @@ if ret != nil {
 
 ### DBRow {#dbrow}
 
-Queries data from a specified table with the specified parameters. Returns an array array consisting of an array of objects map.
+Interroge les données d'une table spécifiée avec les paramètres spécifiés. Renvoie un tableau de tableaux d'objets map.
 
-**Syntax**
+**Syntaxe**
 
 ```
 DBRow(table string)
@@ -837,35 +837,37 @@ DBRow(table string)
 
 * **table**
 
-  Table name.
+  Nom de la table.
 
 * **columns**
   
-  Returns a list of columns. If not specified, all columns will be returned.
+  Retourne une liste de colonnes. Si non spécifié, toutes les colonnes seront renvoyées.
 
-  The value is an array or a string separated by commas.
-* **where**
+  La valeur est un tableau ou une chaîne de caractères séparée par des virgules.
 
-  Query conditions.
+* **où**
 
-  For example: `.Where({name: "John"})` or `.Where({"id": {"$gte": 4}})`.
+  Conditions de requête.
 
-  For more details, see [DBFind](#dbfind).
+  Par exemple : `.Where({name: "John"})` ou `.Where({"id": {"$gte": 4}})`.
+
+  Pour plus de détails, consultez [DBFind](#dbfind).
+
 * **Id**
   
-  Query by ID. For example, `.WhereId(1)`.
+  Requête par ID. Par exemple, `.WhereId(1)`.
 
 * **Order**
 
-  Used to sort the result set by a specified column, or by id by default.
+  Utilisé pour trier l'ensemble des résultats par une colonne spécifiée, ou par id par défaut.
 
-  For more details, see [DBFind](#dbfind).
+  Pour plus de détails, voir [DBFind](#dbfind).
 
 * **Ecosystemid**
 
-  Ecosystem ID. By default, the table of the current ecosystem is queried.
+  Identifiant de l'écosystème. Par défaut, la table de l'écosystème actuel est interrogée.
 
-**Example**
+**Exemple**
 
 ```
 var ret map
@@ -877,11 +879,11 @@ Println(ret)
 
 ### DBSelectMetrics {#dbselectmetrics}
 
-Returns the aggregated data of a metric.
+Retourne les données agrégées d'une métrique.
 
-The metrics are updated each time 100 blocks are generated. And the aggregated data is stored on a 1-day cycle.
+Les métriques sont mises à jour à chaque fois que 100 blocs sont générés. Et les données agrégées sont stockées sur un cycle de 1 jour.
 
-**Syntax**
+**Syntaxe**
 
 ```
 DBSelectMetrics(metric string, timeInterval string, aggregateFunc string) array
@@ -890,33 +892,33 @@ DBSelectMetrics(metric string, timeInterval string, aggregateFunc string) array
 
 * **metric**
 
-  Metric name
+  Nom de la métrique
 
   * **ecosystem_pages**
   
-    Number of ecosystem pages.
+    Nombre de pages d'écosystème.
 
-    Return value: key - ecosystem ID, value - number of ecosystem pages.
+    Valeur de retour : clé - ID de l'écosystème, valeur - nombre de pages d'écosystème.
   * **ecosystem_members**
   
-    Number of ecosystem members.
+    Nombre de membres de l'écosystème.
 
-    Return value: key - ecosystem ID, value - number of ecosystem members.
+    Valeur de retour : clé - ID de l'écosystème, valeur - nombre de membres de l'écosystème.
   * **ecosystem_tx**
 
-    Number of ecosystem transactions.
+    Nombre de transactions de l'écosystème.
 
-    Return value: key - ecosystem ID, value - number of ecosystem transactions.
+    Valeur de retour : clé - ID de l'écosystème, valeur - nombre de transactions de l'écosystème.
 
 * **timeInterval**
 
-    The time interval for aggregating metric data. For example: `1 day`, `30 days`.
+    Intervalle de temps pour l'agrégation des données de la métrique. Par exemple : `1 jour`, `30 jours`.
 
 * **aggregateFunc**
 
-    Aggregate function. For example, `max`, `min`, `avg`.
+    Fonction d'agrégation. Par exemple, `max`, `min`, `avg`.
 
-**Example**
+**Exemple**
 
 ```
 var rows array
@@ -933,9 +935,9 @@ while(i <Len(rows)) {
 
 ### EcosysParam {#ecosysparam}
 
-Returns the value of a specified parameter in the ecosystem parameters table parameters.
+Retourne la valeur d'un paramètre spécifié dans la table des paramètres de l'écosystème.
 
-**Syntax**
+**Syntaxe**
 
 ```
 EcosysParam(name string) string
@@ -944,9 +946,9 @@ EcosysParam(name string) string
 
 * **name**
 
-  Parameter name.
+  Nom du paramètre.
 
-**Example**
+**Exemple**
 
 ```
 Println(EcosysParam("founder_account"))
@@ -956,9 +958,9 @@ Println(EcosysParam("founder_account"))
 
 ### GetHistory {#gethistory}
 
-Returns the history of changes to entries in a specified table.
+Retourne l'historique des modifications apportées aux entrées d'une table spécifiée.
 
-**Syntax**
+**Syntaxe**
 
 ```
 GetHistory(table string, id int) array
@@ -967,21 +969,22 @@ GetHistory(table string, id int) array
 
 * **table**
 
-  Table name.
+  Nom de la table.
+
 * **Id**
 
-  Entry ID.
+  Identifiant d'entrée.
 
-**Return value**
+**Valeur de retour**
 
-  Returns an array of objects of type map, which specify the history of changes to entries in tables.
+  Retourne un tableau d'objets de type map, qui spécifient l'historique des modifications apportées aux entrées des tables.
 
-  Each array contains the fields of a record before making the next change.
-  The array is sorted by order of most recent changes.
-  
-  The id field in the array points to the id of the rollback_tx table. block_id represents the block ID, while block_time represents the block generation timestamp.
+  Chaque tableau contient les champs d'un enregistrement avant de procéder à la prochaine modification.
+  Le tableau est trié par ordre des modifications les plus récentes.
 
-**Example**
+  Le champ id dans le tableau pointe vers l'id de la table rollback_tx. block_id représente l'ID du bloc, tandis que block_time représente l'horodatage de génération du bloc.
+
+**Exemple**
 
 ```
 var list array
@@ -996,9 +999,9 @@ if Len(list) > 0 {
 
 ### GetHistoryRow {#gethistoryrow}
 
-Returns a single snapshot from the change history of a specified entry in a specified table.
+Retourne un instantané unique de l'historique des modifications d'une entrée spécifiée dans une table spécifiée.
 
-**Syntax**
+**Syntaxe**
 
 ```
 GetHistoryRow(table string, id int, rollbackId int) map
@@ -1008,11 +1011,11 @@ GetHistoryRow(table string, id int, rollbackId int) map
 
 * **table**
 
-  Table name.
+  Nom de la table.
 
 * **Id**
 
-  Entry ID.
+  Identifiant de l'entrée.
 
 * **rollbackId**
 
@@ -1029,7 +1032,7 @@ GetHistoryRow(table string, id int, rollbackId int) map
 
 Returns the data type of a specified field in a specified table.
 
-**Syntax**
+**Syntaxe**
 
 ```
 GetColumnType(table, column string) string
@@ -1042,11 +1045,11 @@ GetColumnType(table, column string) string
 * **column**
 
   Field Name.
-> **Return value**
+> **Valeur de retour**
 
   The following types can be returned: `text, varchar, number, money, double, bytes, json, datetime, double`.
 
-**Example**
+**Exemple**
 
 ```
 var coltype string
@@ -1059,7 +1062,7 @@ coltype = GetColumnType("members", "member_name")
 
 Returns data from XLSX spreadsheets.
 
-**Syntax**
+**Syntaxe**
 
 ```
 GetDataFromXLSX(binId int, line int, count int, sheet int) string
@@ -1079,7 +1082,7 @@ GetDataFromXLSX(binId int, line int, count int, sheet int) string
 
   List number, starting from 1 by default.
 
-**Example**
+**Exemple**
 
 ```
 var a array
@@ -1092,7 +1095,7 @@ a = GetDataFromXLSX(3, 12, 10, 1)
 
 Returns the number of lines in a specified XLSX file.
 
-**Syntax**
+**Syntaxe**
 
 ```
 GetRowsCountXLSX(binId int, sheet int) int
@@ -1105,7 +1108,7 @@ GetRowsCountXLSX(binId int, sheet int) int
 
   List number, starting from 1 by default.
 
-**Example**
+**Exemple**
 
 ```
 var count int
@@ -1116,9 +1119,9 @@ count = GetRowsCountXLSX(binid, 1)
 
 ### LangRes {#langres}
 
-Returns a multilingual resource with name label for language lang, specified as a two-character code, for example: `en`, `zh`. If there is no language for a selected language, then the language resource of the `en` label is returned.
+Returns a multilingual resource with name label for language lang, specified as a two-character code, for example: `en`, `fr`. If there is no language for a selected language, then the language resource of the `en` label is returned.
 
-**Syntax**
+**Syntaxe**
 
 ```
 LangRes(label string, lang string) string
@@ -1131,11 +1134,11 @@ LangRes(label string, lang string) string
 
   Two-character language code.
 
-**Example**
+**Exemple**
 
 ```
 warning LangRes("@1confirm", "en")
-error LangRes("@1problems", "zh")
+error LangRes("@1problems", "fr")
 ```
 
 
@@ -1144,7 +1147,7 @@ error LangRes("@1problems", "zh")
 
 Returns relevant information about a specified block.
 
-**Syntax**
+**Syntaxe**
 
 ```
 GetBlock(blockID int64) map
@@ -1154,7 +1157,7 @@ GetBlock(blockID int64) map
 * **blockID**
 
   Block ID.
-> **Return value**
+> **Valeur de retour**
 
   Return an array of objects:
   * **id**
@@ -1167,7 +1170,7 @@ GetBlock(blockID int64) map
   
      The account address of the verification node generated the block.
 
-**Example**
+**Exemple**
 
 ```
 var b map
@@ -1181,7 +1184,7 @@ Println(b)
 
 Adds an entry to a specified table and return the entry ID.
 
-**Syntax**
+**Syntaxe**
 
 ```
 DBInsert(table string, params map) int
@@ -1195,7 +1198,7 @@ DBInsert(table string, params map) int
 
   An array of objects where keys are field names and values are inserted values.
 
-**Example**
+**Exemple**
 
 ```
 DBInsert("mytable", {name: "John Smith", amount: 100})
@@ -1207,7 +1210,7 @@ DBInsert("mytable", {name: "John Smith", amount: 100})
 
 Changes the column value of a specified entry ID in a specified table. If the entry ID does not exist in the table, an error is returned.
 
-**Syntax**
+**Syntaxe**
 
 ```
 DBUpdate(tblname string, id int, params map)
@@ -1217,14 +1220,16 @@ DBUpdate(tblname string, id int, params map)
 * **tblname**
 
   Table name.
+
 * **Id**
 
-  Entry ID.
+  Identifiant de l'entrée.
+
 * **params**
 
-  An array of objects where keys are field names and values are new values after changes.
+  Un tableau d'objets où les clés sont les noms des champs et les valeurs sont les nouvelles valeurs après les modifications.
 
-**Example**
+**Exemple**
 
 ```
 DBUpdate("mytable", myid, {name: "John Smith", amount: 100})
@@ -1234,9 +1239,9 @@ DBUpdate("mytable", myid, {name: "John Smith", amount: 100})
 
 ### DBUpdateExt {#dbupdateext}
 
-Changes the value of a column in a specified table that matches the query condition.
+Modifie la valeur d'une colonne dans une table spécifiée qui correspond à la condition de requête.
 
-**Syntax**
+**Syntaxe**
 
 ```
 DBUpdateExt(tblname string, where map, params map)
@@ -1245,17 +1250,19 @@ DBUpdateExt(tblname string, where map, params map)
 
 * **tblname**
 
-  Table name.
-* **where**
+  Nom de la table.
 
-  Query conditions.
+* **où**
 
-  For more details, see [DBFind](#dbfind).
+  Conditions de requête.
+
+  Pour plus de détails, consultez [DBFind](#dbfind).
+
 * **params**
 
-  An array of objects where keys are field names and values are new values after changes.
+  Un tableau d'objets où les clés sont les noms des champs et les valeurs sont les nouvelles valeurs après les modifications.
 
-**Example**
+**Exemple**
 
 ```
 DBUpdateExt("mytable", {id: $key_id, ecosystem: $ecosystem_id}, {name: "John Smith", amount: 100})
@@ -1265,9 +1272,9 @@ DBUpdateExt("mytable", {id: $key_id, ecosystem: $ecosystem_id}, {name: "John Smi
 
 ### DelColumn {#delcolumn}
 
-Deletes a field in a specified table that has no records.
+Supprime un champ dans une table spécifiée qui ne contient aucun enregistrement.
 
-**Syntax**
+**Syntaxe**
 
 ```
 DelColumn(tblname string, column string)
@@ -1276,11 +1283,11 @@ DelColumn(tblname string, column string)
 
 * **tblname**
 
-  Table name.
+  Nom de la table.
 
 * **column**
 
-  The field to be deleted.
+  Le champ à supprimer.
 
 ```
 DelColumn("mytable", "mycolumn")
@@ -1291,9 +1298,9 @@ DelColumn("mytable", "mycolumn")
 
 ### DelTable {#deltable}
 
-Deletes a specified table that has e no records.
+Supprime une table spécifiée qui ne contient aucun enregistrement.
 
-**Syntax**
+**Syntaxe**
 
 ```
 DelTable(tblname string)
@@ -1302,9 +1309,9 @@ DelTable(tblname string)
 
 * **tblname**
 
-  Table name.
+  Nom de la table.
 
-**Example**
+**Exemple**
 
 ```
 DelTable("mytable")
@@ -1314,20 +1321,20 @@ DelTable("mytable")
 
 ### Append {#append}
 
-Inserts any type of val into the src array.
+Insère n'importe quel type de valeur dans le tableau src.
 
-**Syntax**
+**Syntaxe**
 
-Append(src array, val anyType) array
+Ajouter (src tableau, val anyType) tableau
 
 * **src**
 
-  The original array.
+  Le tableau original.
 * **val**
 
-  The value to be inserted.
+  La valeur à insérer.
 
-**Example**
+**Exemple**
 
 ```
 var list array
@@ -1338,9 +1345,9 @@ list = Append(list, "new_val")
 
 ### Join {#join}
 
-Combines elements of the in array into a string with a specified sep separator.
+Combine les éléments du tableau en une chaîne de caractères avec un séparateur spécifié.
 
-**Syntax**
+**Syntaxe**
 
 ```
 Join(in array, sep string) string
@@ -1349,12 +1356,12 @@ Join(in array, sep string) string
 
 * **In**
 
-  Array name.
+  Nom du tableau.
 * **sep**
 
-  Separator.
+  Séparateur.
 
-**Example**
+**Exemple**
 
 ```
  var val string, myarr array
@@ -1367,9 +1374,9 @@ Join(in array, sep string) string
 
 ### Split {#split}
 
-Uses the sep separator to split the in string into elements and put them into an array.
+Utilisez le séparateur "sep" pour diviser la chaîne d'entrée en éléments et les placer dans un tableau.
 
-**Syntax**
+**Syntaxe**
 
 ```
 Split(in string, sep string) array
@@ -1377,12 +1384,12 @@ Split(in string, sep string) array
 
 * **In**
 
-   String.
+   Chaîne.
 *  **sep**
 
-   Separator.
+   Séparateur.
 
-**Example**
+**Exemple**
 
 ```
 var myarr array
@@ -1393,9 +1400,9 @@ myarr = Split("first,second,third", ",")
 
 ### Len {#len}
 
-Returns the number of elements in a specified array.
+Retourne le nombre d'éléments dans un tableau spécifié.
 
-**Syntax**
+**Syntaxe**
 
  
 
@@ -1405,9 +1412,9 @@ Len(val array) int
 
 * **val**
 
-   Array.
+   Tableau.
 
-**Example**
+**Exemple**
 
 ```
 if Len(mylist) == 0 {
@@ -1419,9 +1426,9 @@ if Len(mylist) == 0 {
 
 ### Row {#row}
 
- The list parameter must not be specified in this case. Return the first object array in the array list. If the list is empty, an empty result is returned. This function is mostly used in conjunction with the [DBFind](#dbfind) function. When using this function, you cannot specify parameters.
+ Le paramètre de liste ne doit pas être spécifié dans ce cas. Renvoyez le premier tableau d'objets dans la liste d'arrays. Si la liste est vide, un résultat vide est renvoyé. Cette fonction est principalement utilisée en conjonction avec la fonction [DBFind](#dbfind). Lors de l'utilisation de cette fonction, vous ne pouvez pas spécifier de paramètres.
 
-**Syntax**
+**Syntaxe**
 
 ```
  Row(list array) map
@@ -1429,9 +1436,9 @@ if Len(mylist) == 0 {
 
 * **list**
 
-   The array of objects returned by the DBFind function.
+   Le tableau d'objets retourné par la fonction DBFind.
 
-**Example**
+**Exemple**
 
 ```
  var ret map
@@ -1443,9 +1450,9 @@ if Len(mylist) == 0 {
 
 ### One {#one}
 
- Returns the field value of the first object array in the array list. If the list array is empty, nil is returned. It is mostly used in conjunction with the [DBFind](#dbfind) function. When using this function, you cannot specify parameters.
+ Retourne la valeur du champ du premier objet du tableau dans la liste d'arrays. Si la liste est vide, nil est retourné. Cela est principalement utilisé en conjonction avec la fonction [DBFind](#dbfind). Lors de l'utilisation de cette fonction, vous ne pouvez pas spécifier de paramètres.
 
-**Syntax**
+**Syntaxe**
 
 ```
 One(list array, column string) string
@@ -1453,13 +1460,13 @@ One(list array, column string) string
 
 *  **list**
 
-  The array of objects returned by the DBFind function.
+  Le tableau d'objets retourné par la fonction DBFind.
 
 * **column**
 
-  Field Name.
+  Nom du champ.
 
-**Example**
+**Exemple**
 
 ```
 var ret string
@@ -1473,9 +1480,9 @@ if ret != nil {
 
 ### GetMapKeys {#getmapkeys}
 
-Returns the key array in the object array.
+Retourne le tableau de clés dans le tableau d'objets.
 
-**Syntax**
+**Syntaxe**
 
 ```
 GetMapKeys(val map) array
@@ -1483,9 +1490,9 @@ GetMapKeys(val map) array
 
 * **val**
 
-    Object array.
+    Tableau d'objets.
 
-**Example**
+**Exemple**
 
 ```
 var val map
@@ -1499,9 +1506,9 @@ arr = GetMapKeys(val)
 
 ### SortedKeys {#sortedkeys}
 
-Returns a sorted key array in the object array.
+Retourne un tableau de clés triées dans le tableau d'objets.
 
-**Syntax**
+**Syntaxe**
 
 ```
 SortedKeys(val map) array
@@ -1510,9 +1517,9 @@ SortedKeys(val map) array
 
 * **val**
 
-    Object array.
+    Tableau d'objets.
 
-**Example**
+**Exemple**
 
 ```
 var val map
@@ -1526,9 +1533,9 @@ arr = SortedKeys(val)
 
 ### CallContract {#callcontract}
 
-Calls the contract with a specified name. All parameters of the data section in the contract must be included in an object array. This function returns the value assigned to the **$result** variable by a specified contract.
+Appelle le contrat avec un nom spécifié. Tous les paramètres de la section de données dans le contrat doivent être inclus dans un tableau d'objets. Cette fonction renvoie la valeur assignée à la variable **$result** par un contrat spécifié.
 
-**Syntax**
+**Syntaxe**
 
 ```
 CallContract(name string, params map)
@@ -1537,12 +1544,13 @@ CallContract(name string, params map)
 
 * **name**
 
-    The name of the contract being called.
+    Le nom du contrat qui est appelé.
+
 * **params**
 
-    An associative array of the contract input data.
+    Un tableau associatif des données d'entrée du contrat.
 
-**Example**
+**Exemple**
 
 ```
 var par map
@@ -1554,9 +1562,9 @@ CallContract("MyContract", par)
 
 ### ContractAccess {#contractaccess}
 
-Checks if the name of contract being executed matches one of the names listed in the parameters. Usually it is used to control contract access to tables. When editing table fields or inserting and adding new column fields in the permissions section of the table, please specify this function in the permissions fields.
+Vérifie si le nom du contrat en cours d'exécution correspond à l'un des noms répertoriés dans les paramètres. Cela est généralement utilisé pour contrôler l'accès du contrat aux tables. Lors de la modification des champs de table ou de l'insertion et de l'ajout de nouveaux champs de colonne dans la section des autorisations de la table, veuillez spécifier cette fonction dans les champs d'autorisations.
 
-**Syntax**
+**Syntaxe**
 
   
 
@@ -1566,9 +1574,9 @@ ContractAccess(name string, [name string]) bool
 
 * **name**
 
-    Contract name.
+    Nom du contrat.
 
-**Example**
+**Exemple**
 
 ```
 ContractAccess("MyContract")
@@ -1579,11 +1587,11 @@ ContractAccess("MyContract","SimpleContract")
 
 ### ContractConditions {#contractconditions}
 
-Calls the conditions section in the contract with a specified name.
+Appelle la section des conditions dans le contrat avec un nom spécifié.
 
-For this type of contracts, the data section must be empty. If the conditions section is executed without error, it returns true. If there is an error during execution, the parent contract will also be terminated due to the error. This function is usually used to control the contract's access to tables and can be called in the permission fields when editing system tables.
+Pour ce type de contrats, la section des données doit être vide. Si la section des conditions est exécutée sans erreur, elle renvoie true. S'il y a une erreur pendant l'exécution, le contrat parent sera également résilié en raison de l'erreur. Cette fonction est généralement utilisée pour contrôler l'accès du contrat aux tables et peut être appelée dans les champs de permission lors de la modification des tables système.
 
-**Syntax**
+**Syntaxe**
 
 ```
 ContractConditions(name string, [name string]) bool
@@ -1592,9 +1600,9 @@ ContractConditions(name string, [name string]) bool
 
 * **name**
 
-    Contract name.
+    Nom du contrat.
 
-**Example**
+**Exemple**
 
 ```
 ContractConditions("MainCondition")
@@ -1604,9 +1612,9 @@ ContractConditions("MainCondition")
 
 ### EvalCondition {#evalcondition}
 
-Gets the value of the condfield field in the record with a 'name' field from the tablename table, and checks the conditions of the condfield field value.
+Obtient la valeur du champ condfield dans l'enregistrement avec un champ 'name' de la table tablename, et vérifie les conditions de la valeur du champ condfield.
 
-**Syntax**
+**Syntaxe**
 
 ```
 EvalCondition(tablename string, name string, condfield string)
@@ -1615,15 +1623,17 @@ EvalCondition(tablename string, name string, condfield string)
 
 * **tablename**
 
-    Table name.
+    Nom de la table.
+
 *  **name**
 
-    Queries the value with the 'name' field.
+    Interroge la valeur avec le champ 'name'.
+
 *  **condfield**
 
-    The name of the field whose conditions needs to be checked.
+    Le nom du champ dont les conditions doivent être vérifiées.
 
-**Example**
+**Exemple**
 
 ```
 EvalCondition(`menu`, $Name, `conditions`)
@@ -1633,9 +1643,9 @@ EvalCondition(`menu`, $Name, `conditions`)
 
 ### GetContractById {#getcontractbyid}
 
-Returns its contract name by contract ID. If not found the contract, an empty string is returned.
+Retourne le nom du contrat en fonction de l'ID du contrat. Si le contrat n'est pas trouvé, une chaîne vide est renvoyée.
 
-**Syntax**
+**Syntaxe**
 
 ```
 GetContractById(id int) string
@@ -1644,9 +1654,9 @@ GetContractById(id int) string
 
 * **Id**
 
-  The contract ID in the contract table contracts.
+  L'identifiant du contrat dans la table des contrats est contracts.
 
-**Example**
+**Exemple**
 
 ```
 var name string
@@ -1657,9 +1667,9 @@ name = GetContractById($IdContract)
 
 ### GetContractByName {#getcontractbyname}
 
-This function returns its contract ID by contract name. If not found the contract, zero is returned.
+Cette fonction renvoie l'ID de contrat correspondant à son nom de contrat. Si le contrat n'est pas trouvé, zéro est renvoyé.
 
-**Syntax**
+**Syntaxe**
 
 ```
 GetContractByName(name string) int
@@ -1667,9 +1677,9 @@ GetContractByName(name string) int
 
 * **name**
 
-    The contract name in the contract table contracts.
+    Le nom du contrat dans la table des contrats est "contrats".
 
-**Example**
+**Exemple**
 
 ```
 var id int
@@ -1680,11 +1690,11 @@ id = GetContractByName(`NewBlock`)
 
 ### RoleAccess {#roleaccess}
 
-Checks whether the role ID of the contract caller matches one of the IDs specified in the parameter.
+Vérifie si l'ID du rôle de l'appelant du contrat correspond à l'un des IDs spécifiés dans le paramètre.
 
-You can use this function to control contract access to tables and other data.
+Vous pouvez utiliser cette fonction pour contrôler l'accès du contrat aux tables et autres données.
 
-**Syntax**
+**Syntaxe**
 
  
 
@@ -1694,9 +1704,9 @@ RoleAccess(id int, [id int]) bool
 
 * **Id**
 
-    Role ID.
+    Identifiant de rôle.
 
-**Example**
+**Exemple**
 
 ```
 RoleAccess(1)
@@ -1707,9 +1717,9 @@ RoleAccess(1, 3)
 
 ### TransactionInfo {#transactioninfo}
 
-Queries transactions by specified hash value and returns information about the contract executed and its parameters.
+Requêtes les transactions par valeur de hachage spécifiée et renvoie des informations sur le contrat exécuté et ses paramètres.
 
-**Syntax**
+**Syntaxe**
 
 ```
 TransactionInfo(hash: string)
@@ -1717,11 +1727,11 @@ TransactionInfo(hash: string)
 
   * **hash**
 
-    Transaction hash in hexadecimal string format.
+    Hachage de transaction au format de chaîne hexadécimale.
   
-> **Return value**
+> **Valeur de retour**
 
-  This function returns a string in JSON format:
+  Cette fonction renvoie une chaîne au format JSON.
 
 ```
 {"contract":"ContractName", "params":{"key": "val"}, "block": "N"}
@@ -1731,16 +1741,17 @@ TransactionInfo(hash: string)
 
   *   **contract**
 
-      Contract name.
+      Nom du contrat.
   
   *   **params**
 
-      Data passed to contract parameters.
+      Données transmises aux paramètres du contrat.
+
   *   **block**
 
-      ID of the block that processed the transaction.
+      ID du bloc qui a traité la transaction.
 
-**Example**
+**Exemple**
 
 ```
 var out map
@@ -1751,9 +1762,9 @@ out = JSONDecode(TransactionInfo(hash))
 
 ### Throw {#throw}
 
-  Generates an error of type exception.
+  Génère une erreur de type exception.
 
-**Syntax**
+**Syntaxe**
 
   
 
@@ -1763,21 +1774,21 @@ Throw(ErrorId string, ErrDescription string)
 
 * **ErrorId**
 
-    Error identifier.
+    Identifiant d'erreur.
 
 * **ErrDescription**
 
-    Error description.
+    Description de l'erreur.
 
->  **Return value**
+>  **Valeur de retour**
 
-  The format of this type of transaction results:
+  Le format de ce type de transaction est le suivant:
 
 ```
 {"type":"exception","error":"Error description","id":"Error ID"}
 ```
 
-**Example**
+**Exemple**
 
 ```
 Throw("Problem", "There is a problem")
@@ -1787,9 +1798,9 @@ Throw("Problem", "There is a problem")
 
 ### ValidateCondition {#validatecondition}
 
-  Tries to compile the conditions specified by the condition parameter. If there is an error during the compilation process, an error is generated and the contract called is terminated. This function is designed to check the correctness of the conditional format.
+  Tente de compiler les conditions spécifiées par le paramètre de condition. S'il y a une erreur pendant le processus de compilation, une erreur est générée et le contrat appelé est terminé. Cette fonction est conçue pour vérifier la correction du format conditionnel.
 
-**Syntax**
+**Syntaxe**
 
 ```
 ValidateCondition(condition string, state int)
@@ -1797,12 +1808,13 @@ ValidateCondition(condition string, state int)
 
 * **condition**
 
-    The conditional format that needs to be verified.
+    Le format conditionnel qui doit être vérifié.
+
 * **state**
 
-    Ecosystem ID. If you check the global condition, please specify it as 0.
+    Identifiant de l'écosystème. Si vous vérifiez l'état mondial, veuillez le spécifier comme 0.
 
-**Example**
+**Exemple**
 
 ```
 ValidateCondition(`ContractAccess("@1MyContract")`, 1)
@@ -1812,9 +1824,9 @@ ValidateCondition(`ContractAccess("@1MyContract")`, 1)
 
 ### AddressToId {#addresstoid}
 
-Returns the corresponding account address by wallet address. If an invalid address is specified, '0' is returned.
+Retourne l'adresse de compte correspondante en fonction de l'adresse de portefeuille. Si une adresse invalide est spécifiée, '0' est retourné.
 
-**Syntax**
+**Syntaxe**
 
 ```
 AddressToId(address string) int
@@ -1823,9 +1835,9 @@ AddressToId(address string) int
 
 *  Address
 
-    Wallet address in `XXXX-...-XXXX` format or number format.
+    Adresse de portefeuille au format `XXXX-...-XXXX` ou au format numérique.
 
-**Example**
+**Exemple**
 
 ```
 wallet = AddressToId($Recipient)
@@ -1835,9 +1847,9 @@ wallet = AddressToId($Recipient)
 
 ### IdToAddress {#idtoaddress}
 
-Returns the corresponding wallet address by account address. If an invalid address is specified, the invalid address 'invalid' is returned.
+Retourne l'adresse de portefeuille correspondante à l'adresse du compte. Si une adresse invalide est spécifiée, l'adresse invalide 'invalid' est renvoyée.
 
-**Syntax**
+**Syntaxe**
 
 ```
 IdToAddress(id int) string
@@ -1846,9 +1858,9 @@ IdToAddress(id int) string
 
 *  **Id**
 
-    Account address.
+    Adresse du compte.
 
-**Example**
+**Exemple**
 
 ```
 $address = IdToAddress($id)
@@ -1858,9 +1870,9 @@ $address = IdToAddress($id)
 
 ### PubToID {#pubtoid}
 
-The account address is returned by public key in hexadecimal format.
+L'adresse du compte est renvoyée par la clé publique au format hexadécimal.
 
-**Syntax**
+**Syntaxe**
 
 ```
 PubToID(hexkey string) int
@@ -1869,9 +1881,9 @@ PubToID(hexkey string) int
 
 *  **hexkey**
 
-    The public key in hexadecimal format.
+    La clé publique au format hexadécimal.
 
-**Example**
+**Exemple**
 
   
 
@@ -1884,9 +1896,9 @@ wallet = PubToID("04fa5e78.....34abd6")
 
 ### DecodeBase64 {#decodebase64}
 
-Returns a string by specifying the base64 format
+Retourne une chaîne en spécifiant le format base64
 
-**Syntax**
+**Syntaxe**
 
 ```
 DecodeBase64(input string) string
@@ -1895,9 +1907,9 @@ DecodeBase64(input string) string
 
 *  **Input**
 
-    String in base64 format.
+    Chaîne au format base64.
 
-**Example**
+**Exemple**
 
 ```
 val = DecodeBase64(mybase64)
@@ -1907,9 +1919,9 @@ val = DecodeBase64(mybase64)
 
 ### EncodeBase64 {#encodebase64}
 
-Returns a string in base64 format by specifying a string.
+Retourne une chaîne au format base64 en spécifiant une chaîne.
 
-**Syntax**
+**Syntaxe**
 
 ```
 EncodeBase64(input string) string
@@ -1918,9 +1930,9 @@ EncodeBase64(input string) string
 
 *  **Input**
 
-    The string to be encoded.
+    La chaîne à encoder.
 
-**Example**
+**Exemple**
 
  
 
@@ -1933,9 +1945,9 @@ base64str = EncodeBase64("my text")
 
 ### Float {#float}
 
-Converts an integer or string to a float number.
+Convertit un entier ou une chaîne de caractères en nombre décimal.
 
-**Syntax**
+**Syntaxe**
 
 ```
 Float(val int|string) float
@@ -1944,9 +1956,9 @@ Float(val int|string) float
 
 * **val**
 
-    An integer or string.
+    Un entier ou une chaîne de caractères.
 
-**Example**
+**Exemple**
 
 ```
 val = Float("567.989") + Float(232)
@@ -1956,9 +1968,9 @@ val = Float("567.989") + Float(232)
 
 ### HexToBytes {#hextobytes}
 
-Converts a string in hexadecimal format to byte type bytes.
+Convertit une chaîne au format hexadécimal en octets de type byte.
 
-**Syntax**
+**Syntaxe**
 
 ```
   HexToBytes(hexdata string) bytes
@@ -1967,9 +1979,9 @@ Converts a string in hexadecimal format to byte type bytes.
 
 *  **hexdata**
 
-    A string in hexadecimal format.
+    Une chaîne au format hexadécimal.
 
-**Example**
+**Exemple**
 
 ```
 var val bytes
@@ -1980,9 +1992,9 @@ val = HexToBytes("34fe4501a4d80094")
 
 ### FormatMoney {#formatmoney}
 
-Returns the string value of exp / 10 ^ digit.
+Retourne la valeur de chaîne de exp / 10 ^ digit.
 
-**Syntax**
+**Syntaxe**
 
   
 
@@ -1992,12 +2004,13 @@ FormatMoney(exp string, digit int) string
 
 * **Exp**
 
-    A number in string format.
+    Un nombre au format de chaîne de caractères.
+
 * **digit**
 
-    The exponent (positive or negative) of 10 in the expression `Exp/10^digit`. Positive values determine decimal places.
+    L'exposant (positif ou négatif) de 10 dans l'expression `Exp/10^digit`. Les valeurs positives déterminent les décimales.
 
-**Example**
+**Exemple**
 
 ```
   s = FormatMoney("78236475917384", 0)
@@ -2010,7 +2023,7 @@ FormatMoney(exp string, digit int) string
 Returns a random number between min and max (min <= result <max). Both min and max must be positive numbers.
 ```
 
-**Syntax**
+**Syntaxe**
 
  
 
@@ -2020,13 +2033,13 @@ Random(min int, max int) int
 
 * **min**
 
-    The minimum value among random numbers.
+    La valeur minimale parmi les nombres aléatoires.
 
 * **max**
 
-    The upper limit of random numbers. The random number generated will be less than this value.
+    La limite supérieure des nombres aléatoires. Le nombre aléatoire généré sera inférieur à cette valeur.
 
-**Example**
+**Exemple**
 
 ```
 i = Random(10,5000)
@@ -2036,9 +2049,9 @@ i = Random(10,5000)
 
 ### Int {#int}
 
-Converts a value in string format to an integer.
+Convertit une valeur au format chaîne de caractères en un entier.
 
-**Syntax**
+**Syntaxe**
 
 ```
 Int(val string) int
@@ -2046,9 +2059,9 @@ Int(val string) int
 
 * **val**
 
-    A number in string format.
+    Un nombre au format de chaîne de caractères.
 
-**Example**
+**Exemple**
 
 ```
 mystr = "-37763499007332"
@@ -2059,9 +2072,9 @@ val = Int(mystr)
 
 ### Hash {#hash}
 
-  Returns the hash of a specified byte array or string, which is generated by the system encryption library crypto.
+  Retourne le hachage d'un tableau d'octets ou d'une chaîne spécifiée, qui est généré par la bibliothèque de chiffrement système crypto.
 
-**Syntax**
+**Syntaxe**
 
  
 
@@ -2071,9 +2084,9 @@ Hash(val interface{}) string, error
 
 * **val**
 
-    A string or byte array.
+    Une chaîne de caractères ou un tableau d'octets.
 
-**Example**
+**Exemple**
 
 ```
 var hash string
@@ -2084,9 +2097,9 @@ hash = Hash("Test message")
 
 ### Sha256 {#sha256}
 
-  Returns the SHA256 hash of a specified string.
+  Retourne le hachage SHA256 d'une chaîne spécifiée.
 
-**Syntax**
+**Syntaxe**
 
  
 
@@ -2096,9 +2109,9 @@ Sha256(val string) string
 
 * **val**
 
-    A string requires the Sha256 hash operation.
+    Une chaîne nécessite l'opération de hachage Sha256.
 
-**Example**
+**Exemple**
 
 ```
 var sha string
@@ -2109,9 +2122,9 @@ sha = Sha256("Test message")
 
 ### Str {#str}
 
-Converts an integer int or float float number to a string.
+Convertit un nombre entier int ou un nombre à virgule flottante float en une chaîne de caractères.
 
-**Syntax**
+**Syntaxe**
 
   
 
@@ -2121,9 +2134,9 @@ Str(val int|float) string
 
 * **val**
 
-    An integer or float number.
+    Un nombre entier ou décimal.
 
-**Example**
+**Exemple**
 
 ```
 myfloat = 5.678
@@ -2134,9 +2147,9 @@ val = Str(myfloat)
 
 ### JSONEncode {#jsonencode}
 
-Converts a number, string or array to a string in JSON format.
+Convertit un nombre, une chaîne de caractères ou un tableau en une chaîne de caractères au format JSON.
 
-**Syntax**
+**Syntaxe**
 
 ```
 JSONEncode(src int|float|string|map|array) string
@@ -2147,7 +2160,7 @@ JSONEncode(src int|float|string|map|array) string
 
     Data to convert.
 
-**Example**
+**Exemple**
 
   
 
@@ -2162,9 +2175,9 @@ json = JSONEncode(mydata)
 
 ### JSONEncodeIndent {#jsonencodeindent}
 
-Uses the specified indentation to convert a number, string, or array to a string in JSON format.
+Utilise l'indentation spécifiée pour convertir un nombre, une chaîne de caractères ou un tableau en une chaîne au format JSON.
 
-**Syntax**
+**Syntaxe**
 
 ```
 JSONEncodeIndent(src int|float|string|map|array, indent string) string
@@ -2173,13 +2186,13 @@ JSONEncodeIndent(src int|float|string|map|array, indent string) string
 
 * **src**
 
-    Data to convert.
+    Données à convertir.
 
 * **Indent**
 
-    The string will be used as indentation.
+    La chaîne sera utilisée comme indentation.
 
-**Example**
+**Exemple**
 
   
 
@@ -2194,9 +2207,9 @@ json = JSONEncodeIndent(mydata, "\t")
 
 ### JSONDecode {#jsondecode}
 
-Converts a string in JSON format to a number, string or array.
+Convertit une chaîne au format JSON en nombre, chaîne de caractères ou tableau.
 
-**Syntax**
+**Syntaxe**
 
 ```
 JSONDecode(src string) int|float|string|map|array
@@ -2205,9 +2218,9 @@ JSONDecode(src string) int|float|string|map|array
 
 *  **src**
 
-    A string containing data in JSON format.
+    Une chaîne contenant des données au format JSON.
 
-**Example**
+**Exemple**
 
 ```
 var mydata map
@@ -2218,9 +2231,9 @@ mydata = JSONDecode(`{"name": "John Smith", "company": "Smith's company"}`)
 
 ### HasPrefix {#hasprefix}
 
-Checks whether the string starts with a specified string.
+Vérifie si la chaîne commence par une chaîne spécifiée.
 
-**Syntax**
+**Syntaxe**
 
   
 
@@ -2230,17 +2243,17 @@ HasPrefix(s string, prefix string) bool
 
 * **s**
 
-    A string.
+    Une chaîne de caractères.
 
 * **prefix**
 
-    The prefix to check.
+    Le préfixe à vérifier.
 
-> **Return value**
+> **Valeur de retour**
 
-  If the string starts with a specified string, `true` is returned.
+  Si la chaîne commence par une chaîne spécifiée, `true` est renvoyé.
 
-**Example**
+**Exemple**
 
 ```
 if HasPrefix($Name, `my`) {
@@ -2252,9 +2265,9 @@ if HasPrefix($Name, `my`) {
 
 ### Contains {#contains}
 
-Checks whether the string contains a specified substring.
+Vérifie si la chaîne de caractères contient une sous-chaîne spécifiée.
 
-**Syntax**
+**Syntaxe**
 
  
 
@@ -2264,17 +2277,17 @@ Contains(s string, substr string) bool
 
 * **s**
 
-    A string.
+    Une chaîne de caractères.
 
 * **substr**
 
-    A substring.
+    Une sous-chaîne.
 
-> **Return value**
+> **Valeur de retour**
 
-  If the string contains the substring, it returns `true`.
+  Si la chaîne contient la sous-chaîne, elle renvoie `true`.
 
-**Example**
+**Exemple**
 
 ```
 if Contains($Name, `my`) {
@@ -2284,11 +2297,11 @@ if Contains($Name, `my`) {
 
 
 
-### Replace {#replace}
+### Remplacer {#replace}
 
-Replaces old (the old string) with new (the new string) in the string.
+Remplacez l'ancien (la vieille chaîne) par le nouveau (la nouvelle chaîne) dans la chaîne.
 
-**Syntax**
+**Syntaxe**
 
 ```
 Replace(s string, old string, new string) string
@@ -2297,17 +2310,17 @@ Replace(s string, old string, new string) string
 
 * **s**
 
-    The original string.
+    La chaîne originale.
 
 * **Old**
 
-    The substring to replace.
+    La sous-chaîne à remplacer.
 
 * **new**
 
-    The new string.
+    La nouvelle chaîne.
 
-**Example**
+**Exemple**
 
 ```
 s = Replace($Name, `me`, `you`)
@@ -2317,9 +2330,9 @@ s = Replace($Name, `me`, `you`)
 
 ### Size {#size}
 
-Returns the number of bytes in a specified string.
+Retourne le nombre d'octets dans une chaîne spécifiée.
 
-**Syntax**
+**Syntaxe**
 
 ```
 Size(val string) int
@@ -2328,9 +2341,9 @@ Size(val string) int
 
 * **val**
 
-    A string.
+    Une chaîne de caractères.
 
-**Example**
+**Exemple**
 
 ```
 var len int
@@ -2341,14 +2354,15 @@ len = Size($Name)
 
 ### Sprintf {#sprintf}
 
-This function creates a string using the specified template and parameters.
+Cette fonction crée une chaîne de caractères en utilisant le modèle et les paramètres spécifiés.
 
-Available wildcards:
-* `%d` (integer)
-* `%s` (string)
-* `%f` (float)
-* `%v` (any type)
-**Syntax**
+Jokers disponibles :
+* `%d` (entier)
+* `%s` (chaîne de caractères)
+* `%f` (nombre à virgule flottante)
+* `%v` (n'importe quel type)
+
+**Syntaxe**
 
 ```
 Sprintf(pattern string, val ...) string
@@ -2357,9 +2371,9 @@ Sprintf(pattern string, val ...) string
 
 * **pattern**
 
-    A string template.
+    Un modèle de chaîne.
 
-**Example**
+**Exemple**
 
 ```
 out = Sprintf("%s=%d", mypar, 6448)
@@ -2369,13 +2383,13 @@ out = Sprintf("%s=%d", mypar, 6448)
 
 ### Substr {#substr}
 
-Returns the substring obtained from a specified string starting from the offset offset (calculated from 0 by default), and the maximum length is limited to length.
+Retourne la sous-chaîne obtenue à partir d'une chaîne spécifiée en commençant à l'offset (calculé à partir de 0 par défaut), et la longueur maximale est limitée à length.
 
-If the offset or length is less than zero, or the offset is greater than the length, an empty string is returned.
+Si l'offset ou la longueur est inférieure à zéro, ou si l'offset est supérieur à la longueur, une chaîne vide est renvoyée.
 
-If the sum of the offset and length is greater than the string size, then, the substring will be returned starting from the offset to the end of the string.
+Si la somme de l'offset et de la longueur est supérieure à la taille de la chaîne, alors la sous-chaîne sera renvoyée à partir de l'offset jusqu'à la fin de la chaîne.
 
-**Syntax**
+**Syntaxe**
 
 ```
 Substr(s string, offset int, length int) string
@@ -2384,17 +2398,17 @@ Substr(s string, offset int, length int) string
 
 * **val**
 
-    A string.
+    Une chaîne de caractères.
 
 * **Offset**
 
-    Offset.
+    Décalage.
 
 * **length**
 
-    Length of the substring.
+    Longueur de la sous-chaîne.
 
-**Example**
+**Exemple**
 
 ```
 var s string
@@ -2405,9 +2419,9 @@ s = Substr($Name, 1, 10)
 
 ### ToLower {#tolower}
 
-Returns a specified string in lowercase.
+Renvoie une chaîne spécifiée en minuscules.
 
-**Syntax**
+**Syntaxe**
 
 ```
 ToLower(val string) string
@@ -2416,9 +2430,9 @@ ToLower(val string) string
 
 * **val**
 
-    A string.
+    Une chaîne de caractères.
 
-**Example**
+**Exemple**
 
 ```
 val = ToLower(val)
@@ -2428,9 +2442,9 @@ val = ToLower(val)
 
 ### ToUpper {#toupper}
 
-Returns a specified string in uppercase.
+Renvoie une chaîne spécifiée en majuscules.
 
-**Syntax**
+**Syntaxe**
 
 ```
 ToUpper(val string) string
@@ -2439,9 +2453,9 @@ ToUpper(val string) string
 
 * **val**
 
-    A string.
+    Une chaîne de caractères.
 
-**Example**
+**Exemple**
 
 ```
 val = ToUpper(val)
@@ -2451,9 +2465,9 @@ val = ToUpper(val)
 
 ### TrimSpace {#trimspace}
 
-Deletes the leading and trailing spaces, tabs and newlines of a specified string.
+Supprime les espaces, les tabulations et les sauts de ligne en début et en fin d'une chaîne spécifiée.
 
-**Syntax**
+**Syntaxe**
 
 ```
 TrimSpace(val string) string
@@ -2462,9 +2476,9 @@ TrimSpace(val string) string
 
 * **val**
 
-    A string.
+    Une chaîne de caractères.
 
-**Example**
+**Exemple**
 
  
 
@@ -2477,9 +2491,9 @@ val = TrimSpace(" mystr ")
 
 ### Floor {#floor}
 
-Returns the largest integer value less than or equal to a specified number, float number, and string.
+Renvoie la plus grande valeur entière inférieure ou égale à un nombre spécifié, un nombre à virgule flottante et une chaîne de caractères.
 
-**Syntax**
+**Syntaxe**
 
 ```
 Floor(x float|int|string) int
@@ -2487,9 +2501,9 @@ Floor(x float|int|string) int
 
 * **x**
 
-    A number, float number, and string.
+    Un nombre, un nombre décimal et une chaîne de caractères.
 
-**Example**
+**Exemple**
 
 ```
 val = Floor(5.6) // returns 5
@@ -2499,9 +2513,9 @@ val = Floor(5.6) // returns 5
 
 ### Log {#log}
 
-Returns the natural logarithm of a specified number, float number, and string.
+Retourne le logarithme naturel d'un nombre spécifié, d'un nombre à virgule flottante et d'une chaîne de caractères.
 
-**Syntax**
+**Syntaxe**
 
 ```
 Log(x float|int|string) float
@@ -2510,9 +2524,9 @@ Log(x float|int|string) float
 
 *  **x**
 
-    A number, float number, and string.
+    Un nombre, un nombre décimal et une chaîne de caractères.
 
-**Example**
+**Exemple**
 
 ```
 val = Log(10)
@@ -2522,9 +2536,9 @@ val = Log(10)
 
 ### Log10 {#log10}
 
-Returns the base-10 logarithm of a specified number, float number, and string.
+Renvoie le logarithme en base 10 d'un nombre, d'un nombre flottant et d'une chaîne spécifiés.
 
-**Syntax**
+**Syntaxe**
 
 ```
 Log10(x float|int|string) float
@@ -2533,9 +2547,9 @@ Log10(x float|int|string) float
 
 * **x**
 
-    A number, float number, and string.
+    Un nombre, un nombre décimal et une chaîne de caractères.
 
-**Example**
+**Exemple**
 
  
 
@@ -2547,9 +2561,9 @@ val = Log10(100)
 
 ### Pow {#pow}
 
-Returns the specified base to the specified power (xy).
+Renvoie la base spécifiée à la puissance spécifiée (xy).
 
-**Syntax**
+**Syntaxe**
 
 ```
 Pow(x float|int|string, y float|int|string) float
@@ -2558,13 +2572,13 @@ Pow(x float|int|string, y float|int|string) float
 
 * **x**
 
-    Base number.
+    Numéro de base.
 
 * **y**
 
-    Exponent.
+    Exposant.
 
-**Example**
+**Exemple**
 
 ```
 val = Pow(2, 3)
@@ -2573,9 +2587,9 @@ val = Pow(2, 3)
 
 ### Round {#round}
 
-Returns the value of a specified number rounded to the nearest integer.
+Renvoie la valeur d'un nombre spécifié arrondi à l'entier le plus proche.
 
-**Syntax**
+**Syntaxe**
 
 ```
 Round(x float|int|string) int
@@ -2584,9 +2598,9 @@ Round(x float|int|string) int
 
 * **x**
 
-    A number.
+    Un numéro.
 
-**Example**
+**Exemple**
 
 ```
 val = Round(5.6)
@@ -2594,7 +2608,7 @@ val = Round(5.6)
 
 ### Sqrt {#sqrt}
 
-Returns the square root of a specified number.
+Retourne la racine carrée d'un nombre spécifié.
 
 ```
 Sqrt(x float|int|string) float
@@ -2603,9 +2617,9 @@ Sqrt(x float|int|string) float
 
 * **x**
 
-    A number.
+    Un numéro.
 
-**Example**
+**Exemple**
 
 ```
 val = Sqrt(225)
@@ -2615,9 +2629,9 @@ val = Sqrt(225)
 
 ### StringToBytes {#stringtobytes}
 
-Converts a string to bytes.
+Convertit une chaîne de caractères en octets.
 
-**Syntax**
+**Syntaxe**
 
 ```
 StringToBytes(src string) bytes
@@ -2626,9 +2640,9 @@ StringToBytes(src string) bytes
 
 * **src**
 
-    A string.
+    Une chaîne de caractères.
 
-**Example**
+**Exemple**
 
  
 
@@ -2641,9 +2655,9 @@ b = StringToBytes("my string")
 
 ### BytesToString {#bytestostring}
 
-Converts bytes to string.
+Convertit des octets en chaîne de caractères.
 
-**Syntax**
+**Syntaxe**
 
 ```
 BytesToString(src bytes) string
@@ -2652,9 +2666,9 @@ BytesToString(src bytes) string
 
 * **src**
 
-    Byte.
+    Octet.
 
-**Example**
+**Exemple**
 
 ```
 var s string
@@ -2665,9 +2679,9 @@ s = BytesToString($Bytes)
 
 ### SysParamString {#sysparamstring}
 
-Returns the value of a specified platform parameter.
+Retourne la valeur d'un paramètre de plateforme spécifié.
 
-**Syntax**
+**Syntaxe**
 
 ```
 SysParamString(name string) string
@@ -2676,9 +2690,9 @@ SysParamString(name string) string
 
 * **name**
 
-    Parameter name.
+    Nom du paramètre.
 
-**Example**
+**Exemple**
 
 ```
 url = SysParamString(`blockchain_url`)
@@ -2688,9 +2702,9 @@ url = SysParamString(`blockchain_url`)
 
 ### SysParamInt {#sysparamint}
 
-Returns the value of a specified platform parameter in the form of a number.
+Retourne la valeur d'un paramètre de plateforme spécifié sous forme de nombre.
 
-**Syntax**
+**Syntaxe**
 
 ```
 SysParamInt(name string) int
@@ -2699,9 +2713,9 @@ SysParamInt(name string) int
 
 * **name**
 
-    Parameter name.
+    Nom du paramètre.
 
-**Example**
+**Exemple**
 
 ```
 maxcol = SysParam(`max_columns`)
@@ -2711,9 +2725,9 @@ maxcol = SysParam(`max_columns`)
 
 ### DBUpdateSysParam {#dbupdatesysparam}
 
-Updates the value and conditions of a platform parameter. If you do not need to change the value or conditions, please specify an empty string in the corresponding parameter.
+Met à jour la valeur et les conditions d'un paramètre de plateforme. Si vous n'avez pas besoin de modifier la valeur ou les conditions, veuillez spécifier une chaîne vide dans le paramètre correspondant.
 
-**Syntax**
+**Syntaxe**
 
 ```
 DBUpdateSysParam(name, value, conditions string)
@@ -2722,17 +2736,17 @@ DBUpdateSysParam(name, value, conditions string)
 
 * **name**
 
-    Parameter name.
+    Nom du paramètre.
 
 * **value**
 
-    New value of a parameter.
+    Nouvelle valeur d'un paramètre.
 
 * **conditions**
 
-    New conditions for updating a parameter.
+    Nouvelles conditions pour mettre à jour un paramètre.
 
-**Example**
+**Exemple**
 
 ```
 DBUpdateSysParam(`fuel_rate`, `400000000000`, ``)
@@ -2741,9 +2755,9 @@ DBUpdateSysParam(`fuel_rate`, `400000000000`, ``)
 
 ### UpdateNotifications {#updatenotifications}
 
-Obtains the notification list of a specified key from the database, and sends the notification obtained to Centrifugo.
+Obtient la liste des notifications d'une clé spécifiée depuis la base de données, et envoie la notification obtenue à Centrifugo.
 
-**Syntax**
+**Syntaxe**
 
 ```
 UpdateNotifications(ecosystemID int, keys int...)
@@ -2752,13 +2766,13 @@ UpdateNotifications(ecosystemID int, keys int...)
 
 * **EcosystemID**
 
-    Ecosystem ID.
+    Identifiant de l'écosystème.
 
 * **key**
 
-    A list of account addresses, separated by commas. Or you can use an array to specify a list of account addresses.
+    Une liste d'adresses de compte, séparées par des virgules. Ou vous pouvez utiliser un tableau pour spécifier une liste d'adresses de compte.
 
-**Example**
+**Exemple**
 
 ```
 UpdateNotifications($ecosystem_id, $key_id, 23345355454, 35545454554)
@@ -2769,9 +2783,9 @@ UpdateNotifications(1, [$key_id, 23345355454, 35545454554])
 
 ### UpdateRolesNotifications {#updaterolesnotifications}
 
-Obtains the notification list of all account addresses of a specified role ID in the database, and sends the notification obtained to Centrifugo.
+Obtient la liste des notifications de toutes les adresses de compte d'un ID de rôle spécifié dans la base de données, et envoie la notification obtenue à Centrifugo.
 
-**Syntax**
+**Syntaxe**
 
 ```
 UpdateRolesNotifications(ecosystemID int, roles int ...)
@@ -2780,13 +2794,13 @@ UpdateRolesNotifications(ecosystemID int, roles int ...)
 
 *  **EcosystemID**
 
-    Ecosystem ID.
+    Identifiant de l'écosystème.
 
 *  **roles**
 
-    A list of role IDs, separated by commas. Or you can use an array to specify a list of role IDs.
+    Une liste d'identifiants de rôles, séparés par des virgules. Ou vous pouvez utiliser un tableau pour spécifier une liste d'identifiants de rôles.
 
-**Example**
+**Exemple**
 
 ```
 UpdateRolesNotifications(1, 1, 2)
@@ -2795,12 +2809,13 @@ UpdateRolesNotifications(1, 1, 2)
 
 ### HTTPRequest {#httprequest}
 
-Sends HTTP requests to the specified address.
-> Note
+Envoie des requêtes HTTP à l'adresse spécifiée.
 
-> This function can only be used in CLB contracts.
+> Remarque
 
-**Syntax**
+> Cette fonction ne peut être utilisée que dans les contrats CLB.
+
+**Syntaxe**
 
 ```
 HTTPRequest(url string, method string, heads map, pars map) string
@@ -2809,21 +2824,21 @@ HTTPRequest(url string, method string, heads map, pars map) string
 
 * **Url**
 
-    Address, to which the request will be sent.
+    Adresse à laquelle la demande sera envoyée.
 
 * **method**
 
-    Request type (GET or POST).
+    Type de requête (GET ou POST).
 
 * **heads**
 
-    An array of request headers, objects.
+    Un tableau d'en-têtes de requête, d'objets.
 
 * **pars**
 
-    Request parameters.
+    Paramètres de la demande.
 
-**Example**
+**Exemple**
 
 ```
 var ret string
@@ -2840,13 +2855,13 @@ json = JSONToMap(ret)
 
 ### HTTPPostJSON {#httppostjson}
 
-This function is similar to the HTTPRequest function, but it sends a POST request and the request parameters are strings.
+Cette fonction est similaire à la fonction HTTPRequest, mais elle envoie une requête POST et les paramètres de la requête sont des chaînes de caractères.
 
->  Note
+> Remarque
 
->  This function can only be used in CLB contracts
+> Cette fonction ne peut être utilisée que dans les contrats CLB.
 
-**Syntax**
+**Syntaxe**
 
 ```
 HTTPPostJSON(url string, heads map, pars string) string
@@ -2855,16 +2870,17 @@ HTTPPostJSON(url string, heads map, pars string) string
 
 * **Url**
 
-    Address, to which the request will be sent.
+    Adresse à laquelle la demande sera envoyée.
 
 * **heads**
 
-    An array of request headers, objects.
+    Un tableau d'en-têtes de requête, d'objets.
+
 * **pars**
 
-    Request parameters as a JSON string. 
+    Paramètres de requête sous forme de chaîne JSON.
 
-**Example**
+**Exemple**
 
 ```
 var ret string
@@ -2880,9 +2896,9 @@ json = JSONToMap(ret)
 
 ### BlockTime {#blocktime}
 
-Returns the generation time of the block in SQL format.
+Retourne le temps de génération du bloc au format SQL.
 
-**Syntax**
+**Syntaxe**
 
 ```
 BlockTime()
@@ -2890,7 +2906,7 @@ BlockTime()
 
 
 
-**Example**
+**Exemple**
 
 ```
 var mytime string
@@ -2902,9 +2918,9 @@ DBInsert("mytable", myid, {time: mytime})
 
 ### DateTime {#datetime}
 
-Converts the timestamp unixtime to a string in YYYY-MM-DD HH:MI:SS format.
+Convertit le timestamp unixtime en une chaîne de caractères au format YYYY-MM-DD HH:MI:SS.
 
-**Syntax**
+**Syntaxe**
 
 ```
 DateTime(unixtime int) string
@@ -2912,7 +2928,7 @@ DateTime(unixtime int) string
 
 
 
-**Example**
+**Exemple**
 
 ```
 DateTime(1532325250)
@@ -2921,9 +2937,9 @@ DateTime(1532325250)
 
 ### UnixDateTime {#unixdatetime}
 
-Converts a string in YYYY-MM-DD HH:MI:SS format to a timestamp unixtime
+Convertit une chaîne au format YYYY-MM-DD HH:MI:SS en un horodatage unixtime
 
-**Syntax**
+**Syntaxe**
 
 ```
 UnixDateTime(datetime string) int
@@ -2931,7 +2947,7 @@ UnixDateTime(datetime string) int
 
 
 
-**Example**
+**Exemple**
 
 ```
 UnixDateTime("2018-07-20 14:23:10")
@@ -2941,11 +2957,11 @@ UnixDateTime("2018-07-20 14:23:10")
 
 ### CreateOBS {#createobs}
 
-Creates a child CLB.
+Crée un CLB enfant.
 
-This function can only be used in the master CLB mode.
+Cette fonction ne peut être utilisée qu'en mode CLB maître.
 
-**Syntax**
+**Syntaxe**
 
 ```
 CreateOBS(OBSName string, DBUser string, DBPassword string, OBSAPIPort int)
@@ -2954,21 +2970,21 @@ CreateOBS(OBSName string, DBUser string, DBPassword string, OBSAPIPort int)
 
 * **OBSName**
 
-    CLB name.
+    Nom du CLB.
 
 * **DBUser**
 
-    The role name of the database.
+    Le nom du rôle de la base de données.
 
 *  **DBPassword**
 
-    The password of the role.
+    Le mot de passe du rôle.
 
 * **OBSAPIPort**
 
-    The port of the API request.
+    Le port de la requête API.
 
-**Example**
+**Exemple**
 
 ```
 CreateOBS("obsname", "obsuser", "obspwd", 8095)
@@ -2977,28 +2993,28 @@ CreateOBS("obsname", "obsuser", "obspwd", 8095)
 
 ### GetOBSList {#getobslist}
 
-Returns the list of child CLBs.
+Retourne la liste des CLBs enfants.
 
-This function can only be used in the master CLB mode.
+Cette fonction ne peut être utilisée qu'en mode CLB maître.
 
-**Syntax**
+**Syntaxe**
 
 ```
 GetOBSList()
 
 ```
 
-> **Return value**
+> **Valeur de retour**
 
-An array of objects, where the key is the CLB name and the value is the process state.
+Un tableau d'objets, où la clé est le nom du CLB et la valeur est l'état du processus.
 
 ### RunOBS {#runobs}
 
-A process running the CLB.
+Un processus en cours d'exécution du CLB.
 
-This function can only be used in the master CLB mode.
+Cette fonction ne peut être utilisée que dans le mode maître du CLB.
 
-**Syntax**
+**Syntaxe**
 
 ```
 RunOBS(OBSName string)
@@ -3007,17 +3023,17 @@ RunOBS(OBSName string)
 
 * **OBSName**
 
-  CLB name.
+  Nom du CLB.
 
-  It can only contain letters and numbers, and the space symbol cannot be used.
+  Il ne peut contenir que des lettres et des chiffres, et le symbole d'espace ne peut pas être utilisé.
 
 ### StopOBS {#stopobs}
 
-Stop the process of a specified CLB.
+Arrêtez le processus d'un CLB spécifié.
 
-This function can only be used in the master CLB mode.
+Cette fonction ne peut être utilisée qu'en mode CLB maître.
 
-**Syntax**
+**Syntaxe**
 
 ```
 StopOBS(OBSName string)
@@ -3026,17 +3042,17 @@ StopOBS(OBSName string)
 
 * **OBSName**
 
-  CLB name.
+  Nom du CLB.
 
-  It can only contain letters and numbers, and the space symbol cannot be used.
+  Il ne peut contenir que des lettres et des chiffres, et le symbole d'espace ne peut pas être utilisé.
 
 ### RemoveOBS {#removeobs}
 
-Deletes the process of a specified CLB.
+Supprime le processus d'un CLB spécifié.
 
-This function can only be used in the master CLB mode.
+Cette fonction ne peut être utilisée qu'en mode CLB maître.
 
-**Syntax**
+**Syntaxe**
 
 ```
 RemoveOBS(OBSName string)
@@ -3045,295 +3061,321 @@ RemoveOBS(OBSName string)
 
 * **OBSName**
 
-CLB name.
+Nom du CLB.
 
-It can only contain letters and numbers, and the space symbol cannot be used.
+Il ne peut contenir que des lettres et des chiffres, et le symbole d'espace ne peut pas être utilisé.
 
 ## System Contracts {#system-contracts}
 
-System contracts are created by default when the IBax blockchain platform is launched. All these contracts were created in the first ecosystem. This is why you need to specify their full names when calling them from other ecosystems, for example, `@1NewContract`.
+Les contrats système sont créés par défaut lorsque la plateforme blockchain IBax est lancée. Tous ces contrats ont été créés dans le premier écosystème. C'est pourquoi vous devez spécifier leurs noms complets lors de leur appel à partir d'autres écosystèmes, par exemple, `@1NewContract`.
 
 ### NewEcosystem {#newecosystem}
 
-This contract creates a new ecosystem. To obtain the ID of the ecosystem created, you must quote the result filed returned in [txstatus](../reference/api2.md#txstatus).
+Ce contrat crée un nouvel écosystème. Pour obtenir l'ID de l'écosystème créé, vous devez citer le champ de résultat retourné dans [txstatus](../reference/api2.md#txstatus).
 
-Parameters:
-  * **Name** string - name of the ecosystem. It can be changed later.
+Paramètres:
+
+  * **Name** - *string* - nom de l'écosystème. Il peut être modifié ultérieurement.
 
 ### EditEcosystemName {#editecosystemname}
 
-Changes the name of the ecosystem in the 1_ecosystems table that only exists in the first ecosystem.
+Modifie le nom de l'écosystème dans la table 1_ecosystems qui n'existe que dans le premier écosystème.
 
-Parameters:
-  * **EcosystemID** int - changes the name of the ecosystem ID;
-  * **NewName** string - new name of the ecosystem.
+Paramètres:
+
+  * **EcosystemID** - *int* - change le nom de l'ID de l'écosystème;
+  * **NewName** - *string* - nouveau nom de l'écosystème.
 
 ### NewContract {#newcontract}
 
-Creates a new contract in the current ecosystem.
+Crée un nouveau contrat dans l'écosystème actuel.
 
-Parameters:
-  * **ApplicationId** int - the application to which a new contract belongs;
-  * **Value** string - contract source code. The upper layer must have only one contract;
-  * **Conditions** string - changes the conditions of the contract;
-  * **TokenEcosystem** int "optional" - ecosystem ID. It determines which token will be used for transactions when the contract is activated.
+Paramètres:
+
+  * **ApplicationId** - *int* - l'application à laquelle appartient un nouveau contrat;
+  * **Value** - *string* - code source du contrat. La couche supérieure ne doit avoir qu'un seul contrat;
+  * **Conditions** - *string* - modifie les conditions du contrat;
+  * **TokenEcosystem** - *int "optionnel"* - ID de l'écosystème. Il détermine quel jeton sera utilisé pour les transactions lorsque le contrat est activé.
 
 ### EditContract {#editcontract}
 
-Edits the contract in the current ecosystem.
+Modifie le contrat dans l'écosystème actuel.
 
-Parameters:
-  * **Id** int - the contract ID changed;
-  * **Value** string "optional" - source code of the contract;
-  * **Conditions** string "optional" - changes the conditions of the contract.
+Paramètres:
+
+  * **Id** - *int* - l'ID du contrat modifié;
+  * **Value** - *string "optionnel"* - code source du contrat;
+  * **Conditions** - *string "optionnel"* - modifie les conditions du contrat.
 
 ### BindWallet {#bindwallet}
-Binding the contract to the wallet address in the current ecosystem. After binding with the contract, the contract execution fee will be paid under this address. 
+Liaison du contrat à l'adresse du portefeuille dans l'écosystème actuel. Après liaison avec le contrat, les frais d'exécution du contrat seront payés sous cette adresse.
 
-Parameters:
-  * **Id** int - the contract ID to be bound.
-  * **WalletId** string "optional" - the wallet address bound to the contract.
+Paramètres:
+
+  * **Id** - *int* - l'ID du contrat à lier.
+  * **WalletId** - *string "optionnel"* - l'adresse du portefeuille liée au contrat.
 
 ### UnbindWallet {#unbindwallet}
 
-Unbinding the contract from the wallet address in the current ecosystem. Only addresses bound to the contract can be unbound. After unbinding the contract, users who execute the contract will pay the execution fee.
+Détacher le contrat de l'adresse du portefeuille dans l'écosystème actuel. Seules les adresses liées au contrat peuvent être détachées. Après avoir détaché le contrat, les utilisateurs qui exécutent le contrat devront payer les frais d'exécution.
 
-Parameters:
-  * **Id** int - the ID of the contract being bound.
+Paramètres:
+
+  * **Id** - *int* - l'ID du contrat en cours de liaison.
 
 ### NewParameter {#newparameter}
 
-A new ecosystem parameter has been added to the current ecosystem.
+Un nouveau paramètre d'écosystème a été ajouté à l'écosystème actuel.
 
-Parameters:
-  * **Name** string - parameter name;
-  * **Value** string - parameter value;
-  * **Conditions** string - conditions to change the parameter.
+Paramètres:
+
+  * **Nom** - *string* - nom du paramètre;
+  * **Valeur** - *string* - valeur du paramètre;
+  * **Conditions** - *string* - conditions pour modifier le paramètre.
 
 ### EditParameter {#editparameter}
 
-Changes existing ecosystem parameters in the current ecosystem.
+Modifie les paramètres de l'écosystème existant dans l'écosystème actuel.
 
-Parameters:
-  * **Name** string - name of the parameter to be changed;
-  * **Value** string - new parameter value;
-  * **Conditions** string - new conditions to change the parameter.
+Paramètres:
+
+  * **Nom** - *string* - nom du paramètre à modifier;
+  * **Valeur** - *string* - nouvelle valeur du paramètre;
+  * **Conditions** - *string* - nouvelles conditions pour modifier le paramètre.
 
 ### NewMenu {#newmenu}
 
-Adds a new menu in the current ecosystem.
+Ajoute un nouveau menu dans l'écosystème actuel.
 
-Parameters:
-  * **Name** string - menu name;
-  * **Value** string - menu source code;
-  * **Title** string "optional" - menu title;
-  * **Conditions** string - conditions to change the menu.
+Paramètres:
+
+  * **Nom** - *string* - nom du menu;
+  * **Valeur** - *string* - code source du menu;
+  * **Titre** - *string "optional"* - titre du menu;
+  * **Conditions** - *string* - conditions pour changer le menu.
 
 ### EditMenu {#editmenu}
 
-Changes the existing menu in the current ecosystem.
+Modifie le menu existant dans l'écosystème actuel.
 
-Parameters:
-  * **Id** int - menu ID to be changed;
-  * **Value** string "optional" - source code of the new menu;
-  * **Title** string "optional" - title of the new menu;
-  * **Conditions** string "optional" - new conditions to change the menu.
+Paramètres:
+
+  * **Id** - *int* - ID du menu à modifier ;
+  * **Value** - *string "optionnel"* - code source du nouveau menu ;
+  * **Title** - *string "optionnel"* - titre du nouveau menu ;
+  * **Conditions** - *string "optionnel"* - nouvelles conditions pour modifier le menu.
 
 ### AppendMenu {#appendmenu}
 
-Adds the source code content to existing menus in the current ecosystem
+Ajoute le contenu du code source aux menus existants dans l'écosystème actuel
 
-Parameters:
-  * **Id** int - menu ID;
-  * **Value** string - source code to be added.
+Paramètres:
+
+  * **Id** - *int* - ID du menu ;
+  * **Value** - *string* - code source à ajouter.
 
 ### NewPage {#newpage}
 
-Adds a new page in the current ecosystem.
+Ajoute une nouvelle page dans l'écosystème actuel.
 
-Parameters:
-  * **Name** string - name of the page;
-  * **Value** string - source code of the page;
-  * **Menu** string - name of the menu associated with the page;
-  * **Conditions** string - conditions to change the page;
-  * **ValidateCount** int "optional" - number of nodes required for page validation. If this parameter is not specified, the min_page_validate_count ecosystem parameter value is used. The value of this parameter cannot be less than min_page_validate_count and greater than max_page_validate_count;
+Paramètres:
 
-  * **ValidateMode** int "optional" - mode of page validity check. The page will be checked when it is loaded if the value of this parameter is 0; or checked when it is loaded or exit the page if the value of this parameter is 1. 
+  * **Nom** - *String* - nom de la page ;
+  * **Valeur** - *String* - code source de la page ;
+  * **Menu** - *String* - nom du menu associé à la page ;
+  * **Conditions** - *String* - conditions pour changer la page ;
+  * **ValidateCount** - *int "optionnel"* - nombre de nœuds requis pour la validation de la page. Si ce paramètre n'est pas spécifié, la valeur du paramètre d'écosystème min_page_validate_count est utilisée. La valeur de ce paramètre ne peut pas être inférieure à min_page_validate_count et supérieure à max_page_validate_count ;
+
+  * **ValidateMode** - *int "optional"* - mode de vérification de validité de la page. La page sera vérifiée lorsqu'elle est chargée si la valeur de ce paramètre est 0 ; ou vérifiée lorsqu'elle est chargée ou quitte la page si la valeur de ce paramètre est 1.
 
 ### EditPage {#editpage}
 
-Changes existing pages in the current ecosystem.
+Modifie les pages existantes dans l'écosystème actuel.
 
-Parameters:
-  * **Id** int - ID of the page to be changed;
-  * **Value** string "optional" - source code of the new page;
-  * **Menu** string "optional" - name of the new menu associated with the page;
-  * **Conditions** string "optional" - new conditions to change the page;
-  * **ValidateCount** int "optional" - number of nodes required for page validation. If this parameter is not specified, the min_page_validate_count ecosystem parameter value is used. The value of this parameter cannot be less than min_page_validate_count and greater than max_page_validate_count;
-  * **ValidateMode** int "optional" - mode of page validity check. The page will be checked when it is loaded if the value of this parameter is 0; or checked when it is loaded or exit the page if the value of this parameter is 1. 
+Paramètres:
+
+  * **Id** - *int* - ID de la page à modifier;
+  * **Value** - *string "optional"* - code source de la nouvelle page ;
+  * **Menu** - *string "optional"* - nom du nouveau menu associé à la page ;
+  * **Conditions** - *string "optional"* - nouvelles conditions pour modifier la page ;
+  * **ValidateCount** - *int "optional"* - nombre de nœuds requis pour la validation de la page. Si ce paramètre n'est pas spécifié, la valeur du paramètre d'écosystème min_page_validate_count est utilisée. La valeur de ce paramètre ne peut être inférieure à min_page_validate_count et supérieure à max_page_validate_count ;
+  * **ValidateMode** - *int "optional"* - mode de vérification de la validité de la page. La page sera vérifiée lors de son chargement si la valeur de ce paramètre est 0 ; ou vérifiée lors de son chargement ou de sa sortie de la page si la valeur de ce paramètre est 1.
 
 ### AppendPage {#appendpage}
 
-Adds the source content to existing pages in the current ecosystem.
+Ajoute le contenu source aux pages existantes dans l'écosystème actuel.
 
-Parameters:
-* **Id** int - ID of the page to be changed;
-* **Value** string - the source code to be added.
+Paramètres:
+
+* **Id** - *int* - ID de la page à modifier;
+* **Value** - *string* - Le code source à ajouter.
 
 ### NewBlock {#newblock}
 
-Adds a page module to the current ecosystem.
+Ajoute un module de page à l'écosystème actuel.
 
-Parameters:
-  * **Name** string - name of the module;
-  * **Value** string - source code of the module;
-  * **Conditions** string - conditions to change the module.
+Paramètres:
+
+  * **Nom** - *string* - nom du module;
+  * **Valeur** - *string* - code source du module;
+  * **Conditions** - *string* - conditions pour modifier le module.
 
 ### EditBlock {#editblock}
 
-Changes existing page modules in the current ecosystem.
+Modifie les modules de page existants dans l'écosystème actuel.
 
-Parameters:
-  * Id int - module ID to be changed;
-  * Value string - source code of the new module;
-  * Conditions string - new conditions to change the module.
+Paramètres:
+
+  * Id - *int* - module ID à changer;
+  * Value - *string* - code source du nouveau module;
+  * Conditions - *string* - nouvelles conditions pour changer le module.
 
 ### NewTable {#newtable}
 
-Adds a new table to the current ecosystem.
+Ajoute une nouvelle table à l'écosystème actuel.
 
-Parameters:
-  * **ApplicationId** int - application ID of the associated table;
-  * **Name** string - name of the new table;
-  * **Columns** string - field array in JSON format `[{"name":"...", "type":"...","index": "0", "conditions":".. ."},...]`, where
-    * **name** - field name, only Latin characters;
-    * **type** - data type `varchar,bytea,number,datetime,money,text,double,character`;
-    * **index** - non-primary key field `0`, primary key `1`;
-    * **conditions** - conditions to change the field data, and the access permissions must be specified in JSON format "`{"update":"ContractConditions(MainCondition)", "read":"ContractConditions(MainCondition)"}`;
-  * **Permissions** string - access permissions in JSON format `{"insert": "...", "new_column": "...", "update": "...", "read": ".. ."}`.
-    * **insert** - permission to insert entries;
-    * **new_column** - permission to add a new column;
-    * **update** - permission to change entry data;
-    * **read** - permission to read entry data.
+Paramètres:
+
+  * **ApplicationId** - *int* - ID de l'application de la table associée ;
+  * **Name** - *string* - nom de la nouvelle table ;
+  * **Columns** - *string* - tableau de champs au format JSON `[{"name":"...", "type":"...","index": "0", "conditions":".. ."},...]`, où
+    * **name** - nom du champ, uniquement des caractères latins ;
+    * **type** - type de données `varchar,bytea,number,datetime,money,text,double,character`;
+    * **index** - champ non clé primaire `0`, clé primaire `1`;
+    * **conditions** - conditions pour modifier les données du champ, et les autorisations d'accès doivent être spécifiées au format JSON "`{"update":"ContractConditions(MainCondition)", "read":"ContractConditions(MainCondition)"}`;
+  * **Permissions** - *string* - autorisations d'accès au format JSON `{"insert": "...", "new_column": "...", "update": "...", "read": ".. ."}`.
+    * **insert** - autorisation d'insérer des entrées ;
+    * **new_column** - autorisation d'ajouter une nouvelle colonne ;
+    * **update** - autorisation de modifier les données de l'entrée ;
+    * **read** - autorisation de lire les données de l'entrée.
 
 ### EditTable {#edittable}
 
-Changes the access permissions of a table in the current ecosystem.
+Modifie les permissions d'accès d'une table dans l'écosystème actuel.
 
-Parameters:
-  * **Name** string - name of the table;
-  * **InsertPerm** string - permission to insert entries into the table;
-  * **UpdatePerm** string - permission to update entries in the table;
-  * **ReadPerm** string - permission to read entries in the table;
-  * **NewColumnPerm** string - permission to create a new column;
+Paramètres:
+
+  * **Name** - *string* - nom de la table ;
+  * **InsertPerm** - *string* - autorisation d'insérer des entrées dans la table ;
+  * **UpdatePerm** - *string* - autorisation de mettre à jour les entrées dans la table ;
+  * **ReadPerm** - *string* - autorisation de lire les entrées dans la table ;
+  * **NewColumnPerm** - *string* - autorisation de créer une nouvelle colonne ;
 
 ### NewColumn {#newcolumn}
 
-Adds a new field to the table of the current ecosystem.
+Ajoute un nouveau champ à la table de l'écosystème actuel.
 
-Parameters:
-  * **TableName** string - table name;
-  * **Name** string - field name in Latin characters;
-  * **Type** string - data type `varchar,bytea,number,money,datetime,text,double,character`;
-  * **UpdatePerm** string - permission to change the value in the column;
-  * **ReadPerm** string - permission to read the value in the column.
+Paramètres:
+
+  * **TableName** - *string* - nom de la table ;
+  * **Name** - *string* - nom du champ en caractères latins ;
+  * **Type** - *string* - type de données `varchar,bytea,number,money,datetime,text,double,character`;
+  * **UpdatePerm** - *string* - autorisation de modifier la valeur dans la colonne ;
+  * **ReadPerm** - *string* - autorisation de lire la valeur dans la colonne.
 
 ### EditColumn {#editcolumn}
 
-Changes the permission of a specified table field in the current ecosystem.
+Modifie les permissions d'un champ de table spécifié dans l'écosystème actuel.
 
-Parameters:
-  * **TableName** string - table name;
-  * **Name** string - field name in Latin characters to be changed;
-  * **UpdatePerm** string - new permission to change the value in the column;
-  * **ReadPerm** string - new permission to read the value in the column.
+Paramètres:
+
+  * **TableName** - *string* - nom de la table ;
+  * **Name** - *string* - nom du champ en caractères latins à modifier ;
+  * **UpdatePerm** - *string* - nouvelle autorisation pour modifier la valeur dans la colonne ;
+  * **ReadPerm** - *string* - nouvelle autorisation pour lire la valeur dans la colonne.
 
 ### NewLang {#newlang}
 
-Adds language resources to the current ecosystem, and the permission to do so is set in the changing_language parameter of the ecosystem parameters.
+Ajoute des ressources linguistiques à l'écosystème actuel, et la permission de le faire est définie dans le paramètre changing_language des paramètres de l'écosystème.
 
-Parameters:
+Paramètres:
 
-  * **Name** string - name of the language resources in Latin characters;
-  * **Trans** string - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "zh": "Chinese text"}`.
+  * **Name** - *string* - nom des ressources linguistiques en caractères latins
+  * **Trans** - *string* - chaîne au format JSON, avec un code de langue à deux caractères comme clé et la chaîne traduite comme valeur. Par exemple, `{"en": "Texte en anglais", "fr": "Texte en français"}`.
 
 ### EditLang {#editlang}
 
-Changes the language resources in the current ecosystem, and the permission to do so is set in the changing_language parameter of the ecosystem parameter.
+Modifie les ressources linguistiques dans l'écosystème actuel, et l'autorisation de le faire est définie dans le paramètre changing_language de l'écosystème.
 
-Parameters:
+Paramètres:
 
-  * **Id** int - language resources ID.
-  * **Trans** - string in JSON format, with a two-character lang code as the key and the translated string as the value. For example, `{"en": "English text", "zh": "Chinese text"}`.
+  * **Id** - *int* - ressources linguistiques ID.
+  * **Trans** - *string* En format JSON, avec un code de langue à deux caractères comme clé et la chaîne traduite comme valeur. Par exemple, `{"en": "Texte en anglais", "fr": "Texte en français"}`.
 
 ### Import {#import}
 
-Imports an application into the current ecosystem and imports the data loaded from the [ImportUpload](#importupload) contract.
+Importe une application dans l'écosystème actuel et importe les données chargées à partir du contrat [ImportUpload](#importupload).
 
-Parameters:
+Paramètres:
 
-  * **Data** string - data imported in text format, which comes from a file exported by the ecosystem.
+  * **Data** - *string* - Données importées au format texte, provenant d'un fichier exporté par l'écosystème.
 
 ### ImportUpload {#importupload}
 
-Loads an external application file into the buffer_data table of the current ecosystem for subsequent import.
+Charge un fichier d'application externe dans la table buffer_data de l'écosystème actuel pour une importation ultérieure.
 
-Parameters:
-  * **InputFile** file - a file written to the buffer_data table of the current ecosystem.
+Paramètres:
+
+  * **InputFile** - *file* - un fichier écrit dans la table buffer_data de l'écosystème actuel.
 
 ### NewAppParam {#newappparam}
 
-Adds new application parameters to the current ecosystem.
+Ajoute de nouveaux paramètres d'application à l'écosystème actuel. 
 
-Parameters:
-  * **ApplicationId** int - application ID;
-  * **Name** string - parameter name;
-  * **Value** string - parameter value;
-  * **Conditions** string - permission to change the parameter.
+Paramètres:
+
+  * **ApplicationId** - *int* - ID de l'application ;
+  * **Name** - *string* - nom du paramètre ;
+  * **Value** - *string* - valeur du paramètre ;
+  * **Conditions** - *string* - autorisation de modifier le paramètre.
 
 ### EditAppParam {#editappparam}
 
-Changes existing application parameters in the current ecosystem.
+Modifie les paramètres de l'application existante dans l'écosystème actuel.
 
-Parameters:
-  * **Id** int - application parameter ID;
-  * **Value** string "optional" - new parameter value;
-  * **Conditions** string "optional" - new permissions to change the parameter.
+Paramètres:
+
+  * **Id** - *int* - ID du paramètre de l'application ;
+  * **Value** - *string "optional"* - nouvelle valeur du paramètre ;
+  * **Conditions** - *string "optional"* - nouvelles autorisations pour modifier le paramètre.
 
 ### NewDelayedContract {#newdelayedcontract}
 
-Adds a new task to the delayed contracts scheduler daemon.
+Ajoute une nouvelle tâche au démon planificateur des contrats retardés.
 
-The delayered contracts scheduler runs contracts required by the currently generated block.
+Le planificateur des contrats retardés exécute les contrats requis par le bloc actuellement généré.
 
-Parameters:
-  * **Contract** string - contract name;
-  * **EveryBlock** int - the contract will be executed every such amount of blocks;
-  * Conditions string - permission to change the task;
-  * **BlockID** int "optional" - the block ID where the contract must be executed. If not specified, it will be calculated automatically by adding the "current block ID" + EveryBlock;
-  * **Limit** int "optional" - the maximum number of task execution. If not specified, the task will be executed for an unlimited times.
+Paramètres:
+
+  * **Contract** - *string* - nom du contrat ;
+  * **EveryBlock** - *int* - le contrat sera exécuté tous les X blocs ;
+  * **Conditions** - *string* - autorisation de modifier la tâche ;
+  * **BlockID** - *int "optional"* - l'ID du bloc où le contrat doit être exécuté. S'il n'est pas spécifié, il sera calculé automatiquement en ajoutant l'ID du "bloc courant" + EveryBlock ;
+  * **Limit** - *int "optional"* - le nombre maximum d'exécutions de la tâche. S'il n'est pas spécifié, la tâche sera exécutée un nombre illimité de fois.
 
 ### EditDelayedContract {#editdelayedcontract}
 
-Changes a task in the delayed contracts scheduler daemon. 
+Modifie une tâche dans le démon planificateur des contrats retardés.
 
-Parameters:
-  * **Id** int - task ID;
-  * **Contract** string - contract name;
-  * **EveryBlock** int - the contract will be executed every such amount of blocks;
-  * **Conditions** string - permission to change the task;
-  * **BlockID** int "optional" - the block ID where the contract must be executed. If not specified, it will be calculated automatically by adding the "current block ID" + EveryBlock;
-  * **Limit** int "optional" - the maximum number of task execution. If not specified, the task will be executed for an unlimited times.
-  * **Deleted** int "optional" - task switching. A value of `1` will disable the task. A value of `0` will enable the task.
+Paramètres:
+
+  * **Id** - *int* - ID de la tâche ;
+  * **Contract** - *string* - nom du contrat ;
+  * **EveryBlock** - *int* - le contrat sera exécuté tous les X blocs ;
+  * **Conditions** - *string* - autorisation de modifier la tâche ;
+  * **BlockID** - *int "optional"* - l'ID du bloc où le contrat doit être exécuté. S'il n'est pas spécifié, il sera calculé automatiquement en ajoutant l'ID du "bloc courant" + EveryBlock ;
+  * **Limit** - *int "optional"* - le nombre maximum d'exécutions de la tâche. S'il n'est pas spécifié, la tâche sera exécutée un nombre illimité de fois ;
+  * **Deleted** - *int "optional"* - bascule de la tâche. Une valeur de `1` désactivera la tâche. Une valeur de `0` activera la tâche.
 
 ### UploadBinary {#uploadbinary}
 
-Adds or overwrites a static file in the X_binaries table. When calling a contract via HTTP API, the request must be in `multipart/form-data` format; the DataMimeType parameter will be used in conjunction with the form data.
+Ajoute ou remplace un fichier statique dans la table X_binaries. Lors de l'appel d'un contrat via l'API HTTP, la requête doit être au format `multipart/form-data`; le paramètre DataMimeType sera utilisé en conjonction avec les données du formulaire.
 
-Parameters:
-  * **Name** string - name of the static file;
-  * **Data** bytes - content of the static file;
-  * **DataMimeType** string "optional" - a static file in mime-type format;
-  * **ApplicationId** int - the application ID associated with the X_binaries table.
+Paramètres:
 
-  If the DataMimeType parameter is not passed, the `application/octet-stream` format is used by default.
+  * **Name** - *string* - nom du fichier statique ;
+  * **Data** - *bytes* - contenu du fichier statique ;
+  * **DataMimeType** - *string "optional"* - un fichier statique au format mime-type ;
+  * **ApplicationId** - *int* - l'ID de l'application associée à la table X_binaries.
+
+  Si le paramètre DataMimeType n'est pas spécifié, le format `application/octet-stream` est utilisé par défaut.

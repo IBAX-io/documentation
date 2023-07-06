@@ -276,7 +276,7 @@ Um eine Datei über ein Formular im Format `multipart/form-data` hochzuladen, mu
 ```
 contract Upload {
      data {
-  	   File file
+      File file
      }
      ...
 }
@@ -1112,7 +1112,7 @@ count = GetRowsCountXLSX(binid, 1)
 
 ### LangRes {#langres}
 
-Gibt eine mehrsprachige Ressource mit Namensbeschriftung für die Sprache lang zurück, die als zweistelliger Code angegeben ist, zum Beispiel: `en`, `zh`. Wenn für eine ausgewählte Sprache keine Sprache vorhanden ist, wird die Sprachressource des `en`-Labels zurückgegeben.,
+Gibt eine mehrsprachige Ressource mit Namensbeschriftung für die Sprache lang zurück, die als zweistelliger Code angegeben ist, zum Beispiel: `en`, `de`. Wenn für eine ausgewählte Sprache keine Sprache vorhanden ist, wird die Sprachressource des `en`-Labels zurückgegeben.,
 **Syntax**
 
 ```
@@ -1130,7 +1130,7 @@ LangRes(label string, lang string) string
 
 ```
 warning LangRes("@1confirm", "en")
-error LangRes("@1problems", "zh")
+error LangRes("@1problems", "de")
 ```
 
 
@@ -3252,7 +3252,7 @@ Fügt dem aktuellen Ökosystem Sprachressourcen hinzu, und die Berechtigung dazu
 Parameter:
 
    * Zeichenfolge **Name** - Name der Sprachressourcen in lateinischen Buchstaben;
-   * **Trans** String - String im JSON-Format, mit einem zweistelligen Langcode als Schlüssel und dem übersetzten String als Wert. Beispiel: `{"en": "englischer Text", "zh": "chinesischer Text"}`.
+   * **Trans** String - String im JSON-Format, mit einem zweistelligen Langcode als Schlüssel und dem übersetzten String als Wert. Beispiel: `{"en": "englischer Text", "de": "chinesischer Text"}`.
 
 ### BearbeitenSprache {#editlang}
 
@@ -3261,7 +3261,7 @@ Parameter:
 Parameter:
 
    * **Id** int - Sprachressourcen-ID.
-   * **Trans** - Zeichenfolge im JSON-Format mit einem zweistelligen Langcode als Schlüssel und der übersetzten Zeichenfolge als Wert. Beispiel: `{"en": "englischer Text", "zh": "chinesischer Text"}`.
+   * **Trans** - Zeichenfolge im JSON-Format mit einem zweistelligen Langcode als Schlüssel und der übersetzten Zeichenfolge als Wert. Beispiel: `{"en": "englischer Text", "de": "deutscher Text"}`.
 
 ### Importieren {#import}
 

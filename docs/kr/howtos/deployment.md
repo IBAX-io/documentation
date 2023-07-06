@@ -275,7 +275,7 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
 * 원심분리기
 * 고이백스
 
-이러한 파일로 [services](#https://wiki.debian.org/systemd/Services)를 만들지 못한 경우 다른 콘솔의 디렉터리에서 바이너리 파일을 실행할 수 있습니다.
+이러한 파일로 [services](https://wiki.debian.org/systemd/Services)를 만들지 못한 경우 다른 콘솔의 디렉터리에서 바이너리 파일을 실행할 수 있습니다.
 
 1. 원심분리기를 실행합니다.
 

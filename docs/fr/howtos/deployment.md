@@ -1,27 +1,27 @@
-# Deployment of A IBAX Network {#deployment-of-a-ibax-network}
+# Déploiement d'un réseau IBAX {#deployment-of-a-ibax-network}
 
-In this section, we will show you how to deploy your own blockchain network.
+Dans cette section, nous vous montrerons comment déployer votre propre réseau blockchain.
 
-## An deployment example {#an-deployment-example}
+## Un exemple de déploiement {#an-deployment-example}
 
-A blockchain network will be deployed with the following three nodes as an example.
+Un réseau blockchain sera déployé avec les trois nœuds suivants à titre d'exemple.
 
-Three network nodes:
+Trois nœuds du réseau :
 
-  * Node 1 is the first node in the blockchain network, which can generate new blocks and send transactions from clients connected to it;
-  * Node 2 is another honor node, which can generate new blocks and send transactions from clients connected to it;
-  * Node 3 is a guardian node, which cannot generate new blocks, but can send transactions from clients connected to it.
+  * Le nœud 1 est le premier nœud du réseau blockchain, qui peut générer de nouveaux blocs et envoyer des transactions à partir des clients qui y sont connectés ;
+  * Le nœud 2 est un autre nœud honorable, qui peut générer de nouveaux blocs et envoyer des transactions à partir des clients qui y sont connectés ;
+  * Le nœud 3 est un nœud gardien, qui ne peut pas générer de nouveaux blocs, mais peut envoyer des transactions à partir des clients qui y sont connectés.
 
-Configurations of the three nodes to be deployed:
+Configurations des trois nœuds à déployer :
 
-* Each node uses its own PostgreSQL database system instance;
-* Each node uses its own Centrifugo service instance;
-* The server side github-backend is deployed on the same host as other backend components.
+* Chaque nœud utilise sa propre instance du système de base de données PostgreSQL ;
+* Chaque nœud utilise sa propre instance du service Centrifugo ;
+* Le côté serveur de github-backend est déployé sur le même hôte que les autres composants backend.
 
-The sample addresses and ports used by the nodes are described in the following table:
+Les adresses et ports d'échantillon utilisés par les nœuds sont décrits dans le tableau suivant :
 
 
-| Node |       Component       |    IP & port     |
+| Nœud |       Composant       |    IP et port     |
 | :--: | :-------------------: | :--------------: |
 |  1   |      PostgreSQL       |  127.0.0.1:5432  |
 |  1   |      Centrifugo       | 192.168.1.1:8000 |
@@ -36,108 +36,109 @@ The sample addresses and ports used by the nodes are described in the following 
 |  3   | go-ibax (TCP service) | 192.168.1.3:7078 |
 |  3   | go-ibax (API service) | 192.168.1.3:7079 |
 
-## Deploy phase {#deploy-phase}
-Your own blockchain network must be deployed in several stages:
-- [Deployment of A IBAX Network](#deployment-of-a-ibax-network)
-  - [An deployment example](#an-deployment-example)
-  - [Deploy phase](#deploy-phase)
-  - [Server deployment](#server-deployment)
-    - [Deploy the first node](#deploy-the-first-node)
-    - [Dependencies and environment settings](#dependencies-and-environment-settings)
+## Phase de déploiement {#deploy-phase}
+Votre propre réseau blockchain doit être déployé en plusieurs étapes:
+- [Déploiement d'un réseau IBAX](#deployment-of-a-ibax-network)
+  - [Exemple de déploiement](#an-deployment-example)
+  - [Phase de déploiement](#deploy-phase)
+  - [Déploiement du serveur](#server-deployment)
+    - [Déploiement du premier nœud](#deploy-the-first-node)
+    - [Dépendances et paramètres d'environnement](#dependencies-and-environment-settings)
       - [sudo](#sudo)
     - [Golang](#golang)
     - [PostgreSQL](#postgresql)
     - [Centrifugo](#centrifugo)
-    - [Directory structure](#directory-structure)
-    - [Create a database](#create-a-database)
-    - [Configure Centrifugo](#configure-centrifugo)
-    - [Install go-ibax](#install-go-ibax)
-    - [Configure the first node](#configure-the-first-node)
-    - [Initiate the first node server](#initiate-the-first-node-server)
-  - [Deploy other nodes](#deploy-other-nodes)
-    - [Node 2](#node-2)
-    - [Node 3](#node-3)
-  - [Front-end deployment](#front-end-deployment)
-    - [Software prerequisites](#software-prerequisites)
-    - [Build a Weaver application](#build-a-weaver-application)
-    - [Add the configuration file for the blockchain network](#add-the-configuration-file-for-the-blockchain-network)
-    - [Build Weaver Web Application](#build-weaver-web-application)
-  - [Configure the blockchain network](#configure-the-blockchain-network)
-    - [Create the creator account](#create-the-creator-account)
-    - [Import applications, roles and templates](#import-applications-roles-and-templates)
-    - [Add the first node to the node list](#add-the-first-node-to-the-node-list)
-  - [Add other honor nodes](#add-other-honor-nodes)
-    - [Add members into the consensus role group](#add-members-into-the-consensus-role-group)
-    - [Create the owner account for other nodes](#create-the-owner-account-for-other-nodes)
-    - [Assign the node owner with the Validators role](#assign-the-node-owner-with-the-validators-role)
+    - [Structure des répertoires](#directory-structure)
+    - [Créer une base de données](#create-a-database)
+    - [Configurer Centrifugo](#configure-centrifugo)
+    - [Installer go-ibax](#install-go-ibax)
+    - [Configurer le premier nœud](#configure-the-first-node)
+    - [Initialiser le serveur du premier nœud](#initiate-the-first-node-server)
+  - [Déploiement des autres nœuds](#deploy-other-nodes)
+    - [Nœud 2](#node-2)
+    - [Nœud 3](#node-3)
+  - [Déploiement de l'interface utilisateur](#front-end-deployment)
+    - [Prérequis logiciels](#software-prerequisites)
+    - [Construire une application Weaver](#build-a-weaver-application)
+    - [Ajouter le fichier de configuration pour le réseau blockchain](#add-the-configuration-file-for-the-blockchain-network)
+    - [Construire l'application Weaver Web](#build-weaver-web-application)
+  - [Configurer le réseau blockchain](#configure-the-blockchain-network)
+    - [Créer le compte créateur](#create-the-creator-account)
+    - [Importer les applications, les rôles et les modèles](#import-applications-roles-and-templates)
+    - [Ajouter le premier nœud à la liste des nœuds](#add-the-first-node-to-the-node-list)
+  - [Ajouter d'autres nœuds d'honneur](#add-other-honor-nodes)
+    - [Ajouter des membres au groupe de rôles du consensus](#add-members-into-the-consensus-role-group)
+    - [Créer le compte propriétaire pour les autres nœuds](#create-the-owner-account-for-other-nodes)
+    - [Assigner au propriétaire du nœud le rôle de validateur](#assign-the-node-owner-with-the-validators-role)
 
-## Server deployment {#server-deployment}
 
-### Deploy the first node {#deploy-the-first-node}
+## Déploiement du serveur {#server-deployment}
 
-The first node is a special one because it is essential to launch the blockchain network. The first block of the blockchain is generated by the first node, and all other nodes would download the blockchain from it. The owner of the first node is the platform creator.
+### Déployer le premier nœud {#deploy-the-first-node}
 
-### Dependencies and environment settings {#dependencies-and-environment-settings}
+Le premier nœud est spécial car il est essentiel pour lancer le réseau blockchain. Le premier bloc de la blockchain est généré par le premier nœud, et tous les autres nœuds téléchargent la blockchain à partir de celui-ci. Le propriétaire du premier nœud est le créateur de la plateforme.
+
+### Dépendances et paramètres de l'environnement {#dependencies-and-environment-settings}
 
 #### sudo {#sudo}
 
-All commands of Debian 9 must be run as a non-root user. However, some system commands require super user permissions to execute. By default, sudo is not installed on Debian 9, you must install it first.
+Toutes les commandes de Debian 9 doivent être exécutées en tant qu'utilisateur non root. Cependant, certaines commandes système nécessitent des permissions de super utilisateur pour être exécutées. Par défaut, sudo n'est pas installé sur Debian 9, vous devez l'installer d'abord.
 
-1. Become a super user.
+1. Devenez un super utilisateur.
 
 ```shell
 su -
 ```
 
-2. Upgrade your system.
+2. Mettez à jour votre système.
 
 ```shell
 apt update -y && apt upgrade -y && apt dist-upgrade -y
 ```
 
-3. Install sudo.
+3. Installer sudo.
 
 ```shell
 apt install sudo -y
 ```
 
-4. Add your user to the sudo group.
+4. Ajoutez votre utilisateur au groupe sudo.
 
 ```shell
 usermod -a -G sudo user
 ```
 
-5. After restarting, the changes take effect.
+5. Après le redémarrage, les modifications prennent effet.
    
 ### Golang {#golang}
 
-Install Go according to the [Official Documents](https://golang.org/doc/install#tarball). 
+Installez Go selon les [Documents Officiels](https://golang.org/doc/install#tarball).
 
-1. Download the latest stable version of Go (> 1.10.x) from [Golang official website](https://golang.org/dl/) or through the command line:
+1. Téléchargez la dernière version stable de Go (> 1.10.x) depuis le [site officiel de Golang](https://golang.org/dl/) ou via la ligne de commande :
 
 ```shell
 wget https://dl.google.com/go/go1.11.2.linux-amd64.tar.gz
 ```
 
-2. Use tar to extract the tarball to the `/usr/local` directory.
+2. Utilisez tar pour extraire l'archive tar dans le répertoire `/usr/local`.
 
 ```shell
 tar -C /usr/local -xzf go1.11.2.linux-amd64.tar.gz
 ```
 
-3. Add `/usr/local/go/bin` to PATH environment variables (located at `/etc/profile` or `$HOME/.profile`).
+3. Ajoutez `/usr/local/go/bin` aux variables d'environnement PATH (qui se trouvent dans `/etc/profile` ou `$HOME/.profile`).
 
 ```shell
 export PATH=$PATH:/usr/local/go/bin
 ```
 
-1. Execute the `source` file to make the changes take effect, for example: 
+1. Exécutez le fichier `source` pour que les modifications prennent effet, par exemple :
 
 ```shell
 source $HOME/.profile
 ```
 
-2. Delete temporary files:
+2. Supprimer les fichiers temporaires.
 
 ```shell
 rm go1.11.2.linux-amd64.tar.gz
@@ -145,7 +146,7 @@ rm go1.11.2.linux-amd64.tar.gz
 
 ### PostgreSQL {#postgresql}
 
-1. Install PostgreSQL (> v.10) and psql:
+1. Installez PostgreSQL (> v.10) et psql:
 
 ```shell
 sudo apt install -y postgresql
@@ -153,7 +154,7 @@ sudo apt install -y postgresql
 
 ### Centrifugo {#centrifugo}
 
-1. Download Centrifugo V.1.8.0 from [GitHub](https://github.com/centrifugal/centrifugo/releases/) or through the command line:
+1. Téléchargez Centrifugo V.1.8.0 depuis [GitHub](https://github.com/centrifugal/centrifugo/releases/) ou via la ligne de commande :
 
 ```shell
 wget https://github.com/centrifugal/centrifugo/releases/download/v1.8.0/centrifugo-1.8.0-linux-amd64.zip \
@@ -162,32 +163,32 @@ wget https://github.com/centrifugal/centrifugo/releases/download/v1.8.0/centrifu
 && mv centrifugo-1.8.0-linux-amd64/* centrifugo/
 ```
 
-2. Delete temporary files: 
+2. Supprimer les fichiers temporaires.
 
 ```shell
 rm -R centrifugo-1.8.0-linux-amd64 \
 && rm centrifugo-1.8.0-linux-amd64.zip
 ```
 
-### Directory structure {#directory-structure}
+### Structure du répertoire {#directory-structure}
 
-For the Debian 9 system, it is recommended to store all software used by the blockchain platform in a separate directory.
+Pour le système Debian 9, il est recommandé de stocker tous les logiciels utilisés par la plateforme blockchain dans un répertoire séparé.
 
-The `/opt/backenddir` directory is used here, but you can use any directory. In this case, please change all commands and configuration files accordingly.
+Le répertoire `/opt/backenddir` est utilisé ici, mais vous pouvez utiliser n'importe quel répertoire. Dans ce cas, veuillez modifier toutes les commandes et les fichiers de configuration en conséquence.
 
-1. Create a directory for the blockchain platform:
+1. Créez un répertoire pour la plateforme blockchain :
 
 ```shell
 sudo mkdir /opt/backenddir
 ```
 
-2. Make your user the owner of the directory:
+2. Faites de votre utilisateur le propriétaire du répertoire.
 
 ```shell
 sudo chown user /opt/backenddir/
 ```
 
-3. Create subdirectories for Centrifugo, go-ibax and node data. All node data is stored in a directory named `nodeX`, where `X` is the node number. According to the node to be deployed, `node1` is Node 1, `node2` is Node 2, and so forth.
+3. Créez des sous-répertoires pour Centrifugo, go-ibax et les données du nœud. Toutes les données du nœud sont stockées dans un répertoire nommé `nodeX`, où `X` est le numéro du nœud. Selon le nœud à déployer, `node1` est le Nœud 1, `node2` est le Nœud 2, et ainsi de suite.
 
 ```shell
 mkdir /opt/backenddir/go-ibax \
@@ -195,34 +196,34 @@ mkdir /opt/backenddir/go-ibax/node1 \
 mkdir /opt/backenddir/centrifugo \
 ```
 
-### Create a database {#create-a-database}
+### Créer une base de données {#create-a-database}
 
-1. Change the user password postgres to the default password *123456*. You can set your own password, but you must change it in the node configuration file *config.toml*.
+1. Changer le mot de passe utilisateur postgres au mot de passe par défaut *123456*. Vous pouvez définir votre propre mot de passe, mais vous devez le modifier dans le fichier de configuration du nœud *config.toml*.
 
 ```shell
 sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '123456'"
 ```
 
-2. Create a current state database for the node, for example **chaindb**:
+2. Créez une base de données d'état actuel pour le nœud, par exemple **chaindb** :
 
 ```shell
 sudo -u postgres psql -c "CREATE DATABASE chaindb"
 ```
 
-### Configure Centrifugo {#configure-centrifugo}
+### Configurer Centrifugo {#configure-centrifugo}
 
-1. Create the Centrifugo configuration file:
+1. Créez le fichier de configuration Centrifugo :
 
 ```shell
 echo '{"secret":"CENT_SECRET"}' > /opt/backenddir/centrifugo/config.json
 ```
 
-You can set your own *secret*, but you must also change it in the node configuration file *config.toml*.
+Vous pouvez définir votre propre *secret*, mais vous devez également le modifier dans le fichier de configuration du nœud *config.toml*.
 
-### Install go-ibax {#install-go-ibax}
+### Installer go-ibax {#install-go-ibax}
 
-1. Download github-backend from GitHub:
-2. Copy the go-ibax binary file to the `/opt/backenddir/go-ibax` directory. If you are using default Go workspace, the binary files are located in the `$HOME/go/bin` directory:
+1. Téléchargez github-backend depuis GitHub :
+2. Copiez le fichier binaire go-ibax dans le répertoire `/opt/backenddir/go-ibax`. Si vous utilisez l'espace de travail Go par défaut, les fichiers binaires se trouvent dans le répertoire `$HOME/go/bin`.
 
 ```shell
 cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
@@ -230,7 +231,7 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
 
 ### Configure the first node {#configure-the-first-node}
 
-3. Create the configuration file for Node 1:
+3. Créez le fichier de configuration pour le Node 1 :
 
 ```shell
 /opt/backenddir/go-ibax config \
@@ -243,17 +244,17 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
  --tcpPort=7078
 ```
 
-4. Generate the keys of Node 1, including the public and private keys of the node and the account:
+4. Générer les clés du Node 1, y compris les clés publique et privée du nœud et du compte :
 ```shell
 /opt/backenddir/go-ibax generateKeys \
  --config=/opt/backenddir/node1/config.toml
 ```
 
-5. Generate the first block:
+5. Générer le premier bloc :
 
-> Note
+> Remarque
 >
-> If you want to create your own blockchain network, you must use the `--test=true` option. Otherwise, you cannot create a new account.
+> Si vous souhaitez créer votre propre réseau blockchain, vous devez utiliser l'option `--test=true`. Sinon, vous ne pourrez pas créer de nouveau compte.
 
 ```shell
 /opt/backenddir/go-ibax generateFirstBlock \
@@ -261,22 +262,22 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
  --test=true
 ```
 
-6. Initialize the database:
+6. Initialiser la base de données.
 
 ```shell
 /opt/backenddir/go-ibax initDatabase \
  --config=/opt/backenddir/node1/config.toml
 ```
 
-### Initiate the first node server {#initiate-the-first-node-server}
+###Initialiser le premier serveur de nœuds {#initiate-the-first-node-server}
 
-To start the first node server, you must start the following two services:
+Pour démarrer le premier serveur de nœuds, vous devez démarrer les deux services suivants :
 * centrifugo
 * go-ibax
 
-If you failed to create [services](https://wiki.debian.org/systemd/Services) with these files, you may execute binary files from directories in different consoles.
+Si vous n'avez pas réussi à créer [des services](https://wiki.debian.org/systemd/Services) avec ces fichiers, vous pouvez exécuter les fichiers binaires à partir de différents terminaux.
 
-1. Run centrifugo:
+1. Exécutez centrifugo :
 
 ```shell
 /opt/backenddir/centrifugo/centrifugo \
@@ -284,30 +285,30 @@ If you failed to create [services](https://wiki.debian.org/systemd/Services) wit
  --config /opt/backenddir/centrifugo/config.json
 ```
 
-2. Run go-ibax:
+2. Exécutez go-ibax:
 
 ```shell
 /opt/backenddir/go-ibax start \
  --config=/opt/backenddir/node1/config.toml
 ```
 
-## Deploy other nodes {#deploy-other-nodes}
+## Déployer d'autres nœuds {#deploy-other-nodes}
 
-Although the deployment of all other nodes (Node 2 and Node 3) is similar to the first, but there are three differences:
+Bien que le déploiement de tous les autres nœuds (Nœud 2 et Nœud 3) soit similaire au premier, il existe trois différences :
 
-* You do not need to generate the first block. But it must be copied from Node 1 to the current node data directory;
-* The node must download blocks from Node 1 by configuring the `--nodesAddr` option;
-* The node must use its own addresses and ports.
+* Vous n'avez pas besoin de générer le premier bloc. Mais il doit être copié depuis le répertoire de données du nœud 1 vers le nœud actuel ;
+* Le nœud doit télécharger les blocs depuis le nœud 1 en configurant l'option `--nodesAddr` ;
+* Le nœud doit utiliser ses propres adresses et ports.
 
-### Node 2 {#node-2}
+### Noeud 2 {#node-2}
 
-Follow operational instructions as shown below: 
+Suivez les instructions opérationnelles indiquées ci-dessous :
 
-1. [Dependencies and environment settings](#dependencies-and-environment-settings)
-2. [Create database](#create-a-database)
+1. [Dépendances et paramètres d'environnement](#dependencies-and-environment-settings)
+2. [Créer une base de données](#create-a-database)
 3. [Centrifugo](#centrifugo)
-4. [Install go-ibax](#install-go-ibax)
-5. Create the configuration file for Node 2: 
+4. [Installer go-ibax](#install-go-ibax)
+5. Créer le fichier de configuration pour le Node 2 :
 
 ```shell
  /opt/backenddir/go-ibax config \
@@ -321,26 +322,26 @@ Follow operational instructions as shown below:
 --nodesAddr=192.168.1.1
 ```
 
-6. Copy the first block file to Node 2. For example, you can perform this operation on Node 2 throughscp:
+6. Copiez le premier fichier de bloc vers le Node 2. Par exemple, vous pouvez effectuer cette opération sur le Node 2 via scp :
 
 ```shell
  scp user@192.168.1.1:/opt/backenddir/node1/1block /opt/backenddir/node2/
 ```
 
-7. Generate the keys of Node 2, including the public and private keys of the node and the account:
+7. Générer les clés de Node 2, y compris les clés publique et privée du nœud et du compte :
 
 ```shell
  /opt/backenddir/go-ibax generateKeys \
 --config=/opt/backenddir/node2/config.toml
 ```
 
-8. Initiate the database: 
+8. Initialiser la base de données.
 
 ```shell
  ./go-ibax initDatabase --config\=node2/config.toml
 ```
 
-9. Run centrifugo:
+9. Exécutez centrifugo:
 
 ```shell
 /opt/backenddir/centrifugo/centrifugo \
@@ -348,28 +349,28 @@ Follow operational instructions as shown below:
 --config/opt/backenddir/centrifugo/config.json
 ```
 
-10. Run go-ibax:
+10. Exécutez go-ibax:
 
 ```shell
 /opt/backenddir/go-ibax start \
  --config=/opt/backenddir/node2/config.toml
 ```
 
-As a result, the node downloads the block from the first node. As this node is not a verification node, it cannot generate a new block. Node 2 will be added to the list of verification nodes later.
+En conséquence, le nœud télécharge le bloc à partir du premier nœud. Comme ce nœud n'est pas un nœud de vérification, il ne peut pas générer un nouveau bloc. Le nœud 2 sera ajouté ultérieurement à la liste des nœuds de vérification.
 
-### Node 3 {#node-3}
+### Noeud 3{#node-3}
 
-Follow operational instructions as shown below: 
+Suivez les instructions opérationnelles indiquées ci-dessous :
 
-1. [Dependencies and environment settings](#dependencies-and-environment-settings)
+1. [Dépendances et paramètres d'environnement](#dependencies-and-environment-settings)
 
-2. [Create database](#create-a-database)
+2. [Créer une base de données](#create-a-database)
 
 3. [Centrifugo](#centrifugo)
 
-4. [Install go-ibax](#install-go-ibax)
+4. [Installer go-ibax](#install-go-ibax)
 
-5. Create the configuration file for Node 3:
+5. Créer le fichier de configuration pour le nœud 3 :
 
 ```shell
  /opt/backenddir/go-ibax config \
@@ -383,27 +384,27 @@ Follow operational instructions as shown below:
 --nodesAddr=192.168.1.1
 ```
 
-6. Copy the first block file to Node 3. For example, you can perform this operation on Node 3 through scp:
+6. Copiez le premier fichier de bloc vers le Node 3. Par exemple, vous pouvez effectuer cette opération sur le Node 3 via scp :
 
 ```shell
  scp user@192.168.1.1:/opt/backenddir/node1/1block /opt/backenddir/node3/
 ```
 
 
-7.Generate the key of Node 3, including the public and private keys of the node and the account:
+7. Générer la clé du Node 3, comprenant les clés publique et privée du nœud ainsi que du compte :
 
 ```shell
  /opt/backenddir/go-ibax generateKeys \
 --config=/opt/backenddir/node3/config.toml
 ```
 
-8.Initiate the database: 
+8. Initialiser la base de données.
 
 ```shell
  ./go-ibax initDatabase --config=node3/config.toml
 ```
 
-9.Run centrifugo:
+9. Exécutez centrifugo:
 
 ```shell
  /opt/backenddir/centrifugo/centrifugo \
@@ -411,78 +412,78 @@ Follow operational instructions as shown below:
 --config/opt/backenddir/centrifugo/config.json
 ```
 
-10.Run go-ibax:
+10. Exécutez go-ibax:
 
 ```shell
  /opt/backenddir/go-ibax start \
  --config=/opt/backenddir/node3/config.toml
 ```
 
-As a result, the node downloads the block from the first node. As this node is not a verification node, it cannot generate a new block. The client may be connected to the node, and it may send transactions to the network.
+En conséquence, le nœud télécharge le bloc à partir du premier nœud. Comme ce nœud n'est pas un nœud de vérification, il ne peut pas générer un nouveau bloc. Le client peut être connecté au nœud et peut envoyer des transactions au réseau.
 
-## Front-end deployment {#front-end-deployment}
+## Déploiement front-end {#front-end-deployment}
 
-Only after installing **GNOME GUI** on Debian 9 (Stretch) 64-bit Official Release, the Govis client can be built with the `yarn` package manager.
+Seulement après avoir installé **GNOME GUI** sur Debian 9 (Stretch) 64-bit Official Release, le client Govis peut être construit avec le gestionnaire de paquets `yarn`.
 
-### Software prerequisites {#software-prerequisites}
+### Prérequis logiciels {#software-prerequisites}
 
-1. Download Node.js LTS version 8.11 from Node.js official website or through the command line:
+1. Téléchargez la version LTS 8.11 de Node.js depuis le site officiel de Node.js ou via la ligne de commande :
 
 ```shell
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash
 ```
 
-2. Install Node.js:
+2. Installer Node.js:
 
 ```shell
 sudo apt install -y nodejs
 ```
 
-1. Download Yarn version 1.7.0 from yarn's [Github](https://github.com/yarnpkg/yarn/releases) repository or through the command line:
+1. Téléchargez la version 1.7.0 de Yarn à partir du dépôt [Github](https://github.com/yarnpkg/yarn/releases) de Yarn ou via la ligne de commande :
 
 ```shell
 cd/opt/backenddir \
 && wget https://github.com/yarnpkg/yarn/releases/download/v1.7.0/yarn_1.7.0_all.deb
 ```
 
-2. Install Yarn:
+2. Installer Yarn:
 
 ```shell
 sudo dpkg -i yarn_1.7.0_all.deb && rm yarn_1.7.0_all.deb
 ```
 
-### Build a Weaver application {#build-a-weaver-application}
+### Créez une application Weaver {#build-a-weaver-application}
 
-1. Download the latest version of Weaver from github-frontend via git:
+1. Téléchargez la dernière version de Weaver depuis github-frontend via git :
 
 ```shell
 cd/opt/backenddir \
 && git clone https://github.com/ibax-io/ibax-front.git
 ```
 
-2. Install Weaver dependencies via Yarn:
+2. Installer les dépendances de Weaver via Yarn:
 
 ```shell
 cd/opt/backenddir/ibax-front/ \
 && yarn install
 ```
 
-### Add the configuration file for the blockchain network {#add-the-configuration-file-for-the-blockchain-network}
+### Ajoutez le fichier de configuration pour le réseau blockchain. {#add-the-configuration-file-for-the-blockchain-network}
 
-1. Create a *settings.json* file that contains information about node connection:
+1. Créez un fichier *settings.json* qui contient des informations sur la connexion du nœud :
 
 ```shell
 cp/opt/backenddir/ibax-front/public/settings.json.dist \
  /opt/backenddir/ibax-front/public/public/settings.json
 ```
  
-2. Edit the *settings.json* file in any text editor and add the required settings in this format:
+2. Modifiez le fichier *settings.json* dans n'importe quel éditeur de texte et ajoutez les paramètres requis dans ce format :
 
 ```
 http://Node_IP-address:Node_HTTP-Port
 ```
 
-Examples of *settings.json* files for the three nodes:
+Exemples de fichiers *settings.json* pour les trois nœuds :
 
 ```json
 {
@@ -494,35 +495,35 @@ Examples of *settings.json* files for the three nodes:
 }
 ```
 
-Build Weaver Desktop Application
+Construire une application de bureau Weaver
 
-1.Use yarn to build the desktop version:
+1. Utilisez yarn pour construire la version de bureau :
 
 ```shell
 cd/opt/backenddir/ibax-front \
 && yarn build-desktop
 ```
 
-2.The desktop version will be packaged into AppImage suffix format:
+2. La version de bureau sera empaquetée dans le format de suffixe AppImage.
 
 ```shell
 yarn release --publish never -l
 ```
 
-After building, your application can be used, but its connection configuration cannot be changed. If these settings need to be changed, a new version of the application must be built.
+Après la construction, votre application peut être utilisée, mais sa configuration de connexion ne peut pas être modifiée. Si ces paramètres doivent être modifiés, une nouvelle version de l'application doit être construite.
 
-### Build Weaver Web Application {#build-weaver-web-application}
+### Construire une application web Weaver {#build-weaver-web-application}
 
-1.Build a web application:
+1. Créez une application web.
 
 ```shell
 cd/opt/backenddir/ibax-front/ \
 && yarn build
 ```
 
-After building, the redistributable files will be placed in the /build directory. You can use any web server of your choice for deployment, and the *settings.json* file must also be placed in this directory. Note that if the connection settings are changed, there is no need to build the application again. Instead, edit the *settings.json* file and restart the web server.
+Après la construction, les fichiers redistribuables seront placés dans le répertoire /build. Vous pouvez utiliser n'importe quel serveur web de votre choix pour le déploiement, et le fichier *settings.json* doit également être placé dans ce répertoire. Notez que si les paramètres de connexion sont modifiés, il n'est pas nécessaire de reconstruire l'application. Au lieu de cela, modifiez le fichier *settings.json* et redémarrez le serveur web.
 
-1.For development or testing purposes, you can build Yarn's web server:
+1. À des fins de développement ou de test, vous pouvez construire le serveur web de Yarn :
 
 
 ```shell
@@ -530,40 +531,41 @@ sudo yarn global add serve \
 && serve -s build
 ```
 
-After that, your Weaver web application will be available at the following location: `http://localhost:5000`.
+Après cela, votre application web Weaver sera disponible à l'adresse suivante : `http://localhost:5000`.
 
-## Configure the blockchain network {#configure-the-blockchain-network}
+## Configurer le réseau blockchain {#configure-the-blockchain-network}
 
-### Create the creator account {#create-the-creator-account}
+### Créez le compte créateur {#create-the-creator-account}
 
-Create an account for the first node owner. This account is the creator of the new blockchain platform and has the administrator access.
+Créez un compte pour le propriétaire du premier nœud. Ce compte est le créateur de la nouvelle plateforme blockchain et a un accès administrateur.
 
-1.Run Weaver;
+1. Lancez Weaver;
 
-2.Import the existing account using the following data:
+2. Importez le compte existant en utilisant les données suivantes:
 
-–Load the backup of the node owner's private key located in the `/opt/backenddir/node1/PrivateKey` file.
+    - Chargez la sauvegarde de la clé privée du propriétaire du nœud située dans le fichier `/opt/backenddir/node1/PrivateKey`.
 
-> Note
+> Remarque
 >
->There are two private key files in this directory. The `PrivateKey` file is used create the node owner's account. The `NodePrivateKey` file is the private key of the node itself and must be kept secret.
+> Il y a deux fichiers de clé privée dans ce répertoire. Le fichier `PrivateKey` est utilisé pour créer le compte du propriétaire du nœud. Le fichier `NodePrivateKey` est la clé privée du nœud lui-même et doit être gardé secret.
 
-3.After logging in to the account, since no role has been created at this time, please select the Without role option.
+3. Après vous être connecté à votre compte, puisqu'aucun rôle n'a été créé pour le moment, veuillez sélectionner l'option Sans rôle.
 
-### Import applications, roles and templates {#import-applications-roles-and-templates}
+### Importer des applications, des rôles et des modèles {#import-applications-roles-and-templates}
 
-At this time, the blockchain platform is in a blank state. You can configure it by adding roles, templates, and application frameworks that support basic ecosystem functions.
+À l'heure actuelle, la plateforme blockchain est dans un état vierge. Vous pouvez la configurer en ajoutant des rôles, des modèles et des frameworks d'application qui prennent en charge les fonctions de base de l'écosystème.
 
-1.Clone the application repository;
+1. Clonez le dépôt de l'application ;
 
 ```shell
 cd/opt/backenddir \
 && git clone https://github.com/ibax-io/dapps.git
 ```
 
-2.Navigate to Developer> Import in Weaver;
+2. Accédez à Développeur > Importer dans Weaver;
 
-3.Import applications as per the following order:
+3. Importez les applications dans l'ordre suivant:
+
 ```
  A./opt/backenddir/dapps/system.json 
  B./opt/backenddir/dapps/conditions.json 
@@ -571,61 +573,61 @@ cd/opt/backenddir \
  D./opt/backenddir/dapps/lang_res.json
 ```
 
-4.Navigate to Admin> Role, and click Install Default Role;
+4. Accédez à Admin> Rôle, et cliquez sur Installer le rôle par défaut ;
 
-5.Exit the system through the configuration file menu in the upper right corner;
+5. Quittez le système via le menu du fichier de configuration dans le coin supérieur droit ;
 
-6.Log in to the system as Admin;
+6. Connectez-vous au système en tant qu'administrateur ;
 
-7.Navigate to Home> Vote> Template List, and click Install Default Template.
+7. Accédez à Accueil> Vote> Liste des modèles, et cliquez sur Installer le modèle par défaut.
 
-### Add the first node to the node list {#add-the-first-node-to-the-node-list}
+### Ajoutez le premier nœud à la liste des nœuds {#add-the-first-node-to-the-node-list}
 
-1.Navigate to Developer> Platform Parameters, and click the first_nodes parameter;
+1. Accédez à Développeur> Paramètres de la plateforme, et cliquez sur le paramètre first_nodes;
 
-2.Specify the parameters of the first blockchain network node.
+2. Spécifiez les paramètres du premier nœud du réseau blockchain.
 
-  * public_key - The public key of the node is located in the `/opt/backenddir/node1/NodePublicKey` file;
+  * public_key - La clé publique du nœud se trouve dans le fichier `/opt/backenddir/node1/NodePublicKey`.
 
 ```
 {"api_address":"http://192.168.1.1:7079","public_key":"%node_public_key%","tcp_address":"192.168.1.1:7078"}
 ```
 
-## Add other honor nodes {#add-other-honor-nodes}
+## Ajoutez d'autres nœuds d'honneur {#add-other-honor-nodes}
 
-### Add members into the consensus role group {#add-members-into-the-consensus-role-group}
+### Ajouter des membres dans le groupe de rôle de consensus {#add-members-into-the-consensus-role-group}
 
-By default, only members in the consensus role (Consensus) group can participate in the voting required to add other master nodes. This means that before adding a new master node, members of the ecosystem must be assigned to the role.
-In this section, the creator's account is designated as the only member of the consensus role group. In a production environment, this role must be assigned to platform members that perform governance.
+Par défaut, seuls les membres du groupe de rôle Consensus peuvent participer au vote nécessaire pour ajouter d'autres nœuds principaux. Cela signifie qu'avant d'ajouter un nouveau nœud principal, les membres de l'écosystème doivent être assignés au rôle.
+Dans cette section, le compte du créateur est désigné comme le seul membre du groupe de rôle Consensus. Dans un environnement de production, ce rôle doit être attribué aux membres de la plateforme qui exercent la gouvernance.
 
-1.Navigate to Home> Role and click Consensus;
+1. Accédez à Accueil > Rôle et cliquez sur Consensus ;
 
-2.Click Assign to assign the creator's account to the role.
+2. Cliquez sur Assigner pour attribuer le compte du créateur au rôle.
 
-### Create the owner account for other nodes {#create-the-owner-account-for-other-nodes}
+### Créez le compte propriétaire pour les autres nœuds. {#create-the-owner-account-for-other-nodes}
 
-1. Run Weaver;
+1. Exécutez Weaver;
 
-2. Import the existing account using the following data:
-     – Load the backup of the node owner's private key located in the `/opt/backenddir/node2/PrivateKey` file.
-     
-3. After logging in to the account, since no role has been created at this time, please select the Without role option.
+2. Importez le compte existant en utilisant les données suivantes:
+     - Chargez la sauvegarde de la clé privée du propriétaire du nœud située dans le fichier `/opt/backenddir/node2/PrivateKey`.
 
-4. Navigate to Home> Personal Information, and click the title of the personal information;
+3. Après vous être connecté au compte, puisqu'aucun rôle n'a été créé à ce moment-là, veuillez sélectionner l'option Sans rôle.
 
-5. Add account details (personal information title, description, etc.).
+4. Accédez à Accueil> Informations personnelles, et cliquez sur le titre des informations personnelles;
 
-### Assign the node owner with the Validators role {#assign-the-node-owner-with-the-validators-role}
+5. Ajoutez les détails du compte (titre des informations personnelles, description, etc.).
 
-1. Operations by the new node owner: 
-    1. Navigate to Home> Verifier;
-    2. Click Create Request and fill in the application form of the verifier candidate;
-    3. Click send request.
-2. Operations by the creator: 
-    1. Log in with a consensus role (Consensus);
-    2. Navigate to Home> Verifier;
-    3. Click the "Play" icon to start voting according to the candidate's request;
-    4. Navigate to Home> Vote, and click Update voting status;
-    5. Click the voting name and vote for the node owner.
+### Attribuer le propriétaire du nœud au rôle de Validateur. {#assign-the-node-owner-with-the-validators-role}
 
-As a result, the account of the owner of the new node is assigned with the Validator role, and the new node is added to the list of master nodes.
+1. Opérations par le nouveau propriétaire du nœud :
+    1. Accédez à Accueil> Vérificateur ;
+    2. Cliquez sur Créer une demande et remplissez le formulaire de candidature du vérificateur ;
+    3. Cliquez sur envoyer la demande.
+2. Opérations par le créateur :
+    1. Connectez-vous avec un rôle de consensus (Consensus) ;
+    2. Accédez à Accueil> Vérificateur ;
+    3. Cliquez sur l'icône "Lecture" pour commencer le vote selon la demande du candidat ;
+    4. Accédez à Accueil > Vote, et cliquez sur Mettre à jour le statut du vote ;
+    5. Cliquez sur le nom du vote et votez pour le propriétaire du nœud.
+
+En conséquence, le compte du propriétaire du nouveau nœud est attribué au rôle de validateur, et le nouveau nœud est ajouté à la liste des nœuds principaux.

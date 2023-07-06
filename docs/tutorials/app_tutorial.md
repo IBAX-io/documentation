@@ -66,6 +66,7 @@ Your first simple application is "Hello, World!".
 ```
 > In this application, strings will be stored in a database table, and there is not a user page. 
 ```
+
 ### Creator account {#creator-account}
 
 Accounts with the Developer role will be assigned the "root" privileges of the ecosystem. By default, this role can access all actions. In a new ecosystem, the creator account will be assigned the Admin role, which you must use it to introduce major changes to the ecosystem, such as creating new applications and database tables.
@@ -93,6 +94,7 @@ Create a new application:
 >    > Another option is `ContractConditions("MainCondition")`, which means no one can make changes to the application except for the creator. 
 > 
 > 6. Your application will be displayed in the applications list, click the Name field of a specific application to activate it.
+>
 >   ````
 >   You can access relevant resources by clicking an application in the Developer tab, no impact on the ecosystem. 
 >   No matter which one you choose, all ecosystem applications are still available.
@@ -174,6 +176,7 @@ contract AppContract {
 Fill in the `data` section.
 
 In the following example, `Message` refers to the variable name, while `string` the variable type. 
+
 
 ``` js
 data {

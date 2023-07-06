@@ -825,7 +825,7 @@ GET
 
 - `name`
 
-    > Ecological system name.
+    > Ecosystem name.
 
 - `roles`
 
@@ -1662,7 +1662,7 @@ The data in the field will be replaced by the *Accept-Language* language resourc
 
 - `lang` [Omitempty](#omitempty)
 
-    > This field specifies the multilingual resource code or localization, e.g., *en, zh*. If the specified multilingual resource is not found, e.g., *en-US*, then the multilingual resource group in
+    > This field specifies the multilingual resource code or localization, e.g., *en, it*. If the specified multilingual resource is not found, e.g., *en-US*, then the multilingual resource group in
      Search in *en*.
 
 ``` text

@@ -6,7 +6,7 @@
   
 ## 部署 {#deployment}
   - [使用命令行工具部署应用](#deploy-application-using-command-line-tools)
-  - [使用命令行工具生态配置](#ecological-configuration-using-command-line-tool)
+  - [使用命令行工具生态配置](#ecosystem-configuration-using-command-line-tool)
 
 ## 进阶指南 {#advanced-guide}
   - [使用应用打包工具部署应用](#deploy-applications-using-application-packaging-tool)
@@ -176,7 +176,7 @@
 3、[创建数据表](#step-3-create-table)
 4、[创建应用参数](#step-4-create-application-parameters)
 5、[创建和部署智能合约](#step-5-create-contract-deploy-contract)
-6、[创建生态参数](#step-6-create-ecological-parameters)
+6、[创建生态参数](#step-6-create-ecosystem-parameters)
 7、[添加本地化](#step-7-add-localization)
 8、[修改智能合约](#step-8-modify-the-contract)
 9、[修改数据表权限](#step-9-modify-data-table-permissions)
@@ -319,97 +319,97 @@ To exit, press ctrl-d or type exit
 
 首先我们编写一个智能合约，将它命名为`NewRecord.sim`。
 ```text
-1	contract NewRecord {				
-2	    data {				
-3	        Student string				
-4	        Grade int				
-5	        Class int				
-6	        Mathematics int				
-7	        Physics int				
-8	        Literature int				
-9	    }				
-10	    func getScore(a b c int) map{				
-11	        var m map				
-12	        var overallScore int				
-13	        overallScore = (a+b+c) / 3				
-14	        m["overallScore"] = overallScore				
-15	        if overallScore >= $gradeTypeABest["min"] && overallScore < $gradeTypeABest["max"] {				
-16	            m["score"] = "A+"				
-17	        }elif overallScore >= $gradeTypeA["min"] && overallScore < $gradeTypeA["max"] {				
-18	            m["score"] = "A"				
-19	        }elif overallScore >= $gradeTypeBBest["min"] && overallScore < $gradeTypeBBest["max"] {				
-20	            m["score"] = "B+"				
-21	        }elif overallScore >= $gradeTypeB["min"] && overallScore < $gradeTypeB["max"] {				
-22	            m["score"] = "B"				
-23	        }elif overallScore >= $gradeTypeC["min"] && overallScore < $gradeTypeC["max"]{				
-24	            m["score"] = "C"				
-25	        }else{				
-26	            m["score"] = "Notset"				
-27	        }				
-28	        return m				
-29	    }				
-30	    func safeJsonDecode(m string) map {				
-31	        var res map				
-32	        if Size(m) > 0 {				
-33	            res = JSONDecode(m)				
-34	        }				
-35	        return res				
-36	    }				
-37					
-38	    conditions {				
-39	        if Size($Student) == 0 {				
-40	            warning "Student Can not be empty"				
-41	        }				
-42	        if $Class <= 0{				
-43	            warning "Class cannot be less than or equal to zero"				
-44	        }				
-45	        if $Grade <= 0{				
-46	            warning "Grade cannot be less than or equal to zero"				
-47	        }				
-48	        if $Mathematics < 0 {				
-49	            warning "Mathematics cannot be less than zero"				
-50	        }				
-51	        if $Physics < 0 {				
-52	            warning "Physics cannot be less than zero"				
-53	        }				
-54	        if $Literature < 0 {				
-55	            warning "Literature cannot be less than zero"				
-56	        }				
-57	        if $Mathematics > 100 || $Physics > 100 ||  $Literature > 100{				
-58	            warning "Score cannot exceed 100"				
-59	        }				
-60	        var app map				
-61	        app = DBFind("@1applications").Columns("id,ecosystem").Where({"ecosystem": 18,"name":"GradesRecorder","deleted":0}).Row()				
-62	        if !app {				
-63	            warning LangRes("@1app_not_found")				
-64	        }				
-65					
-66	        var app_id int				
-67	        app_id = Int(app["id"])				
-68	        $eId = Int(app["ecosystem"])				
-69	        $gradeBestType = AppParam(app_id, "grade_best_type", $eId)				
-70	        $gradeTypeABest = safeJsonDecode(AppParam(app_id, "grade_type_a+", $eId))				
-71	        $gradeTypeA = safeJsonDecode(AppParam(app_id, "grade_type_a", $eId))				
-72	        $gradeTypeBBest = safeJsonDecode(AppParam(app_id, "grade_type_b+", $eId))				
-73	        $gradeTypeB = safeJsonDecode(AppParam(app_id, "grade_type_b", $eId))				
-74	        $gradeTypeC = safeJsonDecode(AppParam(app_id, "grade_type_c", $eId))				
-75	    }				
-76	    action {				
-77	        var m map 				
-78	        m = getScore($Mathematics,$Physics,$Literature)				
-79	        var in map				
-80	        in["student"] = $Student				
-81	        in["class"] = $Class				
-82	        in["grade"] = $Grade				
-83	        in["mathematics"] = $Mathematics				
-84	        in["physics"] = $Physics 				
-85	        in["literature"] = $Literature 				
-86	        in["overall_score"] = m["overallScore"]				
-87	        in["score"] = m["score"]				
-88	        in["created_at"] = $time				
-89	        DBInsert("@"+ Str($eId)+"grade_info", in)				
-90	    }				
-91	}				
+1 contract NewRecord {
+2       data {
+3         Student string
+4         Grade int
+5         Class int
+6         Mathematics int
+7         Physics int
+8         Literature int
+9       }
+10     func getScore(a b c int) map{
+11          var m map
+12          var overallScore int
+13          overallScore = (a+b+c) / 3
+14          m["overallScore"] = overallScore
+15          if overallScore >= $gradeTypeABest["min"] && overallScore < $gradeTypeABest["max"] {
+16              m["score"] = "A+"
+17          }elif overallScore >= $gradeTypeA["min"] && overallScore < $gradeTypeA["max"] {
+18              m["score"] = "A"
+19          }elif overallScore >= $gradeTypeBBest["min"] && overallScore < $gradeTypeBBest["max"] {
+20              m["score"] = "B+"
+21          }elif overallScore >= $gradeTypeB["min"] && overallScore < $gradeTypeB["max"] {
+22              m["score"] = "B"
+23          }elif overallScore >= $gradeTypeC["min"] && overallScore < $gradeTypeC["max"]{
+24              m["score"] = "C"
+25          }else{
+26              m["score"] = "Notset"
+27          }
+28          return m
+29      }
+30      func safeJsonDecode(m string) map {
+31          var res map
+32          if Size(m) > 0 {
+33             res = JSONDecode(m)
+34          }
+35          return res
+36      }
+37
+38      conditions {
+39          if Size($Student) == 0 {
+40            warning "Student Can not be empty"
+41          }
+42          if $Class <= 0{
+43              warning "Class cannot be less than or equal to zero"
+44          }
+45          if $Grade <= 0{
+46              warning "Grade cannot be less than or equal to zero"
+47          }
+48          if $Mathematics < 0 {
+49              warning "Mathematics cannot be less than zero"
+50          }
+51          if $Physics < 0 {
+52              warning "Physics cannot be less than zero"
+53          }
+54          if $Literature < 0 {
+55              warning "Literature cannot be less than zero"
+56          }
+57          if $Mathematics > 100 || $Physics > 100 ||  $Literature > 100{
+58              warning "Score cannot exceed 100"
+59          }
+60          var app map
+61          app = DBFind("@1applications").Columns("id,ecosystem").Where({"ecosystem": 18,"name":"GradesRecorder","deleted":0}).Row()
+62          if !app {
+63              warning LangRes("@1app_not_found")
+64          }
+65
+66          var app_id int
+67          app_id = Int(app["id"])
+68          $eId = Int(app["ecosystem"])
+69          $gradeBestType = AppParam(app_id, "grade_best_type", $eId)
+70          $gradeTypeABest = safeJsonDecode(AppParam(app_id, "grade_type_a+", $eId))
+71          $gradeTypeA = safeJsonDecode(AppParam(app_id, "grade_type_a", $eId))
+72          $gradeTypeBBest = safeJsonDecode(AppParam(app_id, "grade_type_b+", $eId))
+73          $gradeTypeB = safeJsonDecode(AppParam(app_id, "grade_type_b", $eId))
+74          $gradeTypeC = safeJsonDecode(AppParam(app_id, "grade_type_c", $eId))
+75      }
+76      action {
+77          var m map
+78          m = getScore($Mathematics,$Physics,$Literature)
+79          var in map
+80          in["student"] = $Student
+81          in["class"] = $Class
+82          in["grade"] = $Grade
+83          in["mathematics"] = $Mathematics
+84          in["physics"] = $Physics
+85          in["literature"] = $Literature
+86          in["overall_score"] = m["overallScore"]
+87          in["score"] = m["score"]
+88          in["created_at"] = $time
+89          DBInsert("@"+ Str($eId)+"grade_info", in)
+90      }
+91  }
 ```
 下面按行解释：
 - 第2行，[数据部分](../topics/script.md#data-section) 定义了输入参数`Student`学生名称,`Grade`年级,`Class`班级,`Mathematics`数学分数,`Physics`物理分数,`Literature`文学分数。
@@ -499,7 +499,7 @@ callContract @1NewContract {"ApplicationId": 47, "Value-file": "NewRecord.sim", 
 
 比如说我们要指定一个一个人才能调用这个新建记录的智能合约，其他所有人都不可以调用，我们可以设置一个生态参数`new_record_account`。
 
-### 第6步设置生态参数 {#step-6-create-ecological-parameters}
+### 第6步设置生态参数 {#step-6-create-ecosystem-parameters}
 调用智能合约`@1NewParameter`,将在`@1parameters`表创建生态参数`new_record_account`,如果你需要修改生态参数可以调用`@1EditParameter`。
 ```text
 >callContract @1NewParameter {"Name": "new_record_account", "Value": "6667782293976713160", "Conditions": "ContractConditions(\"MainCondition\")"}
@@ -708,7 +708,7 @@ Encode:ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsb
 ```
 
 
-## 使用命令行工具生态配置 {#ecological-configuration-using-command-line-tool}
+## 使用命令行工具生态配置 {#ecosystem-configuration-using-command-line-tool}
 在本教程中，您将学习如何：
 1. [申请加入生态](#apply-to-join-the-ecosystem)
 2. [添加生态成员](#add-ecosystem-members)
@@ -965,13 +965,13 @@ Encode:ewoJIm5hbWUiOiAid...CQkJIlR5cGUiOiAiY29udHJhY3RzIiwKCQkJIk5hbWUiOiAiSGVsb
 ```
 其中合约参数字段定义如下：
 - `FollowFuel`        参数为跟随生态1费率的倍数。
-- `CombustionFlag`	是否开启生态交易gas费燃烧，1-否，2-是。
-- `CombustionPercent`	燃烧百分比，仅开启gas费燃烧生效,取值1到100，未开启时为0。
-- `VmCostFlag`	    虚拟机费用标识，设置直付或代付，1-直付，2-代付。
-- `StorageFlag`	    存储费用标识，设置直付或代付，1-直付，2-代付。
-- `ExpediteFlag`	    加急费用标识，设置直付或代付，1-直付，2-代付。
-- `VmCostConversionRate`	   虚拟机费用转换率，小数位2位，仅代付生效，大于零。
-- `StorageConversionRate`	   存储费用转换率，小数位2位，仅代付生效，大于零。
+- `CombustionFlag` 是否开启生态交易gas费燃烧，1-否，2-是。
+- `CombustionPercent` 燃烧百分比，仅开启gas费燃烧生效,取值1到100，未开启时为0。
+- `VmCostFlag`     虚拟机费用标识，设置直付或代付，1-直付，2-代付。
+- `StorageFlag`     存储费用标识，设置直付或代付，1-直付，2-代付。
+- `ExpediteFlag`     加急费用标识，设置直付或代付，1-直付，2-代付。
+- `VmCostConversionRate`    虚拟机费用转换率，小数位2位，仅代付生效，大于零。
+- `StorageConversionRate`    存储费用转换率，小数位2位，仅代付生效，大于零。
 
 如果你使用了上述设置,所有用户在该生态内调用合约所产生的交易费用，由当前生态设置的生态钱包统一支付。所有用户只需要支付在该生态内所产生的gas费用.当然你可以根据实际需要，调整对应费用参数。
 

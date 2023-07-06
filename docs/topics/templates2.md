@@ -371,17 +371,22 @@ AppParam(App, Name, Index, Source)
 ```
 
 > AppParam
+
   * `App`
   
     Application ID.
+
   * `Name`
 
     Parameter name.
+
   * `Index`
 
     It can be used when the parameter value is a comma-separated list.
+
     The parameter elements index, starting from 1. For example, if `type = full,light`, then `AppParam(1, type, 2)` returns `light`.
     It cannot be used in conjunction with the Source parameter.
+
   * `Source`
 
     It can be used when the parameter value is a comma-separated list.
@@ -480,16 +485,19 @@ Button(Body, Page, Class, Contract, Params, PageParams)
   * `Contract`
 
     Name of the contract called.
+
   * `Params`
 
     The list of values passed to the contract. Normally, the value of the contract parameter (the data section) is obtained from an HTML element (such as an input field) of id with a similar name. If the element id is different from the name of the contract parameter, then the value should be assigned in the format of contractField1=idname1, contractField2=idname2. This parameter is returned to attr as the object {contractField1: idname1, contractField2: idname2}.
+
   * `PageParams`
 
-    The format of parameters passed to the redirect page is pageField1=idname1, pageField2=idname2. Variables with target page parameter names #pageField1 and #pageField2 are created on the target page and assigned the specified values. See more specifications for parameter passing Use PageParams to pass parameters to pages).
+    The format of parameters passed to the redirect page is pageField1=idname1, pageField2=idname2. Variables with target page parameter names #pageField1 and #pageField2 are created on the target page and assigned the specified values.See more parameter passing specifications [passing parameters to the page using PageParams](#pageparams)
   
 > CompositeContract
 
   Used to add additional contracts to the button. CompositeContract can be used multiple times.
+
   * `Name`
 
     Name of the contract.
@@ -826,6 +834,7 @@ DBFind(table, Source)
 > Count
 
   Specify the total number of rows of the Where condition.
+
   In addition to storing it in a variable, the total count is returned in the count parameter of the dbfind element.
 
   If Where and WhereID are not specified, the total count of rows in the table will be returned.
@@ -845,6 +854,7 @@ DBFind(table, Source)
   * `columns`
 
    A comma-separated list of fields that must be processed by the Cutoff function.
+
    The field value will be replaced by a JSON object that has two fields: link link and title title. If the field value contains more than 32 characters, link pointing to the first 32 characters of the full text is returned. If the field value contains 32 characters or less, link is set to void and title contains the complete field value.
 
 > Custom
@@ -942,10 +952,13 @@ EcosysParam(Name, Index, Source)
   * `Name`
 
     Parameter name.
+
   * `Index`
 
     If the requested parameter is a list of comma-separated elements, you can specify an index starting from 1. For example, if `gender = male,female`, then `gender = male,female` returns `female`.
+
     It cannot be used in conjunction with the Source parameter.
+
   * `Source`
 
     It can be used when the parameter value is a comma-separated list.
@@ -996,10 +1009,12 @@ ForList(Source, Index){Body}
   * `Source`
 
     Data source obtained from the [DBFind](#dbfind) or [Data](#data) function.
+
   * `Index`
 
     The variable of the iteration counter, starting from 1.
     An optional parameter. If not specified, the iteration count value will be written to the [Source] _index variable.
+
   * `Body`
 
     Template for inserting elements.
@@ -1062,6 +1077,7 @@ SetVar(coltype,GetColumnType(members, member_name))Div(){#coltype#}
 ### GetHistory {#gethistory}
 
 Create a gethistory element and fill it with the history change records of the entries in the specified table. The data generated will be placed in the Source element, which can be used later in the source input function (for example, [Table](#table)).
+
 The array is sorted in order from the last modified.
 The id field in the array points to the id of the rollback_tx table. block_id represents the block ID, block_time represents the block generation timestamp.
 
@@ -1093,6 +1109,7 @@ GetHistory(blocks, BlockHistory, 1)
 ### GetVar {#getvar}
 
 It returns the value of the specified variable that already exists, or an empty string if it does not exist.
+
 The getvar element is only created when an editable tree is requested. The difference between `GetVar(varname)` and `#varname` is that if varname does not exist, GetVar will return an empty string, while #varname# will be interpreted as a string value.
 
 **Syntax**
@@ -1153,6 +1170,7 @@ If(Condition){ Body}
   * `Condition`
 
     If the condition is equal to an empty string, 0 or false, it is considered that the condition is not met. In all other cases, this condition is considered to be satisfied.
+
   * `Body`
 
     Child element.
@@ -1352,6 +1370,7 @@ InputMap(Name: Coords,Type: polygon, MapType: hybrid, Value: `{"zoom":8, "center
 ### JsonToSource {#jsontosource}
 
 Create a jsontosource element and fill it with the key-value pairs of a JSON array. The data obtained is put into the Source element, which can be used later in the source input function (e.g. [Table](#table)).
+
 The records in the result data are sorted alphabetically by JSON key.
 
 **Syntax**
@@ -1972,6 +1991,7 @@ TransactionInfo(Hash)
   * `Hash`
 
     Transaction hashes in hexadecimal string format.
+
 > Return value
 
   It returns a string in JSON format:
@@ -1997,6 +2017,7 @@ P(TransactionInfo(#hash#))
 Assigns the value Value to a specific variable Name, which is the name of a specific variable instead of its value.
 
 For versions with variable substitution, see [SetVar](#setvar).
+
 **Syntax**
 ```
 VarAsIs(Name, Value)

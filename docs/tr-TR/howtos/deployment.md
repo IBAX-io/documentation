@@ -270,7 +270,7 @@ cp $HOME/go/bin/go-ibax /opt/backenddir/go-ibax
 * Centrifugo
 * go-ibax
 
-Bu dosyalarla [hizmetler](#https://wiki.debian.org/systemd/Services) oluşturamadıysanız, farklı konsollardaki dizinlerden ikili dosyaları çalıştırabilirsiniz.
+Bu dosyalarla [hizmetler](https://wiki.debian.org/systemd/Services) oluşturamadıysanız, farklı konsollardaki dizinlerden ikili dosyaları çalıştırabilirsiniz.
 
 1. Centrifugo çalıştırın:
 

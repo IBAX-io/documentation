@@ -120,6 +120,7 @@ A block structure consists of the following elements:
 ### ObjInfo structure {#objinfo-structure}
 
 The ObjInfo structure contains information about internal objects.
+
 ```
 type ObjInfo struct {
    Type int
@@ -130,6 +131,7 @@ type ObjInfo struct {
 The ObjInfo structure has the following elements:
 
 * **Type** is the object type, which has any of the following values:
+
    * **ObjContract** – [contract](#contractinfo-structure);
    * **ObjFunc** - function;
    * **ObjExtFunc** - external golang function;
@@ -182,6 +184,8 @@ The FieldInfo structure has the following elements:
 #### FuncInfo structure {#funcinfo-structure}
 
 Pointing to the ObjFunc type, and the Value field contains a FuncInfo structure.
+
+
 ```
 type FuncInfo struct {
    Params []reflect.Type
@@ -281,7 +285,7 @@ Identifiers of the virtual machine commands are described in the vm/cmds_list.go
 * **cmdPush** – put a value from the Value field to the stack. For example, put numbers and lines to the stack;
 * **cmdVar** - put the value of a variable to the stack. Value contains a pointer to the VarInfo structure and information about the variable;
 * **cmdExtend** – put the value of an external variable to the stack. Value contains a string with the variable name (starting with $);
-* **cmdCallExtend** – call an external function (starting with $). The parameters of the function are obtained from the stack, and the results are placed to the stack. Value contains a function name (starting with $);
+* **cmdCallExtend** – call an external function (starting with `$`). The parameters of the function are obtained from the stack, and the results are placed to the stack. Value contains a function name (starting with `$`);
 * **cmdPushStr** – put the string in Value to the stack;
 * **cmdCall** - calls the virtual machine function. Value contains a **ObjInfo** structure. This command is applicable to the **ObjExtFunc** golang function and **ObjFunc** Needle function. If a function is called, its parameters will be obtained from the stack and the result values will be placed to the stack;
 * **cmdCallVari** - similar to the **cmdCall** command, it calls the virtual machine function. This command is used to call a function with a variable number of parameters;
@@ -572,6 +576,7 @@ if objInfo == nil && (!vm.Extern || i> *ind || i >= len(*lexems)-2 || (*lexems)[
 ```
 
 We may encounter such a situation, and the contract call will be described later. In this example, if no functions or variables with the same name are found, then we think it is necessary to call a contract. In this compiled language, there is no difference between contracts and function calls. But we need to call the contract through the **ExecContract** function used in the bytecode.
+
 ```
 if objInfo.Type == ObjContract {
    if objInfo.Value != nil {
@@ -592,6 +597,7 @@ if (*lexems)[i+2].Type != isRPar {
 ```
 
 We have a list Used of called parameters for contracts, then we need to mark the case of the contract is called. If the contract is called without parameters, we must add two empty parameters to call **ExecContract** to get at least two parameters.
+
 ```
 if isContract {
    name := StateName((*block)[0].Info.(uint32), lexem.Value.(string))
@@ -615,6 +621,7 @@ if isContract {
 ```
 
 If we see that there is a square bracket next, then we add the **cmdIndex** command to get the value by the index.
+
 ```
 if (*lexems)[i+1].Type == isLBrack {
    if objInfo == nil || objInfo.Type != ObjVar {
@@ -651,6 +658,7 @@ Suppose we encountered the **func** keyword and we have changed the state to *st
 ```
 
 At the same time as the above operations, we will call the **fNameBlock** function. It should be noted that the Block structure is created with the statePush mark, where we get it from the buffer and fill it with the data we need. The **fNameBlock** function is suitable for contracts and functions (including those nested in them). It fills the *Info* field with the corresponding structure and writes itself into the *Objects* of the parent block. In this way, we can call the function or contract with the specified name. Similarly, we create corresponding functions for all states and variables. These functions are usually very small and perform some duties when constructing the virtual machine tree.
+
 ```
 func fNameBlock(buf *[]*Block, state int, lexem *Lexem) error {
    var itype int
@@ -718,6 +726,7 @@ The name of these states are keys, and the possible values are listed in the val
 For example, we have the main state and the incoming characters `/`, `"/": ["solidus", "", "push next"]`,
 
 * **push** - gives the command to remember that it is in a separate stack ;
+
 * **next** - goes to the next character, and at the same time we change the status to **solidus**. After that, gets the next character and check the status of **solidus**.
 
 If the next character has `/` or `/*`, then we go to the comment **comment** state because they start with `//` or `/*`. Obviously, each comment has a different state afterwards, because they end with a different symbol.
@@ -746,12 +755,15 @@ In addition, in **state2int**, we provide each state with its own sequence ident
 
 When we traverse all states and each set in a state and each symbol in a set, we write a three-byte number [new state identifier (0 = main)] + [token type ( 0-no token)] + [token].
 The bidimensionality of the *table* array is that it is divided into states and 34 input symbols from the *alphabet* array, which are arranged in the same order.
+
 We are in the *main* state on the zero row of the *table*. Take the first character, find its index in the *alphabet* array, and get the value from the column with the given index. Starting from the value received, we receive the token in the low byte. If the parsing is complete, the second byte indicates the type of token received. In the third byte, we receive the index of the next new state.
 All of these are described in more detail in the **lexParser** function in *lex.go*.
+
 If you want to add some new characters, you need to add them to the *alphabet* array and increase the quantity of the *AlphaSize* constant. If you want to add a new symbol combination, it should be described in the status, similar to the existing options. After the above operation, run the *lextable.go* file to update the *lex_table.go* file.
 
 ### lex-go {#lex-go}
 The **lexParser** function directly generates lexical analysis and returns an array of received tags based on incoming strings. Let us analyze the structure of tokens.
+
 ```
 type Lexem struct {
    Type  uint32 // Type of the lexem
@@ -762,6 +774,7 @@ type Lexem struct {
 ```
 
 * **Type** - token type. It has one of the following values: `lexSys, lexOper, lexNumber, lexIdent, lexString, lexComment, lexKeyword, lexType, lexExtend`;
+
 * **Value** – token value. The type of value depends on the token type, Let us analyze it in more detail:
    * **lexSys** - includes brackets, commas, etc. In this case, `Type = ch << 8 | lexSys`, please refer to the `isLPar ... isRBrack` constant, and its value is uint32 bits;
    * **lexOper** - the value represents an equivalent character sequence in the form of uint32. See the `isNot ... isOr` constants;
@@ -773,7 +786,9 @@ type Lexem struct {
    * **lexKeyword** - for keywords, only the corresponding indexes are stored, see the `keyContract ... keyTail` constant. In this case `Type = KeyID << 8 | lexKeyword`. In addition, it should be noted that the `true, false, nil` keywords will be immediately converted to lexNumber type tokens, and the corresponding `bool` and `intreface {}` types will be used;
    * **lexType** – this value contains the corresponding `reflect.Type` type value;
    * **lexExtend** – identifiers beginning with a `$`. These variables and functions are passed from the outside and are therefore assigned to special types of tokens. This value contains the name as a string without a $ at the beginning.
+
 * **Line** - the line where the token is found;
+
 * **Column** - in-line position of the token.
 
 Let us analyze the **lexParser** function in detail. The **todo** function looks up the symbol index in the alphabet based on the current state and the incoming symbol, and obtains a new state, token identifier (if any), and other tokens from the conversion table. The parsing itself involves calling the **todo** function in turn for each next character and switching to a new state. Once the tag is received, we create the corresponding token in the output criteria and continue the parsing process. It should be noted that during the parsing process, we do not accumulate the token symbols into a separate stack or array, because we only save the offset of the start of the token. After getting the token, we move the offset of the next token to the current parsing position.
@@ -846,6 +861,7 @@ var mymap map
 mymap["index"] = my[3]
 ```
 In expressions of conditional logical values (such as `if, while, &&, ||, !`), the type is automatically converted to a logical value. If the type is not the default value, it is true.
+
 ```
 var mymap map
 var val string
@@ -853,10 +869,12 @@ if mymap && val {
 ...
 }
 ```
+
 ### Scope {#scope}
 
 Braces specify a block that can contain local scope variables. By default, the scope of a variable extends to its own blocks and all nested blocks. In a block, you can define a new variable using the name of an existing variable. However, in this case, external variables with the same name become unavailable.
 ```
+
 var a int
 a = 3
 {

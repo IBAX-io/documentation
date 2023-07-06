@@ -268,7 +268,7 @@ Um den ersten Knotenserver zu starten, müssen Sie die folgenden zwei Dienste st
 * centrifugo
 * go-ibax
 
-Wenn Sie mit diesen Dateien [Dienste](#https://wiki.debian.org/systemd/Services) nicht erstellen konnten, können Sie Binärdateien aus Verzeichnissen in verschiedenen Konsolen ausführen.
+Wenn Sie mit diesen Dateien [Dienste](https://wiki.debian.org/systemd/Services) nicht erstellen konnten, können Sie Binärdateien aus Verzeichnissen in verschiedenen Konsolen ausführen.
 
 1. Lauf centrifugo:
 
